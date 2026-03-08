@@ -7,6 +7,7 @@ import { ArrowRight, Leaf, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-spa');
+  const philosophyImg = PlaceHolderImages.find(i => i.id === 'massage-1');
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -30,7 +31,7 @@ export default function HomePage() {
       <section className="relative h-screen flex items-center pt-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src={heroImg?.imageUrl || ''}
+            src={heroImg?.imageUrl || 'https://picsum.photos/seed/aura-hero/1920/1080'}
             alt="Luxury Spa"
             fill
             className="object-cover brightness-[0.85]"
@@ -101,7 +102,7 @@ export default function HomePage() {
         <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl">
             <Image
-              src={PlaceHolderImages.find(i => i.id === 'massage-1')?.imageUrl || ''}
+              src={philosophyImg?.imageUrl || 'https://picsum.photos/seed/massage1/800/600'}
               alt="Massage Session"
               fill
               className="object-cover"
