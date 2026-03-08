@@ -1,0 +1,28 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-spa",
+      "description": "Luxury spa interior with forest view",
+      "imageUrl": "https://picsum.photos/seed/aura-hero/1920/1080",
+      "imageHint": "luxury spa"
+    },
+    {
+      "id": "massage-1",
+      "description": "Professional massage therapy session",
+      "imageUrl": "https://picsum.photos/seed/massage1/800/600",
+      "imageHint": "massage therapy"
+    },
+    {
+      "id": "stones",
+      "description": "Hot stones on a back",
+      "imageUrl": "https://picsum.photos/seed/stones/600/400",
+      "imageHint": "spa stones"
+    },
+    {
+      "id": "oils",
+      "description": "Essential oils and bamboo",
+      "imageUrl": "https://picsum.photos/seed/oils/600/400",
+      "imageHint": "wellness aromatherapy"
+    }
+  ]
+}
