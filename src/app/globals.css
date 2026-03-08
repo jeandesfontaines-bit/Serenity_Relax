@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 60 20% 96%; /* #F7F7F2 - Warm Cream */
-    --foreground: 151 61% 10%;
+    --background: 0 0% 98%; /* Soft Linen Off-White */
+    --foreground: 220 20% 10%; /* Deep Obsidian */
     --card: 0 0% 100%;
-    --card-foreground: 151 61% 10%;
+    --card-foreground: 220 20% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 151 61% 10%;
-    --primary: 151 61% 25%; /* #196640 - Forest Green */
-    --primary-foreground: 60 20% 96%;
-    --secondary: 48 77% 52%; /* #E3BD28 - Warm Gold */
-    --secondary-foreground: 151 61% 10%;
-    --muted: 151 20% 90%;
-    --muted-foreground: 151 20% 30%;
-    --accent: 48 77% 52%;
-    --accent-foreground: 151 61% 10%;
+    --popover-foreground: 220 20% 10%;
+    --primary: 220 20% 18%; /* Sophisticated Deep Slate */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 35 20% 75%; /* Muted Champagne/Bronze */
+    --secondary-foreground: 220 20% 10%;
+    --muted: 210 10% 92%;
+    --muted-foreground: 215 15% 40%;
+    --accent: 35 20% 75%;
+    --accent-foreground: 220 20% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 151 20% 85%;
-    --input: 151 20% 85%;
-    --ring: 151 61% 25%;
-    --radius: 0.75rem;
+    --border: 214 10% 90%;
+    --input: 214 10% 90%;
+    --ring: 220 20% 18%;
+    --radius: 0.5rem;
   }
 }
 
@@ -32,9 +32,15 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body;
+    @apply bg-background text-foreground font-body antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-headline;
+    @apply font-headline tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
   }
 }
