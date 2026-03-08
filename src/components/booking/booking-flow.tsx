@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Service, SERVICES } from '@/lib/types';
+import { Service } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
 import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
@@ -72,7 +73,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
 
   if (step === 4) {
     return (
-      <Card className="border-none shadow-2xl rounded-[3rem] p-12 text-center bg-white">
+      <Card className="border-none shadow-none rounded-[3rem] p-12 text-center bg-white">
         <CheckCircle2 className="h-20 w-20 text-primary mx-auto mb-6" />
         <h2 className="text-4xl font-headline font-bold text-primary mb-4">Confirmed!</h2>
         <p className="text-muted-foreground mb-8">
@@ -90,68 +91,84 @@ export function BookingFlow({ services }: { services: Service[] }) {
   return (
     <div className="space-y-8">
       {/* Progress */}
-      <div className="flex justify-between items-center px-4 max-w-xs mx-auto mb-8">
+      <div className="flex justify-between items-center px-4 max-w-xs mx-auto mb-8 pt-8">
         {[1, 2, 3].map((i) => (
-          <div key={i} className={`h-2 w-16 rounded-full transition-colors ${step >= i ? 'bg-primary' : 'bg-muted'}`} />
+          <div key={i} className={`h-1.5 w-16 rounded-full transition-colors ${step >= i ? 'bg-primary' : 'bg-muted'}`} />
         ))}
       </div>
 
       {step === 1 && (
-        <Card className="border-none shadow-2xl rounded-[3rem] overflow-hidden bg-white">
+        <Card className="border-none shadow-none rounded-[3rem] overflow-hidden bg-white">
           <Tabs defaultValue="browse" className="w-full">
-            <div className="bg-primary/5 p-8 pb-0">
-              <TabsList className="grid w-full grid-cols-2 bg-background border rounded-full">
-                <TabsTrigger value="browse" className="rounded-full">Browse Services</TabsTrigger>
-                <TabsTrigger value="ai" className="rounded-full flex items-center gap-2">
-                  <Sparkles className="h-4 w-4" /> AI Matchmaker
+            <div className="px-8 pb-0">
+              <TabsList className="grid w-full grid-cols-2 bg-muted/50 border rounded-full p-1">
+                <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm">Classic Menu</TabsTrigger>
+                <TabsTrigger value="ai" className="rounded-full flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <Sparkles className="h-3 w-3 text-secondary" /> AI Consultant
                 </TabsTrigger>
               </TabsList>
             </div>
             
             <CardContent className="p-8">
-              <TabsContent value="browse">
-                <div className="grid grid-cols-1 gap-4">
-                  {services.map((s) => (
-                    <button
-                      key={s.id}
-                      onClick={() => setSelectedService(s)}
-                      className={`p-6 text-left rounded-3xl border-2 transition-all ${selectedService?.id === s.id ? 'border-primary bg-primary/5' : 'border-transparent bg-background hover:bg-muted'}`}
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-headline font-bold">{s.name}</h3>
-                        <span className="font-bold text-primary">CHF {s.price}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-2">{s.description}</p>
-                      <span className="text-xs font-semibold uppercase tracking-widest text-secondary">{s.duration}</span>
-                    </button>
-                  ))}
+              <TabsContent value="browse" className="space-y-6">
+                <div className="space-y-3">
+                  <Label htmlFor="service-select" className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Select Your Treatment</Label>
+                  <Select 
+                    value={selectedService?.id} 
+                    onValueChange={(id) => {
+                      const s = services.find(srv => srv.id === id);
+                      if (s) setSelectedService(s);
+                    }}
+                  >
+                    <SelectTrigger id="service-select" className="w-full h-16 rounded-2xl text-base px-6 border-muted bg-background focus:ring-primary shadow-sm">
+                      <SelectValue placeholder="Browse our therapeutic menu" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-2xl max-h-[300px]">
+                      {services.map((s) => (
+                        <SelectItem key={s.id} value={s.id} className="py-4 focus:bg-primary/5 cursor-pointer">
+                          <div className="flex flex-col gap-1">
+                            <span className="font-headline font-bold text-lg">{s.name.split('-')[0]}</span>
+                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{s.duration} • CHF {s.price}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
+
+                {selectedService && (
+                  <div className="p-8 rounded-3xl bg-primary/5 border border-primary/10 animate-in fade-in slide-in-from-top-4">
+                    <h3 className="text-xl font-headline font-bold text-primary mb-2">{selectedService.name}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed italic">"{selectedService.description}"</p>
+                  </div>
+                )}
               </TabsContent>
 
               <TabsContent value="ai">
                 <div className="space-y-6">
-                  <div className="p-8 rounded-3xl bg-secondary/10 border-2 border-secondary/20">
-                    <h3 className="text-xl font-headline font-bold text-primary mb-4 flex items-center gap-2">
-                      <Sparkles className="h-5 w-5 text-secondary" /> How are you feeling?
+                  <div className="p-8 rounded-3xl bg-secondary/5 border border-secondary/20">
+                    <h3 className="text-lg font-headline font-bold text-primary mb-4 flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-secondary" /> Personalized Match
                     </h3>
+                    <p className="text-xs text-muted-foreground mb-4">Describe how you feel or what you wish to address (tension, fatigue, recovery...)</p>
                     <Textarea 
-                      placeholder="e.g. My lower back is extremely tight from sitting all day, and I've been feeling quite stressed lately. I need something deep but relaxing."
-                      className="min-h-[120px] rounded-2xl border-none shadow-inner text-base"
+                      placeholder="e.g. I have a stiff neck from work and I'm looking for something deeply relaxing but effective."
+                      className="min-h-[120px] rounded-2xl border-muted bg-white text-base shadow-sm"
                       value={aiQuery}
                       onChange={(e) => setAiQuery(e.target.value)}
                     />
                     <Button 
                       onClick={handleAiRecommend} 
                       disabled={aiLoading || !aiQuery}
-                      className="mt-6 w-full rounded-full bg-secondary text-primary hover:bg-secondary/90 font-bold"
+                      className="mt-6 w-full rounded-full bg-primary text-white hover:bg-primary/90 font-bold h-12"
                     >
                       {aiLoading ? <Loader2 className="animate-spin h-4 w-4 mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
-                      Find My Perfect Match
+                      Find My Perfect Session
                     </Button>
                   </div>
                   {selectedService && (
-                    <div className="p-6 rounded-3xl border-2 border-primary bg-primary/5 animate-in fade-in slide-in-from-top-4">
-                       <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Our AI Recommendation:</p>
+                    <div className="p-6 rounded-3xl border border-primary bg-primary/5 animate-in fade-in slide-in-from-top-4">
+                       <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-2">Tailored for you:</p>
                        <h4 className="text-xl font-headline font-bold">{selectedService.name}</h4>
                     </div>
                   )}
@@ -164,32 +181,34 @@ export function BookingFlow({ services }: { services: Service[] }) {
             <Button 
               disabled={!selectedService} 
               onClick={() => setStep(2)}
-              className="rounded-full px-10 py-6"
+              className="rounded-full px-10 py-6 text-xs uppercase tracking-widest font-bold"
             >
-              Select Schedule <ChevronRight className="ml-2 h-4 w-4" />
+              Next: Schedule <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </Card>
       )}
 
       {step === 2 && (
-        <Card className="border-none shadow-2xl rounded-[3rem] p-8 bg-white">
+        <Card className="border-none shadow-none rounded-[3rem] p-8 bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="space-y-6">
-              <h2 className="text-3xl font-headline font-bold text-primary flex items-center gap-2">
-                <CalendarIcon className="h-6 w-6" /> Pick Your Date
+              <h2 className="text-2xl font-headline font-bold text-primary flex items-center gap-2">
+                <CalendarIcon className="h-6 w-6" /> Date Selection
               </h2>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-3xl border shadow-sm p-4 w-fit bg-white"
-                disabled={(date) => date < new Date() || date.getDay() === 0}
-              />
+              <div className="flex justify-center">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  className="rounded-3xl border border-muted shadow-sm p-4 bg-white"
+                  disabled={(date) => date < new Date() || date.getDay() === 0}
+                />
+              </div>
             </div>
             <div className="space-y-6">
-               <h2 className="text-3xl font-headline font-bold text-primary flex items-center gap-2">
-                <ChevronRight className="h-6 w-6" /> Select Time
+               <h2 className="text-2xl font-headline font-bold text-primary flex items-center gap-2">
+                <ChevronRight className="h-6 w-6" /> Available Times
               </h2>
               <div className="grid grid-cols-2 gap-3">
                 {times.map((t) => (
@@ -197,7 +216,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     key={t}
                     variant={time === t ? 'default' : 'outline'}
                     onClick={() => setTime(t)}
-                    className="rounded-2xl py-6 text-lg"
+                    className={`rounded-2xl py-6 text-lg border-muted ${time === t ? 'bg-primary text-white' : 'hover:border-primary/40'}`}
                   >
                     {t}
                   </Button>
@@ -206,10 +225,10 @@ export function BookingFlow({ services }: { services: Service[] }) {
             </div>
           </div>
           <div className="flex justify-between mt-12">
-            <Button variant="ghost" onClick={() => setStep(1)} className="rounded-full">
-              <ChevronLeft className="mr-2 h-4 w-4" /> Back to Services
+            <Button variant="ghost" onClick={() => setStep(1)} className="rounded-full text-xs uppercase tracking-widest font-bold">
+              <ChevronLeft className="mr-2 h-4 w-4" /> Back
             </Button>
-            <Button disabled={!date || !time} onClick={() => setStep(3)} className="rounded-full px-10">
+            <Button disabled={!date || !time} onClick={() => setStep(3)} className="rounded-full px-10 text-xs uppercase tracking-widest font-bold">
               Personal Details <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -217,51 +236,43 @@ export function BookingFlow({ services }: { services: Service[] }) {
       )}
 
       {step === 3 && (
-        <Card className="border-none shadow-2xl rounded-[3rem] p-12 bg-white">
-          <h2 className="text-3xl font-headline font-bold text-primary mb-8 flex items-center gap-2">
-            <User className="h-7 w-7" /> Almost There
+        <Card className="border-none shadow-none rounded-[3rem] p-12 bg-white">
+          <h2 className="text-2xl font-headline font-bold text-primary mb-8 flex items-center gap-2">
+            <User className="h-7 w-7" /> Client Information
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div className="space-y-2">
-              <Label>First Name</Label>
-              <Input placeholder="Jean" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl" />
+              <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">First Name</Label>
+              <Input placeholder="Jean" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-12 border-muted" />
             </div>
             <div className="space-y-2">
-              <Label>Last Name</Label>
-              <Input placeholder="Dupont" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl" />
+              <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Last Name</Label>
+              <Input placeholder="Dupont" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-12 border-muted" />
             </div>
             <div className="space-y-2">
-              <Label>Email</Label>
-              <Input type="email" placeholder="jean.dupont@email.ch" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl" />
+              <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Email</Label>
+              <Input type="email" placeholder="jean.dupont@email.ch" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-12 border-muted" />
             </div>
             <div className="space-y-2">
-              <Label>Phone</Label>
-              <Input placeholder="+41 79 123 45 67" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl" />
+              <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Phone</Label>
+              <Input placeholder="+41 79 123 45 67" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-12 border-muted" />
             </div>
             <div className="md:col-span-2 space-y-2">
-              <Label>Full Address</Label>
-              <Input placeholder="Chemin du Lac 15, 1202 Genève" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl" />
-            </div>
-            <div className="space-y-2">
-              <Label>Promo Code (Optional)</Label>
-              <Input placeholder="AURA10" value={formData.promoCode} onChange={e => setFormData({...formData, promoCode: e.target.value})} className="rounded-xl" />
-            </div>
-            <div className="md:col-span-2 space-y-2">
-              <Label>Message to Therapist</Label>
-              <Textarea placeholder="Any specific areas of tension?" value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-xl" />
+              <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Session Notes (Optional)</Label>
+              <Textarea placeholder="Any specific areas of tension or preferences?" value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-xl border-muted" />
             </div>
           </div>
           
           <div className="flex justify-between items-center">
-            <Button variant="ghost" onClick={() => setStep(2)} className="rounded-full">
-              <ChevronLeft className="mr-2 h-4 w-4" /> Back to Time
+            <Button variant="ghost" onClick={() => setStep(2)} className="rounded-full text-xs uppercase tracking-widest font-bold">
+              <ChevronLeft className="mr-2 h-4 w-4" /> Back
             </Button>
             <Button 
-              className="rounded-full px-12 py-7 text-lg shadow-xl"
+              className="rounded-full px-12 py-7 text-xs uppercase tracking-widest font-bold shadow-xl"
               disabled={!formData.firstName || !formData.lastName || !formData.email}
               onClick={completeBooking}
             >
-              Complete Booking
+              Complete Reservation
             </Button>
           </div>
         </Card>
