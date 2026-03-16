@@ -20,7 +20,7 @@ export default function HomePage() {
             <span className="text-xl font-headline font-medium text-primary tracking-tight">AuraFlow</span>
           </div>
           <nav className="hidden md:flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70">
-            <Link href="#services" className="hover:text-primary transition-colors">The Menu</Link>
+            <Link href="#carousel" className="hover:text-primary transition-colors">The Arts</Link>
             <Link href="#about" className="hover:text-primary transition-colors">Our Ethos</Link>
             <Link href="/booking" className="hover:text-primary transition-colors">Reservations</Link>
             <Link href="/client/portal" className="bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Portal</Link>
@@ -47,7 +47,7 @@ export default function HomePage() {
         </div>
 
         {/* 3D Curved Carousel */}
-        <div className="w-full max-w-[1400px] mt-16 mx-auto perspective-1000">
+        <div id="carousel" className="w-full max-w-[1400px] mt-16 mx-auto perspective-1000">
           <CurvedCarousel />
         </div>
 
@@ -73,44 +73,6 @@ export default function HomePage() {
             <p className="text-sm text-muted-foreground leading-relaxed font-light">
               Leverage our personalized post-treatment guidance to prolong the therapeutic effects of your session at home.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section id="services" className="py-32 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-            <div className="max-w-xl">
-              <span className="text-secondary font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">The Menu</span>
-              <h2 className="text-5xl font-headline text-primary italic leading-tight">Therapeutic Arts</h2>
-            </div>
-            <p className="text-muted-foreground max-w-sm font-light leading-relaxed">
-              Select from our curated range of services, each meticulously crafted to address specific physical and mental states.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {SERVICES.slice(0, 6).map((service, idx) => (
-              <Card key={service.id} className="group border-none bg-transparent shadow-none hover:shadow-3xl hover:bg-[#FDFCF8] transition-all duration-700 rounded-[3rem] overflow-hidden">
-                <CardContent className="p-12 flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-12">
-                    <span className="text-[3.5rem] font-headline text-primary/5 group-hover:text-secondary/10 transition-colors">0{idx + 1}</span>
-                    <span className="text-lg font-headline italic text-secondary">CHF {service.price}</span>
-                  </div>
-                  <h3 className="text-2xl font-headline font-medium mb-6 text-primary group-hover:translate-x-2 transition-transform duration-500">{service.name.split('-')[0]}</h3>
-                  <p className="text-muted-foreground text-sm font-light mb-12 leading-relaxed opacity-80">
-                    {service.description}
-                  </p>
-                  <div className="mt-auto pt-8 border-t border-primary/5 flex justify-between items-center">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{service.duration}</span>
-                    <Link href={`/booking?serviceId=${service.id}`} className="p-4 rounded-full bg-primary/5 group-hover:bg-primary group-hover:text-white transition-all">
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>
