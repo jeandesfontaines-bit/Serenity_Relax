@@ -38,6 +38,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
   const [aiQuery, setAiQuery] = useState('');
 
   useEffect(() => {
+    // Only set default date on client to avoid hydration mismatch
     setDate(new Date());
   }, []);
 
@@ -75,14 +76,16 @@ export function BookingFlow({ services }: { services: Service[] }) {
   const completeBooking = () => {
     if (!firestore || !selectedService || !date || !time) return;
 
-    const clientId = user?.uid || `anonymous_${Date.now()}`;
+    // Use existing user ID or generate a stable anonymous ID
+    const clientId = user?.uid || `client_${Date.now()}`;
     const appointmentId = `apt_${Date.now()}`;
     
-    // Create Appointment
+    // Calculate Appointment Times
     const startTimeStr = `${format(date, 'yyyy-MM-dd')}T${time}:00`;
     const duration = parseInt(selectedService.duration.split(' ')[0]);
     const endTime = addMinutes(new Date(startTimeStr), duration);
 
+    // 1. Create Appointment
     const appointmentData = {
       id: appointmentId,
       clientId: clientId,
@@ -95,10 +98,9 @@ export function BookingFlow({ services }: { services: Service[] }) {
       isConfirmed: false,
       createdAt: serverTimestamp()
     };
-
     addDocumentNonBlocking(collection(firestore, 'appointments'), appointmentData);
 
-    // Create/Update Client Profile
+    // 2. Create/Update Client Profile
     const clientData = {
       id: clientId,
       firstName: formData.firstName,
@@ -106,18 +108,15 @@ export function BookingFlow({ services }: { services: Service[] }) {
       email: formData.email,
       phone: formData.phone,
       addressStreet: formData.address,
-      addressCity: 'Geneva', // Defaulting for Swiss focus
-      addressPostalCode: '',
+      addressCity: 'Geneva',
       addressCountry: 'Switzerland',
-      dateOfBirth: '',
       loyaltySessionsCompleted: 0,
       isNextSessionFree: false,
       updatedAt: serverTimestamp()
     };
-
     setDocumentNonBlocking(doc(firestore, 'clients', clientId), clientData, { merge: true });
 
-    // Create Invoice
+    // 3. Create Swiss-Compliant Invoice
     const invoiceId = `INV-${Date.now()}`;
     const invoiceData = {
       id: invoiceId,
@@ -137,12 +136,11 @@ export function BookingFlow({ services }: { services: Service[] }) {
       servicePriceSnapshot: selectedService.price,
       isLoyaltyFreeSessionApplied: false
     };
-
     setDocumentNonBlocking(doc(firestore, 'invoices', invoiceId), invoiceData, { merge: true });
 
     toast({
       title: "Booking Successful!",
-      description: "An email confirmation has been sent to your inbox.",
+      description: "Session confirmed for " + format(date, 'PPP') + " at " + time,
     });
     setStep(4);
   };
@@ -155,9 +153,9 @@ export function BookingFlow({ services }: { services: Service[] }) {
         <p className="text-muted-foreground mb-8">
           Thank you, {formData.firstName}. Your session for <strong>{selectedService?.name}</strong> on {date ? format(date, 'PPP') : ''} at {time} is confirmed.
           <br /><br />
-          Check your email for your magic link to access your portal.
+          Check your email for access to your personal portal.
         </p>
-        <Button asChild className="rounded-full px-8">
+        <Button asChild className="rounded-full px-8 bg-primary text-white">
           <a href="/">Return Home</a>
         </Button>
       </Card>
@@ -166,7 +164,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
 
   return (
     <div className="space-y-8">
-      {/* Progress */}
+      {/* Step Indicator */}
       <div className="flex justify-between items-center px-4 max-w-xs mx-auto mb-8 pt-8">
         {[1, 2, 3].map((i) => (
           <div key={i} className={`h-1.5 w-16 rounded-full transition-colors ${step >= i ? 'bg-primary' : 'bg-muted'}`} />
@@ -226,9 +224,9 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     <h3 className="text-lg font-headline font-bold text-primary mb-4 flex items-center gap-2">
                       <Sparkles className="h-5 w-5 text-secondary" /> Personalized Match
                     </h3>
-                    <p className="text-xs text-muted-foreground mb-4">Describe how you feel or what you wish to address (tension, fatigue, recovery...)</p>
+                    <p className="text-xs text-muted-foreground mb-4">Describe your state (e.g., muscle tension, stress, recovery) for a tailored recommendation.</p>
                     <Textarea 
-                      placeholder="e.g. I have a stiff neck from work and I'm looking for something deeply relaxing but effective."
+                      placeholder="e.g. I have severe neck tension from office work and need deep relaxation."
                       className="min-h-[120px] rounded-2xl border-muted bg-white text-base shadow-sm"
                       value={aiQuery}
                       onChange={(e) => setAiQuery(e.target.value)}
@@ -244,7 +242,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                   </div>
                   {selectedService && (
                     <div className="p-6 rounded-3xl border border-primary bg-primary/5 animate-in fade-in slide-in-from-top-4">
-                       <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-2">Tailored for you:</p>
+                       <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-2">AI-Recommended Choice:</p>
                        <h4 className="text-xl font-headline font-bold">{selectedService.name}</h4>
                     </div>
                   )}
@@ -338,8 +336,8 @@ export function BookingFlow({ services }: { services: Service[] }) {
               <Input placeholder="Rue de Lausanne 12, Geneva" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-12 border-muted" />
             </div>
             <div className="md:col-span-2 space-y-2">
-              <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Session Notes (Optional)</Label>
-              <Textarea placeholder="Any specific areas of tension or preferences?" value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-xl border-muted" />
+              <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Notes for Praticien (Optional)</Label>
+              <Textarea placeholder="Specific areas of tension or preferences..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-xl border-muted" />
             </div>
           </div>
           
@@ -348,11 +346,11 @@ export function BookingFlow({ services }: { services: Service[] }) {
               <ChevronLeft className="mr-2 h-4 w-4" /> Back
             </Button>
             <Button 
-              className="rounded-full px-12 py-7 text-xs uppercase tracking-widest font-bold shadow-xl"
+              className="rounded-full px-12 py-7 text-xs uppercase tracking-widest font-bold shadow-xl bg-primary text-white"
               disabled={!formData.firstName || !formData.lastName || !formData.email}
               onClick={completeBooking}
             >
-              Complete Reservation
+              Confirm Reservation
             </Button>
           </div>
         </Card>

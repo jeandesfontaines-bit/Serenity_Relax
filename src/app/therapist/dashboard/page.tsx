@@ -16,20 +16,20 @@ export default function TherapistDashboard() {
   const { firestore } = useFirestore();
 
   // Fetch today's appointments
-  const today = format(new Date(), 'yyyy-MM-dd');
+  const todayDate = format(new Date(), 'yyyy-MM-dd');
   const appointmentsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
     return query(
       collection(firestore, 'appointments'),
-      where('startTime', '>=', `${today}T00:00:00`),
-      where('startTime', '<=', `${today}T23:59:59`),
+      where('startTime', '>=', `${todayDate}T00:00:00`),
+      where('startTime', '<=', `${todayDate}T23:59:59`),
       orderBy('startTime', 'asc')
     );
-  }, [firestore, today]);
+  }, [firestore, todayDate]);
 
   const { data: appointments, isLoading: aptLoading } = useCollection(appointmentsQuery);
 
-  // Fetch all invoices for metrics
+  // Fetch invoices for revenue metrics
   const invoicesQuery = useMemoFirebase(() => {
     if (!firestore) return null;
     return collection(firestore, 'invoices');
@@ -37,13 +37,14 @@ export default function TherapistDashboard() {
 
   const { data: invoices } = useCollection(invoicesQuery);
 
-  // Calculate metrics
+  // Metrics Logic
   const todayRevenue = invoices
-    ?.filter(inv => inv.issueDate.startsWith(today) && inv.status === 'Paid')
+    ?.filter(inv => inv.issueDate.startsWith(todayDate) && inv.status === 'Paid')
     .reduce((sum, inv) => sum + inv.totalAmount, 0) || 0;
 
+  const currentMonth = format(new Date(), 'yyyy-MM');
   const monthlyRevenue = invoices
-    ?.filter(inv => inv.issueDate.startsWith(format(new Date(), 'yyyy-MM')))
+    ?.filter(inv => inv.issueDate.startsWith(currentMonth) && inv.status === 'Paid')
     .reduce((sum, inv) => sum + inv.totalAmount, 0) || 0;
 
   const paidCount = invoices?.filter(inv => inv.status === 'Paid').length || 0;
@@ -58,7 +59,7 @@ export default function TherapistDashboard() {
               <div className="bg-primary text-white p-2 rounded-xl">
                 <LayoutDashboard className="h-5 w-5" />
               </div>
-              <span className="text-sm font-body font-bold text-primary uppercase tracking-widest">SERENITY RELAX</span>
+              <span className="text-sm font-bold uppercase tracking-widest text-primary">SERENITY RELAX</span>
             </Link>
           </SidebarHeader>
           <SidebarContent className="px-4">
@@ -117,20 +118,20 @@ export default function TherapistDashboard() {
           </header>
 
           <main className="p-8 space-y-8 max-w-7xl mx-auto w-full">
-            {/* Stats Row */}
+            {/* Real-time Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="rounded-3xl border-none shadow-sm bg-primary text-white">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium opacity-80 uppercase tracking-widest">Today's Revenue</CardTitle>
+                  <CardTitle className="text-xs font-bold opacity-80 uppercase tracking-widest">Today's Earned</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-headline font-bold">CHF {todayRevenue.toFixed(2)}</p>
-                  <p className="text-xs mt-2 opacity-60">Real-time update</p>
+                  <p className="text-[10px] mt-2 opacity-60">Verified payments only</p>
                 </CardContent>
               </Card>
               <Card className="rounded-3xl border-none shadow-sm bg-white">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Monthly Progress</CardTitle>
+                  <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Monthly Goal</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-between items-end mb-2">
@@ -142,7 +143,7 @@ export default function TherapistDashboard() {
               </Card>
                <Card className="rounded-3xl border-none shadow-sm bg-white">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Invoice Status</CardTitle>
+                  <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Invoice Status</CardTitle>
                 </CardHeader>
                 <CardContent className="flex items-center justify-between">
                   <div>
@@ -155,22 +156,23 @@ export default function TherapistDashboard() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Daily Timeline */}
               <div className="lg:col-span-2">
                 <Card className="rounded-[2.5rem] border-none shadow-sm bg-white overflow-hidden">
                   <CardHeader className="border-b bg-primary/5 p-6 flex flex-row items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Clock className="text-primary h-5 w-5" />
-                      <CardTitle className="text-xl font-headline font-bold">Today's Schedule</CardTitle>
+                      <CardTitle className="text-xl font-headline font-bold">Schedule Timeline</CardTitle>
                     </div>
-                    <Button variant="outline" size="sm" className="rounded-full">Manage Calendar</Button>
+                    <Button variant="outline" size="sm" className="rounded-full text-[10px] uppercase font-bold tracking-widest">Calendar View</Button>
                   </CardHeader>
                   <CardContent className="p-0">
                     <div className="divide-y">
                       {aptLoading && <div className="p-12 text-center text-muted-foreground">Loading appointments...</div>}
-                      {!aptLoading && appointments?.length === 0 && <div className="p-12 text-center text-muted-foreground italic">No appointments scheduled for today.</div>}
+                      {!aptLoading && appointments?.length === 0 && <div className="p-12 text-center text-muted-foreground italic">No appointments for today.</div>}
                       {appointments?.map((apt, idx) => {
                         const service = SERVICES.find(s => s.id === apt.serviceId);
-                        const isNext = idx === 0; // Simple indicator for demo
+                        const isNext = idx === 0;
                         return (
                           <div key={apt.id} className={`flex p-6 hover:bg-muted/50 transition-colors relative ${isNext ? 'bg-secondary/5' : ''}`}>
                             {isNext && <div className="absolute left-0 top-0 bottom-0 w-1 bg-secondary" />}
@@ -180,19 +182,21 @@ export default function TherapistDashboard() {
                             <div className="flex-1">
                               <div className="flex justify-between items-start mb-2">
                                 <div>
-                                  <h4 className="font-headline font-bold text-xl">{apt.clientId.includes('anonymous') ? 'Guest Client' : 'Registered Client'}</h4>
-                                  <p className="text-sm text-muted-foreground">{service?.name || 'Unknown Service'}</p>
+                                  <h4 className="font-headline font-bold text-xl">Session with {apt.clientId.length > 20 ? 'Guest' : 'Client'}</h4>
+                                  <p className="text-sm text-muted-foreground font-medium">{service?.name || 'Treatment'}</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   {isNext && (
-                                    <span className="bg-secondary text-primary text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Next Up</span>
+                                    <span className="bg-secondary text-primary text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full animate-pulse">Next Up</span>
                                   )}
-                                  <Button variant="ghost" size="icon"><MoreHorizontal className="h-4 w-4" /></Button>
+                                  <Button variant="ghost" size="icon" className="rounded-full"><MoreHorizontal className="h-4 w-4" /></Button>
                                 </div>
                               </div>
-                              <div className="bg-muted/30 p-3 rounded-xl border border-dashed border-primary/10">
-                                <p className="text-xs italic text-muted-foreground">"{apt.clientMessage || 'No specific notes'}"</p>
-                              </div>
+                              {apt.clientMessage && (
+                                <div className="bg-muted/30 p-4 rounded-2xl border border-dashed border-primary/10 mt-3">
+                                  <p className="text-xs italic text-muted-foreground leading-relaxed">"{apt.clientMessage}"</p>
+                                </div>
+                              )}
                             </div>
                           </div>
                         );
@@ -202,25 +206,26 @@ export default function TherapistDashboard() {
                 </Card>
               </div>
 
+              {/* Activity Feed */}
               <div className="space-y-8">
                 <Card className="rounded-[2rem] border-none shadow-sm bg-white overflow-hidden">
                    <CardHeader className="bg-secondary/10 p-6">
                     <CardTitle className="text-lg font-headline font-bold flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5" /> Recent Activity
+                      <TrendingUp className="h-5 w-5" /> Recent Actions
                     </CardTitle>
                    </CardHeader>
                    <CardContent className="p-6 space-y-6">
                       <div className="flex gap-4">
-                        <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-700">✓</div>
+                        <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">✓</div>
                         <div>
-                          <p className="text-sm font-medium">Invoice generated</p>
-                          <p className="text-xs text-muted-foreground">Just now</p>
+                          <p className="text-sm font-medium">Automatic confirm sent</p>
+                          <p className="text-xs text-muted-foreground">System action</p>
                         </div>
                       </div>
                       <div className="flex gap-4">
-                        <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700">+</div>
+                        <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">+</div>
                         <div>
-                          <p className="text-sm font-medium">New booking received</p>
+                          <p className="text-sm font-medium">New dossier initialized</p>
                           <p className="text-xs text-muted-foreground">Today</p>
                         </div>
                       </div>
