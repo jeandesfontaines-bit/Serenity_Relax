@@ -3,7 +3,7 @@ import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarContent,
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { WeatherWidget } from '@/components/weather-widget';
-import { Users, Calendar, FileText, LayoutDashboard, Clock, BadgeEuro, TrendingUp, Settings, MoreHorizontal } from 'lucide-react';
+import { Users, Calendar, FileText, LayoutDashboard, Clock, BadgeEuro, TrendingUp, Settings, MoreHorizontal, ShieldCheck } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 
 export default function TherapistDashboard() {
@@ -23,7 +23,7 @@ export default function TherapistDashboard() {
               <div className="bg-primary text-white p-2 rounded-xl">
                 <LayoutDashboard className="h-5 w-5" />
               </div>
-              <span className="text-xl font-headline font-bold text-primary">AuraFlow</span>
+              <span className="text-sm font-body font-bold text-primary uppercase tracking-widest">SERENITY RELAX</span>
             </Link>
           </SidebarHeader>
           <SidebarContent className="px-4">

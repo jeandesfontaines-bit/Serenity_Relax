@@ -24,7 +24,7 @@ export default function HomePage() {
             <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center">
               <Leaf className="text-secondary h-4 w-4" />
             </div>
-            <span className="text-xl font-headline font-medium text-primary tracking-tight">Serenity Relax</span>
+            <span className="text-sm font-body font-bold text-primary uppercase tracking-[0.3em]">SERENITY RELAX</span>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70">
             <Link href="#carousel" className="hover:text-primary transition-colors">The Arts</Link>
@@ -56,7 +56,7 @@ export default function HomePage() {
             
             <h1 className="text-5xl md:text-6xl lg:text-7xl leading-[1.05] font-medium text-slate-950 mb-10 tracking-tight">
               L'éveil de la <br/>
-              <span className="italic font-serif text-emerald-800 relative font-headline">plénitude.</span>
+              <span className="italic font-headline text-emerald-800 relative">plénitude.</span>
             </h1>
             
             <p className="text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-md font-headline italic mb-12">
@@ -141,7 +141,7 @@ export default function HomePage() {
       <footer className="bg-[#111111] py-24 px-6 text-white/90 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center mb-24">
-            <h2 className="text-4xl md:text-5xl font-headline tracking-[0.4em] uppercase mb-4 text-white">Serenity Relax</h2>
+            <h2 className="text-4xl md:text-5xl font-body font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
             <p className="text-[10px] uppercase tracking-[0.6em] italic text-white/30">Excellence Thérapeutique</p>
           </div>
 

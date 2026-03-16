@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Serenity Relax | Excellence Thérapeutique',
+  title: 'SERENITY RELAX | Excellence Thérapeutique',
   description: 'A contemporary sanctuary for physical and mental restoration in Geneva.',
 };
 

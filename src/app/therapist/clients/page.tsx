@@ -23,7 +23,7 @@ export default function ClientsCRM() {
               <div className="bg-primary text-white p-2 rounded-xl">
                 <LayoutDashboard className="h-5 w-5" />
               </div>
-              <span className="text-xl font-headline font-bold text-primary">AuraFlow</span>
+              <span className="text-sm font-body font-bold text-primary uppercase tracking-widest">SERENITY RELAX</span>
             </Link>
           </SidebarHeader>
           <SidebarContent className="px-4">
