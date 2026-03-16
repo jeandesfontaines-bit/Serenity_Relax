@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { cn } from '@/lib/utils';
 
 const TWEEN_FACTOR_BASE = 0.52;
 
@@ -29,6 +28,12 @@ export function CurvedCarousel() {
 
     const styles = emblaApi.scrollSnapList().map((scrollSnap, index) => {
       let diffToTarget = scrollSnap - scrollProgress;
+      
+      // Safety check for engine and indexGroups
+      if (!engine || !engine.indexGroups || !engine.indexGroups[index]) {
+        return 0;
+      }
+
       const slidesInSnap = engine.indexGroups[index];
 
       slidesInSnap.forEach((slideIndex) => {
@@ -66,6 +71,7 @@ export function CurvedCarousel() {
     emblaApi.on('scroll', onScroll);
   }, [emblaApi, onScroll]);
 
+  // Ensure we have portrait images to display
   const portraits = PlaceHolderImages.filter(img => img.id.startsWith('portrait-'));
 
   if (portraits.length === 0) return null;
