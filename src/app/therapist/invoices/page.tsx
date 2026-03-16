@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +15,13 @@ import { updateDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 export default function InvoicingManagement() {
   const { firestore } = useFirestore();
+  const [mounted, setMounted] = useState(false);
+  const [currentPeriodFormatted, setCurrentPeriodFormatted] = useState('');
+
+  useEffect(() => {
+    setMounted(true);
+    setCurrentPeriodFormatted(format(new Date(), 'MMM yyyy'));
+  }, []);
 
   const invoicesQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -103,7 +111,9 @@ export default function InvoicingManagement() {
               </Card>
                <Card className="rounded-3xl border-none shadow-sm bg-white p-6">
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Current Period</p>
-                <p className="text-2xl font-headline font-bold">{format(new Date(), 'MMM yyyy')}</p>
+                <p className="text-2xl font-headline font-bold">
+                  {mounted ? currentPeriodFormatted : '...'}
+                </p>
               </Card>
             </div>
 

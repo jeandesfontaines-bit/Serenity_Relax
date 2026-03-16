@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,6 +24,14 @@ import {
 
 export default function TherapistDashboard() {
   const { firestore } = useFirestore();
+  const [mounted, setMounted] = useState(false);
+  const [currentDateFormatted, setCurrentDateFormatted] = useState('');
+
+  useEffect(() => {
+    setMounted(true);
+    setCurrentDateFormatted(format(new Date(), 'EEEE d MMMM', { locale: fr }));
+  }, []);
+
   const todayDate = format(new Date(), 'yyyy-MM-dd');
 
   const appointmentsQuery = useMemoFirebase(() => {
@@ -170,7 +179,9 @@ export default function TherapistDashboard() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Calendar size={14} className="text-slate-400" />
-                      <span className="text-xs font-bold">{format(new Date(), 'EEEE d MMMM', { locale: fr })}</span>
+                      <span className="text-xs font-bold">
+                        {mounted ? currentDateFormatted : '...'}
+                      </span>
                     </div>
                   </CardHeader>
                   <CardContent className="p-0">
