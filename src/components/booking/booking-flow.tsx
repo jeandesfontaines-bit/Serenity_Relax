@@ -14,13 +14,15 @@ import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
 import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
-import { useFirestore, useUser } from '@/firebase';
+import { useFirestore, useUser, useAuth } from '@/firebase';
 import { collection, doc, serverTimestamp } from 'firebase/firestore';
-import { setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { signInAnonymously } from 'firebase/auth';
 
 export function BookingFlow({ services }: { services: Service[] }) {
   const { firestore } = useFirestore();
   const { user } = useUser();
+  const auth = useAuth();
   const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -36,9 +38,9 @@ export function BookingFlow({ services }: { services: Service[] }) {
   });
   const [aiLoading, setAiLoading] = useState(false);
   const [aiQuery, setAiQuery] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Only set default date on client to avoid hydration mismatch
     setDate(new Date());
   }, []);
 
@@ -73,76 +75,92 @@ export function BookingFlow({ services }: { services: Service[] }) {
 
   const times = ['09:00', '10:30', '13:00', '14:30', '16:00', '17:30'];
 
-  const completeBooking = () => {
+  const completeBooking = async () => {
     if (!firestore || !selectedService || !date || !time) return;
+    setIsSubmitting(true);
 
-    // Use existing user ID or generate a stable anonymous ID
-    const clientId = user?.uid || `client_${Date.now()}`;
-    const appointmentId = `apt_${Date.now()}`;
-    
-    // Calculate Appointment Times
-    const startTimeStr = `${format(date, 'yyyy-MM-dd')}T${time}:00`;
-    const duration = parseInt(selectedService.duration.split(' ')[0]);
-    const endTime = addMinutes(new Date(startTimeStr), duration);
+    try {
+      // Ensure we have an authenticated user context (Anonymous if not logged in)
+      let finalUserId = user?.uid;
+      if (!finalUserId) {
+        const cred = await signInAnonymously(auth);
+        finalUserId = cred.user.uid;
+      }
 
-    // 1. Create Appointment
-    const appointmentData = {
-      id: appointmentId,
-      clientId: clientId,
-      serviceId: selectedService.id,
-      startTime: startTimeStr,
-      endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
-      status: 'Booked',
-      clientMessage: formData.message,
-      isLoyaltyFreeSession: false,
-      isConfirmed: false,
-      createdAt: serverTimestamp()
-    };
-    addDocumentNonBlocking(collection(firestore, 'appointments'), appointmentData);
+      const appointmentId = `apt_${Date.now()}`;
+      
+      // Calculate Appointment Times
+      const startTimeStr = `${format(date, 'yyyy-MM-dd')}T${time}:00`;
+      const duration = parseInt(selectedService.duration.split(' ')[0]);
+      const endTime = addMinutes(new Date(startTimeStr), duration);
 
-    // 2. Create/Update Client Profile
-    const clientData = {
-      id: clientId,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      phone: formData.phone,
-      addressStreet: formData.address,
-      addressCity: 'Geneva',
-      addressCountry: 'Switzerland',
-      loyaltySessionsCompleted: 0,
-      isNextSessionFree: false,
-      updatedAt: serverTimestamp()
-    };
-    setDocumentNonBlocking(doc(firestore, 'clients', clientId), clientData, { merge: true });
+      // 1. Create Appointment
+      const appointmentData = {
+        id: appointmentId,
+        clientId: finalUserId,
+        serviceId: selectedService.id,
+        startTime: startTimeStr,
+        endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
+        status: 'Booked',
+        clientMessage: formData.message,
+        isLoyaltyFreeSession: false,
+        isConfirmed: false,
+        createdAt: serverTimestamp()
+      };
+      setDocumentNonBlocking(doc(firestore, 'appointments', appointmentId), appointmentData);
 
-    // 3. Create Swiss-Compliant Invoice
-    const invoiceId = `INV-${Date.now()}`;
-    const invoiceData = {
-      id: invoiceId,
-      appointmentId: appointmentId,
-      clientId: clientId,
-      invoiceNumber: invoiceId,
-      issueDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
-      totalAmount: selectedService.price,
-      status: 'Pending',
-      therapistRccNumberSnapshot: 'X1234.56',
-      clinicNameSnapshot: 'SERENITY RELAX',
-      clinicAddressSnapshot: 'Chemin de Joinville 26, 1216 Cointrin',
-      clientNameSnapshot: `${formData.firstName} ${formData.lastName}`,
-      clientAddressSnapshot: formData.address,
-      serviceNameSnapshot: selectedService.name,
-      serviceDurationMinutesSnapshot: duration,
-      servicePriceSnapshot: selectedService.price,
-      isLoyaltyFreeSessionApplied: false
-    };
-    setDocumentNonBlocking(doc(firestore, 'invoices', invoiceId), invoiceData, { merge: true });
+      // 2. Create/Update Client Profile
+      const clientData = {
+        id: finalUserId,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        addressStreet: formData.address,
+        addressCity: 'Geneva',
+        addressCountry: 'Switzerland',
+        loyaltySessionsCompleted: 0,
+        isNextSessionFree: false,
+        updatedAt: serverTimestamp()
+      };
+      setDocumentNonBlocking(doc(firestore, 'clients', finalUserId), clientData, { merge: true });
 
-    toast({
-      title: "Booking Successful!",
-      description: "Session confirmed for " + format(date, 'PPP') + " at " + time,
-    });
-    setStep(4);
+      // 3. Create Swiss-Compliant Invoice
+      const invoiceId = `INV-${Date.now()}`;
+      const invoiceData = {
+        id: invoiceId,
+        appointmentId: appointmentId,
+        clientId: finalUserId,
+        invoiceNumber: invoiceId,
+        issueDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
+        totalAmount: selectedService.price,
+        status: 'Pending',
+        therapistRccNumberSnapshot: 'X1234.56',
+        clinicNameSnapshot: 'SERENITY RELAX',
+        clinicAddressSnapshot: 'Chemin de Joinville 26, 1216 Cointrin',
+        clientNameSnapshot: `${formData.firstName} ${formData.lastName}`,
+        clientAddressSnapshot: formData.address,
+        serviceNameSnapshot: selectedService.name,
+        serviceDurationMinutesSnapshot: duration,
+        servicePriceSnapshot: selectedService.price,
+        isLoyaltyFreeSessionApplied: false
+      };
+      setDocumentNonBlocking(doc(firestore, 'invoices', invoiceId), invoiceData, { merge: true });
+
+      toast({
+        title: "Booking Successful!",
+        description: "Session confirmed for " + format(date, 'PPP') + " at " + time,
+      });
+      setStep(4);
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        title: 'Booking Error',
+        description: 'An unexpected error occurred during confirmation.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (step === 4) {
@@ -164,7 +182,6 @@ export function BookingFlow({ services }: { services: Service[] }) {
 
   return (
     <div className="space-y-8">
-      {/* Step Indicator */}
       <div className="flex justify-between items-center px-4 max-w-xs mx-auto mb-8 pt-8">
         {[1, 2, 3].map((i) => (
           <div key={i} className={`h-1.5 w-16 rounded-full transition-colors ${step >= i ? 'bg-primary' : 'bg-muted'}`} />
@@ -347,10 +364,10 @@ export function BookingFlow({ services }: { services: Service[] }) {
             </Button>
             <Button 
               className="rounded-full px-12 py-7 text-xs uppercase tracking-widest font-bold shadow-xl bg-primary text-white"
-              disabled={!formData.firstName || !formData.lastName || !formData.email}
+              disabled={!formData.firstName || !formData.lastName || !formData.email || isSubmitting}
               onClick={completeBooking}
             >
-              Confirm Reservation
+              {isSubmitting ? <Loader2 className="animate-spin h-4 w-4" /> : 'Confirm Reservation'}
             </Button>
           </div>
         </Card>
