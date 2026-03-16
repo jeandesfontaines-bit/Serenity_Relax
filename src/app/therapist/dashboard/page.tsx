@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,28 +19,34 @@ export default function TherapistDashboard() {
       <div className="flex min-h-screen w-full bg-[#F7F7F2]">
         <Sidebar className="border-r border-primary/10">
           <SidebarHeader className="p-6">
-            <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
               <div className="bg-primary text-white p-2 rounded-xl">
                 <LayoutDashboard className="h-5 w-5" />
               </div>
               <span className="text-xl font-headline font-bold text-primary">AuraFlow</span>
-            </div>
+            </Link>
           </SidebarHeader>
           <SidebarContent className="px-4">
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton isActive>
-                  <Calendar className="h-4 w-4" /> Dashboard
+                <SidebarMenuButton isActive asChild>
+                  <Link href="/therapist/dashboard">
+                    <Calendar className="h-4 w-4" /> Dashboard
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Users className="h-4 w-4" /> Client Dossier
+                <SidebarMenuButton asChild>
+                  <Link href="/therapist/clients">
+                    <Users className="h-4 w-4" /> Client Dossier
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <FileText className="h-4 w-4" /> Invoicing
+                <SidebarMenuButton asChild>
+                  <Link href="/therapist/invoices">
+                    <FileText className="h-4 w-4" /> Invoicing
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
@@ -112,7 +119,6 @@ export default function TherapistDashboard() {
               </Card>
             </div>
 
-            {/* Timeline View */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <Card className="rounded-[2.5rem] border-none shadow-sm bg-white overflow-hidden">
@@ -178,24 +184,6 @@ export default function TherapistDashboard() {
                         </div>
                       </div>
                    </CardContent>
-                </Card>
-
-                <Card className="rounded-[2rem] border-none shadow-sm bg-primary text-white p-8">
-                   <h3 className="text-2xl font-headline font-bold mb-4">Practice Stats</h3>
-                   <div className="space-y-4">
-                      <div className="flex justify-between border-b border-white/10 pb-2">
-                        <span className="opacity-70">Total Clients</span>
-                        <span className="font-bold">142</span>
-                      </div>
-                      <div className="flex justify-between border-b border-white/10 pb-2">
-                        <span className="opacity-70">Avg. Rating</span>
-                        <span className="font-bold">4.9/5</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="opacity-70">Loyalty Rewards</span>
-                        <span className="font-bold">8 Pending</span>
-                      </div>
-                   </div>
                 </Card>
               </div>
             </div>

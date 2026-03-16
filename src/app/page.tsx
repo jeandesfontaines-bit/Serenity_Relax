@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CurvedCarousel } from '@/components/curved-carousel';
-import { Leaf, User, Coffee, Sparkles, Instagram, Linkedin, MessageSquare, ArrowRight } from 'lucide-react';
+import { Leaf, User, Coffee, Sparkles, Instagram, Linkedin, MessageSquare } from 'lucide-react';
 
 const BENEFITS = [
   { icon: Leaf, text: "Huiles Organiques", color: "text-emerald-500" },
@@ -26,25 +26,24 @@ export default function HomePage() {
             </div>
             <span className="text-xl font-headline font-medium text-primary tracking-tight">Serenity Relax</span>
           </div>
-          <nav className="hidden md:flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70">
+          <nav className="hidden md:flex items-center gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70">
             <Link href="#carousel" className="hover:text-primary transition-colors">The Arts</Link>
-            <Link href="#about" className="hover:text-primary transition-colors">Our Ethos</Link>
             <Link href="/booking" className="hover:text-primary transition-colors">Reservations</Link>
-            <Link href="/client/portal" className="bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Portal</Link>
+            <Link href="/client/portal" className="hover:text-primary transition-colors">Portal</Link>
+            <Link href="/therapist/dashboard" className="text-secondary hover:opacity-80 transition-opacity">Therapist</Link>
+            <Link href="/booking" className="bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Book Now</Link>
           </nav>
         </div>
       </header>
 
-      {/* New Hero Section */}
+      {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center pt-24 pb-16 overflow-hidden">
-        {/* Arrière-plan avec dégradés animés */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[20%] left-[15%] w-[35rem] h-[35rem] bg-emerald-100/10 rounded-full blur-[100px] animate-float" />
           <div className="absolute bottom-[15%] right-[15%] w-[30rem] h-[30rem] bg-amber-50/30 rounded-full blur-[100px] animate-float" style={{ animationDelay: '-6s' }} />
         </div>
 
         <div className="max-w-7xl mx-auto w-full px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-20">
-          {/* Texte et Introduction */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }} 
             animate={{ opacity: 1, x: 0 }} 
@@ -78,7 +77,6 @@ export default function HomePage() {
             </Button>
           </motion.div>
 
-          {/* Portrait avec Capsule Minimaliste */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.98 }} 
             animate={{ opacity: 1, scale: 1 }} 
@@ -92,8 +90,6 @@ export default function HomePage() {
                 className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent opacity-40" />
-              
-              {/* Capsule João - Version réduite et élégante */}
               <div className="absolute bottom-6 left-6">
                 <div className="bg-white/80 backdrop-blur-xl px-4 py-2.5 rounded-2xl shadow-xl border border-white/20">
                   <span className="text-sm font-bold uppercase tracking-[0.3em] block text-slate-950">João</span>
@@ -144,15 +140,12 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-[#111111] py-24 px-6 text-white/90 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
-          {/* Brand Header */}
           <div className="flex flex-col items-center text-center mb-24">
             <h2 className="text-4xl md:text-5xl font-headline tracking-[0.4em] uppercase mb-4 text-white">Serenity Relax</h2>
             <p className="text-[10px] uppercase tracking-[0.6em] italic text-white/30">Excellence Thérapeutique</p>
           </div>
 
-          {/* Info Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-20 text-center">
-            {/* Localisation */}
             <div className="space-y-8">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Localisation</h4>
               <div className="space-y-3 text-base font-light text-white/50 leading-relaxed">
@@ -161,8 +154,6 @@ export default function HomePage() {
                 <p>1216 Cointrin - Genève</p>
               </div>
             </div>
-
-            {/* Contact */}
             <div className="space-y-8">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Contact</h4>
               <div className="space-y-3 text-base font-light text-white/50 leading-relaxed">
@@ -170,8 +161,6 @@ export default function HomePage() {
                 <p className="break-all">serenityrelaxtherapy@gmail.com</p>
               </div>
             </div>
-
-            {/* Social */}
             <div className="space-y-8">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Social</h4>
               <div className="flex justify-center items-center gap-10">
@@ -187,8 +176,6 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          
-          {/* Bottom Bar */}
           <div className="mt-32 pt-12 border-t border-white/5 text-center">
             <p className="text-[10px] uppercase tracking-[0.4em] text-white/20 font-light">
               © 2026 Serenity Relax Therapy — Tous droits réservés
