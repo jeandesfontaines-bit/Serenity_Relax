@@ -138,46 +138,46 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#111111] py-24 px-6 text-white/90 border-t border-white/5">
+      <footer className="bg-[#111111] py-16 px-6 text-white/90 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col items-center text-center mb-24">
-            <h2 className="text-4xl md:text-5xl font-body font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
-            <p className="text-[10px] uppercase tracking-[0.6em] italic text-white/30">Excellence Thérapeutique</p>
+          <div className="flex flex-col items-center text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-body font-bold tracking-[0.4em] uppercase mb-3 text-white">SERENITY RELAX</h2>
+            <p className="text-[9px] uppercase tracking-[0.6em] italic text-white/30">Excellence Thérapeutique</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 text-center">
-            <div className="space-y-8">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Localisation</h4>
-              <div className="space-y-3 text-base font-light text-white/50 leading-relaxed">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+            <div className="space-y-6">
+              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/20">Localisation</h4>
+              <div className="space-y-2 text-sm font-light text-white/50 leading-relaxed">
                 <p>Alfa Business Center</p>
                 <p>Chemin de Joinville 26, 4ème étage</p>
                 <p>1216 Cointrin - Genève</p>
               </div>
             </div>
-            <div className="space-y-8">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Contact</h4>
-              <div className="space-y-3 text-base font-light text-white/50 leading-relaxed">
+            <div className="space-y-6">
+              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/20">Contact</h4>
+              <div className="space-y-2 text-sm font-light text-white/50 leading-relaxed">
                 <p>+41 78 333 68 23</p>
                 <p className="break-all">serenityrelaxtherapy@gmail.com</p>
               </div>
             </div>
-            <div className="space-y-8">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Social</h4>
-              <div className="flex justify-center items-center gap-10">
+            <div className="space-y-6">
+              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/20">Social</h4>
+              <div className="flex justify-center items-center gap-8">
                 <Link href="#" className="text-white/40 hover:text-white transition-all">
-                  <Instagram className="h-6 w-6" />
+                  <Instagram className="h-5 w-5" />
                 </Link>
                 <Link href="#" className="text-white/40 hover:text-white transition-all">
-                  <MessageSquare className="h-6 w-6" />
+                  <MessageSquare className="h-5 w-5" />
                 </Link>
                 <Link href="#" className="text-white/40 hover:text-white transition-all">
-                  <Linkedin className="h-6 w-6" />
+                  <Linkedin className="h-5 w-5" />
                 </Link>
               </div>
             </div>
           </div>
-          <div className="mt-32 pt-12 border-t border-white/5 text-center">
-            <p className="text-[10px] uppercase tracking-[0.4em] text-white/20 font-light">
+          <div className="mt-16 pt-8 border-t border-white/5 text-center">
+            <p className="text-[9px] uppercase tracking-[0.4em] text-white/20 font-light">
               © 2026 Serenity Relax Therapy — Tous droits réservés
             </p>
           </div>
