@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { SERVICES } from '@/lib/types';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { CurvedCarousel } from '@/components/curved-carousel';
 import { ArrowRight, Leaf, MapPin, Mail, Phone, Instagram, Sparkles } from 'lucide-react';
 
@@ -32,8 +31,8 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-12 overflow-hidden text-center">
         <div className="container mx-auto px-6 z-10 space-y-8 max-w-4xl">
-          <span className="text-secondary font-bold uppercase tracking-[0.4em] text-[10px] mb-4 block">Bespoke Wellness in Geneva</span>
-          <h1 className="text-6xl md:text-8xl font-headline leading-[0.95] text-primary text-balance mb-8">
+          <span className="text-secondary font-bold uppercase tracking-[0.4em] text-[10px] mb-4 block text-center">Bespoke Wellness in Geneva</span>
+          <h1 className="text-6xl md:text-8xl font-headline leading-[0.95] text-primary text-balance mb-8 text-center">
             Reclaim your <br />
             <span className="italic font-light text-secondary">inner silence.</span>
           </h1>

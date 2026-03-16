@@ -68,13 +68,15 @@ export function CurvedCarousel() {
 
   const portraits = PlaceHolderImages.filter(img => img.id.startsWith('portrait-'));
 
+  if (portraits.length === 0) return null;
+
   return (
     <div className="relative w-full overflow-hidden py-12 px-4" style={{ perspective: '1200px' }}>
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-6 py-12">
           {portraits.map((portrait, index) => (
             <div
-              key={index}
+              key={portrait.id}
               className="flex-[0_0_280px] min-w-0 relative aspect-[3/4]"
               style={{
                 transform: `
