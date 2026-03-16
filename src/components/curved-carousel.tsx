@@ -22,6 +22,8 @@ export function CurvedCarousel() {
     if (!emblaApi) return;
 
     const engine = emblaApi.internalEngine();
+    if (!engine) return;
+
     const scrollProgress = emblaApi.scrollProgress();
     const slidesInView = emblaApi.slidesInView();
     const isScrollEvent = !!slidesInView.length;
@@ -29,7 +31,7 @@ export function CurvedCarousel() {
     const styles = emblaApi.scrollSnapList().map((scrollSnap, index) => {
       let diffToTarget = scrollSnap - scrollProgress;
       
-      if (!engine || !engine.indexGroups || !engine.indexGroups[index]) {
+      if (!engine.indexGroups || !engine.indexGroups[index]) {
         return 0;
       }
 
@@ -70,16 +72,15 @@ export function CurvedCarousel() {
     emblaApi.on('scroll', onScroll);
   }, [emblaApi, onScroll]);
 
-  // Map the first 6 therapeutic arts to specific images
+  // Explicitly map therapeutic arts from number 1 to 6
   const therapeuticArts = SERVICES.slice(0, 6).map((service, index) => {
-    // Select relevant images from the placeholder library
     const relevantImages = PlaceHolderImages.filter(img => 
-      img.id !== 'hero-spa' // Skip the wide hero image
+      img.id !== 'hero-spa'
     );
     
     return {
       ...service,
-      displayName: service.name.split(' - ')[0], // Clean up the name for the card
+      displayName: service.name.split(' - ')[0],
       image: relevantImages[index % relevantImages.length]
     };
   });

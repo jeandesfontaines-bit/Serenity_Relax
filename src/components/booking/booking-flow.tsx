@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Service } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ import { toast } from '@/hooks/use-toast';
 export function BookingFlow({ services }: { services: Service[] }) {
   const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState<string>('');
   const [formData, setFormData] = useState({
     firstName: '',
@@ -31,6 +31,11 @@ export function BookingFlow({ services }: { services: Service[] }) {
   });
   const [aiLoading, setAiLoading] = useState(false);
   const [aiQuery, setAiQuery] = useState('');
+
+  // Prevent hydration mismatch by setting initial date after mount
+  useEffect(() => {
+    setDate(new Date());
+  }, []);
 
   const handleAiRecommend = async () => {
     if (!aiQuery) return;
@@ -127,7 +132,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                       {services.map((s) => (
                         <SelectItem key={s.id} value={s.id} className="py-4 focus:bg-primary/5 cursor-pointer">
                           <div className="flex flex-col gap-1">
-                            <span className="font-headline font-bold text-lg">{s.name.split('-')[0]}</span>
+                            <span className="font-headline font-bold text-lg">{s.name.split(' - ')[0]}</span>
                             <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{s.duration} • CHF {s.price}</span>
                           </div>
                         </SelectItem>
@@ -202,7 +207,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                   selected={date}
                   onSelect={setDate}
                   className="rounded-3xl border border-muted shadow-sm p-4 bg-white"
-                  disabled={(date) => date < new Date() || date.getDay() === 0}
+                  disabled={(d) => d < new Date() || d.getDay() === 0}
                 />
               </div>
             </div>
