@@ -9,14 +9,12 @@ import { cn } from '@/lib/utils';
 
 const TWEEN_FACTOR_BASE = 0.52;
 
-const numberWithinRange = (number: number, min: number, max: number): number =>
-  Math.min(Math.max(number, min), max);
-
 export function CurvedCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'center',
     skipSnaps: false,
+    dragFree: true,
   });
 
   const [tweenValues, setTweenValues] = useState<number[]>([]);
@@ -71,31 +69,32 @@ export function CurvedCarousel() {
   const portraits = PlaceHolderImages.filter(img => img.id.startsWith('portrait-'));
 
   return (
-    <div className="relative w-full overflow-hidden py-12 px-4" style={{ perspective: '1000px' }}>
+    <div className="relative w-full overflow-hidden py-12 px-4" style={{ perspective: '1200px' }}>
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-4">
+        <div className="flex gap-6 py-12">
           {portraits.map((portrait, index) => (
             <div
               key={index}
-              className="flex-[0_0_240px] min-w-0 relative aspect-[4/5]"
+              className="flex-[0_0_280px] min-w-0 relative aspect-[3/4]"
               style={{
                 transform: `
-                  scale(${1 - Math.abs(tweenValues[index] || 0) * 0.5})
-                  rotateY(${(tweenValues[index] || 0) * 80}deg)
-                  translateZ(${Math.abs(tweenValues[index] || 0) * -100}px)
+                  scale(${1 - Math.abs(tweenValues[index] || 0) * 0.4})
+                  rotateY(${(tweenValues[index] || 0) * 65}deg)
+                  translateZ(${Math.abs(tweenValues[index] || 0) * -150}px)
                 `,
                 transition: 'transform 0.1s ease-out',
                 transformStyle: 'preserve-3d',
               }}
             >
-              <div className="w-full h-full rounded-[2.5rem] overflow-hidden shadow-2xl bg-muted">
+              <div className="w-full h-full rounded-[3rem] overflow-hidden shadow-2xl bg-muted group cursor-pointer transition-all duration-500 hover:shadow-primary/20">
                 <Image
                   src={portrait.imageUrl}
                   alt={portrait.description}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                   data-ai-hint="portrait"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
             </div>
           ))}

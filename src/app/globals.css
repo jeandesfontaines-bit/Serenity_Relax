@@ -1,10 +1,11 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 35 30% 96%; /* Warm Oatmeal/Sand */
+    --background: 35 30% 98%; /* Soft Parchment */
     --foreground: 20 15% 12%; /* Deep Earth Brown */
     --card: 0 0% 100%;
     --card-foreground: 20 15% 12%;
@@ -14,16 +15,16 @@
     --primary-foreground: 35 30% 98%;
     --secondary: 28 35% 55%; /* Rich Terracotta */
     --secondary-foreground: 35 30% 98%;
-    --muted: 35 15% 90%;
+    --muted: 35 15% 94%;
     --muted-foreground: 20 10% 40%;
-    --accent: 28 35% 88%; /* Soft Blush/Clay */
+    --accent: 28 35% 92%; /* Soft Blush/Clay */
     --accent-foreground: 20 15% 12%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 35 15% 85%;
-    --input: 35 15% 85%;
+    --border: 35 15% 90%;
+    --input: 35 15% 90%;
     --ring: 158 15% 22%;
-    --radius: 2rem;
+    --radius: 2.5rem;
   }
 }
 
@@ -41,10 +42,10 @@
 
 @layer components {
   .organic-shadow {
-    @apply shadow-[0_20px_50px_rgba(0,0,0,0.05)];
+    @apply shadow-[0_20px_50px_rgba(0,0,0,0.03)];
   }
   
-  .text-balance {
-    text-wrap: balance;
+  .perspective-1000 {
+    perspective: 1000px;
   }
 }
