@@ -2,8 +2,8 @@ import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'AuraFlow Wellness | Modern Holistic Therapy',
-  description: 'A contemporary sanctuary for physical and mental restoration.',
+  title: 'Serenity Relax | Excellence Thérapeutique',
+  description: 'A contemporary sanctuary for physical and mental restoration in Geneva.',
 };
 
 export default function RootLayout({

@@ -1,11 +1,10 @@
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { SERVICES } from '@/lib/types';
 import { CurvedCarousel } from '@/components/curved-carousel';
-import { ArrowRight, Leaf, MapPin, Mail, Phone, Instagram, Sparkles } from 'lucide-react';
+import { ArrowRight, Leaf, MapPin, Mail, Phone, Instagram, Sparkles, Linkedin, MessageSquare } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -17,7 +16,7 @@ export default function HomePage() {
             <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center">
               <Leaf className="text-secondary h-4 w-4" />
             </div>
-            <span className="text-xl font-headline font-medium text-primary tracking-tight">AuraFlow</span>
+            <span className="text-xl font-headline font-medium text-primary tracking-tight">Serenity Relax</span>
           </div>
           <nav className="hidden md:flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70">
             <Link href="#carousel" className="hover:text-primary transition-colors">The Arts</Link>
@@ -78,48 +77,57 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-primary py-32 px-6 text-white/90">
+      <footer className="bg-[#111111] py-24 px-6 text-white/90 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-24">
-            <div className="md:col-span-2 space-y-10">
-              <div className="flex items-center gap-3">
-                <Leaf className="text-secondary h-8 w-8" />
-                <span className="text-4xl font-headline tracking-tight">AuraFlow</span>
-              </div>
-              <p className="text-white/60 text-xl font-light max-w-sm leading-relaxed">
-                A contemporary sanctuary for physical restoration and mental clarity in the heart of Geneva.
-              </p>
-              <div className="flex gap-6">
-                <Link href="#" className="h-12 w-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
-                  <Instagram className="h-6 w-6" />
-                </Link>
-              </div>
-            </div>
-            
-            <div className="space-y-10">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Sanctuary</h4>
-              <div className="space-y-6 text-white/50 font-light text-base">
-                <p className="flex items-center gap-4"><MapPin className="h-5 w-5 text-secondary" /> Rue de la Confédération, 1204 Genève</p>
-                <p className="flex items-center gap-4"><Phone className="h-5 w-5 text-secondary" /> +41 22 734 50 00</p>
-                <p className="flex items-center gap-4"><Mail className="h-5 w-5 text-secondary" /> hello@auraflow.ch</p>
+          {/* Brand Header */}
+          <div className="flex flex-col items-center text-center mb-24">
+            <h2 className="text-4xl md:text-5xl font-headline tracking-[0.4em] uppercase mb-4 text-white">Serenity Relax</h2>
+            <p className="text-[10px] uppercase tracking-[0.6em] italic text-white/30">Excellence Thérapeutique</p>
+          </div>
+
+          {/* Info Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 text-center">
+            {/* Localisation */}
+            <div className="space-y-8">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Localisation</h4>
+              <div className="space-y-3 text-base font-light text-white/50 leading-relaxed">
+                <p>Alfa Business Center</p>
+                <p>Chemin de Joinville 26, 4ème étage</p>
+                <p>1216 Cointrin - Genève</p>
               </div>
             </div>
 
-            <div className="space-y-10">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">The Practice</h4>
-              <div className="space-y-6 font-light text-base text-white/50">
-                <Link href="/therapist/dashboard" className="block hover:text-white transition-colors underline underline-offset-[12px] decoration-white/10">Therapist Portal</Link>
-                <p className="text-[10px] opacity-30 uppercase tracking-[0.2em] mt-12 leading-loose">Accredited by ASCA / RME <br /> Complementary Medicine</p>
+            {/* Contact */}
+            <div className="space-y-8">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Contact</h4>
+              <div className="space-y-3 text-base font-light text-white/50 leading-relaxed">
+                <p>+41 78 333 68 23</p>
+                <p className="break-all">serenityrelaxtherapy@gmail.com</p>
+              </div>
+            </div>
+
+            {/* Social */}
+            <div className="space-y-8">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Social</h4>
+              <div className="flex justify-center items-center gap-10">
+                <Link href="#" className="text-white/40 hover:text-white transition-all">
+                  <Instagram className="h-6 w-6" />
+                </Link>
+                <Link href="#" className="text-white/40 hover:text-white transition-all">
+                  <MessageSquare className="h-6 w-6" />
+                </Link>
+                <Link href="#" className="text-white/40 hover:text-white transition-all">
+                  <Linkedin className="h-6 w-6" />
+                </Link>
               </div>
             </div>
           </div>
           
-          <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-            <p className="text-[10px] uppercase tracking-[0.4em] text-white/20">© 2024 AuraFlow Wellness Sanctuary</p>
-            <div className="flex gap-12 text-[10px] uppercase tracking-[0.2em] text-white/20">
-              <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
-            </div>
+          {/* Bottom Bar */}
+          <div className="mt-32 pt-12 border-t border-white/5 text-center">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-white/20 font-light">
+              © 2026 Serenity Relax Therapy — Tous droits réservés
+            </p>
           </div>
         </div>
       </footer>
