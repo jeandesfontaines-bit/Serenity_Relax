@@ -1,17 +1,25 @@
-
 "use client";
 
 import Link from 'next/link';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { WeatherWidget } from '@/components/weather-widget';
-import { Users, Calendar, FileText, LayoutDashboard, Clock, BadgeEuro, TrendingUp, Settings, MoreHorizontal, Plus, Download, Search, CloudSun } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy, where } from 'firebase/firestore';
 import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import { SERVICES } from '@/lib/types';
+import { 
+  Users, 
+  Calendar, 
+  FileText, 
+  LayoutDashboard, 
+  Clock, 
+  TrendingUp, 
+  MoreHorizontal, 
+  Search, 
+  CloudSun 
+} from 'lucide-react';
 
 export default function TherapistDashboard() {
   const { firestore } = useFirestore();
@@ -162,7 +170,7 @@ export default function TherapistDashboard() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Calendar size={14} className="text-slate-400" />
-                      <span className="text-xs font-bold">{format(new Date(), 'EEEE d MMMM', { locale: require('date-fns/locale/fr') })}</span>
+                      <span className="text-xs font-bold">{format(new Date(), 'EEEE d MMMM', { locale: fr })}</span>
                     </div>
                   </CardHeader>
                   <CardContent className="p-0">
@@ -195,7 +203,9 @@ export default function TherapistDashboard() {
                                 </div>
                                 <div className="flex items-center gap-4">
                                   {isNext && <span className="text-[8px] font-black uppercase tracking-[0.2em] bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full animate-pulse">En cours / Prochain</span>}
-                                  <Button variant="ghost" size="icon" className="rounded-full"><MoreHorizontal className="h-4 w-4" /></Button>
+                                  <button className="rounded-full p-2 hover:bg-slate-200 transition-colors">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </button>
                                 </div>
                               </div>
                             </div>
