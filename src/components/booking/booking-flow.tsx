@@ -12,10 +12,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
 import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, addMinutes } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
+import { useFirestore, useUser } from '@/firebase';
+import { collection, doc, serverTimestamp } from 'firebase/firestore';
+import { setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 export function BookingFlow({ services }: { services: Service[] }) {
+  const { firestore } = useFirestore();
+  const { user } = useUser();
   const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -32,7 +37,6 @@ export function BookingFlow({ services }: { services: Service[] }) {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiQuery, setAiQuery] = useState('');
 
-  // Prevent hydration mismatch by setting initial date after mount
   useEffect(() => {
     setDate(new Date());
   }, []);
@@ -69,6 +73,73 @@ export function BookingFlow({ services }: { services: Service[] }) {
   const times = ['09:00', '10:30', '13:00', '14:30', '16:00', '17:30'];
 
   const completeBooking = () => {
+    if (!firestore || !selectedService || !date || !time) return;
+
+    const clientId = user?.uid || `anonymous_${Date.now()}`;
+    const appointmentId = `apt_${Date.now()}`;
+    
+    // Create Appointment
+    const startTimeStr = `${format(date, 'yyyy-MM-dd')}T${time}:00`;
+    const duration = parseInt(selectedService.duration.split(' ')[0]);
+    const endTime = addMinutes(new Date(startTimeStr), duration);
+
+    const appointmentData = {
+      id: appointmentId,
+      clientId: clientId,
+      serviceId: selectedService.id,
+      startTime: startTimeStr,
+      endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
+      status: 'Booked',
+      clientMessage: formData.message,
+      isLoyaltyFreeSession: false,
+      isConfirmed: false,
+      createdAt: serverTimestamp()
+    };
+
+    addDocumentNonBlocking(collection(firestore, 'appointments'), appointmentData);
+
+    // Create/Update Client Profile
+    const clientData = {
+      id: clientId,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      addressStreet: formData.address,
+      addressCity: 'Geneva', // Defaulting for Swiss focus
+      addressPostalCode: '',
+      addressCountry: 'Switzerland',
+      dateOfBirth: '',
+      loyaltySessionsCompleted: 0,
+      isNextSessionFree: false,
+      updatedAt: serverTimestamp()
+    };
+
+    setDocumentNonBlocking(doc(firestore, 'clients', clientId), clientData, { merge: true });
+
+    // Create Invoice
+    const invoiceId = `INV-${Date.now()}`;
+    const invoiceData = {
+      id: invoiceId,
+      appointmentId: appointmentId,
+      clientId: clientId,
+      invoiceNumber: invoiceId,
+      issueDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
+      totalAmount: selectedService.price,
+      status: 'Pending',
+      therapistRccNumberSnapshot: 'X1234.56',
+      clinicNameSnapshot: 'SERENITY RELAX',
+      clinicAddressSnapshot: 'Chemin de Joinville 26, 1216 Cointrin',
+      clientNameSnapshot: `${formData.firstName} ${formData.lastName}`,
+      clientAddressSnapshot: formData.address,
+      serviceNameSnapshot: selectedService.name,
+      serviceDurationMinutesSnapshot: duration,
+      servicePriceSnapshot: selectedService.price,
+      isLoyaltyFreeSessionApplied: false
+    };
+
+    setDocumentNonBlocking(doc(firestore, 'invoices', invoiceId), invoiceData, { merge: true });
+
     toast({
       title: "Booking Successful!",
       description: "An email confirmation has been sent to your inbox.",
@@ -261,6 +332,10 @@ export function BookingFlow({ services }: { services: Service[] }) {
             <div className="space-y-2">
               <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Phone</Label>
               <Input placeholder="+41 79 123 45 67" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-12 border-muted" />
+            </div>
+            <div className="md:col-span-2 space-y-2">
+              <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Address</Label>
+              <Input placeholder="Rue de Lausanne 12, Geneva" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-12 border-muted" />
             </div>
             <div className="md:col-span-2 space-y-2">
               <Label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground ml-2">Session Notes (Optional)</Label>

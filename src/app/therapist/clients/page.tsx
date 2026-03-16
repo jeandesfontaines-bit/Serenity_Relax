@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,14 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Users, Calendar, FileText, LayoutDashboard, Search, Plus, MoreHorizontal, ShieldCheck } from 'lucide-react';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
 
 export default function ClientsCRM() {
-  const clients = [
-    { id: '1', name: 'Jean Dupont', email: 'jean.d@email.ch', phone: '+41 79 123 45 67', sessions: 12, lastVisit: '2024-10-15', insurance: 'Assura' },
-    { id: '2', name: 'Marie Lambert', email: 'm.lambert@gmail.com', phone: '+41 78 555 44 33', sessions: 5, lastVisit: '2024-10-20', insurance: 'Helsana' },
-    { id: '3', name: 'Lucas Steiner', email: 'steiner.l@bluewin.ch', phone: '+41 76 999 88 77', sessions: 8, lastVisit: '2024-09-12', insurance: 'Groupe Mutuel' },
-    { id: '4', name: 'Sophie Martin', email: 'sophie.martin@email.com', phone: '+41 79 444 22 11', sessions: 2, lastVisit: '2024-10-24', insurance: 'CSS' },
-  ];
+  const { firestore } = useFirestore();
+
+  const clientsQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'clients');
+  }, [firestore]);
+
+  const { data: clients, isLoading } = useCollection(clientsQuery);
 
   return (
     <SidebarProvider>
@@ -82,20 +88,22 @@ export default function ClientsCRM() {
                       <TableHead className="pl-6 h-14 font-bold text-primary">Name</TableHead>
                       <TableHead className="h-14 font-bold text-primary">Contact Info</TableHead>
                       <TableHead className="h-14 font-bold text-primary">Insurance</TableHead>
-                      <TableHead className="h-14 font-bold text-primary">Total Sessions</TableHead>
-                      <TableHead className="h-14 font-bold text-primary">Last Visit</TableHead>
+                      <TableHead className="h-14 font-bold text-primary">Sessions</TableHead>
+                      <TableHead className="h-14 font-bold text-primary">Status</TableHead>
                       <TableHead className="pr-6 h-14"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {clients.map((client) => (
+                    {isLoading && <TableRow><TableCell colSpan={6} className="text-center p-12 italic text-muted-foreground">Loading patient records...</TableCell></TableRow>}
+                    {!isLoading && clients?.length === 0 && <TableRow><TableCell colSpan={6} className="text-center p-12 italic text-muted-foreground">No client records found.</TableCell></TableRow>}
+                    {clients?.map((client) => (
                       <TableRow key={client.id} className="hover:bg-muted/30 transition-colors group">
                         <TableCell className="pl-6 py-4">
                           <div className="flex items-center gap-3">
                             <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                              {client.name.split(' ').map(n => n[0]).join('')}
+                              {client.firstName[0]}{client.lastName[0]}
                             </div>
-                            <span className="font-headline font-bold text-lg">{client.name}</span>
+                            <span className="font-headline font-bold text-lg">{client.firstName} {client.lastName}</span>
                           </div>
                         </TableCell>
                         <TableCell>
@@ -105,10 +113,10 @@ export default function ClientsCRM() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <span className="text-sm px-3 py-1 bg-muted rounded-full font-medium">{client.insurance}</span>
+                          <span className="text-sm px-3 py-1 bg-muted rounded-full font-medium">{client.insuranceFundName || 'None'}</span>
                         </TableCell>
-                        <TableCell className="font-bold text-center">{client.sessions}</TableCell>
-                        <TableCell className="text-sm text-muted-foreground">{client.lastVisit}</TableCell>
+                        <TableCell className="font-bold text-center">{client.loyaltySessionsCompleted || 0}</TableCell>
+                        <TableCell className="text-sm text-muted-foreground">Active</TableCell>
                         <TableCell className="pr-6 text-right">
                           <Button variant="ghost" size="icon" className="rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                             <MoreHorizontal className="h-4 w-4" />

@@ -1,18 +1,53 @@
+"use client";
+
 import Link from 'next/link';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { WeatherWidget } from '@/components/weather-widget';
-import { Users, Calendar, FileText, LayoutDashboard, Clock, BadgeEuro, TrendingUp, Settings, MoreHorizontal, ShieldCheck } from 'lucide-react';
+import { Users, Calendar, FileText, LayoutDashboard, Clock, BadgeEuro, TrendingUp, Settings, MoreHorizontal } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection, query, orderBy, where } from 'firebase/firestore';
+import { format } from 'date-fns';
+import { SERVICES } from '@/lib/types';
 
 export default function TherapistDashboard() {
-  const appointments = [
-    { time: '09:00', client: 'Jean Dupont', service: 'Massage Signature', status: 'confirmed', note: 'Persistent lower back pain' },
-    { time: '10:30', client: 'Marie Lambert', service: 'Draineur Lymphatique', status: 'next', note: 'Post-flight recovery' },
-    { time: '13:00', client: 'Lucas Steiner', service: 'Massage Sportif', status: 'pending', note: 'Marathon prep' },
-    { time: '16:00', client: 'Sophie Martin', service: 'Réflexologie', status: 'pending', note: 'Stress relief' },
-  ];
+  const { firestore } = useFirestore();
+
+  // Fetch today's appointments
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const appointmentsQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return query(
+      collection(firestore, 'appointments'),
+      where('startTime', '>=', `${today}T00:00:00`),
+      where('startTime', '<=', `${today}T23:59:59`),
+      orderBy('startTime', 'asc')
+    );
+  }, [firestore, today]);
+
+  const { data: appointments, isLoading: aptLoading } = useCollection(appointmentsQuery);
+
+  // Fetch all invoices for metrics
+  const invoicesQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'invoices');
+  }, [firestore]);
+
+  const { data: invoices } = useCollection(invoicesQuery);
+
+  // Calculate metrics
+  const todayRevenue = invoices
+    ?.filter(inv => inv.issueDate.startsWith(today) && inv.status === 'Paid')
+    .reduce((sum, inv) => sum + inv.totalAmount, 0) || 0;
+
+  const monthlyRevenue = invoices
+    ?.filter(inv => inv.issueDate.startsWith(format(new Date(), 'yyyy-MM')))
+    .reduce((sum, inv) => sum + inv.totalAmount, 0) || 0;
+
+  const paidCount = invoices?.filter(inv => inv.status === 'Paid').length || 0;
+  const pendingCount = invoices?.filter(inv => inv.status === 'Pending').length || 0;
 
   return (
     <SidebarProvider>
@@ -89,20 +124,20 @@ export default function TherapistDashboard() {
                   <CardTitle className="text-sm font-medium opacity-80 uppercase tracking-widest">Today's Revenue</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-headline font-bold">CHF 480.00</p>
-                  <p className="text-xs mt-2 opacity-60">+12% from yesterday</p>
+                  <p className="text-4xl font-headline font-bold">CHF {todayRevenue.toFixed(2)}</p>
+                  <p className="text-xs mt-2 opacity-60">Real-time update</p>
                 </CardContent>
               </Card>
               <Card className="rounded-3xl border-none shadow-sm bg-white">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Monthly Goal</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Monthly Progress</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-between items-end mb-2">
-                    <p className="text-4xl font-headline font-bold">CHF 8,400</p>
-                    <span className="text-sm font-bold text-primary">70%</span>
+                    <p className="text-4xl font-headline font-bold">CHF {monthlyRevenue.toFixed(0)}</p>
+                    <span className="text-sm font-bold text-primary">{Math.min(100, Math.round((monthlyRevenue / 10000) * 100))}%</span>
                   </div>
-                  <Progress value={70} className="h-2 bg-primary/10" />
+                  <Progress value={(monthlyRevenue / 10000) * 100} className="h-2 bg-primary/10" />
                 </CardContent>
               </Card>
                <Card className="rounded-3xl border-none shadow-sm bg-white">
@@ -111,8 +146,8 @@ export default function TherapistDashboard() {
                 </CardHeader>
                 <CardContent className="flex items-center justify-between">
                   <div>
-                    <p className="text-2xl font-headline font-bold text-green-600">Paid: 12</p>
-                    <p className="text-2xl font-headline font-bold text-amber-500">Pending: 3</p>
+                    <p className="text-2xl font-headline font-bold text-green-600">Paid: {paidCount}</p>
+                    <p className="text-2xl font-headline font-bold text-amber-500">Pending: {pendingCount}</p>
                   </div>
                   <BadgeEuro className="h-12 w-12 text-muted-foreground/20" />
                 </CardContent>
@@ -131,31 +166,37 @@ export default function TherapistDashboard() {
                   </CardHeader>
                   <CardContent className="p-0">
                     <div className="divide-y">
-                      {appointments.map((apt, idx) => (
-                        <div key={idx} className={`flex p-6 hover:bg-muted/50 transition-colors relative ${apt.status === 'next' ? 'bg-secondary/5' : ''}`}>
-                          {apt.status === 'next' && <div className="absolute left-0 top-0 bottom-0 w-1 bg-secondary" />}
-                          <div className="w-20 pt-1">
-                            <span className="text-lg font-bold text-primary">{apt.time}</span>
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex justify-between items-start mb-2">
-                              <div>
-                                <h4 className="font-headline font-bold text-xl">{apt.client}</h4>
-                                <p className="text-sm text-muted-foreground">{apt.service}</p>
+                      {aptLoading && <div className="p-12 text-center text-muted-foreground">Loading appointments...</div>}
+                      {!aptLoading && appointments?.length === 0 && <div className="p-12 text-center text-muted-foreground italic">No appointments scheduled for today.</div>}
+                      {appointments?.map((apt, idx) => {
+                        const service = SERVICES.find(s => s.id === apt.serviceId);
+                        const isNext = idx === 0; // Simple indicator for demo
+                        return (
+                          <div key={apt.id} className={`flex p-6 hover:bg-muted/50 transition-colors relative ${isNext ? 'bg-secondary/5' : ''}`}>
+                            {isNext && <div className="absolute left-0 top-0 bottom-0 w-1 bg-secondary" />}
+                            <div className="w-20 pt-1">
+                              <span className="text-lg font-bold text-primary">{apt.startTime.split('T')[1].substring(0, 5)}</span>
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex justify-between items-start mb-2">
+                                <div>
+                                  <h4 className="font-headline font-bold text-xl">{apt.clientId.includes('anonymous') ? 'Guest Client' : 'Registered Client'}</h4>
+                                  <p className="text-sm text-muted-foreground">{service?.name || 'Unknown Service'}</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  {isNext && (
+                                    <span className="bg-secondary text-primary text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Next Up</span>
+                                  )}
+                                  <Button variant="ghost" size="icon"><MoreHorizontal className="h-4 w-4" /></Button>
+                                </div>
                               </div>
-                              <div className="flex items-center gap-2">
-                                {apt.status === 'next' && (
-                                  <span className="bg-secondary text-primary text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Next Up</span>
-                                )}
-                                <Button variant="ghost" size="icon"><MoreHorizontal className="h-4 w-4" /></Button>
+                              <div className="bg-muted/30 p-3 rounded-xl border border-dashed border-primary/10">
+                                <p className="text-xs italic text-muted-foreground">"{apt.clientMessage || 'No specific notes'}"</p>
                               </div>
                             </div>
-                            <div className="bg-muted/30 p-3 rounded-xl border border-dashed border-primary/10">
-                              <p className="text-xs italic text-muted-foreground">"{apt.note}"</p>
-                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </CardContent>
                 </Card>
@@ -172,15 +213,15 @@ export default function TherapistDashboard() {
                       <div className="flex gap-4">
                         <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-700">✓</div>
                         <div>
-                          <p className="text-sm font-medium">Invoice #INV-2024-001 paid</p>
-                          <p className="text-xs text-muted-foreground">20 mins ago</p>
+                          <p className="text-sm font-medium">Invoice generated</p>
+                          <p className="text-xs text-muted-foreground">Just now</p>
                         </div>
                       </div>
                       <div className="flex gap-4">
                         <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700">+</div>
                         <div>
-                          <p className="text-sm font-medium">New booking: Sophie Martin</p>
-                          <p className="text-xs text-muted-foreground">1 hour ago</p>
+                          <p className="text-sm font-medium">New booking received</p>
+                          <p className="text-xs text-muted-foreground">Today</p>
                         </div>
                       </div>
                    </CardContent>
