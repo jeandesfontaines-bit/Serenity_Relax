@@ -77,15 +77,22 @@ export function BookingFlow({ services }: { services: Service[] }) {
   const times = ['09:00', '10:30', '13:00', '14:30', '16:00', '17:30'];
 
   const completeBooking = async () => {
-    if (!firestore || !selectedService || !date || !time) return;
+    if (!firestore || !selectedService || !date || !time) {
+      toast({ variant: 'destructive', title: 'Erreur', description: 'Veuillez remplir tous les champs requis.' });
+      return;
+    }
     setIsSubmitting(true);
 
     try {
       let finalUserId = user?.uid;
-      if (!finalUserId) {
+      
+      // Ensure we have a session (anonymous or otherwise)
+      if (!finalUserId && auth) {
         const cred = await signInAnonymously(auth);
         finalUserId = cred.user.uid;
       }
+
+      if (!finalUserId) throw new Error("Could not establish user session");
 
       const appointmentId = `apt_${Date.now()}`;
       const startTimeStr = `${format(date, 'yyyy-MM-dd')}T${time}:00`;
@@ -144,7 +151,8 @@ export function BookingFlow({ services }: { services: Service[] }) {
 
       setStep(4);
     } catch (err) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Une erreur est survenue lors de la confirmation.' });
+      console.error("Booking error:", err);
+      toast({ variant: 'destructive', title: 'Erreur', description: 'Une erreur est survenue lors de la confirmation. Veuillez réessayer.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -223,6 +231,8 @@ export function BookingFlow({ services }: { services: Service[] }) {
                   </h3>
                   <p className="text-xs text-indigo-700 mb-4 font-serif italic">Décrivez votre état actuel (tensions, stress, fatigue) pour une recommandation sur mesure.</p>
                   <Textarea 
+                    id="ai-query"
+                    name="ai-query"
                     placeholder="ex: J'ai des tensions au cou dues au travail sur ordinateur..."
                     className="min-h-[120px] rounded-2xl border-indigo-200 bg-white text-base shadow-sm font-serif italic"
                     value={aiQuery}
@@ -303,14 +313,38 @@ export function BookingFlow({ services }: { services: Service[] }) {
             <User className="h-7 w-7 text-emerald-600" /> Vos Informations
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <Input placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
-            <Input placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
-            <Input placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
-            <Input placeholder="Téléphone" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
-            <Input placeholder="Adresse" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="md:col-span-2 rounded-xl h-14 bg-slate-50 border-none" />
-            <Input placeholder="Caisse Maladie (optionnel)" value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
-            <Input placeholder="N° Assuré (optionnel)" value={formData.insuranceNumber} onChange={e => setFormData({...formData, insuranceNumber: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
-            <Textarea placeholder="Message pour João (motif de consultation, douleurs spécifiques...)" value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="md:col-span-2 rounded-xl bg-slate-50 border-none font-serif italic" />
+            <div className="space-y-2">
+              <Label htmlFor="firstName">Prénom</Label>
+              <Input id="firstName" name="given-name" autoComplete="given-name" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Nom</Label>
+              <Input id="lastName" name="family-name" autoComplete="family-name" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" name="email" autoComplete="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Téléphone</Label>
+              <Input id="phone" name="tel" autoComplete="tel" type="tel" placeholder="Téléphone" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="address">Adresse</Label>
+              <Input id="address" name="street-address" autoComplete="street-address" placeholder="Adresse" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="insurance">Caisse Maladie (optionnel)</Label>
+              <Input id="insurance" name="insurance" placeholder="Caisse Maladie" value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="insuranceNumber">N° Assuré (optionnel)</Label>
+              <Input id="insuranceNumber" name="insurance-id" placeholder="N° Assuré" value={formData.insuranceNumber} onChange={e => setFormData({...formData, insuranceNumber: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="message">Message pour João</Label>
+              <Textarea id="message" name="message" placeholder="Message pour João (motif de consultation, douleurs spécifiques...)" value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-xl bg-slate-50 border-none font-serif italic" />
+            </div>
           </div>
           
           <div className="flex justify-between items-center">
