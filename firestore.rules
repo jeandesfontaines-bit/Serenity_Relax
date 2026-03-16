@@ -1,0 +1,187 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * AuraFlow Wellness Security Rules
+     * 
+     * Core Philosophy:
+     * This ruleset implements a dual-access model: therapist-administrative access and client-ownership access. 
+     * Authorization is decoupled from data hierarchy through denormalization, ensuring that security checks 
+     * are performant and do not require recursive document lookups (Authorization Independence).
+     * 
+     * Data Structure:
+     * - Client profiles are stored at /clients/{clientId} where {clientId} matches the Firebase Auth UID.
+     * - Appointments, Invoices, and AI Recommendations are stored in top-level collections to facilitate 
+     *   global therapist dashboards while including a 'clientId' field for secure client-specific querying.
+     * - Public-facing catalog data (Services, Schedules, Practice Settings) are globally readable but 
+     *   restricted to therapist-only writes.
+     * 
+     * Key Security Decisions:
+     * - Therapist Authorization: Granted via the existence of a document in the /roles_therapist/{uid} collection.
+     * - Data Integrity: Ownership fields (clientId) are enforced on creation and made immutable on update.
+     * - Deletion: Primarily reserved for the therapist to maintain CRM integrity.
+     */
+
+    // --- Helper Functions ---
+
+    /** @description Checks if the user is authenticated. */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /** @description Checks if the authenticated user has the therapist role via DBAC. */
+    function isTherapist() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_therapist/$(request.auth.uid));
+    }
+
+    /** @description Checks if the provided UID matches the authenticated user. */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * @description Verifies ownership of an existing document before modification/deletion.
+     * @param {string} userId - The expected owner UID.
+     * @param {object} existingResource - The 'resource' object representing the existing document.
+     */
+    function isExistingOwner(userId, existingResource) {
+      return existingResource != null && isOwner(userId);
+    }
+
+    /** @description Verifies that the client ID in the incoming data matches the authenticated user. */
+    function isValidClientOwner() {
+      return isSignedIn() && request.resource.data.clientId == request.auth.uid;
+    }
+
+    /** @description Enforces that a specific field remains unchanged during an update. */
+    function isImmutable(field) {
+      return request.resource.data[field] == resource.data[field];
+    }
+
+    // --- Collection Rules ---
+
+    /**
+     * @description Rules for client profiles. Clients manage their own; therapist manages all for CRM.
+     * @path /clients/{clientId}
+     * @allow (get) Authenticated user 'abc' requests /clients/abc.
+     * @deny (list) Anonymous user attempts to list all clients.
+     * @principle Path-based ownership for private profiles.
+     */
+    match /clients/{clientId} {
+      allow get: if isOwner(clientId) || isTherapist();
+      allow list: if isTherapist();
+      allow create: if isOwner(clientId) && request.resource.data.id == clientId;
+      allow update: if (isExistingOwner(clientId, resource) || isTherapist()) && isImmutable('id');
+      allow delete: if isTherapist() && resource != null;
+    }
+
+    /**
+     * @description Catalog of services. Publicly readable; therapist-only management.
+     * @path /services/{serviceId}
+     * @allow (list) Any guest user views the massage service menu.
+     * @deny (create) Authenticated client attempts to add a new service.
+     * @principle Public read with administrative-only writes.
+     */
+    match /services/{serviceId} {
+      allow get, list: if true;
+      allow create, update, delete: if isTherapist();
+    }
+
+    /**
+     * @description Client appointments. Secured by internal clientId field.
+     * @path /appointments/{appointmentId}
+     * @allow (list) Client 'abc' queries appointments where clientId == 'abc'.
+     * @deny (update) Client 'abc' attempts to change the 'clientId' of an existing appointment.
+     * @principle Authorization independence via denormalized ownership field.
+     */
+    match /appointments/{appointmentId} {
+      allow get, list: if isTherapist() || (isSignedIn() && resource.data.clientId == request.auth.uid);
+      allow create: if isValidClientOwner() || isTherapist();
+      // Client can update their own appointment, but not change the clientId. Therapist has full control.
+      allow update: if isTherapist() || (isExistingOwner(resource.data.clientId, resource) && isImmutable('clientId'));
+      allow delete: if isTherapist() && resource != null;
+    }
+
+    /**
+     * @description Swiss-compliant invoices. Read-only for clients; full management for therapist.
+     * @path /invoices/{invoiceId}
+     * @allow (get) Client 'abc' downloads their invoice as PDF.
+     * @deny (create) Client 'abc' attempts to generate their own invoice document.
+     * @principle Strict administrative control over financial records.
+     */
+    match /invoices/{invoiceId} {
+      allow get, list: if isTherapist() || (isSignedIn() && resource.data.clientId == request.auth.uid);
+      allow create, update, delete: if isTherapist();
+    }
+
+    /**
+     * @description Weekly availability slots. Public for booking; therapist-managed.
+     * @path /therapist_schedules/{scheduleId}
+     * @allow (list) Guest user views the therapist's standard working hours.
+     * @deny (delete) Any client attempts to delete a schedule entry.
+     * @principle Public visibility for scheduling integrity.
+     */
+    match /therapist_schedules/{scheduleId} {
+      allow get, list: if true;
+      allow create, update, delete: if isTherapist();
+    }
+
+    /**
+     * @description Overrides for holidays/blocked time. Public for booking; therapist-managed.
+     * @path /blocked_times/{blockedTimeId}
+     * @allow (get) Guest user checks if a specific date is blocked.
+     * @deny (update) Authenticated client attempts to unblock a therapist's holiday.
+     * @principle Public visibility to prevent overbooking during blocked periods.
+     */
+    match /blocked_times/{blockedTimeId} {
+      allow get, list: if true;
+      allow create, update, delete: if isTherapist();
+    }
+
+    /**
+     * @description AI-generated service recommendations and aftercare.
+     * @path /ai_recommendations/{recommendationId}
+     * @allow (list) Client 'abc' views their personalized aftercare tips.
+     * @deny (get) Client 'abc' attempts to view recommendation for client 'xyz'.
+     * @principle Ownership-based access to personalized health recommendations.
+     */
+    match /ai_recommendations/{recommendationId} {
+      allow get, list: if isTherapist() || (isSignedIn() && resource.data.clientId == request.auth.uid);
+      allow create, update, delete: if isTherapist();
+    }
+
+    /**
+     * @description Promotional codes. Public for validation; therapist-managed.
+     * @path /promo_codes/{promoCodeId}
+     * @allow (get) Client 'abc' validates 'SPRING20' during checkout.
+     * @deny (create) Authenticated client creates a 100% discount code.
+     * @principle Public validation with secure administrative management.
+     */
+    match /promo_codes/{promoCodeId} {
+      allow get, list: if true;
+      allow create, update, delete: if isTherapist();
+    }
+
+    /**
+     * @description Practice-wide settings (Singleton). Public info; therapist-managed.
+     * @path /practice_settings/default
+     * @allow (get) Guest user views the clinic's address and cancellation policy.
+     * @deny (update) Any non-therapist user attempts to change the clinic's RCC number.
+     * @principle Public visibility for business transparency.
+     */
+    match /practice_settings/{settingsId} {
+      allow get, list: if true;
+      allow create, update, delete: if isTherapist();
+    }
+
+    /**
+     * @description Conceptual collection for role assignment. Not listable.
+     * @path /roles_therapist/{uid}
+     */
+    match /roles_therapist/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow write: if false; // Role assignment happens via Admin SDK or Console.
+    }
+  }
+}

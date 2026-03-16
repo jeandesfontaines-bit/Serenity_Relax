@@ -1,0 +1,638 @@
+{
+  "entities": {
+    "Client": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Client",
+      "type": "object",
+      "description": "Represents a registered client of the massage therapy practice, including personal details, contact information, and loyalty program status.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Client entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The client's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The client's last name."
+        },
+        "email": {
+          "type": "string",
+          "description": "The client's email address, used for authentication (magic links) and notifications.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "The client's primary phone number."
+        },
+        "addressStreet": {
+          "type": "string",
+          "description": "The street and house number of the client's address."
+        },
+        "addressCity": {
+          "type": "string",
+          "description": "The city of the client's address."
+        },
+        "addressPostalCode": {
+          "type": "string",
+          "description": "The postal code of the client's address."
+        },
+        "addressCountry": {
+          "type": "string",
+          "description": "The country of the client's address."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "description": "The client's date of birth (YYYY-MM-DD).",
+          "format": "date"
+        },
+        "insuranceFundName": {
+          "type": "string",
+          "description": "Name of the client's complementary health insurance fund, if applicable."
+        },
+        "insuranceNumber": {
+          "type": "string",
+          "description": "The client's insured number with their health fund, if applicable."
+        },
+        "loyaltySessionsCompleted": {
+          "type": "number",
+          "description": "The count of paid sessions completed by the client, used for the loyalty program (11th session free after 10 paid)."
+        },
+        "isNextSessionFree": {
+          "type": "boolean",
+          "description": "Indicates if the client's next booking qualifies as a free loyalty session. This flag is managed by the system."
+        },
+        "therapistNotes": {
+          "type": "string",
+          "description": "General consultation notes or other relevant information recorded by the therapist for this client's dossier."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "addressStreet",
+        "addressCity",
+        "addressPostalCode",
+        "addressCountry",
+        "dateOfBirth",
+        "loyaltySessionsCompleted",
+        "isNextSessionFree"
+      ]
+    },
+    "Service": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Service",
+      "type": "object",
+      "description": "Defines a massage therapy service offered by the practice, including its details, duration, and pricing.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Service entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the massage service (e.g., 'Massage Signature - Séance ciblée approfondie 90 min')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the service, outlining its benefits and focus."
+        },
+        "durationMinutes": {
+          "type": "number",
+          "description": "The standard duration of the service in minutes."
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the service in CHF (Swiss Francs)."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "durationMinutes",
+        "price"
+      ]
+    },
+    "Appointment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Appointment",
+      "type": "object",
+      "description": "Represents a scheduled massage therapy appointment for a client with a specific service.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Appointment entity."
+        },
+        "clientId": {
+          "type": "string",
+          "description": "Reference to the Client who booked this appointment. (Relationship: Client 1:N Appointment)"
+        },
+        "serviceId": {
+          "type": "string",
+          "description": "Reference to the Service booked for this appointment. (Relationship: Service 1:N Appointment)"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "The exact date and time when the appointment is scheduled to begin.",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "The exact date and time when the appointment is scheduled to end.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the appointment (e.g., 'Booked', 'Completed', 'Cancelled', 'NoShow').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clientMessage": {
+          "type": "string",
+          "description": "An optional message provided by the client during the booking process."
+        },
+        "promoCodeId": {
+          "type": "string",
+          "description": "Reference to a PromoCode applied to this appointment, if any. (Relationship: PromoCode 1:N Appointment)"
+        },
+        "therapistNotes": {
+          "type": "string",
+          "description": "Consultation reasons and notes recorded by the therapist during or after the appointment."
+        },
+        "cancellationReason": {
+          "type": "string",
+          "description": "The reason provided if the appointment was cancelled."
+        },
+        "isLoyaltyFreeSession": {
+          "type": "boolean",
+          "description": "Indicates whether this appointment is the client's free session from the loyalty program."
+        },
+        "isConfirmed": {
+          "type": "boolean",
+          "description": "Indicates whether the client has received and confirmed the booking confirmation email."
+        }
+      },
+      "required": [
+        "id",
+        "clientId",
+        "serviceId",
+        "startTime",
+        "endTime",
+        "status",
+        "isLoyaltyFreeSession",
+        "isConfirmed"
+      ]
+    },
+    "Invoice": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Invoice",
+      "type": "object",
+      "description": "Represents a Swiss-compliant invoice generated for a specific appointment and client, including snapshots of relevant data for historical integrity.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Invoice entity."
+        },
+        "appointmentId": {
+          "type": "string",
+          "description": "Reference to the Appointment for which this invoice was generated. (Relationship: Appointment 1:1 Invoice)"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "Reference to the Client associated with this invoice. (Relationship: Client 1:N Invoice)"
+        },
+        "invoiceNumber": {
+          "type": "string",
+          "description": "A unique, human-readable identifier for the invoice."
+        },
+        "issueDate": {
+          "type": "string",
+          "description": "The date and time when the invoice was issued.",
+          "format": "date-time"
+        },
+        "dueDate": {
+          "type": "string",
+          "description": "The date by which the invoice payment is due.",
+          "format": "date-time"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "The total monetary amount of the invoice."
+        },
+        "status": {
+          "type": "string",
+          "description": "The payment status of the invoice (e.g., 'Pending', 'Paid', 'Cancelled').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "therapistRccNumberSnapshot": {
+          "type": "string",
+          "description": "The therapist's RCC number at the time of invoice generation (snapshot from PracticeSettings for integrity)."
+        },
+        "clinicNameSnapshot": {
+          "type": "string",
+          "description": "The name of the clinic at the time of invoice generation (snapshot from PracticeSettings for integrity)."
+        },
+        "clinicAddressSnapshot": {
+          "type": "string",
+          "description": "The full clinic address at the time of invoice generation (snapshot from PracticeSettings for integrity)."
+        },
+        "clientNameSnapshot": {
+          "type": "string",
+          "description": "The client's full name at the time of invoice generation (snapshot from Client for integrity)."
+        },
+        "clientAddressSnapshot": {
+          "type": "string",
+          "description": "The client's full address at the time of invoice generation (snapshot from Client for integrity)."
+        },
+        "serviceNameSnapshot": {
+          "type": "string",
+          "description": "The name of the service at the time of invoice generation (snapshot from Service for integrity)."
+        },
+        "serviceDurationMinutesSnapshot": {
+          "type": "number",
+          "description": "The duration of the service in minutes at the time of invoice generation (snapshot from Service for integrity)."
+        },
+        "servicePriceSnapshot": {
+          "type": "number",
+          "description": "The price of the service at the time of invoice generation (snapshot from Service for integrity)."
+        },
+        "isLoyaltyFreeSessionApplied": {
+          "type": "boolean",
+          "description": "Indicates if a loyalty free session was applied to this invoice, affecting its total amount (snapshot from Appointment for integrity)."
+        }
+      },
+      "required": [
+        "id",
+        "appointmentId",
+        "clientId",
+        "invoiceNumber",
+        "issueDate",
+        "totalAmount",
+        "status",
+        "therapistRccNumberSnapshot",
+        "clinicNameSnapshot",
+        "clinicAddressSnapshot",
+        "clientNameSnapshot",
+        "clientAddressSnapshot",
+        "serviceNameSnapshot",
+        "serviceDurationMinutesSnapshot",
+        "servicePriceSnapshot",
+        "isLoyaltyFreeSessionApplied"
+      ]
+    },
+    "TherapistSchedule": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "TherapistSchedule",
+      "type": "object",
+      "description": "Defines the therapist's recurring weekly availability for appointments.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the TherapistSchedule entity."
+        },
+        "dayOfWeek": {
+          "type": "string",
+          "description": "The day of the week for which this schedule applies (e.g., 'Monday', 'Tuesday').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "startTime": {
+          "type": "string",
+          "description": "The start time of the availability period for the specified day (e.g., '09:00')."
+        },
+        "endTime": {
+          "type": "string",
+          "description": "The end time of the availability period for the specified day (e.g., '17:00')."
+        }
+      },
+      "required": [
+        "id",
+        "dayOfWeek",
+        "startTime",
+        "endTime"
+      ]
+    },
+    "BlockedTime": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BlockedTime",
+      "type": "object",
+      "description": "Represents specific, non-recurring periods when the therapist is unavailable, overriding regular schedule. Used for holidays, personal time, etc.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the BlockedTime entity."
+        },
+        "startTime": {
+          "type": "string",
+          "description": "The exact date and time when the blocked period begins.",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "The exact date and time when the blocked period ends.",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "description": "The reason for the blocked time (e.g., 'Holiday', 'Personal Time', 'Maintenance')."
+        }
+      },
+      "required": [
+        "id",
+        "startTime",
+        "endTime",
+        "reason"
+      ]
+    },
+    "AIRecommendation": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AIRecommendation",
+      "type": "object",
+      "description": "Stores AI-generated recommendations, either for pre-booking service suggestions or post-treatment aftercare tips. These are personalized for clients.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AIRecommendation entity."
+        },
+        "clientId": {
+          "type": "string",
+          "description": "Reference to the Client for whom the recommendation was generated. (Relationship: Client 1:N AIRecommendation)"
+        },
+        "appointmentId": {
+          "type": "string",
+          "description": "Reference to the Appointment if this is a post-treatment recommendation. Null if a pre-booking recommendation. (Relationship: Appointment 1:N AIRecommendation)"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of recommendation (e.g., 'PreBooking' for service suggestions, 'PostTreatment' for aftercare).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clientInputDescription": {
+          "type": "string",
+          "description": "The client's input or description of their state used to generate a pre-booking recommendation (e.g., 'stressed', 'muscle ache'). Applicable only for 'PreBooking' type."
+        },
+        "recommendedServiceIds": {
+          "type": "array",
+          "description": "An array of references to Services recommended by the AI for pre-booking. Applicable only for 'PreBooking' type. (Relationship: Service N:N AIRecommendation, via IDs)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommendationText": {
+          "type": "string",
+          "description": "The actual AI-generated content, such as aftercare tips or wellness advice."
+        },
+        "generatedAt": {
+          "type": "string",
+          "description": "The date and time when the AI recommendation was generated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "clientId",
+        "type",
+        "recommendationText",
+        "generatedAt"
+      ]
+    },
+    "PromoCode": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PromoCode",
+      "type": "object",
+      "description": "Defines promotional codes that clients can use during booking for discounts.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the PromoCode entity."
+        },
+        "code": {
+          "type": "string",
+          "description": "The actual alphanumeric promotional code (e.g., 'SPRING20')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the promotion or discount offered by the code."
+        },
+        "discountPercentage": {
+          "type": "number",
+          "description": "The percentage discount applied by this promo code (e.g., 20 for 20%). Either this or discountAmount must be present."
+        },
+        "discountAmount": {
+          "type": "number",
+          "description": "A fixed monetary amount discount applied by this promo code. Either this or discountPercentage must be present."
+        },
+        "validFrom": {
+          "type": "string",
+          "description": "The date and time from which the promo code is valid.",
+          "format": "date-time"
+        },
+        "validUntil": {
+          "type": "string",
+          "description": "The date and time until which the promo code is valid.",
+          "format": "date-time"
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Indicates whether the promo code is currently active and usable."
+        },
+        "usageLimit": {
+          "type": "number",
+          "description": "The maximum number of times this promo code can be used in total (optional, null for unlimited)."
+        },
+        "timesUsed": {
+          "type": "number",
+          "description": "The current count of how many times this promo code has been successfully used."
+        }
+      },
+      "required": [
+        "id",
+        "code",
+        "description",
+        "validFrom",
+        "validUntil",
+        "isActive",
+        "timesUsed"
+      ]
+    },
+    "PracticeSettings": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PracticeSettings",
+      "type": "object",
+      "description": "Stores global settings and administrative details for the single massage therapy practice. This entity is expected to have only one record.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the PracticeSettings entity (expected to be a singleton, e.g., 'default')."
+        },
+        "therapistRccNumber": {
+          "type": "string",
+          "description": "The therapist's RCC (Registre des Commerçants) number, required for Swiss-compliant invoicing."
+        },
+        "clinicName": {
+          "type": "string",
+          "description": "The official name of the massage therapy clinic or practice."
+        },
+        "clinicAddressStreet": {
+          "type": "string",
+          "description": "The street and house number of the clinic's address."
+        },
+        "clinicAddressCity": {
+          "type": "string",
+          "description": "The city of the clinic's address."
+        },
+        "clinicAddressPostalCode": {
+          "type": "string",
+          "description": "The postal code of the clinic's address."
+        },
+        "clinicAddressCountry": {
+          "type": "string",
+          "description": "The country of the clinic's address."
+        },
+        "clinicPhone": {
+          "type": "string",
+          "description": "The primary phone number for the clinic."
+        },
+        "clinicEmail": {
+          "type": "string",
+          "description": "The primary email address for the clinic, used for official communications.",
+          "format": "email"
+        },
+        "cancellationPolicyHours": {
+          "type": "number",
+          "description": "The minimum number of hours before an appointment that a client can cancel without penalty (e.g., 24 hours)."
+        },
+        "loyaltySessionThreshold": {
+          "type": "number",
+          "description": "The number of paid sessions a client must complete to earn a free loyalty session (e.g., 10 for the 11th session free)."
+        }
+      },
+      "required": [
+        "id",
+        "therapistRccNumber",
+        "clinicName",
+        "clinicAddressStreet",
+        "clinicAddressCity",
+        "clinicAddressPostalCode",
+        "clinicAddressCountry",
+        "clinicPhone",
+        "clinicEmail",
+        "cancellationPolicyHours",
+        "loyaltySessionThreshold"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/clients/{clientId}",
+        "definition": {
+          "entityName": "Client",
+          "schema": {
+            "$ref": "#/backend/entities/Client"
+          },
+          "description": "Primary client profiles. The 'clientId' parameter matches the client's Firebase UID. Therapist can manage all client profiles; clients can manage their own profile. Includes fields for loyalty program tracking."
+        }
+      },
+      {
+        "path": "/services/{serviceId}",
+        "definition": {
+          "entityName": "Service",
+          "schema": {
+            "$ref": "#/backend/entities/Service"
+          },
+          "description": "Catalog of available massage services. Publicly readable for display on the website and booking; therapist-manageable for updates."
+        }
+      },
+      {
+        "path": "/appointments/{appointmentId}",
+        "definition": {
+          "entityName": "Appointment",
+          "schema": {
+            "$ref": "#/backend/entities/Appointment"
+          },
+          "description": "All scheduled appointments across all clients. Includes denormalized 'clientId' for authorization independence, allowing clients to securely query their own appointments and therapists to manage all appointments."
+        }
+      },
+      {
+        "path": "/invoices/{invoiceId}",
+        "definition": {
+          "entityName": "Invoice",
+          "schema": {
+            "$ref": "#/backend/entities/Invoice"
+          },
+          "description": "Swiss-compliant invoices generated for appointments. Includes denormalized 'clientId' and 'appointmentId' for authorization independence, allowing clients to securely access their own invoices and therapists to manage all invoices. Contains snapshots of data for historical integrity."
+        }
+      },
+      {
+        "path": "/therapist_schedules/{scheduleId}",
+        "definition": {
+          "entityName": "TherapistSchedule",
+          "schema": {
+            "$ref": "#/backend/entities/TherapistSchedule"
+          },
+          "description": "Defines the therapist's recurring weekly availability. Publicly readable to calculate available booking slots; therapist-manageable for updates."
+        }
+      },
+      {
+        "path": "/blocked_times/{blockedTimeId}",
+        "definition": {
+          "entityName": "BlockedTime",
+          "schema": {
+            "$ref": "#/backend/entities/BlockedTime"
+          },
+          "description": "Specific periods when the therapist is unavailable, overriding the regular schedule (e.g., holidays). Publicly readable for accurate slot calculation; therapist-manageable."
+        }
+      },
+      {
+        "path": "/ai_recommendations/{recommendationId}",
+        "definition": {
+          "entityName": "AIRecommendation",
+          "schema": {
+            "$ref": "#/backend/entities/AIRecommendation"
+          },
+          "description": "AI-generated service suggestions (pre-booking) or aftercare tips (post-treatment). Includes denormalized 'clientId' for authorization independence, allowing clients to securely query their own recommendations and therapists to manage all recommendations."
+        }
+      },
+      {
+        "path": "/promo_codes/{promoCodeId}",
+        "definition": {
+          "entityName": "PromoCode",
+          "schema": {
+            "$ref": "#/backend/entities/PromoCode"
+          },
+          "description": "Defines promotional codes clients can use during booking for discounts. Publicly readable for validation during booking; therapist-manageable for creation and updates."
+        }
+      },
+      {
+        "path": "/practice_settings/default",
+        "definition": {
+          "entityName": "PracticeSettings",
+          "schema": {
+            "$ref": "#/backend/entities/PracticeSettings"
+          },
+          "description": "A singleton document holding global practice details and settings (e.g., clinic address, RCC number, cancellation policy). Publicly readable for general information display; therapist-manageable for updates."
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure for AuraFlow Wellness prioritizes robust security rules, scalability, and debuggability by adhering to the core design principles of Authorization Independence, Clarity of Intent, DBAC, QAPs, and Invariants.\n\n**Authorization Independence (CRITICAL):**\nThis design mandates denormalizing authorization context to eliminate hierarchical dependencies and the need for `get()` calls in security rules. For client-specific data such as `appointments`, `invoices`, and `ai_recommendations`, the `clientId` is stored directly within each document. This allows security rules to check `resource.data.clientId == request.auth.uid` directly, ensuring clients can only access their own records. This approach supports atomic operations (transactions/batches) for creating parent/child related documents, as no `get()` call to a parent is required for authorization validation. For instance, creating an appointment for a client can be authorized based solely on the `clientId` within the new appointment document.\n\n**Clarity of Intent & Structural Segregation:**\n\n1.  **Therapist Role (DBAC - Existence over Content):** A dedicated, top-level collection `/roles_therapist/{therapistUid}` will exist. This collection will contain a single document where the ID `therapistUid` matches the therapist's Firebase `request.auth.uid`. The mere *existence* of this document grants the therapist full administrative privileges across the system. This explicitly separates authorization logic from data entities and simplifies therapist access rules (e.g., `allow read, write: if exists(/databases/$(database)/documents/roles_therapist/$(request.auth.uid));`). This collection is conceptual for authorization purposes and does not map to a data entity with a defined schema from the provided list, thus it is not included in the `firestorePaths` array.\n\n2.  **Client-Owned Data:** Client profiles are stored in `/clients/{clientId}` where `clientId` is the client's Firebase UID. This follows the path-based ownership principle for private user data, ensuring easy and secure access for individual clients to their own profiles (`request.auth.uid == clientId`).\n\n3.  **Global Client-Related Data (for Therapist QAPs):** For entities like `appointments`, `invoices`, and `ai_recommendations`, while primarily 'owned' by a client, the therapist requires a global view (e.g., for the 'Daily Pulse' dashboard, revenue reports, or managing all recommendations). Therefore, these are structured as top-level collections (`/appointments/{appointmentId}`, `/invoices/{invoiceId}`, `/ai_recommendations/{recommendationId}`). Each document within these collections explicitly includes the `clientId`. This denormalization is crucial for Authorization Independence and QAPs, allowing both:\n    *   Clients to perform secure `list` operations (e.g., `collection('appointments').where('clientId', '==', request.auth.uid)`).\n    *   The therapist to perform efficient `list` operations across all clients without `collectionGroup` queries, which are essential for dashboard and reporting features.\n\n4.  **Public/Therapist-Managed Data:** Collections like `/services`, `/promo_codes`, `/therapist_schedules`, `/blocked_times`, and the singleton `/practice_settings/default` are structured as top-level collections. These are generally publicly readable (for clients to browse services, see availability) but only writable by the authenticated therapist. This structural segregation clarifies their security posture.\n\n**QAPs (Rules are not Filters):**\n\nThe chosen structure inherently supports efficient and secure `list` operations (Query-Applies-to-Paths). Clients can query their own `appointments`, `invoices`, and `ai_recommendations` by applying a `where('clientId', '==', request.auth.uid)` clause, ensuring only relevant data is returned. The therapist, authorized by their dedicated role document, can perform `list` operations on any top-level collection (`clients`, `appointments`, `invoices`, etc.) to retrieve data for their dashboard and management tools, as the security rules will permit broad access based on their authenticated role. This avoids relying on security rules to filter results, which is inefficient and insecure.\n\n**Invariants:**\n\n*   **Ownership:** Explicit `clientId` fields and path-based ownership (`/clients/{clientId}`) maintain clear data ownership.\n*   **Timestamps & State:** The use of `startTime`, `endTime`, `issueDate`, `dueDate`, `generatedAt`, and explicit `status` fields (e.g., `Appointment.status`, `Invoice.status`) ensures predictable state modeling and data integrity.\n*   **Denormalized Data:** Invoice entities (e.g., `therapistRccNumberSnapshot`, `clientNameSnapshot`, `servicePriceSnapshot`) contain snapshots of relevant data at the time of issuance, guaranteeing historical accuracy even if source data changes. This prevents `get()` calls to other documents when processing or viewing invoices."
+  }
+}
