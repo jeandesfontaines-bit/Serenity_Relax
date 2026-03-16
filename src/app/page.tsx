@@ -1,10 +1,12 @@
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { SERVICES } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { ArrowRight, Leaf, MapPin, Mail, Phone, Instagram } from 'lucide-react';
+import { CurvedCarousel } from '@/components/curved-carousel';
+import { ArrowRight, Leaf, MapPin, Mail, Phone, Instagram, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-spa');
@@ -31,55 +33,54 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero Section - Asymmetric & Immersive */}
-      <section className="relative min-h-[100vh] flex items-center pt-24 pb-12 overflow-hidden">
-        <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 z-10 space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary text-[10px] font-bold uppercase tracking-[0.2em]">
-              <span className="h-1 w-1 rounded-full bg-secondary animate-pulse" />
-              Geneva Sanctuary
-            </div>
-            <h1 className="text-7xl md:text-8xl font-headline leading-[0.9] text-primary text-balance">
-              The Art of <br />
-              <span className="italic font-light text-secondary">Slow Living</span>
-            </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-sm font-light">
-              A boutique practice dedicated to physiological restoration. Experience the intersection of manual science and deep sensory calm.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 pt-4">
-              <Button asChild size="lg" className="rounded-full px-12 py-8 text-[11px] uppercase tracking-widest font-bold bg-primary hover:bg-primary/90 transition-all shadow-2xl shadow-primary/20">
-                <Link href="/booking">Book a Session</Link>
-              </Button>
-              <Link href="#services" className="group flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-primary self-center">
-                Explore Menu <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-          </div>
+      {/* Hero Section */}
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-12 overflow-hidden text-center bg-[#FDFCF8]">
+        <div className="container mx-auto px-6 z-10 space-y-8 max-w-4xl">
+          <p className="text-muted-foreground text-sm uppercase tracking-[0.3em]">Curate your recovery</p>
+          <h1 className="text-6xl md:text-8xl font-headline leading-[1] text-primary text-balance">
+            and deliver — <br />
+            <span className="italic font-light text-secondary">faster and smarter.</span>
+          </h1>
           
-          <div className="lg:col-span-7 relative">
-            <div className="relative aspect-[4/5] md:aspect-square lg:aspect-[4/5] rounded-[4rem] overflow-hidden organic-shadow">
-              <Image
-                src={heroImg?.imageUrl || 'https://picsum.photos/seed/aura-hero/1920/1080'}
-                alt="Sanctuary"
-                fill
-                className="object-cover"
-                priority
-                data-ai-hint="boutique spa"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            </div>
-            {/* Floating Decorative Element */}
-            <div className="absolute -bottom-12 -left-12 hidden lg:block w-64 h-64 bg-accent rounded-[3rem] p-8 organic-shadow animate-bounce-slow">
-              <p className="text-primary font-headline text-2xl italic leading-tight">
-                "Where time folds and the body remembers how to breathe."
-              </p>
-            </div>
+          <div className="flex justify-center pt-4">
+            <Button asChild size="lg" className="rounded-full px-10 py-7 text-[11px] uppercase tracking-widest font-bold bg-primary hover:bg-primary/90 transition-all shadow-2xl shadow-primary/20">
+              <Link href="/booking" className="flex items-center gap-2">
+                Get started for Free <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* 3D Curved Carousel */}
+        <div className="w-full max-w-[1400px] mt-16 mx-auto">
+          <CurvedCarousel />
+        </div>
+
+        {/* Features Grid below Carousel */}
+        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 mt-20 text-left max-w-6xl pb-20">
+          <div className="space-y-4">
+            <h3 className="text-xl font-headline font-bold text-primary">Real-Time Collaboration</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed font-light">
+              Communicate seamlessly and keep everyone in sync with built-in messaging, file sharing, and live updates.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-xl font-headline font-bold text-primary">Task & Project Tracking</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed font-light">
+              Assign tasks, set deadlines, and visualize progress with boards, lists, and timelines tailored to your team's style.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-xl font-headline font-bold text-primary">Performance Insights</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed font-light">
+              Make smarter decisions with analytics that show productivity trends, bottlenecks, and team workload balance.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Services Section - Sensorial Cards */}
-      <section id="services" className="py-32 bg-white/50">
+      {/* Services Section */}
+      <section id="services" className="py-32 bg-white">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
             <div className="max-w-xl">
@@ -116,50 +117,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* The Atmosphere - Tactile Section */}
-      <section id="about" className="py-32 bg-background overflow-hidden">
-        <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-          <div className="order-2 lg:order-1 space-y-12">
-            <span className="text-secondary font-bold uppercase tracking-[0.3em] text-[10px] block">The Atmosphere</span>
-            <h2 className="text-6xl font-headline text-primary leading-tight">A Sanctuary <br />for the <span className="italic font-light">Senses</span></h2>
-            
-            <div className="grid grid-cols-1 gap-12">
-              <div className="flex gap-8 group">
-                <div className="h-px w-12 bg-secondary mt-3 group-hover:w-24 transition-all" />
-                <div className="space-y-4">
-                  <h4 className="text-lg font-headline text-primary">Olfactory Silence</h4>
-                  <p className="text-muted-foreground font-light leading-relaxed">Custom essential oil blends, diffused at precise intervals to signal the brain it is time to rest.</p>
-                </div>
-              </div>
-              <div className="flex gap-8 group">
-                <div className="h-px w-12 bg-secondary mt-3 group-hover:w-24 transition-all" />
-                <div className="space-y-4">
-                  <h4 className="text-lg font-headline text-primary">Thermal Comfort</h4>
-                  <p className="text-muted-foreground font-light leading-relaxed">Heated linen, ambient wood tones, and soft indirect lighting create a cocoon of safety.</p>
-                </div>
-              </div>
-            </div>
-
-            <Button asChild variant="outline" className="rounded-full px-10 py-6 text-[10px] uppercase tracking-widest font-bold border-primary/20 text-primary hover:bg-primary hover:text-white transition-all">
-              <Link href="/booking">Reserve Silence</Link>
-            </Button>
-          </div>
-          
-          <div className="order-1 lg:order-2 grid grid-cols-2 gap-6 relative">
-             <div className="relative aspect-[3/4] rounded-[3rem] overflow-hidden organic-shadow mt-12">
-               <Image src={philosophyImg?.imageUrl || ''} alt="Atmosphere" fill className="object-cover" data-ai-hint="minimalist spa" />
-             </div>
-             <div className="relative aspect-[3/4] rounded-[3rem] overflow-hidden organic-shadow">
-               <Image src={oilsImg?.imageUrl || ''} alt="Details" fill className="object-cover" data-ai-hint="essential oils" />
-             </div>
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-32 w-32 bg-white rounded-full flex items-center justify-center border border-accent organic-shadow">
-                <Leaf className="text-secondary h-8 w-8" />
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer - Minimal & Soft */}
+      {/* Footer */}
       <footer className="bg-primary py-24 px-6 text-white/90">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-20">
