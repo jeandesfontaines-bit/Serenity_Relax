@@ -45,7 +45,6 @@ export function BookingFlow({ services }: { services: Service[] }) {
       const found = services.find(s => s.id === serviceId);
       if (found) setSelectedService(found);
     }
-    setDate(new Date());
   }, [searchParams, services]);
 
   const handleAiRecommend = async () => {
@@ -86,20 +85,21 @@ export function BookingFlow({ services }: { services: Service[] }) {
     try {
       let finalUserId = user?.uid;
       
-      // Ensure we have a session (anonymous or otherwise)
       if (!finalUserId && auth) {
         const cred = await signInAnonymously(auth);
         finalUserId = cred.user.uid;
       }
 
-      if (!finalUserId) throw new Error("Could not establish user session");
+      if (!finalUserId) {
+        throw new Error("Impossible d'établir une session sécurisée.");
+      }
 
       const appointmentId = `apt_${Date.now()}`;
       const startTimeStr = `${format(date, 'yyyy-MM-dd')}T${time}:00`;
-      const duration = parseInt(selectedService.duration.split(' ')[0]);
+      const durationMatch = selectedService.duration.match(/\d+/);
+      const duration = durationMatch ? parseInt(durationMatch[0]) : 60;
       const endTime = addMinutes(new Date(startTimeStr), duration);
 
-      // 1. Create Appointment
       setDocumentNonBlocking(doc(firestore, 'appointments', appointmentId), {
         id: appointmentId,
         clientId: finalUserId,
@@ -113,7 +113,6 @@ export function BookingFlow({ services }: { services: Service[] }) {
         createdAt: serverTimestamp()
       });
 
-      // 2. Update Client Profile (CRM)
       setDocumentNonBlocking(doc(firestore, 'clients', finalUserId), {
         id: finalUserId,
         firstName: formData.firstName,
@@ -128,7 +127,6 @@ export function BookingFlow({ services }: { services: Service[] }) {
         updatedAt: serverTimestamp()
       }, { merge: true });
 
-      // 3. Generate Swiss-Compliant Invoice
       const invoiceId = `INV-${Date.now()}`;
       setDocumentNonBlocking(doc(firestore, 'invoices', invoiceId), {
         id: invoiceId,
@@ -150,9 +148,8 @@ export function BookingFlow({ services }: { services: Service[] }) {
       });
 
       setStep(4);
-    } catch (err) {
-      console.error("Booking error:", err);
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Une erreur est survenue lors de la confirmation. Veuillez réessayer.' });
+    } catch (err: any) {
+      toast({ variant: 'destructive', title: 'Erreur', description: err.message || 'Une erreur est survenue lors de la confirmation.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -216,12 +213,6 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     </SelectContent>
                   </Select>
                 </div>
-
-                {selectedService && (
-                  <div className="p-6 rounded-3xl bg-emerald-50/30 border border-emerald-100 animate-in fade-in slide-in-from-top-4">
-                    <p className="text-sm text-slate-600 font-serif italic">"{selectedService.description}"</p>
-                  </div>
-                )}
               </TabsContent>
 
               <TabsContent value="ai" className="space-y-6">
@@ -229,11 +220,10 @@ export function BookingFlow({ services }: { services: Service[] }) {
                   <h3 className="text-lg font-serif font-bold text-indigo-950 mb-4 flex items-center gap-2">
                     <Brain className="h-5 w-5 text-indigo-500" /> Consultation Intuitive
                   </h3>
-                  <p className="text-xs text-indigo-700 mb-4 font-serif italic">Décrivez votre état actuel (tensions, stress, fatigue) pour une recommandation sur mesure.</p>
                   <Textarea 
                     id="ai-query"
                     name="ai-query"
-                    placeholder="ex: J'ai des tensions au cou dues au travail sur ordinateur..."
+                    placeholder="ex: J'ai des tensions au cou..."
                     className="min-h-[120px] rounded-2xl border-indigo-200 bg-white text-base shadow-sm font-serif italic"
                     value={aiQuery}
                     onChange={(e) => setAiQuery(e.target.value)}
@@ -315,11 +305,11 @@ export function BookingFlow({ services }: { services: Service[] }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="space-y-2">
               <Label htmlFor="firstName">Prénom</Label>
-              <Input id="firstName" name="given-name" autoComplete="given-name" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+              <Input id="firstName" name="firstName" autoComplete="given-name" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="lastName">Nom</Label>
-              <Input id="lastName" name="family-name" autoComplete="family-name" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+              <Input id="lastName" name="lastName" autoComplete="family-name" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -327,23 +317,23 @@ export function BookingFlow({ services }: { services: Service[] }) {
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone">Téléphone</Label>
-              <Input id="phone" name="tel" autoComplete="tel" type="tel" placeholder="Téléphone" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+              <Input id="phone" name="phone" autoComplete="tel" type="tel" placeholder="Téléphone" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="address">Adresse</Label>
-              <Input id="address" name="street-address" autoComplete="street-address" placeholder="Adresse" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+              <Input id="address" name="address" autoComplete="street-address" placeholder="Adresse" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="insurance">Caisse Maladie (optionnel)</Label>
-              <Input id="insurance" name="insurance" placeholder="Caisse Maladie" value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+              <Input id="insurance" name="insurance" autoComplete="off" placeholder="Caisse Maladie" value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="insuranceNumber">N° Assuré (optionnel)</Label>
-              <Input id="insuranceNumber" name="insurance-id" placeholder="N° Assuré" value={formData.insuranceNumber} onChange={e => setFormData({...formData, insuranceNumber: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+              <Input id="insuranceNumber" name="insuranceNumber" autoComplete="off" placeholder="N° Assuré" value={formData.insuranceNumber} onChange={e => setFormData({...formData, insuranceNumber: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="message">Message pour João</Label>
-              <Textarea id="message" name="message" placeholder="Message pour João (motif de consultation, douleurs spécifiques...)" value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-xl bg-slate-50 border-none font-serif italic" />
+              <Textarea id="message" name="message" placeholder="Message..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-xl bg-slate-50 border-none font-serif italic" />
             </div>
           </div>
           
