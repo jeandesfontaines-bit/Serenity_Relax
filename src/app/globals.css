@@ -5,25 +5,25 @@
 
 @layer base {
   :root {
-    --background: 35 30% 98%; /* Soft Parchment */
-    --foreground: 20 15% 12%; /* Deep Earth Brown */
+    --background: 0 0% 100%;
+    --foreground: 20 15% 12%;
     --card: 0 0% 100%;
     --card-foreground: 20 15% 12%;
     --popover: 0 0% 100%;
     --popover-foreground: 20 15% 12%;
-    --primary: 158 15% 22%; /* Deep Forest Moss */
-    --primary-foreground: 35 30% 98%;
-    --secondary: 28 35% 55%; /* Rich Terracotta */
-    --secondary-foreground: 35 30% 98%;
-    --muted: 35 15% 94%;
-    --muted-foreground: 20 10% 40%;
-    --accent: 28 35% 92%; /* Soft Blush/Clay */
-    --accent-foreground: 20 15% 12%;
+    --primary: 158 15% 22%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 28 35% 55%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 35 15% 90%;
-    --input: 35 15% 90%;
-    --ring: 158 15% 22%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
     --radius: 2.5rem;
   }
 }
@@ -33,19 +33,17 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body antialiased;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-headline tracking-tight;
+    @apply bg-background text-foreground font-sans antialiased;
   }
 }
 
 @layer components {
-  .organic-shadow {
-    @apply shadow-[0_20px_50px_rgba(0,0,0,0.03)];
+  .blob-shape {
+    @apply animate-morph overflow-hidden shadow-2xl;
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
   }
   
-  .perspective-1000 {
-    perspective: 1000px;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

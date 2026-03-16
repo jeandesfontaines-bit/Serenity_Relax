@@ -1,186 +1,220 @@
+
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { CurvedCarousel } from '@/components/curved-carousel';
-import { Leaf, User, Coffee, Sparkles, Instagram, Linkedin, MessageSquare } from 'lucide-react';
-
-const BENEFITS = [
-  { icon: Leaf, text: "Huiles Organiques", color: "text-emerald-500" },
-  { icon: User, text: "Diagnostic Personnalisé", color: "text-amber-500" },
-  { icon: Coffee, text: "Rituel Thé Cérémonial", color: "text-slate-500" },
-  { icon: Sparkles, text: "Acoustique Zen", color: "text-indigo-500" }
-];
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  ChevronLeft, ChevronRight, LayoutDashboard, Menu, X, Brain, 
+  Instagram, MessageCircle, LogOut, ArrowRight, Leaf
+} from 'lucide-react';
+import { useUser, useAuth } from '@/firebase';
+import { signOut } from 'firebase/auth';
+import { SERVICES } from '@/lib/types';
+import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
+import { toast } from '@/hooks/use-toast';
 
 export default function HomePage() {
+  const { user } = useUser();
+  const auth = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState<{recommendedServiceName: string, reasoning: string} | null>(null);
+
+  const handleAiRecommendation = async () => {
+    if (!aiQuery.trim()) return;
+    setAiLoading(true);
+    try {
+      const result = await recommendMassageService({
+        clientDescription: aiQuery,
+        serviceCatalog: SERVICES.map(s => ({
+          name: s.name,
+          description: s.description,
+          duration: s.duration,
+          price: `CHF ${s.price}`
+        }))
+      });
+      setAiResult(result);
+    } catch (error) {
+      toast({ variant: 'destructive', title: 'Erreur IA', description: 'Impossible de joindre le conseiller.' });
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-[#FDFCF8]">
+    <div className="flex flex-col min-h-screen">
       {/* Navigation */}
-      <header className="fixed w-full z-50 px-6 py-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between bg-white/40 backdrop-blur-2xl rounded-full px-8 py-4 border border-white/20 organic-shadow">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center">
-              <Leaf className="text-secondary h-4 w-4" />
+      <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-5 bg-white/80 backdrop-blur-2xl border-b border-gray-100/50">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-4 cursor-pointer">
+            <div className="flex -space-x-1.5">
+              {['#FACC15', '#A78BFA', '#34D399'].map((c, i) => (
+                <div key={i} className="w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: c}}></div>
+              ))}
             </div>
-            <span className="text-sm font-body font-bold text-primary uppercase tracking-[0.3em]">SERENITY RELAX</span>
+            <div className="flex items-baseline gap-2">
+              <span className="font-sans font-black text-xl tracking-[0.2em] text-slate-950 uppercase">SERENITY RELAX</span>
+              <span className="text-[12px] font-cursive lowercase text-slate-400 tracking-normal whitespace-nowrap">by João</span>
+            </div>
           </div>
-          <nav className="hidden md:flex items-center gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70">
-            <Link href="#carousel" className="hover:text-primary transition-colors">The Arts</Link>
-            <Link href="/booking" className="hover:text-primary transition-colors">Reservations</Link>
-            <Link href="/client/portal" className="hover:text-primary transition-colors">Portal</Link>
-            <Link href="/therapist/dashboard" className="text-secondary hover:opacity-80 transition-opacity">Therapist</Link>
-            <Link href="/booking" className="bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Book Now</Link>
-          </nav>
+          
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="/client/portal" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-black transition-all">Espace Client</Link>
+            <Link href="/therapist/dashboard" className="flex items-center gap-2 bg-slate-100 text-slate-400 px-5 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-slate-950 hover:text-white transition-all">
+              <LayoutDashboard size={14} /> Admin
+            </Link>
+            {user && !user.isAnonymous && (
+              <button onClick={() => signOut(auth)} className="text-slate-400 hover:text-rose-500 transition-colors">
+                <LogOut size={18}/>
+              </button>
+            )}
+          </div>
+          
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-slate-950">
+            {isMenuOpen ? <X size={24}/> : <Menu size={24}/>}
+          </button>
         </div>
-      </header>
+      </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center pt-24 pb-16 overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center pt-32 pb-16 overflow-hidden bg-white">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[20%] left-[15%] w-[35rem] h-[35rem] bg-emerald-100/10 rounded-full blur-[100px] animate-float" />
           <div className="absolute bottom-[15%] right-[15%] w-[30rem] h-[30rem] bg-amber-50/30 rounded-full blur-[100px] animate-float" style={{ animationDelay: '-6s' }} />
         </div>
-
+        
         <div className="max-w-7xl mx-auto w-full px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-20">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }} 
-            animate={{ opacity: 1, x: 0 }} 
-            transition={{ duration: 1.2 }}
-          >
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.2 }}>
             <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-white/50 backdrop-blur-sm border border-slate-200/30 rounded-full shadow-sm mb-10">
               <div className="w-2 h-2 rounded-full bg-emerald-500/60" />
-              <span className="text-[9px] uppercase tracking-[0.4em] font-black text-slate-500">Genève Eaux-Vives</span>
+              <span className="text-[9px] uppercase tracking-[0.4em] font-black text-slate-500">Genève Cointrin</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl leading-[1.05] font-medium text-slate-950 mb-10 tracking-tight">
+            <h1 className="text-5xl md:text-7xl leading-[1.05] font-medium text-slate-950 mb-10 tracking-tight font-serif">
               L'éveil de la <br/>
-              <span className="italic font-headline text-emerald-800 relative">plénitude.</span>
+              <span className="italic font-serif text-emerald-800 relative">plénitude.</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-md font-headline italic mb-12">
+            <p className="text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-md font-serif italic mb-12">
               Un sanctuaire sensoriel confidentiel où le temps s'efface devant l'harmonie.
             </p>
             
-            <div className="flex flex-wrap gap-3 mb-10">
-              {BENEFITS.map((b, i) => (
-                <div key={i} className="flex items-center gap-2.5 px-5 py-3 bg-white border border-slate-100 rounded-xl text-[9px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-all cursor-default shadow-sm">
-                  <b.icon className={`${b.color} opacity-60`} size={12} />
-                  <span>{b.text}</span>
-                </div>
-              ))}
+            {/* AI Recommender Search */}
+            <div className="max-w-md mt-12">
+              <div className="bg-slate-50 p-2 rounded-3xl border border-slate-100 flex gap-3 shadow-inner">
+                <div className="p-3 bg-white rounded-2xl text-indigo-500 shadow-sm"><Brain size={18}/></div>
+                <input 
+                  className="flex-1 bg-transparent border-none outline-none text-sm italic font-serif px-2"
+                  placeholder="Dites-moi comment vous vous sentez..."
+                  value={aiQuery}
+                  onChange={(e) => setAiQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleAiRecommendation()}
+                />
+                <button 
+                  onClick={handleAiRecommendation}
+                  disabled={aiLoading}
+                  className="px-5 bg-black text-white rounded-2xl text-[9px] font-bold uppercase tracking-widest disabled:opacity-50 transition-all hover:bg-slate-800"
+                >
+                  {aiLoading ? '...' : 'Conseil IA'}
+                </button>
+              </div>
+              
+              <AnimatePresence>
+                {aiResult && (
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 p-5 bg-indigo-50 rounded-2xl border border-indigo-100">
+                    <p className="text-xs text-indigo-900 leading-relaxed font-serif italic">"{aiResult.reasoning}"</p>
+                    <Link 
+                      href="/booking"
+                      className="mt-3 text-[9px] font-bold uppercase tracking-widest text-indigo-600 flex items-center gap-2 hover:translate-x-1 transition-transform"
+                    >
+                      Réserver le soin recommandé <ArrowRight size={12}/>
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-
-            <Button asChild size="lg" className="rounded-full px-10 h-14 text-[11px] uppercase tracking-widest font-bold bg-primary hover:bg-primary/90 transition-all shadow-xl shadow-primary/10">
-              <Link href="/booking">Commencer l'expérience</Link>
-            </Button>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }} 
-            animate={{ opacity: 1, scale: 1 }} 
-            transition={{ duration: 1.5 }}
-          >
-            <div className="aspect-[4/5.2] max-w-[340px] mx-auto rounded-[4rem] overflow-hidden shadow-[0_60px_100px_-30px_rgba(0,0,0,0.1)] border-[8px] border-white group relative">
-              <Image 
-                src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
-                alt="João" 
-                fill
-                className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent opacity-40" />
-              <div className="absolute bottom-6 left-6">
-                <div className="bg-white/80 backdrop-blur-xl px-4 py-2.5 rounded-2xl shadow-xl border border-white/20">
-                  <span className="text-sm font-bold uppercase tracking-[0.3em] block text-slate-950">João</span>
-                  <span className="text-[7px] text-slate-400 block tracking-[0.5em] uppercase font-black mt-0.5 opacity-80">Praticien</span>
-                </div>
+          <div className="relative flex justify-center">
+            <div className="relative w-full max-w-[450px] aspect-[4/5]">
+              <div className="absolute inset-0 blob-shape">
+                <img 
+                  src="https://files.cdn-files-a.com/uploads/11301091/2000_69ab35a73a76b.png" 
+                  className="w-full h-full object-cover grayscale-[15%] hover:grayscale-0 transition-all duration-1000" 
+                  alt="João - Serenity Relax"
+                />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* 3D Curved Carousel Section */}
-      <section id="carousel" className="py-24 bg-white/30">
-        <div className="container mx-auto px-6 text-center mb-16">
-          <span className="text-secondary font-bold uppercase tracking-[0.4em] text-[10px] mb-4 block">Découvrez nos soins</span>
-          <h2 className="text-4xl md:text-5xl font-headline italic text-primary">Les Arts Thérapeutiques</h2>
+      {/* Quick Services Carousel */}
+      <section className="py-24 bg-slate-50/30">
+        <div className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="h-0.5 w-8 bg-slate-950"></div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400">Le Catalogue</span>
+          </div>
+          <h2 className="font-serif text-3xl font-bold tracking-tight">Nos Soins <span className="italic font-normal">Holistiques</span></h2>
         </div>
-        <div className="w-full max-w-[1400px] mx-auto perspective-1000">
-          <CurvedCarousel />
+        
+        <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x px-6 pb-12">
+          {SERVICES.slice(0, 6).map((service, i) => (
+            <Link 
+              key={service.id}
+              href={`/booking?serviceId=${service.id}`}
+              className="flex-shrink-0 w-[75vw] sm:w-[280px] snap-center relative aspect-[3/4] rounded-[3rem] overflow-hidden group shadow-lg"
+            >
+              <img src={`https://picsum.photos/seed/${service.id}/600/800`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={service.name} />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+              <div className="absolute bottom-8 left-8 right-8">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2 block opacity-0 group-hover:opacity-100 transition-all">Therapy 0{i+1}</span>
+                <h3 className="text-xl font-serif text-white font-bold leading-tight">{service.name.split(' - ')[0]}</h3>
+                <p className="text-[9px] text-white/60 font-bold uppercase tracking-widest mt-2">CHF {service.price} • {service.duration}</p>
+              </div>
+            </Link>
+          ))}
         </div>
-      </section>
-
-      {/* Feature Highlights */}
-      <section className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 py-24 text-left max-w-6xl">
-        <div className="space-y-4">
-          <div className="h-px w-12 bg-secondary/30 mb-6" />
-          <h3 className="text-xl font-headline font-bold text-primary">Technical Precision</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed font-light">
-            Nos praticiens combinent expertise anatomique et toucher intuitif pour libérer les tensions myofasciales profondes.
-          </p>
-        </div>
-        <div className="space-y-4">
-          <div className="h-px w-12 bg-secondary/30 mb-6" />
-          <h3 className="text-xl font-headline font-bold text-primary">Architecture Sensorielle</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed font-light">
-            Chaque détail—de l'acoustique aux huiles personnalisées—est pensé pour apaiser votre système nerveux.
-          </p>
-        </div>
-        <div className="space-y-4">
-          <div className="h-px w-12 bg-secondary/30 mb-6" />
-          <h3 className="text-xl font-headline font-bold text-primary">Accompagnement IA</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed font-light">
-            Bénéficiez de conseils post-traitement personnalisés par IA pour prolonger les bienfaits de votre séance à domicile.
-          </p>
+        
+        <div className="text-center mt-8">
+          <Link href="/booking" className="inline-flex items-center gap-2 bg-slate-950 text-white px-10 py-5 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-slate-800 transition-all">
+            Voir tous les soins <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#111111] py-16 px-6 text-white/90 border-t border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col items-center text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-body font-bold tracking-[0.4em] uppercase mb-3 text-white">SERENITY RELAX</h2>
-            <p className="text-[9px] uppercase tracking-[0.6em] italic text-white/30">Excellence Thérapeutique</p>
+      <footer className="py-20 px-6 bg-[#121212] text-white border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+          <div className="flex items-baseline gap-3">
+            <h2 className="font-sans text-2xl font-black tracking-[0.25em] text-white uppercase leading-none">
+              SERENITY RELAX <span className="font-cursive lowercase text-xl text-white/40 tracking-normal inline-block">by João</span>
+            </h2>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-            <div className="space-y-6">
-              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/20">Localisation</h4>
-              <div className="space-y-2 text-sm font-light text-white/50 leading-relaxed">
-                <p>Alfa Business Center</p>
-                <p>Chemin de Joinville 26, 4ème étage</p>
-                <p>1216 Cointrin - Genève</p>
-              </div>
+          
+          <div className="flex flex-col sm:flex-row items-center gap-12 text-center md:text-left">
+            <div className="space-y-1">
+              <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">Localisation</h3>
+              <p className="text-[11px] text-white/70 font-medium">Chemin de Joinville 26, 1216 Cointrin</p>
             </div>
-            <div className="space-y-6">
-              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/20">Contact</h4>
-              <div className="space-y-2 text-sm font-light text-white/50 leading-relaxed">
-                <p>+41 78 333 68 23</p>
-                <p className="break-all">serenityrelaxtherapy@gmail.com</p>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/20">Social</h4>
-              <div className="flex justify-center items-center gap-8">
-                <Link href="#" className="text-white/40 hover:text-white transition-all">
-                  <Instagram className="h-5 w-5" />
-                </Link>
-                <Link href="#" className="text-white/40 hover:text-white transition-all">
-                  <MessageSquare className="h-5 w-5" />
-                </Link>
-                <Link href="#" className="text-white/40 hover:text-white transition-all">
-                  <Linkedin className="h-5 w-5" />
-                </Link>
-              </div>
+            <div className="space-y-1">
+              <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">RCC ID</h3>
+              <p className="text-[11px] text-[#FACC15] font-bold tracking-widest">Z123456</p>
             </div>
           </div>
-          <div className="mt-16 pt-8 border-t border-white/5 text-center">
-            <p className="text-[9px] uppercase tracking-[0.4em] text-white/20 font-light">
-              © 2026 Serenity Relax Therapy — Tous droits réservés
-            </p>
+          
+          <div className="flex gap-8 text-white/40">
+            <Instagram size={20} className="hover:text-white cursor-pointer transition-colors" />
+            <MessageCircle size={20} className="hover:text-white cursor-pointer transition-colors" />
+            <Leaf size={20} className="hover:text-emerald-500 cursor-pointer transition-colors" />
           </div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 text-center">
+          <p className="text-[9px] uppercase tracking-[0.5em] text-white/20 font-light">© 2026 SERENITY RELAX THERAPY — TOUS DROITS RÉSERVÉS</p>
         </div>
       </footer>
     </div>

@@ -1,11 +1,12 @@
+
 "use client";
 
 import { useFirestore, useCollection, useUser, useMemoFirebase } from '@/firebase';
 import { collection, query, where, orderBy } from 'firebase/firestore';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, Download, Sparkles, Clock, History, Loader2 } from 'lucide-react';
+import { Download, Sparkles, Clock, History, Loader2, User, ShieldCheck } from 'lucide-react';
 import { format, isAfter } from 'date-fns';
 import { SERVICES } from '@/lib/types';
 import Link from 'next/link';
@@ -14,7 +15,6 @@ export default function ClientPortal() {
   const { firestore } = useFirestore();
   const { user, isUserLoading } = useUser();
 
-  // Fetch appointments for this client
   const appointmentsQuery = useMemoFirebase(() => {
     if (!firestore || !user) return null;
     return query(
@@ -26,73 +26,73 @@ export default function ClientPortal() {
 
   const { data: appointments, isLoading: aptLoading } = useCollection(appointmentsQuery);
 
-  // Split into upcoming and past
   const now = new Date();
   const upcoming = appointments?.filter(apt => isAfter(new Date(apt.startTime), now)) || [];
   const past = appointments?.filter(apt => !isAfter(new Date(apt.startTime), now)) || [];
 
-  if (isUserLoading) return <div className="min-h-screen flex items-center justify-center bg-[#F7F7F2]"><Loader2 className="animate-spin" /></div>;
+  if (isUserLoading) return <div className="min-h-screen flex items-center justify-center bg-[#F7F7F2]"><Loader2 className="animate-spin text-slate-400" /></div>;
 
   if (!user) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F7F7F2] p-8 text-center">
-        <h1 className="text-3xl font-headline font-bold mb-4">Access Your Sanctuary</h1>
-        <p className="text-muted-foreground mb-8">Please log in to view your journey and manage your wellness sessions.</p>
-        <Button asChild className="rounded-full px-8 bg-primary text-white">
-          <Link href="/login">Log In to Portal</Link>
-        </Button>
+        <div className="bg-white p-12 rounded-[3rem] shadow-xl border border-slate-100 max-w-md w-full">
+          <ShieldCheck className="h-16 w-16 text-slate-200 mx-auto mb-6" />
+          <h1 className="text-3xl font-serif font-bold mb-4">Accès Personnel</h1>
+          <p className="text-muted-foreground font-serif italic mb-8">Veuillez vous identifier pour gérer vos séances et consulter vos recommandations personnalisées.</p>
+          <Button asChild className="w-full rounded-full py-7 bg-slate-950 text-white font-bold uppercase tracking-widest">
+            <Link href="/login">Se Connecter</Link>
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F7F2] p-8">
+    <div className="min-h-screen bg-[#F7F7F2] pt-32 pb-24 px-6">
       <div className="max-w-6xl mx-auto space-y-12">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
-            <h1 className="text-5xl font-headline font-bold text-primary mb-2">Welcome Back, {user.displayName || 'Friend'}</h1>
-            <p className="text-muted-foreground">Your personal wellness sanctuary and session history.</p>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Bienvenue</span>
+            </div>
+            <h1 className="text-5xl font-serif font-bold text-primary">{user.displayName || 'Client'} João</h1>
+            <p className="text-muted-foreground font-serif italic mt-2">Votre sanctuaire personnel et historique de soins.</p>
           </div>
-          <Button asChild className="rounded-full px-8 bg-secondary text-primary hover:bg-secondary/90 font-bold">
-            <Link href="/booking">Book Next Session</Link>
+          <Button asChild className="rounded-full px-12 py-7 bg-slate-950 text-white font-bold uppercase tracking-widest shadow-xl">
+            <Link href="/booking">Réserver un soin</Link>
           </Button>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 space-y-12">
-            {/* Upcoming Section */}
             <section>
-              <h2 className="text-2xl font-headline font-bold mb-6 flex items-center gap-2">
-                <Clock className="text-primary h-6 w-6" /> Upcoming Journey
+              <h2 className="text-2xl font-serif font-bold mb-8 flex items-center gap-3">
+                <Clock className="text-emerald-600 h-6 w-6" /> Séances à Venir
               </h2>
-              {aptLoading && <Loader2 className="animate-spin text-primary" />}
+              {aptLoading && <Loader2 className="animate-spin text-slate-200" />}
               {!aptLoading && upcoming.length === 0 && (
-                <Card className="p-8 text-center border-dashed rounded-3xl bg-white">
-                  <p className="text-muted-foreground italic">No upcoming sessions scheduled.</p>
-                </Card>
+                <div className="p-16 text-center border-2 border-dashed border-slate-200 rounded-[3rem] bg-white/50">
+                  <p className="text-slate-400 font-serif italic">Aucune séance prévue pour le moment.</p>
+                </div>
               )}
               {upcoming.map((apt) => {
                 const service = SERVICES.find(s => s.id === apt.serviceId);
                 const aptDate = new Date(apt.startTime);
                 return (
-                  <Card key={apt.id} className="border-none shadow-xl rounded-[2.5rem] bg-white overflow-hidden mb-6">
+                  <Card key={apt.id} className="border-none shadow-sm rounded-[3rem] bg-white overflow-hidden mb-6 group transition-all hover:shadow-xl">
                     <div className="flex flex-col md:flex-row">
-                      <div className="bg-primary text-white p-8 flex flex-col justify-center items-center text-center min-w-[200px]">
-                        <span className="text-sm font-bold uppercase tracking-widest opacity-80">{format(aptDate, 'yyyy')}</span>
-                        <span className="text-4xl font-headline font-bold">{format(aptDate, 'MMM d')}</span>
-                        <span className="text-xl font-bold mt-2">{format(aptDate, 'HH:mm')}</span>
+                      <div className="bg-slate-950 text-white p-10 flex flex-col justify-center items-center text-center min-w-[220px]">
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">{format(aptDate, 'yyyy')}</span>
+                        <span className="text-4xl font-serif font-bold">{format(aptDate, 'd MMM')}</span>
+                        <span className="text-lg font-bold mt-2 opacity-80">{format(aptDate, 'HH:mm')}</span>
                       </div>
-                      <div className="p-8 flex-1 flex flex-col justify-between">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h3 className="text-2xl font-headline font-bold text-primary">{service?.name || 'Session'}</h3>
-                            <Badge variant="secondary" className="mt-2 rounded-full px-3 uppercase text-[10px] tracking-widest font-bold">{apt.status}</Badge>
-                          </div>
-                          <p className="text-2xl font-headline font-bold">CHF {service?.price || 0}</p>
+                      <div className="p-10 flex-1 flex flex-col justify-between">
+                        <div>
+                          <h3 className="text-2xl font-serif font-bold text-slate-950">{service?.name.split(' - ')[0]}</h3>
+                          <Badge className="mt-4 rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-700 border-none font-bold uppercase tracking-widest text-[8px]">{apt.status}</Badge>
                         </div>
                         <div className="flex flex-wrap gap-4 mt-8">
-                          <Button variant="outline" className="rounded-full border-primary/20">Reschedule</Button>
-                          <Button variant="ghost" className="rounded-full text-destructive hover:bg-destructive/10">Cancel Session</Button>
+                          <Button variant="outline" className="rounded-full px-6 border-slate-200 text-[9px] font-bold uppercase tracking-widest">Gérer / Déplacer</Button>
                         </div>
                       </div>
                     </div>
@@ -101,33 +101,33 @@ export default function ClientPortal() {
               })}
             </section>
 
-            {/* History Section */}
             <section>
-              <h2 className="text-2xl font-headline font-bold mb-6 flex items-center gap-2">
-                <History className="text-primary h-6 w-6" /> Past Sessions
+              <h2 className="text-2xl font-serif font-bold mb-8 flex items-center gap-3">
+                <History className="text-emerald-600 h-6 w-6" /> Historique de Soins
               </h2>
               <div className="space-y-4">
                 {past.map((apt) => {
                   const service = SERVICES.find(s => s.id === apt.serviceId);
                   const aptDate = new Date(apt.startTime);
                   return (
-                    <Card key={apt.id} className="border-none shadow-sm rounded-3xl bg-white p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-                      <div className="flex items-center gap-6">
-                        <div className="h-14 w-14 rounded-2xl bg-muted flex items-center justify-center text-primary font-bold">
-                          {format(aptDate, 'MMM')}
+                    <div key={apt.id} className="bg-white border-none shadow-sm rounded-[2.5rem] p-8 flex flex-col md:flex-row items-center justify-between gap-8 transition-all hover:shadow-md">
+                      <div className="flex items-center gap-8">
+                        <div className="h-16 w-16 rounded-2xl bg-slate-50 flex flex-col items-center justify-center">
+                          <span className="text-lg font-bold leading-none">{format(aptDate, 'd')}</span>
+                          <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{format(aptDate, 'MMM')}</span>
                         </div>
                         <div>
-                          <h4 className="font-headline font-bold text-lg">{service?.name || 'Session'}</h4>
-                          <p className="text-xs text-muted-foreground">{format(aptDate, 'PPP')}</p>
+                          <h4 className="font-serif font-bold text-lg">{service?.name.split(' - ')[0]}</h4>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{format(aptDate, 'PPP')}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-8">
-                        <p className="font-bold">CHF {service?.price || 0}</p>
-                        <Button variant="ghost" size="sm" className="rounded-full flex items-center gap-2">
-                          <Download className="h-4 w-4" /> Invoice
+                      <div className="flex items-center gap-10">
+                        <p className="font-bold text-lg">CHF {service?.price || 0}</p>
+                        <Button variant="ghost" className="rounded-full px-6 py-2 bg-slate-50 hover:bg-slate-950 hover:text-white transition-all text-[9px] font-bold uppercase tracking-widest flex items-center gap-2">
+                          <Download size={12} /> Facture PDF
                         </Button>
                       </div>
-                    </Card>
+                    </div>
                   );
                 })}
               </div>
@@ -135,33 +135,40 @@ export default function ClientPortal() {
           </div>
 
           <aside className="space-y-8">
-             {/* AI Tips Card */}
-             <Card className="rounded-[2.5rem] border-none shadow-xl bg-primary text-white p-8">
-                <Sparkles className="h-10 w-10 text-secondary mb-6" />
-                <h3 className="text-2xl font-headline font-bold mb-4">Bon à savoir!</h3>
-                <div className="space-y-4 text-sm opacity-80 leading-relaxed">
-                  <p>Based on your session history, here is your personalized guidance:</p>
-                  <ul className="list-disc pl-4 space-y-2">
-                    <li>Hydrate abundantly with warm herbal teas today.</li>
-                    <li>Avoid heavy lifting for the next 48 hours.</li>
-                    <li>Try a 10-min Epsom salt bath tonight to prolong muscle relaxation.</li>
+             <Card className="rounded-[3rem] border-none shadow-xl bg-slate-950 text-white p-10 relative overflow-hidden">
+                <Sparkles className="h-12 w-12 text-amber-500 mb-8" />
+                <h3 className="text-2xl font-serif font-bold mb-6">Bon à savoir !</h3>
+                <div className="space-y-6 text-sm font-serif italic text-white/70 leading-relaxed">
+                  <p>Suite à vos récents soins, voici vos conseils personnalisés :</p>
+                  <ul className="space-y-4">
+                    <li className="flex gap-3">
+                      <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
+                      Hydratez-vous abondamment avec des infusions tièdes aujourd'hui.
+                    </li>
+                    <li className="flex gap-3">
+                      <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
+                      Évitez les efforts physiques intenses durant les prochaines 48h.
+                    </li>
+                    <li className="flex gap-3">
+                      <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
+                      Un bain tiède au sel d'Epsom ce soir prolongera les bienfaits.
+                    </li>
                   </ul>
-                  <p className="italic mt-6 pt-4 border-t border-white/10">Tailored by Serenity Relax AI</p>
+                  <p className="pt-8 border-t border-white/10 opacity-40 text-[10px] font-sans font-bold uppercase tracking-[0.2em]">Accompagnement IA Serenity</p>
                 </div>
              </Card>
 
-             {/* Loyalty Status */}
-             <Card className="rounded-[2.5rem] border-none shadow-xl bg-white p-8 text-center">
-                <h3 className="text-xl font-headline font-bold text-primary mb-6">Loyalty Program</h3>
-                <div className="flex justify-center flex-wrap gap-2 mb-6">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                    <div key={i} className={`h-6 w-6 rounded-full border ${i <= (past.length % 11) ? 'bg-primary border-primary' : 'bg-transparent border-muted'}`} />
+             <Card className="rounded-[3rem] border-none shadow-xl bg-white p-10 text-center">
+                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8">Programme Fidélité</h3>
+                <div className="flex justify-center flex-wrap gap-2 mb-8">
+                  {[...Array(10)].map((_, i) => (
+                    <div key={i} className={`h-4 w-4 rounded-full border transition-all ${i < (past.length % 11) ? 'bg-amber-400 border-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.3)]' : 'bg-transparent border-slate-100'}`} />
                   ))}
-                  <div className="h-6 w-6 rounded-full border border-secondary bg-secondary/10 flex items-center justify-center">
-                    <Sparkles className="h-3 w-3 text-secondary" />
+                  <div className="h-4 w-4 rounded-full border border-amber-200 bg-amber-50 flex items-center justify-center">
+                    <Sparkles className="h-2 w-2 text-amber-500" />
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">{10 - (past.length % 11)} sessions until your free session!</p>
+                <p className="text-xs text-slate-600 font-serif italic">Plus que {10 - (past.length % 11)} séances avant votre massage offert !</p>
              </Card>
           </aside>
         </div>
