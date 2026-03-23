@@ -42,14 +42,14 @@ const getLocalISODate = (date = new Date()) => {
   return format(date, 'yyyy-MM-dd');
 };
 
-const getWeekDays = (date) => {
+const getWeekDays = (date: Date) => {
   const start = startOfWeek(date, { weekStartsOn: 1 });
   return Array.from({ length: 7 }, (_, i) => addDays(start, i));
 };
 
 // --- SOUS-COMPOSANTS ---
 
-const EditableDetail = ({ icon: Icon, value, onChange, placeholder, multiline, type = "text", options = [] }) => {
+const EditableDetail = ({ icon: Icon, value, onChange, placeholder, multiline, type = "text", options = [] }: any) => {
   const [isEditing, setIsEditing] = useState(false);
   const handleBlur = () => setIsEditing(false);
   const commonClasses = "w-full bg-gray-50 border border-gray-200 rounded-xl p-3 pl-10 text-sm outline-none text-gray-900 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/10 transition-all";
@@ -60,7 +60,7 @@ const EditableDetail = ({ icon: Icon, value, onChange, placeholder, multiline, t
         <Icon size={14} className={`absolute left-3 ${multiline ? 'top-4' : 'top-1/2 -translate-y-1/2'} text-blue-500`} />
         {type === "select" ? (
           <select autoFocus value={value} onChange={onChange} onBlur={handleBlur} className={commonClasses}>
-            {options.map(o => <option key={o.id || o} value={o.id || o}>{o.label || o}</option>)}
+            {options.map((o: any) => <option key={o.id || o} value={o.id || o}>{o.label || o}</option>)}
           </select>
         ) : multiline ? (
           <textarea autoFocus value={value} onChange={onChange} onBlur={handleBlur} placeholder={placeholder} className={`${commonClasses} min-h-[100px] resize-none`} />
@@ -86,14 +86,18 @@ export default function TherapistDashboard() {
   const { user } = useUser();
   const [activeTab, setActiveTab] = useState("dashboard"); 
   const [calendarView, setCalendarView] = useState("week"); 
-  const [sidePanel, setSidePanel] = useState(null); 
+  const [sidePanel, setSidePanel] = useState<string | null>(null); 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mounted, setMounted] = useState(false);
+  const [formattedDate, setFormattedDate] = useState("");
   
-  const [editingBookingId, setEditingBookingId] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [editingBookingId, setEditingBookingId] = useState<string | null>(null);
+  const [formData, setFormData] = useState<any>({});
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    setFormattedDate(format(new Date(), 'EEEE d MMMM', { locale: fr }));
+  }, []);
 
   const appointmentsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -110,34 +114,38 @@ export default function TherapistDashboard() {
     return collection(firestore, 'invoices');
   }, [firestore]);
 
-  const { data: appointments = [] } = useCollection(appointmentsQuery);
-  const { data: clients = [] } = useCollection(clientsQuery);
-  const { data: invoices = [] } = useCollection(invoicesQuery);
+  const { data: rawAppointments } = useCollection(appointmentsQuery);
+  const { data: rawClients } = useCollection(clientsQuery);
+  const { data: rawInvoices } = useCollection(invoicesQuery);
+
+  const appointments = rawAppointments || [];
+  const clients = rawClients || [];
+  const invoices = rawInvoices || [];
 
   const currentISODate = getLocalISODate(currentDate);
 
   const stats = useMemo(() => {
     const todayStr = getLocalISODate(new Date());
-    const todayAppts = appointments?.filter(b => b.startTime.startsWith(todayStr) && b.status !== 'Cancelled') || [];
+    const todayAppts = appointments.filter(b => b.startTime.startsWith(todayStr) && b.status !== 'Cancelled');
     const revenue = todayAppts.reduce((acc, b) => {
       const s = SERVICES.find(srv => srv.id === b.serviceId);
       return acc + (s?.price || 0);
     }, 0);
     
     const currentMonth = format(new Date(), 'yyyy-MM');
-    const monthlyInvoices = invoices?.filter(i => i.issueDate.startsWith(currentMonth)) || [];
+    const monthlyInvoices = invoices.filter(i => i.issueDate.startsWith(currentMonth));
     const monthlyRevenue = monthlyInvoices.reduce((acc, i) => acc + (i.totalAmount || 0), 0);
 
     return { 
       dailyRevenue: revenue, 
       occupation: Math.round((todayAppts.length / TIME_SLOTS.length) * 100) || 0, 
       monthlyRevenue: monthlyRevenue,
-      totalAppointments: appointments?.length || 0,
-      newClients: clients?.length || 0
+      totalAppointments: appointments.length || 0,
+      newClients: clients.length || 0
     };
   }, [appointments, clients, invoices]);
 
-  const handleOpenAdd = (dateStr, time) => {
+  const handleOpenAdd = (dateStr?: string, time?: string) => {
     const defaultDate = dateStr || getLocalISODate(new Date());
     const defaultTime = time || "10:00";
     setEditingBookingId(null);
@@ -153,7 +161,7 @@ export default function TherapistDashboard() {
     setSidePanel('form');
   };
 
-  const handleOpenEdit = (booking) => {
+  const handleOpenEdit = (booking: any) => {
     setEditingBookingId(booking.id);
     const [date, timePart] = booking.startTime.split('T');
     setFormData({
@@ -286,7 +294,7 @@ export default function TherapistDashboard() {
                   <h1 className="text-5xl font-serif font-light text-gray-900 mb-3 tracking-tight">Bonjour <span className="text-blue-600 font-medium">João,</span></h1>
                   <p className="text-gray-500 font-medium flex items-center gap-2">
                     <Calendar size={14} className="text-blue-500" /> 
-                    Nous sommes le {format(new Date(), 'EEEE d MMMM', { locale: fr })}
+                    Nous sommes le {formattedDate}
                   </p>
                 </div>
                 <button onClick={() => handleOpenAdd()} className="flex items-center gap-3 px-8 py-4 rounded-2xl bg-gray-900 text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl shadow-black/10">
@@ -443,13 +451,13 @@ export default function TherapistDashboard() {
                     type="select" 
                     options={clients.map(c => ({ id: c.id, label: `${c.firstName} ${c.lastName}` }))} 
                     value={formData.clientId} 
-                    onChange={e => setFormData({...formData, clientId: e.target.value})} 
+                    onChange={(e: any) => setFormData({...formData, clientId: e.target.value})} 
                     placeholder="Sélectionner un client" 
                   />
                 </section>
                 <section>
                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-4">Soin & Statut</label>
-                   <EditableDetail icon={Sparkles} type="select" options={SERVICES.map(s => ({id: s.id, label: s.name}))} value={formData.serviceId} onChange={e => setFormData({...formData, serviceId: e.target.value})} />
+                   <EditableDetail icon={Sparkles} type="select" options={SERVICES.map(s => ({id: s.id, label: s.name}))} value={formData.serviceId} onChange={(e: any) => setFormData({...formData, serviceId: e.target.value})} />
                    <div className="grid grid-cols-3 gap-2 mt-4">
                     {STATUSES.map(s => (
                       <button key={s.id} onClick={() => setFormData({...formData, status: s.id})} className={`py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all ${formData.status === s.id ? `${s.color} text-white border-transparent shadow-lg shadow-black/10` : 'bg-gray-50 border-gray-200 text-gray-400 hover:border-gray-300'}`}>
@@ -461,13 +469,13 @@ export default function TherapistDashboard() {
                 <section>
                   <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-4">Planification</label>
                   <div className="flex flex-col gap-4">
-                     <EditableDetail icon={Calendar} type="date" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
-                     <EditableDetail icon={Clock} type="select" options={TIME_SLOTS} value={formData.time} onChange={e => setFormData({...formData, time: e.target.value})} />
+                     <EditableDetail icon={Calendar} type="date" value={formData.date} onChange={(e: any) => setFormData({...formData, date: e.target.value})} />
+                     <EditableDetail icon={Clock} type="select" options={TIME_SLOTS} value={formData.time} onChange={(e: any) => setFormData({...formData, time: e.target.value})} />
                   </div>
                 </section>
                 <section>
                   <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-4">Notes</label>
-                  <EditableDetail icon={Activity} multiline value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} placeholder="Motif de consultation..." />
+                  <EditableDetail icon={Activity} multiline value={formData.message} onChange={(e: any) => setFormData({...formData, message: e.target.value})} placeholder="Motif de consultation..." />
                 </section>
               </div>
               <div className="pt-8 flex gap-4 mt-auto">
@@ -484,8 +492,8 @@ export default function TherapistDashboard() {
 
 // --- SUB-COMPONENTS AGENDA ---
 
-function DateNavigation({ currentDate, setCurrentDate, view }) {
-  const handleNav = (dir) => {
+function DateNavigation({ currentDate, setCurrentDate, view }: any) {
+  const handleNav = (dir: number) => {
     const next = new Date(currentDate);
     if (view === 'week') next.setDate(currentDate.getDate() + (dir * 7));
     else if (view === 'month') {
@@ -514,7 +522,7 @@ function DateNavigation({ currentDate, setCurrentDate, view }) {
   );
 }
 
-function WeekView({ appointments, clients, currentDate, onSelectSlot, onSelectBooking }) {
+function WeekView({ appointments, clients, currentDate, onSelectSlot, onSelectBooking }: any) {
   const days = useMemo(() => getWeekDays(currentDate), [currentDate]);
   return (
     <div className="flex flex-col h-full bg-white rounded-[2rem] border border-gray-200 overflow-hidden shadow-sm">
@@ -539,9 +547,9 @@ function WeekView({ appointments, clients, currentDate, onSelectSlot, onSelectBo
               return (
                 <div key={dayIdx} className="flex-1 border-l border-gray-100 relative">
                   {TIME_SLOTS.map(slot => {
-                    const booking = appointments.find(b => b.startTime === `${dateStr}T${slot}:00`);
+                    const booking = (appointments || []).find((b: any) => b.startTime === `${dateStr}T${slot}:00`);
                     const s = booking ? SERVICES.find(srv => srv.id === booking.serviceId) : null;
-                    const client = booking ? clients.find(c => c.id === booking.clientId) : null;
+                    const client = booking ? (clients || []).find((c: any) => c.id === booking.clientId) : null;
                     return (
                       <div key={slot} onClick={() => booking ? onSelectBooking(booking) : onSelectSlot(dateStr, slot)} className="h-24 border-b border-gray-50 hover:bg-blue-50/20 cursor-pointer relative group">
                         {booking && (
@@ -564,11 +572,11 @@ function WeekView({ appointments, clients, currentDate, onSelectSlot, onSelectBo
   );
 }
 
-function MonthView({ appointments, clients, currentDate, onSelectSlot, setCurrentDate, setView }) {
+function MonthView({ appointments, clients, currentDate, onSelectSlot, setCurrentDate, setView }: any) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  const getDaysInMonth = (y, m) => new Date(y, m + 1, 0).getDate();
-  const getFirstDayOfMonth = (y, m) => new Date(y, m, 1).getDay();
+  const getDaysInMonth = (y: number, m: number) => new Date(y, m + 1, 0).getDate();
+  const getFirstDayOfMonth = (y: number, m: number) => new Date(y, m, 1).getDay();
   const daysInMonth = getDaysInMonth(year, month);
   const offset = getFirstDayOfMonth(year, month) === 0 ? 6 : getFirstDayOfMonth(year, month) - 1;
   const calendarDays = useMemo(() => {
@@ -589,7 +597,7 @@ function MonthView({ appointments, clients, currentDate, onSelectSlot, setCurren
         {calendarDays.map((d, i) => {
           const date = new Date(year, month + d.monthOffset, d.day);
           const dateStr = getLocalISODate(date);
-          const dayBookings = appointments.filter(b => b.startTime.startsWith(dateStr));
+          const dayBookings = (appointments || []).filter((b: any) => b.startTime.startsWith(dateStr));
           const isToday = isSameDay(date, new Date());
 
           return (
@@ -611,10 +619,10 @@ function MonthView({ appointments, clients, currentDate, onSelectSlot, setCurren
                 {d.day}
               </span>
               <div className="flex-1 space-y-1 overflow-hidden">
-                {d.current && dayBookings.slice(0, 3).map(b => (
+                {d.current && dayBookings.slice(0, 3).map((b: any) => (
                   <div key={b.id} className="flex items-center gap-1.5 bg-gray-50 p-1 rounded-md px-2 border border-gray-100">
                     <div className={`w-1.5 h-1.5 rounded-full shrink-0 bg-blue-500`} />
-                    <span className="text-[9px] text-gray-600 truncate font-bold">{clients.find(c => c.id === b.clientId)?.firstName || "Client"}</span>
+                    <span className="text-[9px] text-gray-600 truncate font-bold">{(clients || []).find((c: any) => c.id === b.clientId)?.firstName || "Client"}</span>
                   </div>
                 ))}
               </div>
