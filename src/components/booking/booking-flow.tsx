@@ -13,7 +13,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
-import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain } from 'lucide-react';
+import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain, MapPin, Calendar as CalendarDays } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
 import { useFirestore, useUser, useAuth } from '@/firebase';
@@ -32,8 +32,18 @@ export function BookingFlow({ services }: { services: Service[] }) {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState<string>('');
   const [formData, setFormData] = useState({
-    firstName: '', lastName: '', email: '', phone: '', address: '', 
-    insurance: '', insuranceNumber: '', message: ''
+    firstName: '', 
+    lastName: '', 
+    email: '', 
+    phone: '', 
+    address: '', 
+    city: '',
+    postalCode: '',
+    country: 'Suisse',
+    dob: '',
+    insurance: '', 
+    insuranceNumber: '', 
+    message: ''
   });
   const [aiLoading, setAiLoading] = useState(false);
   const [aiQuery, setAiQuery] = useState('');
@@ -75,11 +85,35 @@ export function BookingFlow({ services }: { services: Service[] }) {
 
   const times = ['09:00', '10:30', '13:00', '14:30', '16:00', '17:30'];
 
+  const validateConfirmation = () => {
+    const missing = [];
+    if (!selectedService) missing.push("Soin");
+    if (!date) missing.push("Date");
+    if (!time) missing.push("Horaire");
+    if (!formData.firstName) missing.push("Prénom");
+    if (!formData.lastName) missing.push("Nom");
+    if (!formData.email) missing.push("Email");
+    if (!formData.address) missing.push("Adresse");
+    if (!formData.city) missing.push("Ville");
+    if (!formData.postalCode) missing.push("Code Postal");
+    if (!formData.dob) missing.push("Date de Naissance");
+    
+    return missing;
+  };
+
   const completeBooking = async () => {
-    if (!firestore || !selectedService || !date || !time) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Veuillez remplir tous les champs requis.' });
+    const missing = validateConfirmation();
+    if (missing.length > 0) {
+      toast({ 
+        variant: 'destructive', 
+        title: 'Informations manquantes', 
+        description: `Veuillez remplir : ${missing.join(", ")}.` 
+      });
       return;
     }
+
+    if (!firestore) return;
+
     setIsSubmitting(true);
 
     try {
@@ -95,15 +129,15 @@ export function BookingFlow({ services }: { services: Service[] }) {
       }
 
       const appointmentId = `apt_${Date.now()}`;
-      const startTimeStr = `${format(date, 'yyyy-MM-dd')}T${time}:00`;
-      const durationMatch = selectedService.duration.match(/\d+/);
+      const startTimeStr = `${format(date!, 'yyyy-MM-dd')}T${time}:00`;
+      const durationMatch = selectedService!.duration.match(/\d+/);
       const duration = durationMatch ? parseInt(durationMatch[0]) : 60;
       const endTime = addMinutes(new Date(startTimeStr), duration);
 
       setDocumentNonBlocking(doc(firestore, 'appointments', appointmentId), {
         id: appointmentId,
         clientId: finalUserId,
-        serviceId: selectedService.id,
+        serviceId: selectedService!.id,
         startTime: startTimeStr,
         endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
         status: 'Booked',
@@ -120,6 +154,10 @@ export function BookingFlow({ services }: { services: Service[] }) {
         email: formData.email,
         phone: formData.phone,
         addressStreet: formData.address,
+        addressCity: formData.city,
+        addressPostalCode: formData.postalCode,
+        addressCountry: formData.country,
+        dateOfBirth: formData.dob,
         insuranceFundName: formData.insurance,
         insuranceNumber: formData.insuranceNumber,
         loyaltySessionsCompleted: 0,
@@ -134,16 +172,16 @@ export function BookingFlow({ services }: { services: Service[] }) {
         clientId: finalUserId,
         invoiceNumber: invoiceId,
         issueDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
-        totalAmount: selectedService.price,
+        totalAmount: selectedService!.price,
         status: 'Pending',
         therapistRccNumberSnapshot: 'Z123456',
         clinicNameSnapshot: 'SERENITY RELAX',
         clinicAddressSnapshot: 'Chemin de Joinville 26, 1216 Cointrin',
         clientNameSnapshot: `${formData.firstName} ${formData.lastName}`,
-        clientAddressSnapshot: formData.address,
-        serviceNameSnapshot: selectedService.name,
+        clientAddressSnapshot: `${formData.address}, ${formData.postalCode} ${formData.city}`,
+        serviceNameSnapshot: selectedService!.name,
         serviceDurationMinutesSnapshot: duration,
-        servicePriceSnapshot: selectedService.price,
+        servicePriceSnapshot: selectedService!.price,
         isLoyaltyFreeSessionApplied: false
       });
 
@@ -319,17 +357,35 @@ export function BookingFlow({ services }: { services: Service[] }) {
               <Label htmlFor="phone">Téléphone</Label>
               <Input id="phone" name="phone" autoComplete="tel" type="tel" placeholder="Téléphone" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="address">Adresse</Label>
-              <Input id="address" name="address" autoComplete="street-address" placeholder="Adresse" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            <div className="space-y-2">
+              <Label htmlFor="dob">Date de Naissance</Label>
+              <div className="relative">
+                <CalendarDays className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none pl-12" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="address">Adresse (Rue et N°)</Label>
+              <div className="relative">
+                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Input id="address" name="address" autoComplete="street-address" placeholder="Chemin de..." value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none pl-12" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="postalCode">Code Postal</Label>
+              <Input id="postalCode" name="postalCode" autoComplete="postal-code" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="city">Ville</Label>
+              <Input id="city" name="city" autoComplete="address-level2" placeholder="Cointrin" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="insurance">Caisse Maladie (optionnel)</Label>
-              <Input id="insurance" name="insurance" autoComplete="off" placeholder="Caisse Maladie" value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+              <Input id="insurance" name="insurance" placeholder="Helsana, CSS..." value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="insuranceNumber">N° Assuré (optionnel)</Label>
-              <Input id="insuranceNumber" name="insuranceNumber" autoComplete="off" placeholder="N° Assuré" value={formData.insuranceNumber} onChange={e => setFormData({...formData, insuranceNumber: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+              <Input id="insuranceNumber" name="insuranceNumber" placeholder="N° Assuré" value={formData.insuranceNumber} onChange={e => setFormData({...formData, insuranceNumber: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="message">Message pour João</Label>
@@ -343,7 +399,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
             </Button>
             <Button 
               className="rounded-full px-16 py-8 text-[11px] font-black uppercase tracking-[0.25em] shadow-2xl bg-emerald-600 text-white hover:bg-emerald-700"
-              disabled={!formData.firstName || !formData.lastName || !formData.email || isSubmitting}
+              disabled={isSubmitting}
               onClick={completeBooking}
             >
               {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'Confirmer la Réservation'}
