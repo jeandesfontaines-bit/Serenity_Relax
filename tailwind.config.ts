@@ -1,4 +1,3 @@
-
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -11,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Outfit"', 'sans-serif'],
-        serif: ['"Fraunces"', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        serif: ['"Playfair Display"', 'serif'],
         cursive: ['"Homemade Apple"', 'cursive'],
         code: ['monospace'],
       },

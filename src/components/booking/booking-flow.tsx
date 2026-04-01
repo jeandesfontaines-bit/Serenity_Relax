@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -15,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
 import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain, MapPin, Calendar as CalendarDays } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
 import { useFirestore, useUser, useAuth } from '@/firebase';
 import { collection, doc, serverTimestamp } from 'firebase/firestore';
@@ -93,6 +93,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
     if (!formData.firstName) missing.push("Prénom");
     if (!formData.lastName) missing.push("Nom");
     if (!formData.email) missing.push("Email");
+    if (!formData.phone) missing.push("Téléphone");
     if (!formData.address) missing.push("Adresse");
     if (!formData.city) missing.push("Ville");
     if (!formData.postalCode) missing.push("Code Postal");
@@ -195,56 +196,56 @@ export function BookingFlow({ services }: { services: Service[] }) {
 
   if (step === 4) {
     return (
-      <Card className="border-none shadow-none rounded-[3rem] p-12 text-center bg-white">
-        <CheckCircle2 className="h-20 w-20 text-emerald-500 mx-auto mb-6" />
-        <h2 className="text-4xl font-serif font-bold text-slate-950 mb-4">Confirmé !</h2>
-        <p className="text-muted-foreground font-serif italic mb-8">
-          Merci {formData.firstName}. Votre séance pour <strong>{selectedService?.name.split(' - ')[0]}</strong> le {date ? format(date, 'PPP') : ''} à {time} est validée.
+      <Card className="border-none shadow-none rounded-[4rem] p-24 text-center bg-white">
+        <CheckCircle2 className="h-24 w-24 text-primary mx-auto mb-12" />
+        <h2 className="text-5xl font-serif font-medium text-primary mb-6">Confirmé.</h2>
+        <p className="text-muted-foreground font-serif italic text-lg mb-12 max-w-sm mx-auto">
+          Merci {formData.firstName}. Votre séance de <strong>{selectedService?.name.split(' - ')[0]}</strong> est validée pour le {date ? format(date, 'd MMMM', { locale: fr }) : ''} à {time}.
         </p>
-        <Button asChild className="rounded-full px-10 py-6 bg-slate-950 text-white font-bold uppercase tracking-widest">
-          <a href="/">Retour à l'accueil</a>
+        <Button asChild className="high-end-button bg-primary text-white">
+          <a href="/">Retour au sanctuaire</a>
         </Button>
       </Card>
     );
   }
 
   return (
-    <div className="space-y-8 p-4">
-      <div className="flex justify-between items-center px-4 max-w-xs mx-auto mb-8 pt-4">
+    <div className="space-y-12">
+      <div className="flex justify-between items-center px-12 max-w-sm mx-auto mb-16">
         {[1, 2, 3].map((i) => (
-          <div key={i} className={`h-1.5 w-16 rounded-full transition-colors ${step >= i ? 'bg-slate-950' : 'bg-slate-100'}`} />
+          <div key={i} className={`h-1 w-20 rounded-full transition-all duration-700 ${step >= i ? 'bg-primary' : 'bg-black/5'}`} />
         ))}
       </div>
 
       {step === 1 && (
-        <Card className="border-none shadow-none rounded-[3rem] overflow-hidden bg-white">
+        <Card className="border-none shadow-none rounded-[4rem] overflow-hidden bg-white">
           <Tabs defaultValue="browse" className="w-full">
-            <div className="px-8 pb-0">
-              <TabsList className="grid w-full grid-cols-2 bg-slate-50 border rounded-full p-1">
-                <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white shadow-sm font-bold uppercase text-[9px] tracking-widest">Menu Classique</TabsTrigger>
-                <TabsTrigger value="ai" className="rounded-full flex items-center gap-2 data-[state=active]:bg-white shadow-sm font-bold uppercase text-[9px] tracking-widest">
-                  <Brain className="h-3 w-3 text-emerald-500" /> Conseil IA
+            <div className="px-12 pt-12 pb-0">
+              <TabsList className="grid w-full grid-cols-2 bg-background border rounded-full p-1.5 h-16">
+                <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-xl font-bold uppercase text-[10px] tracking-widest h-full">Menu Classique</TabsTrigger>
+                <TabsTrigger value="ai" className="rounded-full flex items-center gap-3 data-[state=active]:bg-white data-[state=active]:shadow-xl font-bold uppercase text-[10px] tracking-widest h-full">
+                  <Brain className="h-4 w-4" /> Consultation IA
                 </TabsTrigger>
               </TabsList>
             </div>
             
-            <CardContent className="p-8">
-              <TabsContent value="browse" className="space-y-6">
-                <div className="space-y-3">
-                  <Label className="text-[10px] uppercase tracking-widest font-black text-slate-400 ml-2">Choisir votre soin</Label>
+            <CardContent className="p-12">
+              <TabsContent value="browse" className="space-y-10">
+                <div className="space-y-4">
+                  <Label className="text-[10px] uppercase tracking-[0.3em] font-black text-muted-foreground ml-4">Sélectionner votre rituel</Label>
                   <Select 
                     value={selectedService?.id} 
                     onValueChange={(id) => setSelectedService(services.find(s => s.id === id) || null)}
                   >
-                    <SelectTrigger className="w-full h-16 rounded-2xl text-base px-6 border-slate-100 bg-slate-50 focus:ring-slate-950">
-                      <SelectValue placeholder="Parcourir nos rituels" />
+                    <SelectTrigger className="w-full h-20 rounded-3xl text-lg px-8 border-black/5 bg-background focus:ring-primary shadow-sm">
+                      <SelectValue placeholder="Parcourir nos soins" />
                     </SelectTrigger>
-                    <SelectContent className="rounded-2xl">
+                    <SelectContent className="rounded-3xl p-2">
                       {services.map((s) => (
-                        <SelectItem key={s.id} value={s.id} className="py-4">
-                          <div className="flex flex-col gap-0.5">
-                            <span className="font-serif font-bold text-lg">{s.name.split(' - ')[0]}</span>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{s.duration} • CHF {s.price}</span>
+                        <SelectItem key={s.id} value={s.id} className="rounded-2xl py-6 px-6 focus:bg-background cursor-pointer">
+                          <div className="flex flex-col gap-1">
+                            <span className="font-serif font-bold text-xl">{s.name.split(' - ')[0]}</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{s.duration} • CHF {s.price}</span>
                           </div>
                         </SelectItem>
                       ))}
@@ -253,70 +254,71 @@ export function BookingFlow({ services }: { services: Service[] }) {
                 </div>
               </TabsContent>
 
-              <TabsContent value="ai" className="space-y-6">
-                <div className="p-8 rounded-3xl bg-indigo-50 border border-indigo-100">
-                  <h3 className="text-lg font-serif font-bold text-indigo-950 mb-4 flex items-center gap-2">
-                    <Brain className="h-5 w-5 text-indigo-500" /> Consultation Intuitive
+              <TabsContent value="ai" className="space-y-10">
+                <div className="p-12 rounded-[3rem] bg-background border border-black/5">
+                  <h3 className="text-2xl font-serif font-medium text-primary mb-6 flex items-center gap-4">
+                    <Brain className="h-6 w-6 text-primary/40" /> Intuition Digitale
                   </h3>
                   <Textarea 
                     id="ai-query"
                     name="ai-query"
-                    placeholder="ex: J'ai des tensions au cou..."
-                    className="min-h-[120px] rounded-2xl border-indigo-200 bg-white text-base shadow-sm font-serif italic"
+                    placeholder="Décrivez votre état physique ou émotionnel..."
+                    className="min-h-[160px] rounded-[2rem] border-black/5 bg-white text-lg shadow-sm font-serif italic p-8"
                     value={aiQuery}
                     onChange={(e) => setAiQuery(e.target.value)}
                   />
                   <Button 
                     onClick={handleAiRecommend} 
                     disabled={aiLoading || !aiQuery}
-                    className="mt-6 w-full rounded-full bg-indigo-600 text-white font-bold h-12 uppercase text-[10px] tracking-widest"
+                    className="mt-10 w-full high-end-button bg-primary text-white"
                   >
-                    {aiLoading ? <Loader2 className="animate-spin h-4 w-4 mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
-                    Trouver mon soin idéal
+                    {aiLoading ? <Loader2 className="animate-spin h-5 w-5 mr-3" /> : <Sparkles className="h-5 w-5 mr-3" />}
+                    Trouver le soin idéal
                   </Button>
                 </div>
               </TabsContent>
             </CardContent>
           </Tabs>
 
-          <div className="p-8 pt-0 flex justify-end">
+          <div className="px-12 pb-12 flex justify-end">
             <Button 
               disabled={!selectedService} 
               onClick={() => setStep(2)}
-              className="rounded-full px-12 py-7 text-[10px] uppercase tracking-[0.2em] font-black bg-slate-950"
+              className="high-end-button bg-primary text-white"
             >
-              Étape suivante <ChevronRight className="ml-2 h-4 w-4" />
+              Étape suivante <ChevronRight className="ml-3 h-5 w-5" />
             </Button>
           </div>
         </Card>
       )}
 
       {step === 2 && (
-        <Card className="border-none shadow-none rounded-[3rem] p-8 bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="space-y-6">
-              <h2 className="text-2xl font-serif font-bold text-slate-950 flex items-center gap-2">
-                <CalendarIcon className="h-6 w-6 text-emerald-600" /> Date
+        <Card className="border-none shadow-none rounded-[4rem] p-12 bg-white">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+            <div className="space-y-8">
+              <h2 className="text-3xl font-serif font-medium text-primary flex items-center gap-4">
+                <CalendarIcon className="h-7 w-7 text-primary/20" /> La Date
               </h2>
               <Calendar
                 mode="single"
                 selected={date}
                 onSelect={setDate}
-                className="rounded-3xl border border-slate-100 shadow-sm p-4 bg-white mx-auto"
+                locale={fr}
+                className="rounded-[2.5rem] border border-black/5 shadow-sm p-8 bg-background mx-auto"
                 disabled={(d) => d < new Date() || d.getDay() === 0}
               />
             </div>
-            <div className="space-y-6">
-              <h2 className="text-2xl font-serif font-bold text-slate-950 flex items-center gap-2">
-                <ChevronRight className="h-6 w-6 text-emerald-600" /> Horaire
+            <div className="space-y-8">
+              <h2 className="text-3xl font-serif font-medium text-primary flex items-center gap-4">
+                <ChevronRight className="h-7 w-7 text-primary/20" /> L'Horaire
               </h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {times.map((t) => (
                   <Button
                     key={t}
                     variant={time === t ? 'default' : 'outline'}
                     onClick={() => setTime(t)}
-                    className={`rounded-2xl py-6 text-lg border-slate-100 ${time === t ? 'bg-slate-950 text-white' : 'hover:border-slate-300'}`}
+                    className={`h-16 rounded-2xl text-xl font-medium border-black/5 ${time === t ? 'bg-primary text-white' : 'bg-background hover:bg-white hover:shadow-md transition-all'}`}
                   >
                     {t}
                   </Button>
@@ -324,85 +326,71 @@ export function BookingFlow({ services }: { services: Service[] }) {
               </div>
             </div>
           </div>
-          <div className="flex justify-between mt-12">
-            <Button variant="ghost" onClick={() => setStep(1)} className="rounded-full text-[10px] font-black uppercase tracking-widest">
-              <ChevronLeft className="mr-2 h-4 w-4" /> Retour
+          <div className="flex justify-between mt-20">
+            <Button variant="ghost" onClick={() => setStep(1)} className="high-end-button text-muted-foreground border border-black/5">
+              <ChevronLeft className="mr-3 h-5 w-5" /> Retour
             </Button>
-            <Button disabled={!date || !time} onClick={() => setStep(3)} className="rounded-full px-12 text-[10px] font-black uppercase tracking-widest bg-slate-950">
-              Coordonnées <ChevronRight className="ml-2 h-4 w-4" />
+            <Button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button bg-primary text-white">
+              Coordonnées <ChevronRight className="ml-3 h-5 w-5" />
             </Button>
           </div>
         </Card>
       )}
 
       {step === 3 && (
-        <Card className="border-none shadow-none rounded-[3rem] p-12 bg-white">
-          <h2 className="text-2xl font-serif font-bold text-slate-950 mb-8 flex items-center gap-2">
-            <User className="h-7 w-7 text-emerald-600" /> Vos Informations
+        <Card className="border-none shadow-none rounded-[4rem] p-16 bg-white">
+          <h2 className="text-4xl font-serif font-medium text-primary mb-12 flex items-center gap-4">
+            <User className="h-8 w-8 text-primary/20" /> Coordonnées
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="space-y-2">
-              <Label htmlFor="firstName">Prénom</Label>
-              <Input id="firstName" name="firstName" autoComplete="given-name" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div className="space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Prénom</Label>
+              <Input id="firstName" name="firstName" autoComplete="given-name" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-2xl h-16 bg-background border-none px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastName">Nom</Label>
-              <Input id="lastName" name="lastName" autoComplete="family-name" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            <div className="space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Nom</Label>
+              <Input id="lastName" name="lastName" autoComplete="family-name" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-2xl h-16 bg-background border-none px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" autoComplete="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            <div className="space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Email</Label>
+              <Input id="email" name="email" autoComplete="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-2xl h-16 bg-background border-none px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="phone">Téléphone</Label>
-              <Input id="phone" name="phone" autoComplete="tel" type="tel" placeholder="Téléphone" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            <div className="space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Téléphone</Label>
+              <Input id="phone" name="phone" autoComplete="tel" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-2xl h-16 bg-background border-none px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="dob">Date de Naissance</Label>
-              <div className="relative">
-                <CalendarDays className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none pl-12" />
-              </div>
+            <div className="space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Date de Naissance</Label>
+              <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-2xl h-16 bg-background border-none px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="address">Adresse (Rue et N°)</Label>
-              <div className="relative">
-                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <Input id="address" name="address" autoComplete="street-address" placeholder="Chemin de..." value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none pl-12" />
-              </div>
+            <div className="space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Adresse</Label>
+              <Input id="address" name="address" autoComplete="street-address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-2xl h-16 bg-background border-none px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="postalCode">Code Postal</Label>
-              <Input id="postalCode" name="postalCode" autoComplete="postal-code" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            <div className="space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Code Postal</Label>
+              <Input id="postalCode" name="postalCode" autoComplete="postal-code" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-2xl h-16 bg-background border-none px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="city">Ville</Label>
-              <Input id="city" name="city" autoComplete="address-level2" placeholder="Cointrin" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
+            <div className="space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Ville</Label>
+              <Input id="city" name="city" autoComplete="address-level2" placeholder="Cointrin" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-2xl h-16 bg-background border-none px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="insurance">Caisse Maladie (optionnel)</Label>
-              <Input id="insurance" name="insurance" placeholder="Helsana, CSS..." value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="insuranceNumber">N° Assuré (optionnel)</Label>
-              <Input id="insuranceNumber" name="insuranceNumber" placeholder="N° Assuré" value={formData.insuranceNumber} onChange={e => setFormData({...formData, insuranceNumber: e.target.value})} className="rounded-xl h-14 bg-slate-50 border-none" />
-            </div>
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="message">Message pour João</Label>
-              <Textarea id="message" name="message" placeholder="Message..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-xl bg-slate-50 border-none font-serif italic" />
+            <div className="md:col-span-2 space-y-3">
+              <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-2">Message pour João</Label>
+              <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-3xl bg-background border-none font-serif italic p-6 h-32" />
             </div>
           </div>
           
           <div className="flex justify-between items-center">
-            <Button variant="ghost" onClick={() => setStep(2)} className="rounded-full text-[10px] font-black uppercase tracking-widest">
-              <ChevronLeft className="mr-2 h-4 w-4" /> Retour
+            <Button variant="ghost" onClick={() => setStep(2)} className="high-end-button text-muted-foreground border border-black/5">
+              <ChevronLeft className="mr-3 h-5 w-5" /> Retour
             </Button>
             <Button 
-              className="rounded-full px-16 py-8 text-[11px] font-black uppercase tracking-[0.25em] shadow-2xl bg-emerald-600 text-white hover:bg-emerald-700"
+              className="high-end-button bg-primary text-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] h-20 px-16"
               disabled={isSubmitting}
               onClick={completeBooking}
             >
-              {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'Confirmer la Réservation'}
+              {isSubmitting ? <Loader2 className="animate-spin h-6 w-6" /> : 'Confirmer la Réservation'}
             </Button>
           </div>
         </Card>
