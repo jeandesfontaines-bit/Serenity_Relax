@@ -12,7 +12,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
-import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain, MessageCircle, MapPin, Clock, ShieldCheck } from 'lucide-react';
+import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain, MessageCircle, MapPin, ShieldCheck } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
@@ -200,7 +200,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
       <Card className="border-none shadow-none rounded-[3rem] p-12 md:p-20 text-center bg-white">
         <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-8" />
         <h2 className="text-3xl font-serif font-medium text-primary mb-4">Réservé.</h2>
-        <p className="text-muted-foreground font-serif italic text-base mb-8 max-w-sm mx-auto leading-relaxed">
+        <p className="text-muted-foreground text-base mb-8 max-w-sm mx-auto leading-relaxed italic">
           Merci {formData.firstName}. Votre séance de <span className="font-bold text-primary">{selectedService?.name.split(' - ')[0]}</span> est enregistrée pour le {date ? format(date, 'd MMMM', { locale: fr }) : ''} à {time}.
         </p>
         
@@ -275,7 +275,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     id="ai-query"
                     name="ai-query"
                     placeholder="Décrivez votre état physique ou émotionnel..."
-                    className="min-h-[140px] rounded-[1.5rem] border-black/5 bg-white text-base shadow-sm font-serif italic p-6 resize-none focus:ring-primary"
+                    className="min-h-[140px] rounded-[1.5rem] border-black/5 bg-white text-base shadow-sm italic p-6 resize-none focus:ring-primary"
                     value={aiQuery}
                     onChange={(e) => setAiQuery(e.target.value)}
                   />
@@ -386,7 +386,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
               </div>
               <div className="md:col-span-2 space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
-                <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-2xl bg-muted/20 border-none font-serif italic p-6 text-base h-32 focus:bg-white shadow-inner transition-all resize-none" />
+                <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-2xl bg-muted/20 border-none p-6 text-base h-32 focus:bg-white shadow-inner transition-all resize-none italic" />
               </div>
             </div>
 

@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, MapPin, Clock, ShieldCheck, Heart, Droplets, Wind, Calendar
+  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, MapPin, Clock, Heart, Droplets, Wind, Calendar
 } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
@@ -93,7 +93,6 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
         <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
@@ -178,7 +177,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Techniques & Experiences */}
       <section className="py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6 mb-16">
           <div className="flex items-center gap-3 mb-3">
@@ -216,7 +214,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Bon à savoir - Wellness Advice */}
       <section className="py-24 bg-background">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -225,7 +222,7 @@ export default function HomePage() {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Conseils Bien-être</span>
             </div>
             <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tighter">Bon à savoir</h2>
-            <p className="mt-4 text-muted-foreground font-light max-w-lg mx-auto italic font-serif">
+            <p className="mt-4 text-muted-foreground font-light max-w-lg mx-auto italic">
               7 conseils essentiels pour prolonger les bienfaits de votre séance.
             </p>
           </div>
@@ -235,7 +232,7 @@ export default function HomePage() {
               <div key={tip.id} className="p-10 bg-white rounded-[2.5rem] shadow-sm border border-black/[0.01] hover:shadow-md transition-all group">
                 <tip.icon className="h-8 w-8 text-primary/10 group-hover:text-primary/30 transition-colors mb-6" />
                 <h4 className="text-[10px] font-black uppercase tracking-[0.2em] mb-4 text-primary">{tip.id}. {tip.title}</h4>
-                <p className="text-sm text-muted-foreground font-light leading-relaxed italic font-serif">{tip.text}</p>
+                <p className="text-sm text-muted-foreground font-light leading-relaxed italic">{tip.text}</p>
               </div>
             ))}
           </div>
