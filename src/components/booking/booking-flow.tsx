@@ -12,7 +12,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
-import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain, MessageCircle } from 'lucide-react';
+import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain, MessageCircle, MapPin, Clock, ShieldCheck } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
@@ -206,7 +206,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
         
         <div className="bg-muted/30 p-8 rounded-[2rem] mb-10 border border-black/5">
           <p className="text-xs font-bold uppercase tracking-widest text-primary mb-4">Étape Finale Importante</p>
-          <p className="text-sm text-muted-foreground mb-6">Pensez à confirmer votre rendez-vous via WhatsApp pour finaliser la réservation.</p>
+          <p className="text-sm text-muted-foreground mb-6">Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.</p>
           <Button asChild className="high-end-button bg-emerald-600 hover:bg-emerald-700 text-white px-10 gap-2">
             <a href="https://wa.me/41790000000" target="_blank" rel="noopener noreferrer">
               <MessageCircle size={18} /> Confirmer via WhatsApp
@@ -350,62 +350,103 @@ export function BookingFlow({ services }: { services: Service[] }) {
       )}
 
       {step === 3 && (
-        <Card className="border-none shadow-none rounded-[2.5rem] p-8 md:p-12 bg-white">
-          <h2 className="text-2xl font-serif font-medium text-primary mb-10 flex items-center gap-3">
-            <User className="h-6 w-6 text-primary/20" /> Vos Coordonnées
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-12">
-            <div className="space-y-2.5">
-              <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Prénom</Label>
-              <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          <Card className="lg:col-span-2 border-none shadow-none rounded-[2.5rem] p-8 md:p-12 bg-white">
+            <h2 className="text-2xl font-serif font-medium text-primary mb-10 flex items-center gap-3">
+              <User className="h-6 w-6 text-primary/20" /> Vos Coordonnées
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-12">
+              <div className="space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Prénom</Label>
+                <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              </div>
+              <div className="space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Nom</Label>
+                <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              </div>
+              <div className="space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Email</Label>
+                <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              </div>
+              <div className="space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Téléphone</Label>
+                <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              </div>
+              <div className="space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Date de Naissance</Label>
+                <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              </div>
+              <div className="space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
+                <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              </div>
+              <div className="md:col-span-2 space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
+                <Input id="address" name="address" placeholder="Rue et N°, Ville" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              </div>
+              <div className="md:col-span-2 space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
+                <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-2xl bg-muted/20 border-none font-serif italic p-6 text-base h-32 focus:bg-white shadow-inner transition-all resize-none" />
+              </div>
             </div>
-            <div className="space-y-2.5">
-              <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Nom</Label>
-              <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-            </div>
-            <div className="space-y-2.5">
-              <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-            </div>
-            <div className="space-y-2.5">
-              <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Téléphone</Label>
-              <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-            </div>
-            <div className="space-y-2.5">
-              <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Date de Naissance</Label>
-              <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-            </div>
-            <div className="space-y-2.5">
-              <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
-              <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-            </div>
-            <div className="md:col-span-2 space-y-2.5">
-              <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
-              <Input id="address" name="address" placeholder="Rue et N°, Ville" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-            </div>
-            <div className="md:col-span-2 space-y-2.5">
-              <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
-              <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-2xl bg-muted/20 border-none font-serif italic p-6 text-base h-32 focus:bg-white shadow-inner transition-all resize-none" />
-            </div>
-          </div>
-          
-          <div className="bg-muted/20 p-6 rounded-2xl mb-10 border border-black/5 text-xs text-muted-foreground italic">
-            <p><strong>Note :</strong> Toute annulation doit être effectuée au minimum 24h à l'avance. En cas d'annulation tardive, la séance pourra être facturée.</p>
-          </div>
 
-          <div className="flex justify-between items-center">
-            <Button variant="ghost" onClick={() => setStep(2)} className="high-end-button text-muted-foreground border border-black/5 px-8">
-              <ChevronLeft className="mr-2 h-4 w-4" /> Retour
-            </Button>
-            <Button 
-              className="high-end-button bg-primary text-white shadow-lg px-12 h-16 text-xs tracking-[0.2em]"
-              disabled={isSubmitting}
-              onClick={completeBooking}
-            >
-              {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'CONFIRMER'}
-            </Button>
-          </div>
-        </Card>
+            <div className="flex justify-between items-center">
+              <Button variant="ghost" onClick={() => setStep(2)} className="high-end-button text-muted-foreground border border-black/5 px-8">
+                <ChevronLeft className="mr-2 h-4 w-4" /> Retour
+              </Button>
+              <Button 
+                className="high-end-button bg-primary text-white shadow-lg px-12 h-16 text-xs tracking-[0.2em]"
+                disabled={isSubmitting}
+                onClick={completeBooking}
+              >
+                {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'CONFIRMER'}
+              </Button>
+            </div>
+          </Card>
+
+          <aside className="space-y-6">
+            <Card className="rounded-[2rem] border-none shadow-sm bg-white p-8">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
+                <MapPin size={14} className="text-primary/40" /> Informations Pratiques
+              </h3>
+              <div className="space-y-4 text-xs text-muted-foreground leading-relaxed">
+                <div>
+                  <p className="font-bold text-primary mb-1">Lieu</p>
+                  <p>Chemin de Joinville 26, Alpha Business Center, 4ème étage – 1216 Cointrin (Genève)</p>
+                </div>
+                <div>
+                  <p className="font-bold text-primary mb-1">Horaires</p>
+                  <p>Lun - Ven : 8h00 – 20h00</p>
+                  <p>Sam - Dim : 9h30 – 20h00</p>
+                  <p className="italic mt-1">Uniquement sur rendez-vous.</p>
+                </div>
+                <p className="pt-2 border-t border-black/5">Séances à domicile possibles sur demande, selon disponibilité.</p>
+              </div>
+            </Card>
+
+            <Card className="rounded-[2rem] border-none shadow-sm bg-slate-950 text-white p-8">
+              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-4 flex items-center gap-2">
+                <MessageCircle size={14} className="text-emerald-500" /> CONFIRMATION WHATSAPP
+              </h3>
+              <p className="text-xs leading-relaxed italic text-white/70">
+                Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.
+              </p>
+            </Card>
+
+            <Card className="rounded-[2rem] border-none shadow-sm bg-white p-8">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
+                <ShieldCheck size={14} className="text-primary/40" /> Conditions & Informations
+              </h3>
+              <ul className="space-y-3 text-[10px] text-muted-foreground leading-relaxed list-disc pl-4">
+                <li>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation.</li>
+                <li>Elles ne remplacent en aucun cas un avis ou un traitement médical.</li>
+                <li>En réservant une séance, vous confirmez être en bonne condition physique.</li>
+                <li>Toute annulation ou modification doit être effectuée au minimum 24h à l'avance.</li>
+                <li>En cas d'annulation tardive ou d'absence, la séance pourra être facturée.</li>
+              </ul>
+            </Card>
+          </aside>
+        </div>
       )}
     </div>
   );

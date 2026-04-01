@@ -242,53 +242,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Practical Info & Conditions */}
-      <section className="py-24 bg-muted/20">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16">
-          <div className="space-y-10">
-            <div>
-              <h3 className="text-xl font-serif font-bold mb-6 flex items-center gap-3">
-                <MapPin size={20} className="text-primary/40" /> Informations Pratiques
-              </h3>
-              <div className="space-y-4 text-sm text-muted-foreground font-light leading-relaxed">
-                <p><strong>Lieu :</strong> Chemin de Joinville 26, Alpha Business Center, 4ème étage – 1216 Cointrin (Genève)</p>
-                <p><strong>Durée :</strong> 60 ou 90 minutes selon le rituel choisi.</p>
-                <p><strong>Horaires :</strong> 
-                  <br />Lundi au vendredi : 8h00 – 20h00
-                  <br />Samedi et dimanche : 9h30 – 20h00
-                  <br /><em>Uniquement sur rendez-vous.</em>
-                </p>
-                <p>Séances à domicile possibles sur demande, selon disponibilité.</p>
-              </div>
-            </div>
-            
-            <div className="p-8 rounded-[2rem] bg-white border border-black/5 shadow-sm">
-              <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 flex items-center gap-2">
-                <MessageCircle size={14} /> Confirmation WhatsApp
-              </h4>
-              <p className="text-xs text-muted-foreground leading-relaxed italic">
-                Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-10">
-            <div>
-              <h3 className="text-xl font-serif font-bold mb-6 flex items-center gap-3">
-                <ShieldCheck size={20} className="text-primary/40" /> Conditions & Informations
-              </h3>
-              <ul className="space-y-4 text-sm text-muted-foreground font-light leading-relaxed list-disc pl-5">
-                <li>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation.</li>
-                <li>Elles ne remplacent en aucun cas un avis ou un traitement médical.</li>
-                <li>En réservant une séance, vous confirmez être en bonne condition physique.</li>
-                <li>Toute annulation ou modification doit être effectuée au minimum 24h à l'avance.</li>
-                <li>En cas d'annulation tardive ou d'absence, la séance pourra être facturée.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <footer className="py-12 md:py-20 px-6 bg-primary text-white">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10 md:gap-12">
           <div className="flex items-baseline gap-3 text-center md:text-left">
