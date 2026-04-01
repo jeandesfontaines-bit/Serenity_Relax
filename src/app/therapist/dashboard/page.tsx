@@ -45,9 +45,15 @@ import {
   Clock, 
   X, 
   ArrowRight, 
-  Download,
-  CheckCircle2,
-  AlertCircle
+  LayoutGrid,
+  CalendarDays,
+  Bell,
+  Settings,
+  ArrowUpRight,
+  ArrowDownRight,
+  Activity,
+  Sparkles,
+  Heart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SERVICES } from '@/lib/types';
@@ -61,6 +67,8 @@ const STATUS_CONFIG = {
   completed: { label: 'Terminé', color: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500' },
   cancelled: { label: 'Annulé', color: 'bg-rose-100 text-rose-700', dot: 'bg-rose-500' },
 };
+
+const TIME_SLOTS = ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00", "18:30"];
 
 export default function TherapistDashboard() {
   const { firestore } = useFirestore();
@@ -98,13 +106,16 @@ export default function TherapistDashboard() {
     return query(collection(firestore, 'clients'), orderBy('lastName', 'asc'));
   }, [firestore]);
 
-  const { data: appointments = [] } = useCollection(appointmentsQuery);
-  const { data: clients = [] } = useCollection(clientsQuery);
+  const { data: appointmentsRaw } = useCollection(appointmentsQuery);
+  const { data: clientsRaw } = useCollection(clientsQuery);
+  
+  const appointments = useMemo(() => appointmentsRaw || [], [appointmentsRaw]);
+  const clients = useMemo(() => clientsRaw || [], [clientsRaw]);
 
   // Stats Logic
   const stats = useMemo(() => {
     const todayStr = isClient ? format(new Date(), 'yyyy-MM-dd') : '';
-    const todayBookings = (appointments || []).filter(a => a.startTime.startsWith(todayStr));
+    const todayBookings = appointments.filter(a => a.startTime.startsWith(todayStr));
     const revenueToday = todayBookings.reduce((acc, curr) => {
       const s = SERVICES.find(sv => sv.id === curr.serviceId);
       return acc + (s?.price || 0);
@@ -170,179 +181,210 @@ export default function TherapistDashboard() {
   return (
     <div className="min-h-screen bg-[#F8F9FB] text-[#171717] font-sans selection:bg-indigo-100 selection:text-indigo-900">
       
-      {/* FLOATING HEADER */}
-      <header className="px-6 py-6 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-2xl rounded-[2rem] shadow-sm border border-white/50 px-8 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-8">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-black rounded-2xl flex items-center justify-center text-white font-serif italic shadow-xl shadow-black/10">J</div>
-                <div>
-                  <h1 className="text-sm font-bold tracking-tight">João Studio</h1>
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Admin Portal</p>
-                </div>
+      {/* HEADER CLAIR */}
+      <header className="h-20 border-b border-gray-200 flex items-center justify-between px-8 bg-white/80 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
+        <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
+          <div className="flex items-center gap-12">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shadow-lg shadow-black/5"><Calendar size={18}/></div>
+              <div>
+                <span className="text-sm font-bold tracking-tight block text-gray-900">Cabinet Serenity</span>
+                <span className="text-[9px] text-gray-500 uppercase tracking-widest font-bold">Portail Praticien</span>
               </div>
-              
-              <div className="hidden md:flex h-6 w-px bg-slate-100" />
-              
-              <nav className="hidden md:flex gap-1 bg-slate-50 p-1 rounded-2xl">
-                {[
-                  { id: "dashboard", label: "Dashboard", icon: Calendar },
-                  { id: "calendar", label: "Agenda", icon: Clock },
-                  { id: "clients", label: "Clients", icon: Users },
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => { setActiveTab(item.id); setSelectedDate(null); }}
-                    className={`px-6 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all flex items-center gap-2 ${
-                      activeTab === item.id 
-                        ? "bg-white text-black shadow-sm" 
-                        : "text-slate-400 hover:text-black"
-                    }`}
-                  >
-                    <item.icon size={14} strokeWidth={2.5} />
-                    {item.label}
-                  </button>
-                ))}
-              </nav>
             </div>
             
-            <div className="flex items-center gap-4">
-              <div className="hidden sm:flex items-center gap-4 px-6 py-2.5 bg-slate-50 rounded-2xl border border-white">
-                <Wallet size={14} className="text-slate-400" />
-                <span className="text-xs font-bold">{formatCHF(stats.revenueToday)}</span>
-                <span className="text-[8px] text-slate-400 uppercase tracking-widest font-black">Today</span>
-              </div>
-              <button 
-                onClick={() => openNew()}
-                className="bg-black text-white px-6 py-3 rounded-2xl hover:bg-slate-800 transition-all flex items-center gap-2 shadow-xl shadow-black/5 active:scale-95"
-              >
-                <Plus size={16} strokeWidth={3} />
-                <span className="text-[10px] font-bold uppercase tracking-widest">Nouveau</span>
-              </button>
+            <nav className="hidden lg:flex bg-gray-100 p-1 rounded-full border border-gray-200">
+              {[
+                { id: "dashboard", label: "Accueil", icon: LayoutGrid },
+                { id: "calendar", label: "Agenda", icon: CalendarDays },
+                { id: "clients", label: "Clients", icon: Users },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => { setActiveTab(item.id); setSelectedDate(null); }}
+                  className={`px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
+                    activeTab === item.id 
+                      ? "bg-white text-black shadow-sm border border-gray-200" 
+                      : "text-slate-400 hover:text-black"
+                  }`}
+                >
+                  <item.icon size={14} />
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <div className="hidden sm:flex items-center gap-4 px-6 py-2.5 bg-slate-50 rounded-full border border-gray-100">
+              <Wallet size={14} className="text-slate-400" />
+              <span className="text-xs font-bold">{formatCHF(stats.revenueToday)}</span>
+              <span className="text-[8px] text-slate-400 uppercase tracking-widest font-black">Aujourd'hui</span>
             </div>
+            <button 
+              onClick={() => openNew()}
+              className="bg-black text-white px-6 py-3 rounded-2xl hover:bg-slate-800 transition-all flex items-center gap-2 shadow-xl shadow-black/5 active:scale-95"
+            >
+              <Plus size={16} strokeWidth={3} />
+              <span className="text-[10px] font-bold uppercase tracking-widest">Nouveau</span>
+            </button>
           </div>
         </div>
       </header>
 
       {/* MAIN CONTENT */}
-      <main className="max-w-6xl mx-auto px-6 pb-24">
+      <main className="max-w-7xl mx-auto px-8 py-12">
         <AnimatePresence mode="wait">
           {activeTab === "dashboard" && (
             <motion.div 
               key="dashboard"
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-              className="space-y-8"
+              className="space-y-12"
             >
               {/* BENTO STATS */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                 <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-white flex flex-col justify-between h-40 relative overflow-hidden group">
-                    <div className="absolute right-[-20px] top-[-20px] bg-emerald-50 w-32 h-32 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700" />
-                    <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest z-10">Rendez-vous</span>
-                    <div className="z-10">
-                       <span className="text-5xl font-serif font-bold tracking-tighter">{stats.countToday}</span>
-                       <span className="text-xs text-slate-400 ml-3 font-serif italic">séances prévues</span>
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                 {[
+                   { label: "Revenue du jour", value: formatCHF(stats.revenueToday), change: "+12%", trend: "up", icon: Wallet, color: "text-emerald-600", bg: "bg-emerald-50" },
+                   { label: "Occupation", value: `${Math.round((stats.countToday / TIME_SLOTS.length) * 100)}%`, change: "-2%", trend: "down", icon: Activity, color: "text-blue-600", bg: "bg-blue-50" },
+                   { label: "Séances aujourd'hui", value: stats.countToday, change: "+3", trend: "up", icon: CalendarDays, color: "text-purple-600", bg: "bg-purple-50" },
+                   { label: "Nouveaux Patients", value: "12", change: "+5", trend: "up", icon: Users, color: "text-orange-600", bg: "bg-orange-50" },
+                 ].map((kpi, idx) => (
+                  <div key={idx} className="p-8 rounded-[2.5rem] bg-white border border-gray-100 group hover:shadow-xl hover:shadow-gray-200/50 transition-all">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className={`w-12 h-12 rounded-2xl ${kpi.bg} flex items-center justify-center ${kpi.color}`}><kpi.icon size={20}/></div>
+                      <div className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full ${kpi.trend === 'up' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                        {kpi.trend === 'up' ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />} {kpi.change}
+                      </div>
                     </div>
-                 </div>
-                 <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-white flex flex-col justify-between h-40 relative overflow-hidden group">
-                    <div className="absolute right-[-20px] top-[-20px] bg-indigo-50 w-32 h-32 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700" />
-                    <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest z-10">Estimation brute</span>
-                    <div className="z-10">
-                       <span className="text-5xl font-serif font-bold tracking-tighter">{formatCHF(stats.revenueToday)}</span>
-                       <span className="text-xs text-slate-400 ml-3 font-serif italic">revenu jour</span>
-                    </div>
-                 </div>
-                 <div className="bg-black p-8 rounded-[2.5rem] shadow-2xl shadow-black/10 flex flex-col justify-between h-40 text-white relative overflow-hidden group cursor-pointer" onClick={() => setActiveTab('clients')}>
-                    <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white/10 to-transparent group-hover:translate-x-4 transition-transform" />
-                    <span className="text-white/40 text-[10px] font-black uppercase tracking-widest z-10">Fichier Patients</span>
-                    <div className="flex items-center justify-between z-10">
-                       <span className="text-3xl font-serif font-bold tracking-tight">Actif</span>
-                       <ArrowRight className="opacity-40 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                 </div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{kpi.label}</p>
+                    <p className="text-3xl font-bold text-gray-900">{kpi.value}</p>
+                  </div>
+                ))}
               </div>
 
               {/* DAILY PLANNING */}
-              <section>
-                <div className="flex items-center justify-between mb-8 px-4">
-                  <h3 className="text-2xl font-serif font-bold">Planning du jour</h3>
-                  <div className="bg-white px-6 py-2 rounded-full shadow-sm border border-white flex items-center gap-3">
-                    <Clock size={14} className="text-slate-400" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                      {format(new Date(), 'EEEE d MMMM', { locale: fr })}
-                    </span>
+              <div className="grid grid-cols-12 gap-12">
+                <div className="col-span-12 lg:col-span-8 space-y-8">
+                  <div className="flex items-center justify-between px-2">
+                    <h3 className="text-2xl font-bold tracking-tight">Planning du jour</h3>
+                    <div className="bg-white px-6 py-2 rounded-full shadow-sm border border-gray-100 flex items-center gap-3">
+                      <Clock size={14} className="text-slate-400" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                        {isClient ? format(new Date(), 'EEEE d MMMM', { locale: fr }) : '...'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {appointments
+                      .filter(a => a.startTime.startsWith(format(new Date(), 'yyyy-MM-dd')))
+                      .map(appt => {
+                        const service = SERVICES.find(sv => sv.id === appt.serviceId);
+                        const status = STATUS_CONFIG[appt.status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.pending;
+                        return (
+                          <motion.div 
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            key={appt.id} 
+                            onClick={() => openEdit(appt)} 
+                            className="group bg-white p-6 rounded-[2.5rem] shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-100 transition-all cursor-pointer flex items-center gap-8"
+                          >
+                            <div className="flex flex-col items-center justify-center min-w-[80px] h-20 bg-slate-50 rounded-2xl group-hover:bg-black group-hover:text-white transition-all">
+                              <span className="text-lg font-bold">{appt.startTime.split('T')[1]}</span>
+                            </div>
+                            
+                            <div className="flex-1">
+                              <h4 className="text-lg font-bold mb-1">{appt.firstName} {appt.lastName}</h4>
+                              <div className="flex items-center gap-3">
+                                 <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${status.color}`}>
+                                   {status.label}
+                                 </span>
+                                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                   {service?.name}
+                                 </span>
+                              </div>
+                            </div>
+                            
+                            <div className="text-right flex items-center gap-10">
+                              <span className="text-lg font-bold text-slate-900">{formatCHF(service?.price || 0)}</span>
+                              <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-black group-hover:text-white transition-all">
+                                <Edit3 size={18} />
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    {appointments.filter(a => a.startTime.startsWith(format(new Date(), 'yyyy-MM-dd'))).length === 0 && (
+                      <div className="py-24 text-center flex flex-col items-center gap-6 bg-white rounded-[3rem] border border-dashed border-slate-200">
+                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-200">
+                          <Calendar size={28} />
+                        </div>
+                        <div>
+                          <p className="text-lg font-bold mb-2">Aucun rendez-vous aujourd'hui</p>
+                          <p className="text-sm text-slate-400 font-serif italic">Profitez de ce moment de calme pour vous ressourcer.</p>
+                        </div>
+                        <button onClick={() => openNew()} className="text-[10px] font-black uppercase tracking-[0.2em] text-black hover:underline">Programmer un soin</button>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  {(appointments || [])
-                    .filter(a => a.startTime.startsWith(format(new Date(), 'yyyy-MM-dd')))
-                    .map(appt => {
-                      const service = SERVICES.find(sv => sv.id === appt.serviceId);
-                      const status = STATUS_CONFIG[appt.status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.pending;
-                      return (
-                        <motion.div 
-                          initial={{ opacity: 0, scale: 0.98 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          key={appt.id} 
-                          onClick={() => openEdit(appt)} 
-                          className="group bg-white p-6 rounded-[2.5rem] shadow-sm border border-white hover:shadow-xl hover:shadow-black/[0.02] transition-all cursor-pointer flex items-center gap-8"
-                        >
-                          <div className="flex flex-col items-center justify-center min-w-[80px] h-20 bg-slate-50 rounded-[1.5rem] border border-slate-50 group-hover:bg-black group-hover:text-white transition-all">
-                            <span className="text-lg font-bold font-serif">{appt.startTime.split('T')[1]}</span>
-                          </div>
-                          
-                          <div className="flex-1">
-                            <h4 className="text-xl font-serif font-bold mb-1">{appt.firstName} {appt.lastName}</h4>
-                            <div className="flex items-center gap-3">
-                               <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${status.color}`}>
-                                 {status.label}
-                               </span>
-                               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                                 {service?.name}
-                               </span>
-                            </div>
-                          </div>
-                          
-                          <div className="text-right flex items-center gap-10">
-                            <span className="text-lg font-serif font-bold text-slate-900">{formatCHF(service?.price || 0)}</span>
-                            <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-black group-hover:text-white transition-all">
-                              <Edit3 size={18} />
-                            </div>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  {appointments.filter(a => a.startTime.startsWith(format(new Date(), 'yyyy-MM-dd'))).length === 0 && (
-                    <div className="py-24 text-center flex flex-col items-center gap-6 bg-white rounded-[3rem] border border-dashed border-slate-100">
-                      <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-200">
-                        <Calendar size={28} />
-                      </div>
-                      <div>
-                        <p className="text-lg font-serif font-bold mb-2">Aucun rendez-vous aujourd'hui</p>
-                        <p className="text-sm text-slate-400 font-serif italic">Profitez de ce moment de calme pour vous ressourcer.</p>
-                      </div>
-                      <button onClick={() => openNew()} className="text-[10px] font-black uppercase tracking-[0.2em] text-black hover:underline">Programmer un soin</button>
+                <div className="hidden lg:col-span-4 lg:block space-y-8">
+                  <div className="p-8 rounded-[3rem] bg-gray-900 text-white shadow-2xl relative overflow-hidden group">
+                    <Sparkles size={40} className="absolute -right-4 -bottom-4 text-white/10" />
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-8">Focus du moment</h4>
+                    <p className="text-lg font-light leading-relaxed mb-8">
+                      "L'excellence n'est pas un acte, c'est une habitude."
+                    </p>
+                    <div className="pt-8 border-t border-white/10 flex justify-between">
+                       <div>
+                          <p className="text-[9px] font-bold uppercase tracking-widest text-white/40 mb-1">Visites du mois</p>
+                          <p className="text-2xl font-bold">{appointments.length}</p>
+                       </div>
+                       <div className="text-right">
+                          <p className="text-[9px] font-bold uppercase tracking-widest text-white/40 mb-1">Productivité</p>
+                          <p className="text-2xl font-bold">84%</p>
+                       </div>
                     </div>
-                  )}
+                  </div>
+                  
+                  <div className="bg-white p-8 rounded-[3rem] border border-gray-100 shadow-sm">
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6">Activité Clients</h4>
+                    <div className="space-y-6">
+                      {clients.slice(0, 4).map((client) => (
+                        <div key={client.id} className="flex items-center justify-between group cursor-pointer">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-900 font-bold text-sm group-hover:bg-black group-hover:text-white transition-all">
+                              {client.lastName.charAt(0)}
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold">{client.firstName} {client.lastName}</p>
+                              <p className="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Client Fidèle</p>
+                            </div>
+                          </div>
+                          <ArrowRight size={14} className="text-slate-200 group-hover:text-black transition-all" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </section>
+              </div>
             </motion.div>
           )}
 
           {activeTab === "calendar" && (
             <motion.div key="calendar" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8">
-               <div className="bg-white rounded-[3rem] shadow-sm border border-white overflow-hidden">
+               <div className="bg-white rounded-[3rem] shadow-sm border border-gray-100 overflow-hidden">
                  <div className="p-8 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
                     <div className="flex items-center gap-6">
                        {selectedDate ? (
-                         <button onClick={() => setSelectedDate(null)} className="text-black flex items-center gap-3 hover:bg-white px-5 py-2 rounded-2xl transition-all shadow-sm">
+                         <button onClick={() => setSelectedDate(null)} className="text-black flex items-center gap-3 hover:bg-white px-5 py-2 rounded-2xl transition-all shadow-sm border border-gray-200">
                            <ChevronLeft size={16} strokeWidth={3} />
                            <span className="text-[10px] font-black uppercase tracking-widest">Retour au mois</span>
                          </button>
                        ) : (
                          <div className="flex items-center gap-6">
-                           <h3 className="text-2xl font-serif font-bold capitalize">
+                           <h3 className="text-2xl font-bold tracking-tight capitalize">
                              {format(viewDate, 'MMMM yyyy', { locale: fr })}
                            </h3>
                            <div className="flex gap-2 bg-white p-1 rounded-2xl shadow-inner border border-slate-100">
@@ -352,8 +394,8 @@ export default function TherapistDashboard() {
                          </div>
                        )}
                     </div>
-                    <button onClick={() => openNew(selectedDate || undefined)} className="text-[10px] font-black uppercase tracking-widest bg-black text-white px-6 py-3 rounded-2xl">
-                      Action Rapide
+                    <button onClick={() => openNew(selectedDate || undefined)} className="text-[10px] font-black uppercase tracking-widest bg-black text-white px-6 py-3 rounded-2xl shadow-xl shadow-black/5 hover:bg-slate-800">
+                      Ajouter une séance
                     </button>
                  </div>
 
@@ -395,7 +437,7 @@ export default function TherapistDashboard() {
                    </div>
                  ) : (
                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="divide-y divide-slate-50">
-                      {["09:00", "10:30", "12:00", "14:00", "15:30", "17:00", "18:30"].map(slot => {
+                      {TIME_SLOTS.map(slot => {
                         const appt = appointments.find(a => a.startTime === `${selectedDate}T${slot}`);
                         const service = appt ? SERVICES.find(s => s.id === appt.serviceId) : null;
                         const status = appt ? STATUS_CONFIG[appt.status as keyof typeof STATUS_CONFIG] : null;
@@ -409,7 +451,7 @@ export default function TherapistDashboard() {
                                    <div className="flex items-center gap-6">
                                      <div className={`w-1.5 h-12 rounded-full ${status?.dot || 'bg-slate-200'}`} />
                                      <div>
-                                       <h4 className="text-lg font-serif font-bold text-slate-900">{appt.firstName} {appt.lastName}</h4>
+                                       <h4 className="text-lg font-bold text-slate-900">{appt.firstName} {appt.lastName}</h4>
                                        <div className="flex items-center gap-3 mt-2">
                                           <span className={`text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full ${status?.color}`}>{status?.label}</span>
                                           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{service?.name}</span>
@@ -423,7 +465,7 @@ export default function TherapistDashboard() {
                               ) : (
                                 <button onClick={() => openNew(selectedDate)} className="w-full h-full border-2 border-dashed border-slate-50 rounded-[2rem] flex items-center justify-center gap-3 text-slate-300 hover:text-black hover:border-black/20 hover:bg-white transition-all group/btn">
                                   <Plus size={18} className="group-hover/btn:scale-125 transition-transform" />
-                                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Ouvrir le créneau</span>
+                                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Créneau libre</span>
                                 </button>
                               )}
                             </div>
@@ -438,7 +480,7 @@ export default function TherapistDashboard() {
 
           {activeTab === "clients" && (
             <motion.div key="clients" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8">
-               <div className="bg-white rounded-[2rem] shadow-sm border border-white p-3 flex items-center gap-4">
+               <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-3 flex items-center gap-4">
                  <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300">
                     <Search size={22} />
                  </div>
@@ -448,7 +490,7 @@ export default function TherapistDashboard() {
                   placeholder="Rechercher par nom ou email..." 
                   value={searchQuery} 
                   onChange={(e) => setSearchQuery(e.target.value)} 
-                  className="flex-1 bg-transparent border-none outline-none text-lg font-serif italic placeholder:text-slate-300 text-slate-900 h-14" 
+                  className="flex-1 bg-transparent border-none outline-none text-lg italic placeholder:text-slate-300 text-slate-900 h-14" 
                 />
                </div>
                
@@ -458,17 +500,17 @@ export default function TherapistDashboard() {
                    .map(client => {
                      const clientBookings = appointments.filter(a => a.clientId === client.id);
                      return (
-                     <div key={client.id} className="bg-white p-8 rounded-[2.5rem] border border-white shadow-sm hover:shadow-xl transition-all group">
+                     <div key={client.id} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
                         <div className="flex justify-between items-start mb-6">
-                           <div className="w-14 h-14 bg-slate-50 rounded-[1.5rem] flex items-center justify-center text-slate-900 font-serif font-bold text-xl">
+                           <div className="w-14 h-14 bg-slate-50 rounded-[1.5rem] flex items-center justify-center text-slate-900 font-bold text-xl">
                              {client.lastName.charAt(0)}
                            </div>
                            <div className="text-right">
                              <span className="block text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Visites</span>
-                             <span className="text-2xl font-serif font-bold text-black">{clientBookings.length}</span>
+                             <span className="text-2xl font-bold text-black">{clientBookings.length}</span>
                            </div>
                         </div>
-                        <h4 className="text-xl font-serif font-bold text-slate-900 mb-1">{client.firstName} {client.lastName}</h4>
+                        <h4 className="text-xl font-bold text-slate-900 mb-1">{client.firstName} {client.lastName}</h4>
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">{client.email}</p>
                         
                         <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
@@ -506,7 +548,7 @@ export default function TherapistDashboard() {
             >
               <div className="flex justify-between items-center mb-12">
                 <div>
-                  <h3 className="text-3xl font-serif font-bold text-slate-900 mb-1">{editingId ? "Édition" : "Nouveau soin"}</h3>
+                  <h3 className="text-3xl font-bold text-slate-900 mb-1">{editingId ? "Édition" : "Nouveau soin"}</h3>
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Gestion des dossiers patients</p>
                 </div>
                 <button onClick={() => setSidePanel(false)} className="w-14 h-14 flex items-center justify-center rounded-[1.5rem] hover:bg-slate-50 text-slate-300 hover:text-black transition-all"><X size={24} /></button>
@@ -516,8 +558,8 @@ export default function TherapistDashboard() {
                 <section className="space-y-4">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Identité Patient</label>
                   <div className="grid grid-cols-2 gap-4">
-                    <input value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} type="text" placeholder="Prénom" className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 outline-none text-base font-serif italic text-slate-900 focus:bg-white focus:shadow-sm transition-all" />
-                    <input value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} type="text" placeholder="Nom" className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 outline-none text-base font-serif italic text-slate-900 focus:bg-white focus:shadow-sm transition-all" />
+                    <input value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} type="text" placeholder="Prénom" className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 outline-none text-base italic text-slate-900 focus:bg-white focus:shadow-sm transition-all" />
+                    <input value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} type="text" placeholder="Nom" className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 outline-none text-base italic text-slate-900 focus:bg-white focus:shadow-sm transition-all" />
                   </div>
                 </section>
                 
@@ -545,13 +587,13 @@ export default function TherapistDashboard() {
                         }`}
                       >
                         <div className="flex items-center gap-4">
-                           <div className={`w-3 h-3 rounded-full ${s.dot}`} />
+                           <div className={`w-3 h-3 rounded-full ${s.id === '1' ? 'bg-amber-400' : 'bg-indigo-400'}`} />
                            <div>
                              <span className="text-sm font-bold block">{s.name}</span>
                              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{s.duration}</span>
                            </div>
                         </div>
-                        <span className="text-sm font-serif font-bold">{formatCHF(s.price)}</span>
+                        <span className="text-sm font-bold">{formatCHF(s.price)}</span>
                       </button>
                     ))}
                   </div>
@@ -602,4 +644,3 @@ export default function TherapistDashboard() {
     </div>
   );
 }
-
