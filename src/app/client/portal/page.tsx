@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useFirestore, useCollection, useUser, useMemoFirebase } from '@/firebase';
@@ -6,10 +5,20 @@ import { collection, query, where, orderBy } from 'firebase/firestore';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, Sparkles, Clock, History, Loader2, User, ShieldCheck } from 'lucide-react';
+import { Download, Sparkles, Clock, History, Loader2, User, ShieldCheck, Heart, Droplets, Wind, Calendar, Leaf } from 'lucide-react';
 import { format, isAfter } from 'date-fns';
 import { SERVICES } from '@/lib/types';
 import Link from 'next/link';
+
+const WELLNESS_TIPS = [
+  { id: 1, title: "Accueillez vos émotions", icon: Heart },
+  { id: 2, title: "Prenez votre temps", icon: Clock },
+  { id: 3, title: "Hydratez-vous", icon: Droplets },
+  { id: 4, title: "Évitez la douche immédiate", icon: Sparkles },
+  { id: 5, title: "Prolongez la détente", icon: Wind },
+  { id: 6, title: "Planifiez un prochain soin", icon: Calendar },
+  { id: 7, title: "Choisissez la douceur", icon: Leaf },
+];
 
 export default function ClientPortal() {
   const { firestore } = useFirestore();
@@ -55,7 +64,7 @@ export default function ClientPortal() {
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Bienvenue</span>
             </div>
-            <h1 className="text-5xl font-serif font-bold text-primary">{user.displayName || 'Client'} João</h1>
+            <h1 className="text-5xl font-serif font-bold text-primary">{user.displayName || 'Client'}</h1>
             <p className="text-muted-foreground font-serif italic mt-2">Votre sanctuaire personnel et historique de soins.</p>
           </div>
           <Button asChild className="rounded-full px-12 py-7 bg-slate-950 text-white font-bold uppercase tracking-widest shadow-xl">
@@ -139,20 +148,14 @@ export default function ClientPortal() {
                 <Sparkles className="h-12 w-12 text-amber-500 mb-8" />
                 <h3 className="text-2xl font-serif font-bold mb-6">Bon à savoir !</h3>
                 <div className="space-y-6 text-sm font-serif italic text-white/70 leading-relaxed">
-                  <p>Suite à vos récents soins, voici vos conseils personnalisés :</p>
+                  <p>7 conseils pour prolonger les bienfaits de votre soin :</p>
                   <ul className="space-y-4">
-                    <li className="flex gap-3">
-                      <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
-                      Hydratez-vous abondamment avec des infusions tièdes aujourd'hui.
-                    </li>
-                    <li className="flex gap-3">
-                      <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
-                      Évitez les efforts physiques intenses durant les prochaines 48h.
-                    </li>
-                    <li className="flex gap-3">
-                      <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
-                      Un bain tiède au sel d'Epsom ce soir prolongera les bienfaits.
-                    </li>
+                    {WELLNESS_TIPS.map((tip) => (
+                      <li key={tip.id} className="flex gap-3 items-start">
+                        <tip.icon className="h-4 w-4 text-amber-500 mt-0.5 shrink-0" />
+                        <span className="text-[11px] leading-tight">{tip.id}. {tip.title}</span>
+                      </li>
+                    ))}
                   </ul>
                   <p className="pt-8 border-t border-white/10 opacity-40 text-[10px] font-sans font-bold uppercase tracking-[0.2em]">Accompagnement IA Serenity</p>
                 </div>

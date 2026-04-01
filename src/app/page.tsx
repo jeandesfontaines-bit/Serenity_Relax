@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, MapPin, Clock, ShieldCheck
+  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, MapPin, Clock, ShieldCheck, Heart, Droplets, Wind, Calendar
 } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
@@ -18,6 +18,16 @@ const BENEFITS = [
   { icon: User, text: "Approche Personnalisée", color: "text-amber-500" },
   { icon: Coffee, text: "Cadre Discret", color: "text-slate-500" },
   { icon: Sparkles, text: "Excellence João", color: "text-indigo-500" }
+];
+
+const WELLNESS_TIPS = [
+  { id: 1, title: "Accueillez vos émotions", text: "Un massage peut libérer des ressentis profonds. Laissez-les s'exprimer naturellement.", icon: Heart },
+  { id: 2, title: "Prenez votre temps", text: "Restez allongé quelques minutes avant de vous relever doucement.", icon: Clock },
+  { id: 3, title: "Hydratez-vous", text: "Buvez de l'eau à température ambiante pour aider à éliminer les toxines.", icon: Droplets },
+  { id: 4, title: "Évitez la douche immédiate", text: "Attendez environ une heure pour laisser les huiles et l'énergie agir.", icon: Sparkles },
+  { id: 5, title: "Prolongez la détente", text: "Accordez-vous encore quelques instants de repos et respirez profondément.", icon: Wind },
+  { id: 6, title: "Planifiez un prochain soin", text: "Pensez à réserver votre prochaine séance pour un bien-être durable.", icon: Calendar },
+  { id: 7, title: "Choisissez la douceur", text: "Privilégiez des activités calmes pour prolonger la sensation de bien-être.", icon: Leaf },
 ];
 
 export default function HomePage() {
@@ -203,6 +213,32 @@ export default function HomePage() {
           <Link href="/booking" className="inline-flex items-center gap-3 bg-primary text-white h-14 px-10 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition-all">
             Réserver votre rituel <ArrowRight size={14} />
           </Link>
+        </div>
+      </section>
+
+      {/* Bon à savoir - Wellness Advice */}
+      <section className="py-24 bg-background">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full mb-4 border border-black/[0.03] shadow-sm">
+              <Sparkles className="h-3 w-3 text-amber-500" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Conseils Bien-être</span>
+            </div>
+            <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tighter">Bon à savoir</h2>
+            <p className="mt-4 text-muted-foreground font-light max-w-lg mx-auto italic font-serif">
+              7 conseils essentiels pour prolonger les bienfaits de votre séance.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {WELLNESS_TIPS.map((tip) => (
+              <div key={tip.id} className="p-10 bg-white rounded-[2.5rem] shadow-sm border border-black/[0.01] hover:shadow-md transition-all group">
+                <tip.icon className="h-8 w-8 text-primary/10 group-hover:text-primary/30 transition-colors mb-6" />
+                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] mb-4 text-primary">{tip.id}. {tip.title}</h4>
+                <p className="text-sm text-muted-foreground font-light leading-relaxed italic font-serif">{tip.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
