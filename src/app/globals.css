@@ -23,7 +23,7 @@
     --border: 0 0% 90%;
     --input: 0 0% 90%;
     --ring: 0 0% 9%;
-    --radius: 2.5rem;
+    --radius: 2rem;
   }
 }
 
@@ -48,11 +48,11 @@
   }
 
   .high-end-card {
-    @apply bg-white transition-all duration-500 hover:-translate-y-3 hover:scale-[1.02];
+    @apply bg-white transition-all duration-500 hover:-translate-y-2 hover:scale-[1.01];
     box-shadow: 0 10px 40px rgba(0,0,0,0.03);
   }
 
   .high-end-button {
-    @apply h-14 md:h-16 px-10 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] transition-all active:scale-95 disabled:opacity-50;
+    @apply h-12 md:h-14 px-8 rounded-full font-bold uppercase tracking-[0.2em] text-[9px] transition-all active:scale-95 disabled:opacity-50;
   }
 }
