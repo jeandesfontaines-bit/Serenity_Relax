@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --background: 48 18% 95%; /* Bone #f4f3ef */
-    --foreground: 0 0% 9%; /* Obsidian #171717 */
+    --foreground: 0 0% 9%;    /* Obsidian #171717 */
     --card: 0 0% 100%;
     --card-foreground: 0 0% 9%;
     --popover: 0 0% 100%;
@@ -53,6 +53,10 @@
   }
 
   .high-end-button {
-    @apply h-12 md:h-14 px-8 rounded-full font-bold uppercase tracking-[0.2em] text-[9px] transition-all active:scale-95 disabled:opacity-50;
+    @apply h-14 px-10 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3;
+  }
+
+  .editorial-number {
+    @apply text-6xl md:text-8xl font-serif text-primary/10 font-bold italic select-none;
   }
 }
