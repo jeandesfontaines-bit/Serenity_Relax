@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, MapPin, Clock, Heart, Droplets, Wind, Calendar
+  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, MapPin, Clock, Heart, Droplets, Wind, Calendar, ShieldCheck
 } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
@@ -105,7 +105,7 @@ export default function HomePage() {
               Massage sur <span className="italic">mesure.</span>
             </h1>
             
-            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed max-w-md italic mb-8">
+            <p className="text-base md:text-lg text-muted-foreground font-normal leading-relaxed max-w-md mb-8">
               Offrez-vous un moment de détente profonde à travers un soin entièrement personnalisé, adapté à vos besoins et à votre état du moment.
             </p>
 
@@ -122,7 +122,7 @@ export default function HomePage() {
               <div className="bg-white p-1.5 md:p-2 rounded-[2rem] border border-black/5 flex gap-2 md:gap-3 shadow-lg">
                 <div className="hidden sm:flex p-3 bg-background rounded-2xl text-primary items-center justify-center"><Brain size={18}/></div>
                 <input 
-                  className="flex-1 bg-transparent border-none outline-none text-xs md:text-sm italic px-2"
+                  className="flex-1 bg-transparent border-none outline-none text-xs md:text-sm px-2"
                   placeholder="Comment vous sentez-vous ?"
                   value={aiQuery}
                   onChange={(e) => setAiQuery(e.target.value)}
@@ -139,7 +139,7 @@ export default function HomePage() {
               <AnimatePresence>
                 {aiResult && (
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 p-5 bg-white rounded-[2rem] shadow-xl border border-black/5">
-                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic">"{aiResult.reasoning}"</p>
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">"{aiResult.reasoning}"</p>
                     <Link 
                       href="/booking"
                       className="mt-4 text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-2 hover:translate-x-1 transition-transform"
@@ -184,7 +184,7 @@ export default function HomePage() {
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">L'Art du Toucher</span>
           </div>
           <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tighter">Techniques & <span className="italic font-normal">Expériences</span></h2>
-          <p className="mt-6 text-muted-foreground font-light max-w-2xl leading-relaxed">
+          <p className="mt-6 text-muted-foreground font-normal max-w-2xl leading-relaxed">
             Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort et de votre intimité.
           </p>
         </div>
@@ -214,25 +214,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-24 bg-background">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full mb-4 border border-black/[0.03] shadow-sm">
+      <section className="py-32 bg-background">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-24">
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full mb-6 border border-black/[0.03] shadow-sm">
               <Sparkles className="h-3 w-3 text-amber-500" />
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Conseils Bien-être</span>
             </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tighter">Bon à savoir</h2>
-            <p className="mt-4 text-muted-foreground font-light max-w-lg mx-auto italic">
-              7 conseils essentiels pour prolonger les bienfaits de votre séance.
+            <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tighter mb-6">7 conseils pour prolonger <br /> les bienfaits</h2>
+            <p className="text-muted-foreground font-normal max-w-lg mx-auto leading-relaxed">
+              Quelques gestes essentiels pour accueillir pleinement les effets de votre soin dans les heures qui suivent.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {WELLNESS_TIPS.map((tip) => (
-              <div key={tip.id} className="p-10 bg-white rounded-[2.5rem] shadow-sm border border-black/[0.01] hover:shadow-md transition-all group">
-                <tip.icon className="h-8 w-8 text-primary/10 group-hover:text-primary/30 transition-colors mb-6" />
-                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] mb-4 text-primary">{tip.id}. {tip.title}</h4>
-                <p className="text-sm text-muted-foreground font-light leading-relaxed italic">{tip.text}</p>
+          <div className="space-y-20">
+            {WELLNESS_TIPS.map((tip, index) => (
+              <div key={tip.id} className={`flex flex-col md:flex-row gap-8 items-start ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+                <div className="flex-1 space-y-5">
+                  <div className="flex items-center gap-6">
+                    <span className="text-6xl font-serif text-primary/10 font-bold italic select-none">{tip.id}</span>
+                    <div className="h-px bg-primary/10 flex-1 hidden md:block"></div>
+                    <h3 className="text-2xl font-serif font-bold text-primary">{tip.title}</h3>
+                  </div>
+                  <p className="text-base text-muted-foreground leading-relaxed md:pl-20">
+                    {tip.text}
+                  </p>
+                </div>
+                <div className="hidden md:flex w-20 h-20 rounded-full bg-white items-center justify-center shadow-sm border border-black/[0.02] shrink-0 mt-2">
+                  <tip.icon className="h-6 w-6 text-primary/20" />
+                </div>
               </div>
             ))}
           </div>
