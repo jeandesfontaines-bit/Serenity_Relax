@@ -12,7 +12,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
-import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain } from 'lucide-react';
+import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain, MessageCircle } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
@@ -83,7 +83,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
     }
   };
 
-  const times = ['09:00', '10:30', '13:00', '14:30', '16:00', '17:30'];
+  const times = ['08:30', '10:00', '11:30', '13:00', '14:30', '16:00', '17:30', '19:00'];
 
   const validateConfirmation = () => {
     const missing = [];
@@ -139,6 +139,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
         id: appointmentId,
         clientId: finalUserId,
         serviceId: selectedService!.id,
+        serviceName: selectedService!.name,
         startTime: startTimeStr,
         endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
         status: 'Booked',
@@ -177,7 +178,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
         status: 'Pending',
         therapistRccNumberSnapshot: 'Z123456',
         clinicNameSnapshot: 'SERENITY RELAX',
-        clinicAddressSnapshot: 'Chemin de Joinville 26, 1216 Cointrin',
+        clinicAddressSnapshot: 'Chemin de Joinville 26, 4ème étage, 1216 Cointrin',
         clientNameSnapshot: `${formData.firstName} ${formData.lastName}`,
         clientAddressSnapshot: `${formData.address}, ${formData.postalCode} ${formData.city}`,
         serviceNameSnapshot: selectedService!.name,
@@ -198,11 +199,22 @@ export function BookingFlow({ services }: { services: Service[] }) {
     return (
       <Card className="border-none shadow-none rounded-[3rem] p-12 md:p-20 text-center bg-white">
         <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-8" />
-        <h2 className="text-3xl font-serif font-medium text-primary mb-4">Confirmé.</h2>
+        <h2 className="text-3xl font-serif font-medium text-primary mb-4">Réservé.</h2>
         <p className="text-muted-foreground font-serif italic text-base mb-8 max-w-sm mx-auto leading-relaxed">
-          Merci {formData.firstName}. Votre séance de <span className="font-bold text-primary">{selectedService?.name.split(' - ')[0]}</span> est validée pour le {date ? format(date, 'd MMMM', { locale: fr }) : ''} à {time}.
+          Merci {formData.firstName}. Votre séance de <span className="font-bold text-primary">{selectedService?.name.split(' - ')[0]}</span> est enregistrée pour le {date ? format(date, 'd MMMM', { locale: fr }) : ''} à {time}.
         </p>
-        <Button asChild className="high-end-button bg-primary text-white px-12">
+        
+        <div className="bg-muted/30 p-8 rounded-[2rem] mb-10 border border-black/5">
+          <p className="text-xs font-bold uppercase tracking-widest text-primary mb-4">Étape Finale Importante</p>
+          <p className="text-sm text-muted-foreground mb-6">Pensez à confirmer votre rendez-vous via WhatsApp pour finaliser la réservation.</p>
+          <Button asChild className="high-end-button bg-emerald-600 hover:bg-emerald-700 text-white px-10 gap-2">
+            <a href="https://wa.me/41790000000" target="_blank" rel="noopener noreferrer">
+              <MessageCircle size={18} /> Confirmer via WhatsApp
+            </a>
+          </Button>
+        </div>
+
+        <Button asChild variant="ghost" className="high-end-button text-muted-foreground px-12">
           <a href="/">Retour au sanctuaire</a>
         </Button>
       </Card>
@@ -222,7 +234,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
           <Tabs defaultValue="browse" className="w-full">
             <div className="px-8 pt-8 pb-0">
               <TabsList className="grid w-full grid-cols-2 bg-muted/50 border rounded-full p-1 h-14">
-                <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">Menu Classique</TabsTrigger>
+                <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">Menu des Soins</TabsTrigger>
                 <TabsTrigger value="ai" className="rounded-full flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">
                   <Brain className="h-3.5 w-3.5" /> Consultation IA
                 </TabsTrigger>
@@ -305,7 +317,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                 onSelect={setDate}
                 locale={fr}
                 className="rounded-[2rem] border border-black/5 shadow-sm p-6 bg-muted/20 mx-auto scale-90 md:scale-100"
-                disabled={(d) => d < new Date() || d.getDay() === 0}
+                disabled={(d) => d < new Date()}
               />
             </div>
             <div className="space-y-6">
@@ -345,19 +357,19 @@ export function BookingFlow({ services }: { services: Service[] }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-12">
             <div className="space-y-2.5">
               <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Prénom</Label>
-              <Input id="firstName" name="firstName" autoComplete="given-name" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
             </div>
             <div className="space-y-2.5">
               <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Nom</Label>
-              <Input id="lastName" name="lastName" autoComplete="family-name" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
             </div>
             <div className="space-y-2.5">
               <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Email</Label>
-              <Input id="email" name="email" autoComplete="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
             </div>
             <div className="space-y-2.5">
               <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Téléphone</Label>
-              <Input id="phone" name="phone" autoComplete="tel" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
             </div>
             <div className="space-y-2.5">
               <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Date de Naissance</Label>
@@ -365,11 +377,11 @@ export function BookingFlow({ services }: { services: Service[] }) {
             </div>
             <div className="space-y-2.5">
               <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
-              <Input id="postalCode" name="postalCode" autoComplete="postal-code" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
             </div>
             <div className="md:col-span-2 space-y-2.5">
               <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
-              <Input id="address" name="address" autoComplete="street-address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              <Input id="address" name="address" placeholder="Rue et N°, Ville" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
             </div>
             <div className="md:col-span-2 space-y-2.5">
               <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
@@ -377,6 +389,10 @@ export function BookingFlow({ services }: { services: Service[] }) {
             </div>
           </div>
           
+          <div className="bg-muted/20 p-6 rounded-2xl mb-10 border border-black/5 text-xs text-muted-foreground italic">
+            <p><strong>Note :</strong> Toute annulation doit être effectuée au minimum 24h à l'avance. En cas d'annulation tardive, la séance pourra être facturée.</p>
+          </div>
+
           <div className="flex justify-between items-center">
             <Button variant="ghost" onClick={() => setStep(2)} className="high-end-button text-muted-foreground border border-black/5 px-8">
               <ChevronLeft className="mr-2 h-4 w-4" /> Retour
@@ -386,7 +402,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
               disabled={isSubmitting}
               onClick={completeBooking}
             >
-              {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'RÉSERVER'}
+              {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'CONFIRMER'}
             </Button>
           </div>
         </Card>

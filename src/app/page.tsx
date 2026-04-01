@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles
+  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, MapPin, Clock, ShieldCheck
 } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
@@ -15,9 +15,9 @@ import { toast } from '@/hooks/use-toast';
 
 const BENEFITS = [
   { icon: Leaf, text: "Huiles Organiques", color: "text-emerald-500" },
-  { icon: User, text: "Diagnostic Personnalisé", color: "text-amber-500" },
-  { icon: Coffee, text: "Rituel Thé Cérémonial", color: "text-slate-500" },
-  { icon: Sparkles, text: "Acoustique Zen", color: "text-indigo-500" }
+  { icon: User, text: "Approche Personnalisée", color: "text-amber-500" },
+  { icon: Coffee, text: "Cadre Discret", color: "text-slate-500" },
+  { icon: Sparkles, text: "Excellence João", color: "text-indigo-500" }
 ];
 
 export default function HomePage() {
@@ -60,7 +60,7 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen bg-background selection:bg-primary/5">
       <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-4 bg-white/80 backdrop-blur-2xl border-b border-black/5">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex items-baseline gap-2 cursor-pointer">
+          <div className="flex items-baseline gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
             <span className="font-sans font-bold text-sm md:text-base tracking-[0.2em] text-primary uppercase">SERENITY RELAX</span>
             <span className="hidden sm:inline-block text-[10px] font-cursive lowercase text-muted-foreground tracking-normal whitespace-nowrap">by João</span>
           </div>
@@ -83,26 +83,26 @@ export default function HomePage() {
         </div>
       </nav>
 
+      {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
         <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6 md:mb-8">
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6">
               <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
               <span className="text-[9px] uppercase tracking-[0.3em] font-black text-muted-foreground">Genève Cointrin</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-7xl leading-[1.1] font-serif font-medium text-primary mb-6 md:mb-8 tracking-tighter">
-              L'éveil de la <br/>
-              <span className="italic">plénitude.</span>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl leading-[1.1] font-serif font-medium text-primary mb-6 tracking-tighter">
+              Massage sur <span className="italic">mesure.</span>
             </h1>
             
-            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed max-w-md italic mb-8 md:mb-10">
-              Un sanctuaire sensoriel confidentiel où le temps s'efface devant l'harmonie du corps et de l'esprit.
+            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed max-w-md italic mb-8">
+              Offrez-vous un moment de détente profonde à travers un soin entièrement personnalisé, adapté à vos besoins et à votre état du moment.
             </p>
 
-            <div className="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-10">
+            <div className="flex flex-wrap gap-2 md:gap-3 mb-10">
               {BENEFITS.map((b, i) => (
-                <div key={i} className="flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-3 bg-white rounded-xl text-[9px] font-bold uppercase tracking-widest text-muted-foreground shadow-sm border border-black/[0.01]">
+                <div key={i} className="flex items-center gap-2 px-3 py-2 bg-white rounded-xl text-[9px] font-bold uppercase tracking-widest text-muted-foreground shadow-sm border border-black/[0.01]">
                   <b.icon className={`${b.color} opacity-60`} size={12} />
                   <span>{b.text}</span>
                 </div>
@@ -129,7 +129,7 @@ export default function HomePage() {
               
               <AnimatePresence>
                 {aiResult && (
-                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 p-5 md:p-6 bg-white rounded-[2rem] shadow-xl border border-black/5">
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 p-5 bg-white rounded-[2rem] shadow-xl border border-black/5">
                     <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic">"{aiResult.reasoning}"</p>
                     <Link 
                       href="/booking"
@@ -158,7 +158,7 @@ export default function HomePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent opacity-40" />
               <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8">
-                <div className="bg-white/90 backdrop-blur-xl px-4 py-2.5 md:px-5 md:py-3 rounded-2xl shadow-xl border border-white/40">
+                <div className="bg-white/90 backdrop-blur-xl px-4 py-2.5 rounded-2xl shadow-xl border border-white/40">
                   <span className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] block text-primary">João</span>
                   <span className="text-[8px] text-muted-foreground block tracking-[0.3em] uppercase font-black mt-1 opacity-80">Praticien ASCA</span>
                 </div>
@@ -168,13 +168,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 lg:py-32 bg-white">
-        <div className="max-w-6xl mx-auto px-6 mb-12 md:mb-16">
+      {/* Techniques & Experiences */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6 mb-16">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-0.5 w-10 bg-primary"></div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Le Catalogue</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">L'Art du Toucher</span>
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tighter">Nos Soins <span className="italic font-normal">Holistiques</span></h2>
+          <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tighter">Techniques & <span className="italic font-normal">Expériences</span></h2>
+          <p className="mt-6 text-muted-foreground font-light max-w-2xl leading-relaxed">
+            Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort et de votre intimité.
+          </p>
         </div>
         
         <div className="flex gap-6 md:gap-8 overflow-x-auto scrollbar-hide snap-x px-6 max-w-6xl mx-auto pb-12">
@@ -187,7 +191,7 @@ export default function HomePage() {
               <Image src={`https://picsum.photos/seed/${service.id}/800/1000`} fill className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt={service.name} />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
               <div className="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
-                <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2 block opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-700">Therapy 0{i+1}</span>
+                <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2 block opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-700">Expérience 0{i+1}</span>
                 <h3 className="text-lg md:text-xl font-serif text-white font-bold leading-tight mb-3">{service.name.split(' - ')[0]}</h3>
                 <p className="text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
               </div>
@@ -197,8 +201,55 @@ export default function HomePage() {
         
         <div className="text-center mt-8">
           <Link href="/booking" className="inline-flex items-center gap-3 bg-primary text-white h-14 px-10 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition-all">
-            Explorer tous les rituels <ArrowRight size={14} />
+            Réserver votre rituel <ArrowRight size={14} />
           </Link>
+        </div>
+      </section>
+
+      {/* Practical Info & Conditions */}
+      <section className="py-24 bg-muted/20">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16">
+          <div className="space-y-10">
+            <div>
+              <h3 className="text-xl font-serif font-bold mb-6 flex items-center gap-3">
+                <MapPin size={20} className="text-primary/40" /> Informations Pratiques
+              </h3>
+              <div className="space-y-4 text-sm text-muted-foreground font-light leading-relaxed">
+                <p><strong>Lieu :</strong> Chemin de Joinville 26, Alpha Business Center, 4ème étage – 1216 Cointrin (Genève)</p>
+                <p><strong>Durée :</strong> 60 ou 90 minutes selon le rituel choisi.</p>
+                <p><strong>Horaires :</strong> 
+                  <br />Lundi au vendredi : 8h00 – 20h00
+                  <br />Samedi et dimanche : 9h30 – 20h00
+                  <br /><em>Uniquement sur rendez-vous.</em>
+                </p>
+                <p>Séances à domicile possibles sur demande, selon disponibilité.</p>
+              </div>
+            </div>
+            
+            <div className="p-8 rounded-[2rem] bg-white border border-black/5 shadow-sm">
+              <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 flex items-center gap-2">
+                <MessageCircle size={14} /> Confirmation WhatsApp
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed italic">
+                Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-10">
+            <div>
+              <h3 className="text-xl font-serif font-bold mb-6 flex items-center gap-3">
+                <ShieldCheck size={20} className="text-primary/40" /> Conditions & Informations
+              </h3>
+              <ul className="space-y-4 text-sm text-muted-foreground font-light leading-relaxed list-disc pl-5">
+                <li>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation.</li>
+                <li>Elles ne remplacent en aucun cas un avis ou un traitement médical.</li>
+                <li>En réservant une séance, vous confirmez être en bonne condition physique.</li>
+                <li>Toute annulation ou modification doit être effectuée au minimum 24h à l'avance.</li>
+                <li>En cas d'annulation tardive ou d'absence, la séance pourra être facturée.</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -212,8 +263,8 @@ export default function HomePage() {
           
           <div className="flex flex-col sm:flex-row items-center gap-8 md:gap-12 text-center md:text-left">
             <div className="space-y-1">
-              <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">Localisation</h3>
-              <p className="text-[10px] md:text-xs text-white/70 font-medium">Chemin de Joinville 26, 1216 Cointrin</p>
+              <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">Alpha Business Center</h3>
+              <p className="text-[10px] md:text-xs text-white/70 font-medium">Chemin de Joinville 26, 4ème étage, 1216 Cointrin</p>
             </div>
             <div className="space-y-1">
               <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">RCC ID</h3>
@@ -222,7 +273,9 @@ export default function HomePage() {
           </div>
           
           <div className="flex gap-6 text-white/40">
-            <Instagram size={18} className="hover:text-white cursor-pointer transition-colors" />
+            <a href="https://instagram.com/serenity.relax.therapy_by_joao" target="_blank" rel="noopener noreferrer">
+              <Instagram size={18} className="hover:text-white cursor-pointer transition-colors" />
+            </a>
             <MessageCircle size={18} className="hover:text-white cursor-pointer transition-colors" />
           </div>
         </div>

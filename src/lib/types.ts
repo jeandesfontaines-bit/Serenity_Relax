@@ -47,13 +47,13 @@ export type Invoice = {
 };
 
 export const SERVICES: Service[] = [
-  { id: '1', name: 'Massage Signature - Séance ciblée approfondie 90 min', description: 'Une expérience immersive pour une détente totale.', duration: '90 min', price: 150 },
-  { id: '2', name: 'Massage Sportif / Deep Tissue - Séance ciblée 60 min', description: 'Relâchement musculaire profond pour les sportifs.', duration: '60 min', price: 120 },
-  { id: '3', name: 'Massage Thérapeutique - Séance ciblée 60 min (technique suédoise)', description: 'Approche classique pour soulager les tensions.', duration: '60 min', price: 110 },
-  { id: '4', name: 'Massage Deep Relax - Relaxation Profonde 60 min', description: 'Un moment de déconnexion totale.', duration: '60 min', price: 100 },
-  { id: '5', name: 'Massage Thaï aux Huiles Chaudes - Étirements & Pressions Profondes 60 min', description: 'Mélange de dynamisme et de chaleur.', duration: '60 min', price: 130 },
-  { id: '6', name: 'Massage aux Bambous - Stimulation Musculaire Profonde 60 min', description: 'Technique drainante et relaxante.', duration: '60 min', price: 125 },
-  { id: '7', name: 'Draineur Lymphatique - Séance ciblée 60 min', description: 'Amélioration de la circulation et détox.', duration: '60 min', price: 115 },
-  { id: '8', name: 'Aromathérapie - Séance ciblée 60 min', description: 'Soing par les huiles essentielles.', duration: '60 min', price: 105 },
-  { id: '9', name: 'Réflexologie Plantaire Séance ciblée - 30 min', description: 'Pression sur les zones réflexes du pied.', duration: '30 min', price: 70 },
+  { id: '1', name: 'Massage Thérapeutique & Relaxant - 60 min', description: 'Approche personnalisée pour relâcher les tensions et apaiser le mental.', duration: '60 min', price: 110 },
+  { id: '2', name: 'Massage Thérapeutique & Relaxant - 90 min', description: 'Une immersion prolongée pour un rééquilibrage profond du corps.', duration: '90 min', price: 160 },
+  { id: '3', name: 'Deep Relax Signature - 60 min', description: 'Le rituel exclusif pour une déconnexion sensorielle totale.', duration: '60 min', price: 120 },
+  { id: '4', name: 'Massage Kalari Thérapeutique - 60 min', description: 'Technique ancestrale indienne pour stimuler les points vitaux.', duration: '60 min', price: 130 },
+  { id: '5', name: 'Drainage Lymphatique & Détox - 60 min', description: 'Soin fluide pour améliorer la circulation et éliminer les toxines.', duration: '60 min', price: 115 },
+  { id: '6', name: 'Deep Tissue – Récupération & Performance - 60 min', description: 'Massage profond ciblant les fascias et les muscles sollicités.', duration: '60 min', price: 125 },
+  { id: '7', name: 'Massage Thaï aux Huiles Chaudes - 60 min', description: 'Alliance d\'étirements et de chaleur pour une vitalité retrouvée.', duration: '60 min', price: 130 },
+  { id: '8', name: 'Aromathérapie - 60 min', description: 'Soin relaxant utilisant les bienfaits des huiles essentielles bio.', duration: '60 min', price: 110 },
+  { id: '9', name: 'Massage à quatre mains - 60 min', description: 'Expérience immersive et profonde orchestrée par deux praticiens.', duration: '60 min', price: 220 },
 ];
