@@ -9,7 +9,16 @@ import {
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 
-// --- CONFIGURATION & DONNÉES ---
+// --- IMPORTS DES IMAGES PERSONNALISÉES ---
+import bambooImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
+import lymphImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (1).png';
+import aromaImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
+import reflexoImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (3).png';
+import sportifImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (4).png';
+import theraImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (5).png';
+import relaxImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (6).png';
+import thaiImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (7).png';
+
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
 const SERVICES = [
@@ -19,7 +28,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 4,
-    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.cc6cf032.png&w=3840&q=75",
+    image: bambooImg,
     desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", 
     tag: "Profond"
   },
@@ -29,7 +38,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 2,
-    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75",
+    image: lymphImg,
     desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", 
     tag: "Vitalité"
   },
@@ -39,7 +48,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 2,
-    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75",
+    image: aromaImg,
     desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", 
     tag: "Sensoriel"
   },
@@ -49,7 +58,7 @@ const SERVICES = [
     duration: "30 min", 
     price: 60,
     intensity: 3,
-    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75",
+    image: reflexoImg,
     desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", 
     tag: "Ciblé"
   },
@@ -59,7 +68,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 5,
-    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75",
+    image: sportifImg,
     desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", 
     tag: "Performance"
   },
@@ -69,7 +78,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 4,
-    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75",
+    image: theraImg,
     desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", 
     tag: "Signature"
   },
@@ -79,7 +88,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 120,
     intensity: 2,
-    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75",
+    image: relaxImg,
     desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", 
     tag: "Détente"
   },
@@ -89,7 +98,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 120,
     intensity: 4,
-    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75",
+    image: thaiImg,
     desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", 
     tag: "Dynamique"
   }
@@ -135,7 +144,7 @@ const SectionTitle = ({ main, italic, className = "" }: { main: string, italic: 
 );
 
 const SectionDesc = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <p className={`text-neutral-600 text-lg font-sans font-medium leading-relaxed ${className}`}>
+  <p className={`text-neutral-800 text-lg font-sans font-medium leading-relaxed ${className}`}>
     {children}
   </p>
 );
@@ -151,7 +160,6 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
       <Image 
         src={s.image} 
         fill
-        unoptimized
         className="object-cover transition-all duration-700 ease-out [filter:contrast(0.95)_saturate(0.92)_brightness(1.05)]" 
         alt={s.name}
       />
@@ -202,6 +210,7 @@ export default function HomePage() {
       <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
+          {/* PORTRAIT À GAUCHE */}
           <div className="w-full lg:w-[45%] relative">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
@@ -225,6 +234,7 @@ export default function HomePage() {
             </motion.div>
           </div>
 
+          {/* TEXTE À DROITE */}
           <div className="w-full lg:w-[55%] space-y-12 text-left">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
@@ -243,7 +253,7 @@ export default function HomePage() {
                   Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
                 </SectionDesc>
                 <div className="pl-6 border-l-2 border-neutral-900/10 py-2">
-                   <p className="text-neutral-600 italic text-lg leading-snug">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
+                   <p className="text-neutral-800 italic text-lg leading-snug">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
                    <span className="font-cursive text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
               </div>
@@ -264,7 +274,8 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             
-            <div className="w-full lg:w-[28%] lg:sticky lg:top-12 h-fit text-left">
+            {/* TEXTE À GAUCHE (STICKY) */}
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit text-left">
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-8" />
@@ -276,6 +287,7 @@ export default function HomePage() {
               </button>
             </div>
 
+            {/* GRILLE À DROITE */}
             <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
               {SERVICES.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
@@ -290,7 +302,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32 px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
-          {/* CARTE CONSEILS (GAUCHE) */}
+          {/* CARTE CONSEILS (GAUCHE) - PAS D'OMBRE */}
           <div className="relative pt-12 lg:pt-32">
             <div className="min-h-[400px] flex flex-col justify-between relative">
                 <AnimatePresence mode="wait">
@@ -316,7 +328,7 @@ export default function HomePage() {
                                   </h3>
                                 </motion.div>
                                 <div className="h-[1px] w-full bg-neutral-200/50" />
-                                <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed max-w-xl">
+                                <p className="text-neutral-800 text-lg font-sans font-medium leading-relaxed max-w-xl">
                                     {AFTERCARE_TIPS[selectedTip].desc}
                                 </p>
                             </div>
