@@ -8,7 +8,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { 
   ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, 
   Heart, Clock, Calendar, Sun, Instagram,
-  ChevronLeft, ChevronRight, Menu
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -88,7 +88,7 @@ const GlobalStyle = () => (
   `}</style>
 );
 
-const PortraitCard = ({ service }) => {
+const PortraitCard = ({ service }: { service: typeof SERVICES[0] }) => {
   return (
     <motion.div 
       whileHover={{ y: -10 }}
@@ -98,26 +98,26 @@ const PortraitCard = ({ service }) => {
         src={service.image} 
         alt={service.name} 
         data-ai-hint={service.imageHint}
-        className="absolute inset-0 w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-1000"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
       
-      <div className="absolute inset-0 p-12 flex flex-col justify-between z-10">
+      <div className="absolute inset-0 p-10 flex flex-col justify-between z-10">
         <div className="flex justify-between items-start">
           <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/70 group-hover:text-white transition-colors">{service.tag}</span>
         </div>
         
-        <div className="space-y-6">
-          <h3 className="text-3xl md:text-4xl font-fraunces font-medium text-white leading-tight tracking-tight">
+        <div className="space-y-4">
+          <h3 className="text-2xl md:text-3xl font-fraunces text-white leading-tight">
             {service.name}
           </h3>
-          <p className="text-[12px] text-white/60 font-medium leading-relaxed opacity-0 group-hover:opacity-100 translate-y-6 group-hover:translate-y-0 transition-all duration-700 line-clamp-2">
+          <p className="text-[11px] text-white/60 font-medium leading-relaxed opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-700 line-clamp-2">
             {service.desc}
           </p>
-          <div className="flex justify-between items-center pt-8 border-t border-white/10">
-            <span className="text-[11px] font-black uppercase tracking-widest text-white/80">{service.duration}</span>
-            <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 group-hover:bg-white group-hover:text-neutral-900 transition-all">
-              <Plus size={20} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform duration-700" />
+          <div className="flex justify-between items-center pt-6 border-t border-white/10">
+            <span className="text-[10px] font-black uppercase tracking-widest text-white/80">{service.duration}</span>
+            <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 group-hover:bg-white group-hover:text-neutral-900 transition-all">
+              <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform duration-700" />
             </div>
           </div>
         </div>
@@ -181,7 +181,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 2: L'ENGAGEMENT JOÃO */}
-      <section className="py-40 px-6 md:px-10 bg-[#F9F9F7] relative overflow-hidden">
+      <section className="py-40 px-6 md:px-10 bg-[#F9F9F7] relative overflow-hidden border-b border-neutral-100">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-32 items-center">
           <div className="lg:col-span-5 relative">
              <span className="text-[12px] font-black uppercase tracking-[0.6em] text-neutral-400 block mb-14 italic">La philosophie</span>
@@ -246,7 +246,7 @@ export default function HomePage() {
           </div>
 
           <div className="overflow-visible" ref={emblaRef}>
-            <div className="flex gap-12 pb-12"> {/* Added pb-12 to prevent shadow clipping */}
+            <div className="flex gap-12 pb-20"> {/* pb-20 important pour ne pas couper l'ombre */}
               {SERVICES.map((s) => (
                 <div key={s.id} className="flex-[0_0_85%] md:flex-[0_0_35%] lg:flex-[0_0_28%]">
                   <PortraitCard service={s} />
@@ -258,7 +258,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 4: LE RITUEL POST-SOIN */}
-      <section className="py-48 px-6 md:px-10 bg-[#F9F9F7]">
+      <section className="py-48 px-6 md:px-10 bg-[#F9F9F7] border-t border-neutral-100">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col items-center text-center mb-48 space-y-12">
             <span className="text-[12px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Art de vivre</span>
@@ -280,7 +280,7 @@ export default function HomePage() {
                 transition={{ delay: i * 0.1, duration: 0.8 }}
                 className="group relative"
               >
-                <span className="absolute -top-24 -left-8 text-[14rem] font-fraunces font-bold text-neutral-200/30 select-none z-0">
+                <span className="absolute -top-24 -left-8 text-[14rem] font-fraunces font-bold text-neutral-200/40 select-none z-0">
                   {i + 1}
                 </span>
                 

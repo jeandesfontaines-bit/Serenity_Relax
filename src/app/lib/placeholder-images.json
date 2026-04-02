@@ -3,50 +3,50 @@
   "placeholderImages": [
     {
       "id": "hero-bg",
-      "description": "Détail zen et minimaliste d'un spa de luxe",
-      "imageUrl": "https://picsum.photos/seed/serenity-wellness-1/1920/1080",
+      "description": "Atmosphère zen et minimaliste d'un spa de prestige",
+      "imageUrl": "https://picsum.photos/seed/serenity-spa-lux/1920/1080",
       "imageHint": "luxury spa"
     },
     {
       "id": "joao-portrait",
-      "description": "Portrait de João, votre praticien expert",
+      "description": "Portrait de João, expert en massothérapie",
       "imageUrl": "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg",
       "imageHint": "person portrait"
     },
     {
       "id": "service-1",
-      "description": "Massage thérapeutique profond",
-      "imageUrl": "https://picsum.photos/seed/massage-th-2/800/1200",
+      "description": "Massage thérapeutique et mains expertes",
+      "imageUrl": "https://picsum.photos/seed/massage-therapy-1/800/1200",
       "imageHint": "therapeutic massage"
     },
     {
       "id": "service-2",
-      "description": "Détente signature et huiles",
-      "imageUrl": "https://picsum.photos/seed/relax-spa-3/800/1200",
+      "description": "Huiles essentielles et relaxation profonde",
+      "imageUrl": "https://picsum.photos/seed/massage-oils-2/800/1200",
       "imageHint": "wellness oils"
     },
     {
       "id": "service-3",
-      "description": "Récupération sportive",
-      "imageUrl": "https://picsum.photos/seed/sport-recovery-4/800/1200",
+      "description": "Récupération musculaire sportive",
+      "imageUrl": "https://picsum.photos/seed/sport-massage-3/800/1200",
       "imageHint": "sports therapy"
     },
     {
       "id": "service-4",
-      "description": "Tradition Kalari et étirements",
-      "imageUrl": "https://picsum.photos/seed/ayurveda-spa-5/800/1200",
+      "description": "Tradition Kalari et soins ayurvédiques",
+      "imageUrl": "https://picsum.photos/seed/ayurveda-spa-4/800/1200",
       "imageHint": "ayurveda massage"
     },
     {
       "id": "service-5",
-      "description": "Drainage et détox",
-      "imageUrl": "https://picsum.photos/seed/detox-oils-6/800/1200",
+      "description": "Drainage lymphatique et détoxification",
+      "imageUrl": "https://picsum.photos/seed/detox-spa-5/800/1200",
       "imageHint": "lymphatic drainage"
     },
     {
       "id": "service-6",
-      "description": "Soin découverte sérénité",
-      "imageUrl": "https://picsum.photos/seed/peaceful-spa-7/800/1200",
+      "description": "Soin découverte sérénité et calme",
+      "imageUrl": "https://picsum.photos/seed/zen-massage-6/800/1200",
       "imageHint": "peaceful spa"
     }
   ]
