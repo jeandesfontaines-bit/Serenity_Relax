@@ -34,35 +34,11 @@ export default function HomePage() {
   const { user } = useUser();
   const auth = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [aiQuery, setAiQuery] = useState("");
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiResult, setAiResult] = useState<{recommendedServiceName: string, reasoning: string} | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const handleAiRecommendation = async () => {
-    if (!aiQuery.trim()) return;
-    setAiLoading(true);
-    try {
-      const result = await recommendMassageService({
-        clientDescription: aiQuery,
-        serviceCatalog: SERVICES.map(s => ({
-          name: s.name,
-          description: s.description,
-          duration: s.duration,
-          price: `CHF ${s.price}`
-        }))
-      });
-      setAiResult(result);
-    } catch (error) {
-      toast({ variant: 'destructive', title: 'Erreur IA', description: 'Impossible de joindre le conseiller.' });
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   if (!mounted) return null;
 
@@ -72,7 +48,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-baseline gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
             <span className="font-sans font-bold text-sm md:text-base tracking-[0.2em] text-primary uppercase">SERENITY RELAX</span>
-            <span className="hidden sm:inline-block text-[22px] font-cursive text-muted-foreground tracking-normal whitespace-nowrap normal-case">by João</span>
+            <span className="font-cursive text-[22px] text-muted-foreground tracking-normal whitespace-nowrap normal-case">by João</span>
           </div>
           
           <div className="hidden md:flex items-center gap-8">
@@ -94,7 +70,7 @@ export default function HomePage() {
       </nav>
 
       <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-48 md:pb-32 overflow-hidden">
-        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-20">
+        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6">
               <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
@@ -118,38 +94,9 @@ export default function HomePage() {
               ))}
             </div>
             
-            <div className="max-w-md">
-              <div className="bg-white p-1.5 md:p-2 rounded-[2rem] border border-black/5 flex gap-2 md:gap-3 shadow-lg">
-                <div className="hidden sm:flex p-3 bg-background rounded-2xl text-primary items-center justify-center"><Brain size={18}/></div>
-                <input 
-                  className="flex-1 bg-transparent border-none outline-none text-xs md:text-sm px-2 font-sans"
-                  placeholder="Comment vous sentez-vous ?"
-                  value={aiQuery}
-                  onChange={(e) => setAiQuery(e.target.value)}
-                />
-                <button 
-                  onClick={handleAiRecommendation}
-                  disabled={aiLoading}
-                  className="high-end-button bg-primary text-white !h-12 !px-6"
-                >
-                  {aiLoading ? '...' : 'Conseil IA'}
-                </button>
-              </div>
-              
-              <AnimatePresence>
-                {aiResult && (
-                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 p-5 bg-white rounded-[2rem] shadow-xl border border-black/5">
-                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed font-sans">"{aiResult.reasoning}"</p>
-                    <Link 
-                      href="/booking"
-                      className="mt-4 text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-2 hover:translate-x-1 transition-transform"
-                    >
-                      Réserver le soin recommandé <ArrowRight size={12}/>
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            <Link href="/booking" className="inline-flex items-center gap-3 bg-primary text-white h-14 px-10 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition-all active:scale-95">
+              Réserver votre rituel <ArrowRight size={14} />
+            </Link>
           </motion.div>
 
           <motion.div 
@@ -158,12 +105,12 @@ export default function HomePage() {
             transition={{ duration: 1.5 }}
             className="relative flex justify-center lg:justify-end"
           >
-            <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[420px] shadow-2xl group border-[6px] md:border-[8px] border-white/20">
+            <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[420px] shadow-2xl border-[6px] md:border-[8px] border-white/20">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 alt="João" 
                 fill
-                className="object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-1000"
+                className="object-cover grayscale-[10%] transition-all duration-1000"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent opacity-40" />
             </div>
@@ -190,7 +137,7 @@ export default function HomePage() {
               href={`/booking?serviceId=${service.id}`}
               className="flex-shrink-0 w-[75vw] sm:w-[260px] md:w-[280px] snap-center relative aspect-[3/4] rounded-[3rem] overflow-hidden group shadow-xl transition-all"
             >
-              <Image src={`https://picsum.photos/seed/${service.id}/800/1000`} fill className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000" alt={service.name} />
+              <Image src={`https://picsum.photos/seed/${service.id}/800/1000`} fill className="object-cover grayscale-[20%] transition-all duration-1000" alt={service.name} />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
               <div className="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
                 <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2 block opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-700">Expérience 0{i+1}</span>
