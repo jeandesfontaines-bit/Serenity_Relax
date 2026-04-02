@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { 
-  ArrowRight, Leaf, User, Coffee, Sparkles, Clock, Heart, Wind, Calendar
+  ArrowRight, Leaf, User, Coffee, Sparkles, Clock, Heart, Wind, Calendar, Instagram
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { SERVICES } from '@/lib/types';
