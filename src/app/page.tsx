@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
+import Link from 'next/link';
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
@@ -27,21 +28,21 @@ const AFTERCARE_TIPS = [
     id: "01",
     title: "Hydratation", 
     desc: "L'eau alcaline aide votre système lymphatique à drainer les toxines libérées.",
-    advice: "Évitez l'alcool pendant 24h.",
+    advice: "Évitez l'alcool pendant 24h",
     icon: Droplets
   },
   { 
     id: "02",
     title: "Repos", 
     desc: "Accordez-vous un temps de calme pour permettre à votre corps d'ancrer les bienfaits.",
-    advice: "Calme absolu, sans écrans.",
+    advice: "Calme absolu, sans écrans",
     icon: Moon
   },
   { 
     id: "03",
     title: "Écoute", 
     desc: "Vos fascias retrouvent leur liberté. Soyez à l'écoute de vos sensations.",
-    advice: "Douche tiède apaisante.",
+    advice: "Douche tiède apaisante",
     icon: Sparkles
   }
 ];
@@ -62,6 +63,13 @@ const SectionDesc = ({ children, className = "" }: { children: React.ReactNode, 
   <p className={`text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic ${className}`}>
     {children}
   </p>
+);
+
+const TextLink = ({ children, href = "/booking", className = "" }: { children: React.ReactNode, href?: string, className?: string }) => (
+  <Link href={href} className={`inline-flex items-center gap-3 group transition-all ${className}`}>
+    <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">{children}</span>
+    <ArrowRight size={14} className="text-neutral-900 transition-transform group-hover:translate-x-1.5" />
+  </Link>
 );
 
 const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
@@ -163,12 +171,7 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="flex justify-center lg:justify-start pt-4">
-                <button className="inline-flex items-center gap-4 group">
-                  <div className="w-9 h-9 rounded-sm bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:bg-neutral-800">
-                    <ArrowRight size={14} />
-                  </div>
-                  <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Découvrir les rituels</span>
-                </button>
+                <TextLink>Découvrir les rituels</TextLink>
               </div>
             </div>
           </div>
@@ -188,12 +191,7 @@ export default function HomePage() {
               <SectionDesc className="text-neutral-800 mb-12 text-center lg:text-left">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </SectionDesc>
-              <button className="inline-flex items-center gap-4 group mt-4">
-                <div className="w-9 h-9 rounded-sm bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:bg-neutral-800">
-                  <ArrowRight size={14} />
-                </div>
-                <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Réserver un soin</span>
-              </button>
+              <TextLink className="mt-4">Réserver un soin</TextLink>
             </div>
 
             <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
