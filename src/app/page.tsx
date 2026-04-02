@@ -3,11 +3,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { 
   ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, Menu, 
   Heart, Clock, Calendar, Sun, Instagram, Activity,
-  ShieldCheck, Check, ChevronRight, X
+  ShieldCheck, Check, ChevronRight, X, MapPin
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 
@@ -85,11 +85,6 @@ const GRAIN_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='h
 
 const GlobalStyle = () => (
   <style>{`
-    :root {
-      --primary: #111111;
-      --bg: #F9F9F7;
-    }
-    
     .font-fraunces { font-family: 'Fraunces', serif; }
     .font-meow { font-family: 'Meow Script', cursive; }
     .serif-italic { font-family: 'Fraunces', serif; font-style: italic; }
@@ -208,7 +203,7 @@ export default function HomePage() {
           <span className="hero-title-mask">
             <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1 }} className="block text-[10px] font-bold uppercase tracking-[0.5em] text-white/70 mb-6">Genève • Cointrin</motion.span>
           </span>
-          <h1 className="text-6xl md:text-[8rem] font-fraunces font-black leading-[0.85] tracking-tighter mb-12 text-white uppercase">
+          <h1 className="text-6xl md:text-[8rem] font-fraunces font-black leading-[0.85] tracking-tighter mb-12 text-white">
             <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 }} className="block">L'art du</motion.span></span>
             <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.2 }} className="block serif-italic font-light lowercase tracking-normal">mouvement calme.</motion.span></span>
           </h1>
@@ -224,12 +219,12 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 2: L'ENGAGEMENT JOÃO */}
-      <section className="py-32 px-6 md:px-10 bg-white relative overflow-hidden">
+      <section className="py-32 px-6 md:px-10 bg-white relative overflow-hidden border-b border-neutral-100">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           <div className="lg:col-span-5 relative">
              <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 block mb-8">La Philosophie</span>
              <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 mb-12">
-               L'Engagement <span className="serif-italic font-light lowercase">João.</span>
+               L'Engagement <span className="serif-italic font-light">João.</span>
              </h2>
              
              <motion.div 
@@ -267,12 +262,12 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 3: LES SOINS */}
-      <section className="py-32 px-6 md:px-10 bg-[#F9F9F7]">
+      <section className="py-32 px-6 md:px-10 bg-[#F9F9F7] border-b border-neutral-100">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col items-center text-center mb-24 space-y-6">
             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Expertise Thérapeutique</span>
-            <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 uppercase italic">
-              La Carte <span className="serif-italic font-light lowercase tracking-normal">Rituels.</span>
+            <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 italic">
+              La Carte <span className="serif-italic font-light lowercase">Rituels.</span>
             </h2>
             <p className="text-lg text-neutral-400 max-w-lg font-fraunces italic font-light">
               Des techniques précises pour un équilibre musculaire et nerveux optimal. Un moment de déconnexion totale.
@@ -288,12 +283,12 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 4: LE RITUEL POST-SOIN */}
-      <section className="py-32 px-6 md:px-10 bg-white border-t border-neutral-100">
+      <section className="py-32 px-6 md:px-10 bg-white">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col items-center text-center mb-24 space-y-6">
             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400">7 gestes pour magnifier l'expérience</span>
-            <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter uppercase text-neutral-900">
-              Le Rituel <span className="serif-italic font-light lowercase">Post-Soin</span>
+            <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter text-neutral-900">
+              Le Rituel <span className="serif-italic font-light">Post-Soin</span>
             </h2>
           </div>
 
