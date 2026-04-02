@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
@@ -87,7 +86,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-8 flex flex-col justify-between bg-white z-20">
       <div className="space-y-3">
-        <h3 className="text-2xl font-serif font-medium tracking-[0.02em] text-neutral-900 leading-tight capitalize">{s.name.toLowerCase()}</h3>
+        <h3 className="text-2xl font-serif font-medium tracking-[0.02em] text-neutral-900 leading-tight">{s.name}</h3>
         <p className="text-neutral-600 text-[11px] font-sans font-medium leading-relaxed line-clamp-3">{s.desc}</p>
       </div>
       <div className="pt-4 flex items-center justify-between border-t border-neutral-50">
@@ -189,8 +188,11 @@ export default function HomePage() {
               <SectionDesc className="text-neutral-800 mb-12 text-center lg:text-left">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </SectionDesc>
-              <button className="w-full md:w-auto inline-flex items-center justify-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all">
-                Réserver un soin
+              <button className="inline-flex items-center gap-4 group mt-4">
+                <div className="w-9 h-9 rounded-sm bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:bg-neutral-800">
+                  <ArrowRight size={14} />
+                </div>
+                <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Réserver un soin</span>
               </button>
             </div>
 

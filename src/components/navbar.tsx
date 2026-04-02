@@ -36,7 +36,7 @@ export function Navbar() {
   ];
 
   const publicLinks = [
-    { label: "Connexion", href: "/client/portal", icon: User },
+    { label: "Espace Privé", href: "/client/portal", icon: User },
     { label: "Réserver", href: "/booking", icon: Calendar },
   ];
 
