@@ -60,6 +60,14 @@
   }
 
   .high-end-button {
-    @apply py-2.5 px-10 rounded-full font-bold uppercase tracking-[0.2em] text-xs transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3;
+    @apply text-[#0a0a0a] border-[3px] border-black rounded-[52px] px-[30px] py-[10px] tracking-[2px] font-bold uppercase transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3 cursor-pointer bg-transparent;
+    font-size: 25px;
+    line-height: 1.2;
+  }
+}
+
+@layer base {
+  .font-cursive {
+    font-family: 'Meow Script', cursive;
   }
 }

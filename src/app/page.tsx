@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -35,7 +34,7 @@ const ServiceCard = ({ s }: { s: any }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="relative w-full max-w-[280px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group"
+    className="relative w-full max-w-[320px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group"
   >
     <div className="relative aspect-square overflow-hidden mb-6 rounded-[2rem]">
       <Image 
@@ -54,7 +53,7 @@ const ServiceCard = ({ s }: { s: any }) => (
       <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
         {s.name}
       </h3>
-      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
+      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed">
         {s.desc}
       </p>
     </div>
@@ -100,8 +99,8 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          <div className="w-full lg:w-[55%] space-y-12">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start text-center lg:text-left">
+          <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
               <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">L'Engagement João.</span>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-neutral-900 leading-[0.95] tracking-tighter">
                 L'équilibre<br />
@@ -110,7 +109,7 @@ export default function HomePage() {
             </motion.div>
             
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
-              <p className="text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic text-center lg:text-left">
+              <p className="text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </p>
               <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
@@ -118,9 +117,8 @@ export default function HomePage() {
                  <span className="font-cursive text-4xl text-neutral-300 block mt-4">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
-                <Link href="/booking" className="inline-flex items-center gap-3 group">
-                  <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Réserver un soin</span>
-                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                <Link href="/booking" className="high-end-button">
+                  Réserver un soin
                 </Link>
               </div>
             </div>
@@ -140,9 +138,8 @@ export default function HomePage() {
               <p className="text-neutral-600 text-base font-sans font-medium leading-relaxed italic mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <Link href="/booking" className="inline-flex items-center gap-3 group">
-                <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Réserver un soin</span>
-                <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              <Link href="/booking" className="high-end-button">
+                Réserver un soin
               </Link>
             </div>
 

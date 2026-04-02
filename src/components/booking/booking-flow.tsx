@@ -207,16 +207,16 @@ export function BookingFlow({ services }: { services: Service[] }) {
         <div className="bg-muted/30 p-8 rounded-[2rem] mb-10 border border-black/5">
           <p className="text-xs font-bold uppercase tracking-widest text-primary mb-4">Étape Finale Importante</p>
           <p className="text-sm text-muted-foreground mb-6">Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.</p>
-          <Button asChild className="high-end-button bg-emerald-600 hover:bg-emerald-700 text-white px-10 gap-2">
-            <a href="https://wa.me/41790000000" target="_blank" rel="noopener noreferrer">
-              <MessageCircle size={18} /> Confirmer via WhatsApp
+          <button className="high-end-button bg-emerald-600 border-emerald-600 text-white w-full">
+            <a href="https://wa.me/41790000000" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              <MessageCircle size={22} /> CONFIRMER WHATSAPP
             </a>
-          </Button>
+          </button>
         </div>
 
-        <Button asChild variant="ghost" className="high-end-button text-muted-foreground px-12">
-          <a href="/">Retour au sanctuaire</a>
-        </Button>
+        <button className="high-end-button w-full border-neutral-200">
+          <a href="/">RETOUR AU SANCTUAIRE</a>
+        </button>
       </Card>
     );
   }
@@ -249,7 +249,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     value={selectedService?.id} 
                     onValueChange={(id) => setSelectedService(services.find(s => s.id === id) || null)}
                   >
-                    <SelectTrigger className="w-full h-12 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
+                    <SelectTrigger className="w-full h-14 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
                       <SelectValue placeholder="Parcourir nos soins" />
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl p-1">
@@ -279,27 +279,27 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     value={aiQuery}
                     onChange={(e) => setAiQuery(e.target.value)}
                   />
-                  <Button 
+                  <button 
                     onClick={handleAiRecommend} 
                     disabled={aiLoading || !aiQuery}
-                    className="mt-6 w-full py-2.5 rounded-full bg-primary text-white font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-black shadow-lg transition-all"
+                    className="mt-6 high-end-button w-full text-[18px] py-4"
                   >
-                    {aiLoading ? <Loader2 className="animate-spin h-4 w-4 mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
+                    {aiLoading ? <Loader2 className="animate-spin h-5 w-5 mr-2" /> : <Sparkles className="h-5 w-5 mr-2" />}
                     Trouver le soin idéal
-                  </Button>
+                  </button>
                 </div>
               </TabsContent>
             </CardContent>
           </Tabs>
 
           <div className="px-8 pb-8 flex justify-end">
-            <Button 
+            <button 
               disabled={!selectedService} 
               onClick={() => setStep(2)}
-              className="high-end-button bg-primary text-white px-10"
+              className="high-end-button"
             >
-              Suivant <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+              Suivant <ChevronRight className="ml-2 h-6 w-6" />
+            </button>
           </div>
         </Card>
       )}
@@ -338,13 +338,13 @@ export function BookingFlow({ services }: { services: Service[] }) {
               </div>
             </div>
           </div>
-          <div className="flex justify-between mt-12">
-            <Button variant="ghost" onClick={() => setStep(1)} className="high-end-button text-muted-foreground border border-black/5 px-8">
-              <ChevronLeft className="mr-2 h-4 w-4" /> Retour
-            </Button>
-            <Button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button bg-primary text-white px-10">
-              Détails <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+          <div className="flex justify-between mt-12 gap-4">
+            <button onClick={() => setStep(1)} className="high-end-button border-neutral-200">
+              <ChevronLeft className="mr-2 h-6 w-6" /> Retour
+            </button>
+            <button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button">
+              Détails <ChevronRight className="ml-2 h-6 w-6" />
+            </button>
           </div>
         </Card>
       )}
@@ -394,17 +394,17 @@ export function BookingFlow({ services }: { services: Service[] }) {
               </div>
             </div>
 
-            <div className="flex justify-between items-center">
-              <Button variant="ghost" onClick={() => setStep(2)} className="high-end-button text-muted-foreground border border-black/5 px-8">
-                <ChevronLeft className="mr-2 h-4 w-4" /> Retour
-              </Button>
-              <Button 
-                className="high-end-button bg-primary text-white shadow-lg px-12 py-2.5 text-xs tracking-[0.2em]"
+            <div className="flex justify-between items-center gap-4">
+              <button onClick={() => setStep(2)} className="high-end-button border-neutral-200">
+                <ChevronLeft className="mr-2 h-6 w-6" /> Retour
+              </button>
+              <button 
+                className="high-end-button min-w-[200px]"
                 disabled={isSubmitting}
                 onClick={completeBooking}
               >
-                {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'CONFIRMER'}
-              </Button>
+                {isSubmitting ? <Loader2 className="animate-spin h-6 w-6" /> : 'CONFIRMER'}
+              </button>
             </div>
           </Card>
 
