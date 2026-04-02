@@ -45,7 +45,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
           <span className="font-sans font-bold text-xs md:text-base lg:text-lg tracking-[0.3em] text-white uppercase transition-all duration-500">SERENITY RELAX</span>
-          <span className="font-cursive text-xl md:text-2xl lg:text-3xl text-white/40 tracking-normal whitespace-nowrap normal-case group-hover:text-white transition-colors ml-1">by João</span>
+          <span className="font-cursive text-[10px] md:text-xs lg:text-sm text-white tracking-normal whitespace-nowrap normal-case transition-colors ml-1 opacity-80">by João</span>
         </Link>
         
         <div className="hidden md:flex items-center gap-8">
