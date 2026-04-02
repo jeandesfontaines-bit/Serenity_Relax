@@ -13,117 +13,68 @@ import Link from 'next/link';
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
 const SERVICES = [
-  { id: "01", name: "Massage aux Bambous", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", duration: "60 min" },
-  { id: "02", name: "Draineur Lymphatique", intensity: 2, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", duration: "60 min" },
-  { id: "03", name: "Aromathérapie", intensity: 2, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75", tag: "Sensoriel", desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", duration: "60 min" },
-  { id: "04", name: "Réflexologie Plantaire", intensity: 3, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", duration: "30 min" },
-  { id: "05", name: "Massage Sportif", intensity: 5, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", duration: "60 min" },
-  { id: "06", name: "Massage Thérapeutique", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75", tag: "Signature", desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", duration: "60 min" },
-  { id: "07", name: "Massage Deep Relax", intensity: 2, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", duration: "60 min" },
-  { id: "08", name: "Massage Thaï", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", duration: "60 min" }
+  { id: "01", name: "Massage aux Bambous", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions." },
+  { id: "02", name: "Draineur Lymphatique", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation." },
+  { id: "03", name: "Massage Aromathérapie", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75", tag: "Sensoriel", desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit." },
+  { id: "04", name: "Réflexologie Plantaire", duration: "30 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes." },
+  { id: "05", name: "Massage Sportif", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération." },
+  { id: "06", name: "Massage Thérapeutique", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75", tag: "Signature", desc: "Massage ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux." },
+  { id: "07", name: "Massage Deep Tissue", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux." },
+  { id: "08", name: "Massage Thaï", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale." }
 ];
 
-const AFTERCARE_TIPS = [
-  { 
-    id: "01",
-    title: "Hydratation", 
-    desc: "L'eau alcaline aide votre système lymphatique à drainer les toxines libérées.",
-    advice: "Hydratez-vous",
-    icon: Droplets
-  },
-  { 
-    id: "02",
-    title: "Repos", 
-    desc: "Accordez-vous un temps de calme pour permettre à votre corps d'ancrer les bienfaits.",
-    advice: "Prenez votre temps",
-    icon: Moon
-  },
-  { 
-    id: "03",
-    title: "Prudence", 
-    desc: "Votre organisme est en phase de récupération. Soyez à l'écoute de vos sensations.",
-    advice: "Évitez l'alcool",
-    icon: Sparkles
-  }
+const AFTERCARE = [
+  { id: "01", tag: "Hydratation", title: "Accueillez l'eau", desc: "L'eau alcaline aide votre système lymphatique à drainer les toxines libérées pendant le soin." },
+  { id: "02", tag: "Repos", title: "Prenez votre temps", desc: "Accordez-vous un temps de calme absolu pour permettre à votre corps d'ancrer les bienfaits." },
+  { id: "03", tag: "Prudence", title: "Évitez l'alcool", desc: "Votre organisme est en phase de récupération. Soyez à l'écoute de vos sensations intérieures." }
 ];
 
-const OverTitle = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <span className={`text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6 ${className}`}>
-    {children}
-  </span>
-);
+const ServiceCard = ({ s }: { s: any }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    className="relative w-full max-w-[250px] rounded-[2.5rem] bg-white overflow-hidden group shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-all duration-700 hover:-translate-y-2 hover:shadow-2xl"
+  >
+    <div className="relative aspect-[3/4] overflow-hidden m-4 rounded-[2rem]">
+      <Image 
+        src={s.image} 
+        fill
+        unoptimized
+        className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+        alt={s.name}
+      />
+      <div className="absolute top-4 left-4">
+        <span className="text-[8px] font-sans font-black uppercase tracking-[0.3em] text-white/90 bg-black/20 backdrop-blur-md px-3 py-1 rounded-full">
+          {s.tag}
+        </span>
+      </div>
+    </div>
 
-const SectionTitle = ({ main, italic, className = "" }: { main: string, italic: string, className?: string }) => (
-  <h2 className={`text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter ${className}`}>
-    {main} <br className="hidden lg:block"/> <span className="text-neutral-500 italic font-light">{italic}</span>
-  </h2>
-);
+    <div className="px-6 pb-8 pt-2 space-y-4">
+      <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
+        {s.name}
+      </h3>
 
-const SectionDesc = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <p className={`text-neutral-600 text-base md:text-lg font-sans font-medium leading-relaxed italic ${className}`}>
-    {children}
-  </p>
-);
+      <p className="text-[12px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
+        {s.desc}
+      </p>
 
-const TextLink = ({ children, href = "/booking", className = "" }: { children: React.ReactNode, href?: string, className?: string }) => (
-  <Link href={href} className={`inline-flex items-center gap-3 group transition-all ${className}`}>
-    <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">{children}</span>
-    <ArrowRight size={14} className="text-neutral-900 transition-transform group-hover:translate-x-1.5" />
-  </Link>
-);
-
-const ServiceCard = ({ s, index }: { s: any, index: number }) => {
-  const isStaggered = index % 2 !== 0;
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      whileHover={{ y: isStaggered ? 44 : -12 }}
-      className={`relative w-full rounded-[2.5rem] bg-white overflow-hidden group shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-all duration-700
-        ${isStaggered ? 'md:mt-24' : ''}`}
-    >
-      <div className="relative aspect-[4/5] overflow-hidden m-4 rounded-[2rem]">
-        <Image 
-          src={s.image} 
-          fill
-          unoptimized
-          className="object-cover transition-transform duration-1000 group-hover:scale-110" 
-          alt={s.name}
-        />
-        <div className="absolute top-6 left-6">
-          <span className="text-[9px] font-sans font-black uppercase tracking-[0.3em] text-white/90 bg-black/20 backdrop-blur-md px-4 py-1.5 rounded-full">
-            {s.tag}
+      <div className="flex justify-between items-center pt-4 border-t border-neutral-50">
+        <div className="flex items-center gap-2">
+          <Clock size={12} className="text-neutral-300" />
+          <span className="text-[9px] font-sans font-black uppercase tracking-widest text-neutral-300">
+            {s.duration}
           </span>
         </div>
-      </div>
-
-      <div className="p-10 pt-4 space-y-6">
-        <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
-          {s.name}
-        </h3>
-
-        <p className="text-[13px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
-          {s.desc}
-        </p>
-
-        <div className="flex justify-between items-center pt-6 border-t border-neutral-50">
-          <div className="flex items-center gap-3">
-            <Clock size={12} className="text-neutral-300" />
-            <span className="text-[10px] font-sans font-black uppercase tracking-widest text-neutral-300">
-              {s.duration}
-            </span>
-          </div>
-          
-          <div className="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg shadow-black/10 group-hover:scale-110 transition-all duration-500">
-            <Plus size={16} strokeWidth={2.5} />
-          </div>
+        
+        <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110">
+          <Plus size={14} strokeWidth={2.5} />
         </div>
       </div>
-    </motion.div>
-  );
-};
+    </div>
+  </motion.div>
+);
 
 export default function HomePage() {
   const { scrollYProgress } = useScroll();
@@ -145,7 +96,6 @@ export default function HomePage() {
       {/* SECTION HÉROS */}
       <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-32 pb-24 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-          
           <div className="w-full lg:w-[45%] flex justify-center lg:justify-start">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
@@ -161,38 +111,34 @@ export default function HomePage() {
                 alt="Portrait de João P."
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent" />
             </motion.div>
           </div>
 
           <div className="w-full lg:w-[55%] space-y-12">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
-              <OverTitle className="text-center lg:text-left">L'Engagement João.</OverTitle>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-neutral-900 leading-[0.95] tracking-tighter text-center lg:text-left">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start text-center lg:text-left">
+              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">L'Engagement João.</span>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-neutral-900 leading-[0.95] tracking-tighter">
                 L'équilibre<br />
                 <span className="text-neutral-500 italic font-light">par le toucher.</span>
               </h1>
             </motion.div>
             
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
-              <SectionDesc className="text-neutral-800 text-center lg:text-left">
+              <p className="text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic text-center lg:text-left">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
-              </SectionDesc>
-              <div className="space-y-8 text-center lg:text-left">
-                <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed">
-                  Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
-                </p>
-                <div className="pl-8 border-l-2 border-neutral-900/10 py-2">
-                   <p className="text-neutral-800 italic text-2xl leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
-                   <span className="font-cursive text-4xl text-neutral-300 block mt-4">— João P.</span>
-                </div>
+              </p>
+              <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
+                 <p className="text-neutral-800 italic text-2xl leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi. »</p>
+                 <span className="font-cursive text-4xl text-neutral-300 block mt-4">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
-                <TextLink>Découvrir les rituels</TextLink>
+                <Link href="/booking" className="inline-flex items-center gap-3 group">
+                  <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Découvrir les rituels</span>
+                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                </Link>
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -200,67 +146,79 @@ export default function HomePage() {
       <section id="services" className="py-32 px-6 md:px-12 lg:px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[5rem] lg:mx-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
-            
-            <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start">
-              <OverTitle>Menu Signature</OverTitle>
-              <SectionTitle main="Soins" italic="Exclusifs." className="mb-8 text-center lg:text-left" />
-              <SectionDesc className="text-neutral-800 mb-12 text-center lg:text-left">
-                Une sélection exclusive de rituels conçue pour votre équilibre interne et votre récupération physique. Agréé ASCA & RME.
-              </SectionDesc>
-              <TextLink className="mt-4">Réserver un soin</TextLink>
+            <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start text-center lg:text-left">
+              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Menu Signature</span>
+              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
+                Soins <br className="hidden lg:block"/> <span className="text-neutral-500 italic font-light">Exclusifs.</span>
+              </h2>
+              <p className="text-neutral-600 text-base font-sans font-medium leading-relaxed italic mb-12 max-w-sm">
+                Une sélection exclusive conçue pour votre équilibre interne. Agréé ASCA & RME.
+              </p>
+              <Link href="/booking" className="inline-flex items-center gap-3 group">
+                <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Réserver un soin</span>
+                <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
 
-            <div className="w-full lg:w-[68%] grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16">
-              {SERVICES.map((s, i) => (
-                <ServiceCard key={s.id} s={s} index={i} />
-              ))}
+            <div className="w-full lg:w-[68%] flex flex-col md:flex-row gap-12 items-start">
+               {/* Colonne 1 (Gauche) */}
+               <div className="flex-1 flex flex-col gap-12 items-center md:items-end">
+                  {SERVICES.filter((_, i) => i % 2 === 0).map((s) => (
+                    <ServiceCard key={s.id} s={s} />
+                  ))}
+               </div>
+               {/* Colonne 2 (Droite - Décalée) */}
+               <div className="flex-1 flex flex-col gap-12 md:pt-32 items-center md:items-start">
+                  {SERVICES.filter((_, i) => i % 2 !== 0).map((s) => (
+                    <ServiceCard key={s.id} s={s} />
+                  ))}
+               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN */}
-      <section className="py-32 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-20 items-start">
-            
-            <div className="w-full lg:w-[72%] space-y-0 border-t border-neutral-100">
-               {AFTERCARE_TIPS.map((tip) => (
-                <div key={tip.id} className="group py-20 px-0 border-b border-neutral-100 flex flex-col md:flex-row items-start md:items-center gap-16 transition-all duration-700 hover:bg-neutral-50/30">
-                  <div className="flex items-center gap-12 min-w-[140px]">
-                    <span className="text-sm font-sans font-black text-neutral-200 uppercase tracking-widest">{tip.id}</span>
-                    <div className="w-14 h-14 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-700">
-                      <tip.icon size={20} strokeWidth={1.5} />
+      {/* SECTION AFTERCARE */}
+      <section className="py-48 px-6 md:px-12 bg-[#F9F8F4]">
+        <div className="max-w-screen-xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-24 items-center">
+            <div className="space-y-16">
+              <div className="space-y-4">
+                <h3 className="text-5xl font-serif text-[#2C2C2C] leading-none">Optimiser <br/><span className="italic font-light text-[#4A5D45]">votre soin.</span></h3>
+                <p className="text-[#6D6D6D] text-[16px] font-light max-w-sm">Les bénéfices se révèlent dans les heures qui suivent.</p>
+              </div>
+              
+              <div className="space-y-12">
+                {AFTERCARE.map(item => (
+                  <motion.div key={item.id} initial={{ opacity: 0, x: -15 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="group">
+                    <div className="flex items-start gap-8 pb-10 border-b border-[#E8E6E1]">
+                      <span className="text-[11px] font-bold text-[#4A5D45]/40 mt-1">{item.id}</span>
+                      <div className="space-y-3">
+                        <span className="text-[8px] font-bold tracking-[0.4em] text-[#4A5D45] uppercase">{item.tag}</span>
+                        <h4 className="text-2xl font-serif text-[#2C2C2C]">{item.title}</h4>
+                        <p className="text-[14px] text-[#6D6D6D] font-light leading-relaxed max-w-xs">{item.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex-1 space-y-8">
-                    <h4 className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 leading-none">
-                      {tip.title}
-                    </h4>
-                    <div className="space-y-6">
-                      <p className="text-neutral-900 text-2xl font-serif font-medium leading-tight">
-                        {tip.advice}
-                      </p>
-                      <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed max-w-2xl">
-                        {tip.desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
-            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <OverTitle className="mb-2 lg:text-right">Rituel Post-Séance</OverTitle>
-              <SectionTitle main="Prolonger" italic="l'état de grâce." className="lg:text-right" />
-              <div className="h-[2px] w-12 bg-neutral-900 my-10 mx-auto lg:mr-0 lg:ml-auto" />
-              <SectionDesc className="text-neutral-800 lg:text-right">
-                Quelques attentions pour ancrer les bienfaits du soin dans la durée.
-              </SectionDesc>
+            <div className="bg-[#4A5D45] rounded-[5rem] p-16 text-white shadow-xl relative overflow-hidden min-h-[600px] flex flex-col justify-between">
+              <div className="space-y-8 relative z-10">
+                <h2 className="text-6xl font-serif leading-[0.9]">Retrouver<br /><span className="italic font-light opacity-50">son essence.</span></h2>
+                <p className="text-white/70 font-light leading-relaxed text-lg max-w-xs">
+                  Le silence est le meilleur complément du massage. Après votre rendez-vous, privilégiez le calme.
+                </p>
+              </div>
+              
+              <div className="relative z-10 space-y-8">
+                <button className="bg-white text-[#4A5D45] px-10 py-5 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:scale-105 transition-all duration-500 shadow-xl">
+                  Prendre rendez-vous
+                </button>
+              </div>
+              <div className="absolute bottom-10 right-10 font-cursive text-[120px] opacity-10 rotate-[-10deg] pointer-events-none">Serenity</div>
             </div>
-
           </div>
         </div>
       </section>
@@ -276,21 +234,19 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:gap-32 w-full text-center mb-32">
             <div className="space-y-8">
               <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">LOCALISATION</h3>
-              <div className="text-sm font-sans text-neutral-400 space-y-3 leading-relaxed">
+              <div className="text-sm font-sans text-neutral-400 space-y-3">
                 <p>Alfa Business Center</p>
                 <p>Chemin de Joinville 26, 4ème étage</p>
                 <p>1216 Cointrin - Genève</p>
               </div>
             </div>
-
             <div className="space-y-8">
               <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">CONTACT</h3>
-              <div className="text-sm font-sans text-neutral-400 space-y-3 leading-relaxed">
+              <div className="text-sm font-sans text-neutral-400 space-y-3">
                 <p>+41 78 333 68 23</p>
                 <p>serenityrelaxtherapy@gmail.com</p>
               </div>
             </div>
-
             <div className="space-y-8">
               <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">SOCIAL</h3>
               <div className="flex items-center justify-center gap-10">
