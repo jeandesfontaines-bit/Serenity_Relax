@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, Droplets, Moon, Leaf
+  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, Droplets, Moon
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -22,70 +22,14 @@ import thaiImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (7).png';
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
 const SERVICES = [
-  { 
-    id: "01", 
-    name: "Bambous", 
-    intensity: 4,
-    image: bambooImg,
-    desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", 
-    tag: "Profond"
-  },
-  { 
-    id: "02", 
-    name: "Draineur Lymphatique", 
-    intensity: 2,
-    image: lymphImg,
-    desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", 
-    tag: "Vitalité"
-  },
-  { 
-    id: "03", 
-    name: "Aromathérapie", 
-    intensity: 2,
-    image: aromaImg,
-    desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", 
-    tag: "Sensoriel"
-  },
-  { 
-    id: "04", 
-    name: "Réflexologie Plantaire", 
-    intensity: 3,
-    image: reflexoImg,
-    desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", 
-    tag: "Ciblé"
-  },
-  { 
-    id: "05", 
-    name: "Sportif", 
-    intensity: 5,
-    image: sportifImg,
-    desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", 
-    tag: "Performance"
-  },
-  { 
-    id: "06", 
-    name: "Thérapeutique", 
-    intensity: 4,
-    image: theraImg,
-    desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", 
-    tag: "Signature"
-  },
-  { 
-    id: "07", 
-    name: "Deep Relax", 
-    intensity: 2,
-    image: relaxImg,
-    desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", 
-    tag: "Détente"
-  },
-  { 
-    id: "08", 
-    name: "Thaï", 
-    intensity: 4,
-    image: thaiImg,
-    desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", 
-    tag: "Dynamique"
-  }
+  { id: "01", name: "Bambous", intensity: 4, image: bambooImg, desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", tag: "Profond" },
+  { id: "02", name: "Draineur Lymphatique", intensity: 2, image: lymphImg, desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", tag: "Vitalité" },
+  { id: "03", name: "Aromathérapie", intensity: 2, image: aromaImg, desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", tag: "Sensoriel" },
+  { id: "04", name: "Réflexologie Plantaire", intensity: 3, image: reflexoImg, desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", tag: "Ciblé" },
+  { id: "05", name: "Sportif", intensity: 5, image: sportifImg, desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", tag: "Performance" },
+  { id: "06", name: "Thérapeutique", intensity: 4, image: theraImg, desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", tag: "Signature" },
+  { id: "07", name: "Deep Relax", intensity: 2, image: relaxImg, desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", tag: "Détente" },
+  { id: "08", name: "Thaï", intensity: 4, image: thaiImg, desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", tag: "Dynamique" }
 ];
 
 const AFTERCARE_TIPS = [
