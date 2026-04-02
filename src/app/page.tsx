@@ -293,48 +293,8 @@ export default function HomePage() {
       <section className="py-20 md:py-32 px-6 md:px-12 lg:px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
-          {/* CARTE CONSEILS (GAUCHE) */}
-          <div className="relative pt-6 md:pt-12 lg:pt-32 order-1 lg:order-1">
-            <div className="min-h-[350px] md:min-h-[400px] flex flex-col justify-between relative">
-                <AnimatePresence mode="wait">
-                <motion.div 
-                    key={`advice-text-${selectedTip}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="space-y-6 md:space-y-10 relative z-10"
-                >
-                    <div className="pt-4 md:pt-8">
-                        <div className="p-8 md:p-14 bg-[#FAF9F6] rounded-[2rem] md:rounded-[2.5rem] border border-neutral-100/50">
-                            <div className="space-y-6 md:space-y-8">
-                                <motion.div 
-                                  key={`advice-text-inner-${selectedTip}`}
-                                  initial={{ opacity: 0, y: 10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  className="pb-2 md:pb-4"
-                                >
-                                  <h3 className="text-xl md:text-2xl tracking-tight leading-tight text-neutral-900 font-sans font-medium">
-                                      {AFTERCARE_TIPS[selectedTip].advice}
-                                  </h3>
-                                </motion.div>
-                                <div className="h-[1px] w-full bg-neutral-200/50" />
-                                <p className="text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed max-w-xl">
-                                    {AFTERCARE_TIPS[selectedTip].desc}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-                </AnimatePresence>
-                <div className="absolute top-0 left-0 text-neutral-50/50 pointer-events-none select-none -z-0">
-                    <Sparkles size={300} className="md:w-[400px] md:h-[400px]" />
-                </div>
-            </div>
-          </div>
-
-          {/* LISTE ÉTAPES (DROITE) */}
-          <div className="space-y-8 md:space-y-12 order-2 lg:order-2">
+          {/* LISTE ÉTAPES (GAUCHE) */}
+          <div className="space-y-8 md:space-y-12 order-1 lg:order-1">
             <div className="space-y-4">
               <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
               <SectionTitle main="Prolonger" italic="l'état de grâce." />
@@ -362,6 +322,46 @@ export default function HomePage() {
                   </div>
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* CARTE CONSEILS (DROITE) */}
+          <div className="relative pt-6 md:pt-12 lg:pt-32 order-2 lg:order-2">
+            <div className="min-h-[300px] md:min-h-[350px] flex flex-col justify-between relative">
+                <AnimatePresence mode="wait">
+                <motion.div 
+                    key={`advice-text-${selectedTip}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="space-y-6 md:space-y-10 relative z-10"
+                >
+                    <div className="pt-4 md:pt-8">
+                        <div className="p-8 md:p-14 bg-[#FAF9F6] rounded-[2rem] md:rounded-[2.5rem] border border-neutral-100/50">
+                            <div className="space-y-4 md:space-y-6">
+                                <motion.div 
+                                  key={`advice-text-inner-${selectedTip}`}
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  className="pb-2 md:pb-4"
+                                >
+                                  <h3 className="text-base md:text-lg tracking-tight leading-tight text-neutral-900 font-sans font-medium">
+                                      {AFTERCARE_TIPS[selectedTip].advice}
+                                  </h3>
+                                </motion.div>
+                                <div className="h-[1px] w-full bg-neutral-200/50" />
+                                <p className="text-neutral-800 text-sm md:text-base font-sans font-medium leading-relaxed max-w-xl">
+                                    {AFTERCARE_TIPS[selectedTip].desc}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+                </AnimatePresence>
+                <div className="absolute top-0 left-0 text-neutral-50/50 pointer-events-none select-none -z-0">
+                    <Sparkles size={250} className="md:w-[350px] md:h-[350px]" />
+                </div>
             </div>
           </div>
 
