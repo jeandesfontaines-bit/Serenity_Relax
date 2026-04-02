@@ -8,6 +8,7 @@ import { Menu, X, LogOut, LayoutGrid, Users, Wallet, User, Calendar } from 'luci
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { usePathname } from 'next/navigation';
+import { BookingDialog } from '@/components/booking/booking-dialog';
 
 export function Navbar() {
   const { user } = useUser();
@@ -35,11 +36,6 @@ export function Navbar() {
     { id: "invoices", label: "Factures", icon: Wallet, href: "/therapist/invoices" },
   ];
 
-  const publicLinks = [
-    { label: "Espace Privé", href: "/client/portal", icon: User },
-    { label: "Réserver", href: "/booking", icon: Calendar },
-  ];
-
   return (
     <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-4 md:py-6 bg-transparent">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -63,16 +59,19 @@ export function Navbar() {
             </>
           ) : (
             <>
-              {publicLinks.map((link) => (
-                <Link 
-                  key={link.label} 
-                  href={link.href} 
-                  className="flex items-center gap-3 text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 hover:opacity-60 transition-all"
-                >
-                  <link.icon size={14} strokeWidth={2.5} />
-                  {link.label}
-                </Link>
-              ))}
+              <Link 
+                href="/client/portal" 
+                className="flex items-center gap-3 text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 hover:opacity-60 transition-all"
+              >
+                <User size={14} strokeWidth={2.5} />
+                Espace Privé
+              </Link>
+              <BookingDialog>
+                <button className="flex items-center gap-3 text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 hover:opacity-60 transition-all cursor-pointer">
+                  <Calendar size={14} strokeWidth={2.5} />
+                  Réserver
+                </button>
+              </BookingDialog>
             </>
           )}
 
@@ -103,12 +102,18 @@ export function Navbar() {
                 </Link>
               ))
             ) : (
-              publicLinks.map((link) => (
-                <Link key={link.label} href={link.href} onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[11px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">
-                  <link.icon size={16} strokeWidth={2.5} />
-                  {link.label}
+              <>
+                <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[11px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">
+                  <User size={16} strokeWidth={2.5} />
+                  Espace Privé
                 </Link>
-              ))
+                <BookingDialog>
+                  <button onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[11px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 w-full">
+                    <Calendar size={16} strokeWidth={2.5} />
+                    Réserver
+                  </button>
+                </BookingDialog>
+              </>
             )}
             
             {user && !user.isAnonymous && (

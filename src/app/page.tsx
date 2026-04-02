@@ -9,6 +9,7 @@ import {
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 import Link from 'next/link';
+import { BookingDialog } from '@/components/booking/booking-dialog';
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
@@ -119,9 +120,11 @@ export default function HomePage() {
                  <span className="font-cursive text-4xl text-neutral-300 block mt-4">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
-                <Link href="/booking" className="high-end-button">
-                  Réserver un soin
-                </Link>
+                <BookingDialog>
+                  <button className="high-end-button">
+                    Réserver un soin
+                  </button>
+                </BookingDialog>
               </div>
             </div>
           </div>
@@ -140,9 +143,11 @@ export default function HomePage() {
               <p className="text-neutral-600 text-base font-sans font-medium leading-relaxed italic mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <Link href="/booking" className="high-end-button">
-                Réserver un soin
-              </Link>
+              <BookingDialog>
+                <button className="high-end-button">
+                  Réserver un soin
+                </button>
+              </BookingDialog>
             </div>
 
             <div className="w-full lg:w-[68%] grid grid-cols-1 md:grid-cols-2 gap-x-12">
