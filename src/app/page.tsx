@@ -291,7 +291,7 @@ export default function HomePage() {
       {/* RITUEL POST-SOIN - SIMPLIFIÉ EN COLONNES */}
       <section className="py-20 md:py-32 px-6 md:px-12 lg:px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="space-y-16">
-          <div className="text-center max-w-2xl mx-auto space-y-4">
+          <div className="text-right max-w-2xl ml-auto space-y-4">
             <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
             <SectionTitle main="Prolonger" italic="l'état de grâce." />
           </div>
