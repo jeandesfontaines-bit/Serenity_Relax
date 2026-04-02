@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -198,7 +197,7 @@ export default function HomePage() {
       
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-neutral-900 z-[120] origin-left" style={{ scaleX }} />
 
-      {/* SECTION HÉROS */}
+      {/* SECTION HÉROS : Portrait à gauche, Texte à droite */}
       <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
@@ -259,7 +258,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION SERVICES */}
+      {/* SECTION SERVICES : Texte à gauche, Cartes à droite */}
       <section id="services" className="py-24 md:py-32 px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[3rem] md:rounded-[5rem] md:mx-6 overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
@@ -286,7 +285,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN */}
+      {/* RITUEL POST-SOIN : Carte interactive à gauche, Liste à droite */}
       <section className="py-40 px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
