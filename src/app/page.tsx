@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Droplets, Moon, Coffee, HeartPulse, Sparkles, MessageCircle, CheckCircle2
+  Instagram, Linkedin, ArrowRight, Droplets, Moon, Coffee, HeartPulse, Sparkles, MessageCircle
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
