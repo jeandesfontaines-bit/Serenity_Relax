@@ -1,23 +1,16 @@
+
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Droplets, Moon, Coffee, HeartPulse, Sparkles, MessageCircle
+  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 
-// --- IMPORT DES IMAGES ---
+// --- CONFIGURATION & DONNÉES ---
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
-const bambooImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
-const lymphImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (1).png';
-const aromaImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
-const reflexImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (3).png';
-const sportsImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (4).png';
-const therapeuticImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (5).png';
-const deepRelaxImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (6).png';
-const thaiImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (7).png';
 
 const SERVICES = [
   { 
@@ -26,7 +19,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 4,
-    image: bambooImg,
+    image: "https://picsum.photos/seed/bamboo-massage/800/1000",
     desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", 
     tag: "Profond"
   },
@@ -36,7 +29,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 2,
-    image: lymphImg,
+    image: "https://picsum.photos/seed/lymph-drainage/800/1000",
     desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", 
     tag: "Vitalité"
   },
@@ -46,7 +39,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 2,
-    image: aromaImg,
+    image: "https://picsum.photos/seed/oils-spa/800/1000",
     desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", 
     tag: "Sensoriel"
   },
@@ -56,7 +49,7 @@ const SERVICES = [
     duration: "30 min", 
     price: 60,
     intensity: 3,
-    image: reflexImg,
+    image: "https://picsum.photos/seed/foot-reflex/800/1000",
     desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", 
     tag: "Ciblé"
   },
@@ -66,7 +59,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 5,
-    image: sportsImg,
+    image: "https://picsum.photos/seed/sports-physio/800/1000",
     desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", 
     tag: "Performance"
   },
@@ -76,7 +69,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 4,
-    image: therapeuticImg,
+    image: "https://picsum.photos/seed/physiotherapy/800/1000",
     desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", 
     tag: "Signature"
   },
@@ -86,7 +79,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 120,
     intensity: 2,
-    image: deepRelaxImg,
+    image: "https://picsum.photos/seed/deep-sleep-spa/800/1000",
     desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", 
     tag: "Détente"
   },
@@ -96,7 +89,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 120,
     intensity: 4,
-    image: thaiImg,
+    image: "https://picsum.photos/seed/thai-stretch/800/1000",
     desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale avec des huiles chaudes.", 
     tag: "Dynamique"
   }
@@ -158,7 +151,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
       <Image 
         src={s.image} 
         fill
-        className="object-cover grayscale-[0.3] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" 
+        className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700 ease-out" 
         alt={s.name}
         data-ai-hint="luxury massage"
       />
@@ -191,6 +184,13 @@ export default function HomePage() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const [selectedTip, setSelectedTip] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   return (
     <div className="bg-white text-neutral-900 selection:bg-neutral-900 selection:text-white antialiased relative">
@@ -264,10 +264,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             
-            <div className="w-full lg:w-[28%] lg:sticky lg:top-24 h-fit text-left">
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit text-left">
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
-              <div className="h-[2px] w-12 bg-neutral-900 mb-10" />
+              <div className="h-[2px] w-12 bg-neutral-900 mb-8" />
               <p className="text-xl md:text-2xl font-serif font-bold text-neutral-900 leading-tight italic mb-12">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
@@ -290,6 +290,7 @@ export default function HomePage() {
       <section className="py-40 px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
+          {/* COLONNE GAUCHE: CARTE INTERACTIVE */}
           <div className="relative pt-12 lg:pt-32">
             <div className="min-h-[400px] flex flex-col justify-between relative">
                 <AnimatePresence mode="wait">
@@ -329,6 +330,7 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* COLONNE DROITE: LISTE ÉTAPES */}
           <div className="space-y-12">
             <div className="space-y-4">
               <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
@@ -364,8 +366,8 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER ULTRA COMPACT */}
-      <footer className="bg-[#0a0a0a] text-white py-8 px-8 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <footer className="bg-[#0a0a0a] text-white py-12 px-8 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex flex-col items-center md:items-start">
             <div className="font-sans font-bold text-xs tracking-[0.3em] uppercase">SERENITY RELAX</div>
             <p className="text-[8px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-1">Excellence Thérapeutique</p>
@@ -385,7 +387,7 @@ export default function HomePage() {
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto mt-6 pt-6 border-t border-white/5 flex justify-center">
+        <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-white/5 flex justify-center">
           <p className="text-[8px] font-sans font-bold text-neutral-700 uppercase tracking-[0.4em]">
             © 2025 Serenity & Relax Therapy — Tous droits réservés
           </p>
