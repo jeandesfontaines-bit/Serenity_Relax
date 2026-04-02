@@ -238,14 +238,14 @@ export default function HomePage() {
           <div className="w-full lg:w-[55%] space-y-8 md:space-y-10 text-left order-2 lg:order-2">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-tight">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-[0.02em]">
                 L'équilibre<br />
-                <span className="text-neutral-600 italic font-light">par le toucher.</span>
+                <span className="text-neutral-500 italic font-light">par le toucher.</span>
               </h1>
             </motion.div>
             
             <div className="space-y-6 md:space-y-8 max-w-xl">
-              <p className="text-lg md:text-xl font-serif font-medium text-neutral-900 leading-tight italic">
+              <p className="text-lg md:text-xl font-sans font-medium text-neutral-900 leading-tight italic">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </p>
               <div className="space-y-4 md:space-y-6">
@@ -253,7 +253,7 @@ export default function HomePage() {
                   Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
                 </SectionDesc>
                 <div className="pl-6 border-l-2 border-neutral-900/10 py-2">
-                   <p className="text-neutral-800 italic text-base md:text-lg leading-snug">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
+                   <p className="text-neutral-800 italic text-base md:text-lg leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
                    <span className="font-cursive text-2xl md:text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
               </div>
@@ -279,7 +279,7 @@ export default function HomePage() {
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-8" />
-              <p className="text-lg md:text-xl font-serif font-medium text-neutral-900 leading-tight italic mb-8 md:mb-12">
+              <p className="text-lg md:text-xl font-sans font-medium text-neutral-900 leading-tight italic mb-8 md:mb-12">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
               <button className="w-full md:w-auto inline-flex items-center justify-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all">
