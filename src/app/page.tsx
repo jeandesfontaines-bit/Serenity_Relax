@@ -40,27 +40,28 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen bg-background selection:bg-primary/5">
       <Navbar />
 
-      <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-40 md:pb-24 overflow-hidden">
-        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-4 items-center relative z-20">
+      <section className="relative min-h-[90vh] flex items-center pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-20">
           <motion.div 
             initial={{ opacity: 0, y: 10 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8 }}
+            className="flex flex-col items-center lg:items-start text-center lg:text-left"
           >
             <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6">
               <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
               <span className="text-[8px] uppercase tracking-[0.3em] font-black text-muted-foreground">Genève Cointrin</span>
             </div>
             
-            <h1 className="text-[2.6rem] md:text-5xl lg:text-7xl leading-[1.1] font-serif font-medium text-primary mb-6 tracking-tight">
+            <h1 className="text-[2.4rem] md:text-5xl lg:text-7xl leading-[1.1] font-serif font-medium text-primary mb-6 tracking-tight">
               Massage sur <span className="italic font-normal">mesure.</span>
             </h1>
             
-            <p className="text-sm md:text-lg text-muted-foreground font-normal leading-relaxed max-w-md mb-8">
-              Offrez-vous un moment de détente profonde à travers un soin entièrement personnalisé, adapté à vos besoins et à votre état du moment.
+            <p className="text-sm md:text-lg text-muted-foreground font-normal leading-relaxed max-w-md mb-8 italic">
+              Offrez-vous un moment de détente profonde à travers un soin entièrement personnalisé, adapté à vos besoins du moment.
             </p>
 
-            <div className="flex flex-wrap gap-2 mb-10">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-10">
               {BENEFITS.map((b, i) => (
                 <div key={i} className="flex items-center gap-2 px-3 py-1.5 bg-white/50 backdrop-blur-sm rounded-lg text-[8px] font-bold uppercase tracking-widest text-muted-foreground shadow-sm border border-black/[0.03]">
                   <b.icon className={`${b.color} opacity-60`} size={10} />
@@ -78,9 +79,9 @@ export default function HomePage() {
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ duration: 1, delay: 0.2 }}
-            className="relative flex justify-center lg:justify-end lg:-ml-12 mt-12 lg:mt-0"
+            className="relative flex justify-center lg:justify-end mt-12 lg:mt-0"
           >
-            <div className="blob-shape relative aspect-square w-full max-w-[280px] md:max-w-[440px] shadow-2xl border-[6px] md:border-[8px] border-white/30 animate-float">
+            <div className="blob-shape relative aspect-square w-full max-w-[260px] md:max-w-[400px] shadow-2xl border-[6px] md:border-[8px] border-white/30 animate-float">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 alt="João" 
@@ -101,8 +102,8 @@ export default function HomePage() {
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">L'Art du Toucher</span>
           </div>
           <h2 className="font-serif text-3xl md:text-5xl font-medium tracking-tight mt-4">Techniques & Expériences</h2>
-          <p className="mt-6 text-sm md:text-base text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed italic">
-            Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort et de votre intimité.
+          <p className="mt-6 text-sm md:text-base text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed italic px-4">
+            Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort.
           </p>
         </div>
         
@@ -111,20 +112,20 @@ export default function HomePage() {
             <Link 
               key={service.id}
               href={`/booking?serviceId=${service.id}`}
-              className="flex-shrink-0 w-[55vw] sm:w-[220px] md:w-[280px] snap-center relative aspect-[4/5] md:aspect-[3/4] rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-lg transition-all"
+              className="flex-shrink-0 w-[42vw] sm:w-[180px] md:w-[240px] snap-center relative aspect-[3/4] rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden group shadow-lg transition-all"
             >
               <Image src={`https://picsum.photos/seed/${service.id}/800/1000`} fill className="object-cover grayscale-[20%] transition-all duration-1000" alt={service.name} />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
-                <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-white/60 mb-1 md:mb-2 block">0{i+1}</span>
-                <h3 className="text-sm md:text-xl font-serif text-white font-medium leading-tight mb-1 md:mb-3">{service.name.split(' - ')[0]}</h3>
-                <p className="text-[8px] md:text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
+              <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-6 md:right-6">
+                <span className="text-[7px] md:text-[9px] font-bold uppercase tracking-widest text-white/60 mb-1 block">0{i+1}</span>
+                <h3 className="text-xs md:text-lg font-serif text-white font-medium leading-tight mb-1">{service.name.split(' - ')[0]}</h3>
+                <p className="text-[7px] md:text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
               </div>
             </Link>
           ))}
         </div>
         
-        <div className="text-center mt-8 md:mt-12">
+        <div className="text-center mt-8">
           <Link href="/booking" className="inline-flex items-center gap-3 bg-primary text-white py-2.5 px-10 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition-all active:scale-95">
             Réserver votre rituel <ArrowRight size={14} />
           </Link>
@@ -138,7 +139,7 @@ export default function HomePage() {
               <Sparkles className="h-3 w-3 text-amber-500" />
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Le Rituel Post-Soin</span>
             </div>
-            <h2 className="font-serif text-3xl md:text-5xl font-medium tracking-tight mb-6">7 gestes pour magnifier l'expérience</h2>
+            <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tight mb-6">7 gestes pour magnifier l'expérience</h2>
             <p className="text-sm md:text-base text-muted-foreground font-normal max-w-lg mx-auto leading-relaxed italic">
               Quelques attentions essentielles pour accueillir pleinement les bienfaits de votre séance dans les heures qui suivent.
             </p>
@@ -148,18 +149,18 @@ export default function HomePage() {
             {WELLNESS_TIPS.map((tip, idx) => (
               <div 
                 key={tip.id} 
-                className={`group bg-white p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] border border-black/[0.02] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col items-start ${idx === 6 ? 'lg:col-span-3 lg:flex-row lg:items-center lg:gap-12' : ''}`}
+                className={`group bg-white p-6 md:p-8 rounded-[1.2rem] md:rounded-[2rem] border border-black/[0.02] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col items-start ${idx === 6 ? 'lg:col-span-3 lg:flex-row lg:items-center lg:gap-12' : ''}`}
               >
-                <div className="flex items-center justify-between w-full mb-4 md:mb-5 lg:mb-0 lg:w-auto">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-slate-50 flex items-center justify-center text-primary/10 group-hover:text-primary/40 transition-colors">
-                    <tip.icon size={18} className="md:size-[24px]" />
+                <div className="flex items-center justify-between w-full mb-4 lg:mb-0 lg:w-auto">
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-primary/10 group-hover:text-primary/40 transition-colors">
+                    <tip.icon size={18} />
                   </div>
-                  <span className="editorial-number !text-2xl md:!text-4xl !opacity-10 group-hover:!opacity-30 transition-opacity">0{tip.id}</span>
+                  <span className="editorial-number !text-2xl md:!text-3xl !opacity-10 group-hover:!opacity-30 transition-opacity">0{tip.id}</span>
                 </div>
                 
                 <div className="flex-1">
-                  <h3 className="text-base md:text-xl font-serif font-medium text-primary mb-2 md:mb-4 tracking-tight">{tip.title}</h3>
-                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic">
+                  <h3 className="text-base md:text-lg font-serif font-medium text-primary mb-2 tracking-tight">{tip.title}</h3>
+                  <p className="text-[11px] md:text-sm text-muted-foreground leading-relaxed italic">
                     {tip.text}
                   </p>
                 </div>
