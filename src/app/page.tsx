@@ -60,10 +60,10 @@ const BENEFITS = [
 ];
 
 const RITUAL_STEPS = [
-  { title: "Hydratation", desc: "Buvez de l'eau pour éliminer les toxines." },
-  { title: "Huiles", desc: "Laissez agir les huiles 1h sur la peau." },
-  { title: "Repos", desc: "Prolongez le calme et la détente." },
-  { title: "Suivi", desc: "Prévoyez votre prochain soin." }
+  { title: "Hydratation", desc: "Buvez de l'eau pour éliminer les toxines après votre soin." },
+  { title: "Huiles", desc: "Laissez agir les huiles précieuses au moins 1h sur votre peau." },
+  { title: "Repos", desc: "Prolongez le calme et évitez les efforts intenses immédiatement." },
+  { title: "Suivi", desc: "Prévoyez votre prochain soin pour maintenir votre équilibre." }
 ];
 
 const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggered: boolean }) => {
@@ -120,7 +120,7 @@ export default function HomePage() {
       <section className="relative pt-32 md:pt-44 pb-24 px-6 md:px-12 bg-neutral-50">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
-            <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-w-[320px] md:max-w-[420px] w-full mx-auto overflow-hidden">
+            <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-w-[280px] md:max-w-[380px] w-full mx-auto overflow-hidden">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 fill
@@ -233,7 +233,6 @@ export default function HomePage() {
           </div>
 
           <div className="relative">
-            {/* LIGNE DE TEMPS DÉCORATIVE */}
             <div className="hidden lg:block absolute top-[5.5rem] left-0 w-full h-[1px] bg-neutral-100" />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16">
@@ -247,7 +246,6 @@ export default function HomePage() {
                   className="relative group"
                 >
                   <div className="flex flex-col items-start">
-                    {/* NUMÉRO CURSIF ÉLÉGANT */}
                     <span className="text-6xl md:text-7xl font-cursive text-neutral-100 group-hover:text-neutral-900 transition-colors duration-700 leading-none mb-4 -ml-4">
                       {i + 1}
                     </span>
@@ -273,45 +271,45 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="bg-[#0a0a0a] text-white pt-24 pb-12 px-6 md:px-12">
+      <footer className="bg-[#0a0a0a] text-white pt-16 pb-10 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           {/* HEADER DU FOOTER */}
-          <div className="text-center mb-24">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-[0.5em] uppercase mb-4">Serenity Relax</h2>
+          <div className="text-center mb-16">
+            <div className="font-sans font-bold text-lg md:text-xl tracking-[0.3em] uppercase mb-2">SERENITY RELAX</div>
             <p className="text-[10px] md:text-xs font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
           </div>
 
           {/* COLONNES D'INFORMATIONS */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center mb-24">
-            <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center mb-16">
+            <div className="space-y-6">
               <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Localisation</span>
-              <div className="space-y-2 text-sm md:text-base font-medium text-neutral-400">
+              <div className="space-y-2 text-sm font-medium text-neutral-400">
                 <p>Alfa Business Center</p>
                 <p>Chemin de Joinville 26, 4ème étage</p>
                 <p>1216 Cointrin - Genève</p>
               </div>
             </div>
             
-            <div className="space-y-8">
+            <div className="space-y-6">
               <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Contact</span>
-              <div className="space-y-2 text-sm md:text-base font-medium text-neutral-400">
+              <div className="space-y-2 text-sm font-medium text-neutral-400">
                 <p>+41 78 333 68 23</p>
                 <p>serenityrelaxtherapy@gmail.com</p>
               </div>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-6">
               <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Social</span>
               <div className="flex justify-center gap-8 text-neutral-400">
-                <Instagram size={20} className="hover:text-white transition-colors cursor-pointer" />
-                <MessageCircle size={20} className="hover:text-white transition-colors cursor-pointer" />
-                <Linkedin size={20} className="hover:text-white transition-colors cursor-pointer" />
+                <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
+                <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
+                <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
               </div>
             </div>
           </div>
           
           {/* COPYRIGHT */}
-          <div className="pt-12 border-t border-white/5 text-center">
+          <div className="pt-8 border-t border-white/5 text-center">
             <p className="text-[9px] font-bold text-neutral-700 uppercase tracking-[0.4em]">
               © 2025 Serenity & Relax Therapy — Tous droits réservés
             </p>
@@ -321,4 +319,3 @@ export default function HomePage() {
     </div>
   );
 }
-
