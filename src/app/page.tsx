@@ -174,7 +174,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-6 md:p-8 lg:p-9 flex flex-col justify-between bg-white z-20">
       <div className="space-y-2">
-        <h3 className="text-lg md:text-xl font-serif font-bold tracking-tight text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
+        <h3 className="text-lg md:text-xl font-serif font-bold tracking-normal text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
         <p className="text-neutral-600 text-[11px] md:text-[12px] font-sans font-medium leading-relaxed line-clamp-2">{s.desc}</p>
       </div>
       <div className="pt-4 md:pt-5 flex items-center justify-between border-t border-neutral-50">
@@ -185,7 +185,6 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
         </div>
         <div className="flex flex-col items-end">
           <span className="text-[9px] md:text-[10px] font-sans font-black text-neutral-500 tracking-widest uppercase">{s.duration}</span>
-          <span className="text-[9px] md:text-[10px] font-sans font-bold text-neutral-900 mt-0.5">CHF {s.price.toFixed(2)}</span>
         </div>
       </div>
     </div>
@@ -242,14 +241,14 @@ export default function HomePage() {
           <div className="w-full lg:w-[55%] space-y-8 md:space-y-10 text-left order-2 lg:order-2">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1] md:leading-[1.1] tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1] md:leading-[1.1] tracking-normal">
                 L'équilibre<br />
                 <span className="text-neutral-500 italic font-light">par le toucher.</span>
               </h1>
             </motion.div>
             
             <div className="space-y-6 md:space-y-8 max-w-xl">
-              <p className="text-lg md:text-xl font-sans font-medium text-neutral-900 leading-tight italic">
+              <p className="text-lg md:text-xl font-sans font-medium text-neutral-800 leading-tight italic">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </p>
               <div className="space-y-4 md:space-y-6">
@@ -283,7 +282,7 @@ export default function HomePage() {
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-8" />
-              <p className="text-lg md:text-xl font-sans font-medium text-neutral-900 leading-tight italic mb-8 md:mb-12">
+              <p className="text-lg md:text-xl font-sans font-medium text-neutral-800 leading-tight italic mb-8 md:mb-12">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
               <button className="w-full md:w-auto inline-flex items-center justify-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all">
@@ -327,7 +326,7 @@ export default function HomePage() {
                                   animate={{ opacity: 1, y: 0 }}
                                   className="pb-2 md:pb-4"
                                 >
-                                  <h3 className="text-xl md:text-2xl tracking-tight leading-tight text-neutral-900 font-sans font-medium italic">
+                                  <h3 className="text-xl md:text-2xl tracking-tight leading-tight text-neutral-900 font-sans font-medium">
                                       {AFTERCARE_TIPS[selectedTip].advice}
                                   </h3>
                                 </motion.div>
@@ -359,8 +358,8 @@ export default function HomePage() {
                   onClick={() => setSelectedTip(i)} 
                   className="group flex items-center gap-6 md:gap-8 py-4 md:py-6 border-b border-neutral-100 last:border-0 transition-all duration-500 text-left"
                 >
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${selectedTip === i ? 'bg-neutral-900 text-white scale-110' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-100 group-hover:text-neutral-400'}`}>
-                    <tip.icon size={20} strokeWidth={1.5} />
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${selectedTip === i ? 'bg-neutral-900 text-white scale-110' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-100 group-hover:text-neutral-400'}`}>
+                    <tip.icon size={18} strokeWidth={1.5} />
                   </div>
                   <div className="space-y-1">
                     <h4 className={`text-[11px] md:text-sm font-sans font-black uppercase tracking-[0.2em] transition-colors duration-500 ${selectedTip === i ? 'text-neutral-900' : 'text-neutral-600 group-hover:text-neutral-800'}`}>
