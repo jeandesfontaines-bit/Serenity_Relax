@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useRef } from "react";
@@ -136,12 +137,7 @@ export default function HomePage() {
           
           {/* IMAGE À GAUCHE */}
           <div className="w-full lg:w-[45%] relative">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2 }}
-              className="blob-shape bg-white shadow-2xl max-w-[420px] w-full mx-auto overflow-hidden relative"
-            >
+            <div className="blob-shape bg-white shadow-2xl max-w-[420px] w-full mx-auto overflow-hidden relative">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 fill
@@ -150,7 +146,7 @@ export default function HomePage() {
                 data-ai-hint="professional therapist"
                 priority
               />
-            </motion.div>
+            </div>
           </div>
 
           {/* TEXTE À DROITE */}
@@ -207,19 +203,12 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
             
-            {/* Grille de Cartes (À gauche désormais) */}
-            <div className="w-full lg:w-[75%] grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 pb-12">
-              {SERVICES_DISPLAY.map((s, i) => (
-                <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
-              ))}
-            </div>
-
-            {/* Colonne Texte (À droite désormais, collante sur desktop) */}
-            <div className="w-full lg:w-[25%] lg:sticky lg:top-32 h-fit space-y-10 text-right lg:text-left">
+            {/* Colonne Texte (À gauche désormais, collante sur desktop) */}
+            <div className="w-full lg:w-[25%] lg:sticky lg:top-32 h-fit space-y-10 text-left">
               <span className="text-xs font-sans font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu Signature</span>
               <h2 className="text-5xl md:text-7xl font-bold text-neutral-900 tracking-tight font-serif leading-none">Soins.</h2>
-              <div className="h-1 w-12 bg-neutral-900 ml-auto lg:ml-0" />
-              <p className="text-xs font-sans text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px] ml-auto lg:ml-0">
+              <div className="h-1 w-12 bg-neutral-900" />
+              <p className="text-xs font-sans text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
                 Sélection exclusive de 6 rituels pour votre équilibre interne.
               </p>
               <div className="pt-8">
@@ -227,6 +216,13 @@ export default function HomePage() {
                   Réserver
                 </Link>
               </div>
+            </div>
+
+            {/* Grille de Cartes (À droite désormais) */}
+            <div className="w-full lg:w-[75%] grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 pb-12">
+              {SERVICES_DISPLAY.map((s, i) => (
+                <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
+              ))}
             </div>
 
           </div>
