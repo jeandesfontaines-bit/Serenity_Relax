@@ -28,8 +28,8 @@ export function Navbar() {
     <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-6 bg-transparent">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-baseline gap-2 cursor-pointer group">
-          <span className="font-sans font-bold text-sm md:text-base tracking-[0.2em] text-primary uppercase">SERENITY RELAX</span>
-          <span className="font-cursive text-[24px] text-muted-foreground tracking-normal whitespace-nowrap normal-case group-hover:text-primary transition-colors ml-1">by João</span>
+          <span className="font-sans font-bold text-xs md:text-base tracking-[0.2em] text-primary uppercase">SERENITY RELAX</span>
+          <span className="font-cursive text-[20px] md:text-[24px] text-muted-foreground tracking-normal whitespace-nowrap normal-case group-hover:text-primary transition-colors ml-1">by João</span>
         </Link>
         
         <div className="hidden md:flex items-center gap-8">
