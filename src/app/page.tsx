@@ -179,7 +179,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION AFTERCARE */}
-      <section className="py-48 px-6 md:px-12 bg-[#F9F8F4]">
+      <section className="py-48 px-6 md:px-12 bg-white">
         <div className="max-w-screen-xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div className="space-y-16">
