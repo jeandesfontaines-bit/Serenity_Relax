@@ -34,9 +34,9 @@ const ServiceCard = ({ s }: { s: any }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="relative w-full max-w-[250px] rounded-[2.5rem] bg-white overflow-hidden group shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-all duration-700 hover:-translate-y-2 hover:shadow-2xl"
+    className="relative w-full max-w-[280px] bg-transparent group mb-12"
   >
-    <div className="relative aspect-square overflow-hidden m-4 rounded-[2rem]">
+    <div className="relative aspect-square overflow-hidden rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] mb-8">
       <Image 
         src={s.image} 
         fill
@@ -46,19 +46,19 @@ const ServiceCard = ({ s }: { s: any }) => (
       />
     </div>
 
-    <div className="px-6 pb-8 pt-2 space-y-4 text-left">
-      <div>
-        <span className="text-[8px] font-sans font-black uppercase tracking-[0.3em] text-white bg-black px-3 py-1 rounded-full inline-block mb-3">{s.tag}</span>
+    <div className="px-2 space-y-4">
+      <div className="space-y-1">
+        <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-2">{s.tag}</span>
         <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
           {s.name}
         </h3>
       </div>
 
-      <p className="text-[12px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
+      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
         {s.desc}
       </p>
 
-      <div className="flex justify-end items-center pt-4 border-t border-neutral-50">
+      <div className="flex justify-end pt-4">
         <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110">
           <Plus size={14} strokeWidth={2.5} />
         </div>
@@ -171,7 +171,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION FAQ */}
-      <section className="py-24 px-6 md:px-12 bg-white">
+      <section className="py-32 px-6 md:px-12 bg-[#FDFCFB]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-400 block mb-4">Questions fréquentes</span>
@@ -180,7 +180,7 @@ export default function HomePage() {
           
           <div className="space-y-4">
             {FAQS.map((f, i) => (
-              <div key={i} className="bg-[#FDFCFB] rounded-[2rem] border border-neutral-100 overflow-hidden hover:border-neutral-200 transition-all">
+              <div key={i} className="bg-white rounded-[2rem] border border-neutral-100 overflow-hidden hover:border-neutral-200 transition-all">
                 <button 
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full p-8 flex items-center justify-between text-left group"
@@ -211,9 +211,9 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-white text-neutral-900 pt-8 pb-12 px-6">
+      <footer className="bg-white text-neutral-900 pt-16 pb-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-10">
+          <div className="text-center mb-12">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4">SERENITY RELAX</h2>
             <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-neutral-500 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
