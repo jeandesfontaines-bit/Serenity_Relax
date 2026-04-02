@@ -11,9 +11,12 @@ import { Navbar } from '@/components/navbar';
 
 // --- IMPORT DES IMAGES GÉNÉRÉES ---
 import bambooImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
+import lymphImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (1).png';
 import aromaImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
 import reflexImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (3).png';
-import classicImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (6).png';
+import sportsImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (4).png';
+import therapeuticImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (5).png';
+import deepRelaxImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (6).png';
 import thaiImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (7).png';
 
 // --- CONFIGURATION & DONNÉES ---
@@ -36,7 +39,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 2,
-    image: "https://picsum.photos/seed/lymph-drain/800/1000",
+    image: lymphImg,
     desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", 
     tag: "Vitalité"
   },
@@ -66,7 +69,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 5,
-    image: "https://picsum.photos/seed/sports-massage/800/1000",
+    image: sportsImg,
     desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", 
     tag: "Performance"
   },
@@ -76,7 +79,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 4,
-    image: classicImg,
+    image: therapeuticImg,
     desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", 
     tag: "Signature"
   },
@@ -86,7 +89,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 120,
     intensity: 2,
-    image: "https://picsum.photos/seed/deep-relax/800/1000",
+    image: deepRelaxImg,
     desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", 
     tag: "Détente"
   },
