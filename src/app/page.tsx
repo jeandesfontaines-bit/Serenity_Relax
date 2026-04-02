@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle, Plus, Minus
+  Instagram, Linkedin, ArrowRight, MessageCircle, Plus
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -37,7 +37,7 @@ const ServiceCard = ({ s }: { s: any }) => (
     viewport={{ once: true }}
     className="relative w-full max-w-[280px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group"
   >
-    <div className="relative aspect-square overflow-hidden rounded-[2rem] mb-8">
+    <div className="relative aspect-square overflow-hidden rounded-[2rem] mb-6">
       <Image 
         src={s.image} 
         fill
@@ -47,15 +47,15 @@ const ServiceCard = ({ s }: { s: any }) => (
       />
     </div>
 
-    <div className="px-2 pb-4 space-y-4">
+    <div className="px-2 pb-2 space-y-3">
       <div className="space-y-1">
-        <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-2">{s.tag}</span>
+        <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">{s.tag}</span>
         <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
           {s.name}
         </h3>
       </div>
 
-      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
+      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2 italic">
         {s.desc}
       </p>
 
@@ -72,7 +72,6 @@ export default function HomePage() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const [isMounted, setIsMounted] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -172,49 +171,41 @@ export default function HomePage() {
       </section>
 
       {/* SECTION FAQ */}
-      <section className="py-32 px-6 md:px-12 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-400 block mb-4">Questions fréquentes</span>
-            <h3 className="text-4xl md:text-5xl font-serif font-bold tracking-tighter text-neutral-900 uppercase">FAQ.</h3>
-          </div>
-          
-          <div className="space-y-4">
-            {FAQS.map((f, i) => (
-              <div key={i} className="bg-white rounded-[2rem] border border-neutral-100 overflow-hidden hover:border-neutral-200 transition-all">
-                <button 
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full p-8 flex items-center justify-between text-left group"
-                >
-                  <span className="font-serif font-bold text-lg md:text-xl tracking-tight text-neutral-900">{f.q}</span>
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${openFaq === i ? 'bg-neutral-900 text-white rotate-180' : 'bg-white shadow-sm'}`}>
-                    {openFaq === i ? <Minus size={18} /> : <Plus size={18} />}
-                  </div>
-                </button>
-                <AnimatePresence>
-                  {openFaq === i && (
-                    <motion.div 
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
-                    >
-                      <div className="px-8 pb-8 text-neutral-500 font-sans font-light leading-relaxed border-t border-neutral-50 pt-6 italic">
+      <section className="py-32 px-6 md:px-12 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row-reverse gap-20 items-start">
+            {/* Colonne Droite: Titre */}
+            <div className="w-full lg:w-[35%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
+              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Assistance</span>
+              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
+                Questions <br className="hidden lg:block"/> <span className="text-neutral-500 italic font-light">fréquentes.</span>
+              </h2>
+            </div>
+
+            {/* Colonne Gauche: FAQ */}
+            <div className="w-full lg:w-[65%] space-y-12">
+              {FAQS.map((f, i) => (
+                <div key={i} className="bg-white rounded-[3rem] p-10 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-neutral-50 group transition-all duration-500 hover:shadow-xl">
+                  <div className="flex gap-8 items-start">
+                    <span className="text-[10px] font-sans font-black text-neutral-300 uppercase tracking-widest mt-2">0{i+1}</span>
+                    <div className="space-y-4">
+                      <h4 className="font-serif font-bold text-2xl text-neutral-900 tracking-tight leading-snug">{f.q}</h4>
+                      <p className="text-neutral-500 font-sans font-light leading-relaxed italic border-l-2 border-neutral-50 pl-6">
                         {f.a}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-neutral-900 text-white pt-24 pb-12 px-6">
+      <footer className="bg-neutral-900 text-white pt-16 pb-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
             <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-white/50 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
