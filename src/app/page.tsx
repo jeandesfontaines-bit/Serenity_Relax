@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, LayoutDashboard
+  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -123,7 +123,7 @@ const AFTERCARE_TIPS = [
 ];
 
 const OverTitle = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <span className={`text-[10px] font-sans font-black uppercase tracking-[0.5em] text-neutral-600 block mb-6 ${className}`}>
+  <span className={`text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-600 block mb-6 ${className}`}>
     {children}
   </span>
 );
@@ -154,7 +154,6 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
         unoptimized
         className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700 ease-out [filter:contrast(0.95)_saturate(0.92)_brightness(1.05)]" 
         alt={s.name}
-        data-ai-hint="luxury massage"
       />
       <div className="absolute top-6 left-6 z-10">
          <span className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">{s.tag}</span>
@@ -213,9 +212,9 @@ export default function HomePage() {
               <Image 
                 src={MY_PHOTO} 
                 fill
+                unoptimized
                 className="object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000"
                 alt="Portrait de João P."
-                data-ai-hint="professional therapist"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
@@ -288,7 +287,7 @@ export default function HomePage() {
       </section>
 
       {/* RITUEL POST-SOIN */}
-      <section className="py-40 px-8 bg-white max-w-7xl mx-auto overflow-hidden">
+      <section className="py-24 md:py-32 px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
           {/* CARTE CONSEILS (GAUCHE) */}
