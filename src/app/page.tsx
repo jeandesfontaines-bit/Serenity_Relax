@@ -80,13 +80,6 @@ const GlobalStyle = () => (
       box-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.05);
     }
     
-    .section-title {
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-
     .overline {
       font-size: 9px;
       font-weight: 600;
@@ -94,7 +87,7 @@ const GlobalStyle = () => (
       letter-spacing: 0.4em;
       color: #A3A3A3;
       display: block;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
   `}</style>
 );
@@ -127,9 +120,9 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
            <span className="text-[7px] font-bold uppercase tracking-[0.2em] text-white bg-black/40 backdrop-blur-md px-2 py-0.5 rounded-sm">{s.tag}</span>
         </div>
       </div>
-      <div className="flex-1 p-6 flex flex-col justify-between">
+      <div className="flex-1 p-5 md:p-6 flex flex-col justify-between">
         <div className="space-y-2">
-          <h3 className="text-base font-bold tracking-tight text-neutral-900 leading-tight">{s.name}</h3>
+          <h3 className="text-sm md:text-base font-bold tracking-tight text-neutral-900 leading-tight">{s.name}</h3>
           <p className="text-neutral-500 text-[10px] font-medium leading-relaxed italic">{s.desc}</p>
         </div>
         <div className="pt-3 flex items-center justify-between border-t border-neutral-50">
@@ -161,15 +154,15 @@ export default function HomePage() {
       <Navbar />
       
       {/* HEADER INFO COMPACT */}
-      <div className="hidden md:flex fixed top-8 right-32 z-[101] items-center gap-4 text-[9px] font-bold tracking-[0.3em] text-neutral-300 pointer-events-none">
+      <div className="hidden lg:flex fixed top-8 right-32 z-[101] items-center gap-4 text-[9px] font-bold tracking-[0.3em] text-neutral-300 pointer-events-none">
         {time} • CH / GENEVA
       </div>
 
       {/* HERO SECTION : PHILOSOPHIE */}
-      <section className="relative pt-32 pb-20 px-8 bg-neutral-50">
+      <section className="relative pt-28 md:pt-36 pb-16 md:pb-24 px-6 md:px-12 bg-neutral-50">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden bg-white soft-shadow max-h-[500px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
+            <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden bg-white soft-shadow max-h-[450px] md:max-h-[550px] w-full mx-auto">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 fill
@@ -179,23 +172,23 @@ export default function HomePage() {
                 priority
               />
             </div>
-            <div className="flex flex-col">
-              <span className="overline">Philosophie de soin</span>
-              <h1 className="section-title text-neutral-900 mb-8">
-                L'équilibre <br/>
-                <span className="text-neutral-300 font-light">par le toucher.</span>
+            <div className="flex flex-col text-center lg:text-left">
+              <span className="overline">À propos de moi</span>
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6 tracking-tight leading-[1.1]">
+                L'équilibre <br className="hidden md:block"/>
+                <span className="text-neutral-300 font-light italic">par le toucher.</span>
               </h1>
-              <div className="space-y-6 text-neutral-500 font-medium leading-relaxed text-sm">
-                <p className="text-neutral-900 text-lg font-bold italic border-l-2 border-neutral-900 pl-6 py-1">
+              <div className="space-y-5 text-neutral-500 font-medium leading-relaxed text-sm md:text-base">
+                <p className="text-neutral-900 text-base md:text-lg font-bold italic border-l-2 border-neutral-900 pl-6 py-1 text-left">
                   "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
                 </p>
-                <p>
-                  Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie personnalisés.
+                <p className="text-left">
+                  Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie personnalisés pour améliorer votre qualité de vie.
                 </p>
-                <p>
+                <p className="text-left">
                   J'utilise des techniques variées et dédiées, comme le Massage Classique, Relaxant et Thérapeutique, pour apaiser votre corps et revitaliser votre esprit.
                 </p>
-                <div className="pt-4">
+                <div className="pt-6 flex justify-center lg:justify-start">
                   <Link href="/booking" className="inline-flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-900 group">
                     Réserver une séance <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
                   </Link>
@@ -207,23 +200,23 @@ export default function HomePage() {
       </section>
 
       {/* LES BIENFAITS SECTION */}
-      <section className="py-24 px-8 bg-white">
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20 items-end">
-            <div className="lg:col-span-8 flex flex-col">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 mb-16 md:mb-24 items-end">
+            <div className="lg:col-span-8 flex flex-col text-center lg:text-left">
               <span className="overline">Expertise Thérapeutique</span>
-              <h2 className="section-title text-neutral-900">
-                Les bienfaits du Massage <br/>sur le corps
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight leading-tight">
+                Les bienfaits du Massage <br className="hidden md:block"/>sur le corps
               </h2>
             </div>
-            <div className="lg:col-span-4 border-l border-neutral-100 pl-6">
-              <p className="text-neutral-400 text-[13px] font-medium leading-relaxed italic">
+            <div className="lg:col-span-4 border-l-0 lg:border-l border-neutral-100 pl-0 lg:pl-8 mt-6 lg:mt-0">
+              <p className="text-neutral-400 text-xs md:text-[13px] font-medium leading-relaxed italic text-center lg:text-left">
                 Le massage est un soin complet qui agit à la fois sur le corps et l’esprit, favorisant l’équilibre naturel de l’organisme.
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-16 gap-y-12 md:gap-y-16">
             {BENEFITS.map((b, i) => (
               <motion.div 
                 key={i}
@@ -249,23 +242,23 @@ export default function HomePage() {
       </section>
 
       {/* CATALOGUE DES SOINS */}
-      <section className="py-24 px-8 bg-[#F8F8F5] border-y border-neutral-100">
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-[#F8F8F5] border-y border-neutral-100">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-20">
-            <div className="w-full lg:w-[25%] lg:sticky lg:top-24 h-fit space-y-6">
+          <div className="flex flex-col lg:flex-row gap-12 md:gap-20">
+            <div className="w-full lg:w-[25%] lg:sticky lg:top-32 h-fit space-y-6 text-center lg:text-left">
               <span className="overline">Menu de Soins</span>
-              <h2 className="section-title text-neutral-900">Soins.</h2>
-              <div className="h-[1.5px] w-10 bg-neutral-900" />
-              <p className="text-[10px] text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[180px]">
+              <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 tracking-tight">Soins.</h2>
+              <div className="h-[1.5px] w-10 bg-neutral-900 mx-auto lg:mx-0" />
+              <p className="text-[10px] text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[180px] mx-auto lg:mx-0">
                 Sélection exclusive pour votre équilibre interne à Cointrin.
               </p>
-              <div className="pt-8">
-                <Link href="/booking" className="inline-flex items-center gap-4 px-8 py-3 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
+              <div className="pt-4">
+                <Link href="/booking" className="inline-flex items-center gap-4 px-10 py-3.5 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
                   Réserver
                 </Link>
               </div>
             </div>
-            <div className="w-full lg:w-[75%] grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+            <div className="w-full lg:w-[75%] grid grid-cols-1 sm:grid-cols-2 gap-x-6 md:gap-x-10 gap-y-10 md:gap-y-12">
               {SERVICES_DISPLAY.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
               ))}
@@ -275,16 +268,16 @@ export default function HomePage() {
       </section>
 
       {/* RITUEL POST-SOIN */}
-      <section className="py-24 px-8 bg-white overflow-hidden">
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-16 flex flex-col">
+          <div className="mb-12 md:mb-20 flex flex-col text-center lg:text-left">
              <span className="overline">Immersion Continue</span>
-             <h2 className="section-title text-neutral-900">Le Rituel post-soin</h2>
+             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight">Le Rituel post-soin</h2>
           </div>
 
           <div className="relative">
             <div className="absolute top-0 left-0 w-full h-[1px] bg-neutral-100" />
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-y-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-y-12 gap-x-6">
               {RITUAL_STEPS.map((step, i) => (
                 <motion.div 
                   key={i}
@@ -311,10 +304,10 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER NOIR COMPACT */}
-      <footer className="bg-[#0a0a0a] text-white py-12 px-8">
+      <footer className="bg-[#0a0a0a] text-white py-12 md:py-20 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 items-start">
-            <div className="md:col-span-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 items-start">
+            <div className="col-span-1">
               <Link href="/" className="flex flex-col">
                 <span className="text-[10px] font-bold tracking-[0.4em] uppercase">Serenity Relax</span>
                 <span className="text-[7px] text-neutral-500 font-bold tracking-[0.2em] uppercase">Studio Genève Cointrin</span>
@@ -335,15 +328,15 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="flex md:justify-end gap-6 text-neutral-500">
+            <div className="flex sm:justify-end gap-6 text-neutral-500">
               <Instagram size={14} className="hover:text-white transition-colors cursor-pointer" />
               <Linkedin size={14} className="hover:text-white transition-colors cursor-pointer" />
             </div>
           </div>
           
-          <div className="mt-12 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="mt-16 md:mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[7px] font-bold text-neutral-600 uppercase tracking-widest">© 2024 Serenity & Relax Therapy</p>
-            <div className="flex gap-6">
+            <div className="flex gap-8">
                <span className="text-[7px] font-bold text-neutral-600 uppercase tracking-widest cursor-pointer hover:text-white transition-colors">Mentions Légales</span>
                <span className="text-[7px] font-bold text-neutral-600 uppercase tracking-widest cursor-pointer hover:text-white transition-colors">Confidentialité</span>
             </div>
@@ -353,3 +346,4 @@ export default function HomePage() {
     </div>
   );
 }
+
