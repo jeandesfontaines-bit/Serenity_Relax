@@ -13,14 +13,14 @@ import Link from 'next/link';
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
 const SERVICES = [
-  { id: "01", name: "Bambous", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions." },
+  { id: "01", name: "Massage aux Bambous", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions." },
   { id: "02", name: "Draineur Lymphatique", intensity: 2, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation." },
   { id: "03", name: "Aromathérapie", intensity: 2, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75", tag: "Sensoriel", desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit." },
   { id: "04", name: "Réflexologie Plantaire", intensity: 3, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes." },
-  { id: "05", name: "Sportif", intensity: 5, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération." },
-  { id: "06", name: "Thérapeutique", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75", tag: "Signature", desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux." },
-  { id: "07", name: "Deep Relax", intensity: 2, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux." },
-  { id: "08", name: "Thaï", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale." }
+  { id: "05", name: "Massage Sportif", intensity: 5, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération." },
+  { id: "06", name: "Massage Thérapeutique", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75", tag: "Signature", desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux." },
+  { id: "07", name: "Massage Deep Relax", intensity: 2, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux." },
+  { id: "08", name: "Massage Thaï", intensity: 4, image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale." }
 ];
 
 const AFTERCARE_TIPS = [
@@ -28,21 +28,21 @@ const AFTERCARE_TIPS = [
     id: "01",
     title: "Hydratation", 
     desc: "L'eau alcaline aide votre système lymphatique à drainer les toxines libérées.",
-    advice: "Évitez l'alcool pendant 24h",
+    advice: "Hydratez-vous",
     icon: Droplets
   },
   { 
     id: "02",
     title: "Repos", 
     desc: "Accordez-vous un temps de calme pour permettre à votre corps d'ancrer les bienfaits.",
-    advice: "Calme absolu, sans écrans",
+    advice: "Prenez votre temps",
     icon: Moon
   },
   { 
     id: "03",
-    title: "Écoute", 
-    desc: "Vos fascias retrouvent leur liberté. Soyez à l'écoute de vos sensations.",
-    advice: "Douche tiède apaisante",
+    title: "Prudence", 
+    desc: "Votre organisme est en phase de récupération. Soyez à l'écoute de vos sensations.",
+    advice: "Évitez l'alcool",
     icon: Sparkles
   }
 ];
@@ -134,7 +134,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[10rem_4rem_12rem_6rem] shadow-2xl w-full max-w-[380px]"
+              className="relative aspect-[4/5] overflow-hidden rounded-[8rem_4rem_8rem_4rem] shadow-2xl w-full max-w-[380px]"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -250,31 +250,48 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#0a0a0a] text-white py-20 px-6 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16 md:gap-8 text-center md:text-left">
-          <div className="flex flex-col items-center md:items-start">
-            <div className="font-sans font-bold text-base tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
-            <p className="text-xs font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-3">Excellence Thérapeutique</p>
+      <footer className="bg-[#121212] text-white pt-24 pb-12 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col items-center">
+          <div className="text-center mb-16">
+            <h2 className="text-2xl font-sans font-bold tracking-[0.4em] uppercase mb-4">SERENITY RELAX</h2>
+            <p className="text-[10px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-12 md:gap-16 text-sm font-sans font-medium text-neutral-400">
-            <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-3">Localisation</span> Alpha Business Center • Genève</p>
-            <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-3">Contact</span> +41 78 333 68 23</p>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-32 w-full text-center mb-24">
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">LOCALISATION</h3>
+              <div className="text-xs font-sans text-neutral-400 space-y-2 leading-relaxed">
+                <p>Alfa Business Center</p>
+                <p>Chemin de Joinville 26, 4ème étage</p>
+                <p>1216 Cointrin - Genève</p>
+              </div>
+            </div>
 
-          <div className="flex items-center gap-10 justify-center">
-            <Instagram size={20} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
-            <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
-              <MessageCircle size={20} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
-            </a>
-            <Linkedin size={20} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">CONTACT</h3>
+              <div className="text-xs font-sans text-neutral-400 space-y-2 leading-relaxed">
+                <p>+41 78 333 68 23</p>
+                <p>serenityrelaxtherapy@gmail.com</p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">SOCIAL</h3>
+              <div className="flex items-center justify-center gap-8">
+                <Instagram size={20} className="text-neutral-400 hover:text-white transition-colors cursor-pointer" />
+                <MessageCircle size={20} className="text-neutral-400 hover:text-white transition-colors cursor-pointer" />
+                <Linkedin size={20} className="text-neutral-400 hover:text-white transition-colors cursor-pointer" />
+              </div>
+            </div>
           </div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto mt-20 pt-10 border-t border-white/5 flex justify-center">
-          <p className="text-xs font-sans font-bold text-neutral-800 uppercase tracking-[0.5em] text-center">
-            © 2025 Serenity & Relax Therapy — Genève
-          </p>
+          
+          <div className="w-full pt-10 border-t border-white/5">
+            <div className="max-w-fit mx-auto px-12 py-4 border border-white/10 rounded-t-[2rem]">
+              <p className="text-[9px] font-sans font-bold text-neutral-500 uppercase tracking-[0.4em]">
+                © 2026 SERENITY RELAX THERAPY — TOUS DROITS RÉSERVÉS
+              </p>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
