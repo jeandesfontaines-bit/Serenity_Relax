@@ -3,12 +3,11 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  LayoutDashboard, Menu, X, Instagram, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, Clock, Heart, Wind, Calendar
+  ArrowRight, Leaf, User, Coffee, Sparkles, Clock, Heart, Wind, Calendar
 } from 'lucide-react';
-import { useUser, useAuth } from '@/firebase';
-import { signOut } from 'firebase/auth';
+import { Navbar } from '@/components/navbar';
 import { SERVICES } from '@/lib/types';
 
 const BENEFITS = [
@@ -29,9 +28,6 @@ const WELLNESS_TIPS = [
 ];
 
 export default function HomePage() {
-  const { user } = useUser();
-  const auth = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -42,30 +38,7 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background selection:bg-primary/5">
-      <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-6 bg-transparent">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex items-baseline gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-            <span className="font-sans font-bold text-sm md:text-base tracking-[0.2em] text-primary uppercase">SERENITY RELAX</span>
-            <span className="font-cursive text-[22px] text-muted-foreground tracking-normal whitespace-nowrap normal-case">by João</span>
-          </div>
-          
-          <div className="hidden md:flex items-center gap-8">
-            <Link href="/client/portal" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">Espace Client</Link>
-            <Link href="/therapist/dashboard" className="flex items-center gap-3 bg-white px-5 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest text-primary shadow-sm hover:shadow-md transition-all border border-black/5">
-              <LayoutDashboard size={12} /> Admin
-            </Link>
-            {user && !user.isAnonymous && (
-              <button onClick={() => signOut(auth)} className="text-muted-foreground hover:text-destructive transition-colors">
-                <LogOut size={16}/>
-              </button>
-            )}
-          </div>
-          
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-primary">
-            {isMenuOpen ? <X size={20}/> : <Menu size={20}/>}
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-48 md:pb-32 overflow-hidden">
         <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-4 items-center relative z-20">
