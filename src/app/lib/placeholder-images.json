@@ -2,64 +2,52 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-spa",
-      "description": "Luxury spa interior with forest view",
-      "imageUrl": "https://picsum.photos/seed/aura-hero/1920/1080",
-      "imageHint": "luxury spa"
+      "id": "hero-bg",
+      "description": "Détail zen et minimaliste d'un spa de luxe",
+      "imageUrl": "https://picsum.photos/seed/serenity-hero/1920/1080",
+      "imageHint": "minimalist spa"
     },
     {
-      "id": "massage-1",
-      "description": "Professional massage therapy session",
-      "imageUrl": "https://picsum.photos/seed/massage1/800/600",
-      "imageHint": "massage therapy"
-    },
-    {
-      "id": "stones",
-      "description": "Hot stones on a back",
-      "imageUrl": "https://picsum.photos/seed/stones/600/400",
-      "imageHint": "spa stones"
-    },
-    {
-      "id": "oils",
-      "description": "Essential oils and bamboo",
-      "imageUrl": "https://picsum.photos/seed/oils/600/400",
-      "imageHint": "wellness aromatherapy"
-    },
-    {
-      "id": "portrait-1",
-      "description": "Team member portrait 1",
-      "imageUrl": "https://picsum.photos/seed/p1/400/500",
+      "id": "joao-portrait",
+      "description": "Portrait de João, votre thérapeute",
+      "imageUrl": "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg",
       "imageHint": "person portrait"
     },
     {
-      "id": "portrait-2",
-      "description": "Team member portrait 2",
-      "imageUrl": "https://picsum.photos/seed/p2/400/500",
-      "imageHint": "person portrait"
+      "id": "service-1",
+      "description": "Massage thérapeutique",
+      "imageUrl": "https://picsum.photos/seed/massage-th/800/1200",
+      "imageHint": "therapeutic massage"
     },
     {
-      "id": "portrait-3",
-      "description": "Team member portrait 3",
-      "imageUrl": "https://picsum.photos/seed/p3/400/500",
-      "imageHint": "person portrait"
+      "id": "service-2",
+      "description": "Deep relax signature",
+      "imageUrl": "https://picsum.photos/seed/massage-re/800/1200",
+      "imageHint": "relaxing spa"
     },
     {
-      "id": "portrait-4",
-      "description": "Team member portrait 4",
-      "imageUrl": "https://picsum.photos/seed/p4/400/500",
-      "imageHint": "person portrait"
+      "id": "service-3",
+      "description": "Massage sportif",
+      "imageUrl": "https://picsum.photos/seed/massage-sp/800/1200",
+      "imageHint": "sports therapy"
     },
     {
-      "id": "portrait-5",
-      "description": "Team member portrait 5",
-      "imageUrl": "https://picsum.photos/seed/p5/400/500",
-      "imageHint": "person portrait"
+      "id": "service-4",
+      "description": "Kalari thérapeutique",
+      "imageUrl": "https://picsum.photos/seed/massage-an/800/1200",
+      "imageHint": "traditional massage"
     },
     {
-      "id": "portrait-6",
-      "description": "Team member portrait 6",
-      "imageUrl": "https://picsum.photos/seed/p6/400/500",
-      "imageHint": "person portrait"
+      "id": "service-5",
+      "description": "Drainage lymphatique",
+      "imageUrl": "https://picsum.photos/seed/massage-dr/800/1200",
+      "imageHint": "lymphatic drainage"
+    },
+    {
+      "id": "service-6",
+      "description": "Massage découverte",
+      "imageUrl": "https://picsum.photos/seed/massage-di/800/1200",
+      "imageHint": "spa discovery"
     }
   ]
 }
