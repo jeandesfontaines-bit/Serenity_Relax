@@ -175,9 +175,6 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
             <div key={i} className={`h-1 w-3 md:w-4 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900/70' : 'bg-neutral-100'}`} />
           ))}
         </div>
-        <div className="flex flex-col items-end">
-          <span className="text-[9px] md:text-[10px] font-sans font-black text-neutral-500 tracking-widest uppercase">{s.duration}</span>
-        </div>
       </div>
     </div>
   </motion.div>
