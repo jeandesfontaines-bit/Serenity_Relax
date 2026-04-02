@@ -233,7 +233,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
         <Card className="border-none shadow-none rounded-[2.5rem] overflow-hidden bg-white">
           <Tabs defaultValue="browse" className="w-full">
             <div className="px-8 pt-8 pb-0">
-              <TabsList className="grid w-full grid-cols-2 bg-muted/50 border rounded-full p-1 h-14">
+              <TabsList className="grid w-full grid-cols-2 bg-muted/50 border rounded-full p-1 h-12">
                 <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">Menu des Soins</TabsTrigger>
                 <TabsTrigger value="ai" className="rounded-full flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">
                   <Brain className="h-3.5 w-3.5" /> Consultation IA
@@ -249,7 +249,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     value={selectedService?.id} 
                     onValueChange={(id) => setSelectedService(services.find(s => s.id === id) || null)}
                   >
-                    <SelectTrigger className="w-full h-16 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
+                    <SelectTrigger className="w-full h-12 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
                       <SelectValue placeholder="Parcourir nos soins" />
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl p-1">
@@ -282,7 +282,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                   <Button 
                     onClick={handleAiRecommend} 
                     disabled={aiLoading || !aiQuery}
-                    className="mt-6 w-full h-14 rounded-full bg-primary text-white font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-black shadow-lg transition-all"
+                    className="mt-6 w-full py-2.5 rounded-full bg-primary text-white font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-black shadow-lg transition-all"
                   >
                     {aiLoading ? <Loader2 className="animate-spin h-4 w-4 mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
                     Trouver le soin idéal
@@ -330,7 +330,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     key={t}
                     variant={time === t ? 'default' : 'outline'}
                     onClick={() => setTime(t)}
-                    className={`h-16 rounded-xl text-lg font-medium border-black/5 transition-all ${time === t ? 'bg-primary text-white shadow-lg' : 'bg-background hover:bg-white hover:shadow-md'}`}
+                    className={`h-12 rounded-xl text-lg font-medium border-black/5 transition-all ${time === t ? 'bg-primary text-white shadow-lg' : 'bg-background hover:bg-white hover:shadow-md'}`}
                   >
                     {t}
                   </Button>
@@ -358,35 +358,35 @@ export function BookingFlow({ services }: { services: Service[] }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-12">
               <div className="space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Prénom</Label>
-                <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Nom</Label>
-                <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Email</Label>
-                <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Téléphone</Label>
-                <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Date de Naissance</Label>
-                <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
-                <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Ville</Label>
-                <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="md:col-span-2 space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
-                <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="md:col-span-2 space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
@@ -399,7 +399,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                 <ChevronLeft className="mr-2 h-4 w-4" /> Retour
               </Button>
               <Button 
-                className="high-end-button bg-primary text-white shadow-lg px-12 h-16 text-xs tracking-[0.2em]"
+                className="high-end-button bg-primary text-white shadow-lg px-12 py-2.5 text-xs tracking-[0.2em]"
                 disabled={isSubmitting}
                 onClick={completeBooking}
               >

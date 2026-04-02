@@ -216,7 +216,7 @@ export default function TherapistDashboard() {
             </div>
             <button 
               onClick={() => openNew()}
-              className="bg-black text-white px-6 py-3 rounded-2xl hover:bg-slate-800 transition-all flex items-center gap-2 shadow-xl shadow-black/5 active:scale-95"
+              className="bg-black text-white px-6 py-2.5 rounded-2xl hover:bg-slate-800 transition-all flex items-center gap-2 shadow-xl shadow-black/5 active:scale-95"
             >
               <Plus size={16} strokeWidth={3} />
               <span className="text-[10px] font-bold uppercase tracking-widest">Nouveau</span>
@@ -311,7 +311,7 @@ export default function TherapistDashboard() {
                         </div>
                         <div>
                           <p className="text-lg font-bold mb-2">Aucun rendez-vous aujourd'hui</p>
-                          <p className="text-sm text-slate-400 font-serif italic">Profitez de ce moment de calme pour vous ressourcer.</p>
+                          <p className="text-sm text-slate-400 italic">Profitez de ce moment de calme pour vous ressourcer.</p>
                         </div>
                         <button onClick={() => openNew()} className="text-[10px] font-black uppercase tracking-[0.2em] text-black hover:underline">Programmer un soin</button>
                       </div>
@@ -368,7 +368,7 @@ export default function TherapistDashboard() {
                  <div className="p-8 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
                     <div className="flex items-center gap-6">
                        {selectedDate ? (
-                         <button onClick={() => setSelectedDate(null)} className="text-black flex items-center gap-3 hover:bg-white px-5 py-2 rounded-2xl transition-all shadow-sm border border-gray-200">
+                         <button onClick={() => setSelectedDate(null)} className="text-black flex items-center gap-3 hover:bg-white px-5 py-2.5 rounded-2xl transition-all shadow-sm border border-gray-200">
                            <ChevronLeft size={16} strokeWidth={3} />
                            <span className="text-[10px] font-black uppercase tracking-widest">Retour au mois</span>
                          </button>
@@ -384,7 +384,7 @@ export default function TherapistDashboard() {
                          </div>
                        )}
                     </div>
-                    <button onClick={() => openNew(selectedDate || undefined)} className="text-[10px] font-black uppercase tracking-widest bg-black text-white px-6 py-3 rounded-2xl shadow-xl shadow-black/5 hover:bg-slate-800">
+                    <button onClick={() => openNew(selectedDate || undefined)} className="text-[10px] font-black uppercase tracking-widest bg-black text-white px-6 py-2.5 rounded-2xl shadow-xl shadow-black/5 hover:bg-slate-800">
                       Ajouter une séance
                     </button>
                  </div>
@@ -547,8 +547,8 @@ export default function TherapistDashboard() {
                 <section className="space-y-4">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Identité Patient</label>
                   <div className="grid grid-cols-2 gap-4">
-                    <input value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} type="text" placeholder="Prénom" className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 outline-none text-base italic text-slate-900 focus:bg-white focus:shadow-sm transition-all" />
-                    <input value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} type="text" placeholder="Nom" className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 outline-none text-base italic text-slate-900 focus:bg-white focus:shadow-sm transition-all" />
+                    <input value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} type="text" placeholder="Prénom" className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-2.5 outline-none text-base italic text-slate-900 focus:bg-white focus:shadow-sm transition-all" />
+                    <input value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} type="text" placeholder="Nom" className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-2.5 outline-none text-base italic text-slate-900 focus:bg-white focus:shadow-sm transition-all" />
                   </div>
                 </section>
                 
@@ -558,7 +558,7 @@ export default function TherapistDashboard() {
                     type="datetime-local" 
                     value={formData.startTime} 
                     onChange={e => setFormData({...formData, startTime: e.target.value})} 
-                    className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 outline-none text-sm font-bold text-slate-900 focus:bg-white transition-all" 
+                    className="w-full bg-slate-50 border border-slate-50 rounded-2xl px-6 py-2.5 outline-none text-sm font-bold text-slate-900 focus:bg-white transition-all" 
                   />
                 </section>
 
@@ -595,7 +595,7 @@ export default function TherapistDashboard() {
                       <button 
                         key={st} 
                         onClick={() => setFormData({...formData, status: st})}
-                        className={`flex-1 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest border transition-all ${
+                        className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition-all ${
                           formData.status === st 
                             ? `${STATUS_CONFIG[st].color} border-transparent` 
                             : 'bg-slate-50 border-slate-50 text-slate-400'
@@ -612,14 +612,14 @@ export default function TherapistDashboard() {
                 <button 
                   onClick={handleSave} 
                   disabled={!formData.firstName}
-                  className="bg-black text-white py-6 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-black/10 hover:bg-slate-800 transition-all disabled:opacity-20 active:scale-[0.98]"
+                  className="bg-black text-white py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-black/10 hover:bg-slate-800 transition-all disabled:opacity-20 active:scale-[0.98]"
                 >
                   {editingId ? "Mettre à jour" : "Confirmer le soin"}
                 </button>
                 {editingId && (
                   <button 
                     onClick={() => handleDelete(editingId)} 
-                    className="flex items-center justify-center gap-2 text-rose-500 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 transition-all"
+                    className="flex items-center justify-center gap-2 text-rose-500 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 transition-all"
                   >
                     <Trash2 size={16} />
                     Supprimer le dossier

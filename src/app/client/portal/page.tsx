@@ -47,8 +47,8 @@ export default function ClientPortal() {
         <div className="bg-white p-12 rounded-[3rem] shadow-xl border border-slate-100 max-w-md w-full">
           <ShieldCheck className="h-16 w-16 text-slate-200 mx-auto mb-6" />
           <h1 className="text-3xl font-serif font-bold mb-4">Accès Personnel</h1>
-          <p className="text-muted-foreground font-serif italic mb-8">Veuillez vous identifier pour gérer vos séances et consulter vos recommandations personnalisées.</p>
-          <Button asChild className="w-full rounded-full py-7 bg-slate-950 text-white font-bold uppercase tracking-widest">
+          <p className="text-muted-foreground mb-8">Veuillez vous identifier pour gérer vos séances et consulter vos recommandations personnalisées.</p>
+          <Button asChild className="w-full rounded-full py-2.5 bg-slate-950 text-white font-bold uppercase tracking-widest">
             <Link href="/login">Se Connecter</Link>
           </Button>
         </div>
@@ -65,9 +65,9 @@ export default function ClientPortal() {
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Bienvenue</span>
             </div>
             <h1 className="text-5xl font-serif font-bold text-primary">{user.displayName || 'Client'}</h1>
-            <p className="text-muted-foreground font-serif italic mt-2">Votre sanctuaire personnel et historique de soins.</p>
+            <p className="text-muted-foreground mt-2 italic">Votre sanctuaire personnel et historique de soins.</p>
           </div>
-          <Button asChild className="rounded-full px-12 py-7 bg-slate-950 text-white font-bold uppercase tracking-widest shadow-xl">
+          <Button asChild className="rounded-full px-12 py-2.5 bg-slate-950 text-white font-bold uppercase tracking-widest shadow-xl">
             <Link href="/booking">Réserver un soin</Link>
           </Button>
         </header>
@@ -81,7 +81,7 @@ export default function ClientPortal() {
               {aptLoading && <Loader2 className="animate-spin text-slate-200" />}
               {!aptLoading && upcoming.length === 0 && (
                 <div className="p-16 text-center border-2 border-dashed border-slate-200 rounded-[3rem] bg-white/50">
-                  <p className="text-slate-400 font-serif italic">Aucune séance prévue pour le moment.</p>
+                  <p className="text-slate-400 italic">Aucune séance prévue pour le moment.</p>
                 </div>
               )}
               {upcoming.map((apt) => {
@@ -101,7 +101,7 @@ export default function ClientPortal() {
                           <Badge className="mt-4 rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-700 border-none font-bold uppercase tracking-widest text-[8px]">{apt.status}</Badge>
                         </div>
                         <div className="flex flex-wrap gap-4 mt-8">
-                          <Button variant="outline" className="rounded-full px-6 border-slate-200 text-[9px] font-bold uppercase tracking-widest">Gérer / Déplacer</Button>
+                          <Button variant="outline" className="rounded-full px-6 py-2 border-slate-200 text-[9px] font-bold uppercase tracking-widest">Gérer / Déplacer</Button>
                         </div>
                       </div>
                     </div>
@@ -121,7 +121,7 @@ export default function ClientPortal() {
                   return (
                     <div key={apt.id} className="bg-white border-none shadow-sm rounded-[2.5rem] p-8 flex flex-col md:flex-row items-center justify-between gap-8 transition-all hover:shadow-md">
                       <div className="flex items-center gap-8">
-                        <div className="h-16 w-16 rounded-2xl bg-slate-50 flex flex-col items-center justify-center">
+                        <div className="h-16 w-16 rounded-2xl bg-slate-50 flex items-center justify-center">
                           <span className="text-lg font-bold leading-none">{format(aptDate, 'd')}</span>
                           <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{format(aptDate, 'MMM')}</span>
                         </div>
@@ -132,7 +132,7 @@ export default function ClientPortal() {
                       </div>
                       <div className="flex items-center gap-10">
                         <p className="font-bold text-lg">CHF {service?.price || 0}</p>
-                        <Button variant="ghost" className="rounded-full px-6 py-2 bg-slate-50 hover:bg-slate-950 hover:text-white transition-all text-[9px] font-bold uppercase tracking-widest flex items-center gap-2">
+                        <Button variant="ghost" className="rounded-full px-6 py-2.5 bg-slate-50 hover:bg-slate-950 hover:text-white transition-all text-[9px] font-bold uppercase tracking-widest flex items-center gap-2">
                           <Download size={12} /> Facture PDF
                         </Button>
                       </div>
@@ -147,8 +147,8 @@ export default function ClientPortal() {
              <Card className="rounded-[3rem] border-none shadow-xl bg-slate-950 text-white p-10 relative overflow-hidden">
                 <Sparkles className="h-12 w-12 text-amber-500 mb-8" />
                 <h3 className="text-2xl font-serif font-bold mb-6">Bon à savoir !</h3>
-                <div className="space-y-6 text-sm font-serif italic text-white/70 leading-relaxed">
-                  <p>7 conseils pour prolonger les bienfaits de votre soin :</p>
+                <div className="space-y-6 text-sm text-white/70 leading-relaxed">
+                  <p className="italic">7 conseils pour prolonger les bienfaits de votre soin :</p>
                   <ul className="space-y-4">
                     {WELLNESS_TIPS.map((tip) => (
                       <li key={tip.id} className="flex gap-3 items-start">
@@ -171,7 +171,7 @@ export default function ClientPortal() {
                     <Sparkles className="h-2 w-2 text-amber-500" />
                   </div>
                 </div>
-                <p className="text-xs text-slate-600 font-serif italic">Plus que {10 - (past.length % 11)} séances avant votre massage offert !</p>
+                <p className="text-xs text-slate-600 italic">Plus que {10 - (past.length % 11)} séances avant votre massage offert !</p>
              </Card>
           </aside>
         </div>
