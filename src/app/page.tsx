@@ -130,7 +130,7 @@ const OverTitle = ({ children, className = "" }: { children: React.ReactNode, cl
 
 const SectionTitle = ({ main, italic, className = "" }: { main: string, italic: string, className?: string }) => (
   <h2 className={`text-5xl md:text-7xl font-serif font-medium text-neutral-900 leading-[0.9] tracking-tighter ${className}`}>
-    {main} <br/> <span className="text-neutral-400 italic font-light">{italic}</span>
+    {main} <br/> <span className="text-neutral-300 italic font-light">{italic}</span>
   </h2>
 );
 
@@ -145,14 +145,14 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className={`group w-full aspect-[3/4] bg-white rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 shadow-sm transition-all duration-700 ${staggered ? 'md:mt-12 lg:mt-16' : ''}`}
+    className={`group w-full aspect-[3/4] bg-white rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 ${staggered ? 'md:mt-12 lg:mt-16' : ''}`}
   >
     <div className="relative h-[62%] w-full overflow-hidden bg-neutral-100">
       <Image 
         src={s.image} 
         fill
         unoptimized
-        className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700 ease-out" 
+        className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700 ease-out [filter:contrast(0.95)_saturate(0.92)_brightness(1.05)]" 
         alt={s.name}
         data-ai-hint="luxury massage"
       />
@@ -231,7 +231,7 @@ export default function HomePage() {
               <OverTitle>L'Engagement João.</OverTitle>
               <h1 className="text-6xl md:text-8xl font-serif font-bold text-neutral-900 leading-[0.85] tracking-tighter">
                 L'équilibre<br />
-                <span className="text-neutral-400 italic font-light">par le toucher.</span>
+                <span className="text-neutral-300 italic font-light">par le toucher.</span>
               </h1>
             </motion.div>
             
@@ -244,7 +244,7 @@ export default function HomePage() {
                   Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
                 </SectionDesc>
                 <div className="pl-6 border-l-2 border-neutral-900/10 py-2">
-                   <p className="text-neutral-400 italic text-lg leading-snug">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
+                   <p className="text-neutral-600 italic text-lg leading-snug">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
                    <span className="font-cursive text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
               </div>
@@ -272,7 +272,7 @@ export default function HomePage() {
               <p className="text-xl md:text-2xl font-serif font-bold text-neutral-900 leading-tight italic mb-12">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <button className="inline-flex items-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
+              <button className="inline-flex items-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all">
                 Réserver un soin
               </button>
             </div>
@@ -348,7 +348,7 @@ export default function HomePage() {
                     {tip.id}
                   </span>
                   <div className="space-y-1">
-                    <h4 className={`text-sm font-sans font-black uppercase tracking-[0.2em] transition-colors duration-500 ${selectedTip === i ? 'text-neutral-900' : 'text-neutral-400 group-hover:text-neutral-600'}`}>
+                    <h4 className={`text-sm font-sans font-black uppercase tracking-[0.2em] transition-colors duration-500 ${selectedTip === i ? 'text-neutral-900' : 'text-neutral-600 group-hover:text-neutral-800'}`}>
                       {tip.title}
                     </h4>
                     {selectedTip === i && (
@@ -375,8 +375,8 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 md:gap-10 text-[9px] font-sans font-medium text-neutral-400 text-center">
-            <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Localisation</span> Alpha Business Center • Genève</p>
-            <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Contact</span> +41 78 333 68 23</p>
+            <p className="tracking-widest uppercase"><span className="text-neutral-700 font-black mr-2">Localisation</span> Alpha Business Center • Genève</p>
+            <p className="tracking-widest uppercase"><span className="text-neutral-700 font-black mr-2">Contact</span> +41 78 333 68 23</p>
           </div>
 
           <div className="flex items-center gap-6">
