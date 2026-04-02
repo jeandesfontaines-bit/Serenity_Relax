@@ -3,12 +3,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, Menu, 
-  Heart, Clock, Calendar, Sun, Instagram, MapPin, ShieldCheck, 
-  Leaf, User, Coffee
+  Heart, Clock, Calendar, Sun, Instagram, MapPin, 
+  Leaf, Coffee, X
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 
@@ -66,12 +65,7 @@ const RITUAL_STEPS = [
   { title: "Choisissez la douceur", desc: "Privilégiez des activités calmes pour prolonger la sensation de bien-être.", icon: Sun }
 ];
 
-const BENEFITS = [
-  { icon: Leaf, text: "Huiles Organiques", color: "text-emerald-500" },
-  { icon: User, text: "Approche Personnalisée", color: "text-amber-500" },
-  { icon: Coffee, text: "Cadre Discret", color: "text-slate-500" },
-  { icon: Sparkles, text: "Excellence João", color: "text-indigo-500" }
-];
+const PHOTO_JOAO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
 const GRAIN_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")`;
 
@@ -119,7 +113,7 @@ const GlobalStyle = () => (
   `}</style>
 );
 
-const ServiceCard = ({ s, staggered }: { s: typeof SERVICES[0], staggered: boolean }) => {
+const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => {
   const cardRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: cardRef,
@@ -226,18 +220,9 @@ export default function HomePage() {
               L'art du<br/>
               <span className="serif-italic font-light lowercase tracking-normal block ml-4 md:ml-12">mouvement calme.</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/80 font-fraunces italic font-light max-w-md leading-relaxed mb-12">
+            <p className="text-lg md:text-xl text-white/80 font-fraunces italic font-light max-w-md leading-relaxed">
               Un sanctuaire sensoriel confidentiel dédié à la restauration profonde du corps et de l'esprit.
             </p>
-            
-            <div className="flex flex-wrap gap-3">
-              {BENEFITS.map((b, i) => (
-                <div key={i} className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl text-[9px] font-bold uppercase tracking-widest text-white/80 border border-white/10">
-                  <b.icon className={`${b.color} opacity-60`} size={11} />
-                  <span>{b.text}</span>
-                </div>
-              ))}
-            </div>
           </motion.div>
 
           <motion.div 
@@ -254,15 +239,33 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- SECTION ENGAGEMENT JOÃO --- */}
+      {/* --- SECTION ENGAGEMENT JOÃO (SOUS LE HERO) --- */}
       <section className="py-24 md:py-32 px-6 md:px-10 bg-[#F9F9F7]">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          <div className="lg:col-span-5">
-             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 block mb-6">La Philosophie</span>
-             <h2 className="text-4xl md:text-6xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900">
-               L'Engagement <span className="serif-italic font-light lowercase">João.</span>
-             </h2>
+          <div className="lg:col-span-5 flex flex-col justify-between">
+             <div>
+               <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 block mb-6">La Philosophie</span>
+               <h2 className="text-4xl md:text-6xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 mb-12 lg:mb-20">
+                 L'Engagement <span className="serif-italic font-light lowercase">João.</span>
+               </h2>
+             </div>
+             
+             {/* Portrait João intégré */}
+             <motion.div 
+               initial={{ opacity: 0, scale: 0.95 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               viewport={{ once: true }}
+               transition={{ duration: 1 }}
+               className="relative aspect-[4/5] w-full max-w-sm rounded-[3rem] overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000 hidden lg:block border border-white"
+             >
+                <img 
+                  src={PHOTO_JOAO} 
+                  className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000"
+                  alt="João - Serenity Relax"
+                />
+             </motion.div>
           </div>
+          
           <div className="lg:col-span-7 space-y-12">
             <div className="space-y-6">
               <p className="text-xl md:text-2xl font-fraunces font-light text-neutral-700 leading-snug">
@@ -270,7 +273,7 @@ export default function HomePage() {
               </p>
             </div>
             
-            <div className="relative py-12 px-8 bg-white rounded-[2rem] border border-neutral-100 italic">
+            <div className="relative py-12 px-8 bg-white/50 rounded-[2rem] border border-neutral-100 italic">
                <span className="absolute -top-6 left-10 text-8xl font-serif text-neutral-100 select-none">“</span>
                <p className="text-2xl md:text-3xl font-fraunces text-neutral-900 leading-tight">
                  « Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
@@ -280,6 +283,15 @@ export default function HomePage() {
                  Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
                </p>
             </div>
+
+            {/* Photo mobile */}
+            <div className="lg:hidden relative aspect-[4/5] w-full max-w-md rounded-[3rem] overflow-hidden shadow-xl grayscale hover:grayscale-0 transition-all border border-white">
+                <img 
+                  src={PHOTO_JOAO} 
+                  className="w-full h-full object-cover"
+                  alt="João - Serenity Relax"
+                />
+             </div>
           </div>
         </div>
       </section>
@@ -355,7 +367,7 @@ export default function HomePage() {
               </motion.div>
             ))}
             
-            {/* CTA Final */}
+            {/* CTA Final pour le rituel */}
             <Link href="/booking" className="lg:col-span-1 bg-neutral-900 rounded-3xl p-8 flex flex-col justify-between text-white group cursor-pointer overflow-hidden relative">
               <div className="relative z-10 space-y-4">
                 <span className="text-[7px] font-black uppercase tracking-[0.3em] text-white/50">Engagement</span>
