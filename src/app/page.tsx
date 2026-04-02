@@ -3,55 +3,69 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, Menu, 
-  Heart, Clock, Calendar, Sun, Instagram, MapPin, 
-  Leaf, Coffee, X
+  Heart, Clock, Calendar, Sun, Instagram, Activity,
+  ShieldCheck, Check, ChevronRight
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 
 // --- DATA ---
 const SERVICES = [
-  { 
-    id: "01", 
-    name: "Rituel Thérapeutique", 
-    duration: "60 MIN", 
-    intensity: 4,
-    icon: Sparkles,
-    image: "https://images.unsplash.com/photo-1544126592-807daa215671?auto=format&fit=crop&q=80&w=1000",
-    desc: "Libération des tensions profondes et restauration de l'équilibre corporel signé João.", 
-    tag: "Excellence"
+  {
+    id: "01",
+    name: "Massage Thérapeutique & Relaxant",
+    duration: "60 MIN",
+    icon: <Sparkles size={22} strokeWidth={1.5} />,
+    glow: "#E8F2F0",
+    desc: "Approche personnalisée pour relâcher les tensions et apaiser le mental. Rééquilibre le corps en profondeur.",
+    tag: "Soin Ciblé"
   },
-  { 
-    id: "02", 
-    name: "Deep Relax Signature", 
-    duration: "60 MIN", 
-    intensity: 2,
-    icon: Moon,
-    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&q=80&w=1000",
-    desc: "Immersion sensorielle confidentielle conçue pour un lâcher-prise immédiat.", 
+  {
+    id: "02",
+    name: "Deep Relax Signature",
+    duration: "60 MIN",
+    icon: <Moon size={22} strokeWidth={1.5} />,
+    glow: "#E8F0F2",
+    desc: "Rituel exclusif pour une déconnexion sensorielle totale et un lâcher-prise immédiat.",
     tag: "Sérénité"
   },
-  { 
-    id: "03", 
-    name: "Kalari Thérapeutique", 
-    duration: "75 MIN", 
-    intensity: 5,
-    icon: Wind,
-    image: "https://images.unsplash.com/photo-1614859324967-bdf781b9c897?auto=format&fit=crop&q=80&w=1000",
-    desc: "Rééquilibre des flux énergétiques selon les traditions anciennes.", 
+  {
+    id: "03",
+    name: "Massage Kalari Thérapeutique",
+    duration: "75 MIN",
+    icon: <Wind size={22} strokeWidth={1.5} />,
+    glow: "#F2EDE8",
+    desc: "Technique ancestrale indienne stimulant les points vitaux pour rééquilibrer les flux énergétiques.",
     tag: "Tradition"
   },
-  { 
-    id: "04", 
-    name: "Drainage Lymphatique", 
-    duration: "60 MIN", 
-    intensity: 2,
-    icon: Droplets,
-    image: "https://images.unsplash.com/photo-1591343395582-99bf4eb11abc?auto=format&fit=crop&q=80&w=1000",
-    desc: "Technique rythmique de pointe pour éliminer les toxines.", 
+  {
+    id: "04",
+    name: "Drainage Lymphatique & Détox",
+    duration: "60 MIN",
+    icon: <Droplets size={22} strokeWidth={1.5} />,
+    glow: "#F0F4F8",
+    desc: "Soin fluide et rythmique pour améliorer la circulation et éliminer les toxines du corps.",
     tag: "Détox"
+  },
+  {
+    id: "05",
+    name: "Deep Tissue Performance",
+    duration: "60 MIN",
+    icon: <Activity size={22} strokeWidth={1.5} />,
+    glow: "#E8EBF2",
+    desc: "Massage profond ciblant les fascias et les muscles intensément sollicités. Idéal récupération.",
+    tag: "Performance"
+  },
+  {
+    id: "06",
+    name: "Massage Thaï Huiles Chaudes",
+    duration: "60 MIN",
+    icon: <Sun size={22} strokeWidth={1.5} />,
+    glow: "#F2E8E8",
+    desc: "Alliance d'étirements doux et de chaleur pour une vitalité retrouvée et une souplesse accrue.",
+    tag: "Vitalité"
   }
 ];
 
@@ -90,107 +104,90 @@ const GlobalStyle = () => (
       opacity: 0.1;
     }
 
-    .luxury-btn::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      bottom: -2px;
-      left: 0;
-      background: currentColor;
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-    .luxury-btn:hover::after {
-      transform: scaleX(1);
-      transform-origin: left;
+    .hero-title-mask {
+      overflow: hidden;
+      display: block;
     }
 
-    .hero-mask {
-      clip-path: inset(0 0 0 0 round 0 0 3rem 3rem);
+    @keyframes morph {
+      0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+      50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+      100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
     }
+    .blob-shape { animation: morph 12s ease-in-out infinite; will-change: border-radius; }
   `}</style>
 );
 
-const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => {
-  const cardRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"]
-  });
-
-  const yImage = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+const PortraitCard = ({ service }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const r = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    cardRef.current.style.setProperty('--card-x', `${(x / r.width) * 100}%`);
+    cardRef.current.style.setProperty('--card-y', `${(y / r.height) * 100}%`);
+    cardRef.current.style.setProperty('--glow-color', `${service.glow}80`);
+  };
 
   return (
-    <motion.div
+    <motion.div 
       ref={cardRef}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1 }}
-      className={`w-full aspect-[4/6.5] bg-white rounded-[2.5rem] flex flex-col overflow-hidden relative group hover:shadow-xl transition-all duration-700 ${staggered ? 'md:mt-24' : ''}`}
+      onMouseMove={handleMove}
+      whileHover={{ y: -6 }}
+      className="relative w-full aspect-[3/4.2] rounded-[3rem] bg-white border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(17,17,17,0.08)] hover:border-slate-200 transition-all duration-500 cursor-pointer overflow-hidden group flex flex-col p-8 md:p-10 justify-between"
     >
-      <div className="relative h-[55%] w-full overflow-hidden bg-neutral-100">
-        <motion.img 
-          style={{ y: yImage, scale: 1.1 }}
-          src={s.image} 
-          className="absolute inset-0 w-full h-[120%] object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000"
-          alt={s.name}
-        />
-        <div className="absolute top-6 left-8 flex flex-col gap-1">
-           <span className="text-[7px] font-black uppercase tracking-[0.4em] text-white/90">{s.tag}</span>
+      <div
+        className="absolute inset-0 opacity-30 group-hover:opacity-70 transition-opacity duration-700 pointer-events-none"
+        style={{ background: `linear-gradient(145deg, transparent 30%, ${service.glow} 100%)` }}
+      />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none mix-blend-multiply" 
+           style={{ 
+             background: `radial-gradient(circle at var(--card-x, 50%) var(--card-y, 50%), var(--glow-color, rgba(0,0,0,0.02)) 0%, transparent 70%)` 
+           }} 
+      />
+      
+      <div className="space-y-6 relative z-10">
+        <div className="flex justify-between items-start">
+          <div className="w-12 h-12 rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-slate-50 flex items-center justify-center text-primary transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] group-hover:-rotate-3">
+            {React.cloneElement(service.icon, { size: 22, strokeWidth: 1.5 })}
+          </div>
+          <span className="text-[9px] font-extrabold uppercase tracking-[0.2em] text-slate-300 group-hover:text-primary transition-colors duration-500">{service.tag}</span>
         </div>
-        <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center border border-white/20">
-          {React.createElement(s.icon, { size: 16, className: "text-neutral-900", strokeWidth: 1 })}
+        
+        <div className="space-y-3">
+          <h3 className="text-2xl font-fraunces font-bold text-primary leading-[1.1] tracking-tight group-hover:translate-x-1 transition-transform duration-500">
+            {service.name}
+          </h3>
+          <p className="text-[12px] text-slate-400 font-medium leading-relaxed opacity-80 group-hover:opacity-100 line-clamp-3 transition-opacity duration-500">
+            {service.desc}
+          </p>
         </div>
       </div>
 
-      <div className="flex-1 p-8 md:p-10 flex flex-col justify-between">
-        <div className="space-y-4">
-          <div className="flex justify-between items-start">
-             <h3 className="text-xl md:text-2xl font-fraunces font-semibold tracking-tight text-neutral-900 leading-tight max-w-[85%]">
-              {s.name}
-            </h3>
-            <span className="text-[9px] font-medium text-neutral-300 italic font-fraunces">{s.id}</span>
+      <div className="flex justify-between items-end relative z-10 pt-6 border-t border-slate-100 group-hover:border-slate-200 transition-colors duration-500">
+        <div>
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <Clock size={11} className="text-slate-300 group-hover:text-primary/60 transition-colors duration-500" />
+            <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-primary/80 transition-colors duration-500">{service.duration}</span>
           </div>
-          <p className="text-neutral-400 text-xs md:text-sm leading-relaxed">
-            {s.desc}
-          </p>
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest opacity-40 group-hover:opacity-60 transition-opacity duration-500">Séance</span>
         </div>
-
-        <div className="pt-6 flex items-end justify-between border-t border-neutral-50">
-          <div className="space-y-3">
-            <span className="text-[7px] font-bold text-neutral-300 tracking-[0.3em] uppercase block">Intensité</span>
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className={`h-[1px] w-3 rounded-full ${i < s.intensity ? 'bg-neutral-900' : 'bg-neutral-100'}`} />
-              ))}
-            </div>
-          </div>
-          <div className="text-right">
-            <span className="text-xs md:text-sm font-fraunces font-bold text-neutral-900 block mb-2">{s.duration}</span>
-            <Link href="/booking" className="w-10 h-10 rounded-full border border-neutral-100 flex items-center justify-center group-hover:bg-neutral-900 group-hover:text-white transition-all">
-              <Plus size={16} />
-            </Link>
-          </div>
-        </div>
+        
+        <Link href="/booking" className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 group-hover:shadow-[0_8px_20px_rgba(17,17,17,0.2)]">
+          <Plus size={20} strokeWidth={2} className="group-hover:rotate-90 transition-transform duration-500" />
+        </Link>
       </div>
     </motion.div>
   );
 };
 
 export default function HomePage() {
-  const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 500], [0, 150]);
   const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
+  const titleY = useTransform(scrollY, [0, 500], [0, -100]);
 
   return (
     <div className="min-h-screen relative grained bg-[#F9F9F7] selection:bg-neutral-900 selection:text-white">
@@ -198,51 +195,37 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Header */}
-      <section className="relative h-[90vh] w-full overflow-hidden hero-mask bg-[#1a1a1a]">
+      <header className="relative h-screen flex items-center px-6 md:px-20 overflow-hidden bg-[#1a1a1a]">
         <motion.div style={{ y: yHero, opacity: opacityHero }} className="absolute inset-0">
           <img 
             src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=2000" 
             className="w-full h-full object-cover opacity-50 scale-105"
-            alt="Détail zen et minimaliste"
+            alt="Détail zen"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#F9F9F7]" />
         </motion.div>
 
-        <div className="relative h-full max-w-[1400px] mx-auto px-6 md:px-10 flex flex-col justify-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-            className="max-w-4xl"
-          >
-            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.6em] text-white/70 block mb-6">Genève • Cointrin</span>
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-fraunces font-black tracking-tighter leading-[0.85] uppercase text-white mb-8">
-              L'art du<br/>
-              <span className="serif-italic font-light lowercase tracking-normal block ml-4 md:ml-20">mouvement calme.</span>
-            </h1>
-            <p className="text-lg md:text-2xl text-white/80 font-fraunces italic font-light max-w-xl leading-relaxed">
-              Un sanctuaire sensoriel confidentiel dédié à la restauration profonde du corps et de l'esprit.
-            </p>
+        <motion.div style={{ y: titleY }} className="max-w-5xl relative z-20 w-full pt-20">
+          <span className="hero-title-mask">
+            <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1 }} className="block text-[10px] font-bold uppercase tracking-[0.5em] text-white/70 mb-6">Expertise & Bien-être • Genève</motion.span>
+          </span>
+          <h2 className="text-[clamp(3rem,10vw,8rem)] font-fraunces font-black leading-[0.85] tracking-tighter mb-12 text-white uppercase">
+            <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 }} className="block">L'art du</motion.span></span>
+            <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.2 }} className="block serif-italic font-light lowercase tracking-normal ml-[8vw]">mouvement calme.</motion.span></span>
+          </h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="flex flex-col md:flex-row items-end gap-12 ml-[8vw]">
+            <p className="max-w-[320px] text-sm md:text-lg text-white/80 font-fraunces italic font-light leading-relaxed">Un sanctuaire sensoriel confidentiel dédié à la restauration profonde du corps et de l'esprit.</p>
+            <Link href="/booking" className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white group cursor-pointer">
+              <div className="w-px h-12 bg-white/20 group-hover:h-16 transition-all duration-500" /> Réserver un rituel
+            </Link>
           </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
-            className="absolute bottom-12 left-6 md:left-10"
-          >
-            <div className="flex items-center gap-4 text-white/40">
-              <div className="w-12 h-[1px] bg-white/20" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Faites défiler pour explorer</span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+        </motion.div>
+      </header>
 
       {/* --- SECTION ENGAGEMENT JOÃO --- */}
       <section className="py-24 md:py-32 px-6 md:px-10 bg-[#F9F9F7]">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 relative">
              <span className="text-xs font-black uppercase tracking-[0.6em] text-neutral-400 block mb-8">La Philosophie</span>
              <h2 className="text-4xl md:text-6xl lg:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 mb-12">
                L'Engagement <span className="serif-italic font-light lowercase">João.</span>
@@ -253,22 +236,16 @@ export default function HomePage() {
                whileInView={{ opacity: 1, scale: 1 }}
                viewport={{ once: true }}
                transition={{ duration: 1 }}
-               className="relative aspect-[4/5] w-full max-w-md rounded-[3rem] overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000 hidden lg:block border border-white"
+               className="relative aspect-[4/5] w-full max-w-sm rounded-[3rem] overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000 hidden lg:block border border-white"
              >
-                <img 
-                  src={PHOTO_JOAO} 
-                  className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000"
-                  alt="João - Serenity Relax"
-                />
+                <img src={PHOTO_JOAO} className="w-full h-full object-cover" alt="João" />
              </motion.div>
           </div>
           
           <div className="lg:col-span-7 space-y-12">
-            <div className="space-y-8">
-              <p className="text-xl md:text-3xl font-fraunces font-light text-neutral-700 leading-snug">
-                Je ne pratique pas seulement le massage ; je sculpte un <span className="font-bold text-neutral-900">espace de décompression</span>. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
-              </p>
-            </div>
+            <p className="text-xl md:text-3xl font-fraunces font-light text-neutral-700 leading-snug">
+              Je ne pratique pas seulement le massage ; je sculpte un <span className="font-bold text-neutral-900">espace de décompression</span>. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
+            </p>
             
             <div className="relative py-12 md:py-16 px-10 bg-white/50 rounded-[2.5rem] border border-neutral-100 italic">
                <span className="absolute -top-10 left-10 text-9xl font-serif text-neutral-100 select-none opacity-50">“</span>
@@ -280,55 +257,38 @@ export default function HomePage() {
                  Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
                </p>
             </div>
-
-            {/* Photo mobile */}
-            <div className="lg:hidden relative aspect-[4/5] w-full max-w-md rounded-[3rem] overflow-hidden shadow-xl grayscale hover:grayscale-0 transition-all border border-white">
-                <img 
-                  src={PHOTO_JOAO} 
-                  className="w-full h-full object-cover"
-                  alt="João - Serenity Relax"
-                />
-             </div>
+            
+            <div className="lg:hidden aspect-[4/5] w-full max-w-xs rounded-[2.5rem] overflow-hidden shadow-xl grayscale">
+                <img src={PHOTO_JOAO} className="w-full h-full object-cover" alt="João mobile" />
+            </div>
           </div>
         </div>
       </section>
       
       <main className="px-6 md:px-10 max-w-[1400px] mx-auto">
         {/* Section Soins */}
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 pb-32">
-          <div className="w-full lg:w-[30%] lg:sticky lg:top-32 h-fit">
+        <section className="flex flex-col lg:flex-row gap-16 lg:gap-24 pb-32">
+          <div className="w-full lg:w-4/12 lg:sticky lg:top-32 h-fit">
             <div className="space-y-12">
               <div className="space-y-6">
                 <div className="w-12 h-[1px] bg-neutral-900 opacity-20" />
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] uppercase text-neutral-900">
-                  Soin<br/>
-                  <span className="serif-italic font-light lowercase tracking-normal block">D'exception.</span>
+                <h2 className="text-4xl md:text-6xl font-fraunces font-black tracking-tighter leading-[1] uppercase text-neutral-900 italic">
+                  La Carte<br/>
+                  <span className="serif-italic font-light lowercase tracking-normal block">Rituels.</span>
                 </h2>
               </div>
-              
-              <div className="space-y-10 max-w-sm">
-                <p className="text-xl md:text-2xl text-neutral-500 leading-relaxed font-fraunces italic font-light border-l-2 border-neutral-100 pl-8">
-                  "Une approche architecturale du massage pour une libération immédiate."
-                </p>
-                
-                <div className="flex flex-col gap-8">
-                  <Link href="/booking" className="group flex items-center gap-6">
-                    <div className="w-14 h-14 rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-lg transition-all group-hover:bg-neutral-800">
-                       <ArrowRight size={20} strokeWidth={1} />
-                    </div>
-                    <span className="text-xs font-black uppercase tracking-[0.5em] text-neutral-900">Prendre rendez-vous</span>
-                  </Link>
-                </div>
-              </div>
+              <p className="text-xl text-neutral-400 leading-relaxed font-fraunces italic font-light max-w-xs">
+                Une approche précise de la massothérapie pour un équilibre musculaire et nerveux optimal.
+              </p>
             </div>
           </div>
 
-          <div className="w-full lg:w-[70%] grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-16">
-            {SERVICES.map((s, i) => (
-              <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
+          <div className="w-full lg:w-8/12 grid grid-cols-1 md:grid-cols-2 gap-8 py-10">
+            {SERVICES.map((s) => (
+              <PortraitCard key={s.id} service={s} />
             ))}
           </div>
-        </div>
+        </section>
 
         {/* Section Rituel Post-Soin */}
         <section className="pt-24 border-t border-neutral-100 pb-32">
@@ -337,9 +297,6 @@ export default function HomePage() {
             <h2 className="text-4xl md:text-6xl font-fraunces font-black tracking-tighter uppercase text-neutral-900">
               Le Rituel <span className="serif-italic font-light lowercase">Post-Soin</span>
             </h2>
-            <p className="text-neutral-500 max-w-2xl text-base md:text-lg leading-relaxed italic">
-              Quelques attentions essentielles pour accueillir pleinement les bienfaits de votre séance dans les heures qui suivent.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-20">
@@ -352,29 +309,26 @@ export default function HomePage() {
                 transition={{ delay: i * 0.1, duration: 0.8 }}
                 className="group flex flex-col space-y-6"
               >
-                <div className="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 transition-all duration-500">
-                  {React.createElement(step.icon, { size: 20, strokeWidth: 1.2 })}
+                <div className="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white transition-all">
+                  {React.createElement(step.icon as any, { size: 20, strokeWidth: 1.2 })}
                 </div>
                 <div className="space-y-3">
                   <h4 className="font-fraunces font-bold text-neutral-900 text-lg">{step.title}</h4>
-                  <p className="text-neutral-400 text-sm leading-relaxed">
-                    {step.desc}
-                  </p>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{step.desc}</p>
                 </div>
               </motion.div>
             ))}
             
-            {/* CTA Final */}
-            <Link href="/booking" className="lg:col-span-1 bg-neutral-900 rounded-[2.5rem] p-10 flex flex-col justify-between text-white group cursor-pointer overflow-hidden relative shadow-2xl">
+            <Link href="/booking" className="lg:col-span-1 bg-neutral-900 rounded-[3rem] p-10 flex flex-col justify-between text-white group relative overflow-hidden shadow-2xl">
               <div className="relative z-10 space-y-6">
                 <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/50">Engagement</span>
-                <p className="font-fraunces text-xl md:text-2xl leading-tight">Prêt pour votre prochain moment de calme ?</p>
+                <p className="font-fraunces text-2xl leading-tight">Prêt pour votre prochain moment ?</p>
               </div>
               <div className="relative z-10 flex justify-between items-center mt-10">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Réserver</span>
                 <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
               </div>
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
+              <div className="absolute top-0 right-0 p-6 opacity-10">
                 <Sparkles size={80} strokeWidth={0.5} />
               </div>
             </Link>
@@ -383,8 +337,6 @@ export default function HomePage() {
       </main>
 
       <footer className="py-24 px-6 bg-neutral-900 text-white overflow-hidden relative">
-        <div className="absolute bottom-0 right-0 w-[60%] h-[60%] bg-white/5 rounded-full blur-[120px] -mb-32 -mr-32 pointer-events-none" />
-        
         <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-start gap-20 relative z-10">
           <div className="space-y-8">
             <h2 className="font-fraunces font-bold text-xs tracking-[0.3em] uppercase leading-none">
