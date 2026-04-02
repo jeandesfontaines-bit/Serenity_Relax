@@ -23,12 +23,6 @@ const SERVICES = [
   { id: "08", name: "Massage Thaï", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale." }
 ];
 
-const AFTERCARE = [
-  { id: "01", tag: "Hydratation", title: "Accueillez l'eau", desc: "L'eau alcaline aide votre système lymphatique à drainer les toxines libérées pendant le soin." },
-  { id: "02", tag: "Repos", title: "Prenez votre temps", desc: "Accordez-vous un temps de calme absolu pour permettre à votre corps d'ancrer les bienfaits." },
-  { id: "03", tag: "Prudence", title: "Évitez l'alcool", desc: "Votre organisme est en phase de récupération. Soyez à l'écoute de vos sensations intérieures." }
-];
-
 const ServiceCard = ({ s }: { s: any }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
@@ -173,51 +167,6 @@ export default function HomePage() {
                     <ServiceCard key={s.id} s={s} />
                   ))}
                </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION AFTERCARE */}
-      <section className="py-48 px-6 md:px-12 bg-white">
-        <div className="max-w-screen-xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
-            <div className="space-y-16">
-              <div className="space-y-4">
-                <h3 className="text-5xl font-serif text-[#2C2C2C] leading-none">Optimiser <br/><span className="italic font-light text-[#4A5D45]">votre soin.</span></h3>
-                <p className="text-[#6D6D6D] text-[16px] font-light max-w-sm">Les bénéfices se révèlent dans les heures qui suivent.</p>
-              </div>
-              
-              <div className="space-y-12">
-                {AFTERCARE.map(item => (
-                  <motion.div key={item.id} initial={{ opacity: 0, x: -15 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="group">
-                    <div className="flex items-start gap-8 pb-10 border-b border-[#E8E6E1]">
-                      <span className="text-[11px] font-bold text-[#4A5D45]/40 mt-1">{item.id}</span>
-                      <div className="space-y-3">
-                        <span className="text-[8px] font-bold tracking-[0.4em] text-[#4A5D45] uppercase">{item.tag}</span>
-                        <h4 className="text-2xl font-serif text-[#2C2C2C]">{item.title}</h4>
-                        <p className="text-[14px] text-[#6D6D6D] font-light leading-relaxed max-w-xs">{item.desc}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-[#4A5D45] rounded-[5rem] p-16 text-white shadow-xl relative overflow-hidden min-h-[600px] flex flex-col justify-between">
-              <div className="space-y-8 relative z-10">
-                <h2 className="text-6xl font-serif leading-[0.9]">Retrouver<br /><span className="italic font-light opacity-50">son essence.</span></h2>
-                <p className="text-white/70 font-light leading-relaxed text-lg max-w-xs">
-                  Le silence est le meilleur complément du massage. Après votre rendez-vous, privilégiez le calme.
-                </p>
-              </div>
-              
-              <div className="relative z-10 space-y-8">
-                <button className="bg-white text-[#4A5D45] px-10 py-5 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:scale-105 transition-all duration-500 shadow-xl">
-                  Prendre rendez-vous
-                </button>
-              </div>
-              <div className="absolute bottom-10 right-10 font-cursive text-[120px] opacity-10 rotate-[-10deg] pointer-events-none">Serenity</div>
             </div>
           </div>
         </div>
