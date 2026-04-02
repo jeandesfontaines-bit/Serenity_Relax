@@ -136,7 +136,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[8rem_3rem_10rem_4rem] shadow-2xl w-full max-w-[380px]"
+              className="relative aspect-[4/5] overflow-hidden rounded-[10rem_4rem_12rem_6rem] shadow-2xl w-full max-w-[380px]"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -146,7 +146,7 @@ export default function HomePage() {
                 alt="Portrait de João P."
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent" />
             </motion.div>
           </div>
 
@@ -164,11 +164,11 @@ export default function HomePage() {
               <SectionDesc className="text-neutral-800">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </SectionDesc>
-              <div className="space-y-6">
-                <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed text-center lg:text-left">
+              <div className="space-y-6 text-center lg:text-left">
+                <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed">
                   Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
                 </p>
-                <div className="pl-6 border-l-2 border-neutral-900/10 py-2 text-center lg:text-left">
+                <div className="pl-6 border-l-2 border-neutral-900/10 py-2">
                    <p className="text-neutral-800 italic text-xl leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
                    <span className="font-cursive text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
@@ -216,46 +216,49 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN - STYLE ÉDITORIAL LIGNES */}
-      <section className="pt-24 pb-16 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
+      {/* RITUEL POST-SOIN - STYLE ÉDITORIAL AVEC COLONNE FIXE À DROITE */}
+      <section className="py-24 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-24 text-center md:text-right">
-            <div className="hidden md:block h-[1px] flex-1 bg-neutral-100 mb-8 mr-12" />
-            <div>
+          <div className="flex flex-col lg:flex-row gap-24 items-start">
+            
+            {/* LISTE À GAUCHE */}
+            <div className="w-full lg:w-[70%] space-y-0 border-t border-neutral-100">
+               {AFTERCARE_TIPS.map((tip) => (
+                <div key={tip.id} className="group py-16 px-0 border-b border-neutral-100 flex flex-col md:flex-row items-start md:items-center gap-12 transition-all duration-700 hover:bg-neutral-50/30">
+                  <div className="flex items-center gap-12 min-w-[120px]">
+                    <span className="text-sm font-sans font-black text-neutral-200 uppercase tracking-widest">{tip.id}</span>
+                    <div className="w-12 h-12 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-700">
+                      <tip.icon size={18} strokeWidth={1.5} />
+                    </div>
+                  </div>
+                  
+                  <div className="flex-1 space-y-6">
+                    <h4 className="text-xs font-sans font-black uppercase tracking-[0.3em] text-neutral-900 leading-none">
+                      {tip.title}
+                    </h4>
+                    <div className="space-y-4">
+                      <p className="text-neutral-900 text-2xl font-serif font-medium leading-tight">
+                        {tip.advice}
+                      </p>
+                      <p className="text-neutral-500 text-base font-sans font-medium leading-relaxed max-w-2xl">
+                        {tip.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* TEXTE À DROITE (STICKY) */}
+            <div className="w-full lg:w-[30%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
               <OverTitle className="mb-2">Rituel Post-Séance</OverTitle>
               <SectionTitle main="Prolonger" italic="l'état de grâce." />
+              <div className="h-[2px] w-12 bg-neutral-900 my-8 mx-auto lg:mr-0 lg:ml-auto" />
+              <SectionDesc className="text-neutral-800">
+                Quelques attentions pour ancrer les bienfaits du soin dans la durée.
+              </SectionDesc>
             </div>
-          </div>
-          
-          <div className="grid grid-cols-1 gap-0 border-t border-neutral-100">
-            {AFTERCARE_TIPS.map((tip) => (
-              <div key={tip.id} className="group py-16 px-0 border-b border-neutral-100 flex flex-col md:flex-row items-start md:items-center gap-12 transition-all duration-700 hover:bg-neutral-50/30">
-                <div className="flex items-center gap-12 min-w-[120px]">
-                  <span className="text-sm font-sans font-black text-neutral-200 uppercase tracking-widest">{tip.id}</span>
-                  <div className="w-12 h-12 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-700">
-                    <tip.icon size={18} strokeWidth={1.5} />
-                  </div>
-                </div>
-                
-                <div className="flex-1 space-y-6">
-                  <h4 className="text-xs font-sans font-black uppercase tracking-[0.3em] text-neutral-900 leading-none">
-                    {tip.title}
-                  </h4>
-                  <div className="space-y-4">
-                    <p className="text-neutral-900 text-2xl font-serif font-medium leading-tight">
-                      {tip.advice}
-                    </p>
-                    <p className="text-neutral-500 text-base font-sans font-medium leading-relaxed max-w-2xl">
-                      {tip.desc}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="hidden md:block">
-                  <ArrowRight size={24} className="text-neutral-100 group-hover:text-neutral-900 group-hover:translate-x-4 transition-all duration-700" />
-                </div>
-              </div>
-            ))}
+
           </div>
         </div>
       </section>
