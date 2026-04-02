@@ -35,7 +35,7 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-serif font-medium tracking-tight;
   }
   p, span, div, li, input, textarea, button {
     @apply font-sans;
@@ -54,7 +54,7 @@
   }
 
   .high-end-card {
-    @apply bg-white transition-all duration-500 hover:-translate-y-2;
+    @apply bg-white transition-all duration-500;
     box-shadow: 0 10px 40px rgba(0,0,0,0.03);
   }
 
