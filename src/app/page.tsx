@@ -76,6 +76,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
       <Image 
         src={s.image} 
         fill
+        unoptimized
         className="object-cover transition-all duration-700 ease-out [filter:contrast(0.95)_saturate(0.92)_brightness(1.05)]" 
         alt={s.name}
       />
@@ -86,7 +87,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-8 flex flex-col justify-between bg-white z-20">
       <div className="space-y-3">
-        <h3 className="text-2xl font-serif font-medium tracking-[0.02em] text-neutral-900 leading-tight capitalize">{s.name.split(' - ')[0].toLowerCase()}</h3>
+        <h3 className="text-2xl font-serif font-medium tracking-[0.02em] text-neutral-900 leading-tight capitalize">{s.name.toLowerCase()}</h3>
         <p className="text-neutral-600 text-[11px] font-sans font-medium leading-relaxed line-clamp-3">{s.desc}</p>
       </div>
       <div className="pt-4 flex items-center justify-between border-t border-neutral-50">
@@ -208,7 +209,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
             
-            <div className="w-full lg:w-[64%] space-y-0 border-t border-neutral-100">
+            <div className="w-full lg:w-[72%] space-y-0 border-t border-neutral-100">
                {AFTERCARE_TIPS.map((tip) => (
                 <div key={tip.id} className="group py-16 px-0 border-b border-neutral-100 flex flex-col md:flex-row items-start md:items-center gap-12 transition-all duration-700 hover:bg-neutral-50/30">
                   <div className="flex items-center gap-12 min-w-[120px]">
