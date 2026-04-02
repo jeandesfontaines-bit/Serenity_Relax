@@ -37,10 +37,7 @@ const ServiceCard = ({ s }: { s: any }) => (
     viewport={{ once: true }}
     className="relative w-full max-w-[280px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group"
   >
-    <div 
-      className="relative aspect-square overflow-hidden mb-6 transition-all duration-700 group-hover:scale-105" 
-      style={{ borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' }}
-    >
+    <div className="relative aspect-square overflow-hidden mb-6 rounded-[2rem]">
       <Image 
         src={s.image} 
         fill
@@ -90,7 +87,7 @@ export default function HomePage() {
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
               className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[420px]"
-              style={{ borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%' }}
+              style={{ borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' }}
             >
               <Image 
                 src={MY_PHOTO} 
@@ -132,7 +129,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION SERVICES */}
-      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 bg-[#FDFCFB]">
+      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 bg-[#FAF9F6]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -199,9 +196,9 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-neutral-900 text-white pt-12 pb-16 px-6">
+      <footer className="bg-neutral-900 text-white pt-16 pb-20 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
             <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-white/50 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
