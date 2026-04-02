@@ -153,17 +153,17 @@ export default function HomePage() {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }} 
+            initial={{ opacity: 0, scale: 0.9 }} 
             animate={{ opacity: 1, scale: 1 }} 
             transition={{ duration: 1.5 }}
             className="relative flex justify-center lg:justify-end"
           >
-            <div className="aspect-[4/5] w-full max-w-[340px] md:max-w-[380px] rounded-[3rem] md:rounded-[4rem] overflow-hidden shadow-2xl border-[6px] md:border-[8px] border-white group relative">
+            <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[420px] shadow-2xl group border-[6px] md:border-[8px] border-white/20">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 alt="João" 
                 fill
-                className="object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-102"
+                className="object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent opacity-40" />
             </div>
