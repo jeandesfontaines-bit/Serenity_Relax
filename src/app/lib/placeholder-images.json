@@ -1,3 +1,4 @@
+
 {
   "placeholderImages": [
     {
@@ -15,49 +16,49 @@
     {
       "id": "service-1",
       "description": "Massage aux Bambous",
-      "imageUrl": "https://picsum.photos/seed/bamboo-massage/800/1000",
+      "imageUrl": "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75",
       "imageHint": "bamboo massage"
     },
     {
       "id": "service-2",
       "description": "Drainage Lymphatique",
-      "imageUrl": "https://picsum.photos/seed/lymph-drainage/800/1000",
+      "imageUrl": "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75",
       "imageHint": "lymphatic massage"
     },
     {
       "id": "service-3",
       "description": "Aromathérapie",
-      "imageUrl": "https://picsum.photos/seed/oils-spa/800/1000",
+      "imageUrl": "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75",
       "imageHint": "essential oils"
     },
     {
       "id": "service-4",
       "description": "Réflexologie Plantaire",
-      "imageUrl": "https://picsum.photos/seed/foot-reflex/800/1000",
+      "imageUrl": "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75",
       "imageHint": "foot massage"
     },
     {
       "id": "service-5",
       "description": "Massage Sportif",
-      "imageUrl": "https://picsum.photos/seed/sports-physio/800/1000",
+      "imageUrl": "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75",
       "imageHint": "sports massage"
     },
     {
       "id": "service-6",
       "description": "Massage Thérapeutique",
-      "imageUrl": "https://picsum.photos/seed/physiotherapy/800/1000",
+      "imageUrl": "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75",
       "imageHint": "back therapy"
     },
     {
       "id": "service-7",
       "description": "Deep Relax",
-      "imageUrl": "https://picsum.photos/seed/deep-sleep-spa/800/1000",
+      "imageUrl": "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75",
       "imageHint": "relaxing massage"
     },
     {
       "id": "service-8",
       "description": "Massage Thaï",
-      "imageUrl": "https://picsum.photos/seed/thai-stretch/800/1000",
+      "imageUrl": "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75",
       "imageHint": "thai massage"
     }
   ]

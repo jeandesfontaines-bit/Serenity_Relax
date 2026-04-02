@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, Droplets, Moon, LayoutGrid, User, Calendar
+  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, Droplets, Moon
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -86,7 +86,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-8 flex flex-col justify-between bg-white z-20">
       <div className="space-y-3">
-        <h3 className="text-2xl font-serif font-medium tracking-[0.02em] text-neutral-900 leading-tight">{s.name.split(' - ')[0]}</h3>
+        <h3 className="text-2xl font-serif font-medium tracking-[0.02em] text-neutral-900 leading-tight capitalize">{s.name.split(' - ')[0].toLowerCase()}</h3>
         <p className="text-neutral-600 text-[11px] font-sans font-medium leading-relaxed line-clamp-3">{s.desc}</p>
       </div>
       <div className="pt-4 flex items-center justify-between border-t border-neutral-50">
@@ -121,7 +121,6 @@ export default function HomePage() {
       <section className="min-h-[85vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-32 pb-24 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
-          {/* PORTRAIT À GAUCHE */}
           <div className="w-full lg:w-[45%] flex justify-center lg:justify-start">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
@@ -141,7 +140,6 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* TEXTE À DROITE */}
           <div className="w-full lg:w-[55%] space-y-10">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
               <OverTitle className="text-center lg:text-left">L'Engagement João.</OverTitle>
@@ -183,7 +181,6 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
             
-            {/* TEXTE À GAUCHE (STICKY) */}
             <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start">
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6 text-center lg:text-left" />
@@ -196,7 +193,6 @@ export default function HomePage() {
               </button>
             </div>
 
-            {/* GRILLE À DROITE */}
             <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
               {SERVICES.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
@@ -212,7 +208,6 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
             
-            {/* LISTE À GAUCHE */}
             <div className="w-full lg:w-[64%] space-y-0 border-t border-neutral-100">
                {AFTERCARE_TIPS.map((tip) => (
                 <div key={tip.id} className="group py-16 px-0 border-b border-neutral-100 flex flex-col md:flex-row items-start md:items-center gap-12 transition-all duration-700 hover:bg-neutral-50/30">
@@ -240,8 +235,7 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* TEXTE À DROITE (STICKY) */}
-            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit lg:pt-16 flex flex-col items-center lg:items-end text-center lg:text-right">
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
               <OverTitle className="mb-2 lg:text-right">Rituel Post-Séance</OverTitle>
               <SectionTitle main="Prolonger" italic="l'état de grâce." className="lg:text-right" />
               <div className="h-[2px] w-12 bg-neutral-900 my-8 mx-auto lg:mr-0 lg:ml-auto" />
