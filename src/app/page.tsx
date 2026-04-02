@@ -68,7 +68,7 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background selection:bg-primary/5">
-      <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-4 bg-white/80 backdrop-blur-2xl border-b border-black/5">
+      <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-6 bg-transparent">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-baseline gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
             <span className="font-sans font-bold text-sm md:text-base tracking-[0.2em] text-primary uppercase">SERENITY RELAX</span>
@@ -93,7 +93,7 @@ export default function HomePage() {
         </div>
       </nav>
 
-      <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-center pt-32 pb-16 md:pt-48 md:pb-24 overflow-hidden">
         <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6">
@@ -122,7 +122,7 @@ export default function HomePage() {
               <div className="bg-white p-1.5 md:p-2 rounded-[2rem] border border-black/5 flex gap-2 md:gap-3 shadow-lg">
                 <div className="hidden sm:flex p-3 bg-background rounded-2xl text-primary items-center justify-center"><Brain size={18}/></div>
                 <input 
-                  className="flex-1 bg-transparent border-none outline-none text-xs md:text-sm px-2"
+                  className="flex-1 bg-transparent border-none outline-none text-xs md:text-sm px-2 font-sans"
                   placeholder="Comment vous sentez-vous ?"
                   value={aiQuery}
                   onChange={(e) => setAiQuery(e.target.value)}
@@ -139,7 +139,7 @@ export default function HomePage() {
               <AnimatePresence>
                 {aiResult && (
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 p-5 bg-white rounded-[2rem] shadow-xl border border-black/5">
-                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">"{aiResult.reasoning}"</p>
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed font-sans">"{aiResult.reasoning}"</p>
                     <Link 
                       href="/booking"
                       className="mt-4 text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-2 hover:translate-x-1 transition-transform"
@@ -178,13 +178,13 @@ export default function HomePage() {
       </section>
 
       <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6 mb-16">
-          <div className="flex items-center gap-3 mb-3">
+        <div className="max-w-6xl mx-auto px-6 mb-16 text-center">
+          <div className="inline-flex items-center gap-3 mb-3 mx-auto">
             <div className="h-0.5 w-10 bg-primary"></div>
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">L'Art du Toucher</span>
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tighter">Techniques & <span className="italic font-normal">Expériences</span></h2>
-          <p className="mt-6 text-muted-foreground font-normal max-w-2xl leading-relaxed">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium tracking-tighter mt-4">Techniques & <span className="italic font-normal">Expériences</span></h2>
+          <p className="mt-8 text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed font-sans">
             Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort et de votre intimité.
           </p>
         </div>
@@ -201,13 +201,13 @@ export default function HomePage() {
               <div className="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
                 <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2 block opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-700">Expérience 0{i+1}</span>
                 <h3 className="text-lg md:text-xl font-serif text-white font-bold leading-tight mb-3">{service.name.split(' - ')[0]}</h3>
-                <p className="text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
+                <p className="text-[9px] text-white/80 font-bold uppercase tracking-widest font-sans">CHF {service.price} • {service.duration}</p>
               </div>
             </Link>
           ))}
         </div>
         
-        <div className="text-center mt-8">
+        <div className="text-center mt-12">
           <Link href="/booking" className="inline-flex items-center gap-3 bg-primary text-white h-14 px-10 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition-all">
             Réserver votre rituel <ArrowRight size={14} />
           </Link>
@@ -219,29 +219,28 @@ export default function HomePage() {
           <div className="text-center mb-24">
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full mb-6 border border-black/[0.03] shadow-sm">
               <Sparkles className="h-3 w-3 text-amber-500" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Conseils Bien-être</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Bon à savoir</span>
             </div>
-            <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tighter mb-6">7 conseils pour prolonger <br /> les bienfaits</h2>
-            <p className="text-muted-foreground font-normal max-w-lg mx-auto leading-relaxed">
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter mb-6">7 conseils pour prolonger <br /> les bienfaits</h2>
+            <p className="text-muted-foreground font-normal max-w-lg mx-auto leading-relaxed font-sans">
               Quelques gestes essentiels pour accueillir pleinement les effets de votre soin dans les heures qui suivent.
             </p>
           </div>
 
-          <div className="space-y-20">
+          <div className="space-y-32">
             {WELLNESS_TIPS.map((tip, index) => (
-              <div key={tip.id} className={`flex flex-col md:flex-row gap-8 items-start ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
-                <div className="flex-1 space-y-5">
-                  <div className="flex items-center gap-6">
-                    <span className="text-6xl font-serif text-primary/10 font-bold italic select-none">{tip.id}</span>
-                    <div className="h-px bg-primary/10 flex-1 hidden md:block"></div>
-                    <h3 className="text-2xl font-serif font-bold text-primary">{tip.title}</h3>
-                  </div>
-                  <p className="text-base text-muted-foreground leading-relaxed md:pl-20">
+              <div key={tip.id} className="flex flex-col md:flex-row gap-12 items-start relative">
+                <div className="absolute -left-12 md:-left-24 top-0 select-none">
+                  <span className="editorial-number">{tip.id}</span>
+                </div>
+                <div className="flex-1 pt-4">
+                  <h3 className="text-2xl md:text-3xl font-serif font-bold text-primary mb-6">{tip.title}</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed font-sans max-w-2xl">
                     {tip.text}
                   </p>
                 </div>
-                <div className="hidden md:flex w-20 h-20 rounded-full bg-white items-center justify-center shadow-sm border border-black/[0.02] shrink-0 mt-2">
-                  <tip.icon className="h-6 w-6 text-primary/20" />
+                <div className="hidden md:flex w-24 h-24 rounded-full bg-white items-center justify-center shadow-sm border border-black/[0.02] shrink-0">
+                  <tip.icon className="h-8 w-8 text-primary/10" />
                 </div>
               </div>
             ))}
@@ -249,30 +248,44 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="py-12 md:py-20 px-6 bg-primary text-white">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10 md:gap-12">
-          <div className="flex items-baseline gap-3 text-center md:text-left">
-            <h2 className="font-sans text-lg md:text-xl font-bold tracking-[0.2em] uppercase leading-none">
-              SERENITY RELAX <span className="font-cursive lowercase text-base md:text-lg text-white/40 tracking-normal inline-block">by João</span>
+      <footer className="py-20 px-6 bg-primary text-white">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
+          <div className="space-y-6">
+            <h2 className="font-sans text-xl font-bold tracking-[0.2em] uppercase leading-none">
+              SERENITY RELAX <span className="font-cursive lowercase text-lg text-white/40 tracking-normal inline-block">by João</span>
             </h2>
+            <p className="text-white/40 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs font-sans">
+              Un sanctuaire sensoriel confidentiel pour la restauration physique et mentale. Uniquement sur rendez-vous.
+            </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-center gap-8 md:gap-12 text-center md:text-left">
-            <div className="space-y-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-24">
+            <div className="space-y-4">
               <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">Alpha Business Center</h3>
-              <p className="text-[10px] md:text-xs text-white/70 font-medium">Chemin de Joinville 26, 4ème étage, 1216 Cointrin</p>
+              <p className="text-xs text-white/70 font-medium leading-relaxed font-sans">
+                Chemin de Joinville 26,<br />
+                4ème étage,<br />
+                1216 Cointrin – Genève
+              </p>
             </div>
-            <div className="space-y-1">
-              <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">RCC ID</h3>
-              <p className="text-[10px] md:text-xs text-[#FACC15] font-bold tracking-widest">Z123456</p>
+            <div className="space-y-4">
+              <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">Horaires</h3>
+              <p className="text-xs text-white/70 font-medium leading-relaxed font-sans">
+                Lun - Ven : 8h00 – 20h00<br />
+                Sam - Dim : 9h30 – 20h00
+              </p>
             </div>
           </div>
           
-          <div className="flex gap-6 text-white/40">
-            <a href="https://instagram.com/serenity.relax.therapy_by_joao" target="_blank" rel="noopener noreferrer">
-              <Instagram size={18} className="hover:text-white cursor-pointer transition-colors" />
+          <div className="flex gap-8 items-center pt-8 md:pt-0">
+            <a href="https://instagram.com/serenity.relax.therapy_by_joao" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors">
+              <Instagram size={20} />
             </a>
-            <MessageCircle size={18} className="hover:text-white cursor-pointer transition-colors" />
+            <div className="h-10 w-px bg-white/10 hidden md:block" />
+            <div className="space-y-1">
+              <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">ID ASCA</h3>
+              <p className="text-xs text-emerald-400 font-bold tracking-widest">Agréé Thérapeute</p>
+            </div>
           </div>
         </div>
       </footer>
