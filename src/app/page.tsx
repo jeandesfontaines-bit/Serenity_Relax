@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle
+  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, LayoutDashboard
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -145,7 +145,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className={`group w-full aspect-[3/4] bg-white rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 shadow-sm hover:shadow-xl transition-all duration-700 ${staggered ? 'md:mt-12 lg:mt-16' : ''}`}
+    className={`group w-full aspect-[3/4] bg-white rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 shadow-sm transition-all duration-700 ${staggered ? 'md:mt-12 lg:mt-16' : ''}`}
   >
     <div className="relative h-[62%] w-full overflow-hidden bg-neutral-100">
       <Image 
@@ -265,7 +265,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             
-            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit text-left">
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-24 h-fit text-left">
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-8" />
@@ -304,7 +304,7 @@ export default function HomePage() {
                     className="space-y-10 relative z-10"
                 >
                     <div className="pt-8">
-                        <div className="p-10 md:p-14 bg-[#FAF9F6] rounded-[2.5rem] border border-neutral-100/50 shadow-2xl">
+                        <div className="p-10 md:p-14 bg-[#FAF9F6] rounded-[2.5rem] border border-neutral-100/50">
                             <div className="space-y-8">
                                 <motion.div 
                                   key={`advice-text-${selectedTip}`}
@@ -367,14 +367,14 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER ULTRA COMPACT */}
-      <footer className="bg-[#0a0a0a] text-white py-12 px-8 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+      <footer className="bg-[#0a0a0a] text-white py-8 px-6 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start">
-            <div className="font-sans font-bold text-xs tracking-[0.3em] uppercase">SERENITY RELAX</div>
-            <p className="text-[8px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-1">Excellence Thérapeutique</p>
+            <div className="font-sans font-bold text-[10px] tracking-[0.3em] uppercase">SERENITY RELAX</div>
+            <p className="text-[8px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-0.5">Excellence Thérapeutique</p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-6 md:gap-12 text-[10px] font-sans font-medium text-neutral-400 text-center">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-10 text-[9px] font-sans font-medium text-neutral-400 text-center">
             <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Localisation</span> Alpha Business Center • Genève</p>
             <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Contact</span> +41 78 333 68 23</p>
           </div>
@@ -388,9 +388,9 @@ export default function HomePage() {
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-white/5 flex justify-center">
-          <p className="text-[8px] font-sans font-bold text-neutral-700 uppercase tracking-[0.4em]">
-            © 2025 Serenity & Relax Therapy — Tous droits réservés
+        <div className="max-w-7xl mx-auto mt-6 pt-6 border-t border-white/5 flex justify-center">
+          <p className="text-[8px] font-sans font-bold text-neutral-800 uppercase tracking-[0.4em]">
+            © 2025 Serenity & Relax Therapy — Genève
           </p>
         </div>
       </footer>
