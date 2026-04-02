@@ -63,6 +63,6 @@
   }
 
   .editorial-number {
-    @apply text-6xl md:text-8xl font-serif text-primary/10 font-bold italic select-none;
+    @apply text-4xl md:text-8xl font-serif text-primary/10 font-bold italic select-none;
   }
 }

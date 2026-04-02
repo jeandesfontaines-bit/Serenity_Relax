@@ -34,18 +34,6 @@ export type Appointment = {
   priceAtBooking: number;
 };
 
-export type Invoice = {
-  id: string;
-  appointmentId: string;
-  clientId: string;
-  issueDate: string;
-  dueDate: string;
-  status: 'paid' | 'pending';
-  amount: number;
-  rccNumber: string;
-  clinicAddress: string;
-};
-
 export const SERVICES: Service[] = [
   { id: '1', name: 'Massage Thérapeutique & Relaxant - 60 min', description: 'Approche personnalisée pour relâcher les tensions et apaiser le mental.', duration: '60 min', price: 110 },
   { id: '2', name: 'Massage Thérapeutique & Relaxant - 90 min', description: 'Une immersion prolongée pour un rééquilibrage profond du corps.', duration: '90 min', price: 160 },
