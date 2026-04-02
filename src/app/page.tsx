@@ -136,7 +136,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[8rem_3rem_10rem_4rem] border-2 border-white shadow-2xl max-w-[320px] md:max-w-[380px] mx-auto lg:ml-0"
+              className="relative aspect-[4/5] overflow-hidden rounded-[8rem_3rem_10rem_4rem] shadow-2xl max-w-[320px] md:max-w-[380px] mx-auto lg:ml-0"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -264,25 +264,25 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 md:gap-6 text-center md:text-left">
           <div className="flex flex-col items-center md:items-start">
             <div className="font-sans font-bold text-sm tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
-            <p className="text-[10px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-2">Excellence Thérapeutique</p>
+            <p className="text-xs font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-2">Excellence Thérapeutique</p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 text-[11px] font-sans font-medium text-neutral-400">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12 text-sm font-sans font-medium text-neutral-400">
             <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Localisation</span> Alpha Business Center • Genève</p>
             <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Contact</span> +41 78 333 68 23</p>
           </div>
 
           <div className="flex items-center gap-8 justify-center">
-            <Instagram size={16} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
+            <Instagram size={18} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
             <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
-              <MessageCircle size={16} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
+              <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
             </a>
-            <Linkedin size={16} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
+            <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
           </div>
         </div>
         
         <div className="max-w-7xl mx-auto mt-16 pt-10 border-t border-white/5 flex justify-center">
-          <p className="text-sm font-sans font-bold text-neutral-800 uppercase tracking-[0.4em] text-center">
+          <p className="text-xs font-sans font-bold text-neutral-800 uppercase tracking-[0.4em] text-center">
             © 2025 Serenity & Relax Therapy — Genève
           </p>
         </div>
