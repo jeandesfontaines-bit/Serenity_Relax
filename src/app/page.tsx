@@ -80,7 +80,7 @@ export default function HomePage() {
             transition={{ duration: 1, delay: 0.2 }}
             className="relative flex justify-center lg:justify-end lg:-ml-16"
           >
-            <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[440px] shadow-2xl border-[6px] md:border-[8px] border-white/20 animate-float">
+            <div className="blob-shape relative aspect-square w-full max-w-[300px] md:max-w-[440px] shadow-2xl border-[6px] md:border-[8px] border-white/20 animate-float">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 alt="João" 
@@ -95,36 +95,36 @@ export default function HomePage() {
       </section>
 
       <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6 mb-16 text-center">
+        <div className="max-w-6xl mx-auto px-6 mb-12 text-center">
           <div className="inline-flex items-center gap-3 mb-3 mx-auto">
             <div className="h-0.5 w-10 bg-primary"></div>
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">L'Art du Toucher</span>
           </div>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mt-4">Techniques & Expériences</h2>
-          <p className="mt-8 text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed italic">
+          <p className="mt-6 text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed italic">
             Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort et de votre intimité.
           </p>
         </div>
         
-        <div className="flex gap-12 overflow-x-auto scrollbar-hide snap-x px-6 max-w-6xl mx-auto pb-12">
+        <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x px-6 max-w-6xl mx-auto pb-12">
           {SERVICES.map((service, i) => (
             <Link 
               key={service.id}
               href={`/booking?serviceId=${service.id}`}
-              className="flex-shrink-0 w-[75vw] sm:w-[260px] md:w-[280px] snap-center relative aspect-[3/4] rounded-[3rem] overflow-hidden group shadow-xl transition-all"
+              className="flex-shrink-0 w-[65vw] sm:w-[240px] md:w-[280px] snap-center relative aspect-[3/4] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden group shadow-xl transition-all"
             >
               <Image src={`https://picsum.photos/seed/${service.id}/800/1000`} fill className="object-cover grayscale-[20%] transition-all duration-1000" alt={service.name} />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
-              <div className="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
-                <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2 block translate-y-2 group-hover:translate-y-0 transition-all duration-700">Expérience 0{i+1}</span>
-                <h3 className="text-lg md:text-xl font-serif text-white font-medium leading-tight mb-3">{service.name.split(' - ')[0]}</h3>
-                <p className="text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
+              <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
+                <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-white/60 mb-1 md:mb-2 block">Expérience 0{i+1}</span>
+                <h3 className="text-base md:text-xl font-serif text-white font-medium leading-tight mb-2 md:mb-3">{service.name.split(' - ')[0]}</h3>
+                <p className="text-[8px] md:text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
               </div>
             </Link>
           ))}
         </div>
         
-        <div className="text-center mt-12">
+        <div className="text-center mt-8 md:mt-12">
           <Link href="/booking" className="inline-flex items-center gap-3 bg-primary text-white py-2.5 px-10 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition-all active:scale-95">
             Réserver votre rituel <ArrowRight size={14} />
           </Link>
@@ -133,7 +133,7 @@ export default function HomePage() {
 
       <section className="py-24 bg-background">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-20">
+          <div className="text-center mb-16">
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full mb-6 border border-black/[0.02] shadow-sm">
               <Sparkles className="h-3 w-3 text-amber-500" />
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Le Rituel Post-Soin</span>
@@ -144,21 +144,21 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
             {WELLNESS_TIPS.map((tip, idx) => (
               <div 
                 key={tip.id} 
-                className={`group bg-white p-8 md:p-10 rounded-[2.5rem] border border-black/[0.02] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col items-start ${idx === 6 ? 'lg:col-span-3 lg:flex-row lg:items-center lg:gap-12' : ''}`}
+                className={`group bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border border-black/[0.02] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col items-start ${idx === 6 ? 'lg:col-span-3 lg:flex-row lg:items-center lg:gap-12' : ''}`}
               >
-                <div className="flex items-center justify-between w-full mb-6 lg:mb-0 lg:w-auto">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-primary/10 group-hover:text-primary/40 transition-colors">
-                    <tip.icon size={24} />
+                <div className="flex items-center justify-between w-full mb-5 lg:mb-0 lg:w-auto">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-primary/10 group-hover:text-primary/40 transition-colors">
+                    <tip.icon size={20} className="md:size-[24px]" />
                   </div>
-                  <span className="editorial-number !text-4xl !opacity-20 group-hover:!opacity-40 transition-opacity">0{tip.id}</span>
+                  <span className="editorial-number !text-3xl md:!text-4xl !opacity-20 group-hover:!opacity-40 transition-opacity">0{tip.id}</span>
                 </div>
                 
                 <div className="flex-1">
-                  <h3 className="text-xl font-serif font-medium text-primary mb-4 tracking-tight">{tip.title}</h3>
+                  <h3 className="text-lg md:text-xl font-serif font-medium text-primary mb-3 md:mb-4 tracking-tight">{tip.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed italic">
                     {tip.text}
                   </p>
