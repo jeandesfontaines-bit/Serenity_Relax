@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -20,6 +21,7 @@ import { useFirestore, useUser, useAuth } from '@/firebase';
 import { collection, doc, serverTimestamp } from 'firebase/firestore';
 import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { signInAnonymously } from 'firebase/auth';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function BookingFlow({ services }: { services: Service[] }) {
   const searchParams = useSearchParams();
@@ -208,7 +210,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
           <p className="text-xs font-bold uppercase tracking-widest text-primary mb-4">Étape Finale Importante</p>
           <p className="text-sm text-muted-foreground mb-6">Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.</p>
           <button className="high-end-button bg-emerald-600 border-emerald-600 text-white w-full">
-            <a href="https://wa.me/41790000000" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+            <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
               <MessageCircle size={22} /> CONFIRMER WHATSAPP
             </a>
           </button>
@@ -229,229 +231,255 @@ export function BookingFlow({ services }: { services: Service[] }) {
         ))}
       </div>
 
-      {step === 1 && (
-        <Card className="border-none shadow-none rounded-[2.5rem] overflow-hidden bg-white">
-          <Tabs defaultValue="browse" className="w-full">
-            <div className="px-8 pt-8 pb-0">
-              <TabsList className="grid w-full grid-cols-2 bg-muted/50 border rounded-full p-1 h-12">
-                <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">Menu des Soins</TabsTrigger>
-                <TabsTrigger value="ai" className="rounded-full flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">
-                  <Brain className="h-3.5 w-3.5" /> Consultation IA
-                </TabsTrigger>
-              </TabsList>
-            </div>
-            
-            <CardContent className="p-8 pb-4">
-              <TabsContent value="browse" className="space-y-6 mt-0">
-                <div className="space-y-4">
-                  <Label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-2">Sélectionner votre rituel</Label>
-                  <Select 
-                    value={selectedService?.id} 
-                    onValueChange={(id) => setSelectedService(services.find(s => s.id === id) || null)}
-                  >
-                    <SelectTrigger className="w-full h-14 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
-                      <SelectValue placeholder="Parcourir nos soins" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-2xl p-1">
-                      {services.map((s) => (
-                        <SelectItem key={s.id} value={s.id} className="rounded-xl py-4 px-4 focus:bg-background cursor-pointer">
-                          <div className="flex flex-col gap-0.5">
-                            <span className="font-serif font-bold text-base">{s.name.split(' - ')[0]}</span>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">{s.duration} • CHF {s.price}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+      <AnimatePresence mode="wait">
+        {step === 1 && (
+          <motion.div
+            key="step1"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="border-none shadow-none rounded-[2.5rem] overflow-hidden bg-white">
+              <Tabs defaultValue="browse" className="w-full">
+                <div className="px-8 pt-8 pb-0">
+                  <TabsList className="grid w-full grid-cols-2 bg-muted/50 border rounded-full p-1 h-12">
+                    <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">Menu des Soins</TabsTrigger>
+                    <TabsTrigger value="ai" className="rounded-full flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">
+                      <Brain className="h-3.5 w-3.5" /> Consultation IA
+                    </TabsTrigger>
+                  </TabsList>
                 </div>
-              </TabsContent>
+                
+                <CardContent className="p-8 pb-4">
+                  <TabsContent value="browse" className="space-y-6 mt-0">
+                    <div className="space-y-4">
+                      <Label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-2">Sélectionner votre rituel</Label>
+                      <Select 
+                        value={selectedService?.id} 
+                        onValueChange={(id) => setSelectedService(services.find(s => s.id === id) || null)}
+                      >
+                        <SelectTrigger className="w-full h-14 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
+                          <SelectValue placeholder="Parcourir nos soins" />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-2xl p-1">
+                          {services.map((s) => (
+                            <SelectItem key={s.id} value={s.id} className="rounded-xl py-4 px-4 focus:bg-background cursor-pointer">
+                              <div className="flex flex-col gap-0.5">
+                                <span className="font-serif font-bold text-base">{s.name.split(' - ')[0]}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">{s.duration} • CHF {s.price}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </TabsContent>
 
-              <TabsContent value="ai" className="space-y-6 mt-0">
-                <div className="p-8 rounded-[2rem] bg-muted/30 border border-black/5">
-                  <h3 className="text-xl font-serif font-medium text-primary mb-4 flex items-center gap-3">
-                    <Brain className="h-5 w-5 text-primary/40" /> Intuition Digitale
-                  </h3>
-                  <Textarea 
-                    id="ai-query"
-                    name="ai-query"
-                    placeholder="Décrivez votre état physique ou émotionnel..."
-                    className="min-h-[140px] rounded-[1.5rem] border-black/5 bg-white text-base shadow-sm italic p-6 resize-none focus:ring-primary"
-                    value={aiQuery}
-                    onChange={(e) => setAiQuery(e.target.value)}
+                  <TabsContent value="ai" className="space-y-6 mt-0">
+                    <div className="p-8 rounded-[2rem] bg-muted/30 border border-black/5">
+                      <h3 className="text-xl font-serif font-medium text-primary mb-4 flex items-center gap-3">
+                        <Brain className="h-5 w-5 text-primary/40" /> Intuition Digitale
+                      </h3>
+                      <Textarea 
+                        id="ai-query"
+                        name="ai-query"
+                        placeholder="Décrivez votre état physique ou émotionnel..."
+                        className="min-h-[140px] rounded-[1.5rem] border-black/5 bg-white text-base shadow-sm italic p-6 resize-none focus:ring-primary"
+                        value={aiQuery}
+                        onChange={(e) => setAiQuery(e.target.value)}
+                      />
+                      <button 
+                        onClick={handleAiRecommend} 
+                        disabled={aiLoading || !aiQuery}
+                        className="mt-6 high-end-button w-full text-[18px] py-4"
+                      >
+                        {aiLoading ? <Loader2 className="animate-spin h-5 w-5 mr-2" /> : <Sparkles className="h-5 w-5 mr-2" />}
+                        Trouver le soin idéal
+                      </button>
+                    </div>
+                  </TabsContent>
+                </CardContent>
+              </Tabs>
+
+              <div className="px-8 pb-8 flex justify-end">
+                <button 
+                  disabled={!selectedService} 
+                  onClick={() => setStep(2)}
+                  className="high-end-button"
+                >
+                  Suivant <ChevronRight className="ml-2 h-6 w-6" />
+                </button>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
+        {step === 2 && (
+          <motion.div
+            key="step2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="border-none shadow-none rounded-[2.5rem] p-8 bg-white">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
+                    <CalendarIcon className="h-5 w-5 text-primary/20" /> La Date
+                  </h2>
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    locale={fr}
+                    className="rounded-[2rem] border border-black/5 shadow-sm p-6 bg-muted/20 mx-auto scale-90 md:scale-100"
+                    disabled={(d) => d < new Date()}
                   />
+                </div>
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
+                    <ChevronRight className="h-5 w-5 text-primary/20" /> L'Horaire
+                  </h2>
+                  <div className="grid grid-cols-2 gap-3">
+                    {times.map((t) => (
+                      <Button
+                        key={t}
+                        variant={time === t ? 'default' : 'outline'}
+                        onClick={() => setTime(t)}
+                        className={`h-12 rounded-xl text-lg font-medium border-black/5 transition-all ${time === t ? 'bg-primary text-white shadow-lg' : 'bg-background hover:bg-white hover:shadow-md'}`}
+                      >
+                        {t}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between mt-12 gap-4">
+                <button onClick={() => setStep(1)} className="high-end-button border-neutral-200">
+                  <ChevronLeft className="mr-2 h-6 w-6" /> Retour
+                </button>
+                <button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button">
+                  Détails <ChevronRight className="ml-2 h-6 w-6" />
+                </button>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
+        {step === 3 && (
+          <motion.div
+            key="step3"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+              <Card className="lg:col-span-2 border-none shadow-none rounded-[2.5rem] p-8 md:p-12 bg-white">
+                <h2 className="text-2xl font-serif font-medium text-primary mb-10 flex items-center gap-3">
+                  <User className="h-6 w-6 text-primary/20" /> Vos Coordonnées
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-12">
+                  <div className="space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Prénom</Label>
+                    <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                  </div>
+                  <div className="space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Nom</Label>
+                    <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                  </div>
+                  <div className="space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Email</Label>
+                    <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                  </div>
+                  <div className="space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Téléphone</Label>
+                    <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                  </div>
+                  <div className="space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Date de Naissance</Label>
+                    <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                  </div>
+                  <div className="space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
+                    <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                  </div>
+                  <div className="space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Ville</Label>
+                    <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                  </div>
+                  <div className="md:col-span-2 space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
+                    <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                  </div>
+                  <div className="md:col-span-2 space-y-2.5">
+                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
+                    <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-2xl bg-muted/20 border-none p-6 text-base h-32 focus:bg-white shadow-inner transition-all resize-none italic" />
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center gap-4">
+                  <button onClick={() => setStep(2)} className="high-end-button border-neutral-200">
+                    <ChevronLeft className="mr-2 h-6 w-6" /> Retour
+                  </button>
                   <button 
-                    onClick={handleAiRecommend} 
-                    disabled={aiLoading || !aiQuery}
-                    className="mt-6 high-end-button w-full text-[18px] py-4"
+                    className="high-end-button min-w-[200px]"
+                    disabled={isSubmitting}
+                    onClick={completeBooking}
                   >
-                    {aiLoading ? <Loader2 className="animate-spin h-5 w-5 mr-2" /> : <Sparkles className="h-5 w-5 mr-2" />}
-                    Trouver le soin idéal
+                    {isSubmitting ? <Loader2 className="animate-spin h-6 w-6" /> : 'CONFIRMER'}
                   </button>
                 </div>
-              </TabsContent>
-            </CardContent>
-          </Tabs>
+              </Card>
 
-          <div className="px-8 pb-8 flex justify-end">
-            <button 
-              disabled={!selectedService} 
-              onClick={() => setStep(2)}
-              className="high-end-button"
-            >
-              Suivant <ChevronRight className="ml-2 h-6 w-6" />
-            </button>
-          </div>
-        </Card>
-      )}
+              <aside className="space-y-6">
+                <Card className="rounded-[2rem] border-none shadow-sm bg-white p-8">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
+                    <MapPin size={14} className="text-primary/40" /> Informations Pratiques
+                  </h3>
+                  <div className="space-y-4 text-xs text-muted-foreground leading-relaxed">
+                    <div>
+                      <p className="font-bold text-primary mb-1">Lieu</p>
+                      <p>Chemin de Joinville 26, Alpha Business Center, 4ème étage – 1216 Cointrin (Genève)</p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-primary mb-1">Horaires</p>
+                      <p>Lun - Ven : 8h00 – 20h00</p>
+                      <p>Sam - Dim : 9h30 – 20h00</p>
+                      <p className="italic mt-1">Uniquement sur rendez-vous.</p>
+                    </div>
+                    <p className="pt-2 border-t border-black/5">Séances à domicile possibles sur demande, selon disponibilité.</p>
+                  </div>
+                </Card>
 
-      {step === 2 && (
-        <Card className="border-none shadow-none rounded-[2.5rem] p-8 bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="space-y-6">
-              <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
-                <CalendarIcon className="h-5 w-5 text-primary/20" /> La Date
-              </h2>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                locale={fr}
-                className="rounded-[2rem] border border-black/5 shadow-sm p-6 bg-muted/20 mx-auto scale-90 md:scale-100"
-                disabled={(d) => d < new Date()}
-              />
+                <Card className="rounded-[2rem] border-none shadow-sm bg-slate-950 text-white p-8">
+                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-4 flex items-center gap-2">
+                    <MessageCircle size={14} className="text-emerald-500" /> CONFIRMATION WHATSAPP
+                  </h3>
+                  <p className="text-xs leading-relaxed italic text-white/70">
+                    Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.
+                  </p>
+                </Card>
+
+                <Card className="rounded-[2rem] border-none shadow-sm bg-white p-8">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
+                    <ShieldCheck size={14} className="text-primary/40" /> Conditions & Informations
+                  </h3>
+                  <ul className="space-y-3 text-[10px] text-muted-foreground leading-relaxed list-disc pl-4">
+                    <li>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation.</li>
+                    <li>Elles ne remplacent en aucun cas un avis ou un traitement médical.</li>
+                    <li>En réservant une séance, vous confirmez être en bonne condition physique.</li>
+                    <li>Toute annulation ou modification doit être effectuée au minimum 24h à l'avance.</li>
+                    <li>En cas d'annulation tardive ou d'absence, la séance pourra être facturée.</li>
+                  </ul>
+                </Card>
+              </aside>
             </div>
-            <div className="space-y-6">
-              <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
-                <ChevronRight className="h-5 w-5 text-primary/20" /> L'Horaire
-              </h2>
-              <div className="grid grid-cols-2 gap-3">
-                {times.map((t) => (
-                  <Button
-                    key={t}
-                    variant={time === t ? 'default' : 'outline'}
-                    onClick={() => setTime(t)}
-                    className={`h-12 rounded-xl text-lg font-medium border-black/5 transition-all ${time === t ? 'bg-primary text-white shadow-lg' : 'bg-background hover:bg-white hover:shadow-md'}`}
-                  >
-                    {t}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between mt-12 gap-4">
-            <button onClick={() => setStep(1)} className="high-end-button border-neutral-200">
-              <ChevronLeft className="mr-2 h-6 w-6" /> Retour
-            </button>
-            <button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button">
-              Détails <ChevronRight className="ml-2 h-6 w-6" />
-            </button>
-          </div>
-        </Card>
-      )}
-
-      {step === 3 && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          <Card className="lg:col-span-2 border-none shadow-none rounded-[2.5rem] p-8 md:p-12 bg-white">
-            <h2 className="text-2xl font-serif font-medium text-primary mb-10 flex items-center gap-3">
-              <User className="h-6 w-6 text-primary/20" /> Vos Coordonnées
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-12">
-              <div className="space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Prénom</Label>
-                <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-              </div>
-              <div className="space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Nom</Label>
-                <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-              </div>
-              <div className="space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Email</Label>
-                <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-              </div>
-              <div className="space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Téléphone</Label>
-                <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-              </div>
-              <div className="space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Date de Naissance</Label>
-                <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-              </div>
-              <div className="space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
-                <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-              </div>
-              <div className="space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Ville</Label>
-                <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-              </div>
-              <div className="md:col-span-2 space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
-                <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
-              </div>
-              <div className="md:col-span-2 space-y-2.5">
-                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
-                <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-2xl bg-muted/20 border-none p-6 text-base h-32 focus:bg-white shadow-inner transition-all resize-none italic" />
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center gap-4">
-              <button onClick={() => setStep(2)} className="high-end-button border-neutral-200">
-                <ChevronLeft className="mr-2 h-6 w-6" /> Retour
-              </button>
-              <button 
-                className="high-end-button min-w-[200px]"
-                disabled={isSubmitting}
-                onClick={completeBooking}
-              >
-                {isSubmitting ? <Loader2 className="animate-spin h-6 w-6" /> : 'CONFIRMER'}
-              </button>
-            </div>
-          </Card>
-
-          <aside className="space-y-6">
-            <Card className="rounded-[2rem] border-none shadow-sm bg-white p-8">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
-                <MapPin size={14} className="text-primary/40" /> Informations Pratiques
-              </h3>
-              <div className="space-y-4 text-xs text-muted-foreground leading-relaxed">
-                <div>
-                  <p className="font-bold text-primary mb-1">Lieu</p>
-                  <p>Chemin de Joinville 26, Alpha Business Center, 4ème étage – 1216 Cointrin (Genève)</p>
-                </div>
-                <div>
-                  <p className="font-bold text-primary mb-1">Horaires</p>
-                  <p>Lun - Ven : 8h00 – 20h00</p>
-                  <p>Sam - Dim : 9h30 – 20h00</p>
-                  <p className="italic mt-1">Uniquement sur rendez-vous.</p>
-                </div>
-                <p className="pt-2 border-t border-black/5">Séances à domicile possibles sur demande, selon disponibilité.</p>
-              </div>
-            </Card>
-
-            <Card className="rounded-[2rem] border-none shadow-sm bg-slate-950 text-white p-8">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-4 flex items-center gap-2">
-                <MessageCircle size={14} className="text-emerald-500" /> CONFIRMATION WHATSAPP
-              </h3>
-              <p className="text-xs leading-relaxed italic text-white/70">
-                Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.
-              </p>
-            </Card>
-
-            <Card className="rounded-[2rem] border-none shadow-sm bg-white p-8">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
-                <ShieldCheck size={14} className="text-primary/40" /> Conditions & Informations
-              </h3>
-              <ul className="space-y-3 text-[10px] text-muted-foreground leading-relaxed list-disc pl-4">
-                <li>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation.</li>
-                <li>Elles ne remplacent en aucun cas un avis ou un traitement médical.</li>
-                <li>En réservant une séance, vous confirmez être en bonne condition physique.</li>
-                <li>Toute annulation ou modification doit être effectuée au minimum 24h à l'avance.</li>
-                <li>En cas d'annulation tardive ou d'absence, la séance pourra être facturée.</li>
-              </ul>
-            </Card>
-          </aside>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
