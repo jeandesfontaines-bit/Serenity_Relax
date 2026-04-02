@@ -138,8 +138,8 @@ const OverTitle = ({ children, className = "" }: { children: React.ReactNode, cl
 );
 
 const SectionTitle = ({ main, italic, className = "" }: { main: string, italic: string, className?: string }) => (
-  <h2 className={`text-4xl md:text-6xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[0.9] tracking-tighter ${className}`}>
-    {main} <br className="hidden md:block"/> <span className="text-neutral-600 italic font-light">{italic}</span>
+  <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-tight ${className}`}>
+    {main} <br className="hidden md:block"/> <span className="text-neutral-500 italic font-light">{italic}</span>
   </h2>
 );
 
@@ -154,7 +154,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className={`group w-full aspect-[4/5] md:aspect-[3/4] bg-white rounded-[2rem] md:rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 ${staggered ? 'md:mt-12 lg:mt-16' : ''}`}
+    className={`group w-full aspect-[4/5] md:aspect-[3/4] bg-white rounded-[2rem] md:rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 ${staggered ? 'md:mt-8 lg:mt-12' : ''}`}
   >
     <div className="relative h-[60%] md:h-[62%] w-full overflow-hidden bg-neutral-100">
       <Image 
@@ -170,7 +170,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-6 md:p-8 lg:p-9 flex flex-col justify-between bg-white z-20">
       <div className="space-y-2">
-        <h3 className="text-xl md:text-2xl font-serif font-bold tracking-tight text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
+        <h3 className="text-lg md:text-xl font-serif font-bold tracking-tight text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
         <p className="text-neutral-600 text-[11px] md:text-[12px] font-sans font-medium leading-relaxed line-clamp-2">{s.desc}</p>
       </div>
       <div className="pt-4 md:pt-5 flex items-center justify-between border-t border-neutral-50">
@@ -235,20 +235,20 @@ export default function HomePage() {
           </div>
 
           {/* TEXTE À DROITE */}
-          <div className="w-full lg:w-[55%] space-y-8 md:space-y-12 text-left order-2 lg:order-2">
+          <div className="w-full lg:w-[55%] space-y-8 md:space-y-10 text-left order-2 lg:order-2">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-neutral-900 leading-[1] md:leading-[0.85] tracking-tighter">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-tight">
                 L'équilibre<br />
                 <span className="text-neutral-600 italic font-light">par le toucher.</span>
               </h1>
             </motion.div>
             
-            <div className="space-y-8 md:space-y-10 max-w-xl">
-              <p className="text-lg md:text-2xl font-serif font-bold text-neutral-900 leading-tight italic">
+            <div className="space-y-6 md:space-y-8 max-w-xl">
+              <p className="text-lg md:text-xl font-serif font-bold text-neutral-900 leading-tight italic">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </p>
-              <div className="space-y-6 md:space-y-8">
+              <div className="space-y-4 md:space-y-6">
                 <SectionDesc>
                   Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
                 </SectionDesc>
@@ -323,7 +323,7 @@ export default function HomePage() {
                                   animate={{ opacity: 1, y: 0 }}
                                   className="pb-2 md:pb-4"
                                 >
-                                  <h3 className="text-2xl md:text-4xl tracking-tight leading-tight text-neutral-900 font-serif italic">
+                                  <h3 className="text-2xl md:text-3xl tracking-tight leading-tight text-neutral-900 font-serif italic">
                                       « {AFTERCARE_TIPS[selectedTip].advice} »
                                   </h3>
                                 </motion.div>
