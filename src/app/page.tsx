@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, Droplets, Moon, Clock, Plus
+  Instagram, Linkedin, ArrowRight, MessageCircle, Clock, Plus
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -39,7 +39,7 @@ const ServiceCard = ({ s }: { s: any }) => (
         alt={s.name}
       />
       <div className="absolute top-4 left-4">
-        <span className="text-[8px] font-sans font-black uppercase tracking-[0.3em] text-white/90 bg-black/20 backdrop-blur-md px-3 py-1 rounded-full">
+        <span className="text-[8px] font-sans font-black uppercase tracking-[0.3em] text-white bg-black px-3 py-1 rounded-full">
           {s.tag}
         </span>
       </div>
@@ -154,15 +154,15 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="w-full lg:w-[68%] flex flex-col md:flex-row gap-12 items-start">
+            <div className="w-full lg:w-[68%] grid grid-cols-1 md:grid-cols-2 gap-x-12">
                {/* Colonne 1 (Gauche) */}
-               <div className="flex-1 flex flex-col gap-12 items-center md:items-end">
+               <div className="flex flex-col gap-12 items-center md:items-end">
                   {SERVICES.filter((_, i) => i % 2 === 0).map((s) => (
                     <ServiceCard key={s.id} s={s} />
                   ))}
                </div>
                {/* Colonne 2 (Droite - Décalée) */}
-               <div className="flex-1 flex flex-col gap-12 md:pt-32 items-center md:items-start">
+               <div className="flex flex-col gap-12 md:pt-32 items-center md:items-start">
                   {SERVICES.filter((_, i) => i % 2 !== 0).map((s) => (
                     <ServiceCard key={s.id} s={s} />
                   ))}
