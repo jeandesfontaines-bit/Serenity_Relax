@@ -90,7 +90,7 @@ const SERVICES = [
     price: 120,
     intensity: 4,
     image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75",
-    desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale avec des huiles chaudes.", 
+    desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", 
     tag: "Dynamique"
   }
 ];
