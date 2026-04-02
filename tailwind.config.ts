@@ -12,7 +12,7 @@ export default {
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
         serif: ['"Playfair Display"', 'serif'],
-        cursive: ['"Playball"', 'cursive'],
+        cursive: ['"Meow Script"', 'cursive'],
         code: ['monospace'],
       },
       colors: {

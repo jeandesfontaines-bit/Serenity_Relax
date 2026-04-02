@@ -72,7 +72,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-baseline gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
             <span className="font-sans font-bold text-sm md:text-base tracking-[0.2em] text-primary uppercase">SERENITY RELAX</span>
-            <span className="hidden sm:inline-block text-[14px] font-cursive text-muted-foreground tracking-normal whitespace-nowrap">by João</span>
+            <span className="hidden sm:inline-block text-[22px] font-cursive text-muted-foreground tracking-normal whitespace-nowrap normal-case">by João</span>
           </div>
           
           <div className="hidden md:flex items-center gap-8">
@@ -252,7 +252,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
           <div className="space-y-6">
             <h2 className="font-sans text-xl font-bold tracking-[0.2em] uppercase leading-none">
-              SERENITY RELAX <span className="font-cursive text-lg text-white/40 tracking-normal inline-block normal-case">by João</span>
+              SERENITY RELAX <span className="font-cursive text-[28px] text-white/40 tracking-normal inline-block normal-case">by João</span>
             </h2>
             <p className="text-white/40 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs font-sans">
               Un sanctuaire sensoriel confidentiel pour la restauration physique et mentale. Uniquement sur rendez-vous.

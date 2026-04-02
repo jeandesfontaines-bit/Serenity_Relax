@@ -182,7 +182,7 @@ export default function TherapistDashboard() {
               <div className="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shadow-lg shadow-black/5"><Calendar size={18}/></div>
               <div>
                 <span className="text-sm font-bold tracking-tight block text-gray-900">Cabinet Serenity</span>
-                <span className="hidden sm:inline-block text-[14px] font-cursive text-muted-foreground ml-1">by João</span>
+                <span className="hidden sm:inline-block text-[22px] font-cursive text-muted-foreground ml-1 normal-case">by João</span>
               </div>
             </div>
             
