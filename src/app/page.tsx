@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { 
   ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, Menu, 
   Heart, Clock, Calendar, Sun, Instagram, Activity,
-  ShieldCheck, Check, ChevronRight
+  ShieldCheck, Check, ChevronRight, X
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 
@@ -17,7 +17,7 @@ const SERVICES = [
     id: "01",
     name: "Massage Thérapeutique & Relaxant",
     duration: "60 MIN",
-    icon: <Sparkles size={22} strokeWidth={1.5} />,
+    icon: <ShieldCheck size={22} strokeWidth={1.5} />,
     glow: "#E8F2F0",
     desc: "Approche personnalisée pour relâcher les tensions et apaiser le mental. Rééquilibre le corps en profondeur.",
     tag: "Soin Ciblé"
@@ -187,47 +187,48 @@ export default function HomePage() {
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 500], [0, 150]);
   const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
-  const titleY = useTransform(scrollY, [0, 500], [0, -100]);
 
   return (
     <div className="min-h-screen relative grained bg-[#F9F9F7] selection:bg-neutral-900 selection:text-white">
       <GlobalStyle />
       <Navbar />
 
-      {/* Hero Header */}
-      <header className="relative h-screen flex items-center px-6 md:px-20 overflow-hidden bg-[#1a1a1a]">
+      {/* SECTION 1: HERO */}
+      <section className="relative h-screen flex items-center px-6 md:px-20 overflow-hidden bg-[#1a1a1a]">
         <motion.div style={{ y: yHero, opacity: opacityHero }} className="absolute inset-0">
           <img 
             src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=2000" 
             className="w-full h-full object-cover opacity-50 scale-105"
-            alt="Détail zen"
+            alt="Sanctuaire Serenity Relax"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#F9F9F7]" />
         </motion.div>
 
-        <motion.div style={{ y: titleY }} className="max-w-5xl relative z-20 w-full pt-20">
+        <div className="max-w-5xl relative z-20 w-full pt-20 mx-auto text-center">
           <span className="hero-title-mask">
-            <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1 }} className="block text-[10px] font-bold uppercase tracking-[0.5em] text-white/70 mb-6">Expertise & Bien-être • Genève</motion.span>
+            <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1 }} className="block text-[10px] font-bold uppercase tracking-[0.5em] text-white/70 mb-6">Genève • Cointrin</motion.span>
           </span>
-          <h2 className="text-[clamp(3rem,10vw,8rem)] font-fraunces font-black leading-[0.85] tracking-tighter mb-12 text-white uppercase">
+          <h1 className="text-6xl md:text-[8rem] font-fraunces font-black leading-[0.85] tracking-tighter mb-12 text-white uppercase">
             <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 }} className="block">L'art du</motion.span></span>
-            <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.2 }} className="block serif-italic font-light lowercase tracking-normal ml-[8vw]">mouvement calme.</motion.span></span>
-          </h2>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="flex flex-col md:flex-row items-end gap-12 ml-[8vw]">
-            <p className="max-w-[320px] text-sm md:text-lg text-white/80 font-fraunces italic font-light leading-relaxed">Un sanctuaire sensoriel confidentiel dédié à la restauration profonde du corps et de l'esprit.</p>
-            <Link href="/booking" className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white group cursor-pointer">
-              <div className="w-px h-12 bg-white/20 group-hover:h-16 transition-all duration-500" /> Réserver un rituel
+            <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.2 }} className="block serif-italic font-light lowercase tracking-normal">mouvement calme.</motion.span></span>
+          </h1>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="flex flex-col items-center gap-12">
+            <p className="max-w-lg text-lg md:text-xl text-white/80 font-fraunces italic font-light leading-relaxed">
+              Un sanctuaire sensoriel confidentiel dédié à la restauration profonde du corps et de l'esprit.
+            </p>
+            <Link href="/booking" className="inline-flex items-center gap-6 px-12 py-5 bg-white text-primary rounded-full text-[10px] font-black uppercase tracking-[0.4em] hover:scale-105 transition-all shadow-2xl">
+              Réserver votre rituel <ArrowRight size={16} />
             </Link>
           </motion.div>
-        </motion.div>
-      </header>
+        </div>
+      </section>
 
-      {/* --- SECTION ENGAGEMENT JOÃO --- */}
-      <section className="py-24 md:py-32 px-6 md:px-10 bg-[#F9F9F7]">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+      {/* SECTION 2: L'ENGAGEMENT JOÃO */}
+      <section className="py-32 px-6 md:px-10 bg-white relative overflow-hidden">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           <div className="lg:col-span-5 relative">
-             <span className="text-xs font-black uppercase tracking-[0.6em] text-neutral-400 block mb-8">La Philosophie</span>
-             <h2 className="text-4xl md:text-6xl lg:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 mb-12">
+             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 block mb-8">La Philosophie</span>
+             <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 mb-12">
                L'Engagement <span className="serif-italic font-light lowercase">João.</span>
              </h2>
              
@@ -238,68 +239,65 @@ export default function HomePage() {
                transition={{ duration: 1 }}
                className="relative aspect-[4/5] w-full max-w-sm rounded-[3rem] overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000 hidden lg:block border border-white"
              >
-                <img src={PHOTO_JOAO} className="w-full h-full object-cover" alt="João" />
+                <img src={PHOTO_JOAO} className="w-full h-full object-cover" alt="João, votre thérapeute" />
              </motion.div>
           </div>
           
           <div className="lg:col-span-7 space-y-12">
-            <p className="text-xl md:text-3xl font-fraunces font-light text-neutral-700 leading-snug">
-              Je ne pratique pas seulement le massage ; je sculpte un <span className="font-bold text-neutral-900">espace de décompression</span>. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
+            <p className="text-2xl md:text-4xl font-fraunces font-light text-neutral-700 leading-snug">
+              Je ne pratique pas seulement le massage ; je sculpte un <span className="font-bold text-neutral-900">espace de décompression</span>. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle.
             </p>
             
-            <div className="relative py-12 md:py-16 px-10 bg-white/50 rounded-[2.5rem] border border-neutral-100 italic">
-               <span className="absolute -top-10 left-10 text-9xl font-serif text-neutral-100 select-none opacity-50">“</span>
+            <div className="relative py-16 px-10 bg-[#F9F9F7] rounded-[2.5rem] border border-neutral-100 italic">
+               <span className="absolute -top-10 left-10 text-9xl font-serif text-neutral-200 select-none opacity-50">“</span>
                <p className="text-2xl md:text-4xl font-fraunces text-neutral-900 leading-tight">
                  « Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
                </p>
                <div className="mt-10 h-[1px] w-24 bg-neutral-900/10" />
                <p className="mt-8 text-xs md:text-sm font-bold uppercase tracking-widest text-neutral-400 leading-relaxed max-w-lg">
-                 Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
+                 Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment. Agréé ASCA & RME.
                </p>
             </div>
             
             <div className="lg:hidden aspect-[4/5] w-full max-w-xs rounded-[2.5rem] overflow-hidden shadow-xl grayscale">
-                <img src={PHOTO_JOAO} className="w-full h-full object-cover" alt="João mobile" />
+                <img src={PHOTO_JOAO} className="w-full h-full object-cover" alt="João" />
             </div>
           </div>
         </div>
       </section>
-      
-      <main className="px-6 md:px-10 max-w-[1400px] mx-auto">
-        {/* Section Soins */}
-        <section className="flex flex-col lg:flex-row gap-16 lg:gap-24 pb-32">
-          <div className="w-full lg:w-4/12 lg:sticky lg:top-32 h-fit">
-            <div className="space-y-12">
-              <div className="space-y-6">
-                <div className="w-12 h-[1px] bg-neutral-900 opacity-20" />
-                <h2 className="text-4xl md:text-6xl font-fraunces font-black tracking-tighter leading-[1] uppercase text-neutral-900 italic">
-                  La Carte<br/>
-                  <span className="serif-italic font-light lowercase tracking-normal block">Rituels.</span>
-                </h2>
-              </div>
-              <p className="text-xl text-neutral-400 leading-relaxed font-fraunces italic font-light max-w-xs">
-                Une approche précise de la massothérapie pour un équilibre musculaire et nerveux optimal.
-              </p>
-            </div>
+
+      {/* SECTION 3: LES SOINS */}
+      <section className="py-32 px-6 md:px-10 bg-[#F9F9F7]">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col items-center text-center mb-24 space-y-6">
+            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Expertise Thérapeutique</span>
+            <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 uppercase italic">
+              La Carte <span className="serif-italic font-light lowercase tracking-normal">Rituels.</span>
+            </h2>
+            <p className="text-lg text-neutral-400 max-w-lg font-fraunces italic font-light">
+              Des techniques précises pour un équilibre musculaire et nerveux optimal. Un moment de déconnexion totale.
+            </p>
           </div>
 
-          <div className="w-full lg:w-8/12 grid grid-cols-1 md:grid-cols-2 gap-8 py-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {SERVICES.map((s) => (
               <PortraitCard key={s.id} service={s} />
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Section Rituel Post-Soin */}
-        <section className="pt-24 border-t border-neutral-100 pb-32">
-          <div className="flex flex-col items-center text-center mb-20 space-y-6">
-            <span className="text-xs font-black uppercase tracking-[0.6em] text-neutral-400">7 gestes pour magnifier l'expérience</span>
-            <h2 className="text-4xl md:text-6xl font-fraunces font-black tracking-tighter uppercase text-neutral-900">
+      {/* SECTION 4: LE RITUEL POST-SOIN */}
+      <section className="py-32 px-6 md:px-10 bg-white border-t border-neutral-100">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col items-center text-center mb-24 space-y-6">
+            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400">7 gestes pour magnifier l'expérience</span>
+            <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter uppercase text-neutral-900">
               Le Rituel <span className="serif-italic font-light lowercase">Post-Soin</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-20 items-stretch">
             {RITUAL_STEPS.map((step, i) => (
               <motion.div 
                 key={i}
@@ -309,20 +307,20 @@ export default function HomePage() {
                 transition={{ delay: i * 0.1, duration: 0.8 }}
                 className="group flex flex-col space-y-6"
               >
-                <div className="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white transition-all">
-                  {React.createElement(step.icon as any, { size: 20, strokeWidth: 1.2 })}
+                <div className="w-14 h-14 rounded-full border border-neutral-100 flex items-center justify-center text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-500">
+                  {React.createElement(step.icon as any, { size: 24, strokeWidth: 1 })}
                 </div>
-                <div className="space-y-3">
-                  <h4 className="font-fraunces font-bold text-neutral-900 text-lg">{step.title}</h4>
+                <div className="space-y-4">
+                  <h4 className="font-fraunces font-bold text-neutral-900 text-xl">{step.title}</h4>
                   <p className="text-neutral-400 text-sm leading-relaxed">{step.desc}</p>
                 </div>
               </motion.div>
             ))}
             
-            <Link href="/booking" className="lg:col-span-1 bg-neutral-900 rounded-[3rem] p-10 flex flex-col justify-between text-white group relative overflow-hidden shadow-2xl">
+            <Link href="/booking" className="lg:col-span-1 bg-neutral-900 rounded-[3rem] p-10 flex flex-col justify-between text-white group relative overflow-hidden shadow-2xl transition-all hover:scale-[1.02]">
               <div className="relative z-10 space-y-6">
                 <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/50">Engagement</span>
-                <p className="font-fraunces text-2xl leading-tight">Prêt pour votre prochain moment ?</p>
+                <p className="font-fraunces text-2xl leading-tight">Prêt pour votre prochain moment de calme ?</p>
               </div>
               <div className="relative z-10 flex justify-between items-center mt-10">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Réserver</span>
@@ -333,17 +331,18 @@ export default function HomePage() {
               </div>
             </Link>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
-      <footer className="py-24 px-6 bg-neutral-900 text-white overflow-hidden relative">
-        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-start gap-20 relative z-10">
+      {/* FOOTER */}
+      <footer className="py-32 px-6 bg-neutral-900 text-white overflow-hidden relative">
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row justify-between items-start gap-20 relative z-10">
           <div className="space-y-8">
             <h2 className="font-fraunces font-bold text-xs tracking-[0.3em] uppercase leading-none">
               SERENITY RELAX <span className="font-meow text-3xl text-white/40 tracking-normal inline-block normal-case ml-2">by João</span>
             </h2>
             <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-medium leading-loose max-w-sm">
-              Un sanctuaire sensoriel confidentiel pour la restauration physique et mentale. Uniquement sur rendez-vous.
+              Un sanctuaire sensoriel confidentiel pour la restauration physique et mentale. Agréé Thérapeute ASCA & RME.
             </p>
           </div>
           
@@ -371,9 +370,9 @@ export default function HomePage() {
                 <Instagram size={24} />
               </a>
               <div className="h-10 w-px bg-white/10 hidden md:block" />
-              <div className="space-y-2">
-                <h3 className="text-[9px] font-bold tracking-[0.3em] uppercase text-white/20">ID ASCA</h3>
-                <p className="text-xs text-emerald-400 font-black tracking-widest">Agréé Thérapeute</p>
+              <div className="space-y-2 text-right">
+                <h3 className="text-[9px] font-bold tracking-[0.3em] uppercase text-white/20">Agréments</h3>
+                <p className="text-xs text-emerald-400 font-black tracking-widest">ASCA • RME</p>
               </div>
             </div>
             <p className="text-[10px] text-white/20 uppercase tracking-widest">&copy; {new Date().getFullYear()} Serenity Relax. Tous droits réservés.</p>
