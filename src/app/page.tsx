@@ -190,7 +190,7 @@ export default function HomePage() {
       {/* SECTION SERVICES */}
       <section id="services" className="py-24 px-6 md:px-12 lg:px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[5rem] lg:mx-6 overflow-visible">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-24 items-start">
+          <div className="flex flex-col lg:flex-row gap-12 items-start">
             
             {/* TEXTE À GAUCHE (STICKY) */}
             <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start">
@@ -219,10 +219,10 @@ export default function HomePage() {
       {/* RITUEL POST-SOIN - STYLE ÉDITORIAL AVEC COLONNE FIXE À DROITE */}
       <section className="py-24 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-24 items-start">
+          <div className="flex flex-col lg:flex-row gap-12 items-start">
             
             {/* LISTE À GAUCHE */}
-            <div className="w-full lg:w-[70%] space-y-0 border-t border-neutral-100">
+            <div className="w-full lg:w-[64%] space-y-0 border-t border-neutral-100">
                {AFTERCARE_TIPS.map((tip) => (
                 <div key={tip.id} className="group py-16 px-0 border-b border-neutral-100 flex flex-col md:flex-row items-start md:items-center gap-12 transition-all duration-700 hover:bg-neutral-50/30">
                   <div className="flex items-center gap-12 min-w-[120px]">
@@ -250,11 +250,11 @@ export default function HomePage() {
             </div>
 
             {/* TEXTE À DROITE (STICKY) */}
-            <div className="w-full lg:w-[30%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <OverTitle className="mb-2">Rituel Post-Séance</OverTitle>
-              <SectionTitle main="Prolonger" italic="l'état de grâce." />
+            <div className="w-full lg:w-[36%] lg:sticky lg:top-32 h-fit lg:pt-16 flex flex-col items-center lg:items-end text-center lg:text-right">
+              <OverTitle className="mb-2 lg:text-right">Rituel Post-Séance</OverTitle>
+              <SectionTitle main="Prolonger" italic="l'état de grâce." className="lg:text-right" />
               <div className="h-[2px] w-12 bg-neutral-900 my-8 mx-auto lg:mr-0 lg:ml-auto" />
-              <SectionDesc className="text-neutral-800">
+              <SectionDesc className="text-neutral-800 lg:text-right">
                 Quelques attentions pour ancrer les bienfaits du soin dans la durée.
               </SectionDesc>
             </div>
