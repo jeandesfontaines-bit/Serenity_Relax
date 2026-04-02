@@ -1,9 +1,9 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import useEmblaCarousel from 'embla-carousel-react';
 import { 
   ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, Menu, 
@@ -373,4 +373,3 @@ export default function HomePage() {
     </div>
   );
 }
-
