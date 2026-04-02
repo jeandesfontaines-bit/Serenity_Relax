@@ -1,53 +1,60 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import useEmblaCarousel from 'embla-carousel-react';
 import { 
   ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, Menu, 
   Heart, Clock, Calendar, Sun, Instagram, Activity,
-  ShieldCheck, Zap, Smile, Waves, Power, X, MapPin
+  ShieldCheck, Zap, Smile, Waves, Power, X, MapPin, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 
 // --- DATA ---
 const SERVICES = [
   {
-    id: "01", name: "Massage Thérapeutique", duration: "60 min",
+    id: "01", name: "Massage thérapeutique", duration: "60 min",
     image: "https://images.unsplash.com/photo-1544126592-807daa215671?auto=format&fit=crop&q=80&w=1000",
     desc: "Libération des tensions profondes et restauration de l'équilibre corporel signé João.",
-    tag: "Excellence"
+    tag: "Excellence",
+    glow: "#F0F4F8"
   },
   {
-    id: "02", name: "Deep Relax Signature", duration: "60 min",
+    id: "02", name: "Deep relax signature", duration: "60 min",
     image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&q=80&w=1000",
     desc: "Une immersion sensorielle confidentielle conçue pour un lâcher-prise immédiat.",
-    tag: "Sérénité"
+    tag: "Sérénité",
+    glow: "#E8F0F2"
   },
   {
-    id: "03", name: "Massage Sportif", duration: "60 min",
+    id: "03", name: "Massage sportif", duration: "60 min",
     image: "https://images.unsplash.com/photo-1614859324967-bdf781b9c897?auto=format&fit=crop&q=80&w=1000",
     desc: "Conçu pour les sportifs, un travail musculaire profond pour une récupération optimale.",
-    tag: "Performance"
+    tag: "Performance",
+    glow: "#E8EBF2"
   },
   {
-    id: "04", name: "Kalari Thérapeutique", duration: "75 min",
+    id: "04", name: "Kalari thérapeutique", duration: "75 min",
     image: "https://images.unsplash.com/photo-1600334129128-685c4583168a?auto=format&fit=crop&q=80&w=1000",
     desc: "Alliance d'étirements doux et de chaleur pour une vitalité et une souplesse retrouvées.",
-    tag: "Tradition"
+    tag: "Tradition",
+    glow: "#F2EDE8"
   },
   {
-    id: "05", name: "Drainage Lymphatique", duration: "60 min",
+    id: "05", name: "Drainage lymphatique", duration: "60 min",
     image: "https://images.unsplash.com/photo-1591343395582-99bf4eb11abc?auto=format&fit=crop&q=80&w=1000",
     desc: "Soin fluide pour améliorer la circulation et éliminer les toxines du corps.",
-    tag: "Détox"
+    tag: "Détox",
+    glow: "#E8F2F0"
   },
   {
-    id: "06", name: "Massage Découverte", duration: "30 min",
+    id: "06", name: "Massage découverte", duration: "30 min",
     image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?auto=format&fit=crop&q=80&w=1000",
     desc: "Idéal pour découvrir l'approche Serenity & Relax dans un format court et apaisant.",
-    tag: "Initiation"
+    tag: "Initiation",
+    glow: "#F2E8E8"
   }
 ];
 
@@ -93,7 +100,7 @@ const PortraitCard = ({ service }) => {
   return (
     <motion.div 
       whileHover={{ y: -8 }}
-      className="relative w-full aspect-[3/4.5] rounded-[2.5rem] overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-700 cursor-pointer"
+      className="relative w-full aspect-[3/4.5] rounded-[2.5rem] overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-700 cursor-pointer flex-shrink-0"
     >
       <img 
         src={service.image} 
@@ -131,6 +138,16 @@ export default function HomePage() {
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 500], [0, 150]);
   const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: 'start',
+    skipSnaps: false,
+    dragFree: true
+  });
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
   return (
     <div className="min-h-screen relative grained bg-[#F9F9F7]">
@@ -208,20 +225,41 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 3: LES SOINS */}
+      {/* SECTION 3: LES SOINS (CARROUSEL) */}
       <section className="py-32 px-6 md:px-10 bg-[#F9F9F7]">
         <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col items-center text-center mb-24 space-y-8">
-            <span className="text-[11px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Expertise thérapeutique</span>
-            <h2 className="text-4xl md:text-6xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900">
-              La carte des <span className="serif-italic font-light lowercase">rituels.</span>
-            </h2>
+          <div className="flex flex-col md:flex-row justify-between items-end mb-24 space-y-8 md:space-y-0">
+            <div className="space-y-8">
+              <span className="text-[11px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Expertise thérapeutique</span>
+              <h2 className="text-4xl md:text-6xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900">
+                La carte des <span className="serif-italic font-light lowercase">rituels.</span>
+              </h2>
+            </div>
+            
+            <div className="flex gap-4">
+              <button 
+                onClick={scrollPrev} 
+                className="w-14 h-14 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-400 hover:bg-white hover:text-neutral-900 hover:border-white transition-all shadow-sm"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button 
+                onClick={scrollNext} 
+                className="w-14 h-14 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-400 hover:bg-white hover:text-neutral-900 hover:border-white transition-all shadow-sm"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14">
-            {SERVICES.map((s) => (
-              <PortraitCard key={s.id} service={s} />
-            ))}
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex gap-8 md:gap-10">
+              {SERVICES.map((s) => (
+                <div key={s.id} className="flex-[0_0_85%] md:flex-[0_0_35%] lg:flex-[0_0_28%]">
+                  <PortraitCard service={s} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
