@@ -292,7 +292,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                       <button 
                         onClick={handleAiRecommend} 
                         disabled={aiLoading || !aiQuery}
-                        className="mt-6 high-end-button w-full text-[18px] py-4"
+                        className="mt-6 high-end-button w-full"
                       >
                         {aiLoading ? <Loader2 className="animate-spin h-5 w-5 mr-2" /> : <Sparkles className="h-5 w-5 mr-2" />}
                         Trouver le soin idéal

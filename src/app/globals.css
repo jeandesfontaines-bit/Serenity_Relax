@@ -61,9 +61,9 @@
   }
 
   .high-end-button {
-    @apply text-[#0a0a0a] border-[3px] border-black rounded-[52px] px-[30px] py-[10px] tracking-[2px] font-bold uppercase transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3 cursor-pointer bg-transparent;
-    font-size: 25px;
-    line-height: 1.2;
+    @apply inline-flex items-center justify-center px-10 py-4 border-2 border-black rounded-full 
+           text-[10px] font-black uppercase tracking-[0.4em] transition-all duration-500
+           hover:bg-black hover:text-white active:scale-95 cursor-pointer bg-transparent;
   }
 }
 
