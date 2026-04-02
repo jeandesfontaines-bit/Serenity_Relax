@@ -251,7 +251,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION SERVICES */}
-      <section id="services" className="py-20 md:py-32 px-6 md:px-12 lg:px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[2.5rem] md:rounded-[5rem] lg:mx-6 overflow-visible">
+      <section id="services" className="py-16 md:py-24 px-6 md:px-12 lg:px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[2.5rem] md:rounded-[5rem] lg:mx-6 overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             
@@ -280,7 +280,7 @@ export default function HomePage() {
       </section>
 
       {/* RITUEL POST-SOIN - STYLE ÉDITORIAL */}
-      <section className="py-24 md:py-40 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
+      <section className="pt-24 md:pt-40 pb-12 md:pb-16 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-20 md:mb-24 text-center md:text-right">
             <div className="hidden md:block h-[1px] flex-1 bg-neutral-100 mb-8 mr-12" />
@@ -326,11 +326,11 @@ export default function HomePage() {
       <footer className="bg-[#0a0a0a] text-white py-16 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 md:gap-6">
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <div className="font-sans font-bold text-[11px] md:text-sm tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
-            <p className="text-[9px] md:text-[10px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-2">Excellence Thérapeutique</p>
+            <div className="font-sans font-bold text-sm tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
+            <p className="text-[10px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-2">Excellence Thérapeutique</p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 text-[10px] md:text-[11px] font-sans font-medium text-neutral-400 text-center">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12 text-[11px] font-sans font-medium text-neutral-400 text-center">
             <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Localisation</span> Alpha Business Center • Genève</p>
             <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Contact</span> +41 78 333 68 23</p>
           </div>
@@ -345,7 +345,7 @@ export default function HomePage() {
         </div>
         
         <div className="max-w-7xl mx-auto mt-16 pt-10 border-t border-white/5 flex justify-center">
-          <p className="text-[9px] md:text-[10px] font-sans font-bold text-neutral-800 uppercase tracking-[0.4em] text-center">
+          <p className="text-[10px] font-sans font-bold text-neutral-800 uppercase tracking-[0.4em] text-center">
             © 2025 Serenity & Relax Therapy — Genève
           </p>
         </div>
