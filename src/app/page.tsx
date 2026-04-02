@@ -18,13 +18,13 @@ const BENEFITS = [
 ];
 
 const WELLNESS_TIPS = [
-  { id: 1, title: "ACCUEILLEZ VOS ÉMOTIONS", text: "Un massage peut libérer des ressentis profonds. Laissez-les s'exprimer naturellement.", icon: Heart },
-  { id: 2, title: "PRENEZ VOTRE TEMPS", text: "Restez allongé quelques minutes avant de vous relever doucement.", icon: Clock },
-  { id: 3, title: "HYDRATEZ-VOUS", text: "Buvez de l'eau à température ambiante pour aider à éliminer les toxines.", icon: Heart },
-  { id: 4, title: "ÉVITEZ LA DOUCHE IMMÉDIATE", text: "Attendez environ une heure pour laisser les huiles et l'énergie agir.", icon: Sparkles },
-  { id: 5, title: "PROLONGEZ LA DÉTENTE", text: "Accordez-vous encore quelques instants de repos et respirez profondément.", icon: Wind },
-  { id: 6, title: "PLANIFIEZ UN PROCHAIN SOIN", text: "Pensez à réserver votre prochaine séance pour un bien-être durable.", icon: Calendar },
-  { id: 7, title: "CHOISISSEZ LA DOUCEUR", text: "Privilégiez des activités calmes pour prolonger la sensation de bien-être.", icon: Leaf },
+  { id: 1, title: "Accueillez vos émotions", text: "Un massage peut libérer des ressentis profonds. Laissez-les s'exprimer naturellement.", icon: Heart },
+  { id: 2, title: "Prenez votre temps", text: "Restez allongé quelques minutes avant de vous relever doucement.", icon: Clock },
+  { id: 3, title: "Hydratez-vous", text: "Buvez de l'eau à température ambiante pour aider à éliminer les toxines.", icon: Heart },
+  { id: 4, title: "Évitez la douche immédiate", text: "Attendez environ une heure pour laisser les huiles et l'énergie agir.", icon: Sparkles },
+  { id: 5, title: "Prolongez la détente", text: "Accordez-vous encore quelques instants de repos et respirez profondément.", icon: Wind },
+  { id: 6, title: "Planifiez un prochain soin", text: "Pensez à réserver votre prochaine séance pour un bien-être durable.", icon: Calendar },
+  { id: 7, title: "Choisissez la douceur", text: "Privilégiez des activités calmes pour prolonger la sensation de bien-être.", icon: Leaf },
 ];
 
 export default function HomePage() {
@@ -48,7 +48,7 @@ export default function HomePage() {
               <span className="text-[9px] uppercase tracking-[0.3em] font-black text-muted-foreground">Genève Cointrin</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-7xl leading-[1.1] font-sans font-bold text-primary mb-6 tracking-tighter">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl leading-[1.1] font-serif font-bold text-primary mb-6 tracking-tighter">
               Massage sur <span className="italic font-medium">mesure.</span>
             </h1>
             
@@ -95,7 +95,7 @@ export default function HomePage() {
             <div className="h-0.5 w-10 bg-primary"></div>
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">L'Art du Toucher</span>
           </div>
-          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter mt-4 uppercase">Techniques & <span className="italic font-medium">Expériences</span></h2>
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter mt-4">Techniques & <span className="italic font-medium">Expériences</span></h2>
           <p className="mt-8 text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed italic">
             Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort et de votre intimité.
           </p>
@@ -112,7 +112,7 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
               <div className="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
                 <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2 block opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-700">Expérience 0{i+1}</span>
-                <h3 className="text-lg md:text-xl font-sans text-white font-bold leading-tight mb-3 uppercase">{service.name.split(' - ')[0]}</h3>
+                <h3 className="text-lg md:text-xl font-serif text-white font-bold leading-tight mb-3">{service.name.split(' - ')[0]}</h3>
                 <p className="text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
               </div>
             </Link>
@@ -133,7 +133,7 @@ export default function HomePage() {
               <Sparkles className="h-3 w-3 text-amber-500" />
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Bon à savoir</span>
             </div>
-            <h2 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 uppercase">7 conseils pour prolonger <br /> les bienfaits</h2>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6">7 conseils pour prolonger les bienfaits</h2>
             <p className="text-muted-foreground font-normal max-w-lg mx-auto leading-relaxed italic">
               Quelques gestes essentiels pour accueillir pleinement les effets de votre soin dans les heures qui suivent.
             </p>
@@ -146,7 +146,7 @@ export default function HomePage() {
                   <span className="editorial-number">{tip.id}</span>
                 </div>
                 <div className="flex-1 pt-4">
-                  <h3 className="text-2xl md:text-3xl font-sans font-bold text-primary mb-6 uppercase tracking-tight">{tip.title}</h3>
+                  <h3 className="text-2xl md:text-3xl font-serif font-bold text-primary mb-6 tracking-tight">{tip.title}</h3>
                   <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
                     {tip.text}
                   </p>
@@ -163,7 +163,7 @@ export default function HomePage() {
       <footer className="py-20 px-6 bg-primary text-white">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
           <div className="space-y-6">
-            <h2 className="font-sans text-xl font-bold tracking-[0.2em] uppercase leading-none">
+            <h2 className="font-serif text-xl font-bold tracking-[0.2em] uppercase leading-none">
               SERENITY RELAX <span className="font-cursive text-[28px] text-white/40 tracking-normal inline-block normal-case ml-2">by João</span>
             </h2>
             <p className="text-white/40 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs">
