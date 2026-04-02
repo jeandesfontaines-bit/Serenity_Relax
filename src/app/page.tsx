@@ -136,7 +136,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] border-[8px] md:border-[12px] border-white shadow-2xl max-w-[320px] md:max-w-[380px] mx-auto lg:ml-0"
+              className="relative aspect-[4/5] overflow-hidden rounded-[8rem_3rem_10rem_4rem] border-2 border-white shadow-2xl max-w-[320px] md:max-w-[380px] mx-auto lg:ml-0"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -282,7 +282,7 @@ export default function HomePage() {
         </div>
         
         <div className="max-w-7xl mx-auto mt-16 pt-10 border-t border-white/5 flex justify-center">
-          <p className="text-[10px] font-sans font-bold text-neutral-800 uppercase tracking-[0.4em] text-center">
+          <p className="text-sm font-sans font-bold text-neutral-800 uppercase tracking-[0.4em] text-center">
             © 2025 Serenity & Relax Therapy — Genève
           </p>
         </div>
