@@ -47,7 +47,7 @@ const ServiceCard = ({ s }: { s: any }) => (
       />
     </div>
 
-    <div className="px-2 pb-12 space-y-3">
+    <div className="px-2 pb-20 space-y-3">
       <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
         {s.tag}
       </span>
@@ -167,9 +167,12 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
               <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-8">Assistance</span>
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter">
+              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
                 Questions <br /> <span className="text-neutral-500 italic font-light">fréquentes.</span>
               </h2>
+              <p className="text-neutral-600 text-base font-sans font-medium leading-relaxed italic mb-12 max-w-xs">
+                Tout ce qu'il faut savoir pour préparer votre visite dans notre sanctuaire de Cointrin.
+              </p>
             </div>
 
             <div className="w-full lg:w-[68%] space-y-20">
