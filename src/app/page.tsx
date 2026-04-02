@@ -40,16 +40,16 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen bg-background selection:bg-primary/5">
       <Navbar />
 
-      <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-48 md:pb-32 overflow-hidden">
-        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-4 items-center relative z-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+      <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-2 items-center relative z-20">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6">
               <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
               <span className="text-[9px] uppercase tracking-[0.3em] font-black text-muted-foreground">Genève Cointrin</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-7xl leading-[1.1] font-serif font-medium text-primary mb-6 tracking-tighter">
-              Massage sur <span className="italic">mesure.</span>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl leading-[1.1] font-sans font-bold text-primary mb-6 tracking-tighter">
+              Massage sur <span className="italic font-medium">mesure.</span>
             </h1>
             
             <p className="text-base md:text-lg text-muted-foreground font-normal leading-relaxed max-w-md mb-8">
@@ -73,10 +73,10 @@ export default function HomePage() {
           <motion.div 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
-            transition={{ duration: 1.5 }}
+            transition={{ duration: 1 }}
             className="relative flex justify-center lg:justify-end animate-float"
           >
-            <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[420px] shadow-2xl border-[6px] md:border-[8px] border-white/20">
+            <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[440px] shadow-2xl border-[6px] md:border-[8px] border-white/20">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 alt="João" 
@@ -95,8 +95,8 @@ export default function HomePage() {
             <div className="h-0.5 w-10 bg-primary"></div>
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">L'Art du Toucher</span>
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium tracking-tighter mt-4">Techniques & <span className="italic font-normal">Expériences</span></h2>
-          <p className="mt-8 text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed">
+          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter mt-4 uppercase">Techniques & <span className="italic font-medium">Expériences</span></h2>
+          <p className="mt-8 text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed italic">
             Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort et de votre intimité.
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
               <div className="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
                 <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2 block opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-700">Expérience 0{i+1}</span>
-                <h3 className="text-lg md:text-xl font-serif text-white font-bold leading-tight mb-3">{service.name.split(' - ')[0]}</h3>
+                <h3 className="text-lg md:text-xl font-sans text-white font-bold leading-tight mb-3 uppercase">{service.name.split(' - ')[0]}</h3>
                 <p className="text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
               </div>
             </Link>
@@ -133,8 +133,8 @@ export default function HomePage() {
               <Sparkles className="h-3 w-3 text-amber-500" />
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Bon à savoir</span>
             </div>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter mb-6">7 conseils pour prolonger <br /> les bienfaits</h2>
-            <p className="text-muted-foreground font-normal max-w-lg mx-auto leading-relaxed">
+            <h2 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 uppercase">7 conseils pour prolonger <br /> les bienfaits</h2>
+            <p className="text-muted-foreground font-normal max-w-lg mx-auto leading-relaxed italic">
               Quelques gestes essentiels pour accueillir pleinement les effets de votre soin dans les heures qui suivent.
             </p>
           </div>
@@ -146,7 +146,7 @@ export default function HomePage() {
                   <span className="editorial-number">{tip.id}</span>
                 </div>
                 <div className="flex-1 pt-4">
-                  <h3 className="text-2xl md:text-3xl font-serif font-bold text-primary mb-6">{tip.title}</h3>
+                  <h3 className="text-2xl md:text-3xl font-sans font-bold text-primary mb-6 uppercase tracking-tight">{tip.title}</h3>
                   <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
                     {tip.text}
                   </p>
@@ -164,7 +164,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
           <div className="space-y-6">
             <h2 className="font-sans text-xl font-bold tracking-[0.2em] uppercase leading-none">
-              SERENITY RELAX <span className="font-cursive text-[28px] text-white/40 tracking-normal inline-block normal-case">by João</span>
+              SERENITY RELAX <span className="font-cursive text-[28px] text-white/40 tracking-normal inline-block normal-case ml-2">by João</span>
             </h2>
             <p className="text-white/40 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs">
               Un sanctuaire sensoriel confidentiel pour la restauration physique et mentale. Uniquement sur rendez-vous.

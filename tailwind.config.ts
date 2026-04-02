@@ -11,7 +11,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-        serif: ['"Playfair Display"', 'serif'],
+        serif: ['"Plus Jakarta Sans"', 'sans-serif'],
         cursive: ['"Meow Script"', 'cursive'],
         code: ['monospace'],
       },
@@ -55,9 +55,6 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-      scale: {
-        '102': '1.02',
-      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
@@ -69,7 +66,7 @@ export default {
         },
         float: {
           '0%, 100%': { transform: 'translate(0, 0)' },
-          '50%': { transform: 'translate(-20px, 20px)' },
+          '50%': { transform: 'translate(-15px, 15px)' },
         },
         morph: {
           '0%': { borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' },
@@ -80,7 +77,7 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        float: 'float 12s ease-in-out infinite',
+        float: 'float 10s ease-in-out infinite',
         morph: 'morph 8s ease-in-out infinite',
       },
     },

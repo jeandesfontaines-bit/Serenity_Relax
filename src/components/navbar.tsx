@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutDashboard, Menu, X, LogOut, User } from 'lucide-react';
+import { LayoutDashboard, Menu, X, LogOut } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 
@@ -29,7 +29,7 @@ export function Navbar() {
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-baseline gap-2 cursor-pointer group">
           <span className="font-sans font-bold text-sm md:text-base tracking-[0.2em] text-primary uppercase">SERENITY RELAX</span>
-          <span className="font-cursive text-[22px] text-muted-foreground tracking-normal whitespace-nowrap normal-case group-hover:text-primary transition-colors">by João</span>
+          <span className="font-cursive text-[24px] text-muted-foreground tracking-normal whitespace-nowrap normal-case group-hover:text-primary transition-colors ml-1">by João</span>
         </Link>
         
         <div className="hidden md:flex items-center gap-8">
@@ -52,9 +52,9 @@ export function Navbar() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -10 }}
             className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-black/5 p-8 flex flex-col gap-6 md:hidden"
           >
             <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Espace Client</Link>

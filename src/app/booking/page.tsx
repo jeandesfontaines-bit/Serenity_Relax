@@ -11,11 +11,11 @@ export default function BookingPage() {
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-12 md:mb-16">
           <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-white border border-black/5 rounded-full mb-8 shadow-sm">
-            <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
             <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">Expérience Privée</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-serif font-medium text-primary mb-6 tracking-tighter leading-tight">
-            Réserver un <span className="italic">moment.</span>
+          <h1 className="text-4xl md:text-6xl font-sans font-bold text-primary mb-6 tracking-tighter leading-tight uppercase">
+            Réserver un <span className="italic font-medium">moment.</span>
           </h1>
           <p className="text-muted-foreground text-base md:text-lg font-light max-w-lg mx-auto leading-relaxed italic">
             Curate your personal journey of recovery. Securing your preferred time in our sanctuary is the first step to restoration.
