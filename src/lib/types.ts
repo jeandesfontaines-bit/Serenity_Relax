@@ -1,4 +1,3 @@
-
 export type Service = {
   id: string;
   name: string;
@@ -46,7 +45,7 @@ export type Appointment = {
 export const SERVICES: Service[] = [
   { 
     id: '1', 
-    name: 'Massage aux Bambous - Stimulation Musculaire Profonde 60 min', 
+    name: 'Bambous - Stimulation Musculaire Profonde 60 min', 
     description: 'Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.', 
     duration: '60 min', 
     price: 110 
@@ -74,28 +73,28 @@ export const SERVICES: Service[] = [
   },
   { 
     id: '5', 
-    name: 'Massage Sportif / Deep Tissue - Séance ciblée 60 min', 
+    name: 'Sportif / Deep Tissue - Séance ciblée 60 min', 
     description: 'Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.', 
     duration: '60 min', 
     price: 110 
   },
   { 
     id: '6', 
-    name: 'Massage Thérapeutique - Séance ciblée 60 min', 
-    description: 'Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.', 
+    name: 'Thérapeutique - Séance ciblée 60 min', 
+    description: 'Soin ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.', 
     duration: '60 min', 
     price: 110 
   },
   { 
     id: '7', 
-    name: 'Massage Deep Relax - Relaxation Profonde 60 min', 
+    name: 'Deep Relax - Relaxation Profonde 60 min', 
     description: 'Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.', 
     duration: '60 min', 
     price: 120 
   },
   { 
     id: '8', 
-    name: 'Massage Thaï aux Huiles Chaudes - Étirements & Pressions Profondes 60 min', 
+    name: 'Thaï aux Huiles Chaudes - Étirements & Pressions Profondes 60 min', 
     description: 'Technique dynamique combinant pressions profondes et étirements fluides pour relancer l\'énergie vitale.', 
     duration: '60 min', 
     price: 120 
