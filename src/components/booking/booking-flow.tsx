@@ -1,17 +1,15 @@
-
 "use client";
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Service } from '@/lib/types';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, MessageCircle, MapPin, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, MessageCircle, MapPin, ShieldCheck, Clock } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
@@ -209,48 +207,42 @@ export function BookingFlow({ services }: { services: Service[] }) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
+            className="p-8 md:p-12"
           >
-            <Card className="border-none shadow-none rounded-[2.5rem] overflow-hidden bg-white p-12">
-              <div className="space-y-10">
-                <header className="space-y-4">
-                  <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">Étape 01</span>
-                  <h2 className="text-3xl font-serif font-medium text-primary">Choisissez votre rituel.</h2>
-                  <p className="text-muted-foreground text-sm italic">Sélectionnez le soin qui répond à vos besoins du moment.</p>
-                </header>
+            <div className="space-y-12">
+              <header className="space-y-4 text-center">
+                <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">Étape 01</span>
+                <h2 className="text-4xl md:text-5xl font-serif font-medium text-primary">Choisissez votre rituel.</h2>
+                <p className="text-muted-foreground text-base italic max-w-md mx-auto">Sélectionnez le soin qui répond à vos besoins du moment pour passer à la planification.</p>
+              </header>
 
-                <div className="space-y-4">
-                  <Label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-2">Nos prestations</Label>
-                  <Select 
-                    value={selectedService?.id} 
-                    onValueChange={(id) => setSelectedService(services.find(s => s.id === id) || null)}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                {services.map((s) => (
+                  <button
+                    key={s.id}
+                    onClick={() => {
+                      setSelectedService(s);
+                      setStep(2);
+                    }}
+                    className="group text-left p-8 rounded-[2.5rem] border-2 border-black/5 bg-white hover:border-primary/20 hover:shadow-2xl hover:shadow-black/[0.03] transition-all duration-500 flex flex-col justify-between min-h-[180px]"
                   >
-                    <SelectTrigger className="w-full h-16 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
-                      <SelectValue placeholder="Parcourir le menu des soins" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-2xl p-1">
-                      {services.map((s) => (
-                        <SelectItem key={s.id} value={s.id} className="rounded-xl py-4 px-4 focus:bg-background cursor-pointer">
-                          <div className="flex flex-col gap-0.5">
-                            <span className="font-serif font-bold text-base">{s.name.split(' - ')[0]}</span>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">{s.duration} • CHF {s.price}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex justify-end pt-8">
-                  <button 
-                    disabled={!selectedService} 
-                    onClick={() => setStep(2)}
-                    className="high-end-button"
-                  >
-                    Suivant <ChevronRight className="ml-2 h-6 w-6" />
+                    <div className="flex justify-between items-start gap-4">
+                      <div className="space-y-2">
+                        <h3 className="font-serif font-bold text-2xl text-primary leading-tight">{s.name.split(' - ')[0]}</h3>
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/60">{s.duration}</p>
+                      </div>
+                      <span className="font-serif font-bold text-2xl text-primary">CHF {s.price}</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-6 leading-relaxed line-clamp-2">
+                      {s.description}
+                    </p>
+                    <div className="mt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary opacity-0 group-hover:opacity-100 transition-all">
+                      Réserver ce soin <ChevronRight size={14} strokeWidth={3} />
+                    </div>
                   </button>
-                </div>
+                ))}
               </div>
-            </Card>
+            </div>
           </motion.div>
         )}
 
@@ -263,7 +255,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
             transition={{ duration: 0.5 }}
           >
             <Card className="border-none shadow-none rounded-[2.5rem] p-12 bg-white">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                 <div className="space-y-8">
                   <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
                     <CalendarIcon className="h-5 w-5 text-primary/20" /> La Date
@@ -279,7 +271,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                 </div>
                 <div className="space-y-8">
                   <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
-                    <ChevronRight className="h-5 w-5 text-primary/20" /> L'Horaire
+                    <Clock className="h-5 w-5 text-primary/20" /> L'Horaire
                   </h2>
                   <div className="grid grid-cols-2 gap-3">
                     {times.map((t) => (
