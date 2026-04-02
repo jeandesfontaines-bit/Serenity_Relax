@@ -25,7 +25,7 @@ const SERVICES = [
   {
     id: "02", name: "Deep relax signature", duration: "60 min",
     image: PlaceHolderImages.find(img => img.id === 'service-2')?.imageUrl || "",
-    imageHint: "wellness oils",
+    imageHint: "massage oils",
     desc: "Une immersion sensorielle confidentielle conçue pour un lâcher-prise immédiat.",
     tag: "Sérénité"
   },
@@ -39,21 +39,21 @@ const SERVICES = [
   {
     id: "04", name: "Kalari thérapeutique", duration: "75 min",
     image: PlaceHolderImages.find(img => img.id === 'service-4')?.imageUrl || "",
-    imageHint: "ayurvedic massage",
+    imageHint: "hot stones",
     desc: "Alliance d'étirements doux et de chaleur pour une vitalité et une souplesse retrouvées.",
     tag: "Tradition"
   },
   {
     id: "05", name: "Drainage lymphatique", duration: "60 min",
     image: PlaceHolderImages.find(img => img.id === 'service-5')?.imageUrl || "",
-    imageHint: "lymphatic massage",
+    imageHint: "spa treatment",
     desc: "Soin fluide pour améliorer la circulation et éliminer les toxines du corps.",
     tag: "Détox"
   },
   {
     id: "06", name: "Massage découverte", duration: "30 min",
     image: PlaceHolderImages.find(img => img.id === 'service-6')?.imageUrl || "",
-    imageHint: "relaxing massage",
+    imageHint: "head massage",
     desc: "Idéal pour découvrir l'approche Serenity & Relax dans un format court et apaisant.",
     tag: "Initiation"
   }
@@ -69,55 +69,36 @@ const RITUAL_STEPS = [
   { title: "Choisissez la douceur", desc: "Privilégiez des activités calmes pour prolonger la sensation de bien-être.", icon: Sun }
 ];
 
-const PHOTO_JOAO = PlaceHolderImages.find(img => img.id === 'joao-portrait')?.imageUrl || "";
-
-const GlobalStyle = () => (
-  <style>{`
-    .font-fraunces { font-family: 'Fraunces', serif; }
-    .serif-italic { font-family: 'Fraunces', serif; font-style: italic; }
-
-    .grained::before { 
-      content: ''; 
-      position: fixed; 
-      inset: 0; 
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"); 
-      pointer-events: none; 
-      z-index: 100; 
-      opacity: 0.1;
-    }
-  `}</style>
-);
-
 const PortraitCard = ({ service }: { service: typeof SERVICES[0] }) => {
   return (
     <motion.div 
-      whileHover={{ y: -10 }}
-      className="relative w-full aspect-[3/4.5] rounded-[3.5rem] overflow-hidden group shadow-2xl hover:shadow-primary/5 transition-all duration-700 cursor-pointer bg-white"
+      whileHover={{ y: -5 }}
+      className="relative w-full aspect-[3/4] rounded-[2.5rem] overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer bg-white"
     >
       <img 
         src={service.image} 
         alt={service.name} 
         data-ai-hint={service.imageHint}
-        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-1000"
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-1000"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       
-      <div className="absolute inset-0 p-10 flex flex-col justify-between z-10">
+      <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
         <div className="flex justify-between items-start">
-          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/70 group-hover:text-white transition-colors">{service.tag}</span>
+          <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/70">{service.tag}</span>
         </div>
         
-        <div className="space-y-4">
-          <h3 className="text-2xl md:text-3xl font-fraunces text-white leading-tight">
+        <div className="space-y-3">
+          <h3 className="text-xl md:text-2xl font-serif text-white leading-tight">
             {service.name}
           </h3>
-          <p className="text-[11px] text-white/60 font-medium leading-relaxed opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-700 line-clamp-2">
+          <p className="text-[10px] text-white/60 leading-relaxed line-clamp-2">
             {service.desc}
           </p>
-          <div className="flex justify-between items-center pt-6 border-t border-white/10">
-            <span className="text-[10px] font-black uppercase tracking-widest text-white/80">{service.duration}</span>
-            <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 group-hover:bg-white group-hover:text-neutral-900 transition-all">
-              <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform duration-700" />
+          <div className="flex justify-between items-center pt-4 border-t border-white/10">
+            <span className="text-[9px] font-bold uppercase tracking-widest text-white/80">{service.duration}</span>
+            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 group-hover:bg-white group-hover:text-black transition-all">
+              <Plus size={14} />
             </div>
           </div>
         </div>
@@ -128,7 +109,7 @@ const PortraitCard = ({ service }: { service: typeof SERVICES[0] }) => {
 
 export default function HomePage() {
   const { scrollY } = useScroll();
-  const yHero = useTransform(scrollY, [0, 500], [0, 150]);
+  const yHero = useTransform(scrollY, [0, 500], [0, 100]);
   const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -142,114 +123,105 @@ export default function HomePage() {
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
   return (
-    <div className="min-h-screen relative grained bg-[#F9F9F7]">
-      <GlobalStyle />
+    <div className="min-h-screen relative bg-[#F9F9F7]">
       <Navbar />
 
       {/* SECTION 1: HERO */}
-      <section className="relative h-[100vh] flex items-center px-6 md:px-20 overflow-hidden bg-[#1a1a1a] rounded-b-[4rem] md:rounded-b-[6rem]">
+      <section className="relative h-[90vh] flex items-center px-6 md:px-20 overflow-hidden bg-[#1a1a1a] rounded-b-[3rem] md:rounded-b-[4rem]">
         <motion.div style={{ y: yHero, opacity: opacityHero }} className="absolute inset-0">
           <img 
             src={PlaceHolderImages.find(img => img.id === 'hero-bg')?.imageUrl || ""} 
-            className="w-full h-full object-cover opacity-60 scale-105"
+            className="w-full h-full object-cover opacity-50 scale-105"
             alt="Sanctuaire Serenity Relax"
             data-ai-hint="luxury spa"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-[#F9F9F7]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
         </motion.div>
 
-        <div className="max-w-[1400px] relative z-20 w-full pt-20 mx-auto">
+        <div className="max-w-6xl relative z-20 w-full pt-20 mx-auto">
           <motion.span 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="block text-[12px] font-black uppercase tracking-[0.6em] text-white/70 mb-12"
+            className="block text-[10px] font-black uppercase tracking-[0.5em] text-white/70 mb-8"
           >
             Genève • Cointrin
           </motion.span>
-          <h1 className="text-7xl md:text-9xl font-fraunces font-medium leading-[0.85] tracking-tighter mb-20 text-white">
-            L'art du <span className="serif-italic font-light tracking-normal block mt-6">mouvement calme</span>
+          <h1 className="text-5xl md:text-8xl font-serif leading-[0.95] tracking-tight mb-12 text-white">
+            L'art du <span className="italic font-light block mt-2">mouvement calme</span>
           </h1>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="flex flex-col items-start gap-16">
-            <p className="max-w-xl text-2xl md:text-4xl text-white/80 font-fraunces italic font-light leading-relaxed">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="flex flex-col items-start gap-12">
+            <p className="max-w-xl text-lg md:text-2xl text-white/80 font-serif italic font-light leading-relaxed">
               Un sanctuaire sensoriel confidentiel dédié à la restauration profonde du corps et de l'esprit.
             </p>
-            <Link href="/booking" className="inline-flex items-center gap-8 px-16 py-6 bg-white text-neutral-900 rounded-full text-[12px] font-black uppercase tracking-[0.4em] hover:scale-105 transition-all shadow-2xl">
-              Réserver votre rituel <ArrowRight size={18} />
+            <Link href="/booking" className="inline-flex items-center gap-6 px-10 py-5 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:scale-105 transition-all shadow-xl">
+              Réserver votre rituel <ArrowRight size={16} />
             </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* SECTION 2: L'ENGAGEMENT JOÃO */}
-      <section className="py-48 px-6 md:px-10 bg-[#F9F9F7] relative overflow-hidden">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-32 items-center">
-          <div className="lg:col-span-5 relative">
-             <span className="text-[12px] font-black uppercase tracking-[0.6em] text-neutral-400 block mb-14 italic">La philosophie</span>
-             <h2 className="text-5xl md:text-7xl font-fraunces font-medium tracking-tighter leading-[0.95] text-neutral-900 mb-16">
-               L'engagement <span className="serif-italic font-light">João.</span>
+      {/* SECTION 2: PHILOSOPHIE */}
+      <section className="py-24 px-6 md:px-10 bg-[#F9F9F7]">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-8">
+             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400 block italic">La philosophie</span>
+             <h2 className="text-4xl md:text-6xl font-serif tracking-tight leading-[1.1] text-neutral-900">
+               L'engagement <span className="italic font-light">João.</span>
              </h2>
-             
-             <motion.div 
-               initial={{ opacity: 0, scale: 0.95 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
-               className="relative aspect-[4/5] w-full max-w-sm rounded-[4rem] overflow-hidden shadow-2xl transition-all duration-1000"
-             >
-                <img src={PHOTO_JOAO} className="w-full h-full object-cover scale-105 grayscale hover:grayscale-0 transition-all duration-1000" alt="João, votre thérapeute" data-ai-hint="therapist portrait" />
-             </motion.div>
+             <p className="text-xl md:text-2xl font-serif font-light text-neutral-700 leading-relaxed italic">
+              "Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle."
+             </p>
+             <div className="pt-8 border-t border-neutral-200">
+               <p className="text-sm text-neutral-500 max-w-md leading-relaxed">
+                Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel. Agréé Thérapeute ASCA & RME.
+               </p>
+             </div>
           </div>
           
-          <div className="lg:col-span-7 space-y-24">
-            <p className="text-4xl md:text-6xl font-fraunces font-light text-neutral-700 leading-tight">
-              Je ne pratique pas seulement le massage ; je sculpte un <span className="font-bold text-neutral-900">espace de décompression</span>. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle.
-            </p>
-            
-            <div className="relative py-24 px-14 bg-white rounded-[3.5rem] border border-neutral-100 italic">
-               <span className="absolute -top-14 left-14 text-[12rem] font-serif text-neutral-50 select-none">“</span>
-               <p className="text-3xl md:text-5xl font-fraunces text-neutral-900 leading-tight relative z-10">
-                 Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain.
-               </p>
-               <div className="mt-16 h-[1px] w-32 bg-neutral-900/10" />
-               <p className="mt-14 text-[16px] font-bold uppercase tracking-widest text-neutral-400 leading-relaxed max-w-lg">
-                 Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment. Agréé Thérapeute ASCA & RME.
-               </p>
-            </div>
+          <div className="relative">
+             <motion.div 
+               initial={{ opacity: 0, scale: 0.98 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               viewport={{ once: true }}
+               className="relative aspect-[4/5] w-full max-w-sm mx-auto rounded-[3rem] overflow-hidden shadow-2xl"
+             >
+                <img src={PlaceHolderImages.find(img => img.id === 'joao-portrait')?.imageUrl} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="João" data-ai-hint="therapist portrait" />
+             </motion.div>
           </div>
         </div>
       </section>
 
       {/* SECTION 3: LES SOINS (CARROUSEL) */}
-      <section className="py-48 px-6 md:px-10 bg-white">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-32 space-y-12 md:space-y-0">
-            <div className="space-y-12">
-              <span className="text-[12px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Expertise thérapeutique</span>
-              <h2 className="text-6xl md:text-8xl font-fraunces font-medium tracking-tighter leading-[0.9] text-neutral-900">
-                La carte des <span className="serif-italic font-light">rituels.</span>
+      <section className="py-24 px-6 md:px-10 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 space-y-8 md:space-y-0">
+            <div className="space-y-4">
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400 italic">Expertise thérapeutique</span>
+              <h2 className="text-4xl md:text-6xl font-serif tracking-tight leading-none text-neutral-900">
+                La carte des <span className="italic font-light">rituels.</span>
               </h2>
             </div>
             
-            <div className="flex gap-6">
+            <div className="flex gap-4">
               <button 
                 onClick={scrollPrev} 
-                className="w-20 h-20 rounded-full border border-neutral-100 flex items-center justify-center text-neutral-400 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all shadow-sm"
+                className="w-12 h-12 rounded-full border border-neutral-100 flex items-center justify-center text-neutral-400 hover:bg-black hover:text-white transition-all"
               >
-                <ChevronLeft size={28} />
+                <ChevronLeft size={20} />
               </button>
               <button 
                 onClick={scrollNext} 
-                className="w-20 h-20 rounded-full border border-neutral-100 flex items-center justify-center text-neutral-400 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all shadow-sm"
+                className="w-12 h-12 rounded-full border border-neutral-100 flex items-center justify-center text-neutral-400 hover:bg-black hover:text-white transition-all"
               >
-                <ChevronRight size={28} />
+                <ChevronRight size={20} />
               </button>
             </div>
           </div>
 
-          {/* Wrapper avec padding vertical pour éviter de couper les ombres */}
-          <div className="py-20 -my-20 overflow-visible" ref={emblaRef}>
-            <div className="flex gap-12">
+          <div className="overflow-visible" ref={emblaRef}>
+            <div className="flex gap-8 py-8 px-4 -mx-4">
               {SERVICES.map((s) => (
-                <div key={s.id} className="flex-[0_0_85%] md:flex-[0_0_35%] lg:flex-[0_0_28%]">
+                <div key={s.id} className="flex-[0_0_80%] md:flex-[0_0_40%] lg:flex-[0_0_30%]">
                   <PortraitCard service={s} />
                 </div>
               ))}
@@ -259,109 +231,97 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 4: LE RITUEL POST-SOIN */}
-      <section className="py-48 px-6 md:px-10 bg-[#F9F9F7]">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col items-center text-center mb-48 space-y-12">
-            <span className="text-[12px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Art de vivre</span>
-            <h2 className="text-7xl md:text-9xl font-fraunces font-medium tracking-tighter text-neutral-900">
-              Le rituel <span className="serif-italic font-light lowercase">post-soin.</span>
+      <section className="py-24 px-6 md:px-10 bg-[#F9F9F7]">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col items-center text-center mb-24 space-y-6">
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400 italic">Art de vivre</span>
+            <h2 className="text-4xl md:text-7xl font-serif tracking-tight text-neutral-900">
+              Le rituel <span className="italic font-light lowercase">post-soin.</span>
             </h2>
-            <p className="text-neutral-500 max-w-2xl text-2xl leading-relaxed font-fraunces italic font-light">
+            <p className="text-neutral-500 max-w-xl text-lg font-serif italic font-light">
               Sept gestes essentiels pour prolonger l'immersion et magnifier les bienfaits de votre séance.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-16 gap-y-48">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16">
             {RITUAL_STEPS.map((step, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.8 }}
-                className="group relative"
+                transition={{ delay: i * 0.1 }}
+                className="relative group"
               >
-                <span className="absolute -top-32 -left-8 text-[16rem] font-fraunces font-bold text-neutral-200/40 select-none z-0">
+                <span className="absolute -top-6 -left-4 text-6xl font-serif font-bold text-neutral-100 select-none z-0">
                   {i + 1}
                 </span>
-                
-                <div className="relative z-10 space-y-10 pt-12">
-                  <div className="w-20 h-20 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 transition-all duration-700">
-                    {React.createElement(step.icon as any, { size: 32, strokeWidth: 1 })}
+                <div className="relative z-10 space-y-4">
+                  <div className="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-400 group-hover:bg-black group-hover:text-white transition-all duration-500">
+                    {React.createElement(step.icon as any, { size: 20, strokeWidth: 1.5 })}
                   </div>
-                  <div className="space-y-6">
-                    <h4 className="font-fraunces font-medium text-neutral-900 text-3xl">
-                      {step.title}
-                    </h4>
-                    <p className="text-neutral-400 text-[16px] leading-relaxed italic font-fraunces font-light">
-                      {step.desc}
-                    </p>
-                  </div>
+                  <h4 className="font-serif text-xl text-neutral-900">{step.title}</h4>
+                  <p className="text-neutral-500 text-xs leading-relaxed italic font-serif font-light">{step.desc}</p>
                 </div>
               </motion.div>
             ))}
             
-            <Link href="/booking" className="lg:col-span-1 bg-neutral-900 rounded-[4rem] p-16 flex flex-col justify-between text-white group relative overflow-hidden shadow-2xl transition-all hover:scale-[1.02]">
-              <div className="relative z-10 space-y-10">
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40">Engagement bien-être</span>
-                <p className="font-fraunces text-4xl leading-tight">
-                  Prêt pour votre prochain <span className="serif-italic">moment de calme ?</span>
+            <Link href="/booking" className="lg:col-span-1 bg-black rounded-[2rem] p-10 flex flex-col justify-between text-white group relative overflow-hidden transition-transform hover:scale-[1.02] shadow-2xl">
+              <div className="relative z-10 space-y-4">
+                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/40">Engagement bien-être</span>
+                <p className="font-serif text-2xl leading-tight">
+                  Prêt pour votre prochain <span className="italic">moment de calme ?</span>
                 </p>
               </div>
-              <div className="relative z-10 flex items-center justify-between mt-20 px-12 py-6 bg-white/10 rounded-full hover:bg-white hover:text-neutral-900 transition-all">
-                <span className="text-[11px] font-black uppercase tracking-[0.3em]">Réserver</span>
-                <ArrowRight size={22} />
+              <div className="relative z-10 flex items-center justify-between mt-12 px-8 py-4 bg-white/10 rounded-full hover:bg-white hover:text-black transition-all">
+                <span className="text-[9px] font-black uppercase tracking-[0.3em]">Réserver</span>
+                <ArrowRight size={16} />
               </div>
-              <div className="absolute -top-12 -right-12 opacity-10">
-                <Sparkles size={200} strokeWidth={0.5} />
-              </div>
+              <Sparkles className="absolute -top-6 -right-6 opacity-10 h-32 w-32" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="py-40 px-6 bg-[#1a1a1a] text-white overflow-hidden">
-        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row justify-between items-start gap-32">
-          <div className="space-y-16">
-            <h2 className="font-fraunces font-bold text-sm tracking-[0.5em] uppercase">
-              SERENITY RELAX <span className="font-meow text-6xl text-white/40 tracking-normal inline-block normal-case ml-4">by João</span>
+      <footer className="py-24 px-6 bg-[#1a1a1a] text-white">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-16">
+          <div className="space-y-8">
+            <h2 className="font-serif font-bold text-xs tracking-[0.4em] uppercase">
+              SERENITY RELAX <span className="font-cursive text-4xl text-white/30 tracking-normal normal-case ml-2">by João</span>
             </h2>
-            <p className="text-white/30 text-[12px] uppercase tracking-[0.2em] font-medium leading-loose max-w-sm">
-              Un sanctuaire sensoriel confidentiel dédié à la restauration profonde du corps et de l'esprit. Agréé Thérapeute ASCA & RME pour un accompagnement d'excellence.
+            <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-medium leading-loose max-w-xs">
+              Un sanctuaire sensoriel confidentiel dédié à la restauration profonde du corps et de l'esprit. Thérapeute agréé ASCA & RME.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-24 md:gap-48">
-            <div className="space-y-12">
-              <h3 className="text-[12px] font-bold tracking-[0.3em] uppercase text-white/20">Le Cabinet</h3>
-              <p className="text-xl text-white/70 font-medium leading-relaxed italic font-fraunces font-light">
-                Chemin de Joinville 26,<br />
-                Alpha Business Center, 4ème étage,<br />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/20">Le Cabinet</h3>
+              <p className="text-sm text-white/60 font-serif italic font-light">
+                Chemin de Joinville 26, 4ème étage<br />
                 1216 Cointrin – Genève
               </p>
             </div>
-            <div className="space-y-12">
-              <h3 className="text-[12px] font-bold tracking-[0.3em] uppercase text-white/20">Horaires</h3>
-              <p className="text-xl text-white/70 font-medium leading-relaxed italic font-fraunces font-light">
-                Lundi au vendredi : 8h00 – 20h00<br />
-                Samedi et dimanche : 9h30 – 20h00
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/20">Horaires</h3>
+              <p className="text-sm text-white/60 font-serif italic font-light">
+                Lun-Ven : 8h00 – 20h00<br />
+                Sam-Dim : 9h30 – 20h00
               </p>
             </div>
           </div>
           
-          <div className="flex flex-col gap-20 items-start md:items-end">
-            <div className="flex gap-16 items-center">
-              <a href="https://instagram.com/serenity.relax.therapy_by_joao" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-all transform hover:scale-110">
-                <Instagram size={32} />
-              </a>
-              <div className="h-16 w-px bg-white/10 hidden md:block" />
-              <div className="space-y-6 text-right">
-                <h3 className="text-[11px] font-bold tracking-[0.3em] uppercase text-white/20">Agréments</h3>
-                <p className="text-[14px] text-emerald-400 font-black tracking-[0.2em] uppercase">ASCA • RME</p>
+          <div className="flex flex-col gap-12 items-start md:items-end">
+            <div className="flex gap-8 items-center">
+              <a href="#" className="text-white/40 hover:text-white transition-all"><Instagram size={24} /></a>
+              <div className="h-10 w-px bg-white/10" />
+              <div className="space-y-2 text-right">
+                <h3 className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/20">Agréments</h3>
+                <p className="text-[12px] text-emerald-400 font-black tracking-[0.1em] uppercase">ASCA • RME</p>
               </div>
             </div>
-            <p className="text-[11px] text-white/20 uppercase tracking-widest">&copy; {new Date().getFullYear()} Serenity Relax Studio. Tous droits réservés.</p>
+            <p className="text-[9px] text-white/20 uppercase tracking-widest">&copy; {new Date().getFullYear()} Serenity Relax. Tous droits réservés.</p>
           </div>
         </div>
       </footer>

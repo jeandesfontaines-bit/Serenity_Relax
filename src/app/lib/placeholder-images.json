@@ -15,39 +15,39 @@
     },
     {
       "id": "service-1",
-      "description": "Massage thérapeutique et mains expertes",
-      "imageUrl": "https://picsum.photos/seed/massage-hands/800/1200",
+      "description": "Mains pratiquant un massage thérapeutique",
+      "imageUrl": "https://picsum.photos/seed/massage-therapy-1/800/1000",
       "imageHint": "massage therapy"
     },
     {
       "id": "service-2",
-      "description": "Huiles essentielles et relaxation profonde",
-      "imageUrl": "https://picsum.photos/seed/essential-oils/800/1200",
-      "imageHint": "wellness oils"
+      "description": "Huiles de massage et ambiance relaxante",
+      "imageUrl": "https://picsum.photos/seed/wellness-oils/800/1000",
+      "imageHint": "massage oil"
     },
     {
       "id": "service-3",
-      "description": "Récupération musculaire sportive",
-      "imageUrl": "https://picsum.photos/seed/deep-tissue/800/1200",
+      "description": "Massage musculaire profond pour sportif",
+      "imageUrl": "https://picsum.photos/seed/deep-tissue-massage/800/1000",
       "imageHint": "sports massage"
     },
     {
       "id": "service-4",
-      "description": "Tradition Kalari et soins ayurvédiques",
-      "imageUrl": "https://picsum.photos/seed/ayurveda/800/1200",
-      "imageHint": "ayurvedic massage"
+      "description": "Pierres chaudes sur le dos d'un patient",
+      "imageUrl": "https://picsum.photos/seed/hot-stones-spa/800/1000",
+      "imageHint": "hot stones"
     },
     {
       "id": "service-5",
-      "description": "Drainage lymphatique et détoxification",
-      "imageUrl": "https://picsum.photos/seed/detox-treatment/800/1200",
-      "imageHint": "lymphatic massage"
+      "description": "Drainage lymphatique manuel",
+      "imageUrl": "https://picsum.photos/seed/lymphatic-drainage/800/1000",
+      "imageHint": "spa treatment"
     },
     {
       "id": "service-6",
-      "description": "Soin découverte sérénité et calme",
-      "imageUrl": "https://picsum.photos/seed/spa-zen/800/1200",
-      "imageHint": "relaxing massage"
+      "description": "Soin relaxant du visage et du cou",
+      "imageUrl": "https://picsum.photos/seed/relaxing-spa-treatment/800/1000",
+      "imageHint": "head massage"
     }
   ]
 }
