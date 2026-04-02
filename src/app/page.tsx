@@ -126,13 +126,15 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      <div className="hidden lg:flex fixed top-10 right-32 z-[101] items-center gap-5 text-xs font-bold tracking-[0.3em] text-neutral-400 pointer-events-none uppercase">
-        {time} • CH / GENEVA
-      </div>
-
       <section className="relative pt-32 md:pt-44 pb-24 px-6 md:px-12 bg-neutral-50">
         <div className="max-w-7xl mx-auto">
+          {/* HORLOGE ABSOLUE DANS LA SECTION (Ne fixe plus au scroll) */}
+          <div className="hidden lg:flex absolute top-12 right-12 items-center gap-5 text-xs font-bold tracking-[0.3em] text-neutral-300 pointer-events-none uppercase">
+            {time} • CH / GENEVA
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+            {/* BLOB STATIQUE SANS ANIMATION */}
             <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-h-[550px] md:max-h-[650px] w-full mx-auto overflow-hidden">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
@@ -145,7 +147,7 @@ export default function HomePage() {
             </div>
             <div className="flex flex-col text-left">
               <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-8 block">À propos de moi</span>
-              <h1 className="text-3xl md:text-5xl font-bold text-neutral-900 mb-10 tracking-tight leading-[1.1] font-serif">
+              <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-10 tracking-tight leading-[1.1] font-serif">
                 L'équilibre <br className="hidden md:block"/>
                 <span className="text-neutral-300 font-light italic">par le toucher.</span>
               </h1>
@@ -153,7 +155,7 @@ export default function HomePage() {
                 <p className="text-neutral-900 text-xl font-bold italic border-l-4 border-neutral-900 pl-8 py-2">
                   "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
                 </p>
-                <div className="space-y-4">
+                <div className="space-y-4 text-base md:text-lg">
                   <p>
                     Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Je suis passionnée par le bien-être global et mon travail consiste à offrir des services de massothérapie personnalisés pour améliorer votre qualité de vie.
                   </p>
@@ -177,7 +179,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-24">
             <div className="lg:col-span-8 flex flex-col text-left">
               <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Expertise Thérapeutique</span>
-              <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 tracking-tight leading-tight font-serif">
+              <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 tracking-tight leading-tight font-serif">
                 Les bienfaits du Massage <br className="hidden md:block"/>sur le corps
               </h2>
             </div>
@@ -218,7 +220,7 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row gap-16 md:gap-24">
             <div className="w-full lg:w-[25%] lg:sticky lg:top-40 h-fit space-y-10 text-left">
               <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu de Soins</span>
-              <h2 className="text-4xl md:text-6xl font-bold text-neutral-900 tracking-tight font-serif">Soins.</h2>
+              <h2 className="text-5xl md:text-6xl font-bold text-neutral-900 tracking-tight font-serif">Soins.</h2>
               <div className="h-1 w-12 bg-neutral-900" />
               <p className="text-xs text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
                 Sélection exclusive pour votre équilibre interne.
@@ -242,7 +244,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 flex flex-col text-left">
              <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Immersion Continue</span>
-             <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 tracking-tight font-serif">Le Rituel post-soin</h2>
+             <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 tracking-tight font-serif">Le Rituel post-soin</h2>
           </div>
 
           <div className="relative">
