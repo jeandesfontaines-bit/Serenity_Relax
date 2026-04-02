@@ -1,9 +1,10 @@
+
 'use client';
 
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin
+  Instagram, Linkedin, Brain, Zap, Activity, ShieldCheck
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -27,6 +28,33 @@ const FAQS = [
   { q: "Où se situe le cabinet ?", a: "Le cabinet se trouve à Cointrin, au Alfa Business Center, Chemin de Joinville 26. Il est situé au 4ème étage avec ascenseur." },
   { q: "Proposez-vous des massages à domicile ?", a: "Oui, je propose des séances à domicile sur demande et selon mes disponibilités dans la région genevoise. Un supplément peut s'appliquer." },
   { q: "Quelle est votre politique d'annulation ?", a: "Toute annulation ou modification de rendez-vous doit être effectuée au moins 24 heures à l'avance. En cas de délai non respecté, la séance pourra être facturée." }
+];
+
+const BIOLOGICAL_IMPACTS = [
+  { 
+    id: "brain", 
+    title: "Neuro-Apaisement", 
+    desc: "Régulation immédiate du cortisol et stimulation de l'ocytocine pour un état de calme mental profond.", 
+    icon: Brain 
+  },
+  { 
+    id: "myofascial", 
+    title: "Relâchement Myofascial", 
+    desc: "Dissolution des noeuds musculaires et amélioration de l'élasticité des tissus pour une liberté de mouvement retrouvée.", 
+    icon: Zap 
+  },
+  { 
+    id: "flow", 
+    title: "Flux & Oxygène", 
+    desc: "Optimisation de la microcirculation sanguine facilitant l'apport nutritif aux cellules et le drainage des toxines.", 
+    icon: Activity 
+  },
+  { 
+    id: "regen", 
+    title: "Régénération", 
+    desc: "Soutien du système immunitaire and induction d'un sommeil réparateur, clé de la reconstruction organique.", 
+    icon: ShieldCheck 
+  }
 ];
 
 const ServiceCard = ({ s }: { s: any }) => (
@@ -105,17 +133,20 @@ export default function HomePage() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
               <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">L'Engagement João.</span>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-neutral-900 leading-[0.95] tracking-tighter">
-                L'équilibre<br />
-                <span className="text-neutral-500 italic font-light">par le toucher.</span>
+                L'Art du<br />
+                <span className="text-neutral-500 italic font-light text-6xl md:text-8xl">Lâcher-Prise Absolu.</span>
               </h1>
             </motion.div>
             
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
               <p className="text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic">
-                "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
+                Découvrez une parenthèse de sérénité au cœur de Genève. Des soins sur-mesure conçus pour restaurer l'équilibre entre votre corps et votre esprit.
               </p>
               <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
-                 <p className="text-neutral-800 italic text-2xl leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi. »</p>
+                 <p className="text-neutral-800 text-xl leading-relaxed font-sans mb-4">
+                   Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
+                 </p>
+                 <p className="text-neutral-800 italic text-2xl leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
                  <span className="font-cursive text-4xl text-neutral-900 block mt-4">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
@@ -126,6 +157,35 @@ export default function HomePage() {
                 </BookingDialog>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION IMPACT BIOLOGIQUE */}
+      <section className="py-32 px-6 md:px-12 lg:px-8 bg-white border-b border-neutral-50">
+        <div className="max-w-7xl mx-auto">
+          <header className="max-w-3xl mb-24">
+            <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Impact Biologique</span>
+            <h2 className="text-4xl md:text-6xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
+              L'Écho <span className="text-neutral-500 italic font-light">du Corps.</span>
+            </h2>
+            <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed italic">
+              Au-delà de la détente, une influence mesurable sur votre santé globale et votre vitalité. Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
+            </p>
+          </header>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            {BIOLOGICAL_IMPACTS.map((impact) => (
+              <div key={impact.id} className="space-y-6">
+                <div className="w-12 h-12 bg-neutral-50 rounded-2xl flex items-center justify-center text-neutral-900">
+                  <impact.icon size={24} strokeWidth={1.5} />
+                </div>
+                <h4 className="text-xl font-serif font-bold text-neutral-900">{impact.title}</h4>
+                <p className="text-sm text-neutral-500 font-sans font-medium leading-relaxed">
+                  {impact.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
