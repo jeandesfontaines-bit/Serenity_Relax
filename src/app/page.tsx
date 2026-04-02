@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useRef } from "react";
@@ -90,7 +91,7 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
           />
         </motion.div>
         <div className="absolute top-4 left-4 z-10">
-           <span className="text-xs font-bold uppercase tracking-[0.2em] text-white bg-black/50 backdrop-blur-md px-3 py-1 rounded-sm">{s.tag}</span>
+           <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white bg-black/50 backdrop-blur-md px-3 py-1 rounded-sm">{s.tag}</span>
         </div>
       </div>
       <div className="flex-1 p-8 flex flex-col justify-between">
@@ -119,8 +120,8 @@ export default function HomePage() {
       <section className="relative pt-32 md:pt-44 pb-24 px-6 md:px-12 bg-neutral-50">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
-            {/* PORTRAIT BLOB STATIQUE SANS DÉFORMATION */}
-            <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-h-[550px] md:max-h-[650px] w-full mx-auto overflow-hidden">
+            {/* PORTRAIT BLOB RÉDUIT ET STATIQUE */}
+            <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-w-[320px] md:max-w-[420px] w-full mx-auto overflow-hidden">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 fill
