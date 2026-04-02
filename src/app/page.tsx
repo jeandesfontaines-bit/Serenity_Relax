@@ -8,28 +8,19 @@ import {
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
-
-// --- IMPORTS DES IMAGES ---
-import bambooImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
-import lymphImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (1).png';
-import aromaImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
-import reflexoImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (3).png';
-import sportifImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (4).png';
-import theraImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (5).png';
-import relaxImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (6).png';
-import thaiImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (7).png';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
 const SERVICES = [
-  { id: "01", name: "Bambous", intensity: 4, image: bambooImg, desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", tag: "Profond" },
-  { id: "02", name: "Draineur Lymphatique", intensity: 2, image: lymphImg, desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", tag: "Vitalité" },
-  { id: "03", name: "Aromathérapie", intensity: 2, image: aromaImg, desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", tag: "Sensoriel" },
-  { id: "04", name: "Réflexologie Plantaire", intensity: 3, image: reflexoImg, desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", tag: "Ciblé" },
-  { id: "05", name: "Sportif", intensity: 5, image: sportifImg, desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", tag: "Performance" },
-  { id: "06", name: "Thérapeutique", intensity: 4, image: theraImg, desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", tag: "Signature" },
-  { id: "07", name: "Deep Relax", intensity: 2, image: relaxImg, desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", tag: "Détente" },
-  { id: "08", name: "Thaï", intensity: 4, image: thaiImg, desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", tag: "Dynamique" }
+  { id: "01", name: "Bambous", intensity: 4, image: PlaceHolderImages.find(img => img.id === 'service-1')?.imageUrl || '', tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions." },
+  { id: "02", name: "Draineur Lymphatique", intensity: 2, image: PlaceHolderImages.find(img => img.id === 'service-2')?.imageUrl || '', tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation." },
+  { id: "03", name: "Aromathérapie", intensity: 2, image: PlaceHolderImages.find(img => img.id === 'service-3')?.imageUrl || '', tag: "Sensoriel", desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit." },
+  { id: "04", name: "Réflexologie Plantaire", intensity: 3, image: PlaceHolderImages.find(img => img.id === 'service-4')?.imageUrl || '', tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes." },
+  { id: "05", name: "Sportif", intensity: 5, image: PlaceHolderImages.find(img => img.id === 'service-5')?.imageUrl || '', tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération." },
+  { id: "06", name: "Thérapeutique", intensity: 4, image: PlaceHolderImages.find(img => img.id === 'service-6')?.imageUrl || '', tag: "Signature", desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux." },
+  { id: "07", name: "Deep Relax", intensity: 2, image: PlaceHolderImages.find(img => img.id === 'service-7')?.imageUrl || '', tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux." },
+  { id: "08", name: "Thaï", intensity: 4, image: PlaceHolderImages.find(img => img.id === 'service-8')?.imageUrl || '', tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale." }
 ];
 
 const AFTERCARE_TIPS = [
@@ -57,19 +48,19 @@ const AFTERCARE_TIPS = [
 ];
 
 const OverTitle = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <span className={`text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-600 block mb-6 text-center lg:text-left ${className}`}>
+  <span className={`text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-600 block mb-6 ${className}`}>
     {children}
   </span>
 );
 
 const SectionTitle = ({ main, italic, className = "" }: { main: string, italic: string, className?: string }) => (
-  <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-tight text-center lg:text-left ${className}`}>
+  <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-tight ${className}`}>
     {main} <br className="hidden lg:block"/> <span className="text-neutral-500 italic font-light">{italic}</span>
   </h2>
 );
 
 const SectionDesc = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <p className={`text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic text-center lg:text-left ${className}`}>
+  <p className={`text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic ${className}`}>
     {children}
   </p>
 );
@@ -95,7 +86,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-8 flex flex-col justify-between bg-white z-20">
       <div className="space-y-3">
-        <h3 className="text-lg font-serif font-medium tracking-[0.02em] text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
+        <h3 className="text-2xl font-serif font-medium tracking-[0.02em] text-neutral-900 leading-tight">{s.name.split(' - ')[0]}</h3>
         <p className="text-neutral-600 text-[11px] font-sans font-medium leading-relaxed line-clamp-3">{s.desc}</p>
       </div>
       <div className="pt-4 flex items-center justify-between border-t border-neutral-50">
@@ -153,7 +144,7 @@ export default function HomePage() {
           {/* TEXTE À DROITE */}
           <div className="w-full lg:w-[55%] space-y-10">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
-              <OverTitle>L'Engagement João.</OverTitle>
+              <OverTitle className="text-center lg:text-left">L'Engagement João.</OverTitle>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] md:leading-[1.1] tracking-tight text-center lg:text-left">
                 L'équilibre<br />
                 <span className="text-neutral-500 italic font-light">par le toucher.</span>
@@ -161,7 +152,7 @@ export default function HomePage() {
             </motion.div>
             
             <div className="space-y-8 max-w-xl mx-auto lg:mx-0">
-              <SectionDesc className="text-neutral-800">
+              <SectionDesc className="text-neutral-800 text-center lg:text-left">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </SectionDesc>
               <div className="space-y-6 text-center lg:text-left">
@@ -195,9 +186,9 @@ export default function HomePage() {
             {/* TEXTE À GAUCHE (STICKY) */}
             <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start">
               <OverTitle>Menu Signature</OverTitle>
-              <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
+              <SectionTitle main="Soins" italic="Exclusifs." className="mb-6 text-center lg:text-left" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-8 mx-auto lg:mx-0" />
-              <SectionDesc className="text-neutral-800 mb-12">
+              <SectionDesc className="text-neutral-800 mb-12 text-center lg:text-left">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </SectionDesc>
               <button className="w-full md:w-auto inline-flex items-center justify-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all">
@@ -216,7 +207,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN - STYLE ÉDITORIAL AVEC COLONNE FIXE À DROITE */}
+      {/* RITUEL POST-SOIN */}
       <section className="py-24 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
@@ -233,7 +224,7 @@ export default function HomePage() {
                   </div>
                   
                   <div className="flex-1 space-y-6">
-                    <h4 className="text-xs font-sans font-black uppercase tracking-[0.3em] text-neutral-900 leading-none">
+                    <h4 className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 leading-none">
                       {tip.title}
                     </h4>
                     <div className="space-y-4">
@@ -250,7 +241,7 @@ export default function HomePage() {
             </div>
 
             {/* TEXTE À DROITE (STICKY) */}
-            <div className="w-full lg:w-[36%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit lg:pt-16 flex flex-col items-center lg:items-end text-center lg:text-right">
               <OverTitle className="mb-2 lg:text-right">Rituel Post-Séance</OverTitle>
               <SectionTitle main="Prolonger" italic="l'état de grâce." className="lg:text-right" />
               <div className="h-[2px] w-12 bg-neutral-900 my-8 mx-auto lg:mr-0 lg:ml-auto" />
