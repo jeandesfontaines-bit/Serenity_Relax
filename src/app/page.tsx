@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle, Plus
+  Instagram, Linkedin, ArrowRight, MessageCircle
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -55,15 +55,9 @@ const ServiceCard = ({ s }: { s: any }) => (
         {s.name}
       </h3>
 
-      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2 italic">
+      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed italic line-clamp-2">
         {s.desc}
       </p>
-
-      <div className="flex justify-end pt-4 border-t border-neutral-50">
-        <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110">
-          <Plus size={12} strokeWidth={3} />
-        </div>
-      </div>
     </div>
   </motion.div>
 );
@@ -203,7 +197,7 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-neutral-900 text-white py-12 px-6">
+      <footer className="bg-neutral-900 text-white py-16 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
