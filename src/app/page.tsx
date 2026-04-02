@@ -25,7 +25,6 @@ const SERVICES = [
   { 
     id: "01", 
     name: "Bambous", 
-    duration: "60 min", 
     intensity: 4,
     image: bambooImg,
     desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", 
@@ -34,7 +33,6 @@ const SERVICES = [
   { 
     id: "02", 
     name: "Draineur Lymphatique", 
-    duration: "60 min", 
     intensity: 2,
     image: lymphImg,
     desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", 
@@ -43,7 +41,6 @@ const SERVICES = [
   { 
     id: "03", 
     name: "Aromathérapie", 
-    duration: "60 min", 
     intensity: 2,
     image: aromaImg,
     desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", 
@@ -52,7 +49,6 @@ const SERVICES = [
   { 
     id: "04", 
     name: "Réflexologie Plantaire", 
-    duration: "30 min", 
     intensity: 3,
     image: reflexoImg,
     desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", 
@@ -61,7 +57,6 @@ const SERVICES = [
   { 
     id: "05", 
     name: "Sportif", 
-    duration: "60 min", 
     intensity: 5,
     image: sportifImg,
     desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", 
@@ -70,7 +65,6 @@ const SERVICES = [
   { 
     id: "06", 
     name: "Thérapeutique", 
-    duration: "60 min", 
     intensity: 4,
     image: theraImg,
     desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", 
@@ -79,7 +73,6 @@ const SERVICES = [
   { 
     id: "07", 
     name: "Deep Relax", 
-    duration: "60 min", 
     intensity: 2,
     image: relaxImg,
     desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", 
@@ -88,7 +81,6 @@ const SERVICES = [
   { 
     id: "08", 
     name: "Thaï", 
-    duration: "60 min", 
     intensity: 4,
     image: thaiImg,
     desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", 
@@ -100,29 +92,29 @@ const AFTERCARE_TIPS = [
   { 
     id: "01",
     title: "Hydratation", 
-    desc: "Boire de l'eau alcaline ou une infusion tiède après votre soin permet d'aider votre système lymphatique à drainer les toxines libérées durant le massage.",
+    desc: "L'eau alcaline aide votre système lymphatique à drainer les toxines libérées.",
     advice: "Évitez l'alcool pendant 24h.",
     icon: Droplets
   },
   { 
     id: "02",
     title: "Repos", 
-    desc: "Votre système nerveux a été apaisé. Accordez-vous un temps de calme, sans écrans, pour permettre à votre corps d'ancrer les bienfaits du relâchement.",
-    advice: "Accordez-vous un temps de calme, sans écrans.",
+    desc: "Accordez-vous un temps de calme pour permettre à votre corps d'ancrer les bienfaits.",
+    advice: "Calme absolu, sans écrans.",
     icon: Moon
   },
   { 
     id: "03",
     title: "Nutrition", 
-    desc: "Privilégiez un repas léger et chaud pour ne pas mobiliser toute votre énergie vers la digestion, mais plutôt vers la régénération de vos tissus.",
-    advice: "Privilégiez un repas léger et chaud.",
+    desc: "Ne mobilisez pas votre énergie vers la digestion, mais vers la régénération.",
+    advice: "Repas léger et chaud.",
     icon: Leaf
   },
   { 
     id: "04",
     title: "Écoute", 
-    desc: "Des sensations de courbatures légères peuvent apparaître le lendemain : c'est le signe que vos fascias retrouvent leur liberté de mouvement.",
-    advice: "Une douche tiède apaisera votre corps.",
+    desc: "Vos fascias retrouvent leur liberté. Soyez à l'écoute de vos sensations.",
+    advice: "Douche tiède apaisante.",
     icon: Sparkles
   }
 ];
@@ -150,7 +142,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className={`group w-full aspect-[4/5] md:aspect-[3/4] bg-white rounded-[2rem] md:rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 ${staggered ? 'md:mt-8 lg:mt-12' : ''}`}
+    className={`group w-full max-w-[340px] aspect-[4/5] md:aspect-[3/4] bg-white rounded-[2rem] md:rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 ${staggered ? 'md:mt-8 lg:mt-12' : ''}`}
   >
     <div className="relative h-[60%] md:h-[62%] w-full overflow-hidden bg-neutral-100">
       <Image 
@@ -164,12 +156,12 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
       </div>
     </div>
     
-    <div className="flex-1 p-6 md:p-8 lg:p-9 flex flex-col justify-between bg-white z-20">
+    <div className="flex-1 p-6 md:p-8 flex flex-col justify-between bg-white z-20">
       <div className="space-y-2">
-        <h3 className="text-lg md:text-xl font-serif font-medium tracking-[0.05em] text-neutral-900 leading-none uppercase">{s.name.split(' - ')[0]}</h3>
-        <p className="text-neutral-600 text-[11px] md:text-[12px] font-sans font-medium leading-relaxed line-clamp-2">{s.desc}</p>
+        <h3 className="text-base md:text-lg font-serif font-medium tracking-[0.05em] text-neutral-900 leading-none uppercase">{s.name.split(' - ')[0]}</h3>
+        <p className="text-neutral-600 text-[10px] md:text-[11px] font-sans font-medium leading-relaxed line-clamp-2">{s.desc}</p>
       </div>
-      <div className="pt-4 md:pt-5 flex items-center justify-between border-t border-neutral-50">
+      <div className="pt-4 flex items-center justify-between border-t border-neutral-50">
         <div className="flex items-center gap-1.5">
           {[...Array(5)].map((_, i) => (
             <div key={i} className={`h-1 w-3 md:w-4 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900/70' : 'bg-neutral-100'}`} />
@@ -207,7 +199,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] border-[8px] md:border-[12px] border-white shadow-2xl max-w-[400px] mx-auto lg:ml-0"
+              className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] border-[8px] md:border-[12px] border-white shadow-2xl max-w-[380px] mx-auto lg:ml-0"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -244,9 +236,9 @@ export default function HomePage() {
                    <span className="font-cursive text-2xl md:text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
               </div>
-              <button className="inline-flex items-center gap-4 md:gap-6 group pt-4">
-                <div className="w-10 h-10 rounded-sm bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:bg-neutral-800">
-                  <ArrowRight size={16} />
+              <button className="inline-flex items-center gap-4 group pt-4">
+                <div className="w-9 h-9 rounded-sm bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:bg-neutral-800">
+                  <ArrowRight size={14} />
                 </div>
                 <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Découvrir les rituels</span>
               </button>
@@ -275,7 +267,7 @@ export default function HomePage() {
             </div>
 
             {/* GRILLE À DROITE */}
-            <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16">
+            <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-6 md:gap-x-12 gap-y-12 md:gap-y-16">
               {SERVICES.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
               ))}
@@ -285,29 +277,39 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN - SIMPLIFIÉ EN COLONNES */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-8 bg-white max-w-7xl mx-auto overflow-hidden">
-        <div className="space-y-16">
-          <div className="text-right max-w-2xl ml-auto space-y-4">
-            <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
-            <SectionTitle main="Prolonger" italic="l'état de grâce." />
+      {/* RITUEL POST-SOIN - STYLE ÉDITORIAL */}
+      <section className="py-24 md:py-40 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-24 text-right">
+            <div className="hidden md:block h-[1px] flex-1 bg-neutral-100 mb-8 mr-12" />
+            <div>
+              <OverTitle className="mb-2">Rituel Post-Séance</OverTitle>
+              <SectionTitle main="Prolonger" italic="l'état de grâce." />
+            </div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-            {AFTERCARE_TIPS.map((tip) => (
-              <div key={tip.id} className="space-y-6 group">
-                <div className="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-300 transition-all duration-500 group-hover:bg-neutral-900 group-hover:text-white">
-                  <tip.icon size={18} strokeWidth={1.5} />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-0 border-t border-neutral-100">
+            {AFTERCARE_TIPS.map((tip, idx) => (
+              <div 
+                key={tip.id} 
+                className={`py-12 md:px-8 space-y-8 group ${idx !== 0 ? 'md:border-l border-neutral-100' : ''} ${idx === 0 ? 'md:pl-0' : ''}`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-sans font-black text-neutral-200 uppercase tracking-widest">{tip.id}</span>
+                  <div className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-700">
+                    <tip.icon size={14} strokeWidth={1.5} />
+                  </div>
                 </div>
+                
                 <div className="space-y-4">
-                  <h4 className="text-[11px] font-sans font-black uppercase tracking-[0.2em] text-neutral-900">
+                  <h4 className="text-[11px] font-sans font-black uppercase tracking-[0.2em] text-neutral-900 leading-none">
                     {tip.title}
                   </h4>
                   <div className="space-y-3">
                     <p className="text-neutral-900 text-sm font-sans font-bold leading-tight">
                       {tip.advice}
                     </p>
-                    <p className="text-neutral-500 text-[12px] font-sans font-medium leading-relaxed">
+                    <p className="text-neutral-500 text-[11px] font-sans font-medium leading-relaxed">
                       {tip.desc}
                     </p>
                   </div>
@@ -319,19 +321,19 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#0a0a0a] text-white py-8 px-6 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6">
+      <footer className="bg-[#0a0a0a] text-white py-12 px-6 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 md:gap-6">
           <div className="flex flex-col items-center md:items-start">
             <div className="font-sans font-bold text-[10px] tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
-            <p className="text-[8px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-0.5">Excellence Thérapeutique</p>
+            <p className="text-[8px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-1">Excellence Thérapeutique</p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 md:gap-10 text-[8px] md:text-[9px] font-sans font-medium text-neutral-400 text-center">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-12 text-[8px] md:text-[9px] font-sans font-medium text-neutral-400 text-center">
             <p className="tracking-widest uppercase"><span className="text-neutral-700 font-black mr-2">Localisation</span> Alpha Business Center • Genève</p>
             <p className="tracking-widest uppercase"><span className="text-neutral-700 font-black mr-2">Contact</span> +41 78 333 68 23</p>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <Instagram size={14} className="hover:text-white transition-colors cursor-pointer text-neutral-500" />
             <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
               <MessageCircle size={14} className="hover:text-white transition-colors cursor-pointer text-neutral-500" />
@@ -340,7 +342,7 @@ export default function HomePage() {
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto mt-6 pt-6 border-t border-white/5 flex justify-center">
+        <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 flex justify-center">
           <p className="text-[7px] md:text-[8px] font-sans font-bold text-neutral-800 uppercase tracking-[0.4em] text-center">
             © 2025 Serenity & Relax Therapy — Genève
           </p>
