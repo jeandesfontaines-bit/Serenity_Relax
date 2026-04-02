@@ -4,12 +4,13 @@
 import React, { useState } from "react";
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  ArrowRight, Sparkles, MessageCircle, Instagram, Linkedin, Droplets, Moon, Coffee, HeartPulse
+  ArrowRight, Sparkles, MessageCircle, Instagram, Linkedin, Droplets, Moon, Coffee, HeartPulse, CheckCircle2
 } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 import { SERVICES } from '@/lib/types';
+import bambooImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
 
 // --- CONFIGURATION & DONNÉES ---
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
@@ -74,14 +75,14 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES[0], staggered: boole
   >
     <div className="relative h-[62%] w-full overflow-hidden bg-neutral-100">
       <Image 
-        src={`https://picsum.photos/seed/massage-${s.id}/800/1000`} 
+        src={s.id === '1' ? bambooImg : `https://picsum.photos/seed/massage-${s.id}/800/1000`} 
         fill
         className="object-cover grayscale-[0.3] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" 
         alt={s.name}
         data-ai-hint="luxury massage"
       />
       <div className="absolute top-6 left-6 z-10">
-         <span className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">Soin</span>
+         <span className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">Rituel</span>
       </div>
     </div>
     
@@ -113,7 +114,7 @@ export default function HomePage() {
       
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-neutral-900 z-[120] origin-left" style={{ scaleX }} />
 
-      {/* SECTION HÉROS - IMAGE À GAUCHE */}
+      {/* SECTION HÉROS */}
       <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
@@ -174,12 +175,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION SERVICES - TEXTE À GAUCHE CARDS À DROITE */}
+      {/* SECTION SERVICES */}
       <section id="services" className="py-24 md:py-32 px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[3rem] md:rounded-[5rem] md:mx-6 overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             
-            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit text-left">
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-24 h-fit text-left">
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-10" />
@@ -201,11 +202,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN - CONSEILS À GAUCHE LISTE À DROITE */}
+      {/* RITUEL POST-SOIN */}
       <section className="py-40 px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
-          {/* CARTE DE CONSEILS (À GAUCHE) */}
           <div className="relative pt-12 lg:pt-32">
             <div className="min-h-[400px] flex flex-col justify-between relative">
                 <AnimatePresence mode="wait">
@@ -245,7 +245,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* LISTE DES ÉTAPES (À DROITE) */}
           <div className="space-y-12">
             <div className="space-y-4">
               <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
@@ -280,7 +279,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER - ULTRA COMPACT & NOIR */}
+      {/* FOOTER - ULTRA COMPACT */}
       <footer className="bg-[#0a0a0a] text-white py-8 px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start">
