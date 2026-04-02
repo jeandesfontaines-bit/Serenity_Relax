@@ -166,7 +166,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-6 md:p-8 lg:p-9 flex flex-col justify-between bg-white z-20">
       <div className="space-y-2">
-        <h3 className="text-lg md:text-xl font-serif font-medium tracking-tight text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
+        <h3 className="text-lg md:text-xl font-serif font-medium tracking-[0.05em] text-neutral-900 leading-none uppercase">{s.name.split(' - ')[0]}</h3>
         <p className="text-neutral-600 text-[11px] md:text-[12px] font-sans font-medium leading-relaxed line-clamp-2">{s.desc}</p>
       </div>
       <div className="pt-4 md:pt-5 flex items-center justify-between border-t border-neutral-50">
@@ -205,13 +205,13 @@ export default function HomePage() {
       <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-24 md:pt-32 pb-20 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
           
-          {/* PORTRAIT À GAUCHE - RÉDUIT */}
+          {/* PORTRAIT À GAUCHE */}
           <div className="w-full lg:w-[45%] relative order-1 lg:order-1">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] border-[8px] md:border-[12px] border-white shadow-2xl max-w-[500px] mx-auto lg:ml-0"
+              className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] border-[8px] md:border-[12px] border-white shadow-2xl max-w-[420px] mx-auto lg:ml-0"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -229,7 +229,7 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* TEXTE À DROITE - ÉLARGI */}
+          {/* TEXTE À DROITE */}
           <div className="w-full lg:w-[55%] space-y-8 md:space-y-10 text-left order-2 lg:order-2">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
@@ -253,8 +253,8 @@ export default function HomePage() {
                 </div>
               </div>
               <button className="inline-flex items-center gap-4 md:gap-6 group pt-4">
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:scale-110 group-hover:bg-neutral-800">
-                  <ArrowRight size={20} />
+                <div className="w-10 h-10 md:w-11 md:h-11 rounded-sm bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:bg-neutral-800">
+                  <ArrowRight size={16} />
                 </div>
                 <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Découvrir les rituels</span>
               </button>
@@ -350,8 +350,8 @@ export default function HomePage() {
                   onClick={() => setSelectedTip(i)} 
                   className="group flex items-center gap-6 md:gap-8 py-4 md:py-6 border-b border-neutral-100 last:border-0 transition-all duration-500 text-left"
                 >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${selectedTip === i ? 'bg-neutral-900 text-white scale-110' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-100 group-hover:text-neutral-400'}`}>
-                    <tip.icon size={18} strokeWidth={1.5} />
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${selectedTip === i ? 'bg-neutral-900 text-white' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-100 group-hover:text-neutral-400'}`}>
+                    <tip.icon size={16} strokeWidth={1.5} />
                   </div>
                   <div className="space-y-1">
                     <h4 className={`text-[11px] md:text-sm font-sans font-black uppercase tracking-[0.2em] transition-colors duration-500 ${selectedTip === i ? 'text-neutral-900' : 'text-neutral-600 group-hover:text-neutral-800'}`}>
