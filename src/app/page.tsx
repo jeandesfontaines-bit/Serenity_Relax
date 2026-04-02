@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -12,14 +13,14 @@ import Link from 'next/link';
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
 const SERVICES = [
-  { id: "01", name: "Bambous", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions." },
-  { id: "02", name: "Draineur Lymphatique", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation." },
-  { id: "03", name: "Aromathérapie", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75", tag: "Sensoriel", desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit." },
-  { id: "04", name: "Réflexologie Plantaire", duration: "30 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes." },
-  { id: "05", name: "Sportif", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération." },
-  { id: "06", name: "Thérapeutique", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75", tag: "Signature", desc: "Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux." },
-  { id: "07", name: "Deep Tissue", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux." },
-  { id: "08", name: "Thaï", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale." }
+  { id: "01", name: "Bambous", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75" },
+  { id: "02", name: "Draineur Lymphatique", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75" },
+  { id: "03", name: "Aromathérapie", tag: "Sensoriel", desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75" },
+  { id: "04", name: "Réflexologie Plantaire", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75" },
+  { id: "05", name: "Sportif", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75" },
+  { id: "06", name: "Thérapeutique", tag: "Signature", desc: "Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75" },
+  { id: "07", name: "Deep Tissue", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75" },
+  { id: "08", name: "Thaï", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75" }
 ];
 
 const FAQS = [
@@ -34,9 +35,9 @@ const ServiceCard = ({ s }: { s: any }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="relative w-full max-w-[280px] bg-transparent group mb-12"
+    className="relative w-full max-w-[280px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group"
   >
-    <div className="relative aspect-square overflow-hidden rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] mb-8">
+    <div className="relative aspect-square overflow-hidden rounded-[2rem] mb-8">
       <Image 
         src={s.image} 
         fill
@@ -46,7 +47,7 @@ const ServiceCard = ({ s }: { s: any }) => (
       />
     </div>
 
-    <div className="px-2 space-y-4">
+    <div className="px-2 pb-4 space-y-4">
       <div className="space-y-1">
         <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-2">{s.tag}</span>
         <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
@@ -58,7 +59,7 @@ const ServiceCard = ({ s }: { s: any }) => (
         {s.desc}
       </p>
 
-      <div className="flex justify-end pt-4">
+      <div className="flex justify-end pt-4 border-t border-neutral-50">
         <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110">
           <Plus size={14} strokeWidth={2.5} />
         </div>
@@ -135,7 +136,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION SERVICES */}
-      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 bg-white">
+      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 bg-[#FDFCFB]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -171,7 +172,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION FAQ */}
-      <section className="py-32 px-6 md:px-12 bg-[#FDFCFB]">
+      <section className="py-32 px-6 md:px-12 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-400 block mb-4">Questions fréquentes</span>
@@ -211,35 +212,35 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-white text-neutral-900 pt-16 pb-12 px-6">
+      <footer className="bg-neutral-900 text-white pt-24 pb-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4">SERENITY RELAX</h2>
-            <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-neutral-500 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
+            <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-white/50 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-24 w-full text-center">
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-neutral-300 uppercase tracking-[0.3em]">LOCALISATION</h3>
-              <div className="text-sm font-sans text-neutral-400 space-y-2">
+              <h3 className="text-[10px] font-sans font-black text-white/30 uppercase tracking-[0.3em]">LOCALISATION</h3>
+              <div className="text-sm font-sans text-white/40 space-y-2">
                 <p>Alfa Business Center</p>
                 <p>Chemin de Joinville 26, 4ème étage</p>
                 <p>1216 Cointrin - Genève</p>
               </div>
             </div>
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-neutral-300 uppercase tracking-[0.3em]">CONTACT</h3>
-              <div className="text-sm font-sans text-neutral-400 space-y-2">
+              <h3 className="text-[10px] font-sans font-black text-white/30 uppercase tracking-[0.3em]">CONTACT</h3>
+              <div className="text-sm font-sans text-white/40 space-y-2">
                 <p>+41 78 333 68 23</p>
                 <p>serenityrelaxtherapy@gmail.com</p>
               </div>
             </div>
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-neutral-300 uppercase tracking-[0.3em]">SOCIAL</h3>
+              <h3 className="text-[10px] font-sans font-black text-white/30 uppercase tracking-[0.3em]">SOCIAL</h3>
               <div className="flex items-center justify-center gap-8">
-                <Instagram size={20} className="text-neutral-300 hover:text-neutral-900 transition-colors cursor-pointer" />
-                <MessageCircle size={20} className="text-neutral-300 hover:text-neutral-900 transition-colors cursor-pointer" />
-                <Linkedin size={20} className="text-neutral-300 hover:text-neutral-900 transition-colors cursor-pointer" />
+                <Instagram size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
+                <MessageCircle size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
+                <Linkedin size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
               </div>
             </div>
           </div>
