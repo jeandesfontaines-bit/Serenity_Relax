@@ -167,24 +167,24 @@ export function BookingFlow({ services }: { services: Service[] }) {
 
   if (step === 4) {
     return (
-      <Card className="border-none shadow-none rounded-[3rem] p-12 md:p-20 text-center bg-white">
-        <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-8" />
+      <Card className="border-none shadow-none rounded-[3rem] p-12 md:p-16 text-center bg-white">
+        <CheckCircle2 className="h-12 w-12 text-primary mx-auto mb-6" />
         <h2 className="text-3xl font-serif font-medium text-primary mb-4">Réservé.</h2>
-        <p className="text-muted-foreground text-base mb-8 max-w-sm mx-auto leading-relaxed italic">
+        <p className="text-muted-foreground text-sm mb-8 max-w-xs mx-auto leading-relaxed italic">
           Merci {formData.firstName}. Votre séance de <span className="font-bold text-primary">{selectedService?.name.split(' - ')[0]}</span> est enregistrée pour le {date ? format(date, 'd MMMM', { locale: fr }) : ''} à {time}.
         </p>
         
-        <div className="bg-muted/30 p-8 rounded-[2rem] mb-10 border border-black/5">
-          <p className="text-xs font-bold uppercase tracking-widest text-primary mb-4">Étape Finale Importante</p>
-          <p className="text-sm text-muted-foreground mb-6">Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.</p>
-          <button className="high-end-button bg-emerald-600 border-emerald-600 text-white w-full">
-            <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-              <MessageCircle size={22} /> CONFIRMER WHATSAPP
+        <div className="bg-muted/30 p-6 rounded-[2rem] mb-8 border border-black/5">
+          <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-3">Étape Finale Importante</p>
+          <p className="text-xs text-muted-foreground mb-6">Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.</p>
+          <button className="high-end-button bg-emerald-600 border-emerald-600 text-white w-full py-3 text-[12px]">
+            <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+              <MessageCircle size={18} /> CONFIRMER WHATSAPP
             </a>
           </button>
         </div>
 
-        <button className="high-end-button w-full border-neutral-200">
+        <button className="high-end-button w-full border-neutral-200 py-3 text-[12px]">
           <a href="/">RETOUR AU SANCTUAIRE</a>
         </button>
       </Card>
@@ -192,10 +192,10 @@ export function BookingFlow({ services }: { services: Service[] }) {
   }
 
   return (
-    <div className="space-y-10">
-      <div className="flex justify-between items-center px-12 max-w-xs mx-auto">
+    <div className="space-y-6">
+      <div className="flex justify-between items-center px-12 max-w-xs mx-auto pt-6">
         {[1, 2, 3].map((i) => (
-          <div key={i} className={`h-1 w-12 md:w-16 rounded-full transition-all duration-700 ${step >= i ? 'bg-primary' : 'bg-primary/10'}`} />
+          <div key={i} className={`h-1 w-10 md:w-14 rounded-full transition-all duration-700 ${step >= i ? 'bg-primary' : 'bg-primary/10'}`} />
         ))}
       </div>
 
@@ -207,16 +207,16 @@ export function BookingFlow({ services }: { services: Service[] }) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
-            className="p-8 md:p-12"
+            className="p-6 md:p-10"
           >
-            <div className="space-y-12">
-              <header className="space-y-4 text-center">
+            <div className="space-y-8">
+              <header className="space-y-2 text-center">
                 <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">Étape 01</span>
-                <h2 className="text-4xl md:text-5xl font-serif font-medium text-primary">Choisissez votre rituel.</h2>
-                <p className="text-muted-foreground text-base italic max-w-md mx-auto">Sélectionnez le soin qui répond à vos besoins du moment pour passer à la planification.</p>
+                <h2 className="text-3xl md:text-4xl font-serif font-medium text-primary tracking-tight">Choisissez votre rituel.</h2>
+                <p className="text-muted-foreground text-sm italic max-w-md mx-auto">Sélectionnez le soin souhaité pour passer à la planification.</p>
               </header>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
                 {services.map((s) => (
                   <button
                     key={s.id}
@@ -224,20 +224,20 @@ export function BookingFlow({ services }: { services: Service[] }) {
                       setSelectedService(s);
                       setStep(2);
                     }}
-                    className="group text-left p-8 rounded-[2.5rem] border-2 border-black/5 bg-white hover:border-primary/20 hover:shadow-2xl hover:shadow-black/[0.03] transition-all duration-500 flex flex-col justify-between min-h-[180px]"
+                    className="group text-left p-6 rounded-[2rem] border-2 border-black/5 bg-white hover:border-primary/20 hover:shadow-xl hover:shadow-black/[0.02] transition-all duration-500 flex flex-col justify-between min-h-[140px]"
                   >
                     <div className="flex justify-between items-start gap-4">
-                      <div className="space-y-2">
-                        <h3 className="font-serif font-bold text-2xl text-primary leading-tight">{s.name.split(' - ')[0]}</h3>
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/60">{s.duration}</p>
+                      <div className="space-y-1">
+                        <h3 className="font-serif font-bold text-lg text-primary leading-tight">{s.name.split(' - ')[0]}</h3>
+                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/60">{s.duration}</p>
                       </div>
-                      <span className="font-serif font-bold text-2xl text-primary">CHF {s.price}</span>
+                      <span className="font-serif font-bold text-xl text-primary">CHF {s.price}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-6 leading-relaxed line-clamp-2">
+                    <p className="text-xs text-muted-foreground mt-4 leading-relaxed line-clamp-2">
                       {s.description}
                     </p>
-                    <div className="mt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary opacity-0 group-hover:opacity-100 transition-all">
-                      Réserver ce soin <ChevronRight size={14} strokeWidth={3} />
+                    <div className="mt-4 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-primary opacity-0 group-hover:opacity-100 transition-all">
+                      Réserver ce soin <ChevronRight size={12} strokeWidth={3} />
                     </div>
                   </button>
                 ))}
@@ -254,32 +254,32 @@ export function BookingFlow({ services }: { services: Service[] }) {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className="border-none shadow-none rounded-[2.5rem] p-12 bg-white">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div className="space-y-8">
-                  <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
-                    <CalendarIcon className="h-5 w-5 text-primary/20" /> La Date
+            <Card className="border-none shadow-none rounded-[2.5rem] p-8 md:p-10 bg-white">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                  <h2 className="text-xl font-serif font-medium text-primary flex items-center gap-3">
+                    <CalendarIcon className="h-4 w-4 text-primary/20" /> La Date
                   </h2>
                   <Calendar
                     mode="single"
                     selected={date}
                     onSelect={setDate}
                     locale={fr}
-                    className="rounded-[2rem] border border-black/5 shadow-sm p-6 bg-muted/20 mx-auto"
+                    className="rounded-[1.5rem] border border-black/5 shadow-sm p-4 bg-muted/20 mx-auto"
                     disabled={(d) => d < new Date()}
                   />
                 </div>
-                <div className="space-y-8">
-                  <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-primary/20" /> L'Horaire
+                <div className="space-y-6">
+                  <h2 className="text-xl font-serif font-medium text-primary flex items-center gap-3">
+                    <Clock className="h-4 w-4 text-primary/20" /> L'Horaire
                   </h2>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2">
                     {times.map((t) => (
                       <Button
                         key={t}
                         variant={time === t ? 'default' : 'outline'}
                         onClick={() => setTime(t)}
-                        className={`h-14 rounded-xl text-lg font-medium border-black/5 transition-all ${time === t ? 'bg-primary text-white shadow-lg' : 'bg-background hover:bg-white hover:shadow-md'}`}
+                        className={`h-12 rounded-xl text-base font-medium border-black/5 transition-all ${time === t ? 'bg-primary text-white shadow-lg' : 'bg-background hover:bg-white hover:shadow-md'}`}
                       >
                         {t}
                       </Button>
@@ -287,12 +287,12 @@ export function BookingFlow({ services }: { services: Service[] }) {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between mt-16 gap-4">
-                <button onClick={() => setStep(1)} className="high-end-button border-neutral-200">
-                  <ChevronLeft className="mr-2 h-6 w-6" /> Retour
+              <div className="flex justify-between mt-12 gap-4">
+                <button onClick={() => setStep(1)} className="high-end-button border-neutral-200 py-3 px-6 text-[12px]">
+                  <ChevronLeft className="mr-2 h-5 w-5" /> Retour
                 </button>
-                <button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button">
-                  Détails <ChevronRight className="ml-2 h-6 w-6" />
+                <button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button py-3 px-6 text-[12px]">
+                  Détails <ChevronRight className="ml-2 h-5 w-5" />
                 </button>
               </div>
             </Card>
@@ -306,105 +306,88 @@ export function BookingFlow({ services }: { services: Service[] }) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
+            className="p-6 md:p-10"
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-              <Card className="lg:col-span-2 border-none shadow-none rounded-[2.5rem] p-12 bg-white">
-                <h2 className="text-2xl font-serif font-medium text-primary mb-12 flex items-center gap-3">
-                  <User className="h-6 w-6 text-primary/20" /> Vos Coordonnées
+              <Card className="lg:col-span-2 border-none shadow-none rounded-[2rem] p-8 bg-white">
+                <h2 className="text-xl font-serif font-medium text-primary mb-8 flex items-center gap-3">
+                  <User className="h-5 w-5 text-primary/20" /> Vos Coordonnées
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-10 mb-12">
-                  <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 mb-8">
+                  <div className="space-y-2">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Prénom</Label>
-                    <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4 text-sm focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Nom</Label>
-                    <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4 text-sm focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Email</Label>
-                    <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4 text-sm focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Téléphone</Label>
-                    <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4 text-sm focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Date de Naissance</Label>
-                    <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4 text-sm focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
-                    <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4 text-sm focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Ville</Label>
-                    <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4 text-sm focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="md:col-span-2 space-y-3">
+                  <div className="md:col-span-2 space-y-2">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
-                    <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
-                  </div>
-                  <div className="md:col-span-2 space-y-3">
-                    <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
-                    <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-2xl bg-muted/20 border-none p-6 text-base h-32 focus:bg-white shadow-inner transition-all resize-none italic" />
+                    <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4 text-sm focus:bg-white shadow-inner transition-all" />
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center gap-4">
-                  <button onClick={() => setStep(2)} className="high-end-button border-neutral-200">
-                    <ChevronLeft className="mr-2 h-6 w-6" /> Retour
+                  <button onClick={() => setStep(2)} className="high-end-button border-neutral-200 py-3 px-6 text-[12px]">
+                    <ChevronLeft className="mr-2 h-5 w-5" /> Retour
                   </button>
                   <button 
-                    className="high-end-button min-w-[200px]"
+                    className="high-end-button min-w-[160px] py-3 text-[12px]"
                     disabled={isSubmitting}
                     onClick={completeBooking}
                   >
-                    {isSubmitting ? <Loader2 className="animate-spin h-6 w-6" /> : 'CONFIRMER'}
+                    {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'CONFIRMER'}
                   </button>
                 </div>
               </Card>
 
-              <aside className="space-y-6">
-                <Card className="rounded-[2rem] border-none shadow-sm bg-white p-8">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
-                    <MapPin size={14} className="text-primary/40" /> Informations Pratiques
+              <aside className="space-y-4">
+                <Card className="rounded-[1.5rem] border-none shadow-sm bg-white p-6">
+                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 flex items-center gap-2">
+                    <MapPin size={12} className="text-primary/40" /> Lieu
                   </h3>
-                  <div className="space-y-4 text-xs text-muted-foreground leading-relaxed">
-                    <div>
-                      <p className="font-bold text-primary mb-1">Lieu</p>
-                      <p>Chemin de Joinville 26, Alpha Business Center, 4ème étage – 1216 Cointrin (Genève)</p>
-                    </div>
-                    <div>
-                      <p className="font-bold text-primary mb-1">Horaires</p>
-                      <p>Lun - Ven : 8h00 – 20h00</p>
-                      <p>Sam - Dim : 9h30 – 20h00</p>
-                      <p className="italic mt-1">Uniquement sur rendez-vous.</p>
-                    </div>
-                    <p className="pt-2 border-t border-black/5">Séances à domicile possibles sur demande, selon disponibilité.</p>
-                  </div>
-                </Card>
-
-                <Card className="rounded-[2rem] border-none shadow-sm bg-slate-950 text-white p-8">
-                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-4 flex items-center gap-2">
-                    <MessageCircle size={14} className="text-emerald-500" /> CONFIRMATION WHATSAPP
-                  </h3>
-                  <p className="text-xs leading-relaxed italic text-white/70">
-                    Après votre réservation en ligne, pensez à confirmer votre rendez-vous via WhatsApp pour garantir votre créneau.
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    Chemin de Joinville 26, Alpha Business Center, 4ème étage – 1216 Cointrin (Genève)
                   </p>
                 </Card>
 
-                <Card className="rounded-[2rem] border-none shadow-sm bg-white p-8">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
-                    <ShieldCheck size={14} className="text-primary/40" /> Conditions & Informations
+                <Card className="rounded-[1.5rem] border-none shadow-sm bg-slate-950 text-white p-6">
+                  <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/40 mb-3 flex items-center gap-2">
+                    <MessageCircle size={12} className="text-emerald-500" /> WHATSAPP
                   </h3>
-                  <ul className="space-y-3 text-[10px] text-muted-foreground leading-relaxed list-disc pl-4">
-                    <li>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation.</li>
-                    <li>Elles ne remplacent en aucun cas un avis ou un traitement médical.</li>
-                    <li>En réservant une séance, vous confirmez être en bonne condition physique.</li>
-                    <li>Toute annulation ou modification doit être effectuée au minimum 24h à l'avance.</li>
-                    <li>En cas d'annulation tardive ou d'absence, la séance pourra être facturée.</li>
-                  </ul>
+                  <p className="text-[10px] leading-relaxed italic text-white/70">
+                    Confirmez votre créneau par message après réservation.
+                  </p>
+                </Card>
+
+                <Card className="rounded-[1.5rem] border-none shadow-sm bg-white p-6">
+                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 flex items-center gap-2">
+                    <ShieldCheck size={12} className="text-primary/40" /> Conditions
+                  </h3>
+                  <p className="text-[10px] text-muted-foreground leading-relaxed italic">
+                    Annulation possible jusqu'à 24h avant le rendez-vous.
+                  </p>
                 </Card>
               </aside>
             </div>
