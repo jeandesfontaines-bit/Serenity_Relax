@@ -37,7 +37,10 @@ const ServiceCard = ({ s }: { s: any }) => (
     viewport={{ once: true }}
     className="relative w-full max-w-[280px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group"
   >
-    <div className="relative aspect-square overflow-hidden rounded-[2rem] mb-6">
+    <div 
+      className="relative aspect-square overflow-hidden mb-6 transition-all duration-700 group-hover:scale-105" 
+      style={{ borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' }}
+    >
       <Image 
         src={s.image} 
         fill
@@ -86,7 +89,8 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[8rem_4rem_8rem_4rem] shadow-2xl w-full max-w-[420px]"
+              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[420px]"
+              style={{ borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%' }}
             >
               <Image 
                 src={MY_PHOTO} 
@@ -195,9 +199,9 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-neutral-900 text-white pt-16 pb-16 px-6">
+      <footer className="bg-neutral-900 text-white pt-12 pb-16 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
             <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-white/50 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
