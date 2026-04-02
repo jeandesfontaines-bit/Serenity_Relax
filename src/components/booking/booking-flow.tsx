@@ -10,10 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
-import { Sparkles, CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, Brain, MessageCircle, MapPin, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, MessageCircle, MapPin, ShieldCheck } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
@@ -47,8 +45,6 @@ export function BookingFlow({ services }: { services: Service[] }) {
     insuranceNumber: '', 
     message: ''
   });
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiQuery, setAiQuery] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -58,32 +54,6 @@ export function BookingFlow({ services }: { services: Service[] }) {
       if (found) setSelectedService(found);
     }
   }, [searchParams, services]);
-
-  const handleAiRecommend = async () => {
-    if (!aiQuery) return;
-    setAiLoading(true);
-    try {
-      const result = await recommendMassageService({
-        clientDescription: aiQuery,
-        serviceCatalog: services.map(s => ({
-          name: s.name,
-          description: s.description,
-          duration: s.duration,
-          price: `CHF ${s.price}`
-        }))
-      });
-      
-      const found = services.find(s => s.name === result.recommendedServiceName);
-      if (found) {
-        setSelectedService(found);
-        toast({ title: "Recommandation IA", description: `Le soin "${found.name.split(' - ')[0]}" semble idéal pour vous.` });
-      }
-    } catch (error) {
-      toast({ variant: 'destructive', title: 'Erreur IA', description: 'Impossible de joindre le conseiller.' });
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   const times = ['08:30', '10:00', '11:30', '13:00', '14:30', '16:00', '17:30', '19:00'];
 
@@ -240,76 +210,45 @@ export function BookingFlow({ services }: { services: Service[] }) {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className="border-none shadow-none rounded-[2.5rem] overflow-hidden bg-white">
-              <Tabs defaultValue="browse" className="w-full">
-                <div className="px-8 pt-8 pb-0">
-                  <TabsList className="grid w-full grid-cols-2 bg-muted/50 border rounded-full p-1 h-12">
-                    <TabsTrigger value="browse" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">Menu des Soins</TabsTrigger>
-                    <TabsTrigger value="ai" className="rounded-full flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold uppercase text-[10px] tracking-[0.2em] h-full transition-all">
-                      <Brain className="h-3.5 w-3.5" /> Consultation IA
-                    </TabsTrigger>
-                  </TabsList>
+            <Card className="border-none shadow-none rounded-[2.5rem] overflow-hidden bg-white p-12">
+              <div className="space-y-10">
+                <header className="space-y-4">
+                  <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">Étape 01</span>
+                  <h2 className="text-3xl font-serif font-medium text-primary">Choisissez votre rituel.</h2>
+                  <p className="text-muted-foreground text-sm italic">Sélectionnez le soin qui répond à vos besoins du moment.</p>
+                </header>
+
+                <div className="space-y-4">
+                  <Label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-2">Nos prestations</Label>
+                  <Select 
+                    value={selectedService?.id} 
+                    onValueChange={(id) => setSelectedService(services.find(s => s.id === id) || null)}
+                  >
+                    <SelectTrigger className="w-full h-16 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
+                      <SelectValue placeholder="Parcourir le menu des soins" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-2xl p-1">
+                      {services.map((s) => (
+                        <SelectItem key={s.id} value={s.id} className="rounded-xl py-4 px-4 focus:bg-background cursor-pointer">
+                          <div className="flex flex-col gap-0.5">
+                            <span className="font-serif font-bold text-base">{s.name.split(' - ')[0]}</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">{s.duration} • CHF {s.price}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-                
-                <CardContent className="p-8 pb-4">
-                  <TabsContent value="browse" className="space-y-6 mt-0">
-                    <div className="space-y-4">
-                      <Label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-2">Sélectionner votre rituel</Label>
-                      <Select 
-                        value={selectedService?.id} 
-                        onValueChange={(id) => setSelectedService(services.find(s => s.id === id) || null)}
-                      >
-                        <SelectTrigger className="w-full h-14 rounded-2xl text-base px-6 border-black/5 bg-background focus:ring-primary shadow-sm hover:shadow-md transition-all">
-                          <SelectValue placeholder="Parcourir nos soins" />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-2xl p-1">
-                          {services.map((s) => (
-                            <SelectItem key={s.id} value={s.id} className="rounded-xl py-4 px-4 focus:bg-background cursor-pointer">
-                              <div className="flex flex-col gap-0.5">
-                                <span className="font-serif font-bold text-base">{s.name.split(' - ')[0]}</span>
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">{s.duration} • CHF {s.price}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </TabsContent>
 
-                  <TabsContent value="ai" className="space-y-6 mt-0">
-                    <div className="p-8 rounded-[2rem] bg-muted/30 border border-black/5">
-                      <h3 className="text-xl font-serif font-medium text-primary mb-4 flex items-center gap-3">
-                        <Brain className="h-5 w-5 text-primary/40" /> Intuition Digitale
-                      </h3>
-                      <Textarea 
-                        id="ai-query"
-                        name="ai-query"
-                        placeholder="Décrivez votre état physique ou émotionnel..."
-                        className="min-h-[140px] rounded-[1.5rem] border-black/5 bg-white text-base shadow-sm italic p-6 resize-none focus:ring-primary"
-                        value={aiQuery}
-                        onChange={(e) => setAiQuery(e.target.value)}
-                      />
-                      <button 
-                        onClick={handleAiRecommend} 
-                        disabled={aiLoading || !aiQuery}
-                        className="mt-6 high-end-button w-full"
-                      >
-                        {aiLoading ? <Loader2 className="animate-spin h-5 w-5 mr-2" /> : <Sparkles className="h-5 w-5 mr-2" />}
-                        Trouver le soin idéal
-                      </button>
-                    </div>
-                  </TabsContent>
-                </CardContent>
-              </Tabs>
-
-              <div className="px-8 pb-8 flex justify-end">
-                <button 
-                  disabled={!selectedService} 
-                  onClick={() => setStep(2)}
-                  className="high-end-button"
-                >
-                  Suivant <ChevronRight className="ml-2 h-6 w-6" />
-                </button>
+                <div className="flex justify-end pt-8">
+                  <button 
+                    disabled={!selectedService} 
+                    onClick={() => setStep(2)}
+                    className="high-end-button"
+                  >
+                    Suivant <ChevronRight className="ml-2 h-6 w-6" />
+                  </button>
+                </div>
               </div>
             </Card>
           </motion.div>
@@ -323,9 +262,9 @@ export function BookingFlow({ services }: { services: Service[] }) {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className="border-none shadow-none rounded-[2.5rem] p-8 bg-white">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div className="space-y-6">
+            <Card className="border-none shadow-none rounded-[2.5rem] p-12 bg-white">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div className="space-y-8">
                   <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
                     <CalendarIcon className="h-5 w-5 text-primary/20" /> La Date
                   </h2>
@@ -334,11 +273,11 @@ export function BookingFlow({ services }: { services: Service[] }) {
                     selected={date}
                     onSelect={setDate}
                     locale={fr}
-                    className="rounded-[2rem] border border-black/5 shadow-sm p-6 bg-muted/20 mx-auto scale-90 md:scale-100"
+                    className="rounded-[2rem] border border-black/5 shadow-sm p-6 bg-muted/20 mx-auto"
                     disabled={(d) => d < new Date()}
                   />
                 </div>
-                <div className="space-y-6">
+                <div className="space-y-8">
                   <h2 className="text-2xl font-serif font-medium text-primary flex items-center gap-3">
                     <ChevronRight className="h-5 w-5 text-primary/20" /> L'Horaire
                   </h2>
@@ -348,7 +287,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                         key={t}
                         variant={time === t ? 'default' : 'outline'}
                         onClick={() => setTime(t)}
-                        className={`h-12 rounded-xl text-lg font-medium border-black/5 transition-all ${time === t ? 'bg-primary text-white shadow-lg' : 'bg-background hover:bg-white hover:shadow-md'}`}
+                        className={`h-14 rounded-xl text-lg font-medium border-black/5 transition-all ${time === t ? 'bg-primary text-white shadow-lg' : 'bg-background hover:bg-white hover:shadow-md'}`}
                       >
                         {t}
                       </Button>
@@ -356,7 +295,7 @@ export function BookingFlow({ services }: { services: Service[] }) {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between mt-12 gap-4">
+              <div className="flex justify-between mt-16 gap-4">
                 <button onClick={() => setStep(1)} className="high-end-button border-neutral-200">
                   <ChevronLeft className="mr-2 h-6 w-6" /> Retour
                 </button>
@@ -377,44 +316,44 @@ export function BookingFlow({ services }: { services: Service[] }) {
             transition={{ duration: 0.5 }}
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-              <Card className="lg:col-span-2 border-none shadow-none rounded-[2.5rem] p-8 md:p-12 bg-white">
-                <h2 className="text-2xl font-serif font-medium text-primary mb-10 flex items-center gap-3">
+              <Card className="lg:col-span-2 border-none shadow-none rounded-[2.5rem] p-12 bg-white">
+                <h2 className="text-2xl font-serif font-medium text-primary mb-12 flex items-center gap-3">
                   <User className="h-6 w-6 text-primary/20" /> Vos Coordonnées
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-12">
-                  <div className="space-y-2.5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-10 mb-12">
+                  <div className="space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Prénom</Label>
-                    <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="firstName" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Nom</Label>
-                    <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="lastName" name="lastName" placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Email</Label>
-                    <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Téléphone</Label>
-                    <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="phone" name="phone" type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Date de Naissance</Label>
-                    <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="dob" name="dob" type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
-                    <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Ville</Label>
-                    <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="md:col-span-2 space-y-2.5">
+                  <div className="md:col-span-2 space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
-                    <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-12 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                    <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-6 text-base focus:bg-white shadow-inner transition-all" />
                   </div>
-                  <div className="md:col-span-2 space-y-2.5">
+                  <div className="md:col-span-2 space-y-3">
                     <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>
                     <Textarea id="message" name="message" placeholder="Message ou motif de consultation..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="rounded-2xl bg-muted/20 border-none p-6 text-base h-32 focus:bg-white shadow-inner transition-all resize-none italic" />
                   </div>
