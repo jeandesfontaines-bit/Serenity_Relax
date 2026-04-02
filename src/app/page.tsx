@@ -151,6 +151,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
       <Image 
         src={s.image} 
         fill
+        unoptimized
         className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700 ease-out" 
         alt={s.name}
         data-ai-hint="luxury massage"
