@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -53,22 +52,22 @@ import {
   ArrowDownRight,
   Activity,
   Sparkles,
-  Heart
+  Heart,
+  User as UserIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SERVICES } from '@/lib/types';
 
-// --- UTILS ---
 const formatCHF = (amt: number) => new Intl.NumberFormat('fr-CH', { style: 'currency', currency: 'CHF' }).format(amt);
 
 const STATUS_CONFIG = {
   pending: { label: 'En attente', color: 'bg-amber-100 text-amber-700', dot: 'bg-amber-500' },
-  confirmed: { label: 'Confirmé', color: 'bg-indigo-100 text-indigo-700', dot: 'bg-indigo-500' },
+  confirmed: { label: 'Confirmé', color: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500' },
   completed: { label: 'Terminé', color: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500' },
   cancelled: { label: 'Annulé', color: 'bg-rose-100 text-rose-700', dot: 'bg-rose-500' },
 };
 
-const TIME_SLOTS = ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00", "18:30"];
+const TIME_SLOTS = ["08:30", "10:00", "11:30", "13:00", "14:30", "16:00", "17:30", "19:00"];
 
 export default function TherapistDashboard() {
   const { firestore } = useFirestore();
@@ -79,7 +78,6 @@ export default function TherapistDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isClient, setIsClient] = useState(false);
 
-  // Side Panel State
   const [sidePanel, setSidePanel] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -95,7 +93,6 @@ export default function TherapistDashboard() {
     setIsClient(true);
   }, []);
 
-  // Data Sync
   const appointmentsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
     return query(collection(firestore, 'appointments'), orderBy('startTime', 'asc'));
@@ -112,7 +109,6 @@ export default function TherapistDashboard() {
   const appointments = useMemo(() => appointmentsRaw || [], [appointmentsRaw]);
   const clients = useMemo(() => clientsRaw || [], [clientsRaw]);
 
-  // Stats Logic
   const stats = useMemo(() => {
     const todayStr = isClient ? format(new Date(), 'yyyy-MM-dd') : '';
     const todayBookings = appointments.filter(a => a.startTime.startsWith(todayStr));
@@ -123,14 +119,13 @@ export default function TherapistDashboard() {
     return { countToday: todayBookings.length, revenueToday };
   }, [appointments, isClient]);
 
-  // Actions
   const handleSave = async () => {
     if (!firestore || !formData.firstName) return;
     
     const payload = {
       ...formData,
       updatedAt: serverTimestamp(),
-      clientId: formData.firstName.toLowerCase() // Mocking client relation
+      clientId: formData.firstName.toLowerCase()
     };
 
     if (editingId) {
@@ -166,8 +161,8 @@ export default function TherapistDashboard() {
   const openEdit = (appt: any) => {
     setEditingId(appt.id);
     setFormData({
-      firstName: appt.firstName,
-      lastName: appt.lastName,
+      firstName: appt.firstName || appt.clientNameSnapshot?.split(' ')[0] || 'Client',
+      lastName: appt.lastName || appt.clientNameSnapshot?.split(' ')[1] || '',
       serviceId: appt.serviceId,
       startTime: appt.startTime,
       status: appt.status,
@@ -179,17 +174,15 @@ export default function TherapistDashboard() {
   if (!isClient) return null;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] text-[#171717] font-sans selection:bg-indigo-100 selection:text-indigo-900">
-      
-      {/* HEADER CLAIR */}
-      <header className="h-20 border-b border-gray-200 flex items-center justify-between px-8 bg-white/80 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
+    <div className="min-h-screen bg-[#F8F9FB] text-[#171717] font-sans">
+      <header className="h-20 border-b border-gray-200 flex items-center justify-between px-8 bg-white/80 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
           <div className="flex items-center gap-12">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shadow-lg shadow-black/5"><Calendar size={18}/></div>
               <div>
                 <span className="text-sm font-bold tracking-tight block text-gray-900">Cabinet Serenity</span>
-                <span className="text-[9px] text-gray-500 uppercase tracking-widest font-bold">Portail Praticien</span>
+                <span className="hidden sm:inline-block text-[14px] font-cursive text-muted-foreground ml-1">by João</span>
               </div>
             </div>
             
@@ -232,7 +225,6 @@ export default function TherapistDashboard() {
         </div>
       </header>
 
-      {/* MAIN CONTENT */}
       <main className="max-w-7xl mx-auto px-8 py-12">
         <AnimatePresence mode="wait">
           {activeTab === "dashboard" && (
@@ -241,13 +233,12 @@ export default function TherapistDashboard() {
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
               className="space-y-12"
             >
-              {/* BENTO STATS */}
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                  {[
                    { label: "Revenue du jour", value: formatCHF(stats.revenueToday), change: "+12%", trend: "up", icon: Wallet, color: "text-emerald-600", bg: "bg-emerald-50" },
                    { label: "Occupation", value: `${Math.round((stats.countToday / TIME_SLOTS.length) * 100)}%`, change: "-2%", trend: "down", icon: Activity, color: "text-blue-600", bg: "bg-blue-50" },
                    { label: "Séances aujourd'hui", value: stats.countToday, change: "+3", trend: "up", icon: CalendarDays, color: "text-purple-600", bg: "bg-purple-50" },
-                   { label: "Nouveaux Patients", value: "12", change: "+5", trend: "up", icon: Users, color: "text-orange-600", bg: "bg-orange-50" },
+                   { label: "Nouveaux Patients", value: clients.length.toString(), change: "+5", trend: "up", icon: Users, color: "text-orange-600", bg: "bg-orange-50" },
                  ].map((kpi, idx) => (
                   <div key={idx} className="p-8 rounded-[2.5rem] bg-white border border-gray-100 group hover:shadow-xl hover:shadow-gray-200/50 transition-all">
                     <div className="flex justify-between items-start mb-6">
@@ -262,7 +253,6 @@ export default function TherapistDashboard() {
                 ))}
               </div>
 
-              {/* DAILY PLANNING */}
               <div className="grid grid-cols-12 gap-12">
                 <div className="col-span-12 lg:col-span-8 space-y-8">
                   <div className="flex items-center justify-between px-2">
@@ -290,11 +280,11 @@ export default function TherapistDashboard() {
                             className="group bg-white p-6 rounded-[2.5rem] shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-100 transition-all cursor-pointer flex items-center gap-8"
                           >
                             <div className="flex flex-col items-center justify-center min-w-[80px] h-20 bg-slate-50 rounded-2xl group-hover:bg-black group-hover:text-white transition-all">
-                              <span className="text-lg font-bold">{appt.startTime.split('T')[1]}</span>
+                              <span className="text-lg font-bold">{appt.startTime.split('T')[1].substring(0, 5)}</span>
                             </div>
                             
                             <div className="flex-1">
-                              <h4 className="text-lg font-bold mb-1">{appt.firstName} {appt.lastName}</h4>
+                              <h4 className="text-lg font-bold mb-1">{appt.firstName || appt.clientNameSnapshot || 'Client'} {appt.lastName || ''}</h4>
                               <div className="flex items-center gap-3">
                                  <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${status.color}`}>
                                    {status.label}
@@ -355,7 +345,7 @@ export default function TherapistDashboard() {
                         <div key={client.id} className="flex items-center justify-between group cursor-pointer">
                           <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-900 font-bold text-sm group-hover:bg-black group-hover:text-white transition-all">
-                              {client.lastName.charAt(0)}
+                              {client.lastName?.charAt(0) || client.firstName?.charAt(0) || 'C'}
                             </div>
                             <div>
                               <p className="text-xs font-bold">{client.firstName} {client.lastName}</p>
@@ -422,9 +412,9 @@ export default function TherapistDashboard() {
                             <span className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-bold transition-all ${isToday ? 'bg-black text-white shadow-xl shadow-black/20' : 'text-slate-400 group-hover:bg-white group-hover:text-black'}`}>{format(day, 'd')}</span>
                             <div className="mt-4 flex flex-col gap-2">
                                {dayBookings.slice(0, 2).map(b => (
-                                  <div key={b.id} className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl shadow-sm border border-slate-50">
+                                  <div key={b.id} className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl shadow-sm border border-slate-50">
                                     <div className={`w-2 h-2 rounded-full shrink-0 ${STATUS_CONFIG[b.status as keyof typeof STATUS_CONFIG]?.dot || 'bg-slate-400'}`} />
-                                    <span className="text-[9px] font-bold text-slate-600 truncate">{b.firstName}</span>
+                                    <span className="text-[9px] font-bold text-slate-600 truncate">{b.firstName || b.clientNameSnapshot?.split(' ')[0] || 'Client'}</span>
                                   </div>
                                ))}
                                {dayBookings.length > 2 && (
@@ -451,7 +441,7 @@ export default function TherapistDashboard() {
                                    <div className="flex items-center gap-6">
                                      <div className={`w-1.5 h-12 rounded-full ${status?.dot || 'bg-slate-200'}`} />
                                      <div>
-                                       <h4 className="text-lg font-bold text-slate-900">{appt.firstName} {appt.lastName}</h4>
+                                       <h4 className="text-lg font-bold text-slate-900">{appt.firstName || appt.clientNameSnapshot || 'Client'} {appt.lastName || ''}</h4>
                                        <div className="flex items-center gap-3 mt-2">
                                           <span className={`text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full ${status?.color}`}>{status?.label}</span>
                                           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{service?.name}</span>
@@ -503,7 +493,7 @@ export default function TherapistDashboard() {
                      <div key={client.id} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
                         <div className="flex justify-between items-start mb-6">
                            <div className="w-14 h-14 bg-slate-50 rounded-[1.5rem] flex items-center justify-center text-slate-900 font-bold text-xl">
-                             {client.lastName.charAt(0)}
+                             {client.lastName?.charAt(0) || client.firstName?.charAt(0) || 'C'}
                            </div>
                            <div className="text-right">
                              <span className="block text-[10px] font-black uppercase tracking-widest text-slate-300 mb-1">Visites</span>
@@ -528,7 +518,6 @@ export default function TherapistDashboard() {
         </AnimatePresence>
       </main>
 
-      {/* SIDE PANEL */}
       <AnimatePresence>
         {sidePanel && (
           <>
