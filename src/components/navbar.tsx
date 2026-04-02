@@ -25,7 +25,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-6 bg-[#0a0a0a]">
+    <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-3 bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-baseline gap-2 cursor-pointer group">
           <span className="font-sans font-bold text-xs md:text-sm tracking-[0.2em] text-white uppercase">SERENITY RELAX</span>
