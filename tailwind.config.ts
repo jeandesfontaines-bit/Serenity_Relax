@@ -63,22 +63,11 @@ export default {
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translate(0, 0)' },
-          '50%': { transform: 'translate(-10px, 15px)' },
-        },
-        morph: {
-          '0%': { borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' },
-          '50%': { borderRadius: '70% 30% 46% 54% / 30% 29% 71% 70%' },
-          '100%': { borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' },
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        float: 'float 8s ease-in-out infinite',
-        morph: 'morph 8s ease-in-out infinite',
       },
     },
   },

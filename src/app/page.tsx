@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, CheckCircle2, ArrowRight, MessageCircle
+  Instagram, Linkedin, ArrowRight, MessageCircle
 } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -68,10 +68,10 @@ const SERVICES_DISPLAY = [
 ];
 
 const RITUAL_STEPS = [
-  { title: "Émotions", desc: "Accueillez vos ressentis sans jugement après le soin. Observez le calme intérieur." },
-  { title: "Hydratation", desc: "Buvez de l'eau alcaline ou une infusion tiède pour drainer les toxines libérées." },
-  { title: "Repos", desc: "Évitez les écrans et les efforts intenses pendant les 2 heures suivant la séance." },
-  { title: "Soin", desc: "Laissez les huiles essentielles pénétrer. Évitez la douche immédiate (attendre 1h)." }
+  { title: "Hydratation", desc: "Buvez de l'eau alcaline ou une infusion tiède pour drainer les toxines libérées lors du soin." },
+  { title: "Huiles", desc: "Laissez les huiles précieuses pénétrer votre épiderme. Évitez la douche immédiate (attendre 1h)." },
+  { title: "Repos", desc: "Évitez les écrans et les efforts intenses pendant les 2 heures suivant votre séance au sanctuaire." },
+  { title: "Suivi", desc: "Observez vos ressentis dans les jours qui suivent et hydratez-vous généreusement." }
 ];
 
 const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggered: boolean }) => {
@@ -99,7 +99,7 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
           />
         </motion.div>
         <div className="absolute top-6 left-6 z-10">
-           <span className="text-[9px] font-bold font-sans uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">{s.tag}</span>
+           <span className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">{s.tag}</span>
         </div>
       </div>
       <div className="flex-1 p-8 flex flex-col justify-between">
@@ -134,7 +134,27 @@ export default function HomePage() {
       <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-neutral-50 relative border-b border-neutral-100">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
-          <div className="w-full lg:w-[55%] space-y-12">
+          {/* IMAGE À GAUCHE */}
+          <div className="w-full lg:w-[45%] relative">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2 }}
+              className="blob-shape bg-white shadow-2xl max-w-[420px] w-full mx-auto overflow-hidden relative"
+            >
+              <Image 
+                src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
+                fill
+                className="object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000"
+                alt="João Thérapeute"
+                data-ai-hint="professional therapist"
+                priority
+              />
+            </motion.div>
+          </div>
+
+          {/* TEXTE À DROITE */}
+          <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -153,7 +173,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 1 }}
-              className="space-y-8 max-w-xl"
+              className="space-y-8 max-w-xl mx-auto lg:mx-0"
             >
               <p className="text-xl md:text-2xl font-serif font-bold text-neutral-900 leading-tight italic">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
@@ -161,7 +181,7 @@ export default function HomePage() {
               
               <div className="space-y-6 text-neutral-600 font-sans font-medium leading-relaxed text-base md:text-lg">
                 <p>
-                  Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie.
+                  Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
                 </p>
                 <div className="pl-6 border-l-2 border-neutral-900/10 py-2">
                    <p className="text-neutral-400 italic text-lg leading-snug">
@@ -179,24 +199,6 @@ export default function HomePage() {
               </Link>
             </motion.div>
           </div>
-
-          <div className="w-full lg:w-[45%] relative">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2 }}
-              className="blob-shape bg-white shadow-2xl max-w-[420px] w-full mx-auto overflow-hidden relative"
-            >
-              <Image 
-                src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
-                fill
-                className="object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000"
-                alt="João Thérapeute"
-                data-ai-hint="professional therapist"
-                priority
-              />
-            </motion.div>
-          </div>
         </div>
       </section>
 
@@ -204,12 +206,20 @@ export default function HomePage() {
       <section id="services" className="py-32 md:py-44 px-8 bg-white overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
-            {/* Colonne Texte (Gauché sur desktop) */}
-            <div className="w-full lg:w-[25%] lg:sticky lg:top-32 h-fit space-y-10">
+            
+            {/* Grille de Cartes (À gauche désormais) */}
+            <div className="w-full lg:w-[75%] grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 pb-12">
+              {SERVICES_DISPLAY.map((s, i) => (
+                <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
+              ))}
+            </div>
+
+            {/* Colonne Texte (À droite désormais, collante sur desktop) */}
+            <div className="w-full lg:w-[25%] lg:sticky lg:top-32 h-fit space-y-10 text-right lg:text-left">
               <span className="text-xs font-sans font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu Signature</span>
               <h2 className="text-5xl md:text-7xl font-bold text-neutral-900 tracking-tight font-serif leading-none">Soins.</h2>
-              <div className="h-1 w-12 bg-neutral-900" />
-              <p className="text-xs font-sans text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
+              <div className="h-1 w-12 bg-neutral-900 ml-auto lg:ml-0" />
+              <p className="text-xs font-sans text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px] ml-auto lg:ml-0">
                 Sélection exclusive de 6 rituels pour votre équilibre interne.
               </p>
               <div className="pt-8">
@@ -219,12 +229,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Grille de Cartes (Droit sur desktop) */}
-            <div className="w-full lg:w-[75%] grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 pb-12">
-              {SERVICES_DISPLAY.map((s, i) => (
-                <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -277,24 +281,24 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#0a0a0a] text-white pt-16 pb-10 px-8">
+      <footer className="bg-[#0a0a0a] text-white pt-12 pb-8 px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="font-sans font-bold text-lg md:text-xl tracking-[0.3em] uppercase mb-2">SERENITY RELAX</div>
-            <p className="text-[10px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
+          <div className="text-center mb-8">
+            <div className="font-sans font-bold text-base md:text-lg tracking-[0.3em] uppercase mb-1">SERENITY RELAX</div>
+            <p className="text-[9px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center mb-12 border-b border-white/5 pb-12">
-            <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-8 border-b border-white/5 pb-8">
+            <div className="space-y-4">
               <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Localisation</span>
               <div className="space-y-1 text-sm font-sans font-medium text-neutral-400">
-                <p>Alfa Business Center</p>
+                <p>Alpha Business Center</p>
                 <p>Chemin de Joinville 26, 4ème étage</p>
                 <p>1216 Cointrin - Genève</p>
               </div>
             </div>
             
-            <div className="space-y-6">
+            <div className="space-y-4">
               <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Contact</span>
               <div className="space-y-1 text-sm font-sans font-medium text-neutral-400">
                 <p>+41 78 333 68 23</p>
@@ -302,18 +306,18 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Social</span>
-              <div className="flex justify-center gap-8 text-neutral-400">
-                <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
-                <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
-                <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
+              <div className="flex justify-center gap-6 text-neutral-400">
+                <Instagram size={16} className="hover:text-white transition-colors cursor-pointer" />
+                <MessageCircle size={16} className="hover:text-white transition-colors cursor-pointer" />
+                <Linkedin size={16} className="hover:text-white transition-colors cursor-pointer" />
               </div>
             </div>
           </div>
           
           <div className="text-center">
-            <p className="text-[9px] font-sans font-bold text-neutral-700 uppercase tracking-[0.4em]">
+            <p className="text-[8px] font-sans font-bold text-neutral-700 uppercase tracking-[0.4em]">
               © 2025 Serenity & Relax Therapy — Tous droits réservés
             </p>
           </div>
