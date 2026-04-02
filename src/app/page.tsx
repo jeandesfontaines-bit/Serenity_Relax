@@ -79,7 +79,7 @@ const RITUAL_STEPS = [
     title: "Huiles", 
     desc: "Laissez les huiles précieuses pénétrer votre épiderme. Évitez la douche immédiate (attendre 1h).",
     icon: <Sparkles size={24} />,
-    advice: "Laissez agir pour une peau soyeuse et nourrie."
+    advice: "Laissez agir pour une peau nourrie et soyeuse."
   },
   { 
     title: "Repos", 
@@ -149,13 +149,52 @@ const AftercareSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
           
-          <div className="space-y-12">
+          {/* Carte de détail (À GAUCHE) */}
+          <div className="relative order-2 lg:order-1">
+             <AnimatePresence mode="wait">
+               <motion.div
+                 key={selectedTip}
+                 initial={{ opacity: 0, y: 20 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 exit={{ opacity: 0, y: -20 }}
+                 transition={{ duration: 0.4 }}
+                 className="bg-white rounded-[4rem] p-12 md:p-20 text-neutral-900 aspect-square flex flex-col justify-between relative overflow-hidden border border-neutral-100 shadow-2xl"
+               >
+                 <div className="space-y-10 relative z-10">
+                   <div className="w-16 h-16 rounded-3xl bg-neutral-50 flex items-center justify-center shadow-inner text-neutral-900">
+                     {RITUAL_STEPS[selectedTip].icon}
+                   </div>
+                   <h3 className="text-4xl font-serif font-bold tracking-tight leading-tight">
+                     Pourquoi c'est <br/> <span className="italic font-medium">fondamental ?</span>
+                   </h3>
+                   <p className="text-xl font-sans font-medium text-neutral-500 italic leading-relaxed">
+                     {RITUAL_STEPS[selectedTip].desc}
+                   </p>
+                 </div>
+
+                 <div className="space-y-6 relative z-10">
+                   <div className="flex items-center gap-4 text-neutral-200">
+                     <span className="w-8 h-px bg-neutral-100"></span>
+                     <span className="text-[10px] font-sans font-bold uppercase tracking-widest">Le conseil de João</span>
+                   </div>
+                   <div className="p-8 bg-neutral-50 rounded-[2rem] border border-neutral-100">
+                     <p className="text-neutral-900 text-lg font-serif font-bold italic tracking-tight">
+                       « {RITUAL_STEPS[selectedTip].advice} »
+                     </p>
+                   </div>
+                 </div>
+               </motion.div>
+             </AnimatePresence>
+          </div>
+
+          {/* Texte et Liste (À DROITE) */}
+          <div className="space-y-12 order-1 lg:order-2">
             <div className="space-y-4">
               <span className="text-[11px] font-sans font-black uppercase tracking-[0.4em] text-neutral-300 block mb-4">Immersion Continue</span>
               <h2 className="text-5xl md:text-7xl font-serif font-bold text-neutral-900 leading-none tracking-tighter">
                 Le Rituel <br/> <span className="text-neutral-200 italic font-light">post-soin.</span>
               </h2>
-              <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed pt-6 border-l-2 border-neutral-100 pl-8 italic">
+              <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed pt-6 border-l-2 border-neutral-100 pl-8 italic text-right lg:text-left">
                 Le massage ne s'arrête pas à la porte du studio. Les heures qui suivent sont essentielles pour ancrer vos bénéfices.
               </p>
             </div>
@@ -197,43 +236,7 @@ const AftercareSection = () => {
               ))}
             </div>
           </div>
-
-          <div className="relative">
-             <AnimatePresence mode="wait">
-               <motion.div
-                 key={selectedTip}
-                 initial={{ opacity: 0, y: 20 }}
-                 animate={{ opacity: 1, y: 0 }}
-                 exit={{ opacity: 0, y: -20 }}
-                 transition={{ duration: 0.4 }}
-                 className="bg-white rounded-[4rem] p-12 md:p-20 text-neutral-900 aspect-square flex flex-col justify-between relative overflow-hidden border border-neutral-100 shadow-2xl"
-               >
-                 <div className="space-y-10 relative z-10">
-                   <div className="w-16 h-16 rounded-3xl bg-neutral-50 flex items-center justify-center shadow-inner text-neutral-900">
-                     {RITUAL_STEPS[selectedTip].icon}
-                   </div>
-                   <h3 className="text-4xl font-serif font-bold tracking-tight leading-tight">
-                     Pourquoi c'est <br/> <span className="italic font-medium">fondamental ?</span>
-                   </h3>
-                   <p className="text-xl font-sans font-medium text-neutral-500 italic leading-relaxed">
-                     {RITUAL_STEPS[selectedTip].desc}
-                   </p>
-                 </div>
-
-                 <div className="space-y-6 relative z-10">
-                   <div className="flex items-center gap-4 text-neutral-200">
-                     <span className="w-8 h-px bg-neutral-100"></span>
-                     <span className="text-[10px] font-sans font-black uppercase tracking-widest">Le conseil de João</span>
-                   </div>
-                   <div className="p-8 bg-neutral-50 rounded-[2rem] border border-neutral-100">
-                     <p className="text-neutral-900 text-lg font-serif font-bold italic tracking-tight">
-                       « {RITUAL_STEPS[selectedTip].advice} »
-                     </p>
-                   </div>
-                 </div>
-               </motion.div>
-             </AnimatePresence>
-          </div>
+          
         </div>
       </div>
     </section>
@@ -254,7 +257,6 @@ export default function HomePage() {
       <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-neutral-50 relative border-b border-neutral-100">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
-          {/* IMAGE À GAUCHE */}
           <div className="w-full lg:w-[45%] relative">
             <div className="blob-shape bg-white shadow-2xl max-w-[420px] w-full mx-auto overflow-hidden relative border-[12px] border-white">
               <Image 
@@ -268,7 +270,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* TEXTE À DROITE */}
           <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -322,7 +323,6 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
             
-            {/* Colonne Texte (À GAUCHE) */}
             <div className="w-full lg:w-[25%] lg:sticky lg:top-32 h-fit space-y-10 text-left">
               <span className="text-xs font-sans font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu Signature</span>
               <h2 className="text-5xl md:text-7xl font-bold text-neutral-900 tracking-tight font-serif leading-none">Soins.</h2>
@@ -337,7 +337,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Grille de Cartes (À DROITE) */}
             <div className="w-full lg:w-[75%] grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 pb-12">
               {SERVICES_DISPLAY.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
@@ -348,7 +347,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN INTERACTIF */}
+      {/* RITUEL POST-SOIN INTERACTIF - CARTE À GAUCHE, TEXTE À DROITE */}
       <AftercareSection />
 
       {/* FOOTER - NOIR COMPACT */}
@@ -381,7 +380,9 @@ export default function HomePage() {
               <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Social</span>
               <div className="flex justify-center gap-6 text-neutral-400">
                 <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
-                <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
+                <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
+                </a>
                 <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
               </div>
             </div>
@@ -397,4 +398,3 @@ export default function HomePage() {
     </div>
   );
 }
-
