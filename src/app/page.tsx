@@ -234,22 +234,31 @@ export default function HomePage() {
           </div>
 
           <div className="relative">
-            <div className="absolute top-0 left-0 w-full h-px bg-neutral-100" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-16">
+            {/* LIGNE DE TEMPS DÉCORATIVE */}
+            <div className="hidden lg:block absolute top-[5.5rem] left-0 w-full h-[1px] bg-neutral-100" />
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16">
               {RITUAL_STEPS.map((step, i) => (
                 <motion.div 
                   key={i}
-                  initial={{ opacity: 0, y: 15 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="pt-12 pr-8 group"
+                  transition={{ delay: i * 0.1, duration: 0.8 }}
+                  className="relative group"
                 >
-                  <div className="flex flex-col space-y-8">
-                    <span className="text-xl font-bold text-neutral-200 group-hover:text-neutral-900 transition-colors duration-500 font-serif italic">0{i+1}</span>
-                    <div className="space-y-4">
-                      <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-900">{step.title}</h4>
-                      <p className="text-base text-neutral-400 font-medium leading-relaxed italic group-hover:text-neutral-600 transition-colors">
+                  <div className="flex flex-col items-start">
+                    {/* NUMÉRO CURSIF ÉLÉGANT */}
+                    <span className="text-6xl md:text-7xl font-cursive text-neutral-100 group-hover:text-neutral-900 transition-colors duration-700 leading-none mb-4 -ml-4">
+                      {i + 1}
+                    </span>
+                    
+                    <div className="space-y-4 pt-4 border-t border-neutral-100 lg:border-t-0 w-full">
+                      <h4 className="text-lg font-bold uppercase tracking-widest text-neutral-900 flex items-center gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-neutral-900" />
+                        {step.title}
+                      </h4>
+                      <p className="text-base text-neutral-500 font-medium leading-relaxed italic group-hover:text-neutral-900 transition-colors">
                         {step.desc}
                       </p>
                     </div>
@@ -257,6 +266,10 @@ export default function HomePage() {
                 </motion.div>
               ))}
             </div>
+          </div>
+          
+          <div className="mt-24 pt-12 border-t border-neutral-50 text-center">
+             <p className="font-cursive text-3xl text-neutral-300">João Thérapeute</p>
           </div>
         </div>
       </section>
