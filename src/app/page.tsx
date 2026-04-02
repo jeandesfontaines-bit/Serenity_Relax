@@ -41,7 +41,7 @@ export default function HomePage() {
       <Navbar />
 
       <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-40 md:pb-24 overflow-hidden">
-        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-4 items-center relative z-20">
+        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-2 items-center relative z-20">
           <motion.div 
             initial={{ opacity: 0, y: 10 }} 
             animate={{ opacity: 1, y: 0 }} 
@@ -78,9 +78,9 @@ export default function HomePage() {
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ duration: 1, delay: 0.2 }}
-            className="relative flex justify-center lg:justify-end lg:-ml-16"
+            className="relative flex justify-center lg:justify-end lg:-ml-12"
           >
-            <div className="blob-shape relative aspect-square w-full max-w-[300px] md:max-w-[440px] shadow-2xl border-[6px] md:border-[8px] border-white/20 animate-float">
+            <div className="blob-shape relative aspect-square w-full max-w-[260px] md:max-w-[440px] shadow-2xl border-[6px] md:border-[8px] border-white/20 animate-float">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 alt="João" 
@@ -106,19 +106,19 @@ export default function HomePage() {
           </p>
         </div>
         
-        <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x px-6 max-w-6xl mx-auto pb-12">
+        <div className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide snap-x px-6 max-w-6xl mx-auto pb-12">
           {SERVICES.map((service, i) => (
             <Link 
               key={service.id}
               href={`/booking?serviceId=${service.id}`}
-              className="flex-shrink-0 w-[65vw] sm:w-[240px] md:w-[280px] snap-center relative aspect-[3/4] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden group shadow-xl transition-all"
+              className="flex-shrink-0 w-[42vw] sm:w-[220px] md:w-[280px] snap-center relative aspect-[4/5] md:aspect-[3/4] rounded-[1.2rem] md:rounded-[3rem] overflow-hidden group shadow-xl transition-all"
             >
               <Image src={`https://picsum.photos/seed/${service.id}/800/1000`} fill className="object-cover grayscale-[20%] transition-all duration-1000" alt={service.name} />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
-                <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-white/60 mb-1 md:mb-2 block">Expérience 0{i+1}</span>
-                <h3 className="text-base md:text-xl font-serif text-white font-medium leading-tight mb-2 md:mb-3">{service.name.split(' - ')[0]}</h3>
-                <p className="text-[8px] md:text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
+              <div className="absolute bottom-4 left-4 right-4 md:bottom-10 md:left-8 md:right-8">
+                <span className="text-[7px] md:text-[9px] font-bold uppercase tracking-widest text-white/60 mb-1 md:mb-2 block">Expérience 0{i+1}</span>
+                <h3 className="text-xs md:text-xl font-serif text-white font-medium leading-tight mb-1 md:mb-3">{service.name.split(' - ')[0]}</h3>
+                <p className="text-[7px] md:text-[9px] text-white/80 font-bold uppercase tracking-widest">CHF {service.price} • {service.duration}</p>
               </div>
             </Link>
           ))}
@@ -144,22 +144,22 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {WELLNESS_TIPS.map((tip, idx) => (
               <div 
                 key={tip.id} 
-                className={`group bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border border-black/[0.02] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col items-start ${idx === 6 ? 'lg:col-span-3 lg:flex-row lg:items-center lg:gap-12' : ''}`}
+                className={`group bg-white p-4 md:p-10 rounded-[1.2rem] md:rounded-[2.5rem] border border-black/[0.02] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col items-start ${idx === 6 ? 'lg:col-span-3 lg:flex-row lg:items-center lg:gap-12' : ''}`}
               >
-                <div className="flex items-center justify-between w-full mb-5 lg:mb-0 lg:w-auto">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-primary/10 group-hover:text-primary/40 transition-colors">
-                    <tip.icon size={20} className="md:size-[24px]" />
+                <div className="flex items-center justify-between w-full mb-4 md:mb-5 lg:mb-0 lg:w-auto">
+                  <div className="w-8 h-8 md:w-12 md:h-12 rounded-xl bg-slate-50 flex items-center justify-center text-primary/10 group-hover:text-primary/40 transition-colors">
+                    <tip.icon size={16} className="md:size-[24px]" />
                   </div>
-                  <span className="editorial-number !text-3xl md:!text-4xl !opacity-20 group-hover:!opacity-40 transition-opacity">0{tip.id}</span>
+                  <span className="editorial-number !text-2xl md:!text-4xl !opacity-20 group-hover:!opacity-40 transition-opacity">0{tip.id}</span>
                 </div>
                 
                 <div className="flex-1">
-                  <h3 className="text-lg md:text-xl font-serif font-medium text-primary mb-3 md:mb-4 tracking-tight">{tip.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed italic">
+                  <h3 className="text-base md:text-xl font-serif font-medium text-primary mb-2 md:mb-4 tracking-tight">{tip.title}</h3>
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic">
                     {tip.text}
                   </p>
                 </div>
