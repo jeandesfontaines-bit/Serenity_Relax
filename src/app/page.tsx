@@ -30,7 +30,7 @@ const ServiceCard = ({ s }: { s: any }) => (
     viewport={{ once: true }}
     className="relative w-full max-w-[250px] rounded-[2.5rem] bg-white overflow-hidden group shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-all duration-700 hover:-translate-y-2 hover:shadow-2xl"
   >
-    <div className="relative aspect-[3/4] overflow-hidden m-4 rounded-[2rem]">
+    <div className="relative aspect-square overflow-hidden m-4 rounded-[2rem]">
       <Image 
         src={s.image} 
         fill
