@@ -41,14 +41,14 @@ export default function HomePage() {
       <Navbar />
 
       <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-40 md:pb-24 overflow-hidden">
-        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-2 items-center relative z-20">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-4 items-center relative z-20">
+          <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6">
               <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
               <span className="text-[9px] uppercase tracking-[0.3em] font-black text-muted-foreground">Genève Cointrin</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-7xl leading-[1.1] font-serif font-bold text-primary mb-6 tracking-tighter">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl leading-[1.1] font-serif font-bold text-primary mb-6 tracking-tight">
               Massage sur <span className="italic font-medium">mesure.</span>
             </h1>
             
@@ -74,9 +74,9 @@ export default function HomePage() {
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ duration: 1 }}
-            className="relative flex justify-center lg:justify-end animate-float"
+            className="relative flex justify-center lg:justify-end"
           >
-            <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[440px] shadow-2xl border-[6px] md:border-[8px] border-white/20">
+            <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[440px] shadow-2xl border-[6px] md:border-[8px] border-white/20 animate-float">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 alt="João" 
@@ -95,7 +95,7 @@ export default function HomePage() {
             <div className="h-0.5 w-10 bg-primary"></div>
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">L'Art du Toucher</span>
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter mt-4">Techniques & <span className="italic font-medium">Expériences</span></h2>
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mt-4">Techniques & <span className="italic font-medium">Expériences</span></h2>
           <p className="mt-8 text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed italic">
             Une approche professionnelle, attentive et respectueuse. Vous restez couvert selon vos préférences, dans le respect total de votre confort et de votre intimité.
           </p>
@@ -133,7 +133,7 @@ export default function HomePage() {
               <Sparkles className="h-3 w-3 text-amber-500" />
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Bon à savoir</span>
             </div>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6">7 conseils pour prolonger les bienfaits</h2>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">7 conseils pour prolonger les bienfaits</h2>
             <p className="text-muted-foreground font-normal max-w-lg mx-auto leading-relaxed italic">
               Quelques gestes essentiels pour accueillir pleinement les effets de votre soin dans les heures qui suivent.
             </p>
@@ -163,7 +163,7 @@ export default function HomePage() {
       <footer className="py-20 px-6 bg-primary text-white">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
           <div className="space-y-6">
-            <h2 className="font-serif text-xl font-bold tracking-[0.2em] uppercase leading-none">
+            <h2 className="font-sans font-bold text-sm tracking-[0.2em] uppercase leading-none">
               SERENITY RELAX <span className="font-cursive text-[28px] text-white/40 tracking-normal inline-block normal-case ml-2">by João</span>
             </h2>
             <p className="text-white/40 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs">
