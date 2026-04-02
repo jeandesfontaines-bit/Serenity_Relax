@@ -4,7 +4,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
-  Instagram, Linkedin, CheckCircle2, ArrowRight
+  Instagram, Linkedin, CheckCircle2, ArrowRight, MessageCircle
 } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -120,7 +120,6 @@ export default function HomePage() {
       <section className="relative pt-32 md:pt-44 pb-24 px-6 md:px-12 bg-neutral-50">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
-            {/* PORTRAIT BLOB RÉDUIT ET STATIQUE */}
             <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-w-[320px] md:max-w-[420px] w-full mx-auto overflow-hidden">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
@@ -274,45 +273,52 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="bg-[#0a0a0a] text-white py-20 px-6 md:px-12">
+      <footer className="bg-[#0a0a0a] text-white pt-24 pb-12 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 items-start">
-            <div className="col-span-1">
-              <Link href="/" className="flex flex-col">
-                <span className="text-xs font-bold tracking-[0.4em] uppercase">Serenity Relax</span>
-                <span className="text-[10px] text-neutral-600 font-bold tracking-[0.2em] uppercase mt-1">Studio Genève Cointrin</span>
-              </Link>
+          {/* HEADER DU FOOTER */}
+          <div className="text-center mb-24">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-[0.5em] uppercase mb-4">Serenity Relax</h2>
+            <p className="text-[10px] md:text-xs font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
+          </div>
+
+          {/* COLONNES D'INFORMATIONS */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center mb-24">
+            <div className="space-y-8">
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Localisation</span>
+              <div className="space-y-2 text-sm md:text-base font-medium text-neutral-400">
+                <p>Alfa Business Center</p>
+                <p>Chemin de Joinville 26, 4ème étage</p>
+                <p>1216 Cointrin - Genève</p>
+              </div>
             </div>
             
-            <div className="space-y-5">
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-neutral-700 block">Adresse</span>
-              <p className="text-sm font-medium text-neutral-400 leading-relaxed">
-                Joinville 26, 1216 Cointrin
-              </p>
+            <div className="space-y-8">
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Contact</span>
+              <div className="space-y-2 text-sm md:text-base font-medium text-neutral-400">
+                <p>+41 78 333 68 23</p>
+                <p>serenityrelaxtherapy@gmail.com</p>
+              </div>
             </div>
 
-            <div className="space-y-5">
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-neutral-700 block">Contact</span>
-              <p className="text-sm font-medium text-neutral-400 leading-relaxed">
-                +41 78 333 68 23
-              </p>
-            </div>
-
-            <div className="flex sm:justify-end gap-8 text-neutral-600">
-              <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
-              <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
+            <div className="space-y-8">
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Social</span>
+              <div className="flex justify-center gap-8 text-neutral-400">
+                <Instagram size={20} className="hover:text-white transition-colors cursor-pointer" />
+                <MessageCircle size={20} className="hover:text-white transition-colors cursor-pointer" />
+                <Linkedin size={20} className="hover:text-white transition-colors cursor-pointer" />
+              </div>
             </div>
           </div>
           
-          <div className="mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-            <p className="text-[10px] font-bold text-neutral-700 uppercase tracking-widest">© 2024 Serenity & Relax Therapy</p>
-            <div className="flex gap-10">
-               <span className="text-[10px] font-bold text-neutral-700 uppercase tracking-widest cursor-pointer hover:text-white transition-colors">Mentions Légales</span>
-               <span className="text-[10px] font-bold text-neutral-700 uppercase tracking-widest cursor-pointer hover:text-white transition-colors">Confidentialité</span>
-            </div>
+          {/* COPYRIGHT */}
+          <div className="pt-12 border-t border-white/5 text-center">
+            <p className="text-[9px] font-bold text-neutral-700 uppercase tracking-[0.4em]">
+              © 2025 Serenity & Relax Therapy — Tous droits réservés
+            </p>
           </div>
         </div>
       </footer>
     </div>
   );
 }
+
