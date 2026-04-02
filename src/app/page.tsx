@@ -9,7 +9,7 @@ import {
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 
-// --- IMPORTS DES IMAGES PERSONNALISÉES ---
+// --- IMPORTS DES IMAGES ---
 import bambooImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
 import lymphImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (1).png';
 import aromaImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
@@ -105,13 +105,6 @@ const AFTERCARE_TIPS = [
   },
   { 
     id: "03",
-    title: "Nutrition", 
-    desc: "Ne mobilisez pas votre énergie vers la digestion, mais vers la régénération.",
-    advice: "Repas léger et chaud.",
-    icon: Leaf
-  },
-  { 
-    id: "04",
     title: "Écoute", 
     desc: "Vos fascias retrouvent leur liberté. Soyez à l'écoute de vos sensations.",
     advice: "Douche tiède apaisante.",
@@ -280,7 +273,7 @@ export default function HomePage() {
       </section>
 
       {/* RITUEL POST-SOIN - STYLE ÉDITORIAL */}
-      <section className="pt-24 md:pt-40 pb-12 md:pb-16 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
+      <section className="pt-24 pb-12 md:pb-16 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-20 md:mb-24 text-center md:text-right">
             <div className="hidden md:block h-[1px] flex-1 bg-neutral-100 mb-8 mr-12" />
@@ -290,7 +283,7 @@ export default function HomePage() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-0 border-t border-neutral-100">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-neutral-100">
             {AFTERCARE_TIPS.map((tip, idx) => (
               <div 
                 key={tip.id} 
@@ -324,18 +317,18 @@ export default function HomePage() {
 
       {/* FOOTER */}
       <footer className="bg-[#0a0a0a] text-white py-16 px-6 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 md:gap-6">
-          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 md:gap-6 text-center md:text-left">
+          <div className="flex flex-col items-center md:items-start">
             <div className="font-sans font-bold text-sm tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
             <p className="text-[10px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-2">Excellence Thérapeutique</p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 text-[11px] font-sans font-medium text-neutral-400 text-center">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12 text-[11px] font-sans font-medium text-neutral-400">
             <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Localisation</span> Alpha Business Center • Genève</p>
             <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Contact</span> +41 78 333 68 23</p>
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8 justify-center">
             <Instagram size={16} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
             <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
               <MessageCircle size={16} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
