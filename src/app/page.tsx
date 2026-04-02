@@ -47,7 +47,7 @@ const ServiceCard = ({ s }: { s: any }) => (
       />
     </div>
 
-    <div className="px-2 pb-8 space-y-3">
+    <div className="px-2 pb-12 space-y-3">
       <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
         {s.tag}
       </span>
@@ -179,7 +179,7 @@ export default function HomePage() {
                     <span className="text-[11px] font-sans font-black text-neutral-200 uppercase tracking-widest mt-2">0{i+1}</span>
                     <div className="space-y-6">
                       <h4 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">{f.q}</h4>
-                      <p className="text-neutral-500 font-sans font-light leading-relaxed italic border-l-2 border-neutral-50 pl-8 max-w-xl">
+                      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed border-l-2 border-neutral-50 pl-8 max-w-xl">
                         {f.a}
                       </p>
                     </div>
@@ -218,8 +218,12 @@ export default function HomePage() {
             <div className="space-y-6">
               <h3 className="text-[10px] font-sans font-black text-white/30 uppercase tracking-[0.3em]">SOCIAL</h3>
               <div className="flex items-center justify-center gap-8">
-                <Instagram size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
-                <Linkedin size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                  <Instagram size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                  <Linkedin size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
+                </a>
               </div>
             </div>
           </div>
