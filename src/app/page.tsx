@@ -51,46 +51,22 @@ const SERVICES_DISPLAY = [
 ];
 
 const BENEFITS = [
-  { title: "Douleurs", desc: "Apaise les tensions, réduit les raideurs dorsales et cervicales." },
-  { title: "Mobilité", desc: "Assouplit les muscles et améliore durablement la posture." },
-  { title: "Vitalité", desc: "Stimule la circulation et accélère la récupération naturelle." },
-  { title: "Peau", desc: "Adoucit et revitalise l'épiderme par le pétrissage précis." },
-  { title: "Énergie", desc: "Approfondit la respiration et redonne un équilibre global." },
-  { title: "Harmonie", desc: "Réduit le stress pour une sensation durable de bien-être." }
+  { title: "Soulagement des douleurs", desc: "Apaise les tensions musculaires, réduit les raideurs et atténue les douleurs dorsales, cervicales ou articulaires." },
+  { title: "Souplesse et mobilité", desc: "Assouplit les muscles, améliore la posture et prévient les inconforts chroniques." },
+  { title: "Circulation et vitalité", desc: "Stimule la circulation sanguine et lymphatique, favorise l’élimination des toxines et accélère la récupération naturelle." },
+  { title: "Beauté et peau", desc: "Adoucit et revitalise la peau, tout en améliorant son aspect grâce aux mouvements de friction et de pétrissage." },
+  { title: "Respiration et énergie", desc: "Apaise le mental, approfondit la respiration et redonne énergie et équilibre." },
+  { title: "Bien-être émotionnel", desc: "Réduit le stress, favorise la relaxation profonde et procure une sensation durable d’harmonie." }
 ];
 
 const RITUAL_STEPS = [
   { title: "Émotions", desc: "Accueillez vos ressentis." },
-  { title: "Temps", desc: "Restez allongé 5 min." },
   { title: "Eau", desc: "Éliminez les toxines." },
   { title: "Huiles", desc: "Laissez agir 1h." },
   { title: "Repos", desc: "Prolongez le calme." },
   { title: "Suivi", desc: "Prévoyez le prochain soin." },
   { title: "Douceur", desc: "Activités calmes." }
 ];
-
-const GlobalStyle = () => (
-  <style>{`
-    :root {
-      --primary: #0a0a0a;
-      --bg-bone: #F8F8F5;
-    }
-
-    .soft-shadow {
-      box-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.05);
-    }
-    
-    .overline {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.3em;
-      color: #A3A3A3;
-      display: block;
-      margin-bottom: 1rem;
-    }
-  `}</style>
-);
 
 const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggered: boolean }) => {
   const cardRef = useRef(null);
@@ -104,7 +80,7 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className={`w-full aspect-[4/5] bg-white rounded-2xl flex flex-col overflow-hidden relative group border border-neutral-100 soft-shadow hover:shadow-2xl transition-all duration-700 ${staggered ? 'md:mt-16' : ''}`}
+      className={`w-full aspect-[4/5.5] bg-white rounded-2xl flex flex-col overflow-hidden relative group border border-neutral-100 soft-shadow hover:shadow-2xl transition-all duration-700 ${staggered ? 'md:mt-16' : ''}`}
     >
       <div className="relative h-[55%] w-full overflow-hidden bg-neutral-50">
         <motion.div style={{ y: yImage }} className="absolute inset-0 w-full h-[120%]">
@@ -122,8 +98,8 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
       </div>
       <div className="flex-1 p-6 md:p-8 flex flex-col justify-between">
         <div className="space-y-3">
-          <h3 className="text-xl md:text-2xl font-bold tracking-tight text-neutral-900 leading-tight">{s.name}</h3>
-          <p className="text-neutral-500 text-sm md:text-base font-medium leading-relaxed italic">{s.desc}</p>
+          <h3 className="text-xl font-bold tracking-tight text-neutral-900 leading-tight">{s.name}</h3>
+          <p className="text-neutral-500 text-sm font-medium leading-relaxed italic">{s.desc}</p>
         </div>
         <div className="pt-5 flex items-center justify-between border-t border-neutral-100">
           <div className="flex items-center gap-1.5">
@@ -150,11 +126,10 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <GlobalStyle />
       <Navbar />
       
       {/* HEADER INFO COMPACT */}
-      <div className="hidden lg:flex fixed top-10 right-32 z-[101] items-center gap-5 text-xs font-bold tracking-[0.3em] text-neutral-400 pointer-events-none">
+      <div className="hidden lg:flex fixed top-10 right-32 z-[101] items-center gap-5 text-xs font-bold tracking-[0.3em] text-neutral-400 pointer-events-none uppercase">
         {time} • CH / GENEVA
       </div>
 
@@ -173,20 +148,20 @@ export default function HomePage() {
               />
             </div>
             <div className="flex flex-col text-left">
-              <span className="overline">À propos de moi</span>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-neutral-900 mb-8 tracking-tight leading-[1.1]">
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">À propos de moi</span>
+              <h1 className="text-4xl md:text-6xl font-bold text-neutral-900 mb-8 tracking-tight leading-[1.1]">
                 L'équilibre <br className="hidden md:block"/>
                 <span className="text-neutral-300 font-light italic">par le toucher.</span>
               </h1>
-              <div className="space-y-8 text-neutral-600 font-medium leading-relaxed text-base md:text-lg">
+              <div className="space-y-6 text-neutral-600 font-medium leading-relaxed text-base md:text-lg">
                 <p className="text-neutral-900 text-xl md:text-2xl font-bold italic border-l-4 border-neutral-900 pl-8 py-2">
                   "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
                 </p>
                 <p>
-                  Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie personnalisés pour améliorer votre qualité de vie.
+                  Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Je suis passionné par le bien-être global et mon travail consiste à offrir des services de massothérapie personnalisés pour améliorer votre qualité de vie.
                 </p>
                 <p>
-                  J'utilise des techniques variées et dédiées, comme le Massage Classique, Relaxant et Thérapeutique, pour apaiser votre corps et revitaliser votre esprit.
+                  J'utilise des techniques variées et dédiées, comme le Massage Classique, Relaxant et Thérapeutique, pour apaiser votre corps et revitaliser votre esprit, créant ainsi une harmonie parfaite.
                 </p>
                 <div className="pt-8">
                   <Link href="/booking" className="inline-flex items-center gap-5 text-sm font-bold uppercase tracking-[0.3em] text-neutral-900 group">
@@ -204,14 +179,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20 mb-20 md:mb-32 items-end">
             <div className="lg:col-span-8 flex flex-col text-left">
-              <span className="overline">Expertise Thérapeutique</span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 tracking-tight leading-tight">
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Expertise Thérapeutique</span>
+              <h2 className="text-4xl md:text-6xl font-bold text-neutral-900 tracking-tight leading-tight">
                 Les bienfaits du Massage <br className="hidden md:block"/>sur le corps
               </h2>
             </div>
             <div className="lg:col-span-4 border-l-0 lg:border-l-2 border-neutral-100 pl-0 lg:pl-10 mt-8 lg:mt-0">
               <p className="text-neutral-500 text-sm md:text-base font-medium leading-relaxed italic">
-                Le massage est un soin complet qui agit à la fois sur le corps et l’esprit, favorisant l’équilibre naturel de l’organisme.
+                Le massage est bien plus qu’un moment de détente : c’est un soin complet qui agit à la fois sur le corps et l’esprit.
               </p>
             </div>
           </div>
@@ -232,7 +207,7 @@ export default function HomePage() {
                   </div>
                   <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-900">{b.title}</h4>
                 </div>
-                <p className="text-neutral-500 text-sm md:text-base font-medium leading-relaxed group-hover:text-neutral-800 transition-colors">
+                <p className="text-neutral-500 text-sm font-medium leading-relaxed group-hover:text-neutral-800 transition-colors">
                   {b.desc}
                 </p>
               </motion.div>
@@ -242,11 +217,11 @@ export default function HomePage() {
       </section>
 
       {/* CATALOGUE DES SOINS */}
-      <section className="py-24 md:py-40 px-6 md:px-12 bg-[#F8F8F5] border-y border-neutral-100">
+      <section className="py-24 md:py-40 px-6 md:px-12 bg-neutral-50 border-y border-neutral-100">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 md:gap-24">
             <div className="w-full lg:w-[25%] lg:sticky lg:top-40 h-fit space-y-8 text-left">
-              <span className="overline">Menu de Soins</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu de Soins</span>
               <h2 className="text-4xl md:text-6xl font-bold text-neutral-900 tracking-tight">Soins.</h2>
               <div className="h-1 w-12 bg-neutral-900" />
               <p className="text-xs text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
@@ -271,13 +246,13 @@ export default function HomePage() {
       <section className="py-24 md:py-40 px-6 md:px-12 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 md:mb-32 flex flex-col text-left">
-             <span className="overline">Immersion Continue</span>
-             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 tracking-tight">Le Rituel post-soin</h2>
+             <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Immersion Continue</span>
+             <h2 className="text-4xl md:text-6xl font-bold text-neutral-900 tracking-tight">Le Rituel post-soin</h2>
           </div>
 
           <div className="relative">
-            <div className="absolute top-0 left-0 w-full h-0.5 bg-neutral-100" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-y-16 gap-x-10">
+            <div className="absolute top-0 left-0 w-full h-px bg-neutral-100" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-16 gap-x-10">
               {RITUAL_STEPS.map((step, i) => (
                 <motion.div 
                   key={i}
@@ -303,7 +278,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER NOIR COMPACT */}
+      {/* FOOTER */}
       <footer className="bg-[#0a0a0a] text-white py-20 md:py-32 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 items-start">
