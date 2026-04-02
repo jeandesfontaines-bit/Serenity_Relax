@@ -2,9 +2,9 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle, Clock, Plus
+  Instagram, Linkedin, ArrowRight, MessageCircle, Clock, Plus, Minus, Calendar
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -23,6 +23,13 @@ const SERVICES = [
   { id: "08", name: "Massage Thaï", duration: "60 min", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale." }
 ];
 
+const FAQS = [
+  { q: "Les soins sont-ils remboursés ?", a: "Oui, je suis agréé ASCA & RME. Veuillez vérifier auprès de votre assurance complémentaire pour connaître vos modalités de remboursement." },
+  { q: "Où se situe le cabinet ?", a: "Le cabinet se trouve à Cointrin, au Alfa Business Center, Chemin de Joinville 26. Il est situé au 4ème étage avec ascenseur." },
+  { q: "Proposez-vous des massages à domicile ?", a: "Oui, je propose des séances à domicile sur demande et selon mes disponibilités dans la région genevoise. Un supplément peut s'appliquer." },
+  { q: "Quelle est votre politique d'annulation ?", a: "Toute annulation ou modification de rendez-vous doit être effectuée au moins 24 heures à l'avance. En cas de délai non respecté, la séance pourra être facturée." }
+];
+
 const ServiceCard = ({ s }: { s: any }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
@@ -38,17 +45,15 @@ const ServiceCard = ({ s }: { s: any }) => (
         className="object-cover transition-transform duration-1000 group-hover:scale-110" 
         alt={s.name}
       />
-      <div className="absolute top-4 left-4">
-        <span className="text-[8px] font-sans font-black uppercase tracking-[0.3em] text-white bg-black px-3 py-1 rounded-full">
-          {s.tag}
-        </span>
-      </div>
     </div>
 
     <div className="px-6 pb-8 pt-2 space-y-4">
-      <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
-        {s.name}
-      </h3>
+      <div>
+        <span className="text-[8px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-2">{s.tag}</span>
+        <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
+          {s.name}
+        </h3>
+      </div>
 
       <p className="text-[12px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
         {s.desc}
@@ -74,6 +79,7 @@ export default function HomePage() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const [isMounted, setIsMounted] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -127,7 +133,7 @@ export default function HomePage() {
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
                 <Link href="/booking" className="inline-flex items-center gap-3 group">
-                  <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Découvrir les rituels</span>
+                  <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Réserver un soin</span>
                   <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
@@ -143,10 +149,10 @@ export default function HomePage() {
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start text-center lg:text-left">
               <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Menu Signature</span>
               <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
-                Soins <br className="hidden lg:block"/> <span className="text-neutral-500 italic font-light">Exclusifs.</span>
+                Soins <br className="hidden lg:block"/> <span className="text-neutral-500 italic font-light">sur mesure.</span>
               </h2>
               <p className="text-neutral-600 text-base font-sans font-medium leading-relaxed italic mb-12 max-w-sm">
-                Une sélection exclusive conçue pour votre équilibre interne. Agréé ASCA & RME.
+                Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
               <Link href="/booking" className="inline-flex items-center gap-3 group">
                 <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Réserver un soin</span>
@@ -168,6 +174,46 @@ export default function HomePage() {
                   ))}
                </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION FAQ */}
+      <section className="py-32 px-6 md:px-12 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-400 block mb-4">Questions fréquentes</span>
+            <h3 className="text-4xl md:text-5xl font-serif font-bold tracking-tighter text-neutral-900 uppercase">FAQ.</h3>
+          </div>
+          
+          <div className="space-y-4">
+            {FAQS.map((f, i) => (
+              <div key={i} className="bg-[#FDFCFB] rounded-[2rem] border border-neutral-100 overflow-hidden hover:border-neutral-200 transition-all">
+                <button 
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full p-8 flex items-center justify-between text-left group"
+                >
+                  <span className="font-serif font-bold text-lg md:text-xl tracking-tight text-neutral-900">{f.q}</span>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${openFaq === i ? 'bg-neutral-900 text-white rotate-180' : 'bg-white shadow-sm'}`}>
+                    {openFaq === i ? <Minus size={18} /> : <Plus size={18} />}
+                  </div>
+                </button>
+                <AnimatePresence>
+                  {openFaq === i && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                    >
+                      <div className="px-8 pb-8 text-neutral-500 font-sans font-light leading-relaxed border-t border-neutral-50 pt-6 italic">
+                        {f.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
           </div>
         </div>
       </section>
