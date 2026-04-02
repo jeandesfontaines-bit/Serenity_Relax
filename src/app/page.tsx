@@ -81,48 +81,43 @@ const ServiceCard = ({ s, index }: { s: any, index: number }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       whileHover={{ y: isStaggered ? 44 : -12 }}
-      className={`relative w-full aspect-[3/4.2] rounded-[2.5rem] bg-neutral-900 overflow-hidden group shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-700
+      className={`relative w-full rounded-[2.5rem] bg-white overflow-hidden group shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-all duration-700
         ${isStaggered ? 'md:mt-24' : ''}`}
     >
-      <Image 
-        src={s.image} 
-        fill
-        unoptimized
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0" 
-        alt={s.name}
-      />
-      
-      {/* Overlay dégradé */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-
-      {/* Contenu */}
-      <div className="absolute inset-0 z-20 p-10 flex flex-col justify-between text-left">
-        <div>
-          <span className="text-[9px] font-sans font-black uppercase tracking-[0.3em] text-white/50 border-b border-white/10 pb-1">
+      <div className="relative aspect-[4/5] overflow-hidden m-4 rounded-[2rem]">
+        <Image 
+          src={s.image} 
+          fill
+          unoptimized
+          className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+          alt={s.name}
+        />
+        <div className="absolute top-6 left-6">
+          <span className="text-[9px] font-sans font-black uppercase tracking-[0.3em] text-white/90 bg-black/20 backdrop-blur-md px-4 py-1.5 rounded-full">
             {s.tag}
           </span>
         </div>
-        
-        <div className="space-y-4">
-          <h3 className="text-2xl md:text-3xl font-serif font-medium text-white tracking-tight leading-tight">
-            {s.name}
-          </h3>
+      </div>
 
-          <p className="text-[13px] text-white/60 font-sans font-medium leading-relaxed line-clamp-2">
-            {s.desc}
-          </p>
+      <div className="p-10 pt-4 space-y-6">
+        <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
+          {s.name}
+        </h3>
 
-          <div className="flex justify-between items-center pt-6 border-t border-white/5">
-            <div className="flex items-center gap-3">
-              <Clock size={12} className="text-white/30" />
-              <span className="text-[10px] font-sans font-black uppercase tracking-widest text-white/40">
-                {s.duration}
-              </span>
-            </div>
-            
-            <div className="text-white/30 group-hover:text-white transition-colors">
-              <Plus size={18} strokeWidth={2.5} />
-            </div>
+        <p className="text-[13px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
+          {s.desc}
+        </p>
+
+        <div className="flex justify-between items-center pt-6 border-t border-neutral-50">
+          <div className="flex items-center gap-3">
+            <Clock size={12} className="text-neutral-300" />
+            <span className="text-[10px] font-sans font-black uppercase tracking-widest text-neutral-300">
+              {s.duration}
+            </span>
+          </div>
+          
+          <div className="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-500">
+            <Plus size={16} strokeWidth={2.5} />
           </div>
         </div>
       </div>
@@ -230,7 +225,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
             
-            <div className="w-full lg:w-[68%] space-y-0 border-t border-neutral-100">
+            <div className="w-full lg:w-[72%] space-y-0 border-t border-neutral-100">
                {AFTERCARE_TIPS.map((tip) => (
                 <div key={tip.id} className="group py-20 px-0 border-b border-neutral-100 flex flex-col md:flex-row items-start md:items-center gap-16 transition-all duration-700 hover:bg-neutral-50/30">
                   <div className="flex items-center gap-12 min-w-[140px]">
@@ -245,7 +240,7 @@ export default function HomePage() {
                       {tip.title}
                     </h4>
                     <div className="space-y-6">
-                      <p className="text-neutral-900 text-2xl md:text-3xl font-serif font-medium leading-tight">
+                      <p className="text-neutral-900 text-2xl font-serif font-medium leading-tight">
                         {tip.advice}
                       </p>
                       <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed max-w-2xl">
@@ -257,7 +252,7 @@ export default function HomePage() {
               ))}
             </div>
 
-            <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
               <OverTitle className="mb-2 lg:text-right">Rituel Post-Séance</OverTitle>
               <SectionTitle main="Prolonger" italic="l'état de grâce." className="lg:text-right" />
               <div className="h-[2px] w-12 bg-neutral-900 my-10 mx-auto lg:mr-0 lg:ml-auto" />
