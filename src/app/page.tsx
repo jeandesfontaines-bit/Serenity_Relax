@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  LayoutDashboard, Menu, X, Brain, Instagram, MessageCircle, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, MapPin, Clock, Heart, Droplets, Wind, Calendar, ShieldCheck
+  LayoutDashboard, Menu, X, Instagram, LogOut, ArrowRight, Leaf, User, Coffee, Sparkles, Clock, Heart, Wind, Calendar
 } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
@@ -68,7 +68,7 @@ export default function HomePage() {
       </nav>
 
       <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-48 md:pb-32 overflow-hidden">
-        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 items-center relative z-20">
+        <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-4 items-center relative z-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6">
               <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
@@ -101,7 +101,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ duration: 1.5 }}
-            className="relative flex justify-center lg:justify-end"
+            className="relative flex justify-center lg:justify-end animate-float"
           >
             <div className="blob-shape relative aspect-square w-full max-w-[340px] md:max-w-[420px] shadow-2xl border-[6px] md:border-[8px] border-white/20">
               <Image 
@@ -210,8 +210,8 @@ export default function HomePage() {
             <div className="space-y-4">
               <h3 className="text-[9px] font-bold tracking-widest uppercase text-white/20">Horaires</h3>
               <p className="text-xs text-white/70 font-medium leading-relaxed">
-                Lun - Ven : 8h00 – 20h00<br />
-                Sam - Dim : 9h30 – 20h00
+                Lundi au vendredi : 8h00 – 20h00<br />
+                Samedi et dimanche : 9h30 – 20h00
               </p>
             </div>
           </div>

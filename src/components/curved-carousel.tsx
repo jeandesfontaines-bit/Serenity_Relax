@@ -110,7 +110,7 @@ export function CurvedCarousel() {
                   src={art.image.imageUrl}
                   alt={art.displayName}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover transition-transform duration-700"
                   data-ai-hint={art.image.imageHint}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
