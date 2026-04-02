@@ -77,9 +77,9 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className={`group w-full max-w-[340px] aspect-[4/5] md:aspect-[3/4] bg-white rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 mx-auto lg:mx-0 ${staggered ? 'lg:mt-8 xl:mt-12' : ''}`}
+    className={`group w-full max-w-[250px] aspect-[2/3] bg-white rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 mx-auto lg:mx-0 ${staggered ? 'lg:mt-12 xl:mt-16' : ''}`}
   >
-    <div className="relative h-[65%] w-full overflow-hidden bg-neutral-100">
+    <div className="relative h-[60%] w-full overflow-hidden bg-neutral-100">
       <Image 
         src={s.image} 
         fill
@@ -92,15 +92,15 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
       </div>
     </div>
     
-    <div className="flex-1 p-8 flex flex-col justify-between bg-white z-20">
-      <div className="space-y-3">
+    <div className="flex-1 p-6 flex flex-col justify-between bg-white z-20">
+      <div className="space-y-2">
         <h3 className="text-2xl font-serif font-medium tracking-[0.02em] text-neutral-900 leading-tight">{s.name}</h3>
-        <p className="text-neutral-600 text-[11px] font-sans font-medium leading-relaxed line-clamp-3">{s.desc}</p>
+        <p className="text-neutral-600 text-[10px] font-sans font-medium leading-relaxed line-clamp-3">{s.desc}</p>
       </div>
       <div className="pt-4 flex items-center justify-between border-t border-neutral-50">
         <div className="flex items-center gap-1.5">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className={`h-1 w-4 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900/70' : 'bg-neutral-100'}`} />
+            <div key={i} className={`h-1 w-3 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900/70' : 'bg-neutral-100'}`} />
           ))}
         </div>
       </div>
@@ -194,7 +194,7 @@ export default function HomePage() {
               <TextLink className="mt-4">Réserver un soin</TextLink>
             </div>
 
-            <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+            <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
               {SERVICES.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
               ))}
