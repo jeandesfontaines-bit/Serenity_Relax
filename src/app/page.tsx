@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { 
   Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle
 } from "lucide-react";
@@ -130,7 +130,7 @@ const OverTitle = ({ children, className = "" }: { children: React.ReactNode, cl
 
 const SectionTitle = ({ main, italic, className = "" }: { main: string, italic: string, className?: string }) => (
   <h2 className={`text-5xl md:text-7xl font-serif font-medium text-neutral-900 leading-[0.9] tracking-tighter ${className}`}>
-    {main} <br/> <span className="text-neutral-300 italic font-light">{italic}</span>
+    {main} <br/> <span className="text-neutral-400 italic font-light">{italic}</span>
   </h2>
 );
 
@@ -152,7 +152,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
         src={s.image} 
         fill
         unoptimized
-        className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700 ease-out [filter:contrast(0.95)_saturate(0.92)_brightness(1.05)]" 
+        className="object-cover transition-all duration-700 ease-out [filter:contrast(0.95)_saturate(0.92)_brightness(1.05)]" 
         alt={s.name}
       />
       <div className="absolute top-6 left-6 z-10">
@@ -172,7 +172,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
           ))}
         </div>
         <div className="flex flex-col items-end">
-          <span className="text-[10px] font-sans font-black text-neutral-400 tracking-widest uppercase">{s.duration}</span>
+          <span className="text-[10px] font-sans font-black text-neutral-500 tracking-widest uppercase">{s.duration}</span>
           <span className="text-[10px] font-sans font-bold text-neutral-900 mt-0.5">CHF {s.price.toFixed(2)}</span>
         </div>
       </div>
@@ -230,7 +230,7 @@ export default function HomePage() {
               <OverTitle>L'Engagement João.</OverTitle>
               <h1 className="text-6xl md:text-8xl font-serif font-bold text-neutral-900 leading-[0.85] tracking-tighter">
                 L'équilibre<br />
-                <span className="text-neutral-300 italic font-light">par le toucher.</span>
+                <span className="text-neutral-400 italic font-light">par le toucher.</span>
               </h1>
             </motion.div>
             
@@ -316,7 +316,7 @@ export default function HomePage() {
                                   </h3>
                                 </motion.div>
                                 <div className="h-[1px] w-full bg-neutral-200/50" />
-                                <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed max-w-xl">
+                                <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed max-w-xl">
                                     {AFTERCARE_TIPS[selectedTip].desc}
                                 </p>
                             </div>
