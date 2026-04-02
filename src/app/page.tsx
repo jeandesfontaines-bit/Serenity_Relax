@@ -79,29 +79,29 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className={`group w-full max-w-[340px] aspect-[4/5] md:aspect-[3/4] bg-white rounded-[2rem] md:rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 mx-auto lg:mx-0 ${staggered ? 'lg:mt-8 xl:mt-12' : ''}`}
+    className={`group w-full max-w-[340px] aspect-[4/5] md:aspect-[3/4] bg-white rounded-[2.5rem] flex flex-col overflow-hidden relative border border-neutral-100/50 transition-all duration-700 mx-auto lg:mx-0 ${staggered ? 'lg:mt-8 xl:mt-12' : ''}`}
   >
-    <div className="relative h-[60%] md:h-[62%] w-full overflow-hidden bg-neutral-100">
+    <div className="relative h-[65%] w-full overflow-hidden bg-neutral-100">
       <Image 
         src={s.image} 
         fill
         className="object-cover transition-all duration-700 ease-out [filter:contrast(0.95)_saturate(0.92)_brightness(1.05)]" 
         alt={s.name}
       />
-      <div className="absolute top-4 left-4 md:top-6 md:left-6 z-10">
-         <span className="text-[8px] md:text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">{s.tag}</span>
+      <div className="absolute top-6 left-6 z-10">
+         <span className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">{s.tag}</span>
       </div>
     </div>
     
-    <div className="flex-1 p-6 md:p-8 flex flex-col justify-between bg-white z-20">
-      <div className="space-y-2">
-        <h3 className="text-base md:text-lg font-serif font-medium tracking-[0.05em] text-neutral-900 leading-none uppercase">{s.name.split(' - ')[0]}</h3>
-        <p className="text-neutral-600 text-[10px] md:text-[11px] font-sans font-medium leading-relaxed line-clamp-2">{s.desc}</p>
+    <div className="flex-1 p-8 flex flex-col justify-between bg-white z-20">
+      <div className="space-y-3">
+        <h3 className="text-lg font-serif font-medium tracking-[0.05em] text-neutral-900 leading-none uppercase">{s.name.split(' - ')[0]}</h3>
+        <p className="text-neutral-600 text-[11px] font-sans font-medium leading-relaxed line-clamp-3">{s.desc}</p>
       </div>
       <div className="pt-4 flex items-center justify-between border-t border-neutral-50">
         <div className="flex items-center gap-1.5">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className={`h-1 w-3 md:w-4 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900/70' : 'bg-neutral-100'}`} />
+            <div key={i} className={`h-1 w-4 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900/70' : 'bg-neutral-100'}`} />
           ))}
         </div>
       </div>
@@ -127,16 +127,16 @@ export default function HomePage() {
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-neutral-900 z-[120] origin-left" style={{ scaleX }} />
 
       {/* SECTION HÉROS */}
-      <section className="min-h-[80vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-24 md:pt-32 pb-16 md:pb-24 bg-white relative border-b border-neutral-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
+      <section className="min-h-[85vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-32 pb-24 bg-white relative border-b border-neutral-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
           {/* PORTRAIT À GAUCHE */}
-          <div className="w-full lg:w-[45%] relative order-1 lg:order-1">
+          <div className="w-full lg:w-[45%] flex justify-center lg:justify-start">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[8rem_3rem_10rem_4rem] shadow-2xl max-w-[320px] md:max-w-[380px] mx-auto lg:ml-0"
+              className="relative aspect-[4/5] overflow-hidden rounded-[8rem_3rem_10rem_4rem] shadow-2xl w-full max-w-[380px]"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -151,26 +151,26 @@ export default function HomePage() {
           </div>
 
           {/* TEXTE À DROITE */}
-          <div className="w-full lg:w-[55%] space-y-8 md:space-y-10 order-2 lg:order-2">
+          <div className="w-full lg:w-[55%] space-y-10">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
               <OverTitle>L'Engagement João.</OverTitle>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1] md:leading-[1.1] tracking-tight text-center lg:text-left">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] md:leading-[1.1] tracking-tight text-center lg:text-left">
                 L'équilibre<br />
                 <span className="text-neutral-500 italic font-light">par le toucher.</span>
               </h1>
             </motion.div>
             
-            <div className="space-y-6 md:space-y-8 max-w-xl mx-auto lg:mx-0">
+            <div className="space-y-8 max-w-xl mx-auto lg:mx-0">
               <SectionDesc className="text-neutral-800">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </SectionDesc>
-              <div className="space-y-4 md:space-y-6">
-                <p className="text-neutral-600 text-base md:text-lg font-sans font-medium leading-relaxed text-center lg:text-left">
+              <div className="space-y-6">
+                <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed text-center lg:text-left">
                   Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
                 </p>
                 <div className="pl-6 border-l-2 border-neutral-900/10 py-2 text-center lg:text-left">
-                   <p className="text-neutral-800 italic text-base md:text-lg leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
-                   <span className="font-cursive text-2xl md:text-3xl text-neutral-300 block mt-2">— João P.</span>
+                   <p className="text-neutral-800 italic text-xl leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
+                   <span className="font-cursive text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
               </div>
               <div className="flex justify-center lg:justify-start pt-4">
@@ -188,16 +188,16 @@ export default function HomePage() {
       </section>
 
       {/* SECTION SERVICES */}
-      <section id="services" className="py-16 md:py-24 px-6 md:px-12 lg:px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[2.5rem] md:rounded-[5rem] lg:mx-6 overflow-visible">
+      <section id="services" className="py-24 px-6 md:px-12 lg:px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[5rem] lg:mx-6 overflow-visible">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
+          <div className="flex flex-col lg:flex-row gap-24 items-start">
             
             {/* TEXTE À GAUCHE (STICKY) */}
             <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start">
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-8 mx-auto lg:mx-0" />
-              <SectionDesc className="text-neutral-800 mb-8 md:mb-12">
+              <SectionDesc className="text-neutral-800 mb-12">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </SectionDesc>
               <button className="w-full md:w-auto inline-flex items-center justify-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all">
@@ -206,7 +206,7 @@ export default function HomePage() {
             </div>
 
             {/* GRILLE À DROITE */}
-            <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-6 md:gap-x-12 gap-y-10 md:gap-y-16">
+            <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
               {SERVICES.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
               ))}
@@ -217,9 +217,9 @@ export default function HomePage() {
       </section>
 
       {/* RITUEL POST-SOIN - STYLE ÉDITORIAL LIGNES */}
-      <section className="pt-24 pb-12 md:pb-16 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
+      <section className="pt-24 pb-16 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-20 md:mb-24 text-center md:text-right">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-24 text-center md:text-right">
             <div className="hidden md:block h-[1px] flex-1 bg-neutral-100 mb-8 mr-12" />
             <div>
               <OverTitle className="mb-2">Rituel Post-Séance</OverTitle>
@@ -228,30 +228,31 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 gap-0 border-t border-neutral-100">
-            {AFTERCARE_TIPS.map((tip, idx) => (
-              <div 
-                key={tip.id} 
-                className={`py-12 px-6 md:px-8 space-y-8 group text-center md:text-left ${idx !== 0 ? 'md:border-l border-neutral-100' : ''} ${idx === 0 ? 'md:pl-0' : ''}`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-sans font-black text-neutral-200 uppercase tracking-widest">{tip.id}</span>
-                  <div className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-700 mx-auto md:mx-0">
-                    <tip.icon size={14} strokeWidth={1.5} />
+            {AFTERCARE_TIPS.map((tip) => (
+              <div key={tip.id} className="group py-16 px-0 border-b border-neutral-100 flex flex-col md:flex-row items-start md:items-center gap-12 transition-all duration-700 hover:bg-neutral-50/30">
+                <div className="flex items-center gap-12 min-w-[120px]">
+                  <span className="text-sm font-sans font-black text-neutral-200 uppercase tracking-widest">{tip.id}</span>
+                  <div className="w-12 h-12 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-700">
+                    <tip.icon size={18} strokeWidth={1.5} />
                   </div>
                 </div>
                 
-                <div className="space-y-4">
-                  <h4 className="text-[11px] font-sans font-black uppercase tracking-[0.2em] text-neutral-900 leading-none">
+                <div className="flex-1 space-y-6">
+                  <h4 className="text-xs font-sans font-black uppercase tracking-[0.3em] text-neutral-900 leading-none">
                     {tip.title}
                   </h4>
-                  <div className="space-y-3">
-                    <p className="text-neutral-900 text-sm font-sans font-bold leading-tight">
+                  <div className="space-y-4">
+                    <p className="text-neutral-900 text-2xl font-serif font-medium leading-tight">
                       {tip.advice}
                     </p>
-                    <p className="text-neutral-500 text-[11px] font-sans font-medium leading-relaxed">
+                    <p className="text-neutral-500 text-base font-sans font-medium leading-relaxed max-w-2xl">
                       {tip.desc}
                     </p>
                   </div>
+                </div>
+                
+                <div className="hidden md:block">
+                  <ArrowRight size={24} className="text-neutral-100 group-hover:text-neutral-900 group-hover:translate-x-4 transition-all duration-700" />
                 </div>
               </div>
             ))}
@@ -260,29 +261,29 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#0a0a0a] text-white py-16 px-6 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 md:gap-6 text-center md:text-left">
+      <footer className="bg-[#0a0a0a] text-white py-20 px-6 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16 md:gap-8 text-center md:text-left">
           <div className="flex flex-col items-center md:items-start">
-            <div className="font-sans font-bold text-sm tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
-            <p className="text-xs font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-2">Excellence Thérapeutique</p>
+            <div className="font-sans font-bold text-base tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
+            <p className="text-xs font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-3">Excellence Thérapeutique</p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 text-sm font-sans font-medium text-neutral-400">
-            <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Localisation</span> Alpha Business Center • Genève</p>
-            <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-2">Contact</span> +41 78 333 68 23</p>
+          <div className="flex flex-col md:flex-row gap-12 md:gap-16 text-sm font-sans font-medium text-neutral-400">
+            <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-3">Localisation</span> Alpha Business Center • Genève</p>
+            <p className="tracking-widest uppercase"><span className="text-neutral-600 font-black mr-3">Contact</span> +41 78 333 68 23</p>
           </div>
 
-          <div className="flex items-center gap-8 justify-center">
-            <Instagram size={18} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
+          <div className="flex items-center gap-10 justify-center">
+            <Instagram size={20} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
             <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
-              <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
+              <MessageCircle size={20} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
             </a>
-            <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
+            <Linkedin size={20} className="hover:text-white transition-colors cursor-pointer text-neutral-600" />
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto mt-16 pt-10 border-t border-white/5 flex justify-center">
-          <p className="text-xs font-sans font-bold text-neutral-800 uppercase tracking-[0.4em] text-center">
+        <div className="max-w-7xl mx-auto mt-20 pt-10 border-t border-white/5 flex justify-center">
+          <p className="text-xs font-sans font-bold text-neutral-800 uppercase tracking-[0.5em] text-center">
             © 2025 Serenity & Relax Therapy — Genève
           </p>
         </div>
