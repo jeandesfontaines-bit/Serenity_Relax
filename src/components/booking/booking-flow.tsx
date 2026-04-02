@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
-import { CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, MessageCircle, MapPin, ShieldCheck, Clock } from 'lucide-react';
+import { CheckCircle2, CalendarIcon, User, ChevronRight, ChevronLeft, Loader2, MessageCircle, MapPin, ShieldCheck, Clock, Info } from 'lucide-react';
 import { format, addMinutes } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
@@ -125,12 +125,12 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         <CheckCircle2 className="h-12 w-12 text-primary mx-auto mb-6" />
         <h2 className="text-3xl font-serif font-medium text-primary mb-4">Réservé.</h2>
         <p className="text-muted-foreground text-sm mb-8 italic">Confirmation envoyée.</p>
-        <button className="high-end-button bg-emerald-600 border-emerald-600 text-white w-full py-3 text-[12px] mb-4">
+        <button className="high-end-button bg-emerald-600 border-emerald-600 text-white w-full py-4 text-[10px] mb-4">
           <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
             <MessageCircle size={18} /> CONFIRMER WHATSAPP
           </a>
         </button>
-        <button onClick={() => window.location.reload()} className="high-end-button w-full border-neutral-200 py-3 text-[12px]">
+        <button onClick={() => window.location.reload()} className="high-end-button w-full border-neutral-200 py-4 text-[10px]">
           RETOUR
         </button>
       </Card>
@@ -159,12 +159,12 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   <button
                     key={s.id}
                     onClick={() => { setSelectedService(s); setStep(2); }}
-                    className="group text-left p-5 rounded-[2rem] border-2 border-black/5 bg-white hover:border-primary/20 hover:shadow-xl transition-all flex flex-col justify-between"
+                    className="group text-left p-6 rounded-[2rem] border border-black/5 bg-white hover:border-primary/20 hover:shadow-xl transition-all flex flex-col justify-between"
                   >
                     <div className="flex justify-between items-start gap-4">
                       <div>
                         <h3 className="font-serif font-bold text-base text-primary">{s.name.split(' - ')[0]}</h3>
-                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/60">{s.duration}</p>
+                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/60 mt-1">{s.duration}</p>
                       </div>
                       <span className="font-serif font-bold text-lg text-primary">CHF {s.price}</span>
                     </div>
@@ -183,7 +183,14 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   <h2 className="text-xl font-serif font-medium text-primary flex items-center gap-3">
                     <CalendarIcon className="h-4 w-4 opacity-20" /> La Date
                   </h2>
-                  <Calendar mode="single" selected={date} onSelect={setDate} locale={fr} className="rounded-[1.5rem] border border-black/5 p-4 bg-muted/10" disabled={(d) => d < new Date()} />
+                  <Calendar 
+                    mode="single" 
+                    selected={date} 
+                    onSelect={setDate} 
+                    locale={fr} 
+                    className="rounded-[1.5rem] border border-black/5 p-4 bg-muted/10" 
+                    disabled={(d) => d < new Date()} 
+                  />
                 </div>
                 <div className="flex-1 space-y-4">
                   <h2 className="text-xl font-serif font-medium text-primary flex items-center gap-3">
@@ -191,7 +198,12 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   </h2>
                   <div className="grid grid-cols-2 gap-2">
                     {times.map((t) => (
-                      <Button key={t} variant={time === t ? 'default' : 'outline'} onClick={() => setTime(t)} className={`h-12 rounded-xl border-black/5 ${time === t ? 'bg-primary text-white' : 'bg-background'}`}>
+                      <Button 
+                        key={t} 
+                        variant={time === t ? 'default' : 'outline'} 
+                        onClick={() => setTime(t)} 
+                        className={`h-12 rounded-xl border-black/5 ${time === t ? 'bg-primary text-white' : 'bg-background hover:bg-neutral-50'}`}
+                      >
                         {t}
                       </Button>
                     ))}
@@ -199,10 +211,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 </div>
               </div>
               <div className="flex justify-between mt-12 gap-4">
-                <button onClick={() => setStep(1)} className="high-end-button border-neutral-200 py-3 px-6 text-[12px]">
+                <button onClick={() => setStep(1)} className="high-end-button border-neutral-200 py-3 px-8 text-[10px]">
                   RETOUR
                 </button>
-                <button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button py-3 px-6 text-[12px]">
+                <button disabled={!date || !time} onClick={() => setStep(3)} className="high-end-button py-3 px-8 text-[10px]">
                   DÉTAILS
                 </button>
               </div>
@@ -228,11 +240,27 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                     <Input placeholder="Adresse complète" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-11 bg-muted/20 border-none px-4" />
                   </div>
                 </div>
+
+                <div className="mt-8 pt-8 border-t border-black/5">
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-6 flex items-center gap-2">
+                    <Info size={14} className="opacity-30" /> Conditions & informations
+                  </h3>
+                  <div className="space-y-4 text-[11px] leading-relaxed text-muted-foreground italic font-sans">
+                    <p>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation. Elles ne remplacent en aucun cas un avis ou un traitement médical.</p>
+                    <p>En réservant une séance, vous confirmez être en bonne condition physique et ne pas avoir de contre-indication au massage. En cas de doute, n’hésitez pas à demander l’avis de votre médecin.</p>
+                    <p>Toute annulation ou modification doit être effectuée au minimum 24h à l’avance. En cas d’annulation tardive ou d’absence, la séance pourra être facturée.</p>
+                  </div>
+                </div>
+
                 <div className="flex justify-between items-center gap-4 pt-6">
-                  <button onClick={() => setStep(2)} className="high-end-button border-neutral-200 py-3 px-6 text-[12px]">
+                  <button onClick={() => setStep(2)} className="high-end-button border-neutral-200 py-4 px-8 text-[10px]">
                     RETOUR
                   </button>
-                  <button className="high-end-button min-w-[160px] py-3 text-[12px]" disabled={isSubmitting || !formData.firstName || !formData.email} onClick={completeBooking}>
+                  <button 
+                    className="high-end-button min-w-[160px] py-4 text-[10px]" 
+                    disabled={isSubmitting || !formData.firstName || !formData.email} 
+                    onClick={completeBooking}
+                  >
                     {isSubmitting ? <Loader2 className="animate-spin h-5 w-5" /> : 'CONFIRMER'}
                   </button>
                 </div>
@@ -241,14 +269,14 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 <Card className="rounded-[1.5rem] border-none p-6 bg-white shadow-sm">
                   <h3 className="text-[10px] font-black uppercase tracking-widest text-primary mb-3">RÉSUMÉ</h3>
                   <div className="space-y-2 text-xs italic text-muted-foreground">
-                    <p>{selectedService?.name.split(' - ')[0]}</p>
+                    <p className="font-bold text-primary">{selectedService?.name.split(' - ')[0]}</p>
                     <p>{date ? format(date, 'd MMMM', { locale: fr }) : ''} à {time}</p>
-                    <p className="font-bold text-primary">CHF {selectedService?.price}</p>
+                    <p className="font-bold text-primary mt-2">CHF {selectedService?.price}</p>
                   </div>
                 </Card>
                 <Card className="rounded-[1.5rem] border-none p-6 bg-neutral-900 text-white">
                   <h3 className="text-[9px] font-black uppercase tracking-widest text-emerald-400 mb-2">IMPORTANT</h3>
-                  <p className="text-[10px] italic opacity-70">Confirmez par WhatsApp après réservation.</p>
+                  <p className="text-[10px] italic opacity-70">Confirmez par WhatsApp après réservation pour valider votre créneau.</p>
                 </Card>
               </aside>
             </div>
