@@ -9,7 +9,7 @@
     },
     {
       "id": "joao-portrait",
-      "description": "Portrait de João, votre thérapeute",
+      "description": "Portrait de João, votre praticien expert",
       "imageUrl": "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg",
       "imageHint": "person portrait"
     },
@@ -21,33 +21,33 @@
     },
     {
       "id": "service-2",
-      "description": "Pierres chaudes et détente",
+      "description": "Détente signature et huiles",
       "imageUrl": "https://picsum.photos/seed/relax-spa-3/800/1200",
-      "imageHint": "hot stones"
+      "imageHint": "wellness oils"
     },
     {
       "id": "service-3",
       "description": "Récupération sportive",
       "imageUrl": "https://picsum.photos/seed/sport-recovery-4/800/1200",
-      "imageHint": "sports massage"
+      "imageHint": "sports therapy"
     },
     {
       "id": "service-4",
-      "description": "Herbes et rituels anciens",
-      "imageUrl": "https://picsum.photos/seed/herbal-spa-5/800/1200",
+      "description": "Tradition Kalari et étirements",
+      "imageUrl": "https://picsum.photos/seed/ayurveda-spa-5/800/1200",
       "imageHint": "ayurveda massage"
     },
     {
       "id": "service-5",
-      "description": "Huiles essentielles et drainage",
-      "imageUrl": "https://picsum.photos/seed/essential-oils-6/800/1200",
-      "imageHint": "aromatherapy massage"
+      "description": "Drainage et détox",
+      "imageUrl": "https://picsum.photos/seed/detox-oils-6/800/1200",
+      "imageHint": "lymphatic drainage"
     },
     {
       "id": "service-6",
-      "description": "Ambiance de soin sereine",
+      "description": "Soin découverte sérénité",
       "imageUrl": "https://picsum.photos/seed/peaceful-spa-7/800/1200",
-      "imageHint": "spa treatment"
+      "imageHint": "peaceful spa"
     }
   ]
 }
