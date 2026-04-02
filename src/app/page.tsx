@@ -1,10 +1,10 @@
 
 'use client';
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import React, { useState, useRef } from "react";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle
+  Instagram, Linkedin, ArrowRight, MessageCircle, CheckCircle2, Droplets, Moon, HeartPulse, Sparkles, Wind
 } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -69,10 +69,30 @@ const SERVICES_DISPLAY = [
 ];
 
 const RITUAL_STEPS = [
-  { title: "Hydratation", desc: "Buvez de l'eau alcaline ou une infusion tiède pour drainer les toxines libérées lors du soin." },
-  { title: "Huiles", desc: "Laissez les huiles précieuses pénétrer votre épiderme. Évitez la douche immédiate (attendre 1h)." },
-  { title: "Repos", desc: "Évitez les écrans et les efforts intenses pendant les 2 heures suivant votre séance au sanctuaire." },
-  { title: "Suivi", desc: "Observez vos ressentis dans les jours qui suivent et hydratez-vous généreusement." }
+  { 
+    title: "Hydratation", 
+    desc: "Buvez de l'eau alcaline ou une infusion tiède pour drainer les toxines libérées lors du soin.",
+    icon: <Droplets size={24} />,
+    advice: "Buvez au moins 1.5L d'eau après votre séance."
+  },
+  { 
+    title: "Huiles", 
+    desc: "Laissez les huiles précieuses pénétrer votre épiderme. Évitez la douche immédiate (attendre 1h).",
+    icon: <Sparkles size={24} />,
+    advice: "Laissez agir pour une peau soyeuse et nourrie."
+  },
+  { 
+    title: "Repos", 
+    desc: "Évitez les écrans et les efforts intenses pendant les 2 heures suivant votre séance.",
+    icon: <Moon size={24} />,
+    advice: "Privilégiez la lecture ou le calme absolu."
+  },
+  { 
+    title: "Suivi", 
+    desc: "Observez vos ressentis dans les jours qui suivent et hydratez-vous généreusement.",
+    icon: <HeartPulse size={24} />,
+    advice: "Notez les changements de tension physique."
+  }
 ];
 
 const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggered: boolean }) => {
@@ -121,6 +141,105 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
   );
 };
 
+const AftercareSection = () => {
+  const [selectedTip, setSelectedTip] = useState(0);
+
+  return (
+    <section className="py-32 md:py-44 px-8 bg-[#FAF9F6] rounded-[3rem] md:rounded-[5rem] mx-4 md:mx-6 mb-20 overflow-hidden border border-neutral-100">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-24 items-center">
+          
+          <div className="space-y-12">
+            <div className="space-y-4">
+              <span className="text-[11px] font-sans font-black uppercase tracking-[0.4em] text-neutral-300 block mb-4">Immersion Continue</span>
+              <h2 className="text-5xl md:text-7xl font-serif font-bold text-neutral-900 leading-none tracking-tighter">
+                Le Rituel <br/> <span className="text-neutral-200 italic font-light">post-soin.</span>
+              </h2>
+              <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed pt-6 border-l-2 border-neutral-100 pl-8 italic">
+                Le massage ne s'arrête pas à la porte du studio. Les heures qui suivent sont essentielles pour ancrer vos bénéfices.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+              {RITUAL_STEPS.map((tip, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedTip(i)}
+                  className={`group relative flex items-start gap-6 p-6 rounded-[2rem] transition-all duration-500 text-left ${
+                    selectedTip === i 
+                      ? 'bg-white shadow-xl border border-neutral-100/50' 
+                      : 'hover:bg-white/50'
+                  }`}
+                >
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-500 ${
+                    selectedTip === i ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-400'
+                  }`}>
+                    {tip.icon}
+                  </div>
+                  <div className="space-y-1">
+                    <h4 className={`text-[11px] font-sans font-black uppercase tracking-widest transition-colors duration-500 ${
+                      selectedTip === i ? 'text-neutral-900' : 'text-neutral-300 group-hover:text-neutral-600'
+                    }`}>
+                      {tip.title}
+                    </h4>
+                    <p className={`text-sm font-sans font-medium transition-opacity duration-500 ${
+                      selectedTip === i ? 'opacity-100 text-neutral-600' : 'opacity-0 h-0 overflow-hidden'
+                    }`}>
+                      {tip.desc}
+                    </p>
+                  </div>
+                  {selectedTip === i && (
+                    <motion.div layoutId="indicator" className="absolute right-8 top-1/2 -translate-y-1/2 text-neutral-200">
+                      <ArrowRight size={20} />
+                    </motion.div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative">
+             <AnimatePresence mode="wait">
+               <motion.div
+                 key={selectedTip}
+                 initial={{ opacity: 0, y: 20 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 exit={{ opacity: 0, y: -20 }}
+                 transition={{ duration: 0.4 }}
+                 className="bg-white rounded-[4rem] p-12 md:p-20 text-neutral-900 aspect-square flex flex-col justify-between relative overflow-hidden border border-neutral-100 shadow-2xl"
+               >
+                 <div className="space-y-10 relative z-10">
+                   <div className="w-16 h-16 rounded-3xl bg-neutral-50 flex items-center justify-center shadow-inner text-neutral-900">
+                     {RITUAL_STEPS[selectedTip].icon}
+                   </div>
+                   <h3 className="text-4xl font-serif font-bold tracking-tight leading-tight">
+                     Pourquoi c'est <br/> <span className="italic font-medium">fondamental ?</span>
+                   </h3>
+                   <p className="text-xl font-sans font-medium text-neutral-500 italic leading-relaxed">
+                     {RITUAL_STEPS[selectedTip].desc}
+                   </p>
+                 </div>
+
+                 <div className="space-y-6 relative z-10">
+                   <div className="flex items-center gap-4 text-neutral-200">
+                     <span className="w-8 h-px bg-neutral-100"></span>
+                     <span className="text-[10px] font-sans font-black uppercase tracking-widest">Le conseil de João</span>
+                   </div>
+                   <div className="p-8 bg-neutral-50 rounded-[2rem] border border-neutral-100">
+                     <p className="text-neutral-900 text-lg font-serif font-bold italic tracking-tight">
+                       « {RITUAL_STEPS[selectedTip].advice} »
+                     </p>
+                   </div>
+                 </div>
+               </motion.div>
+             </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default function HomePage() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
@@ -131,13 +250,13 @@ export default function HomePage() {
       
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-primary z-[120] origin-left" style={{ scaleX }} />
 
-      {/* SECTION HÉROS */}
+      {/* SECTION HÉROS - IMAGE À GAUCHE */}
       <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-neutral-50 relative border-b border-neutral-100">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
           {/* IMAGE À GAUCHE */}
           <div className="w-full lg:w-[45%] relative">
-            <div className="blob-shape bg-white shadow-2xl max-w-[420px] w-full mx-auto overflow-hidden relative">
+            <div className="blob-shape bg-white shadow-2xl max-w-[420px] w-full mx-auto overflow-hidden relative border-[12px] border-white">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 fill
@@ -198,17 +317,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION SERVICES */}
+      {/* SECTION SERVICES - SOINS À GAUCHE CARDS À DROITE */}
       <section id="services" className="py-32 md:py-44 px-8 bg-white overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
             
-            {/* Colonne Texte (À gauche désormais, collante sur desktop) */}
+            {/* Colonne Texte (À GAUCHE) */}
             <div className="w-full lg:w-[25%] lg:sticky lg:top-32 h-fit space-y-10 text-left">
               <span className="text-xs font-sans font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu Signature</span>
               <h2 className="text-5xl md:text-7xl font-bold text-neutral-900 tracking-tight font-serif leading-none">Soins.</h2>
               <div className="h-1 w-12 bg-neutral-900" />
-              <p className="text-xs font-sans text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
+              <p className="text-sm font-sans text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
                 Sélection exclusive de 6 rituels pour votre équilibre interne.
               </p>
               <div className="pt-8">
@@ -218,7 +337,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Grille de Cartes (À droite désormais) */}
+            {/* Grille de Cartes (À DROITE) */}
             <div className="w-full lg:w-[75%] grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 pb-12">
               {SERVICES_DISPLAY.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
@@ -229,62 +348,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN */}
-      <section className="py-24 md:py-40 px-8 bg-neutral-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-20 flex flex-col text-left">
-             <span className="text-xs font-sans font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Immersion Continue</span>
-             <h2 className="text-4xl md:text-6xl font-bold text-neutral-900 tracking-tight font-serif">Le Rituel post-soin</h2>
-          </div>
+      {/* RITUEL POST-SOIN INTERACTIF */}
+      <AftercareSection />
 
-          <div className="relative">
-            <div className="hidden lg:block absolute top-[5.5rem] left-0 w-full h-[1px] bg-neutral-200" />
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16">
-              {RITUAL_STEPS.map((step, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.8 }}
-                  className="relative group"
-                >
-                  <div className="flex flex-col items-start">
-                    <span className="text-6xl md:text-8xl font-cursive text-neutral-200 group-hover:text-neutral-900 transition-colors duration-700 leading-none mb-4 -ml-4">
-                      {i + 1}
-                    </span>
-                    
-                    <div className="space-y-4 pt-4 border-t border-neutral-200 lg:border-t-0 w-full">
-                      <h4 className="text-lg font-sans font-bold uppercase tracking-widest text-neutral-900 flex items-center gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-neutral-900" />
-                        {step.title}
-                      </h4>
-                      <p className="text-base font-sans text-neutral-500 font-medium leading-relaxed italic group-hover:text-neutral-900 transition-colors">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          
-          <div className="mt-24 pt-12 border-t border-neutral-200 text-center">
-             <p className="font-cursive text-3xl text-neutral-300">João Thérapeute</p>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="bg-[#0a0a0a] text-white pt-12 pb-8 px-8">
+      {/* FOOTER - NOIR COMPACT */}
+      <footer className="bg-[#0a0a0a] text-white pt-16 pb-10 px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <div className="font-sans font-bold text-base md:text-lg tracking-[0.3em] uppercase mb-1">SERENITY RELAX</div>
             <p className="text-[9px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-8 border-b border-white/5 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center mb-12 border-b border-white/5 pb-12">
             <div className="space-y-4">
               <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Localisation</span>
               <div className="space-y-1 text-sm font-sans font-medium text-neutral-400">
@@ -305,9 +380,9 @@ export default function HomePage() {
             <div className="space-y-4">
               <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Social</span>
               <div className="flex justify-center gap-6 text-neutral-400">
-                <Instagram size={16} className="hover:text-white transition-colors cursor-pointer" />
-                <MessageCircle size={16} className="hover:text-white transition-colors cursor-pointer" />
-                <Linkedin size={16} className="hover:text-white transition-colors cursor-pointer" />
+                <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
+                <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
+                <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
               </div>
             </div>
           </div>
@@ -322,3 +397,4 @@ export default function HomePage() {
     </div>
   );
 }
+
