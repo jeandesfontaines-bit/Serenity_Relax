@@ -4,49 +4,49 @@
     {
       "id": "hero-bg",
       "description": "Ambiance sereine d'un cabinet de massage haut de gamme",
-      "imageUrl": "https://picsum.photos/seed/wellness-hero/1920/1080",
+      "imageUrl": "https://picsum.photos/seed/massage-ambience/1920/1080",
       "imageHint": "luxury spa"
     },
     {
       "id": "joao-portrait",
       "description": "Portrait professionnel du thérapeute João",
-      "imageUrl": "https://picsum.photos/seed/therapist-portrait/800/1000",
+      "imageUrl": "https://picsum.photos/seed/therapist-portrait-wellness/800/1000",
       "imageHint": "professional therapist"
     },
     {
       "id": "service-1",
       "description": "Massage thérapeutique profond",
-      "imageUrl": "https://picsum.photos/seed/massage-back/800/1000",
+      "imageUrl": "https://picsum.photos/seed/massage-back-therapy/800/1000",
       "imageHint": "back massage"
     },
     {
       "id": "service-2",
       "description": "Relaxation aux huiles essentielles",
-      "imageUrl": "https://picsum.photos/seed/essential-oils-spa/800/1000",
+      "imageUrl": "https://picsum.photos/seed/spa-oils-wellness/800/1000",
       "imageHint": "essential oils"
     },
     {
       "id": "service-3",
       "description": "Soin sportif et récupération",
-      "imageUrl": "https://picsum.photos/seed/sports-therapy/800/1000",
+      "imageUrl": "https://picsum.photos/seed/sports-massage-technique/800/1000",
       "imageHint": "sports massage"
     },
     {
       "id": "service-4",
       "description": "Massage aux pierres chaudes",
-      "imageUrl": "https://picsum.photos/seed/hot-stones-massage/800/1000",
+      "imageUrl": "https://picsum.photos/seed/hot-stones-therapy/800/1000",
       "imageHint": "hot stones"
     },
     {
       "id": "service-5",
       "description": "Drainage lymphatique bien-être",
-      "imageUrl": "https://picsum.photos/seed/lymphatic-care/800/1000",
+      "imageUrl": "https://picsum.photos/seed/lymphatic-treatment/800/1000",
       "imageHint": "lymphatic massage"
     },
     {
       "id": "service-6",
       "description": "Massage relaxant crânien",
-      "imageUrl": "https://picsum.photos/seed/head-massage-relax/800/1000",
+      "imageUrl": "https://picsum.photos/seed/head-massage-spa/800/1000",
       "imageHint": "head massage"
     }
   ]
