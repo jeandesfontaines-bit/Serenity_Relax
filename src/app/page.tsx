@@ -4,45 +4,128 @@
 import React, { useState } from "react";
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  ArrowRight, Sparkles, MessageCircle, Instagram, Linkedin, Droplets, Moon, Coffee, HeartPulse, CheckCircle2
+  Instagram, Linkedin, ArrowRight, Droplets, Moon, Coffee, HeartPulse, Sparkles, MessageCircle, CheckCircle2
 } from "lucide-react";
-import Link from 'next/link';
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
-import { SERVICES } from '@/lib/types';
+
+// --- IMPORT DES IMAGES GÉNÉRÉES ---
 import bambooImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
+import aromaImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
+import reflexImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (3).png';
+import classicImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (6).png';
+import thaiImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (7).png';
 
 // --- CONFIGURATION & DONNÉES ---
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
+
+const SERVICES = [
+  { 
+    id: "01", 
+    name: "Bambous", 
+    duration: "60 min", 
+    price: 110,
+    intensity: 4,
+    image: bambooImg,
+    desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", 
+    tag: "Profond"
+  },
+  { 
+    id: "02", 
+    name: "Draineur Lymphatique", 
+    duration: "60 min", 
+    price: 110,
+    intensity: 2,
+    image: "https://picsum.photos/seed/lymph-drain/800/1000",
+    desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", 
+    tag: "Vitalité"
+  },
+  { 
+    id: "03", 
+    name: "Aromathérapie", 
+    duration: "60 min", 
+    price: 110,
+    intensity: 2,
+    image: aromaImg,
+    desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", 
+    tag: "Sensoriel"
+  },
+  { 
+    id: "04", 
+    name: "Réflexologie Plantaire", 
+    duration: "30 min", 
+    price: 60,
+    intensity: 3,
+    image: reflexImg,
+    desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", 
+    tag: "Ciblé"
+  },
+  { 
+    id: "05", 
+    name: "Sportif", 
+    duration: "60 min", 
+    price: 110,
+    intensity: 5,
+    image: "https://picsum.photos/seed/sports-massage/800/1000",
+    desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", 
+    tag: "Performance"
+  },
+  { 
+    id: "06", 
+    name: "Thérapeutique", 
+    duration: "60 min", 
+    price: 110,
+    intensity: 4,
+    image: classicImg,
+    desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", 
+    tag: "Signature"
+  },
+  { 
+    id: "07", 
+    name: "Deep Relax", 
+    duration: "60 min", 
+    price: 120,
+    intensity: 2,
+    image: "https://picsum.photos/seed/deep-relax/800/1000",
+    desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", 
+    tag: "Détente"
+  },
+  { 
+    id: "08", 
+    name: "Thaï", 
+    duration: "60 min", 
+    price: 120,
+    intensity: 4,
+    image: thaiImg,
+    desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale avec des huiles chaudes.", 
+    tag: "Dynamique"
+  }
+];
 
 const AFTERCARE_TIPS = [
   { 
     id: "01",
     title: "Hydratation Optimale", 
     desc: "Boire de l'eau alcaline ou une infusion tiède après votre soin permet d'aider votre système lymphatique à drainer les toxines libérées durant le massage.",
-    advice: "Évitez l'alcool pendant 24h.",
-    icon: <Droplets size={24} />
+    advice: "Évitez l'alcool pendant 24h."
   },
   { 
     id: "02",
     title: "Repos & Intégration", 
     desc: "Votre système nerveux a été apaisé. Accordez-vous un temps de calme, sans écrans, pour permettre à votre corps d'ancrer les bienfaits du relâchement.",
-    advice: "Sieste de 15 min conseillée.",
-    icon: <Moon size={24} />
+    advice: "Sieste de 15 min conseillée."
   },
   { 
     id: "03",
     title: "Nutrition Douce", 
     desc: "Privilégiez un repas léger et chaud pour ne pas mobiliser toute votre énergie vers la digestion, mais plutôt vers la régénération de vos tissus.",
-    advice: "Repas chaud privilégié.",
-    icon: <Coffee size={24} />
+    advice: "Repas chaud privilégié."
   },
   { 
     id: "04",
     title: "Écoute & Souplesse", 
     desc: "Des sensations de courbatures légères peuvent apparaître le lendemain : c'est le signe que vos fascias retrouvent leur liberté de mouvement.",
-    advice: "Une douche tiède apaisera.",
-    icon: <HeartPulse size={24} />
+    advice: "Une douche tiède apaisera."
   }
 ];
 
@@ -66,7 +149,7 @@ const SectionDesc = ({ children, className = "" }: { children: React.ReactNode, 
   </p>
 );
 
-const ServiceCard = ({ s, staggered }: { s: typeof SERVICES[0], staggered: boolean }) => (
+const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -75,29 +158,32 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES[0], staggered: boole
   >
     <div className="relative h-[62%] w-full overflow-hidden bg-neutral-100">
       <Image 
-        src={s.id === '1' ? bambooImg : `https://picsum.photos/seed/massage-${s.id}/800/1000`} 
+        src={s.image} 
         fill
         className="object-cover grayscale-[0.3] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" 
         alt={s.name}
         data-ai-hint="luxury massage"
       />
       <div className="absolute top-6 left-6 z-10">
-         <span className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">Rituel</span>
+         <span className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">{s.tag}</span>
       </div>
     </div>
     
     <div className="flex-1 p-8 md:p-9 flex flex-col justify-between bg-white z-20">
       <div className="space-y-2">
-        <h3 className="text-2xl font-serif font-bold tracking-tight text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
-        <p className="text-neutral-500 text-[12px] font-sans font-medium leading-relaxed line-clamp-2">{s.description}</p>
+        <h3 className="text-2xl font-serif font-bold tracking-tight text-neutral-900 leading-none">{s.name}</h3>
+        <p className="text-neutral-500 text-[12px] font-sans font-medium leading-relaxed line-clamp-2">{s.desc}</p>
       </div>
       <div className="pt-5 flex items-center justify-between border-t border-neutral-50">
         <div className="flex items-center gap-1.5">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className={`h-1 w-4 rounded-full transition-colors duration-500 ${i < (s.price > 115 ? 5 : 4) ? 'bg-neutral-900/70' : 'bg-neutral-100'}`} />
+            <div key={i} className={`h-1 w-4 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900/70' : 'bg-neutral-100'}`} />
           ))}
         </div>
-        <span className="text-[10px] font-sans font-black text-neutral-400 tracking-widest uppercase">{s.duration}</span>
+        <div className="flex flex-col items-end">
+          <span className="text-[10px] font-sans font-black text-neutral-400 tracking-widest uppercase">{s.duration}</span>
+          <span className="text-[10px] font-sans font-bold text-neutral-900 mt-0.5">CHF {s.price}</span>
+        </div>
       </div>
     </div>
   </motion.div>
@@ -123,7 +209,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] blob-shape overflow-hidden border-[12px] border-white shadow-2xl"
+              className="relative aspect-[4/5] overflow-hidden rounded-[3rem] border-[12px] border-white shadow-2xl"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -163,12 +249,12 @@ export default function HomePage() {
                    <span className="font-cursive text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
               </div>
-              <Link href="/booking" className="inline-flex items-center gap-6 group pt-4">
+              <button className="inline-flex items-center gap-6 group pt-4">
                 <div className="w-14 h-14 rounded-full bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:scale-110 group-hover:bg-neutral-800">
                   <ArrowRight size={22} />
                 </div>
                 <span className="text-[11px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Découvrir les rituels</span>
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -185,11 +271,11 @@ export default function HomePage() {
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-10" />
               <p className="text-xl md:text-2xl font-serif font-bold text-neutral-900 leading-tight italic mb-12">
-                Une sélection exclusive de {SERVICES.length} rituels conçue pour votre équilibre interne et votre récupération physique.
+                Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <Link href="/booking" className="inline-flex items-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
+              <button className="inline-flex items-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
                 Réserver un soin
-              </Link>
+              </button>
             </div>
 
             <div className="w-full lg:w-[72%] grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
@@ -279,7 +365,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER - ULTRA COMPACT */}
+      {/* FOOTER ULTRA COMPACT */}
       <footer className="bg-[#0a0a0a] text-white py-8 px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start">
