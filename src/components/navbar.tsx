@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -25,11 +26,11 @@ export function Navbar() {
   };
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-3 bg-[#0a0a0a]">
+    <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-4 md:py-3 bg-[#0a0a0a]">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link href="/" className="flex items-baseline gap-2 cursor-pointer group">
-          <span className="font-sans font-bold text-xs md:text-sm tracking-[0.2em] text-white uppercase">SERENITY RELAX</span>
-          <span className="font-cursive text-[20px] md:text-[24px] text-white/40 tracking-normal whitespace-nowrap normal-case group-hover:text-white transition-colors ml-1">by João</span>
+        <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
+          <span className="font-sans font-bold text-[10px] md:text-xs tracking-[0.2em] text-white uppercase">SERENITY RELAX</span>
+          <span className="font-cursive text-[18px] md:text-[24px] text-white/40 tracking-normal whitespace-nowrap normal-case group-hover:text-white transition-colors ml-1">by João</span>
         </Link>
         
         <div className="hidden md:flex items-center gap-8">
@@ -44,8 +45,8 @@ export function Navbar() {
           )}
         </div>
         
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-white">
-          {isMenuOpen ? <X size={18}/> : <Menu size={18}/>}
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-white p-1">
+          {isMenuOpen ? <X size={20}/> : <Menu size={20}/>}
         </button>
       </div>
 
