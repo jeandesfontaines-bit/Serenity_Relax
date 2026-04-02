@@ -13,14 +13,14 @@ import Link from 'next/link';
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
 const SERVICES = [
-  { id: "01", name: "Bambous", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75" },
-  { id: "02", name: "Draineur Lymphatique", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75" },
-  { id: "03", name: "Aromathérapie", tag: "Sensoriel", desc: "Soin intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75" },
-  { id: "04", name: "Réflexologie Plantaire", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75" },
-  { id: "05", name: "Sportif", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75" },
-  { id: "06", name: "Thérapeutique", tag: "Signature", desc: "Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75" },
-  { id: "07", name: "Deep Tissue", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75" },
-  { id: "08", name: "Thaï", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75" }
+  { id: "01", name: "Bambous", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", image: "https://picsum.photos/seed/bamboo-spa/600/600" },
+  { id: "02", name: "Draineur Lymphatique", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", image: "https://picsum.photos/seed/lymphatic/600/600" },
+  { id: "03", name: "Aromathérapie", tag: "Sensoriel", desc: "Soin intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", image: "https://picsum.photos/seed/aroma/600/600" },
+  { id: "04", name: "Réflexologie Plantaire", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", image: "https://picsum.photos/seed/reflex/600/600" },
+  { id: "05", name: "Sportif", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", image: "https://picsum.photos/seed/sport/600/600" },
+  { id: "06", name: "Thérapeutique", tag: "Signature", desc: "Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", image: "https://picsum.photos/seed/therapy/600/600" },
+  { id: "07", name: "Deep Tissue", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", image: "https://picsum.photos/seed/deep/600/600" },
+  { id: "08", name: "Thaï", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", image: "https://picsum.photos/seed/thai/600/600" }
 ];
 
 const FAQS = [
@@ -41,9 +41,9 @@ const ServiceCard = ({ s }: { s: any }) => (
       <Image 
         src={s.image} 
         fill
-        unoptimized
         className="object-cover transition-transform duration-1000 group-hover:scale-110" 
         alt={s.name}
+        data-ai-hint={s.tag}
       />
     </div>
 
@@ -54,7 +54,7 @@ const ServiceCard = ({ s }: { s: any }) => (
       <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
         {s.name}
       </h3>
-      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed italic line-clamp-2">
+      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2">
         {s.desc}
       </p>
     </div>
