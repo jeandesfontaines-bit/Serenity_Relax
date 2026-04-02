@@ -8,11 +8,9 @@ import {
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 import { BookingDialog } from '@/components/booking/booking-dialog';
-import { SERVICES as LIB_SERVICES } from '@/lib/types';
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
-// Sync IDs with lib/types.ts for consistent pre-selection
 const HOME_SERVICES = [
   { id: "1", name: "Bambous", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75" },
   { id: "2", name: "Draineur Lymphatique", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75" },
@@ -118,7 +116,7 @@ export default function HomePage() {
               </p>
               <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
                  <p className="text-neutral-800 italic text-2xl leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi. »</p>
-                 <span className="font-cursive text-4xl text-neutral-300 block mt-4">— João P.</span>
+                 <span className="font-cursive text-4xl text-neutral-900 block mt-4">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
                 <BookingDialog>
