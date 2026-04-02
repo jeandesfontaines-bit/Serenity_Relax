@@ -91,13 +91,13 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
           />
         </motion.div>
         <div className="absolute top-4 left-4 z-10">
-           <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white bg-black/50 backdrop-blur-md px-3 py-1 rounded-sm">{s.tag}</span>
+           <span className="text-xs font-bold uppercase tracking-[0.2em] text-white bg-black/50 backdrop-blur-md px-3 py-1 rounded-sm">{s.tag}</span>
         </div>
       </div>
       <div className="flex-1 p-8 flex flex-col justify-between">
         <div className="space-y-4">
           <h3 className="text-xl font-bold tracking-tight text-neutral-900 leading-tight">{s.name}</h3>
-          <p className="text-neutral-500 text-sm font-medium leading-relaxed italic">{s.desc}</p>
+          <p className="text-neutral-500 text-base font-medium leading-relaxed italic">{s.desc}</p>
         </div>
         <div className="pt-6 flex items-center justify-between border-t border-neutral-100">
           <div className="flex items-center gap-1.5">
@@ -105,7 +105,7 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
               <div key={i} className={`h-1.5 w-1.5 rounded-full ${i < s.intensity ? 'bg-neutral-900' : 'bg-neutral-200'}`} />
             ))}
           </div>
-          <span className="text-[10px] font-bold text-neutral-400 tracking-widest uppercase">{s.duration}</span>
+          <span className="text-xs font-bold text-neutral-400 tracking-widest uppercase">{s.duration}</span>
         </div>
       </div>
     </motion.div>
@@ -126,7 +126,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      <div className="hidden lg:flex fixed top-10 right-32 z-[101] items-center gap-5 text-[10px] font-bold tracking-[0.3em] text-neutral-400 pointer-events-none uppercase">
+      <div className="hidden lg:flex fixed top-10 right-32 z-[101] items-center gap-5 text-xs font-bold tracking-[0.3em] text-neutral-400 pointer-events-none uppercase">
         {time} • CH / GENEVA
       </div>
 
@@ -144,12 +144,12 @@ export default function HomePage() {
               />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-8 block">À propos de moi</span>
+              <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-8 block">À propos de moi</span>
               <h1 className="text-3xl md:text-5xl font-bold text-neutral-900 mb-10 tracking-tight leading-[1.1] font-serif">
                 L'équilibre <br className="hidden md:block"/>
                 <span className="text-neutral-300 font-light italic">par le toucher.</span>
               </h1>
-              <div className="space-y-8 text-neutral-600 font-medium leading-relaxed text-base">
+              <div className="space-y-8 text-neutral-600 font-medium leading-relaxed text-base md:text-lg">
                 <p className="text-neutral-900 text-xl font-bold italic border-l-4 border-neutral-900 pl-8 py-2">
                   "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
                 </p>
@@ -162,7 +162,7 @@ export default function HomePage() {
                   </p>
                 </div>
                 <div className="pt-10">
-                  <Link href="/booking" className="inline-flex items-center gap-6 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-900 group">
+                  <Link href="/booking" className="inline-flex items-center gap-6 text-xs font-bold uppercase tracking-[0.3em] text-neutral-900 group">
                     Réserver une séance <ArrowRight size={16} className="group-hover:translate-x-3 transition-transform" />
                   </Link>
                 </div>
@@ -176,13 +176,13 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-24">
             <div className="lg:col-span-8 flex flex-col text-left">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Expertise Thérapeutique</span>
+              <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Expertise Thérapeutique</span>
               <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 tracking-tight leading-tight font-serif">
                 Les bienfaits du Massage <br className="hidden md:block"/>sur le corps
               </h2>
             </div>
             <div className="lg:col-span-4 border-l-0 lg:border-l-2 border-neutral-100 pl-0 lg:pl-10">
-              <p className="text-neutral-500 text-base font-medium leading-relaxed italic">
+              <p className="text-neutral-500 text-base md:text-lg font-medium leading-relaxed italic">
                 Le massage est bien plus qu’un moment de détente : c’est un soin complet qui agit à la fois sur le corps et l’esprit. Grâce à des gestes précis et adaptés, il favorise l’équilibre naturel de l’organisme et améliore la qualité de vie au quotidien.
               </p>
             </div>
@@ -202,9 +202,9 @@ export default function HomePage() {
                   <div className="p-2 rounded-xl bg-neutral-50 group-hover:bg-black transition-all duration-500">
                     <CheckCircle2 size={16} className="text-neutral-300 group-hover:text-white" />
                   </div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-neutral-900">{b.title}</h4>
+                  <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-900">{b.title}</h4>
                 </div>
-                <p className="text-neutral-500 text-sm font-medium leading-relaxed group-hover:text-neutral-800 transition-colors">
+                <p className="text-neutral-500 text-base font-medium leading-relaxed group-hover:text-neutral-800 transition-colors">
                   {b.desc}
                 </p>
               </motion.div>
@@ -217,14 +217,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 md:gap-24">
             <div className="w-full lg:w-[25%] lg:sticky lg:top-40 h-fit space-y-10 text-left">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu de Soins</span>
+              <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu de Soins</span>
               <h2 className="text-4xl md:text-6xl font-bold text-neutral-900 tracking-tight font-serif">Soins.</h2>
               <div className="h-1 w-12 bg-neutral-900" />
-              <p className="text-[10px] text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
+              <p className="text-xs text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
                 Sélection exclusive pour votre équilibre interne.
               </p>
               <div className="pt-8">
-                <Link href="/booking" className="inline-flex items-center gap-6 px-12 py-4 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
+                <Link href="/booking" className="inline-flex items-center gap-6 px-12 py-4 bg-black text-white text-xs font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
                   Réserver
                 </Link>
               </div>
@@ -241,7 +241,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32 px-6 md:px-12 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 flex flex-col text-left">
-             <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Immersion Continue</span>
+             <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Immersion Continue</span>
              <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 tracking-tight font-serif">Le Rituel post-soin</h2>
           </div>
 
@@ -258,10 +258,10 @@ export default function HomePage() {
                   className="pt-12 pr-8 group"
                 >
                   <div className="flex flex-col space-y-8">
-                    <span className="text-[11px] font-bold text-neutral-200 group-hover:text-neutral-900 transition-colors duration-500 font-serif italic">0{i+1}</span>
+                    <span className="text-xl font-bold text-neutral-200 group-hover:text-neutral-900 transition-colors duration-500 font-serif italic">0{i+1}</span>
                     <div className="space-y-4">
-                      <h4 className="text-[11px] font-bold uppercase tracking-widest text-neutral-900">{step.title}</h4>
-                      <p className="text-sm text-neutral-400 font-medium leading-relaxed italic group-hover:text-neutral-600 transition-colors">
+                      <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-900">{step.title}</h4>
+                      <p className="text-base text-neutral-400 font-medium leading-relaxed italic group-hover:text-neutral-600 transition-colors">
                         {step.desc}
                       </p>
                     </div>
@@ -278,21 +278,21 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 items-start">
             <div className="col-span-1">
               <Link href="/" className="flex flex-col">
-                <span className="text-[11px] font-bold tracking-[0.4em] uppercase">Serenity Relax</span>
-                <span className="text-[9px] text-neutral-600 font-bold tracking-[0.2em] uppercase mt-1">Studio Genève Cointrin</span>
+                <span className="text-xs font-bold tracking-[0.4em] uppercase">Serenity Relax</span>
+                <span className="text-[10px] text-neutral-600 font-bold tracking-[0.2em] uppercase mt-1">Studio Genève Cointrin</span>
               </Link>
             </div>
             
             <div className="space-y-5">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-700 block">Adresse</span>
-              <p className="text-[11px] font-medium text-neutral-400 leading-relaxed">
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-neutral-700 block">Adresse</span>
+              <p className="text-sm font-medium text-neutral-400 leading-relaxed">
                 Joinville 26, 1216 Cointrin
               </p>
             </div>
 
             <div className="space-y-5">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-700 block">Contact</span>
-              <p className="text-[11px] font-medium text-neutral-400 leading-relaxed">
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-neutral-700 block">Contact</span>
+              <p className="text-sm font-medium text-neutral-400 leading-relaxed">
                 +41 78 333 68 23
               </p>
             </div>
@@ -304,10 +304,10 @@ export default function HomePage() {
           </div>
           
           <div className="mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-            <p className="text-[9px] font-bold text-neutral-700 uppercase tracking-widest">© 2024 Serenity & Relax Therapy</p>
+            <p className="text-[10px] font-bold text-neutral-700 uppercase tracking-widest">© 2024 Serenity & Relax Therapy</p>
             <div className="flex gap-10">
-               <span className="text-[9px] font-bold text-neutral-700 uppercase tracking-widest cursor-pointer hover:text-white transition-colors">Mentions Légales</span>
-               <span className="text-[9px] font-bold text-neutral-700 uppercase tracking-widest cursor-pointer hover:text-white transition-colors">Confidentialité</span>
+               <span className="text-[10px] font-bold text-neutral-700 uppercase tracking-widest cursor-pointer hover:text-white transition-colors">Mentions Légales</span>
+               <span className="text-[10px] font-bold text-neutral-700 uppercase tracking-widest cursor-pointer hover:text-white transition-colors">Confidentialité</span>
             </div>
           </div>
         </div>
