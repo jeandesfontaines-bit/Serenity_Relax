@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useRef } from "react";
@@ -69,10 +68,10 @@ const SERVICES_DISPLAY = [
 ];
 
 const RITUAL_STEPS = [
+  { title: "Émotions", desc: "Accueillez vos ressentis sans jugement après le soin. Observez le calme intérieur." },
   { title: "Hydratation", desc: "Buvez de l'eau alcaline ou une infusion tiède pour drainer les toxines libérées." },
-  { title: "Huiles", desc: "Laissez agir les huiles précieuses au moins 1h sur votre peau. Évitez la douche immédiate." },
   { title: "Repos", desc: "Évitez les écrans et les efforts intenses pendant les 2 heures suivant la séance." },
-  { title: "Suivi", desc: "Planifiez votre prochaine séance pour maintenir les bénéfices de ce soin." }
+  { title: "Soin", desc: "Laissez les huiles essentielles pénétrer. Évitez la douche immédiate (attendre 1h)." }
 ];
 
 const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggered: boolean }) => {
@@ -100,13 +99,13 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
           />
         </motion.div>
         <div className="absolute top-6 left-6 z-10">
-           <span className="text-[9px] font-black uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">{s.tag}</span>
+           <span className="text-[9px] font-bold font-sans uppercase tracking-[0.25em] text-white bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full">{s.tag}</span>
         </div>
       </div>
       <div className="flex-1 p-8 flex flex-col justify-between">
         <div className="space-y-3">
-          <h3 className="text-2xl font-bold tracking-tight text-neutral-900 leading-none">{s.name}</h3>
-          <p className="text-neutral-500 text-[13px] font-medium leading-relaxed italic">{s.desc}</p>
+          <h3 className="text-2xl font-serif font-bold tracking-tight text-neutral-900 leading-none">{s.name}</h3>
+          <p className="text-neutral-500 text-sm font-sans font-medium leading-relaxed italic">{s.desc}</p>
         </div>
         <div className="pt-6 flex items-center justify-between border-t border-neutral-100">
           <div className="flex items-center gap-1.5">
@@ -114,7 +113,7 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
               <div key={i} className={`h-1 w-4 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900' : 'bg-neutral-100'}`} />
             ))}
           </div>
-          <span className="text-[10px] font-black text-neutral-400 tracking-widest uppercase">{s.duration}</span>
+          <span className="text-[10px] font-sans font-black text-neutral-400 tracking-widest uppercase">{s.duration}</span>
         </div>
       </div>
     </motion.div>
@@ -129,10 +128,10 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      <motion.div className="fixed top-0 left-0 right-0 h-1.5 bg-primary z-[120] origin-left" style={{ scaleX }} />
+      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-primary z-[120] origin-left" style={{ scaleX }} />
 
       {/* SECTION HÉROS */}
-      <section className="min-h-screen flex flex-col justify-center px-8 pt-44 pb-20 bg-neutral-50 relative border-b border-neutral-100">
+      <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-neutral-50 relative border-b border-neutral-100">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
           <div className="w-full lg:w-[55%] space-y-12">
@@ -141,7 +140,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <span className="text-[11px] font-black uppercase tracking-[0.5em] text-neutral-300 block mb-6">
+              <span className="text-[11px] font-sans font-black uppercase tracking-[0.5em] text-neutral-300 block mb-6">
                 L'Engagement João.
               </span>
               <h1 className="text-5xl md:text-8xl font-bold text-neutral-900 leading-[0.85] tracking-tighter font-serif">
@@ -156,11 +155,11 @@ export default function HomePage() {
               transition={{ delay: 0.3, duration: 1 }}
               className="space-y-8 max-w-xl"
             >
-              <p className="text-xl md:text-2xl font-bold text-neutral-900 leading-tight italic">
+              <p className="text-xl md:text-2xl font-serif font-bold text-neutral-900 leading-tight italic">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </p>
               
-              <div className="space-y-6 text-neutral-600 font-medium leading-relaxed text-base md:text-lg">
+              <div className="space-y-6 text-neutral-600 font-sans font-medium leading-relaxed text-base md:text-lg">
                 <p>
                   Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie.
                 </p>
@@ -168,7 +167,7 @@ export default function HomePage() {
                    <p className="text-neutral-400 italic text-lg leading-snug">
                      « Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
                    </p>
-                   <span className="cursive-font text-3xl text-neutral-300 block mt-2 font-cursive">— João P.</span>
+                   <span className="font-cursive text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
               </div>
 
@@ -176,7 +175,7 @@ export default function HomePage() {
                 <div className="w-14 h-14 rounded-full bg-neutral-900 text-white flex items-center justify-center group-hover:bg-neutral-800 transition-all duration-500 shadow-lg">
                   <ArrowRight size={22} />
                 </div>
-                <span className="text-[11px] font-black uppercase tracking-[0.3em] text-neutral-900">Prendre rendez-vous</span>
+                <span className="text-[11px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Prendre rendez-vous</span>
               </Link>
             </motion.div>
           </div>
@@ -205,19 +204,22 @@ export default function HomePage() {
       <section id="services" className="py-32 md:py-44 px-8 bg-white overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
-            <div className="w-full lg:w-[25%] lg:sticky lg:top-40 h-fit space-y-10">
-              <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu Signature</span>
+            {/* Colonne Texte (Gauché sur desktop) */}
+            <div className="w-full lg:w-[25%] lg:sticky lg:top-32 h-fit space-y-10">
+              <span className="text-xs font-sans font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Menu Signature</span>
               <h2 className="text-5xl md:text-7xl font-bold text-neutral-900 tracking-tight font-serif leading-none">Soins.</h2>
               <div className="h-1 w-12 bg-neutral-900" />
-              <p className="text-xs text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
+              <p className="text-xs font-sans text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
                 Sélection exclusive de 6 rituels pour votre équilibre interne.
               </p>
               <div className="pt-8">
-                <Link href="/booking" className="inline-flex items-center gap-6 px-12 py-4 bg-black text-white text-xs font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
+                <Link href="/booking" className="inline-flex items-center gap-6 px-12 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
                   Réserver
                 </Link>
               </div>
             </div>
+
+            {/* Grille de Cartes (Droit sur desktop) */}
             <div className="w-full lg:w-[75%] grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 pb-12">
               {SERVICES_DISPLAY.map((s, i) => (
                 <ServiceCard key={s.id} s={s} staggered={i % 2 !== 0} />
@@ -231,7 +233,7 @@ export default function HomePage() {
       <section className="py-24 md:py-40 px-8 bg-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 flex flex-col text-left">
-             <span className="text-xs font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Immersion Continue</span>
+             <span className="text-xs font-sans font-bold uppercase tracking-[0.4em] text-neutral-300 mb-6 block">Immersion Continue</span>
              <h2 className="text-4xl md:text-6xl font-bold text-neutral-900 tracking-tight font-serif">Le Rituel post-soin</h2>
           </div>
 
@@ -254,11 +256,11 @@ export default function HomePage() {
                     </span>
                     
                     <div className="space-y-4 pt-4 border-t border-neutral-200 lg:border-t-0 w-full">
-                      <h4 className="text-lg font-bold uppercase tracking-widest text-neutral-900 flex items-center gap-3">
+                      <h4 className="text-lg font-sans font-bold uppercase tracking-widest text-neutral-900 flex items-center gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-neutral-900" />
                         {step.title}
                       </h4>
-                      <p className="text-base text-neutral-500 font-medium leading-relaxed italic group-hover:text-neutral-900 transition-colors">
+                      <p className="text-base font-sans text-neutral-500 font-medium leading-relaxed italic group-hover:text-neutral-900 transition-colors">
                         {step.desc}
                       </p>
                     </div>
@@ -279,13 +281,13 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <div className="font-sans font-bold text-lg md:text-xl tracking-[0.3em] uppercase mb-2">SERENITY RELAX</div>
-            <p className="text-[10px] md:text-xs font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
+            <p className="text-[10px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center mb-12 border-b border-white/5 pb-12">
             <div className="space-y-6">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Localisation</span>
-              <div className="space-y-1 text-sm font-medium text-neutral-400">
+              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Localisation</span>
+              <div className="space-y-1 text-sm font-sans font-medium text-neutral-400">
                 <p>Alfa Business Center</p>
                 <p>Chemin de Joinville 26, 4ème étage</p>
                 <p>1216 Cointrin - Genève</p>
@@ -293,15 +295,15 @@ export default function HomePage() {
             </div>
             
             <div className="space-y-6">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Contact</span>
-              <div className="space-y-1 text-sm font-medium text-neutral-400">
+              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Contact</span>
+              <div className="space-y-1 text-sm font-sans font-medium text-neutral-400">
                 <p>+41 78 333 68 23</p>
                 <p>serenityrelaxtherapy@gmail.com</p>
               </div>
             </div>
 
             <div className="space-y-6">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600 block">Social</span>
+              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Social</span>
               <div className="flex justify-center gap-8 text-neutral-400">
                 <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
                 <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
@@ -311,7 +313,7 @@ export default function HomePage() {
           </div>
           
           <div className="text-center">
-            <p className="text-[9px] font-bold text-neutral-700 uppercase tracking-[0.4em]">
+            <p className="text-[9px] font-sans font-bold text-neutral-700 uppercase tracking-[0.4em]">
               © 2025 Serenity & Relax Therapy — Tous droits réservés
             </p>
           </div>
