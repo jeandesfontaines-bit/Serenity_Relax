@@ -116,7 +116,7 @@ const ServiceCard = ({ s, index }: { s: any, index: number }) => {
             </span>
           </div>
           
-          <div className="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-500">
+          <div className="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg shadow-black/10 group-hover:scale-110 transition-all duration-500">
             <Plus size={16} strokeWidth={2.5} />
           </div>
         </div>
