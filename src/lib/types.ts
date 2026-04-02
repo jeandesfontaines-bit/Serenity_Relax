@@ -35,13 +35,12 @@ export type Appointment = {
 };
 
 export const SERVICES: Service[] = [
-  { id: '1', name: 'Massage Thérapeutique & Relaxant - 60 min', description: 'Approche personnalisée pour relâcher les tensions et apaiser le mental.', duration: '60 min', price: 110 },
-  { id: '2', name: 'Massage Thérapeutique & Relaxant - 90 min', description: 'Une immersion prolongée pour un rééquilibrage profond du corps.', duration: '90 min', price: 160 },
-  { id: '3', name: 'Deep Relax Signature - 60 min', description: 'Le rituel exclusif pour une déconnexion sensorielle totale.', duration: '60 min', price: 120 },
-  { id: '4', name: 'Massage Kalari Thérapeutique - 60 min', description: 'Technique ancestrale indienne pour stimuler les points vitaux.', duration: '60 min', price: 130 },
-  { id: '5', name: 'Drainage Lymphatique & Détox - 60 min', description: 'Soin fluide pour améliorer la circulation et éliminer les toxines.', duration: '60 min', price: 115 },
-  { id: '6', name: 'Deep Tissue – Récupération & Performance - 60 min', description: 'Massage profond ciblant les fascias et les muscles sollicités.', duration: '60 min', price: 125 },
-  { id: '7', name: 'Massage Thaï aux Huiles Chaudes - 60 min', description: 'Alliance d\'étirements et de chaleur pour une vitalité retrouvée.', duration: '60 min', price: 130 },
-  { id: '8', name: 'Aromathérapie - 60 min', description: 'Soin relaxant utilisant les bienfaits des huiles essentielles bio.', duration: '60 min', price: 110 },
-  { id: '9', name: 'Massage à quatre mains - 60 min', description: 'Expérience immersive et profonde orchestrée par deux praticiens.', duration: '60 min', price: 220 },
+  { id: '1', name: 'Massage aux Bambous - Stimulation Musculaire Profonde 60 min', description: 'Technique utilisant des bâtons de bambou pour travailler les tensions en profondeur.', duration: '60 min', price: 110 },
+  { id: '2', name: 'Draineur Lymphatique - Séance ciblée 60 min', description: 'Soin fluide pour améliorer la circulation et éliminer les toxines.', duration: '60 min', price: 110 },
+  { id: '3', name: 'Aromathérapie - Séance ciblée 60 min', description: 'Massage intégrant des huiles essentielles personnalisées pour l\'équilibre.', duration: '60 min', price: 110 },
+  { id: '4', name: 'Réflexologie Plantaire Séance ciblée - 30 min', description: 'Technique ciblée basée sur la stimulation des points réflexes des pieds.', duration: '30 min', price: 60 },
+  { id: '5', name: 'Massage Sportif / Deep Tissue - Séance ciblée 60 min', description: 'Conçu pour les sportifs ou personnes actives, aide à dénouer les muscles.', duration: '60 min', price: 110 },
+  { id: '6', name: 'Massage Thérapeutique - Séance ciblée 60 min', description: 'Massage ciblé (technique suédoise) pour soulager les tensions musculaires.', duration: '60 min', price: 110 },
+  { id: '7', name: 'Massage Deep Relax - Relaxation Profonde 60 min', description: 'Technique lente et profonde pour une détente totale du corps.', duration: '60 min', price: 120 },
+  { id: '8', name: 'Massage Thaï aux Huiles Chaudes - Étirements & Pressions Profondes 60 min', description: 'Technique dynamique combinant pressions profondes et étirements.', duration: '60 min', price: 120 },
 ];

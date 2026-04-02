@@ -1,97 +1,46 @@
-
 'use client';
 
 import React, { useState, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle, Droplets, Moon, HeartPulse, Sparkles, Wind
+  Instagram, Linkedin, ArrowRight, MessageCircle, Droplets, Moon, HeartPulse, Sparkles, Wind, CheckCircle2, ChevronRight
 } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
+import { SERVICES } from '@/lib/types';
 
-// --- DATA ---
-const SERVICES_DISPLAY = [
-  { 
-    id: "01", 
-    name: "Rituel Thérapeutique", 
-    duration: "60 min", 
-    intensity: 4,
-    image: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&q=80&w=1000",
-    desc: "Libération des tensions chroniques et restauration de la fluidité physique.", 
-    tag: "Signature"
-  },
-  { 
-    id: "02", 
-    name: "Deep Relax", 
-    duration: "60 min", 
-    intensity: 2,
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1000",
-    desc: "Immersion sensorielle profonde pour un lâcher-prise nerveux immédiat.", 
-    tag: "Détente"
-  },
-  { 
-    id: "03", 
-    name: "Kalari Thérapeutique", 
-    duration: "75 min", 
-    intensity: 5,
-    image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=1000",
-    desc: "Équilibre énergétique global inspiré des traditions ancestrales.", 
-    tag: "Énergie"
-  },
-  { 
-    id: "04", 
-    name: "Drainage Lymphatique", 
-    duration: "60 min", 
-    intensity: 2,
-    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=1000",
-    desc: "Technique de pompage douce pour revitaliser et détoxifier l'organisme.", 
-    tag: "Vitalité"
-  },
-  { 
-    id: "05", 
-    name: "Récupération Athlète", 
-    duration: "90 min", 
-    intensity: 5,
-    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&q=80&w=1000",
-    desc: "Travail ciblé sur les fascias et trigger points pour sportifs exigeants.", 
-    tag: "Performance"
-  },
-  { 
-    id: "06", 
-    name: "Rituel Maman", 
-    duration: "60 min", 
-    intensity: 1,
-    image: "https://images.unsplash.com/photo-1519824141121-99745c511f73?auto=format&fit=crop&q=80&w=1000",
-    desc: "Soin prénatal enveloppant pour soulager le dos et les jambes lourdes.", 
-    tag: "Douceur"
-  }
-];
+const SERVICES_DISPLAY = SERVICES.map((s, i) => ({
+  ...s,
+  id: (i + 1).toString().padStart(2, '0'),
+  image: `https://picsum.photos/seed/massage-${i+1}/800/1000`,
+  tag: s.id === '3' || s.id === '7' ? "Signature" : s.id === '5' ? "Performance" : "Soin"
+}));
 
 const RITUAL_STEPS = [
   { 
     title: "Hydratation", 
-    desc: "Buvez de l'eau alcaline ou une infusion tiède pour drainer les toxines libérées lors du soin.",
+    desc: "Buvez de l'eau alcaline ou une infusion tiède pour aider votre système lymphatique à éliminer les toxines.",
     icon: <Droplets size={24} />,
-    advice: "Buvez au moins 1.5L d'eau après votre séance."
+    advice: "Buvez au moins 1.5L après votre séance."
   },
   { 
     title: "Huiles", 
-    desc: "Laissez les huiles précieuses pénétrer votre épiderme. Évitez la douche immédiate (attendre 1h).",
+    desc: "Laissez les huiles précieuses pénétrer votre épiderme. Évitez la douche immédiate pendant au moins 1 heure.",
     icon: <Sparkles size={24} />,
-    advice: "Laissez agir pour une peau nourrie et soyeuse."
+    advice: "Laissez agir pour une peau nourrie."
   },
   { 
     title: "Repos", 
-    desc: "Évitez les écrans et les efforts intenses pendant les 2 heures suivant votre séance.",
+    desc: "Évitez les écrans et les efforts intenses. Accordez-vous un moment de calme pour ancrer les bénéfices.",
     icon: <Moon size={24} />,
-    advice: "Privilégiez la lecture ou le calme absolu."
+    advice: "Privilégiez le repos absolu."
   },
   { 
     title: "Suivi", 
-    desc: "Observez vos ressentis dans les jours qui suivent et hydratez-vous généreusement.",
+    desc: "Observez vos ressentis. Des courbatures légères sont normales, c'est le signe que le corps se réaligne.",
     icon: <HeartPulse size={24} />,
-    advice: "Notez les changements de tension physique."
+    advice: "Notez l'évolution de vos tensions."
   }
 ];
 
@@ -125,13 +74,13 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
       </div>
       <div className="flex-1 p-8 flex flex-col justify-between">
         <div className="space-y-3">
-          <h3 className="text-2xl font-serif font-bold tracking-tight text-neutral-900 leading-none">{s.name}</h3>
-          <p className="text-neutral-500 text-sm font-sans font-medium leading-relaxed italic">{s.desc}</p>
+          <h3 className="text-xl font-serif font-bold tracking-tight text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
+          <p className="text-neutral-500 text-sm font-sans font-medium leading-relaxed italic line-clamp-2">{s.description}</p>
         </div>
         <div className="pt-6 flex items-center justify-between border-t border-neutral-100">
           <div className="flex items-center gap-1.5">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className={`h-1 w-4 rounded-full transition-colors duration-500 ${i < s.intensity ? 'bg-neutral-900' : 'bg-neutral-100'}`} />
+              <div key={i} className={`h-1 w-4 rounded-full transition-colors duration-500 ${i < (s.price > 115 ? 5 : 4) ? 'bg-neutral-900' : 'bg-neutral-100'}`} />
             ))}
           </div>
           <span className="text-[10px] font-sans font-black text-neutral-400 tracking-widest uppercase">{s.duration}</span>
@@ -150,7 +99,7 @@ const AftercareSection = () => {
         <div className="grid lg:grid-cols-2 gap-24 items-center">
           
           {/* Carte de détail (À GAUCHE) */}
-          <div className="relative order-2 lg:order-1">
+          <div className="relative">
              <AnimatePresence mode="wait">
                <motion.div
                  key={selectedTip}
@@ -165,7 +114,7 @@ const AftercareSection = () => {
                      {RITUAL_STEPS[selectedTip].icon}
                    </div>
                    <h3 className="text-4xl font-serif font-bold tracking-tight leading-tight">
-                     Pourquoi c'est <br/> <span className="italic font-medium">fondamental ?</span>
+                     Pourquoi c'est <br/> <span className="italic font-medium text-neutral-400">fondamental ?</span>
                    </h3>
                    <p className="text-xl font-sans font-medium text-neutral-500 italic leading-relaxed">
                      {RITUAL_STEPS[selectedTip].desc}
@@ -188,13 +137,13 @@ const AftercareSection = () => {
           </div>
 
           {/* Texte et Liste (À DROITE) */}
-          <div className="space-y-12 order-1 lg:order-2">
+          <div className="space-y-12">
             <div className="space-y-4">
               <span className="text-[11px] font-sans font-black uppercase tracking-[0.4em] text-neutral-300 block mb-4">Immersion Continue</span>
               <h2 className="text-5xl md:text-7xl font-serif font-bold text-neutral-900 leading-none tracking-tighter">
                 Le Rituel <br/> <span className="text-neutral-200 italic font-light">post-soin.</span>
               </h2>
-              <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed pt-6 border-l-2 border-neutral-100 pl-8 italic text-right lg:text-left">
+              <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed pt-6 border-l-2 border-neutral-100 pl-8 italic">
                 Le massage ne s'arrête pas à la porte du studio. Les heures qui suivent sont essentielles pour ancrer vos bénéfices.
               </p>
             </div>
@@ -328,7 +277,7 @@ export default function HomePage() {
               <h2 className="text-5xl md:text-7xl font-bold text-neutral-900 tracking-tight font-serif leading-none">Soins.</h2>
               <div className="h-1 w-12 bg-neutral-900" />
               <p className="text-sm font-sans text-neutral-400 font-bold leading-relaxed uppercase tracking-widest max-w-[200px]">
-                Sélection exclusive de 6 rituels pour votre équilibre interne.
+                Sélection exclusive de {SERVICES_DISPLAY.length} rituels pour votre équilibre interne.
               </p>
               <div className="pt-8">
                 <Link href="/booking" className="inline-flex items-center gap-6 px-12 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
@@ -347,10 +296,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN INTERACTIF - CARTE À GAUCHE, TEXTE À DROITE */}
+      {/* RITUEL POST-SOIN INTERACTIF */}
       <AftercareSection />
 
-      {/* FOOTER - NOIR TRÈS COMPACT */}
+      {/* FOOTER - COMPACT & NOIR */}
       <footer className="bg-[#0a0a0a] text-white py-12 px-8">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-8">
           <div className="space-y-1">
@@ -358,17 +307,22 @@ export default function HomePage() {
             <p className="text-[10px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
           </div>
 
-          <div className="space-y-3 text-[12px] font-sans font-medium text-neutral-400">
-            <p>Alpha Business Center • Chemin de Joinville 26, 1216 Cointrin, Genève</p>
-            <p>+41 78 333 68 23 • serenityrelaxtherapy@gmail.com</p>
-          </div>
-
-          <div className="flex justify-center gap-6 text-neutral-500">
-            <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
-            <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
-              <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
-            </a>
-            <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
+          <div className="grid md:grid-cols-3 gap-8 w-full max-w-4xl text-[11px] font-sans font-medium text-neutral-400">
+            <div>
+              <p className="font-black uppercase tracking-widest text-neutral-600 mb-2">Localisation</p>
+              <p>Alpha Business Center • Joinville 26, 1216 Cointrin</p>
+            </div>
+            <div>
+              <p className="font-black uppercase tracking-widest text-neutral-600 mb-2">Contact</p>
+              <p>+41 78 333 68 23 • serenityrelaxtherapy@gmail.com</p>
+            </div>
+            <div className="flex justify-center items-center gap-6">
+              <Instagram size={16} className="hover:text-white transition-colors cursor-pointer" />
+              <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
+                <MessageCircle size={16} className="hover:text-white transition-colors cursor-pointer" />
+              </a>
+              <Linkedin size={16} className="hover:text-white transition-colors cursor-pointer" />
+            </div>
           </div>
           
           <div className="pt-8 border-t border-white/5 w-full">

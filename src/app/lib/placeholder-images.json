@@ -1,4 +1,3 @@
-
 {
   "placeholderImages": [
     {
@@ -15,39 +14,51 @@
     },
     {
       "id": "service-1",
-      "description": "Massage thérapeutique profond",
-      "imageUrl": "https://picsum.photos/seed/massage-back-therapy/800/1000",
-      "imageHint": "back massage"
+      "description": "Massage aux Bambous",
+      "imageUrl": "https://picsum.photos/seed/bamboo-massage/800/1000",
+      "imageHint": "bamboo massage"
     },
     {
       "id": "service-2",
-      "description": "Relaxation aux huiles essentielles",
-      "imageUrl": "https://picsum.photos/seed/spa-oils-wellness/800/1000",
-      "imageHint": "essential oils"
-    },
-    {
-      "id": "service-3",
-      "description": "Soin sportif et récupération",
-      "imageUrl": "https://picsum.photos/seed/sports-massage-technique/800/1000",
-      "imageHint": "sports massage"
-    },
-    {
-      "id": "service-4",
-      "description": "Massage aux pierres chaudes",
-      "imageUrl": "https://picsum.photos/seed/hot-stones-therapy/800/1000",
-      "imageHint": "hot stones"
-    },
-    {
-      "id": "service-5",
-      "description": "Drainage lymphatique bien-être",
-      "imageUrl": "https://picsum.photos/seed/lymphatic-treatment/800/1000",
+      "description": "Drainage Lymphatique",
+      "imageUrl": "https://picsum.photos/seed/lymph-drainage/800/1000",
       "imageHint": "lymphatic massage"
     },
     {
+      "id": "service-3",
+      "description": "Aromathérapie",
+      "imageUrl": "https://picsum.photos/seed/oils-spa/800/1000",
+      "imageHint": "essential oils"
+    },
+    {
+      "id": "service-4",
+      "description": "Réflexologie Plantaire",
+      "imageUrl": "https://picsum.photos/seed/foot-reflex/800/1000",
+      "imageHint": "foot massage"
+    },
+    {
+      "id": "service-5",
+      "description": "Massage Sportif",
+      "imageUrl": "https://picsum.photos/seed/sports-physio/800/1000",
+      "imageHint": "sports massage"
+    },
+    {
       "id": "service-6",
-      "description": "Massage relaxant crânien",
-      "imageUrl": "https://picsum.photos/seed/head-massage-spa/800/1000",
-      "imageHint": "head massage"
+      "description": "Massage Thérapeutique",
+      "imageUrl": "https://picsum.photos/seed/physiotherapy/800/1000",
+      "imageHint": "back therapy"
+    },
+    {
+      "id": "service-7",
+      "description": "Deep Relax",
+      "imageUrl": "https://picsum.photos/seed/deep-sleep-spa/800/1000",
+      "imageHint": "relaxing massage"
+    },
+    {
+      "id": "service-8",
+      "description": "Massage Thaï",
+      "imageUrl": "https://picsum.photos/seed/thai-stretch/800/1000",
+      "imageHint": "thai massage"
     }
   ]
 }
