@@ -293,40 +293,8 @@ export default function HomePage() {
       <section className="py-20 md:py-32 px-6 md:px-12 lg:px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
-          {/* LISTE ÉTAPES (GAUCHE) */}
-          <div className="space-y-8 md:space-y-12 order-1 lg:order-1">
-            <div className="space-y-4">
-              <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
-              <SectionTitle main="Prolonger" italic="l'état de grâce." />
-            </div>
-            <div className="flex flex-col gap-1 md:gap-2">
-              {AFTERCARE_TIPS.map((tip, i) => (
-                <button 
-                  key={i} 
-                  onClick={() => setSelectedTip(i)} 
-                  className="group flex items-center gap-6 md:gap-8 py-4 md:py-6 border-b border-neutral-100 last:border-0 transition-all duration-500 text-left"
-                >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${selectedTip === i ? 'bg-neutral-900 text-white' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-100 group-hover:text-neutral-400'}`}>
-                    <tip.icon size={16} strokeWidth={1.5} />
-                  </div>
-                  <div className="space-y-1">
-                    <h4 className={`text-[11px] md:text-sm font-sans font-black uppercase tracking-[0.2em] transition-colors duration-500 ${selectedTip === i ? 'text-neutral-900' : 'text-neutral-600 group-hover:text-neutral-800'}`}>
-                      {tip.title}
-                    </h4>
-                    {selectedTip === i && (
-                      <motion.div 
-                        layoutId="active-indicator"
-                        className="h-0.5 w-6 md:w-8 bg-neutral-900 rounded-full"
-                      />
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* CARTE CONSEILS (DROITE) */}
-          <div className="relative pt-6 md:pt-12 lg:pt-32 order-2 lg:order-2">
+          {/* CARTE CONSEILS (GAUCHE) */}
+          <div className="relative pt-6 md:pt-12 lg:pt-32 order-1 lg:order-1">
             <div className="min-h-[300px] md:min-h-[350px] flex flex-col justify-between relative">
                 <AnimatePresence mode="wait">
                 <motion.div 
@@ -362,6 +330,38 @@ export default function HomePage() {
                 <div className="absolute top-0 left-0 text-neutral-50/50 pointer-events-none select-none -z-0">
                     <Sparkles size={250} className="md:w-[350px] md:h-[350px]" />
                 </div>
+            </div>
+          </div>
+
+          {/* LISTE ÉTAPES (DROITE) */}
+          <div className="space-y-8 md:space-y-12 order-2 lg:order-2">
+            <div className="space-y-4">
+              <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
+              <SectionTitle main="Prolonger" italic="l'état de grâce." />
+            </div>
+            <div className="flex flex-col gap-1 md:gap-2">
+              {AFTERCARE_TIPS.map((tip, i) => (
+                <button 
+                  key={i} 
+                  onClick={() => setSelectedTip(i)} 
+                  className="group flex items-center gap-6 md:gap-8 py-4 md:py-6 border-b border-neutral-100 last:border-0 transition-all duration-500 text-left"
+                >
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${selectedTip === i ? 'bg-neutral-900 text-white' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-100 group-hover:text-neutral-400'}`}>
+                    <tip.icon size={16} strokeWidth={1.5} />
+                  </div>
+                  <div className="space-y-1">
+                    <h4 className={`text-[11px] md:text-sm font-sans font-black uppercase tracking-[0.2em] transition-colors duration-500 ${selectedTip === i ? 'text-neutral-900' : 'text-neutral-600 group-hover:text-neutral-800'}`}>
+                      {tip.title}
+                    </h4>
+                    {selectedTip === i && (
+                      <motion.div 
+                        layoutId="active-indicator"
+                        className="h-0.5 w-6 md:w-8 bg-neutral-900 rounded-full"
+                      />
+                    )}
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
 
