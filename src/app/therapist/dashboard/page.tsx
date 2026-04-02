@@ -46,12 +46,11 @@ import {
   LayoutGrid,
   CalendarDays,
   Activity,
-  Sparkles,
-  ArrowUpRight,
-  ArrowDownRight
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SERVICES } from '@/lib/types';
+import { Navbar } from '@/components/navbar';
 import Link from 'next/link';
 
 const formatCHF = (amt: number) => new Intl.NumberFormat('fr-CH', { style: 'currency', currency: 'CHF' }).format(amt);
@@ -158,58 +157,39 @@ export default function TherapistDashboard() {
   if (!isClient) return null;
 
   return (
-    <div className="min-h-screen bg-[#F7F7F2] text-neutral-900 selection:bg-neutral-900 selection:text-white">
-      <header className="h-24 border-b border-neutral-100 flex items-center justify-between px-8 bg-white/80 backdrop-blur-xl sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
-          <div className="flex items-center gap-12">
-            <Link href="/" className="flex flex-col items-start group">
-              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">SERENITY RELAX</span>
-              <span className="font-cursive text-xl text-neutral-400 normal-case -mt-1 group-hover:text-neutral-900 transition-colors">by João</span>
-            </Link>
-            
-            <nav className="hidden lg:flex bg-neutral-50 p-1.5 rounded-full border border-neutral-100">
+    <div className="min-h-screen bg-[#F7F7F2] text-neutral-900 selection:bg-neutral-900 selection:text-white pt-24">
+      <Navbar />
+      
+      <main className="max-w-7xl mx-auto px-8 py-16">
+        <div className="mb-12 flex items-center justify-between">
+            <nav className="flex bg-white p-1.5 rounded-full border border-neutral-100 shadow-sm">
               {[
                 { id: "dashboard", label: "Accueil", icon: LayoutGrid },
                 { id: "calendar", label: "Agenda", icon: CalendarDays },
-                { id: "clients", label: "Clients", icon: Users },
-                { id: "invoices", label: "Factures", icon: Wallet, link: "/therapist/invoices" },
+                { id: "clients", label: "Dossiers", icon: Users },
               ].map((item) => (
-                item.link ? (
-                  <Link
-                    key={item.id}
-                    href={item.link}
-                    className="px-6 py-2 text-[10px] font-sans font-bold uppercase tracking-widest rounded-full transition-all flex items-center gap-2 text-neutral-400 hover:text-neutral-900"
-                  >
-                    <item.icon size={14} /> {item.label}
-                  </Link>
-                ) : (
-                  <button
-                    key={item.id}
-                    onClick={() => { setActiveTab(item.id); setSelectedDate(null); }}
-                    className={`px-6 py-2 text-[10px] font-sans font-bold uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
-                      activeTab === item.id 
-                        ? "bg-white text-neutral-900 shadow-sm border border-neutral-200" 
-                        : "text-neutral-400 hover:text-neutral-900"
-                    }`}
-                  >
-                    <item.icon size={14} /> {item.label}
-                  </button>
-                )
+                <button
+                  key={item.id}
+                  onClick={() => { setActiveTab(item.id); setSelectedDate(null); }}
+                  className={`px-8 py-2.5 text-[10px] font-sans font-bold uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
+                    activeTab === item.id 
+                      ? "bg-neutral-900 text-white shadow-lg" 
+                      : "text-neutral-400 hover:text-neutral-900"
+                  }`}
+                >
+                  <item.icon size={14} /> {item.label}
+                </button>
               ))}
             </nav>
-          </div>
-          
-          <button 
-            onClick={() => openNew()}
-            className="bg-neutral-900 text-white px-8 py-3 rounded-full hover:bg-neutral-800 transition-all flex items-center gap-3 shadow-xl shadow-black/5 active:scale-95"
-          >
-            <Plus size={16} strokeWidth={2.5} />
-            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em]">Nouveau Soin</span>
-          </button>
+            <button 
+              onClick={() => openNew()}
+              className="bg-neutral-900 text-white px-8 py-3 rounded-full hover:bg-neutral-800 transition-all flex items-center gap-3 shadow-xl active:scale-95"
+            >
+              <Plus size={16} strokeWidth={2.5} />
+              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em]">Nouveau Soin</span>
+            </button>
         </div>
-      </header>
 
-      <main className="max-w-7xl mx-auto px-8 py-16">
         <AnimatePresence mode="wait">
           {activeTab === "dashboard" && (
             <motion.div 
@@ -224,7 +204,7 @@ export default function TherapistDashboard() {
                    { label: "Séances aujourd'hui", value: stats.countToday, trend: "up", icon: CalendarDays, color: "text-neutral-900" },
                    { label: "Total Clients", value: clients.length.toString(), trend: "up", icon: Users, color: "text-neutral-900" },
                  ].map((kpi, idx) => (
-                  <div key={idx} className="p-10 rounded-[2.5rem] bg-white border border-neutral-100/50 hover:shadow-2xl hover:shadow-neutral-200/50 transition-all duration-500">
+                  <div key={idx} className="p-10 rounded-[2.5rem] bg-white border border-neutral-100/50 hover:shadow-2xl transition-all duration-500">
                     <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-900 mb-8">
                       <kpi.icon size={20}/>
                     </div>
@@ -365,9 +345,6 @@ export default function TherapistDashboard() {
                          </div>
                        )}
                     </div>
-                    <button onClick={() => openNew(selectedDate || undefined)} className="text-[10px] font-sans font-black uppercase tracking-[0.2em] bg-neutral-900 text-white px-8 py-3 rounded-full hover:bg-neutral-800 transition-all">
-                      Ajouter une séance
-                    </button>
                  </div>
 
                  {!selectedDate ? (
@@ -502,11 +479,11 @@ export default function TherapistDashboard() {
       <AnimatePresence>
         {sidePanel && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSidePanel(false)} className="fixed inset-0 bg-neutral-950/20 backdrop-blur-md z-[60]" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSidePanel(false)} className="fixed inset-0 bg-neutral-950/20 backdrop-blur-md z-[120]" />
             <motion.div 
               initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} 
               transition={{ type: "spring", damping: 35, stiffness: 300 }} 
-              className="fixed right-0 top-0 bottom-0 w-full sm:w-[550px] bg-[#F7F7F2] z-[70] p-16 shadow-2xl flex flex-col"
+              className="fixed right-0 top-0 bottom-0 w-full sm:w-[550px] bg-[#F7F7F2] z-[130] p-16 shadow-2xl flex flex-col"
             >
               <div className="flex justify-between items-center mb-16">
                 <div>
@@ -544,7 +521,7 @@ export default function TherapistDashboard() {
                           <span className="text-lg font-serif font-bold block">{s.name.split(' - ')[0]}</span>
                           <span className="text-[10px] text-neutral-400 font-sans font-black uppercase tracking-[0.2em]">{s.duration}</span>
                         </div>
-                        <span className="text-lg font-serif font-bold">{formatCHF(s.price)}</span>
+                        <span className="text-lg font-serif font-bold">CHF {s.price}</span>
                       </button>
                     ))}
                   </div>

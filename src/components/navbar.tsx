@@ -4,13 +4,15 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutDashboard, Menu, X, LogOut } from 'lucide-react';
+import { LayoutDashboard, Menu, X, LogOut, CalendarDays, Users, Wallet, LayoutGrid } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
+import { usePathname } from 'next/navigation';
 
 export function Navbar() {
   const { user } = useUser();
   const auth = useAuth();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -25,8 +27,21 @@ export function Navbar() {
     setIsMenuOpen(false);
   };
 
+  const isTherapistArea = pathname?.startsWith('/therapist');
+
+  const adminLinks = [
+    { id: "dashboard", label: "Accueil", icon: LayoutGrid, href: "/therapist/dashboard" },
+    { id: "clients", label: "Clients", icon: Users, href: "/therapist/clients" },
+    { id: "invoices", label: "Factures", icon: Wallet, href: "/therapist/invoices" },
+  ];
+
+  const publicLinks = [
+    { label: "Espace Client", href: "/client/portal" },
+    { label: "Admin", href: "/therapist/dashboard" },
+  ];
+
   return (
-    <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-4 md:py-3 bg-[#0a0a0a]">
+    <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-4 md:py-3 bg-[#0a0a0a] border-b border-white/5 shadow-2xl">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
           <span className="font-sans font-bold text-[10px] md:text-xs tracking-[0.2em] text-white uppercase">SERENITY RELAX</span>
@@ -34,12 +49,30 @@ export function Navbar() {
         </Link>
         
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/client/portal" className="text-[10px] font-sans font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors">Espace Client</Link>
-          <Link href="/therapist/dashboard" className="flex items-center gap-2.5 bg-white/5 px-4 py-1.5 rounded-full font-sans font-bold text-[9px] uppercase tracking-widest text-white/80 hover:bg-white/10 transition-all border border-white/5">
-            <LayoutDashboard size={10} /> Admin
-          </Link>
+          {isTherapistArea ? (
+            <>
+              {adminLinks.map((link) => (
+                <Link 
+                  key={link.id} 
+                  href={link.href} 
+                  className={`flex items-center gap-2 text-[10px] font-sans font-bold uppercase tracking-widest transition-colors ${pathname === link.href ? 'text-white' : 'text-white/40 hover:text-white'}`}
+                >
+                  <link.icon size={12} /> {link.label}
+                </Link>
+              ))}
+            </>
+          ) : (
+            <>
+              {publicLinks.map((link) => (
+                <Link key={link.label} href={link.href} className="text-[10px] font-sans font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors">
+                  {link.label}
+                </Link>
+              ))}
+            </>
+          )}
+
           {user && !user.isAnonymous && (
-            <button onClick={handleSignOut} className="text-white/40 hover:text-rose-400 transition-colors">
+            <button onClick={handleSignOut} className="text-white/40 hover:text-rose-400 transition-colors ml-4">
               <LogOut size={14}/>
             </button>
           )}
@@ -58,8 +91,20 @@ export function Navbar() {
             exit={{ opacity: 0, y: -10 }}
             className="absolute top-full left-0 right-0 bg-[#0a0a0a] shadow-2xl border-t border-white/5 p-8 flex flex-col gap-6 md:hidden"
           >
-            <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="text-[10px] font-sans font-bold uppercase tracking-widest text-white/70">Espace Client</Link>
-            <Link href="/therapist/dashboard" onClick={() => setIsMenuOpen(false)} className="text-[10px] font-sans font-bold uppercase tracking-widest text-white/70">Admin</Link>
+            {isTherapistArea ? (
+              adminLinks.map((link) => (
+                <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 text-[10px] font-sans font-bold uppercase tracking-widest text-white/70">
+                  <link.icon size={14} /> {link.label}
+                </Link>
+              ))
+            ) : (
+              publicLinks.map((link) => (
+                <Link key={link.label} href={link.href} onClick={() => setIsMenuOpen(false)} className="text-[10px] font-sans font-bold uppercase tracking-widest text-white/70">
+                  {link.label}
+                </Link>
+              ))
+            )}
+            
             {user && !user.isAnonymous && (
               <button onClick={handleSignOut} className="text-left text-[10px] font-sans font-bold uppercase tracking-widest text-rose-400">Déconnexion</button>
             )}

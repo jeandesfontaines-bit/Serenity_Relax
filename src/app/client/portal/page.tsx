@@ -6,6 +6,7 @@ import { collection, query, where, orderBy } from 'firebase/firestore';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Navbar } from '@/components/navbar';
 import { Download, Sparkles, Clock, History, Loader2, Heart, Droplets, Wind, Calendar, Leaf, ShieldCheck } from 'lucide-react';
 import { format, isAfter } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -46,6 +47,7 @@ export default function ClientPortal() {
   if (!user) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F7F7F2] p-8 text-center">
+        <Navbar />
         <div className="bg-white p-16 rounded-[4rem] shadow-2xl border border-neutral-100 max-w-md w-full">
           <ShieldCheck className="h-20 w-20 text-neutral-100 mx-auto mb-10" />
           <h1 className="text-4xl font-serif font-bold mb-6 text-neutral-900">Espace Privé</h1>
@@ -60,6 +62,7 @@ export default function ClientPortal() {
 
   return (
     <div className="min-h-screen bg-[#F7F7F2] pt-32 pb-32 px-6">
+      <Navbar />
       <div className="max-w-7xl mx-auto space-y-20">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
           <div>
