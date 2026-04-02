@@ -350,46 +350,29 @@ export default function HomePage() {
       {/* RITUEL POST-SOIN INTERACTIF - CARTE À GAUCHE, TEXTE À DROITE */}
       <AftercareSection />
 
-      {/* FOOTER - NOIR COMPACT */}
-      <footer className="bg-[#0a0a0a] text-white pt-16 pb-10 px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="font-sans font-bold text-base md:text-lg tracking-[0.3em] uppercase mb-1">SERENITY RELAX</div>
-            <p className="text-[9px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
+      {/* FOOTER - NOIR SIMPLIFIÉ */}
+      <footer className="bg-[#0a0a0a] text-white py-16 px-8">
+        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-10">
+          <div className="space-y-1">
+            <div className="font-sans font-bold text-sm md:text-base tracking-[0.3em] uppercase">SERENITY RELAX</div>
+            <p className="text-[10px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center mb-12 border-b border-white/5 pb-12">
-            <div className="space-y-4">
-              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Localisation</span>
-              <div className="space-y-1 text-sm font-sans font-medium text-neutral-400">
-                <p>Alpha Business Center</p>
-                <p>Chemin de Joinville 26, 4ème étage</p>
-                <p>1216 Cointrin - Genève</p>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Contact</span>
-              <div className="space-y-1 text-sm font-sans font-medium text-neutral-400">
-                <p>+41 78 333 68 23</p>
-                <p>serenityrelaxtherapy@gmail.com</p>
-              </div>
-            </div>
+          <div className="space-y-4 text-[13px] font-sans font-medium text-neutral-400 max-w-sm">
+            <p>Alpha Business Center • Chemin de Joinville 26, 1216 Cointrin, Genève</p>
+            <p>+41 78 333 68 23 • serenityrelaxtherapy@gmail.com</p>
+          </div>
 
-            <div className="space-y-4">
-              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-neutral-600 block">Social</span>
-              <div className="flex justify-center gap-6 text-neutral-400">
-                <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
-                <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
-                </a>
-                <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
-              </div>
-            </div>
+          <div className="flex justify-center gap-8 text-neutral-500">
+            <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
+            <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
+              <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
+            </a>
+            <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
           </div>
           
-          <div className="text-center">
-            <p className="text-[8px] font-sans font-bold text-neutral-700 uppercase tracking-[0.4em]">
+          <div className="pt-10 border-t border-white/5 w-full">
+            <p className="text-[9px] font-sans font-bold text-neutral-700 uppercase tracking-[0.4em]">
               © 2025 Serenity & Relax Therapy — Tous droits réservés
             </p>
           </div>
