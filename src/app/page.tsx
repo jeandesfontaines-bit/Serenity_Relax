@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { 
   Instagram, Linkedin, ArrowRight, MessageCircle, Plus
 } from "lucide-react";
@@ -15,7 +15,7 @@ const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea
 const SERVICES = [
   { id: "01", name: "Bambous", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75" },
   { id: "02", name: "Draineur Lymphatique", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75" },
-  { id: "03", name: "Aromathérapie", tag: "Sensoriel", desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75" },
+  { id: "03", name: "Aromathérapie", tag: "Sensoriel", desc: "Soin intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75" },
   { id: "04", name: "Réflexologie Plantaire", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75" },
   { id: "05", name: "Sportif", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75" },
   { id: "06", name: "Thérapeutique", tag: "Signature", desc: "Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75" },
@@ -48,12 +48,12 @@ const ServiceCard = ({ s }: { s: any }) => (
     </div>
 
     <div className="px-2 pb-2 space-y-3">
-      <div className="space-y-1">
-        <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">{s.tag}</span>
-        <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
-          {s.name}
-        </h3>
-      </div>
+      <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
+        {s.tag}
+      </span>
+      <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
+        {s.name}
+      </h3>
 
       <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed line-clamp-2 italic">
         {s.desc}
@@ -61,7 +61,7 @@ const ServiceCard = ({ s }: { s: any }) => (
 
       <div className="flex justify-end pt-4 border-t border-neutral-50">
         <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110">
-          <Plus size={14} strokeWidth={2.5} />
+          <Plus size={12} strokeWidth={3} />
         </div>
       </div>
     </div>
@@ -171,26 +171,26 @@ export default function HomePage() {
       </section>
 
       {/* SECTION FAQ */}
-      <section className="py-32 px-6 md:px-12 lg:px-8 bg-white">
+      <section className="py-48 px-6 md:px-12 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row-reverse gap-20 items-start">
-            {/* Colonne Droite: Titre */}
-            <div className="w-full lg:w-[35%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Assistance</span>
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
-                Questions <br className="hidden lg:block"/> <span className="text-neutral-500 italic font-light">fréquentes.</span>
+          <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
+            {/* Colonne Droite: Titre Sticky */}
+            <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
+              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-8">Assistance</span>
+              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter">
+                Questions <br /> <span className="text-neutral-500 italic font-light">fréquentes.</span>
               </h2>
             </div>
 
-            {/* Colonne Gauche: FAQ */}
-            <div className="w-full lg:w-[65%] space-y-12">
+            {/* Colonne Gauche: FAQ en Liste Classique */}
+            <div className="w-full lg:w-[68%] space-y-20">
               {FAQS.map((f, i) => (
-                <div key={i} className="bg-white rounded-[3rem] p-10 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-neutral-50 group transition-all duration-500 hover:shadow-xl">
-                  <div className="flex gap-8 items-start">
-                    <span className="text-[10px] font-sans font-black text-neutral-300 uppercase tracking-widest mt-2">0{i+1}</span>
-                    <div className="space-y-4">
-                      <h4 className="font-serif font-bold text-2xl text-neutral-900 tracking-tight leading-snug">{f.q}</h4>
-                      <p className="text-neutral-500 font-sans font-light leading-relaxed italic border-l-2 border-neutral-50 pl-6">
+                <div key={i} className="group transition-all duration-500 border-b border-neutral-100 pb-16 last:border-0">
+                  <div className="flex gap-12 items-start">
+                    <span className="text-[11px] font-sans font-black text-neutral-200 uppercase tracking-widest mt-2">0{i+1}</span>
+                    <div className="space-y-6">
+                      <h4 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">{f.q}</h4>
+                      <p className="text-neutral-500 font-sans font-light leading-relaxed italic border-l-2 border-neutral-50 pl-8 max-w-xl">
                         {f.a}
                       </p>
                     </div>
@@ -203,7 +203,7 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-neutral-900 text-white pt-16 pb-12 px-6">
+      <footer className="bg-neutral-900 text-white py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
@@ -230,7 +230,6 @@ export default function HomePage() {
               <h3 className="text-[10px] font-sans font-black text-white/30 uppercase tracking-[0.3em]">SOCIAL</h3>
               <div className="flex items-center justify-center gap-8">
                 <Instagram size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
-                <MessageCircle size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
                 <Linkedin size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
               </div>
             </div>
