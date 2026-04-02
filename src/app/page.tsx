@@ -166,12 +166,6 @@ export default function HomePage() {
                 className="object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-102"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent opacity-40" />
-              <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8">
-                <div className="bg-white/90 backdrop-blur-xl px-4 py-2.5 rounded-2xl shadow-xl border border-white/40">
-                  <span className="text-xs md:text-sm font-bold tracking-[0.2em] block text-primary">João</span>
-                  <span className="text-[8px] text-muted-foreground block tracking-[0.3em] uppercase font-black mt-1 opacity-80">Praticien ASCA</span>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
