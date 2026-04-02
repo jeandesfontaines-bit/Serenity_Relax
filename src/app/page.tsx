@@ -10,7 +10,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 
-// --- DONNÉES ---
+// --- DATA ---
 const SERVICES_DISPLAY = [
   { 
     id: "01", 
@@ -126,16 +126,14 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      {/* HEADER INFO COMPACT */}
       <div className="hidden lg:flex fixed top-10 right-32 z-[101] items-center gap-5 text-[10px] font-bold tracking-[0.3em] text-neutral-400 pointer-events-none uppercase">
         {time} • CH / GENEVA
       </div>
 
-      {/* HERO SECTION : PORTRAIT AVEC FORME BLOB NATURELLE */}
       <section className="relative pt-32 md:pt-44 pb-24 px-6 md:px-12 bg-neutral-50">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
-            <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-h-[550px] md:max-h-[650px] w-full mx-auto">
+            <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-h-[550px] md:max-h-[650px] w-full mx-auto overflow-hidden">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 fill
@@ -174,8 +172,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* LES BIENFAITS SECTION */}
-      <section className="py-24 md:py-32 px-6 md:px-12 bg-white">
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-white border-b border-neutral-100">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-24">
             <div className="lg:col-span-8 flex flex-col text-left">
@@ -216,8 +213,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CATALOGUE DES SOINS */}
-      <section className="py-24 md:py-32 px-6 md:px-12 bg-neutral-50 border-y border-neutral-100 overflow-visible">
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-neutral-50 overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 md:gap-24">
             <div className="w-full lg:w-[25%] lg:sticky lg:top-40 h-fit space-y-10 text-left">
@@ -242,7 +238,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN - 4 ÉTAPES CLÉS */}
       <section className="py-24 md:py-32 px-6 md:px-12 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 flex flex-col text-left">
@@ -278,7 +273,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="bg-[#0a0a0a] text-white py-20 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 items-start">
