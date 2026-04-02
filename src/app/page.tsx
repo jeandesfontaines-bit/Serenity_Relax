@@ -221,11 +221,7 @@ export default function HomePage() {
                 alt="Portrait de João P."
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 right-6 md:right-10 text-white">
-                <OverTitle className="mb-1 text-white/70">Fondateur</OverTitle>
-                <p className="text-base md:text-lg font-serif font-bold tracking-tight leading-none">João P.</p>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </motion.div>
           </div>
 
