@@ -123,19 +123,19 @@ const AFTERCARE_TIPS = [
 ];
 
 const OverTitle = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <span className={`text-[10px] font-sans font-black uppercase tracking-[0.5em] text-neutral-400 block mb-6 ${className}`}>
+  <span className={`text-[10px] font-sans font-black uppercase tracking-[0.5em] text-neutral-600 block mb-6 ${className}`}>
     {children}
   </span>
 );
 
 const SectionTitle = ({ main, italic, className = "" }: { main: string, italic: string, className?: string }) => (
   <h2 className={`text-5xl md:text-7xl font-serif font-medium text-neutral-900 leading-[0.9] tracking-tighter ${className}`}>
-    {main} <br/> <span className="text-neutral-200 italic font-light">{italic}</span>
+    {main} <br/> <span className="text-neutral-400 italic font-light">{italic}</span>
   </h2>
 );
 
 const SectionDesc = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <p className={`text-neutral-500 text-lg font-sans font-medium leading-relaxed ${className}`}>
+  <p className={`text-neutral-600 text-lg font-sans font-medium leading-relaxed ${className}`}>
     {children}
   </p>
 );
@@ -199,7 +199,7 @@ export default function HomePage() {
       
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-neutral-900 z-[120] origin-left" style={{ scaleX }} />
 
-      {/* SECTION HÉROS : Portrait à gauche, Texte à droite */}
+      {/* SECTION HÉROS */}
       <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
@@ -231,7 +231,7 @@ export default function HomePage() {
               <OverTitle>L'Engagement João.</OverTitle>
               <h1 className="text-6xl md:text-8xl font-serif font-bold text-neutral-900 leading-[0.85] tracking-tighter">
                 L'équilibre<br />
-                <span className="text-neutral-200 italic font-light">par le toucher.</span>
+                <span className="text-neutral-400 italic font-light">par le toucher.</span>
               </h1>
             </motion.div>
             
@@ -260,12 +260,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION SERVICES : Texte à gauche, Cartes à droite */}
+      {/* SECTION SERVICES */}
       <section id="services" className="py-24 md:py-32 px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[3rem] md:rounded-[5rem] md:mx-6 overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             
-            <div className="w-full lg:w-[28%] lg:sticky lg:top-24 h-fit text-left">
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-12 h-fit text-left">
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-8" />
@@ -287,11 +287,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN : Carte interactive à gauche, Liste à droite */}
+      {/* RITUEL POST-SOIN */}
       <section className="py-40 px-8 bg-white max-w-7xl mx-auto overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
-          {/* COLONNE GAUCHE: CARTE INTERACTIVE */}
+          {/* CARTE CONSEILS (GAUCHE) */}
           <div className="relative pt-12 lg:pt-32">
             <div className="min-h-[400px] flex flex-col justify-between relative">
                 <AnimatePresence mode="wait">
@@ -317,7 +317,7 @@ export default function HomePage() {
                                   </h3>
                                 </motion.div>
                                 <div className="h-[1px] w-full bg-neutral-200/50" />
-                                <p className="text-neutral-500 text-lg font-sans font-medium leading-relaxed max-w-xl">
+                                <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed max-w-xl">
                                     {AFTERCARE_TIPS[selectedTip].desc}
                                 </p>
                             </div>
@@ -331,7 +331,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* COLONNE DROITE: LISTE ÉTAPES */}
+          {/* LISTE ÉTAPES (DROITE) */}
           <div className="space-y-12">
             <div className="space-y-4">
               <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
@@ -366,7 +366,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER ULTRA COMPACT */}
+      {/* FOOTER */}
       <footer className="bg-[#0a0a0a] text-white py-8 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start">
