@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle, Clock, Plus, Minus
+  Instagram, Linkedin, ArrowRight, MessageCircle, Plus, Minus
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -48,7 +48,7 @@ const ServiceCard = ({ s }: { s: any }) => (
 
     <div className="px-6 pb-8 pt-2 space-y-4 text-left">
       <div>
-        <span className="text-[8px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-2">{s.tag}</span>
+        <span className="text-[8px] font-sans font-black uppercase tracking-[0.3em] text-white bg-black px-3 py-1 rounded-full inline-block mb-3">{s.tag}</span>
         <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
           {s.name}
         </h3>
@@ -58,14 +58,7 @@ const ServiceCard = ({ s }: { s: any }) => (
         {s.desc}
       </p>
 
-      <div className="flex justify-between items-center pt-4 border-t border-neutral-50">
-        <div className="flex items-center gap-2">
-          <Clock size={12} className="text-neutral-300" />
-          <span className="text-[9px] font-sans font-black uppercase tracking-widest text-neutral-300">
-            {s.duration}
-          </span>
-        </div>
-        
+      <div className="flex justify-end items-center pt-4 border-t border-neutral-50">
         <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110">
           <Plus size={14} strokeWidth={2.5} />
         </div>
@@ -142,7 +135,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION SERVICES */}
-      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 bg-[#FAF9F6] border-y border-neutral-100/50 rounded-[5rem] lg:mx-6">
+      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -218,16 +211,16 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#121212] text-white py-12 px-6">
+      <footer className="bg-white text-neutral-900 pt-8 pb-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-8">
+          <div className="text-center mb-10">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4">SERENITY RELAX</h2>
             <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-neutral-500 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-24 w-full text-center">
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">LOCALISATION</h3>
+              <h3 className="text-[10px] font-sans font-black text-neutral-300 uppercase tracking-[0.3em]">LOCALISATION</h3>
               <div className="text-sm font-sans text-neutral-400 space-y-2">
                 <p>Alfa Business Center</p>
                 <p>Chemin de Joinville 26, 4ème étage</p>
@@ -235,18 +228,18 @@ export default function HomePage() {
               </div>
             </div>
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">CONTACT</h3>
+              <h3 className="text-[10px] font-sans font-black text-neutral-300 uppercase tracking-[0.3em]">CONTACT</h3>
               <div className="text-sm font-sans text-neutral-400 space-y-2">
                 <p>+41 78 333 68 23</p>
                 <p>serenityrelaxtherapy@gmail.com</p>
               </div>
             </div>
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">SOCIAL</h3>
+              <h3 className="text-[10px] font-sans font-black text-neutral-300 uppercase tracking-[0.3em]">SOCIAL</h3>
               <div className="flex items-center justify-center gap-8">
-                <Instagram size={20} className="text-neutral-400 hover:text-white transition-colors cursor-pointer" />
-                <MessageCircle size={20} className="text-neutral-400 hover:text-white transition-colors cursor-pointer" />
-                <Linkedin size={20} className="text-neutral-400 hover:text-white transition-colors cursor-pointer" />
+                <Instagram size={20} className="text-neutral-300 hover:text-neutral-900 transition-colors cursor-pointer" />
+                <MessageCircle size={20} className="text-neutral-300 hover:text-neutral-900 transition-colors cursor-pointer" />
+                <Linkedin size={20} className="text-neutral-300 hover:text-neutral-900 transition-colors cursor-pointer" />
               </div>
             </div>
           </div>
