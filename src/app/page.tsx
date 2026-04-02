@@ -19,7 +19,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 4,
-    image: "https://picsum.photos/seed/bamboo-massage/800/1000",
+    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.cc6cf032.png&w=3840&q=75",
     desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", 
     tag: "Profond"
   },
@@ -29,7 +29,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 2,
-    image: "https://picsum.photos/seed/lymph-drainage/800/1000",
+    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75",
     desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", 
     tag: "Vitalité"
   },
@@ -39,7 +39,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 2,
-    image: "https://picsum.photos/seed/oils-spa/800/1000",
+    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75",
     desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", 
     tag: "Sensoriel"
   },
@@ -49,7 +49,7 @@ const SERVICES = [
     duration: "30 min", 
     price: 60,
     intensity: 3,
-    image: "https://picsum.photos/seed/foot-reflex/800/1000",
+    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75",
     desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", 
     tag: "Ciblé"
   },
@@ -59,7 +59,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 5,
-    image: "https://picsum.photos/seed/sports-physio/800/1000",
+    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75",
     desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", 
     tag: "Performance"
   },
@@ -69,7 +69,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 110,
     intensity: 4,
-    image: "https://picsum.photos/seed/physiotherapy/800/1000",
+    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75",
     desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", 
     tag: "Signature"
   },
@@ -79,7 +79,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 120,
     intensity: 2,
-    image: "https://picsum.photos/seed/deep-sleep-spa/800/1000",
+    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75",
     desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", 
     tag: "Détente"
   },
@@ -89,7 +89,7 @@ const SERVICES = [
     duration: "60 min", 
     price: 120,
     intensity: 4,
-    image: "https://picsum.photos/seed/thai-stretch/800/1000",
+    image: "https://9000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75",
     desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale avec des huiles chaudes.", 
     tag: "Dynamique"
   }
