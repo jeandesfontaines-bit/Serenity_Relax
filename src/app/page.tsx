@@ -134,7 +134,7 @@ export default function HomePage() {
       <section className="py-24 bg-background">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full mb-6 border border-black/[0.03] shadow-sm">
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full mb-6 border border-black/[0.02] shadow-sm">
               <Sparkles className="h-3 w-3 text-amber-500" />
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Le Rituel Post-Soin</span>
             </div>
