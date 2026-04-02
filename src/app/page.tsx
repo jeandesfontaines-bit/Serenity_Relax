@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { 
   ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, Menu, 
   Heart, Clock, Calendar, Sun, Instagram, Activity,
-  ShieldCheck, Check, ChevronRight, X, MapPin
+  ShieldCheck, Check, ChevronRight, X, MapPin, Eye, Zap
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 
@@ -15,26 +15,26 @@ import { Navbar } from '@/components/navbar';
 const SERVICES = [
   {
     id: "01",
-    name: "Massage Thérapeutique & Relaxant",
-    duration: "60 MIN",
+    name: "Massage thérapeutique & relaxant",
+    duration: "60 min",
     icon: <ShieldCheck size={22} strokeWidth={1.5} />,
     glow: "#E8F2F0",
-    desc: "Approche personnalisée pour relâcher les tensions et apaiser le mental. Rééquilibre le corps en profondeur.",
-    tag: "Soin Ciblé"
+    desc: "Une approche personnalisée pour relâcher les tensions et apaiser le mental. Rééquilibre le corps en profondeur.",
+    tag: "Soin ciblé"
   },
   {
     id: "02",
-    name: "Deep Relax Signature",
-    duration: "60 MIN",
+    name: "Deep relax signature",
+    duration: "60 min",
     icon: <Moon size={22} strokeWidth={1.5} />,
     glow: "#E8F0F2",
-    desc: "Rituel exclusif pour une déconnexion sensorielle totale et un lâcher-prise immédiat.",
+    desc: "Un rituel exclusif pour une déconnexion sensorielle totale et un lâcher-prise immédiat.",
     tag: "Sérénité"
   },
   {
     id: "03",
-    name: "Massage Kalari Thérapeutique",
-    duration: "75 MIN",
+    name: "Massage kalari thérapeutique",
+    duration: "75 min",
     icon: <Wind size={22} strokeWidth={1.5} />,
     glow: "#F2EDE8",
     desc: "Technique ancestrale indienne stimulant les points vitaux pour rééquilibrer les flux énergétiques.",
@@ -42,17 +42,17 @@ const SERVICES = [
   },
   {
     id: "04",
-    name: "Drainage Lymphatique & Détox",
-    duration: "60 MIN",
+    name: "Drainage lymphatique & détox",
+    duration: "60 min",
     icon: <Droplets size={22} strokeWidth={1.5} />,
     glow: "#F0F4F8",
-    desc: "Soin fluide et rythmique pour améliorer la circulation et éliminer les toxines du corps.",
+    desc: "Un soin fluide et rythmique pour améliorer la circulation et éliminer les toxines du corps.",
     tag: "Détox"
   },
   {
     id: "05",
-    name: "Deep Tissue Performance",
-    duration: "60 MIN",
+    name: "Deep tissue performance",
+    duration: "60 min",
     icon: <Activity size={22} strokeWidth={1.5} />,
     glow: "#E8EBF2",
     desc: "Massage profond ciblant les fascias et les muscles intensément sollicités. Idéal récupération.",
@@ -60,11 +60,11 @@ const SERVICES = [
   },
   {
     id: "06",
-    name: "Massage Thaï Huiles Chaudes",
-    duration: "60 MIN",
+    name: "Massage thaï huiles chaudes",
+    duration: "60 min",
     icon: <Sun size={22} strokeWidth={1.5} />,
     glow: "#F2E8E8",
-    desc: "Alliance d'étirements doux et de chaleur pour une vitalité retrouvée et une souplesse accrue.",
+    desc: "Une alliance d'étirements doux et de chaleur pour une vitalité retrouvée et une souplesse accrue.",
     tag: "Vitalité"
   }
 ];
@@ -203,7 +203,7 @@ export default function HomePage() {
           <span className="hero-title-mask">
             <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1 }} className="block text-[10px] font-bold uppercase tracking-[0.5em] text-white/70 mb-6">Genève • Cointrin</motion.span>
           </span>
-          <h1 className="text-6xl md:text-[8rem] font-fraunces font-black leading-[0.85] tracking-tighter mb-12 text-white">
+          <h1 className="text-5xl md:text-9xl font-fraunces font-black leading-[0.85] tracking-tighter mb-12 text-white">
             <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 }} className="block">L'art du</motion.span></span>
             <span className="hero-title-mask"><motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.2 }} className="block serif-italic font-light lowercase tracking-normal">mouvement calme.</motion.span></span>
           </h1>
@@ -222,9 +222,9 @@ export default function HomePage() {
       <section className="py-32 px-6 md:px-10 bg-white relative overflow-hidden border-b border-neutral-100">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           <div className="lg:col-span-5 relative">
-             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 block mb-8">La Philosophie</span>
-             <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 mb-12">
-               L'Engagement <span className="serif-italic font-light">João.</span>
+             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 block mb-8">La philosophie</span>
+             <h2 className="text-4xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 mb-12">
+               L'engagement <span className="serif-italic font-light">João.</span>
              </h2>
              
              <motion.div 
@@ -265,9 +265,9 @@ export default function HomePage() {
       <section className="py-32 px-6 md:px-10 bg-[#F9F9F7] border-b border-neutral-100">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col items-center text-center mb-24 space-y-6">
-            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Expertise Thérapeutique</span>
-            <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900 italic">
-              La Carte <span className="serif-italic font-light lowercase">Rituels.</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Expertise thérapeutique</span>
+            <h2 className="text-4xl md:text-7xl font-fraunces font-black tracking-tighter leading-[0.9] text-neutral-900">
+              La carte des <span className="serif-italic font-light lowercase">rituels.</span>
             </h2>
             <p className="text-lg text-neutral-400 max-w-lg font-fraunces italic font-light">
               Des techniques précises pour un équilibre musculaire et nerveux optimal. Un moment de déconnexion totale.
@@ -282,47 +282,64 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 4: LE RITUEL POST-SOIN */}
-      <section className="py-32 px-6 md:px-10 bg-white">
+      {/* SECTION 4: LE RITUEL POST-SOIN (AMÉLIORÉ) */}
+      <section className="py-32 px-6 md:px-10 bg-white border-b border-neutral-100">
         <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col items-center text-center mb-24 space-y-6">
-            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400">7 gestes pour magnifier l'expérience</span>
-            <h2 className="text-5xl md:text-7xl font-fraunces font-black tracking-tighter text-neutral-900">
-              Le Rituel <span className="serif-italic font-light">Post-Soin</span>
+          <div className="flex flex-col items-center text-center mb-32 space-y-6">
+            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Art de vivre</span>
+            <h2 className="text-4xl md:text-7xl font-fraunces font-black tracking-tighter text-neutral-900">
+              Le rituel <span className="serif-italic font-light">post-soin.</span>
             </h2>
+            <p className="text-lg text-neutral-400 max-w-2xl font-fraunces italic font-light">
+              Quelques gestes essentiels pour magnifier les bienfaits de votre séance et prolonger cet état de grâce.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-20 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
             {RITUAL_STEPS.map((step, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.8 }}
-                className="group flex flex-col space-y-6"
+                className="group relative"
               >
-                <div className="w-14 h-14 rounded-full border border-neutral-100 flex items-center justify-center text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-500">
-                  {React.createElement(step.icon as any, { size: 24, strokeWidth: 1 })}
-                </div>
-                <div className="space-y-4">
-                  <h4 className="font-fraunces font-bold text-neutral-900 text-xl">{step.title}</h4>
-                  <p className="text-neutral-400 text-sm leading-relaxed">{step.desc}</p>
+                {/* Numéro éditorial en arrière-plan */}
+                <span className="absolute -top-12 -left-4 text-8xl md:text-9xl font-fraunces font-bold text-neutral-50/80 select-none z-0">
+                  0{i + 1}
+                </span>
+                
+                <div className="relative z-10 space-y-6">
+                  <div className="w-14 h-14 rounded-full border border-neutral-100 flex items-center justify-center text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-500 shadow-sm">
+                    {React.createElement(step.icon as any, { size: 24, strokeWidth: 1 })}
+                  </div>
+                  <div className="space-y-4">
+                    <h4 className="font-fraunces font-bold text-neutral-900 text-2xl group-hover:translate-x-1 transition-transform">
+                      {step.title}
+                    </h4>
+                    <p className="text-neutral-400 text-sm leading-relaxed max-w-xs italic font-fraunces font-light">
+                      {step.desc}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}
             
-            <Link href="/booking" className="lg:col-span-1 bg-neutral-900 rounded-[3rem] p-10 flex flex-col justify-between text-white group relative overflow-hidden shadow-2xl transition-all hover:scale-[1.02]">
-              <div className="relative z-10 space-y-6">
-                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/50">Engagement</span>
-                <p className="font-fraunces text-2xl leading-tight">Prêt pour votre prochain moment de calme ?</p>
+            {/* CTA Final Intégré */}
+            <Link href="/booking" className="lg:col-span-2 md:col-span-2 bg-neutral-900 rounded-[3rem] p-12 flex flex-col md:flex-row justify-between items-center text-white group relative overflow-hidden shadow-2xl transition-all hover:scale-[1.01]">
+              <div className="relative z-10 space-y-4 text-center md:text-left">
+                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">Engagement bien-être</span>
+                <p className="font-fraunces text-3xl md:text-4xl leading-tight max-w-md">
+                  Prêt pour votre prochain <span className="serif-italic">moment de calme ?</span>
+                </p>
               </div>
-              <div className="relative z-10 flex justify-between items-center mt-10">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Réserver</span>
+              <div className="relative z-10 flex items-center gap-4 mt-8 md:mt-0 px-8 py-4 bg-white/10 rounded-full hover:bg-white hover:text-neutral-900 transition-all">
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Réserver maintenant</span>
                 <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
               </div>
-              <div className="absolute top-0 right-0 p-6 opacity-10">
-                <Sparkles size={80} strokeWidth={0.5} />
+              <div className="absolute -top-10 -right-10 p-10 opacity-10">
+                <Sparkles size={160} strokeWidth={0.5} />
               </div>
             </Link>
           </div>
