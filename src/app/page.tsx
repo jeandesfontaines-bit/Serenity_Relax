@@ -131,11 +131,11 @@ export default function HomePage() {
         {time} • CH / GENEVA
       </div>
 
-      {/* HERO SECTION : PORTRAIT FIXÉ SANS BLOB */}
+      {/* HERO SECTION : PORTRAIT AVEC FORME BLOB NATURELLE */}
       <section className="relative pt-32 md:pt-44 pb-24 px-6 md:px-12 bg-neutral-50">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
-            <div className="relative aspect-square md:aspect-[4/5] rounded-3xl overflow-hidden bg-white shadow-2xl max-h-[550px] md:max-h-[650px] w-full mx-auto">
+            <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-h-[550px] md:max-h-[650px] w-full mx-auto">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 fill
@@ -155,12 +155,14 @@ export default function HomePage() {
                 <p className="text-neutral-900 text-xl font-bold italic border-l-4 border-neutral-900 pl-8 py-2">
                   "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
                 </p>
-                <p>
-                  Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Je suis passionnée par le bien-être global et mon travail consiste à offrir des services de massothérapie personnalisés pour améliorer votre qualité de vie.
-                </p>
-                <p>
-                  J'utilise des techniques variées et dédiées, comme le Massage Classique, Relaxant et Thérapeutique, pour apaiser votre corps et revitaliser votre esprit, créant ainsi une harmonie parfaite.
-                </p>
+                <div className="space-y-4">
+                  <p>
+                    Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Je suis passionnée par le bien-être global et mon travail consiste à offrir des services de massothérapie personnalisés pour améliorer votre qualité de vie.
+                  </p>
+                  <p>
+                    J'utilise des techniques variées et dédiées, comme le Massage Classique, Relaxant et Thérapeutique, pour apaiser votre corps et revitaliser votre esprit, créant ainsi une harmonie parfaite.
+                  </p>
+                </div>
                 <div className="pt-10">
                   <Link href="/booking" className="inline-flex items-center gap-6 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-900 group">
                     Réserver une séance <ArrowRight size={16} className="group-hover:translate-x-3 transition-transform" />
@@ -240,7 +242,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN - 4 ÉTAPES SÉLECTIONNÉES */}
+      {/* RITUEL POST-SOIN - 4 ÉTAPES CLÉS */}
       <section className="py-24 md:py-32 px-6 md:px-12 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 flex flex-col text-left">
