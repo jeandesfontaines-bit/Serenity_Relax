@@ -4,7 +4,7 @@
 import React, { useState, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle, CheckCircle2, Droplets, Moon, HeartPulse, Sparkles, Wind
+  Instagram, Linkedin, ArrowRight, MessageCircle, Droplets, Moon, HeartPulse, Sparkles, Wind
 } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -350,20 +350,20 @@ export default function HomePage() {
       {/* RITUEL POST-SOIN INTERACTIF - CARTE À GAUCHE, TEXTE À DROITE */}
       <AftercareSection />
 
-      {/* FOOTER - NOIR SIMPLIFIÉ */}
-      <footer className="bg-[#0a0a0a] text-white py-16 px-8">
-        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-10">
+      {/* FOOTER - NOIR TRÈS COMPACT */}
+      <footer className="bg-[#0a0a0a] text-white py-12 px-8">
+        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-8">
           <div className="space-y-1">
-            <div className="font-sans font-bold text-sm md:text-base tracking-[0.3em] uppercase">SERENITY RELAX</div>
+            <div className="font-sans font-bold text-sm tracking-[0.3em] uppercase">SERENITY RELAX</div>
             <p className="text-[10px] font-sans font-medium italic tracking-[0.3em] text-neutral-500 uppercase">Excellence Thérapeutique</p>
           </div>
 
-          <div className="space-y-4 text-[13px] font-sans font-medium text-neutral-400 max-w-sm">
+          <div className="space-y-3 text-[12px] font-sans font-medium text-neutral-400">
             <p>Alpha Business Center • Chemin de Joinville 26, 1216 Cointrin, Genève</p>
             <p>+41 78 333 68 23 • serenityrelaxtherapy@gmail.com</p>
           </div>
 
-          <div className="flex justify-center gap-8 text-neutral-500">
+          <div className="flex justify-center gap-6 text-neutral-500">
             <Instagram size={18} className="hover:text-white transition-colors cursor-pointer" />
             <a href="https://wa.me/41783336823" target="_blank" rel="noopener noreferrer">
               <MessageCircle size={18} className="hover:text-white transition-colors cursor-pointer" />
@@ -371,7 +371,7 @@ export default function HomePage() {
             <Linkedin size={18} className="hover:text-white transition-colors cursor-pointer" />
           </div>
           
-          <div className="pt-10 border-t border-white/5 w-full">
+          <div className="pt-8 border-t border-white/5 w-full">
             <p className="text-[9px] font-sans font-bold text-neutral-700 uppercase tracking-[0.4em]">
               © 2025 Serenity & Relax Therapy — Tous droits réservés
             </p>
