@@ -218,14 +218,14 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#121212] text-white pt-32 pb-16 px-6">
+      <footer className="bg-[#121212] text-white pt-16 pb-16 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-24">
+          <div className="text-center mb-12">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-6">SERENITY RELAX</h2>
             <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-neutral-500 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:gap-32 w-full text-center mb-32">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:gap-32 w-full text-center">
             <div className="space-y-8">
               <h3 className="text-[10px] font-sans font-black text-neutral-600 uppercase tracking-[0.3em]">LOCALISATION</h3>
               <div className="text-sm font-sans text-neutral-400 space-y-3">
