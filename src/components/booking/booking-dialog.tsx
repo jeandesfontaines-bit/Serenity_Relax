@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
@@ -7,7 +6,12 @@ import { SERVICES } from '@/lib/types';
 import { ReactNode } from 'react';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 
-export function BookingDialog({ children }: { children: ReactNode }) {
+interface BookingDialogProps {
+  children: ReactNode;
+  serviceId?: string;
+}
+
+export function BookingDialog({ children, serviceId }: BookingDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -18,7 +22,7 @@ export function BookingDialog({ children }: { children: ReactNode }) {
           <DialogTitle>Réserver un soin Serenity Relax</DialogTitle>
         </VisuallyHidden.Root>
         <div className="p-1">
-          <BookingFlow services={SERVICES} />
+          <BookingFlow services={SERVICES} initialServiceId={serviceId} />
         </div>
       </DialogContent>
     </Dialog>

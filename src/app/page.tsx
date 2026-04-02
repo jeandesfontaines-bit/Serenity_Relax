@@ -1,27 +1,27 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight
+  Instagram, Linkedin
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
-import Link from 'next/link';
 import { BookingDialog } from '@/components/booking/booking-dialog';
+import { SERVICES as LIB_SERVICES } from '@/lib/types';
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
-const SERVICES = [
-  { id: "01", name: "Bambous", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75" },
-  { id: "02", name: "Draineur Lymphatique", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75" },
-  { id: "03", name: "Aromathérapie", tag: "Sensoriel", desc: "Soin intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75" },
-  { id: "04", name: "Réflexologie Plantaire", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75" },
-  { id: "05", name: "Sportif", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75" },
-  { id: "06", name: "Thérapeutique", tag: "Signature", desc: "Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75" },
-  { id: "07", name: "Deep Relax", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75" },
-  { id: "08", name: "Thaï", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75" }
+// Sync IDs with lib/types.ts for consistent pre-selection
+const HOME_SERVICES = [
+  { id: "1", name: "Bambous", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75" },
+  { id: "2", name: "Draineur Lymphatique", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75" },
+  { id: "3", name: "Aromathérapie", tag: "Sensoriel", desc: "Soin intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75" },
+  { id: "4", name: "Réflexologie Plantaire", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75" },
+  { id: "5", name: "Sportif", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75" },
+  { id: "6", name: "Thérapeutique", tag: "Signature", desc: "Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75" },
+  { id: "7", name: "Deep Relax", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75" },
+  { id: "8", name: "Thaï", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75" }
 ];
 
 const FAQS = [
@@ -32,35 +32,36 @@ const FAQS = [
 ];
 
 const ServiceCard = ({ s }: { s: any }) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="relative w-full max-w-[320px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group"
-  >
-    <div className="relative aspect-square overflow-hidden mb-6 rounded-[2rem]">
-      <Image 
-        src={s.image} 
-        fill
-        unoptimized
-        className="object-cover transition-transform duration-1000 group-hover:scale-110" 
-        alt={s.name}
-        data-ai-hint={s.tag}
-      />
-    </div>
+  <BookingDialog serviceId={s.id}>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="relative w-full max-w-[320px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group cursor-pointer"
+    >
+      <div className="relative aspect-square overflow-hidden mb-6 rounded-[2rem]">
+        <Image 
+          src={s.image} 
+          fill
+          unoptimized
+          className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+          alt={s.name}
+        />
+      </div>
 
-    <div className="px-2 pb-20 space-y-3">
-      <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
-        {s.tag}
-      </span>
-      <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
-        {s.name}
-      </h3>
-      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed">
-        {s.desc}
-      </p>
-    </div>
-  </motion.div>
+      <div className="px-2 pb-20 space-y-3">
+        <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
+          {s.tag}
+        </span>
+        <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
+          {s.name}
+        </h3>
+        <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed">
+          {s.desc}
+        </p>
+      </div>
+    </motion.div>
+  </BookingDialog>
 );
 
 export default function HomePage() {
@@ -152,12 +153,12 @@ export default function HomePage() {
 
             <div className="w-full lg:w-[68%] grid grid-cols-1 md:grid-cols-2 gap-x-12">
                <div className="flex flex-col gap-12 items-center md:items-end">
-                  {SERVICES.filter((_, i) => i % 2 === 0).map((s) => (
+                  {HOME_SERVICES.filter((_, i) => i % 2 === 0).map((s) => (
                     <ServiceCard key={s.id} s={s} />
                   ))}
                </div>
                <div className="flex flex-col gap-12 md:pt-32 items-center md:items-start">
-                  {SERVICES.filter((_, i) => i % 2 !== 0).map((s) => (
+                  {HOME_SERVICES.filter((_, i) => i % 2 !== 0).map((s) => (
                     <ServiceCard key={s.id} s={s} />
                   ))}
                </div>
