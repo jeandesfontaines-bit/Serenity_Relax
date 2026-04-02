@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, CheckCircle2, Sparkles, MessageCircle
+  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle
 } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -178,7 +178,7 @@ export default function HomePage() {
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-10" />
-              <p className="text-[13px] text-neutral-600 font-sans font-bold leading-relaxed uppercase tracking-widest max-w-sm mb-12">
+              <p className="text-xl md:text-2xl font-serif font-bold text-neutral-900 leading-tight italic mb-12">
                 Une sélection exclusive de {SERVICES.length} rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
               <Link href="/booking" className="inline-flex items-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all shadow-xl">
