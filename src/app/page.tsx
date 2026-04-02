@@ -216,7 +216,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN - STYLE ÉDITORIAL */}
+      {/* RITUEL POST-SOIN - STYLE ÉDITORIAL LIGNES */}
       <section className="pt-24 pb-12 md:pb-16 px-6 md:px-12 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-20 md:mb-24 text-center md:text-right">
@@ -227,7 +227,7 @@ export default function HomePage() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-neutral-100">
+          <div className="grid grid-cols-1 gap-0 border-t border-neutral-100">
             {AFTERCARE_TIPS.map((tip, idx) => (
               <div 
                 key={tip.id} 
