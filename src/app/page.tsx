@@ -1,7 +1,6 @@
-
 'use client';
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   Instagram, Linkedin, CheckCircle2, ArrowRight
@@ -113,28 +112,14 @@ const ServiceCard = ({ s, staggered }: { s: typeof SERVICES_DISPLAY[0], staggere
 };
 
 export default function HomePage() {
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    const updateTime = () => setTime(new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }));
-    updateTime();
-    const interval = setInterval(updateTime, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
       
       <section className="relative pt-32 md:pt-44 pb-24 px-6 md:px-12 bg-neutral-50">
         <div className="max-w-7xl mx-auto">
-          {/* HORLOGE ABSOLUE DANS LA SECTION (Ne fixe plus au scroll) */}
-          <div className="hidden lg:flex absolute top-12 right-12 items-center gap-5 text-xs font-bold tracking-[0.3em] text-neutral-300 pointer-events-none uppercase">
-            {time} • CH / GENEVA
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
-            {/* BLOB STATIQUE SANS ANIMATION */}
+            {/* PORTRAIT BLOB STATIQUE SANS DÉFORMATION */}
             <div className="relative aspect-square md:aspect-[4/5] blob-shape bg-white shadow-2xl max-h-[550px] md:max-h-[650px] w-full mx-auto overflow-hidden">
               <Image 
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
@@ -157,7 +142,7 @@ export default function HomePage() {
                 </p>
                 <div className="space-y-4 text-base md:text-lg">
                   <p>
-                    Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Je suis passionnée par le bien-être global et mon travail consiste à offrir des services de massothérapie personnalisés pour améliorer votre qualité de vie.
+                    Bonjour, je suis João, massothérapeute et le fondateur de Serenity & Relax Therapy. Je suis passionné par le bien-être global et mon travail consiste à offrir des services de massothérapie personnalisés pour améliorer votre qualité de vie.
                   </p>
                   <p>
                     J'utilise des techniques variées et dédiées, comme le Massage Classique, Relaxant et Thérapeutique, pour apaiser votre corps et revitaliser votre esprit, créant ainsi une harmonie parfaite.
