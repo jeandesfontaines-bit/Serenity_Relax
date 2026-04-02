@@ -238,7 +238,7 @@ export default function HomePage() {
           <div className="w-full lg:w-[55%] space-y-8 md:space-y-10 text-left order-2 lg:order-2">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-[0.02em]">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-normal">
                 L'équilibre<br />
                 <span className="text-neutral-500 italic font-light">par le toucher.</span>
               </h1>
@@ -307,9 +307,9 @@ export default function HomePage() {
             <div className="min-h-[350px] md:min-h-[400px] flex flex-col justify-between relative">
                 <AnimatePresence mode="wait">
                 <motion.div 
-                    key={selectedTip}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    key={`advice-text-${selectedTip}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, x: 20 }}
                     transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     className="space-y-6 md:space-y-10 relative z-10"
@@ -318,13 +318,13 @@ export default function HomePage() {
                         <div className="p-8 md:p-14 bg-[#FAF9F6] rounded-[2rem] md:rounded-[2.5rem] border border-neutral-100/50">
                             <div className="space-y-6 md:space-y-8">
                                 <motion.div 
-                                  key={`advice-text-${selectedTip}`}
+                                  key={`advice-text-inner-${selectedTip}`}
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   className="pb-2 md:pb-4"
                                 >
-                                  <h3 className="text-2xl md:text-3xl tracking-tight leading-tight text-neutral-900 font-serif italic">
-                                      « {AFTERCARE_TIPS[selectedTip].advice} »
+                                  <h3 className="text-xl md:text-2xl tracking-tight leading-tight text-neutral-900 font-sans font-medium italic">
+                                      {AFTERCARE_TIPS[selectedTip].advice}
                                   </h3>
                                 </motion.div>
                                 <div className="h-[1px] w-full bg-neutral-200/50" />
