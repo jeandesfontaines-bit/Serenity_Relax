@@ -44,8 +44,8 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-4 md:py-3 bg-[#0a0a0a] border-b border-white/5 shadow-2xl">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
-          <span className="font-sans font-bold text-[10px] md:text-xs tracking-[0.2em] text-white uppercase">SERENITY RELAX</span>
-          <span className="font-cursive text-[18px] md:text-[24px] text-white/40 tracking-normal whitespace-nowrap normal-case group-hover:text-white transition-colors ml-1">by João</span>
+          <span className="font-sans font-bold text-xs md:text-base lg:text-lg tracking-[0.3em] text-white uppercase transition-all duration-500">SERENITY RELAX</span>
+          <span className="font-cursive text-xl md:text-2xl lg:text-3xl text-white/40 tracking-normal whitespace-nowrap normal-case group-hover:text-white transition-colors ml-1">by João</span>
         </Link>
         
         <div className="hidden md:flex items-center gap-8">

@@ -26,7 +26,6 @@ const SERVICES = [
     id: "01", 
     name: "Bambous", 
     duration: "60 min", 
-    price: 110,
     intensity: 4,
     image: bambooImg,
     desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", 
@@ -36,7 +35,6 @@ const SERVICES = [
     id: "02", 
     name: "Draineur Lymphatique", 
     duration: "60 min", 
-    price: 110,
     intensity: 2,
     image: lymphImg,
     desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", 
@@ -46,7 +44,6 @@ const SERVICES = [
     id: "03", 
     name: "Aromathérapie", 
     duration: "60 min", 
-    price: 110,
     intensity: 2,
     image: aromaImg,
     desc: "Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", 
@@ -56,7 +53,6 @@ const SERVICES = [
     id: "04", 
     name: "Réflexologie Plantaire", 
     duration: "30 min", 
-    price: 60,
     intensity: 3,
     image: reflexoImg,
     desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", 
@@ -66,7 +62,6 @@ const SERVICES = [
     id: "05", 
     name: "Sportif", 
     duration: "60 min", 
-    price: 110,
     intensity: 5,
     image: sportifImg,
     desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", 
@@ -76,7 +71,6 @@ const SERVICES = [
     id: "06", 
     name: "Thérapeutique", 
     duration: "60 min", 
-    price: 110,
     intensity: 4,
     image: theraImg,
     desc: "Massage ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", 
@@ -86,7 +80,6 @@ const SERVICES = [
     id: "07", 
     name: "Deep Relax", 
     duration: "60 min", 
-    price: 120,
     intensity: 2,
     image: relaxImg,
     desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", 
@@ -96,7 +89,6 @@ const SERVICES = [
     id: "08", 
     name: "Thaï", 
     duration: "60 min", 
-    price: 120,
     intensity: 4,
     image: thaiImg,
     desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", 
@@ -174,7 +166,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-6 md:p-8 lg:p-9 flex flex-col justify-between bg-white z-20">
       <div className="space-y-2">
-        <h3 className="text-lg md:text-xl font-serif font-bold tracking-normal text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
+        <h3 className="text-lg md:text-xl font-serif font-bold tracking-[0.05em] text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
         <p className="text-neutral-600 text-[11px] md:text-[12px] font-sans font-medium leading-relaxed line-clamp-2">{s.desc}</p>
       </div>
       <div className="pt-4 md:pt-5 flex items-center justify-between border-t border-neutral-50">
@@ -241,7 +233,7 @@ export default function HomePage() {
           <div className="w-full lg:w-[55%] space-y-8 md:space-y-10 text-left order-2 lg:order-2">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1] md:leading-[1.1] tracking-normal">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1] md:leading-[1.1] tracking-tight">
                 L'équilibre<br />
                 <span className="text-neutral-500 italic font-light">par le toucher.</span>
               </h1>
@@ -252,7 +244,7 @@ export default function HomePage() {
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
               </p>
               <div className="space-y-4 md:space-y-6">
-                <SectionDesc>
+                <SectionDesc className="text-neutral-600">
                   Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
                 </SectionDesc>
                 <div className="pl-6 border-l-2 border-neutral-900/10 py-2">
@@ -384,7 +376,7 @@ export default function HomePage() {
       <footer className="bg-[#0a0a0a] text-white py-8 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6">
           <div className="flex flex-col items-center md:items-start">
-            <div className="font-sans font-bold text-[10px] tracking-[0.3em] uppercase">SERENITY RELAX</div>
+            <div className="font-sans font-bold text-[10px] tracking-[0.3em] uppercase transition-all">SERENITY RELAX</div>
             <p className="text-[8px] font-sans font-medium tracking-[0.3em] text-neutral-500 uppercase mt-0.5">Excellence Thérapeutique</p>
           </div>
 
