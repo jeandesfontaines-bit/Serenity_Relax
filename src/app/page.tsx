@@ -95,7 +95,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
     
     <div className="flex-1 p-8 flex flex-col justify-between bg-white z-20">
       <div className="space-y-3">
-        <h3 className="text-lg font-serif font-medium tracking-[0.05em] text-neutral-900 leading-none uppercase">{s.name.split(' - ')[0]}</h3>
+        <h3 className="text-lg font-serif font-medium tracking-[0.02em] text-neutral-900 leading-none">{s.name.split(' - ')[0]}</h3>
         <p className="text-neutral-600 text-[11px] font-sans font-medium leading-relaxed line-clamp-3">{s.desc}</p>
       </div>
       <div className="pt-4 flex items-center justify-between border-t border-neutral-50">
@@ -250,7 +250,7 @@ export default function HomePage() {
             </div>
 
             {/* TEXTE À DROITE (STICKY) */}
-            <div className="w-full lg:w-[36%] lg:sticky lg:top-32 h-fit lg:pt-16 flex flex-col items-center lg:items-end text-center lg:text-right">
+            <div className="w-full lg:w-[36%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
               <OverTitle className="mb-2 lg:text-right">Rituel Post-Séance</OverTitle>
               <SectionTitle main="Prolonger" italic="l'état de grâce." className="lg:text-right" />
               <div className="h-[2px] w-12 bg-neutral-900 my-8 mx-auto lg:mr-0 lg:ml-auto" />
