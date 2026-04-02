@@ -4,12 +4,12 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle
+  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, Droplets, Moon, Leaf
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 
-// --- IMPORTS DES IMAGES PERSONNALISÉES (Dépôt local src/lib/) ---
+// --- IMPORTS DES IMAGES PERSONNALISÉES ---
 import bambooImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
 import lymphImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (1).png';
 import aromaImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
@@ -109,25 +109,29 @@ const AFTERCARE_TIPS = [
     id: "01",
     title: "Hydratation Optimale", 
     desc: "Boire de l'eau alcaline ou une infusion tiède après votre soin permet d'aider votre système lymphatique à drainer les toxines libérées durant le massage.",
-    advice: "Évitez l'alcool pendant 24h."
+    advice: "Évitez l'alcool pendant 24h.",
+    icon: Droplets
   },
   { 
     id: "02",
     title: "Repos & Intégration", 
     desc: "Votre système nerveux a été apaisé. Accordez-vous un temps de calme, sans écrans, pour permettre à votre corps d'ancrer les bienfaits du relâchement.",
-    advice: "Sieste de 15 min conseillée."
+    advice: "Accordez-vous un temps de calme, sans écrans.",
+    icon: Moon
   },
   { 
     id: "03",
     title: "Nutrition Douce", 
     desc: "Privilégiez un repas léger et chaud pour ne pas mobiliser toute votre énergie vers la digestion, mais plutôt vers la régénération de vos tissus.",
-    advice: "Repas chaud privilégié."
+    advice: "Privilégiez un repas léger et chaud.",
+    icon: Leaf
   },
   { 
     id: "04",
     title: "Écoute & Souplesse", 
     desc: "Des sensations de courbatures légères peuvent apparaître le lendemain : c'est le signe que vos fascias retrouvent leur liberté de mouvement.",
-    advice: "Une douche tiède apaisera."
+    advice: "Une douche tiède apaisera votre corps.",
+    icon: Sparkles
   }
 ];
 
@@ -238,7 +242,7 @@ export default function HomePage() {
           <div className="w-full lg:w-[55%] space-y-8 md:space-y-10 text-left order-2 lg:order-2">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1.1] md:leading-[1] tracking-normal">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-neutral-900 leading-[1] md:leading-[1.1] tracking-tight">
                 L'équilibre<br />
                 <span className="text-neutral-500 italic font-light">par le toucher.</span>
               </h1>
@@ -355,9 +359,9 @@ export default function HomePage() {
                   onClick={() => setSelectedTip(i)} 
                   className="group flex items-center gap-6 md:gap-8 py-4 md:py-6 border-b border-neutral-100 last:border-0 transition-all duration-500 text-left"
                 >
-                  <span className={`text-3xl md:text-5xl font-sans font-black transition-all duration-500 ${selectedTip === i ? 'text-neutral-900 translate-x-1 md:translate-x-2' : 'text-neutral-100 group-hover:text-neutral-200'}`}>
-                    {tip.id}
-                  </span>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${selectedTip === i ? 'bg-neutral-900 text-white scale-110' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-100 group-hover:text-neutral-400'}`}>
+                    <tip.icon size={20} strokeWidth={1.5} />
+                  </div>
                   <div className="space-y-1">
                     <h4 className={`text-[11px] md:text-sm font-sans font-black uppercase tracking-[0.2em] transition-colors duration-500 ${selectedTip === i ? 'text-neutral-900' : 'text-neutral-600 group-hover:text-neutral-800'}`}>
                       {tip.title}
