@@ -41,7 +41,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-4 md:py-3 bg-[#0a0a0a] border-b border-white/5 shadow-2xl">
+    <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-4 md:py-3 bg-[#0a0a0a] border-b border-white/5 shadow-2xl">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
           <span className="font-sans font-bold text-xs md:text-base lg:text-lg tracking-[0.3em] text-white uppercase transition-all duration-500">SERENITY RELAX</span>
