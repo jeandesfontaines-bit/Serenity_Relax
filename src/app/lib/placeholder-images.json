@@ -3,50 +3,50 @@
   "placeholderImages": [
     {
       "id": "hero-bg",
-      "description": "Atmosphère zen et minimaliste d'un spa de prestige",
-      "imageUrl": "https://picsum.photos/seed/serenity-spa-lux/1920/1080",
-      "imageHint": "luxury spa"
+      "description": "Atmosphère zen d'un cabinet de massage de prestige",
+      "imageUrl": "https://picsum.photos/seed/massage-studio-lux/1920/1080",
+      "imageHint": "massage studio"
     },
     {
       "id": "joao-portrait",
-      "description": "Portrait de João, expert en massothérapie",
-      "imageUrl": "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg",
-      "imageHint": "therapist portrait"
+      "description": "Portrait professionnel de João, massothérapeute",
+      "imageUrl": "https://picsum.photos/seed/therapist-portrait/800/1000",
+      "imageHint": "professional therapist"
     },
     {
       "id": "service-1",
-      "description": "Mains pratiquant un massage thérapeutique",
-      "imageUrl": "https://picsum.photos/seed/massage-therapy-1/800/1000",
+      "description": "Massage thérapeutique musculaire",
+      "imageUrl": "https://picsum.photos/seed/massage-therapy/800/1000",
       "imageHint": "massage therapy"
     },
     {
       "id": "service-2",
-      "description": "Huiles de massage et ambiance relaxante",
-      "imageUrl": "https://picsum.photos/seed/wellness-oils/800/1000",
-      "imageHint": "massage oil"
+      "description": "Huiles essentielles et relaxation",
+      "imageUrl": "https://picsum.photos/seed/essential-oils-massage/800/1000",
+      "imageHint": "massage oils"
     },
     {
       "id": "service-3",
-      "description": "Massage musculaire profond pour sportif",
-      "imageUrl": "https://picsum.photos/seed/deep-tissue-massage/800/1000",
+      "description": "Massage sportif profond",
+      "imageUrl": "https://picsum.photos/seed/sports-massage-deep/800/1000",
       "imageHint": "sports massage"
     },
     {
       "id": "service-4",
-      "description": "Pierres chaudes sur le dos d'un patient",
-      "imageUrl": "https://picsum.photos/seed/hot-stones-spa/800/1000",
+      "description": "Massage aux pierres chaudes",
+      "imageUrl": "https://picsum.photos/seed/hot-stones-therapy/800/1000",
       "imageHint": "hot stones"
     },
     {
       "id": "service-5",
       "description": "Drainage lymphatique manuel",
-      "imageUrl": "https://picsum.photos/seed/lymphatic-drainage/800/1000",
-      "imageHint": "spa treatment"
+      "imageUrl": "https://picsum.photos/seed/lymphatic-treatment/800/1000",
+      "imageHint": "lymphatic massage"
     },
     {
       "id": "service-6",
-      "description": "Soin relaxant du visage et du cou",
-      "imageUrl": "https://picsum.photos/seed/relaxing-spa-treatment/800/1000",
+      "description": "Massage relaxant du visage",
+      "imageUrl": "https://picsum.photos/seed/face-massage-relax/800/1000",
       "imageHint": "head massage"
     }
   ]
