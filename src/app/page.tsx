@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import useEmblaCarousel from 'embla-carousel-react';
 import { 
-  ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, Menu, 
-  Heart, Clock, Calendar, Sun, Instagram, Activity,
-  ShieldCheck, Zap, Smile, Waves, Power, X, MapPin, ChevronLeft, ChevronRight
+  ArrowRight, Sparkles, Moon, Wind, Droplets, Plus, 
+  Heart, Clock, Calendar, Sun, Instagram,
+  ChevronLeft, ChevronRight, MapPin
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -85,13 +85,6 @@ const GlobalStyle = () => (
       z-index: 100; 
       opacity: 0.1;
     }
-
-    @keyframes morph {
-      0% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
-      50% { border-radius: 70% 30% 46% 54% / 30% 29% 71% 70%; }
-      100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
-    }
-    .blob-shape { animation: morph 12s ease-in-out infinite; will-change: border-radius; }
   `}</style>
 );
 
@@ -269,7 +262,7 @@ export default function HomePage() {
           <div className="flex flex-col items-center text-center mb-40 space-y-10">
             <span className="text-[11px] font-black uppercase tracking-[0.6em] text-neutral-400 italic">Art de vivre</span>
             <h2 className="text-5xl md:text-7xl font-fraunces font-medium tracking-tighter text-neutral-900">
-              Le rituel <span className="serif-italic font-light">post-soin.</span>
+              Le rituel <span className="serif-italic font-light lowercase">post-soin.</span>
             </h2>
             <p className="text-neutral-500 max-w-2xl text-lg leading-relaxed font-fraunces italic font-light">
               Sept gestes essentiels pour prolonger l'immersion et magnifier les bienfaits de votre séance.

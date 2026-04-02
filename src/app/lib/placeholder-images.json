@@ -4,8 +4,8 @@
     {
       "id": "hero-bg",
       "description": "Détail zen et minimaliste d'un spa de luxe",
-      "imageUrl": "https://picsum.photos/seed/serenity-hero/1920/1080",
-      "imageHint": "minimalist spa"
+      "imageUrl": "https://picsum.photos/seed/serenity-wellness-1/1920/1080",
+      "imageHint": "luxury spa"
     },
     {
       "id": "joao-portrait",
@@ -15,39 +15,39 @@
     },
     {
       "id": "service-1",
-      "description": "Massage thérapeutique",
-      "imageUrl": "https://picsum.photos/seed/massage-th/800/1200",
+      "description": "Massage thérapeutique profond",
+      "imageUrl": "https://picsum.photos/seed/massage-th-2/800/1200",
       "imageHint": "therapeutic massage"
     },
     {
       "id": "service-2",
-      "description": "Deep relax signature",
-      "imageUrl": "https://picsum.photos/seed/massage-re/800/1200",
-      "imageHint": "relaxing spa"
+      "description": "Pierres chaudes et détente",
+      "imageUrl": "https://picsum.photos/seed/relax-spa-3/800/1200",
+      "imageHint": "hot stones"
     },
     {
       "id": "service-3",
-      "description": "Massage sportif",
-      "imageUrl": "https://picsum.photos/seed/massage-sp/800/1200",
-      "imageHint": "sports therapy"
+      "description": "Récupération sportive",
+      "imageUrl": "https://picsum.photos/seed/sport-recovery-4/800/1200",
+      "imageHint": "sports massage"
     },
     {
       "id": "service-4",
-      "description": "Kalari thérapeutique",
-      "imageUrl": "https://picsum.photos/seed/massage-an/800/1200",
-      "imageHint": "traditional massage"
+      "description": "Herbes et rituels anciens",
+      "imageUrl": "https://picsum.photos/seed/herbal-spa-5/800/1200",
+      "imageHint": "ayurveda massage"
     },
     {
       "id": "service-5",
-      "description": "Drainage lymphatique",
-      "imageUrl": "https://picsum.photos/seed/massage-dr/800/1200",
-      "imageHint": "lymphatic drainage"
+      "description": "Huiles essentielles et drainage",
+      "imageUrl": "https://picsum.photos/seed/essential-oils-6/800/1200",
+      "imageHint": "aromatherapy massage"
     },
     {
       "id": "service-6",
-      "description": "Massage découverte",
-      "imageUrl": "https://picsum.photos/seed/massage-di/800/1200",
-      "imageHint": "spa discovery"
+      "description": "Ambiance de soin sereine",
+      "imageUrl": "https://picsum.photos/seed/peaceful-spa-7/800/1200",
+      "imageHint": "spa treatment"
     }
   ]
 }
