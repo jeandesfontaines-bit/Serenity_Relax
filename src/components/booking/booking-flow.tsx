@@ -380,9 +380,13 @@ export function BookingFlow({ services }: { services: Service[] }) {
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Code Postal</Label>
                 <Input id="postalCode" name="postalCode" placeholder="1216" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
+              <div className="space-y-2.5">
+                <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Ville</Label>
+                <Input id="city" name="city" placeholder="Genève" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+              </div>
               <div className="md:col-span-2 space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Adresse</Label>
-                <Input id="address" name="address" placeholder="Rue et N°, Ville" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
+                <Input id="address" name="address" placeholder="Rue et N°" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="rounded-xl h-14 bg-muted/20 border-none px-5 text-base focus:bg-white shadow-inner transition-all" />
               </div>
               <div className="md:col-span-2 space-y-2.5">
                 <Label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground ml-2">Message pour João</Label>

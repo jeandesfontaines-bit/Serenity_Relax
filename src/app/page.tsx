@@ -93,7 +93,7 @@ export default function HomePage() {
         </div>
       </nav>
 
-      <section className="relative min-h-[85vh] flex items-center pt-32 pb-16 md:pt-48 md:pb-24 overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-center pt-24 pb-16 md:pt-48 md:pb-32 overflow-hidden">
         <div className="max-w-6xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-sm border border-black/5 rounded-full mb-6">
@@ -163,12 +163,12 @@ export default function HomePage() {
                 src="https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" 
                 alt="João" 
                 fill
-                className="object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                className="object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-102"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent opacity-40" />
               <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8">
                 <div className="bg-white/90 backdrop-blur-xl px-4 py-2.5 rounded-2xl shadow-xl border border-white/40">
-                  <span className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] block text-primary">João</span>
+                  <span className="text-xs md:text-sm font-bold tracking-[0.2em] block text-primary">João</span>
                   <span className="text-[8px] text-muted-foreground block tracking-[0.3em] uppercase font-black mt-1 opacity-80">Praticien ASCA</span>
                 </div>
               </div>
@@ -189,14 +189,14 @@ export default function HomePage() {
           </p>
         </div>
         
-        <div className="flex gap-6 md:gap-8 overflow-x-auto scrollbar-hide snap-x px-6 max-w-6xl mx-auto pb-12">
+        <div className="flex gap-12 overflow-x-auto scrollbar-hide snap-x px-6 max-w-6xl mx-auto pb-12">
           {SERVICES.map((service, i) => (
             <Link 
               key={service.id}
               href={`/booking?serviceId=${service.id}`}
-              className="flex-shrink-0 w-[75vw] sm:w-[260px] md:w-[280px] snap-center relative aspect-[3/4] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden group shadow-xl transition-all hover:scale-[1.01]"
+              className="flex-shrink-0 w-[75vw] sm:w-[260px] md:w-[280px] snap-center relative aspect-[3/4] rounded-[3rem] overflow-hidden group shadow-xl transition-all hover:scale-102"
             >
-              <Image src={`https://picsum.photos/seed/${service.id}/800/1000`} fill className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt={service.name} />
+              <Image src={`https://picsum.photos/seed/${service.id}/800/1000`} fill className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" alt={service.name} />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
               <div className="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8">
                 <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2 block opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-700">Expérience 0{i+1}</span>
@@ -208,13 +208,13 @@ export default function HomePage() {
         </div>
         
         <div className="text-center mt-12">
-          <Link href="/booking" className="inline-flex items-center gap-3 bg-primary text-white h-14 px-10 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition-all">
+          <Link href="/booking" className="inline-flex items-center gap-3 bg-primary text-white h-14 px-10 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-xl hover:bg-black transition-all active:scale-95">
             Réserver votre rituel <ArrowRight size={14} />
           </Link>
         </div>
       </section>
 
-      <section className="py-32 bg-background">
+      <section className="py-24 bg-background">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-24">
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full mb-6 border border-black/[0.03] shadow-sm">
@@ -228,7 +228,7 @@ export default function HomePage() {
           </div>
 
           <div className="space-y-32">
-            {WELLNESS_TIPS.map((tip, index) => (
+            {WELLNESS_TIPS.map((tip) => (
               <div key={tip.id} className="flex flex-col md:flex-row gap-12 items-start relative">
                 <div className="absolute -left-12 md:-left-24 top-0 select-none">
                   <span className="editorial-number">{tip.id}</span>
@@ -252,7 +252,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
           <div className="space-y-6">
             <h2 className="font-sans text-xl font-bold tracking-[0.2em] uppercase leading-none">
-              SERENITY RELAX <span className="font-cursive text-lg text-white/40 tracking-normal inline-block">by João</span>
+              SERENITY RELAX <span className="font-cursive text-lg text-white/40 tracking-normal inline-block normal-case">by João</span>
             </h2>
             <p className="text-white/40 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs font-sans">
               Un sanctuaire sensoriel confidentiel pour la restauration physique et mentale. Uniquement sur rendez-vous.
