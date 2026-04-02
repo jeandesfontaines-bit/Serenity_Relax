@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { 
   Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle, Droplets, Moon, Leaf
 } from "lucide-react";
@@ -99,28 +99,28 @@ const SERVICES = [
 const AFTERCARE_TIPS = [
   { 
     id: "01",
-    title: "Hydratation Optimale", 
+    title: "Hydratation", 
     desc: "Boire de l'eau alcaline ou une infusion tiède après votre soin permet d'aider votre système lymphatique à drainer les toxines libérées durant le massage.",
     advice: "Évitez l'alcool pendant 24h.",
     icon: Droplets
   },
   { 
     id: "02",
-    title: "Repos & Intégration", 
+    title: "Repos", 
     desc: "Votre système nerveux a été apaisé. Accordez-vous un temps de calme, sans écrans, pour permettre à votre corps d'ancrer les bienfaits du relâchement.",
     advice: "Accordez-vous un temps de calme, sans écrans.",
     icon: Moon
   },
   { 
     id: "03",
-    title: "Nutrition Douce", 
+    title: "Nutrition", 
     desc: "Privilégiez un repas léger et chaud pour ne pas mobiliser toute votre énergie vers la digestion, mais plutôt vers la régénération de vos tissus.",
     advice: "Privilégiez un repas léger et chaud.",
     icon: Leaf
   },
   { 
     id: "04",
-    title: "Écoute & Souplesse", 
+    title: "Écoute", 
     desc: "Des sensations de courbatures légères peuvent apparaître le lendemain : c'est le signe que vos fascias retrouvent leur liberté de mouvement.",
     advice: "Une douche tiède apaisera votre corps.",
     icon: Sparkles
@@ -140,7 +140,7 @@ const SectionTitle = ({ main, italic, className = "" }: { main: string, italic: 
 );
 
 const SectionDesc = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <p className={`text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed ${className}`}>
+  <p className={`text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic ${className}`}>
     {children}
   </p>
 );
@@ -186,7 +186,6 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
 export default function HomePage() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  const [selectedTip, setSelectedTip] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -211,7 +210,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] border-[8px] md:border-[12px] border-white shadow-2xl max-w-[420px] mx-auto lg:ml-0"
+              className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] border-[8px] md:border-[12px] border-white shadow-2xl max-w-[400px] mx-auto lg:ml-0"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -236,20 +235,20 @@ export default function HomePage() {
             </motion.div>
             
             <div className="space-y-6 md:space-y-8 max-w-xl">
-              <p className="text-lg md:text-xl font-sans font-medium text-neutral-800 leading-tight italic">
+              <SectionDesc className="text-neutral-800">
                 "Une approche personnalisée pour restaurer votre harmonie physique et mentale."
-              </p>
+              </SectionDesc>
               <div className="space-y-4 md:space-y-6">
-                <SectionDesc className="text-neutral-600">
+                <p className="text-neutral-600 text-base md:text-lg font-sans font-medium leading-relaxed">
                   Passionné par le bien-être global, mon travail consiste à offrir des services de massothérapie dédiés à l'amélioration de votre qualité de vie au quotidien.
-                </SectionDesc>
+                </p>
                 <div className="pl-6 border-l-2 border-neutral-900/10 py-2">
                    <p className="text-neutral-800 italic text-base md:text-lg leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
                    <span className="font-cursive text-2xl md:text-3xl text-neutral-300 block mt-2">— João P.</span>
                 </div>
               </div>
               <button className="inline-flex items-center gap-4 md:gap-6 group pt-4">
-                <div className="w-10 h-10 md:w-11 md:h-11 rounded-sm bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:bg-neutral-800">
+                <div className="w-10 h-10 rounded-sm bg-neutral-900 text-white flex items-center justify-center transition-all duration-500 shadow-lg group-hover:bg-neutral-800">
                   <ArrowRight size={16} />
                 </div>
                 <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900">Découvrir les rituels</span>
@@ -270,9 +269,9 @@ export default function HomePage() {
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-8" />
-              <p className="text-lg md:text-xl font-sans font-medium text-neutral-800 leading-tight italic mb-8 md:mb-12">
+              <SectionDesc className="text-neutral-800 mb-8 md:mb-12">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
-              </p>
+              </SectionDesc>
               <button className="w-full md:w-auto inline-flex items-center justify-center px-10 py-4 bg-black text-white text-[10px] font-sans font-bold uppercase tracking-[0.3em] rounded-sm hover:opacity-80 transition-all">
                 Réserver un soin
               </button>
@@ -289,82 +288,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RITUEL POST-SOIN */}
+      {/* RITUEL POST-SOIN - SIMPLIFIÉ EN COLONNES */}
       <section className="py-20 md:py-32 px-6 md:px-12 lg:px-8 bg-white max-w-7xl mx-auto overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+        <div className="space-y-16">
+          <div className="text-center max-w-2xl mx-auto space-y-4">
+            <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
+            <SectionTitle main="Prolonger" italic="l'état de grâce." />
+          </div>
           
-          {/* CARTE CONSEILS (GAUCHE) */}
-          <div className="relative pt-6 md:pt-12 lg:pt-32 order-1 lg:order-1">
-            <div className="min-h-[300px] md:min-h-[350px] flex flex-col justify-between relative">
-                <AnimatePresence mode="wait">
-                <motion.div 
-                    key={`advice-text-${selectedTip}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="space-y-6 md:space-y-10 relative z-10"
-                >
-                    <div className="pt-4 md:pt-8">
-                        <div className="p-8 md:p-14 bg-[#FAF9F6] rounded-[2rem] md:rounded-[2.5rem] border border-neutral-100/50">
-                            <div className="space-y-4 md:space-y-6">
-                                <motion.div 
-                                  key={`advice-text-inner-${selectedTip}`}
-                                  initial={{ opacity: 0, y: 10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  className="pb-2 md:pb-4"
-                                >
-                                  <h3 className="text-base md:text-lg tracking-tight leading-tight text-neutral-900 font-sans font-medium">
-                                      {AFTERCARE_TIPS[selectedTip].advice}
-                                  </h3>
-                                </motion.div>
-                                <div className="h-[1px] w-full bg-neutral-200/50" />
-                                <p className="text-neutral-800 text-sm md:text-base font-sans font-medium leading-relaxed max-w-xl">
-                                    {AFTERCARE_TIPS[selectedTip].desc}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-                </AnimatePresence>
-                <div className="absolute top-0 left-0 text-neutral-50/50 pointer-events-none select-none -z-0">
-                    <Sparkles size={250} className="md:w-[350px] md:h-[350px]" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+            {AFTERCARE_TIPS.map((tip) => (
+              <div key={tip.id} className="space-y-6 group">
+                <div className="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-300 transition-all duration-500 group-hover:bg-neutral-900 group-hover:text-white">
+                  <tip.icon size={18} strokeWidth={1.5} />
                 </div>
-            </div>
-          </div>
-
-          {/* LISTE ÉTAPES (DROITE) */}
-          <div className="space-y-8 md:space-y-12 order-2 lg:order-2">
-            <div className="space-y-4">
-              <OverTitle className="mb-0">Rituel Post-Séance</OverTitle>
-              <SectionTitle main="Prolonger" italic="l'état de grâce." />
-            </div>
-            <div className="flex flex-col gap-1 md:gap-2">
-              {AFTERCARE_TIPS.map((tip, i) => (
-                <button 
-                  key={i} 
-                  onClick={() => setSelectedTip(i)} 
-                  className="group flex items-center gap-6 md:gap-8 py-4 md:py-6 border-b border-neutral-100 last:border-0 transition-all duration-500 text-left"
-                >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${selectedTip === i ? 'bg-neutral-900 text-white' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-100 group-hover:text-neutral-400'}`}>
-                    <tip.icon size={16} strokeWidth={1.5} />
+                <div className="space-y-4">
+                  <h4 className="text-[11px] font-sans font-black uppercase tracking-[0.2em] text-neutral-900">
+                    {tip.title}
+                  </h4>
+                  <div className="space-y-3">
+                    <p className="text-neutral-900 text-sm font-sans font-bold leading-tight">
+                      {tip.advice}
+                    </p>
+                    <p className="text-neutral-500 text-[12px] font-sans font-medium leading-relaxed">
+                      {tip.desc}
+                    </p>
                   </div>
-                  <div className="space-y-1">
-                    <h4 className={`text-[11px] md:text-sm font-sans font-black uppercase tracking-[0.2em] transition-colors duration-500 ${selectedTip === i ? 'text-neutral-900' : 'text-neutral-600 group-hover:text-neutral-800'}`}>
-                      {tip.title}
-                    </h4>
-                    {selectedTip === i && (
-                      <motion.div 
-                        layoutId="active-indicator"
-                        className="h-0.5 w-6 md:w-8 bg-neutral-900 rounded-full"
-                      />
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
+                </div>
+              </div>
+            ))}
           </div>
-
         </div>
       </section>
 
