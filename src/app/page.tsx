@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle
+  Instagram, Linkedin, ArrowRight
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -47,14 +47,13 @@ const ServiceCard = ({ s }: { s: any }) => (
       />
     </div>
 
-    <div className="px-2 pb-2 space-y-3">
+    <div className="px-2 pb-8 space-y-3">
       <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
         {s.tag}
       </span>
       <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
         {s.name}
       </h3>
-
       <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed italic line-clamp-2">
         {s.desc}
       </p>
@@ -147,13 +146,11 @@ export default function HomePage() {
             </div>
 
             <div className="w-full lg:w-[68%] grid grid-cols-1 md:grid-cols-2 gap-x-12">
-               {/* Colonne 1 (Gauche) */}
                <div className="flex flex-col gap-12 items-center md:items-end">
                   {SERVICES.filter((_, i) => i % 2 === 0).map((s) => (
                     <ServiceCard key={s.id} s={s} />
                   ))}
                </div>
-               {/* Colonne 2 (Droite - Décalée) */}
                <div className="flex flex-col gap-12 md:pt-32 items-center md:items-start">
                   {SERVICES.filter((_, i) => i % 2 !== 0).map((s) => (
                     <ServiceCard key={s.id} s={s} />
@@ -168,7 +165,6 @@ export default function HomePage() {
       <section className="py-48 px-6 md:px-12 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
-            {/* Colonne Droite: Titre Sticky */}
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
               <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-8">Assistance</span>
               <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter">
@@ -176,7 +172,6 @@ export default function HomePage() {
               </h2>
             </div>
 
-            {/* Colonne Gauche: FAQ en Liste Classique */}
             <div className="w-full lg:w-[68%] space-y-20">
               {FAQS.map((f, i) => (
                 <div key={i} className="group transition-all duration-500 border-b border-neutral-100 pb-16 last:border-0">
@@ -197,7 +192,7 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-neutral-900 text-white py-16 px-6">
+      <footer className="bg-neutral-900 text-white pt-16 pb-16 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
