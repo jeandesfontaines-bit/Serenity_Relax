@@ -1,10 +1,9 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, MessageCircle, Clock, Plus, Minus, Calendar
+  Instagram, Linkedin, ArrowRight, MessageCircle, Clock, Plus, Minus
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -249,14 +248,6 @@ export default function HomePage() {
                 <MessageCircle size={22} className="text-neutral-400 hover:text-white transition-colors cursor-pointer" />
                 <Linkedin size={22} className="text-neutral-400 hover:text-white transition-colors cursor-pointer" />
               </div>
-            </div>
-          </div>
-          
-          <div className="w-full pt-12 border-t border-white/5">
-            <div className="max-w-fit mx-auto px-16 py-6 border border-white/10 rounded-t-[2.5rem]">
-              <p className="text-[9px] font-sans font-bold text-neutral-500 uppercase tracking-[0.5em]">
-                © 2026 SERENITY RELAX THERAPY — TOUS DROITS RÉSERVÉS
-              </p>
             </div>
           </div>
         </div>
