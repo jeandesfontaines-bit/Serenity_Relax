@@ -1,9 +1,10 @@
+
 'use client';
 
 import React, { useState } from "react";
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  Instagram, Linkedin, ArrowRight, Sparkles, MessageCircle
+  ArrowRight, Sparkles, MessageCircle, Instagram, Linkedin, Droplets, Moon, Coffee, HeartPulse
 } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -18,25 +19,29 @@ const AFTERCARE_TIPS = [
     id: "01",
     title: "Hydratation Optimale", 
     desc: "Boire de l'eau alcaline ou une infusion tiède après votre soin permet d'aider votre système lymphatique à drainer les toxines libérées durant le massage.",
-    advice: "Évitez l'alcool pendant 24h."
+    advice: "Évitez l'alcool pendant 24h.",
+    icon: <Droplets size={24} />
   },
   { 
     id: "02",
     title: "Repos & Intégration", 
     desc: "Votre système nerveux a été apaisé. Accordez-vous un temps de calme, sans écrans, pour permettre à votre corps d'ancrer les bienfaits du relâchement.",
-    advice: "Sieste de 15 min conseillée."
+    advice: "Sieste de 15 min conseillée.",
+    icon: <Moon size={24} />
   },
   { 
     id: "03",
     title: "Nutrition Douce", 
     desc: "Privilégiez un repas léger et chaud pour ne pas mobiliser toute votre énergie vers la digestion, mais plutôt vers la régénération de vos tissus.",
-    advice: "Repas chaud privilégié."
+    advice: "Repas chaud privilégié.",
+    icon: <Coffee size={24} />
   },
   { 
     id: "04",
     title: "Écoute & Souplesse", 
     desc: "Des sensations de courbatures légères peuvent apparaître le lendemain : c'est le signe que vos fascias retrouvent leur liberté de mouvement.",
-    advice: "Une douche tiède apaisera."
+    advice: "Une douche tiède apaisera.",
+    icon: <HeartPulse size={24} />
   }
 ];
 
@@ -109,7 +114,7 @@ export default function HomePage() {
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-neutral-900 z-[120] origin-left" style={{ scaleX }} />
 
       {/* SECTION HÉROS - IMAGE À GAUCHE */}
-      <section className="min-h-screen flex flex-col justify-center px-8 pt-32 pb-20 bg-white relative border-b border-neutral-50 overflow-hidden">
+      <section className="min-h-screen flex flex-col justify-center px-8 pt-24 pb-20 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
           <div className="w-full lg:w-[45%] relative">
@@ -117,7 +122,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden border-[12px] border-white shadow-2xl"
+              className="relative aspect-[4/5] blob-shape overflow-hidden border-[12px] border-white shadow-2xl"
             >
               <Image 
                 src={MY_PHOTO} 
@@ -135,7 +140,7 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          <div className="w-full lg:w-[55%] space-y-12">
+          <div className="w-full lg:w-[55%] space-y-12 text-left">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <OverTitle>L'Engagement João.</OverTitle>
               <h1 className="text-6xl md:text-8xl font-serif font-bold text-neutral-900 leading-[0.85] tracking-tighter">
@@ -174,7 +179,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             
-            <div className="w-full lg:w-[28%] lg:sticky lg:top-24 h-fit text-left">
+            <div className="w-full lg:w-[28%] lg:sticky lg:top-32 h-fit text-left">
               <OverTitle>Menu Signature</OverTitle>
               <SectionTitle main="Soins" italic="Exclusifs." className="mb-6" />
               <div className="h-[2px] w-12 bg-neutral-900 mb-10" />
@@ -276,7 +281,7 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER - ULTRA COMPACT & NOIR */}
-      <footer className="bg-[#0a0a0a] text-white py-8 px-8">
+      <footer className="bg-[#0a0a0a] text-white py-8 px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start">
             <div className="font-sans font-bold text-xs tracking-[0.3em] uppercase">SERENITY RELAX</div>
