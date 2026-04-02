@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Noto Sans"', 'sans-serif'],
-        serif: ['"Noto Serif"', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        serif: ['"DM Serif Display"', 'serif'],
         cursive: ['"Meow Script"', 'cursive'],
         code: ['monospace'],
       },

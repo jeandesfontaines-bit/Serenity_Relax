@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from "react";
@@ -9,18 +8,16 @@ import {
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
 
-// --- IMPORT DES IMAGES GÉNÉRÉES ---
-import bambooImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
-import lymphImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (1).png';
-import aromaImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
-import reflexImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (3).png';
-import sportsImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (4).png';
-import therapeuticImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (5).png';
-import deepRelaxImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (6).png';
-import thaiImg from '@/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (7).png';
-
-// --- CONFIGURATION & DONNÉES ---
+// --- IMPORT DES IMAGES ---
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
+const bambooImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
+const lymphImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (1).png';
+const aromaImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
+const reflexImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (3).png';
+const sportsImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (4).png';
+const therapeuticImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (5).png';
+const deepRelaxImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (6).png';
+const thaiImg = '/src/lib/Gemini_Generated_Image_4vxbi24vxbi24vxb (7).png';
 
 const SERVICES = [
   { 
@@ -132,8 +129,6 @@ const AFTERCARE_TIPS = [
   }
 ];
 
-// --- COMPOSANTS DE STYLE ---
-
 const OverTitle = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
   <span className={`text-[10px] font-sans font-black uppercase tracking-[0.5em] text-neutral-400 block mb-6 ${className}`}>
     {children}
@@ -185,7 +180,7 @@ const ServiceCard = ({ s, staggered }: { s: any, staggered: boolean }) => (
         </div>
         <div className="flex flex-col items-end">
           <span className="text-[10px] font-sans font-black text-neutral-400 tracking-widest uppercase">{s.duration}</span>
-          <span className="text-[10px] font-sans font-bold text-neutral-900 mt-0.5">CHF {s.price}</span>
+          <span className="text-[10px] font-sans font-bold text-neutral-900 mt-0.5">CHF {s.price.toFixed(2)}</span>
         </div>
       </div>
     </div>
