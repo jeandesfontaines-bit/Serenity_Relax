@@ -111,7 +111,7 @@ export default function HomePage() {
                 src={MY_PHOTO} 
                 fill
                 unoptimized
-                className="object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000"
+                className="object-cover transition-all duration-1000"
                 alt="Portrait de João P."
                 priority
               />

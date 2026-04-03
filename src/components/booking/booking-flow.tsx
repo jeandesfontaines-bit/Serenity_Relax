@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -221,7 +220,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                           fill 
                           unoptimized 
                           alt={s.name} 
-                          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                          className="object-cover transition-all duration-700"
                         />
                       </div>
                       <div className="flex-1">
