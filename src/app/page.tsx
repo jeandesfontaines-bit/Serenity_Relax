@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -99,26 +100,9 @@ export default function HomePage() {
       {/* SECTION HÉROS */}
       <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-32 pb-24 bg-white relative border-b border-neutral-50 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-          <div className="w-full lg:w-[45%] flex justify-center lg:justify-start">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, x: -20 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[420px]"
-              style={{ borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' }}
-            >
-              <Image 
-                src={MY_PHOTO} 
-                fill
-                unoptimized
-                className="object-cover transition-all duration-1000"
-                alt="Portrait de João P."
-                priority
-              />
-            </motion.div>
-          </div>
-
-          <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left">
+          
+          {/* TEXTE À GAUCHE */}
+          <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left order-2 lg:order-1">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
               <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">L'Engagement João.</span>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-neutral-900 leading-[0.95] tracking-tighter">
@@ -145,6 +129,27 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          {/* IMAGE À DROITE */}
+          <div className="w-full lg:w-[45%] flex justify-center lg:justify-end order-1 lg:order-2">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[420px]"
+              style={{ borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' }}
+            >
+              <Image 
+                src={MY_PHOTO} 
+                fill
+                unoptimized
+                className="object-cover transition-all duration-1000"
+                alt="Portrait de João P."
+                priority
+              />
+            </motion.div>
+          </div>
+
         </div>
       </section>
 
