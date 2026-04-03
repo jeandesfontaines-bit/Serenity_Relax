@@ -35,7 +35,7 @@ export function Navbar() {
   ];
 
   return (
-    <div className="fixed top-6 left-0 right-0 z-[150] px-6">
+    <div className="absolute top-8 left-0 right-0 z-[150] px-6">
       <nav className="max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full px-8 py-3 md:py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
