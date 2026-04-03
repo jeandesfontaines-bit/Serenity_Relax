@@ -9,7 +9,11 @@ import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { usePathname } from 'next/navigation';
 
-export function Navbar() {
+interface NavbarProps {
+  onBookingClick?: () => void;
+}
+
+export function Navbar({ onBookingClick }: NavbarProps) {
   const { user } = useUser();
   const auth = useAuth();
   const pathname = usePathname();
@@ -66,13 +70,13 @@ export function Navbar() {
                   <User size={12} strokeWidth={2.5} />
                   Espace Privé
                 </Link>
-                <Link 
-                  href="/booking"
-                  className={`flex items-center gap-2 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-6 py-2 rounded-full border border-neutral-900 md:text-[0.8125rem] lg:text-[0.875rem] ${pathname === '/booking' ? 'bg-neutral-900 text-white' : 'text-neutral-900 hover:bg-neutral-900 hover:text-white'}`}
+                <button 
+                  onClick={onBookingClick}
+                  className="flex items-center gap-2 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-6 py-2 rounded-full border border-neutral-900 md:text-[0.8125rem] lg:text-[0.875rem] text-neutral-900 hover:bg-neutral-900 hover:text-white"
                 >
                   <Calendar size={12} strokeWidth={2.5} />
                   Réserver
-                </Link>
+                </button>
               </>
             )}
 
@@ -108,10 +112,13 @@ export function Navbar() {
                     <User size={16} strokeWidth={2.5} />
                     Espace Privé
                   </Link>
-                  <Link href="/booking" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-4 w-full md:text-[0.8125rem] lg:text-[0.875rem]">
+                  <button 
+                    onClick={() => { setIsMenuOpen(false); onBookingClick?.(); }} 
+                    className="flex items-center justify-center gap-4 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-4 w-full md:text-[0.8125rem] lg:text-[0.875rem]"
+                  >
                     <Calendar size={16} strokeWidth={2.5} />
                     Réserver
-                  </Link>
+                  </button>
                 </>
               )}
               

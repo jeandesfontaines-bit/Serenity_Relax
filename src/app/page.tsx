@@ -4,12 +4,14 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, Brain, Zap, Activity, ShieldCheck
+  Instagram, Linkedin, Brain, Zap, Activity, ShieldCheck, Calendar
 } from "lucide-react";
 import Image from 'next/image';
-import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { SERVICES } from '@/lib/types';
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { BookingFlow } from "@/components/booking/booking-flow";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 const HERO_BG = "https://picsum.photos/seed/massage-ambience/1920/1080";
@@ -48,53 +50,27 @@ const BIOLOGICAL_IMPACTS = [
   }
 ];
 
-const ServiceCard = ({ s }: { s: any }) => (
-  <Link href={`/booking?serviceId=${s.id}`}>
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="relative w-full max-w-[320px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group cursor-pointer"
-    >
-      <div className="relative aspect-square overflow-hidden mb-6 rounded-[2rem]">
-        <Image 
-          src={s.image} 
-          fill
-          unoptimized
-          className="object-cover transition-transform duration-1000 group-hover:scale-110" 
-          alt={s.name}
-        />
-      </div>
-
-      <div className="px-2 pb-20 space-y-3">
-        <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-1 md:text-[0.75rem] lg:text-[0.8rem]">
-          {s.name.includes('Bambous') ? 'Profond' : s.name.includes('Draineur') ? 'Vitalité' : s.name.includes('Aroma') ? 'Sensoriel' : s.name.includes('Réflexologie') ? 'Ciblé' : s.name.includes('Sportif') ? 'Performance' : s.name.includes('Thérapeutique') ? 'Signature' : s.name.includes('Deep Relax') ? 'Détente' : 'Dynamique'}
-        </span>
-        <h3 className="text-[1.1rem] leading-snug font-serif font-medium text-neutral-900 tracking-tight md:text-[1.2rem] lg:text-[1.25rem]">
-          {s.name.split(' - ')[0]}
-        </h3>
-        <p className="text-[0.8125rem] leading-relaxed text-neutral-500 font-sans font-medium md:text-[0.875rem] lg:text-[0.9375rem]">
-          {s.description}
-        </p>
-      </div>
-    </motion.div>
-  </Link>
-);
-
 export default function HomePage() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const [isMounted, setIsMounted] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  const openBooking = (serviceId?: string) => {
+    setSelectedServiceId(serviceId);
+    setBookingOpen(true);
+  };
+
   if (!isMounted) return null;
 
   return (
     <div className="bg-white text-neutral-900 selection:bg-neutral-900 selection:text-white antialiased relative">
-      <Navbar />
+      <Navbar onBookingClick={() => openBooking()} />
       
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-neutral-900 z-[120] origin-left" style={{ scaleX }} />
 
@@ -136,9 +112,9 @@ export default function HomePage() {
                  <span className="font-cursive text-[1.5rem] text-neutral-900 block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
-                <Link href="/booking" className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
+                <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
                   Réserver un soin
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -156,7 +132,7 @@ export default function HomePage() {
                 src={MY_PHOTO} 
                 fill
                 unoptimized
-                className="object-cover transition-all duration-1000"
+                className="object-cover transition-all duration-1000 grayscale-0"
                 alt="Portrait de João P."
                 priority
               />
@@ -209,20 +185,20 @@ export default function HomePage() {
               <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <Link href="/booking" className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
+              <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
                 Réserver un soin
-              </Link>
+              </button>
             </div>
 
             <div className="w-full lg:w-[68%] grid grid-cols-1 md:grid-cols-2 gap-x-12">
                <div className="flex flex-col gap-12 items-center md:items-end">
                   {SERVICES.slice(0, 4).map((s) => (
-                    <ServiceCard key={s.id} s={s} />
+                    <ServiceCard key={s.id} s={s} onClick={() => openBooking(s.id)} />
                   ))}
                </div>
                <div className="flex flex-col gap-12 md:pt-32 items-center md:items-start">
                   {SERVICES.slice(4, 8).map((s) => (
-                    <ServiceCard key={s.id} s={s} />
+                    <ServiceCard key={s.id} s={s} onClick={() => openBooking(s.id)} />
                   ))}
                </div>
             </div>
@@ -304,6 +280,50 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* SYSTEME DE RESERVATION (DRAWER) */}
+      <Sheet open={bookingOpen} onOpenChange={setBookingOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-[700px] p-0 border-none bg-[#F7F7F2] overflow-y-auto scrollbar-hide">
+          <VisuallyHidden.Root>
+            <SheetTitle>Réserver votre rituel Serenity Relax</SheetTitle>
+          </VisuallyHidden.Root>
+          <div className="pt-16 pb-12">
+            <BookingFlow services={SERVICES} initialServiceId={selectedServiceId} />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
+
+const ServiceCard = ({ s, onClick }: { s: any, onClick: () => void }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    onClick={onClick}
+    className="relative w-full max-w-[320px] bg-white rounded-[3rem] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group cursor-pointer"
+  >
+    <div className="relative aspect-square overflow-hidden mb-6 rounded-[2rem]">
+      <Image 
+        src={s.image} 
+        fill
+        unoptimized
+        className="object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-0" 
+        alt={s.name}
+      />
+    </div>
+
+    <div className="px-2 pb-20 space-y-3">
+      <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-1 md:text-[0.75rem] lg:text-[0.8rem]">
+        {s.name.includes('Bambous') ? 'Profond' : s.name.includes('Draineur') ? 'Vitalité' : s.name.includes('Aroma') ? 'Sensoriel' : s.name.includes('Réflexologie') ? 'Ciblé' : s.name.includes('Sportif') ? 'Performance' : s.name.includes('Thérapeutique') ? 'Signature' : s.name.includes('Deep Relax') ? 'Détente' : 'Dynamique'}
+      </span>
+      <h3 className="text-[1.1rem] leading-snug font-serif font-medium text-neutral-900 tracking-tight md:text-[1.2rem] lg:text-[1.25rem]">
+        {s.name.split(' - ')[0]}
+      </h3>
+      <p className="text-[0.8125rem] leading-relaxed text-neutral-500 font-sans font-medium md:text-[0.875rem] lg:text-[0.9375rem]">
+        {s.description}
+      </p>
+    </div>
+  </motion.div>
+);
