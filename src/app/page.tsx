@@ -156,28 +156,30 @@ export default function HomePage() {
       {/* SECTION IMPACT BIOLOGIQUE */}
       <section className="py-32 px-6 md:px-12 lg:px-8 bg-white border-b border-neutral-50">
         <div className="max-w-7xl mx-auto">
-          <header className="max-w-3xl mb-24">
-            <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Impact Biologique</span>
-            <h2 className="text-4xl md:text-6xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
-              L'Écho <span className="text-neutral-500 italic font-light">du Corps.</span>
-            </h2>
-            <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed italic">
-              Au-delà de la détente, une influence mesurable sur votre santé globale et votre vitalité. Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
-            </p>
-          </header>
+          <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
+            <header className="w-full lg:w-[40%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
+              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Impact Biologique</span>
+              <h2 className="text-4xl md:text-6xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
+                L'Écho <span className="text-neutral-500 italic font-light">du Corps.</span>
+              </h2>
+              <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed italic">
+                Au-delà de la détente, une influence mesurable sur votre santé globale et votre vitalité. Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
+              </p>
+            </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-            {BIOLOGICAL_IMPACTS.map((impact) => (
-              <div key={impact.id} className="space-y-6">
-                <div className="w-12 h-12 bg-neutral-50 rounded-2xl flex items-center justify-center text-neutral-900">
-                  <impact.icon size={24} strokeWidth={1.5} />
+            <div className="w-full lg:w-[60%] grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+              {BIOLOGICAL_IMPACTS.map((impact) => (
+                <div key={impact.id} className="space-y-6">
+                  <div className="w-12 h-12 bg-neutral-50 rounded-2xl flex items-center justify-center text-neutral-900">
+                    <impact.icon size={24} strokeWidth={1.5} />
+                  </div>
+                  <h4 className="text-xl font-serif font-bold text-neutral-900">{impact.title}</h4>
+                  <p className="text-sm text-neutral-500 font-sans font-medium leading-relaxed">
+                    {impact.desc}
+                  </p>
                 </div>
-                <h4 className="text-xl font-serif font-bold text-neutral-900">{impact.title}</h4>
-                <p className="text-sm text-neutral-500 font-sans font-medium leading-relaxed">
-                  {impact.desc}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
