@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -16,7 +17,8 @@ import {
   Mail,
   Phone,
   MessageCircle,
-  MapPin
+  MapPin,
+  Sparkles
 } from 'lucide-react';
 import { format, addMinutes, isSameDay, startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, isSameMonth, isBefore, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -55,7 +57,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingRef, setBookingRef] = useState<string | null>(null);
 
-  // Auto-select service from URL or props
   useEffect(() => {
     const sId = initialServiceId || searchParams.get('serviceId');
     if (sId) {
@@ -67,7 +68,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
     }
   }, [initialServiceId, searchParams, services]);
 
-  // Auto-advance to Step 2 when service is selected
   const handleServiceSelect = (service: Service) => {
     setSelectedService(service);
   };
@@ -79,7 +79,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
     }
   }, [selectedService, step]);
 
-  // Auto-advance to Step 3 when time is selected
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
   };
@@ -160,19 +159,19 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8">
           <CheckCircle2 size={48} strokeWidth={1.5} />
         </div>
-        <h2 className="text-4xl font-serif font-bold text-neutral-900 mb-4 tracking-tighter">Réservé.</h2>
-        <p className="text-neutral-500 mb-10 italic font-sans">Référence de votre rituel : <span className="font-bold text-neutral-900">{bookingRef}</span></p>
+        <h2 className="text-[2.4rem] font-serif font-bold text-neutral-900 mb-4 tracking-tighter md:text-[3.3rem] lg:text-[4.5rem]">Réservé.</h2>
+        <p className="text-[1rem] leading-relaxed font-sans italic text-neutral-500 mb-10 md:text-[1.08rem] lg:text-[1.15rem]">Référence de votre rituel : <span className="font-bold text-neutral-900">{bookingRef}</span></p>
         
         <div className="space-y-4 max-w-sm mx-auto">
           <a 
             href="https://wa.me/41783336823" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="high-end-button w-full bg-emerald-600 border-emerald-600 text-white flex items-center justify-center gap-3"
+            className="w-full inline-flex items-center justify-center px-8 py-3.5 bg-emerald-600 border border-emerald-600 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 md:text-[0.8125rem] lg:text-[0.875rem] gap-3"
           >
             <MessageCircle size={20} /> CONFIRMER WHATSAPP
           </a>
-          <button onClick={() => window.location.reload()} className="high-end-button w-full border-neutral-200">
+          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-8 py-3.5 border border-neutral-200 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
             RETOUR
           </button>
         </div>
@@ -201,8 +200,8 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 className="space-y-10"
               >
                 <div className="text-center lg:text-left">
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 block mb-2">Étape 01</span>
-                  <h2 className="text-4xl font-serif font-bold text-neutral-900 tracking-tighter">Votre Rituel.</h2>
+                  <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block mb-2 md:text-[0.75rem] lg:text-[0.8rem]">Étape 01</span>
+                  <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-bold text-neutral-900 tracking-tighter">Votre Rituel.</h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -224,10 +223,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-serif font-bold text-lg text-neutral-900 leading-tight">{s.name.split(' - ')[0]}</h4>
+                        <h4 className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900 md:text-[1.2rem] lg:text-[1.25rem] leading-tight">{s.name.split(' - ')[0]}</h4>
                         <div className="flex items-center justify-between mt-1">
-                          <span className="text-[8px] font-black uppercase tracking-widest text-neutral-400">{s.duration}</span>
-                          <span className="font-serif font-bold text-neutral-900 text-sm">CHF {s.price}</span>
+                          <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-400 md:text-[0.75rem] lg:text-[0.8rem]">{s.duration}</span>
+                          <span className="text-[1.1rem] font-serif font-bold text-neutral-900 md:text-[1.2rem] lg:text-[1.25rem]">CHF {s.price}</span>
                         </div>
                       </div>
                     </button>
@@ -244,17 +243,17 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               >
                 <div className="flex justify-between items-end gap-6">
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 block mb-2">Étape 02</span>
-                    <h2 className="text-4xl font-serif font-bold text-neutral-900 tracking-tighter">L'Agenda.</h2>
+                    <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block mb-2 md:text-[0.75rem] lg:text-[0.8rem]">Étape 02</span>
+                    <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-bold text-neutral-900 tracking-tighter">L'Agenda.</h2>
                   </div>
-                  <button onClick={() => setStep(1)} className="text-[10px] font-black uppercase tracking-widest text-neutral-400 hover:text-neutral-900 flex items-center gap-2">
+                  <button onClick={() => setStep(1)} className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-400 hover:text-neutral-900 flex items-center gap-2 md:text-[0.75rem] lg:text-[0.8rem]">
                     <ChevronLeft size={14} /> Modifier
                   </button>
                 </div>
 
                 <div className="bg-white rounded-[3rem] shadow-sm border border-neutral-50 overflow-hidden">
                   <div className="flex items-center justify-between p-8 border-b border-neutral-50">
-                    <h3 className="text-xl font-serif font-bold text-neutral-900 capitalize">
+                    <h3 className="text-[1.1rem] font-serif font-bold text-neutral-900 capitalize md:text-[1.2rem] lg:text-[1.25rem]">
                       {currentMonth.toLocaleString('fr-FR', { month: 'long', year: 'numeric' })}
                     </h3>
                     <div className="flex gap-2">
@@ -262,7 +261,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                       <button onClick={handleNextMonth} className="p-3 hover:bg-neutral-50 rounded-full transition-all text-neutral-300 hover:text-neutral-900"><ChevronRight size={20} /></button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-7 text-center text-[9px] font-black text-neutral-300 uppercase tracking-[0.3em] py-4 bg-neutral-50/50">
+                  <div className="grid grid-cols-7 text-center text-[0.7rem] font-black text-neutral-300 uppercase tracking-[0.28em] py-4 bg-neutral-50/50 md:text-[0.75rem] lg:text-[0.8rem]">
                     {['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'].map(d => <div key={d}>{d}</div>)}
                   </div>
                   <div className="grid grid-cols-7 p-4 gap-2">
@@ -291,13 +290,13 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 <AnimatePresence>
                   {selectedDate && (
                     <motion.section initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                      <label className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 block">Créneaux Disponibles</label>
+                      <label className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block md:text-[0.75rem] lg:text-[0.8rem]">Créneaux Disponibles</label>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         {times.map((t) => (
                           <button
                             key={t}
                             onClick={() => handleTimeSelect(t)}
-                            className={`py-5 px-6 rounded-2xl border-2 transition-all duration-500 font-serif font-bold text-lg
+                            className={`py-5 px-6 rounded-2xl border-2 transition-all duration-500 font-serif font-bold text-[1.1rem] md:text-[1.2rem] lg:text-[1.25rem]
                               ${selectedTime === t ? 'bg-neutral-900 border-neutral-900 text-white shadow-2xl' : 'bg-white border-neutral-50 text-neutral-900 hover:border-neutral-200'}
                             `}
                           >
@@ -318,23 +317,23 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 className="space-y-12"
               >
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 block mb-2">Étape 03</span>
-                  <h2 className="text-4xl font-serif font-bold text-neutral-900 tracking-tighter">Coordonnées.</h2>
+                  <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block mb-2 md:text-[0.75rem] lg:text-[0.8rem]">Étape 03</span>
+                  <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-bold text-neutral-900 tracking-tighter">Coordonnées.</h2>
                 </div>
 
                 <div className="bg-white p-10 rounded-[3rem] border border-neutral-50 space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Input placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-serif text-lg italic" />
-                    <Input placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-serif text-lg italic" />
+                    <Input placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-serif text-[1rem] italic" />
+                    <Input placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-serif text-[1rem] italic" />
                     <Input type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-sans font-medium" />
                     <Input type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-sans font-medium" />
                   </div>
                   
                   <div className="pt-8 border-t border-neutral-50">
-                    <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-900 mb-6 flex items-center gap-3">
+                    <h3 className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-900 mb-6 flex items-center gap-3 md:text-[0.75rem] lg:text-[0.8rem]">
                       <Info size={16} className="text-neutral-200" /> Conditions & informations
                     </h3>
-                    <div className="space-y-4 text-xs leading-relaxed text-neutral-400 italic font-sans">
+                    <div className="space-y-4 text-[0.8125rem] leading-relaxed text-neutral-400 italic font-sans md:text-[0.875rem] lg:text-[0.9375rem]">
                       <p>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation. Elles ne remplacent en aucun cas un avis ou un traitement médical.</p>
                       <p>En réservant une séance, vous confirmez être en bonne condition physique et ne pas avoir de contre-indication au massage. En cas de doute, n’hésitez pas à demander l’avis de votre médecin.</p>
                       <p>Toute annulation ou modification doit être effectuée au minimum 24h à l’avance. En cas d’annulation tardive ou d’absence, la séance pourra être facturée.</p>
@@ -342,11 +341,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   </div>
 
                   <div className="flex justify-between items-center gap-4 pt-6">
-                    <button onClick={() => setStep(2)} className="high-end-button border-neutral-100 !px-8">RETOUR</button>
+                    <button onClick={() => setStep(2)} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-100 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-50 md:text-[0.8125rem] lg:text-[0.875rem]">RETOUR</button>
                     <button 
                       disabled={!formData.firstName || !formData.email} 
                       onClick={() => setStep(4)} 
-                      className="high-end-button flex-1"
+                      className="flex-1 inline-flex items-center justify-center px-8 py-3.5 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-800 md:text-[0.8125rem] lg:text-[0.875rem]"
                     >
                       VÉRIFIER
                     </button>
@@ -364,20 +363,20 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 <div className="inline-flex w-16 h-16 bg-neutral-50 rounded-full items-center justify-center text-neutral-900 mb-6">
                   <Info size={24} />
                 </div>
-                <h2 className="text-4xl font-serif font-bold text-neutral-900 tracking-tighter">Vérifiez votre rituel.</h2>
+                <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-bold text-neutral-900 tracking-tighter">Vérifiez votre rituel.</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left bg-white p-10 rounded-[3rem] border border-neutral-50 shadow-sm">
                   <div className="space-y-4">
-                    <p className="text-[10px] font-black text-neutral-300 uppercase tracking-widest">SOIN & RENDEZ-VOUS</p>
-                    <p className="text-2xl font-serif font-bold text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
-                    <p className="text-neutral-500 font-sans italic">
+                    <p className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest md:text-[0.75rem] lg:text-[0.8rem]">SOIN & RENDEZ-VOUS</p>
+                    <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900 md:text-[1.2rem] lg:text-[1.25rem]">{selectedService?.name.split(' - ')[0]}</p>
+                    <p className="text-[1rem] font-sans font-light italic text-neutral-500 md:text-[1.08rem] lg:text-[1.15rem]">
                       {selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : ''} à {selectedTime}
                     </p>
                   </div>
                   <div className="space-y-4">
-                    <p className="text-[10px] font-black text-neutral-300 uppercase tracking-widest">VOS COORDONNÉES</p>
-                    <p className="text-2xl font-serif font-bold text-neutral-900">{formData.firstName} {formData.lastName}</p>
-                    <p className="text-neutral-500 font-sans italic">{formData.email}</p>
+                    <p className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest md:text-[0.75rem] lg:text-[0.8rem]">VOS COORDONNÉES</p>
+                    <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900 md:text-[1.2rem] lg:text-[1.25rem]">{formData.firstName} {formData.lastName}</p>
+                    <p className="text-[1rem] font-sans font-light italic text-neutral-500 md:text-[1.08rem] lg:text-[1.15rem]">{formData.email}</p>
                   </div>
                 </div>
 
@@ -385,11 +384,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   <button 
                     onClick={completeBooking} 
                     disabled={isSubmitting} 
-                    className="high-end-button w-full bg-neutral-900 text-white shadow-2xl shadow-neutral-900/10 flex items-center justify-center gap-4"
+                    className="w-full inline-flex items-center justify-center px-8 py-3.5 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-800 md:text-[0.8125rem] lg:text-[0.875rem] shadow-2xl shadow-neutral-900/10 gap-4"
                   >
                     {isSubmitting ? <Loader2 className="animate-spin" /> : <>CONFIRMER LA RÉSERVATION <CheckCircle2 size={18} /></>}
                   </button>
-                  <button onClick={() => setStep(3)} className="text-[10px] font-black uppercase tracking-widest text-neutral-300 hover:text-neutral-900 transition-colors">Retour</button>
+                  <button onClick={() => setStep(3)} className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 hover:text-neutral-900 transition-colors md:text-[0.75rem] lg:text-[0.8rem]">Retour</button>
                 </div>
               </motion.div>
             )}
@@ -399,15 +398,15 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         {step < 5 && (
           <div className="lg:col-span-4">
             <div className="bg-white p-10 rounded-[3rem] border border-neutral-50 shadow-sm sticky top-32 space-y-10">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300">Résumé</h4>
+              <h4 className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 md:text-[0.75rem] lg:text-[0.8rem]">Résumé</h4>
               <div className="space-y-8">
                 <div className="flex gap-5">
                   <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-900 shrink-0">
                     <MapPin size={20} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[9px] font-black text-neutral-300 uppercase tracking-widest mb-1">Localisation</p>
-                    <p className="text-sm font-sans font-medium text-neutral-600">Alfa Business Center, Cointrin</p>
+                    <p className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest mb-1 md:text-[0.75rem] lg:text-[0.8rem]">Localisation</p>
+                    <p className="text-[0.8125rem] font-sans font-medium text-neutral-600 md:text-[0.875rem] lg:text-[0.9375rem]">Alfa Business Center, Cointrin</p>
                   </div>
                 </div>
                 
@@ -416,17 +415,17 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                     <Clock size={20} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[9px] font-black text-neutral-300 uppercase tracking-widest mb-1">Rituel</p>
-                    <p className="text-sm font-serif font-bold text-neutral-900">{selectedService?.name.split(' - ')[0] || 'En attente...'}</p>
-                    {selectedDate && <p className="text-xs text-neutral-400 mt-1">{format(selectedDate, 'd MMM')} {selectedTime ? ` à ${selectedTime}` : ''}</p>}
+                    <p className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest mb-1 md:text-[0.75rem] lg:text-[0.8rem]">Rituel</p>
+                    <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900 md:text-[1.2rem] lg:text-[1.25rem]">{selectedService?.name.split(' - ')[0] || 'En attente...'}</p>
+                    {selectedDate && <p className="text-[0.8125rem] text-neutral-400 mt-1 md:text-[0.875rem] lg:text-[0.9375rem]">{format(selectedDate, 'd MMM')} {selectedTime ? ` à ${selectedTime}` : ''}</p>}
                   </div>
                 </div>
               </div>
 
               <div className="pt-10 border-t border-neutral-50">
                 <div className="flex justify-between items-center mb-10">
-                  <span className="text-[10px] font-black text-neutral-300 uppercase tracking-widest">HONORAIRES</span>
-                  <span className="text-3xl font-serif font-bold text-neutral-900">CHF {selectedService?.price || 0}</span>
+                  <span className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest md:text-[0.75rem] lg:text-[0.8rem]">HONORAIRES</span>
+                  <span className="text-[1.9rem] leading-tight font-serif font-bold text-neutral-900 md:text-[2.3rem] lg:text-[2.8rem]">CHF {selectedService?.price || 0}</span>
                 </div>
               </div>
             </div>

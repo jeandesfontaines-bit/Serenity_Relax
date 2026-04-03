@@ -67,13 +67,13 @@ const ServiceCard = ({ s }: { s: any }) => (
       </div>
 
       <div className="px-2 pb-20 space-y-3">
-        <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
+        <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-1 md:text-[0.75rem] lg:text-[0.8rem]">
           {s.name.includes('Bambous') ? 'Profond' : s.name.includes('Draineur') ? 'Vitalité' : s.name.includes('Aroma') ? 'Sensoriel' : s.name.includes('Réflexologie') ? 'Ciblé' : s.name.includes('Sportif') ? 'Performance' : s.name.includes('Thérapeutique') ? 'Signature' : s.name.includes('Deep Relax') ? 'Détente' : 'Dynamique'}
         </span>
-        <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
+        <h3 className="text-[1.1rem] leading-snug font-serif font-medium text-neutral-900 tracking-tight md:text-[1.2rem] lg:text-[1.25rem]">
           {s.name.split(' - ')[0]}
         </h3>
-        <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed">
+        <p className="text-[0.8125rem] leading-relaxed text-neutral-500 font-sans font-medium md:text-[0.875rem] lg:text-[0.9375rem]">
           {s.description}
         </p>
       </div>
@@ -100,7 +100,6 @@ export default function HomePage() {
 
       {/* SECTION HÉROS */}
       <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-32 pb-24 relative border-b border-neutral-50 overflow-hidden">
-        {/* Background Overlay */}
         <div className="absolute inset-0 z-0">
           <Image 
             src={HERO_BG}
@@ -118,26 +117,26 @@ export default function HomePage() {
           {/* TEXTE À GAUCHE */}
           <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left order-2 lg:order-1">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
-              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">L'Engagement João.</span>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-neutral-900 leading-[0.95] tracking-tighter">
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">L'Engagement João.</span>
+              <h1 className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.5rem] font-serif font-medium text-neutral-900 tracking-tighter">
                 L'Art du<br />
-                <span className="text-neutral-500 italic font-light text-6xl md:text-8xl">Lâcher-Prise Absolu.</span>
+                <span className="text-neutral-500 italic font-light">Lâcher-Prise Absolu.</span>
               </h1>
             </motion.div>
             
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
-              <p className="text-neutral-800 text-base md:text-lg font-sans font-medium leading-relaxed italic">
+              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">
                 Découvrez une parenthèse de sérénité au cœur de Genève. Des soins sur-mesure conçus pour restaurer l'équilibre entre votre corps et votre esprit.
               </p>
               <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
-                 <p className="text-neutral-800 text-xl leading-relaxed font-sans mb-4">
+                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4">
                    Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
                  </p>
-                 <p className="text-neutral-800 italic text-2xl leading-snug font-sans">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
-                 <span className="font-cursive text-4xl text-neutral-900 block mt-4">— João P.</span>
+                 <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
+                 <span className="font-cursive text-[1.5rem] text-neutral-900 block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
-                <Link href="/booking" className="high-end-button">
+                <Link href="/booking" className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
                   Réserver un soin
                 </Link>
               </div>
@@ -172,11 +171,11 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
             <header className="w-full lg:w-[40%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Impact Biologique</span>
-              <h2 className="text-4xl md:text-6xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">Impact Biologique</span>
+              <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-neutral-900 tracking-tighter mb-8">
                 L'Écho <span className="text-neutral-500 italic font-light">du Corps.</span>
               </h2>
-              <p className="text-neutral-600 text-lg font-sans font-medium leading-relaxed italic">
+              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem]">
                 Au-delà de la détente, une influence mesurable sur votre santé globale et votre vitalité. Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
               </p>
             </header>
@@ -187,8 +186,8 @@ export default function HomePage() {
                   <div className="w-12 h-12 bg-neutral-50 rounded-2xl flex items-center justify-center text-neutral-900">
                     <impact.icon size={24} strokeWidth={1.5} />
                   </div>
-                  <h4 className="text-xl font-serif font-bold text-neutral-900">{impact.title}</h4>
-                  <p className="text-sm text-neutral-500 font-sans font-medium leading-relaxed">
+                  <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-bold text-neutral-900">{impact.title}</h4>
+                  <p className="text-[0.8125rem] leading-relaxed md:text-[0.875rem] lg:text-[0.9375rem] text-neutral-500 font-sans font-medium">
                     {impact.desc}
                   </p>
                 </div>
@@ -203,14 +202,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start text-center lg:text-left">
-              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-6">Menu Signature</span>
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">Menu Signature</span>
+              <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-neutral-900 tracking-tighter mb-8">
                 Soins <br className="hidden lg:block"/> <span className="text-neutral-500 italic font-light">exclusifs.</span>
               </h2>
-              <p className="text-neutral-600 text-base font-sans font-medium leading-relaxed italic mb-12 max-w-sm">
+              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <Link href="/booking" className="high-end-button">
+              <Link href="/booking" className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
                 Réserver un soin
               </Link>
             </div>
@@ -236,11 +235,11 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-8">Assistance</span>
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium text-neutral-900 leading-[1] tracking-tighter mb-8">
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-8 md:text-[0.75rem] lg:text-[0.8rem]">Assistance</span>
+              <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-neutral-900 tracking-tighter mb-8">
                 Questions <br /> <span className="text-neutral-500 italic font-light">fréquentes.</span>
               </h2>
-              <p className="text-neutral-600 text-base font-sans font-medium leading-relaxed italic mb-12 max-w-xs">
+              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-xs">
                 Tout ce qu'il faut savoir pour préparer votre visite dans notre sanctuaire de Cointrin.
               </p>
             </div>
@@ -249,10 +248,10 @@ export default function HomePage() {
               {FAQS.map((f, i) => (
                 <div key={i} className="group transition-all duration-500 border-b border-neutral-100 pb-16 last:border-0">
                   <div className="flex gap-12 items-start">
-                    <span className="text-[11px] font-sans font-black text-neutral-200 uppercase tracking-widest mt-2">0{i+1}</span>
+                    <span className="text-[0.7rem] font-sans font-black text-neutral-200 uppercase tracking-widest mt-2">0{i+1}</span>
                     <div className="space-y-6">
-                      <h4 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">{f.q}</h4>
-                      <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed border-l-2 border-neutral-50 pl-8 max-w-xl">
+                      <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium text-neutral-900 tracking-tight">{f.q}</h4>
+                      <p className="text-[0.8125rem] leading-relaxed text-neutral-500 font-sans font-medium border-l-2 border-neutral-50 pl-8 max-w-xl md:text-[0.875rem] lg:text-[0.9375rem]">
                         {f.a}
                       </p>
                     </div>
@@ -268,28 +267,28 @@ export default function HomePage() {
       <footer className="bg-neutral-900 text-white pt-16 pb-20 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white">SERENITY RELAX</h2>
-            <p className="text-[10px] font-sans font-medium italic tracking-[0.4em] text-white/50 uppercase">EXCELLENCE THÉRAPEUTIQUE</p>
+            <h2 className="text-[1.1rem] font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white md:text-[1.2rem] lg:text-[1.25rem]">SERENITY RELAX</h2>
+            <p className="text-[0.7rem] font-sans font-medium italic tracking-[0.4em] text-white/50 uppercase md:text-[0.75rem] lg:text-[0.8rem]">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-24 w-full text-center">
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-white/30 uppercase tracking-[0.3em]">LOCALISATION</h3>
-              <div className="text-sm font-sans text-white/40 space-y-2">
+              <h3 className="text-[0.7rem] font-sans font-black text-white/30 uppercase tracking-[0.3em] md:text-[0.75rem] lg:text-[0.8rem]">LOCALISATION</h3>
+              <div className="text-[0.8125rem] leading-relaxed font-sans text-white/40 space-y-2 md:text-[0.875rem] lg:text-[0.9375rem]">
                 <p>Alfa Business Center</p>
                 <p>Chemin de Joinville 26, 4ème étage</p>
                 <p>1216 Cointrin - Genève</p>
               </div>
             </div>
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-white/30 uppercase tracking-[0.3em]">CONTACT</h3>
-              <div className="text-sm font-sans text-white/40 space-y-2">
+              <h3 className="text-[0.7rem] font-sans font-black text-white/30 uppercase tracking-[0.3em] md:text-[0.75rem] lg:text-[0.8rem]">CONTACT</h3>
+              <div className="text-[0.8125rem] leading-relaxed font-sans text-white/40 space-y-2 md:text-[0.875rem] lg:text-[0.9375rem]">
                 <p>+41 78 333 68 23</p>
                 <p>serenityrelaxtherapy@gmail.com</p>
               </div>
             </div>
             <div className="space-y-6">
-              <h3 className="text-[10px] font-sans font-black text-white/30 uppercase tracking-[0.3em]">SOCIAL</h3>
+              <h3 className="text-[0.7rem] font-sans font-black text-white/30 uppercase tracking-[0.3em] md:text-[0.75rem] lg:text-[0.8rem]">SOCIAL</h3>
               <div className="flex items-center justify-center gap-8">
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
                   <Instagram size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
@@ -299,6 +298,9 @@ export default function HomePage() {
                 </a>
               </div>
             </div>
+          </div>
+          <div className="mt-20">
+            <span className="font-cursive text-[1.5rem] text-white/20 md:text-[1.75rem] lg:text-[2rem]">João</span>
           </div>
         </div>
       </footer>

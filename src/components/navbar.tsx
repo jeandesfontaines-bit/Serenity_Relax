@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -39,8 +40,8 @@ export function Navbar() {
       <nav className="max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full px-8 py-3 md:py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
-            <span className="font-sans font-bold text-xs md:text-sm tracking-[0.3em] text-neutral-900 uppercase transition-all duration-500">SERENITY RELAX</span>
-            <span className="font-cursive text-[10px] md:text-xs text-neutral-900 tracking-normal whitespace-nowrap normal-case transition-colors ml-1">by João</span>
+            <span className="font-sans font-bold text-[0.7rem] tracking-[0.3em] text-neutral-900 uppercase transition-all duration-500 md:text-[0.75rem] lg:text-[0.8rem]">SERENITY RELAX</span>
+            <span className="font-cursive text-[1.1rem] text-neutral-900 tracking-normal whitespace-nowrap normal-case transition-colors ml-1 md:text-[1.25rem] lg:text-[1.35rem]">by João</span>
           </Link>
           
           <div className="hidden md:flex items-center gap-8 lg:gap-12">
@@ -50,7 +51,7 @@ export function Navbar() {
                   <Link 
                     key={link.id} 
                     href={link.href} 
-                    className={`flex items-center gap-2 text-[9px] font-sans font-black uppercase tracking-[0.3em] transition-colors ${pathname === link.href ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
+                    className={`flex items-center gap-2 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] transition-colors md:text-[0.8125rem] lg:text-[0.875rem] ${pathname === link.href ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
                   >
                     <link.icon size={12} /> {link.label}
                   </Link>
@@ -60,14 +61,14 @@ export function Navbar() {
               <>
                 <Link 
                   href="/client/portal" 
-                  className={`flex items-center gap-2 text-[9px] font-sans font-black uppercase tracking-[0.3em] transition-all ${pathname === '/client/portal' ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
+                  className={`flex items-center gap-2 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] transition-all md:text-[0.8125rem] lg:text-[0.875rem] ${pathname === '/client/portal' ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
                 >
                   <User size={12} strokeWidth={2.5} />
                   Espace Privé
                 </Link>
                 <Link 
                   href="/booking"
-                  className={`flex items-center gap-2 text-[9px] font-sans font-black uppercase tracking-[0.3em] transition-all px-6 py-2 rounded-full border border-neutral-900 ${pathname === '/booking' ? 'bg-neutral-900 text-white' : 'text-neutral-900 hover:bg-neutral-900 hover:text-white'}`}
+                  className={`flex items-center gap-2 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-6 py-2 rounded-full border border-neutral-900 md:text-[0.8125rem] lg:text-[0.875rem] ${pathname === '/booking' ? 'bg-neutral-900 text-white' : 'text-neutral-900 hover:bg-neutral-900 hover:text-white'}`}
                 >
                   <Calendar size={12} strokeWidth={2.5} />
                   Réserver
@@ -97,17 +98,17 @@ export function Navbar() {
             >
               {isTherapistArea ? (
                 adminLinks.map((link) => (
-                  <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-3 text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 py-2">
+                  <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-3 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.8125rem] lg:text-[0.875rem]">
                     <link.icon size={14} /> {link.label}
                   </Link>
                 ))
               ) : (
                 <>
-                  <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[11px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 py-2">
+                  <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.8125rem] lg:text-[0.875rem]">
                     <User size={16} strokeWidth={2.5} />
                     Espace Privé
                   </Link>
-                  <Link href="/booking" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[11px] font-sans font-black uppercase tracking-[0.3em] bg-neutral-900 text-white rounded-full py-4 w-full">
+                  <Link href="/booking" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-4 w-full md:text-[0.8125rem] lg:text-[0.875rem]">
                     <Calendar size={16} strokeWidth={2.5} />
                     Réserver
                   </Link>
@@ -115,7 +116,7 @@ export function Navbar() {
               )}
               
               {user && !user.isAnonymous && (
-                <button onClick={handleSignOut} className="text-center text-[10px] font-sans font-black uppercase tracking-[0.3em] text-rose-500 pt-4 border-t border-neutral-100">Déconnexion</button>
+                <button onClick={handleSignOut} className="text-center text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] text-rose-500 pt-4 border-t border-neutral-100 md:text-[0.8125rem] lg:text-[0.875rem]">Déconnexion</button>
               )}
             </motion.div>
           )}

@@ -18,13 +18,13 @@ export default function BookingPage() {
             className="inline-flex items-center gap-3 px-5 py-2.5 bg-white border border-black/5 rounded-full mb-8 shadow-sm"
           >
             <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
-            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">Expérience Privée</span>
+            <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-muted-foreground md:text-[0.75rem] lg:text-[0.8rem]">Expérience Privée</span>
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-neutral-900 mb-8 tracking-tighter leading-[0.9]"
+            className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.5rem] font-serif font-medium text-neutral-900 mb-8 tracking-tighter"
           >
             Réserver un <span className="italic font-light text-neutral-500">moment.</span>
           </motion.h1>
@@ -32,7 +32,7 @@ export default function BookingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-muted-foreground text-lg md:text-xl font-light max-w-xl mx-auto leading-relaxed italic"
+            className="text-[1rem] leading-relaxed font-sans font-light italic text-muted-foreground max-w-xl mx-auto md:text-[1.08rem] lg:text-[1.15rem]"
           >
             Composez votre propre voyage de récupération. Sécuriser votre créneau dans notre sanctuaire est la première étape vers la restauration.
           </motion.p>
