@@ -4,6 +4,8 @@
 import React, { useState, useEffect } from 'react';
 import { Service } from '@/lib/types';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { 
   Calendar as CalendarIcon, 
   Clock, 
@@ -41,6 +43,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [acceptedConditions, setAcceptedConditions] = useState(false);
   
   const [formData, setFormData] = useState({
     firstName: '', 
@@ -185,29 +188,29 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 <h2 className="text-[1.9rem] leading-tight font-serif font-bold text-neutral-900 tracking-tighter">Votre Rituel.</h2>
               </div>
 
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 gap-2">
                 {services.map((s) => (
                   <button
                     key={s.id}
                     onClick={() => handleServiceSelect(s)}
-                    className={`group p-4 rounded-2xl border text-left transition-all duration-500 flex items-center gap-4 bg-white
+                    className={`group p-3 rounded-2xl border text-left transition-all duration-500 flex items-center gap-4 bg-white
                       ${selectedService?.id === s.id ? 'border-neutral-900 shadow-xl' : 'border-neutral-50 hover:border-neutral-200'}
                     `}
                   >
-                    <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0">
+                    <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0">
                       <Image 
                         src={s.image || ''} 
                         fill 
                         unoptimized 
                         alt={s.name} 
-                        className="object-cover transition-all duration-700"
+                        className="object-cover"
                       />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-[1rem] leading-snug font-serif font-bold text-neutral-900 truncate">{s.name.split(' - ')[0]}</h4>
-                      <div className="flex items-center justify-between mt-0.5">
-                        <span className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400">{s.duration}</span>
-                        <span className="text-[1rem] font-serif font-bold text-neutral-900">CHF {s.price}</span>
+                    <div className="flex-1 min-w-0 flex items-center justify-between gap-4">
+                      <h4 className="text-[0.95rem] leading-snug font-serif font-bold text-neutral-900 truncate">{s.name.split(' - ')[0]}</h4>
+                      <div className="flex items-center gap-4 shrink-0">
+                        <span className="text-[0.6rem] font-black uppercase tracking-[0.15em] text-neutral-300">{s.duration}</span>
+                        <span className="text-[0.95rem] font-serif font-bold text-neutral-900">CHF {s.price}</span>
                       </div>
                     </div>
                   </button>
@@ -316,19 +319,27 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   <h3 className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-900 mb-6 flex items-center gap-3">
                     <Info size={16} className="text-neutral-200" /> Conditions & informations
                   </h3>
-                  <div className="space-y-4 text-[0.8125rem] leading-relaxed text-neutral-400 italic font-sans">
+                  <div className="space-y-4 text-[0.8125rem] leading-relaxed text-neutral-400 italic font-sans mb-8">
                     <p>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation. Elles ne remplacent en aucun cas un avis ou un traitement médical.</p>
-                    <p>En réservant une séance, vous confirmez être en bonne condition physique et ne pas avoir de contre-indication au massage. En cas de doute, n’hésitez pas à demander l’avis de votre médecin.</p>
-                    <p>Toute annulation ou modification doit être effectuée au minimum 24h à l’avance. En cas d’annulation tardive ou d’absence, la séance pourra être facturée.</p>
+                    <p>En réservant une séance, vous confirmez être en bonne condition physique et ne pas avoir de contre-indication au massage.</p>
+                    <p>En cas de doute, n’hésitez pas à demander l’avis de votre médecin.</p>
+                    <p>Toute annulation ou modification doit être effectuée au minimum 24h à l’avance.</p>
+                    <p>En cas d’annulation tardive ou d’absence, la séance pourra être facturée.</p>
+                  </div>
+                  <div className="flex items-start space-x-3 bg-neutral-50 p-6 rounded-2xl">
+                    <Checkbox id="terms" checked={acceptedConditions} onCheckedChange={(checked) => setAcceptedConditions(checked === true)} />
+                    <Label htmlFor="terms" className="text-[0.75rem] font-sans font-bold text-neutral-900 cursor-pointer leading-tight">
+                      J'accepte les conditions et confirme mon état de santé pour cette séance.
+                    </Label>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center gap-4 pt-6">
                   <button onClick={() => setStep(2)} className="inline-flex items-center justify-center px-8 py-3 border border-neutral-100 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-50">RETOUR</button>
                   <button 
-                    disabled={!formData.firstName || !formData.email} 
+                    disabled={!formData.firstName || !formData.email || !acceptedConditions} 
                     onClick={() => setStep(4)} 
-                    className="flex-1 inline-flex items-center justify-center px-8 py-3 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-800"
+                    className="flex-1 inline-flex items-center justify-center px-8 py-3 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-800 disabled:opacity-20"
                   >
                     VÉRIFIER
                   </button>

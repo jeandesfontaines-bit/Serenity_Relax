@@ -171,7 +171,7 @@ export default function TherapistDashboard() {
                 <button
                   key={item.id}
                   onClick={() => { setActiveTab(item.id); setSelectedDate(null); }}
-                  className={`px-6 py-2.5 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-bold uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
+                  className={`px-6 py-2.5 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
                     activeTab === item.id 
                       ? "bg-neutral-900 text-white shadow-lg" 
                       : "text-neutral-400 hover:text-neutral-900"
@@ -186,7 +186,7 @@ export default function TherapistDashboard() {
               className="bg-neutral-900 text-white px-8 py-3 rounded-full hover:bg-neutral-800 transition-all flex items-center gap-3 shadow-xl active:scale-95"
             >
               <Plus size={16} strokeWidth={2.5} />
-              <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-bold uppercase tracking-[0.2em]">Nouveau Soin</span>
+              <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.2em]">Nouveau Soin</span>
             </button>
         </div>
 
