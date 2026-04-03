@@ -79,7 +79,7 @@ export default function HomePage() {
           
           {/* TEXTE À GAUCHE */}
           <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left order-2 lg:order-1">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start pt-12">
               <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">L'Engagement João.</span>
               <h1 className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.5rem] font-serif font-medium text-neutral-900 tracking-tighter">
                 L'Art du<br />
@@ -119,7 +119,7 @@ export default function HomePage() {
                 src={MY_PHOTO} 
                 fill
                 unoptimized
-                className="object-cover transition-all duration-1000 grayscale-0"
+                className="object-cover transition-all duration-1000"
                 alt="Portrait de João P."
                 priority
               />
