@@ -24,9 +24,9 @@ export default function BookingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-neutral-900 mb-8 tracking-tighter leading-[0.9] uppercase"
+            className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-neutral-900 mb-8 tracking-tighter leading-[0.9]"
           >
-            Réserver un <span className="italic font-medium text-neutral-500">moment.</span>
+            Réserver un <span className="italic font-light text-neutral-500">moment.</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -34,7 +34,7 @@ export default function BookingPage() {
             transition={{ delay: 0.2 }}
             className="text-muted-foreground text-lg md:text-xl font-light max-w-xl mx-auto leading-relaxed italic"
           >
-            Curate your personal journey of recovery. Securing your preferred time in our sanctuary is the first step to restoration.
+            Composez votre propre voyage de récupération. Sécuriser votre créneau dans notre sanctuaire est la première étape vers la restauration.
           </motion.p>
         </header>
 
