@@ -149,11 +149,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
             href="https://wa.me/41783336823" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="w-full inline-flex items-center justify-center px-8 py-4 bg-emerald-600 border border-emerald-600 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 gap-3"
+            className="w-full inline-flex items-center justify-center px-8 py-3 bg-emerald-600 border border-emerald-600 text-white rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 gap-3"
           >
-            <MessageCircle size={20} /> CONFIRMER WHATSAPP
+            <MessageCircle size={16} /> CONFIRMER WHATSAPP
           </a>
-          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-8 py-4 border border-neutral-200 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
+          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-8 py-3 border border-neutral-200 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
             RETOUR
           </button>
         </div>
@@ -200,7 +200,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         fill 
                         unoptimized 
                         alt={s.name} 
-                        className="object-cover transition-all duration-700 grayscale-0"
+                        className="object-cover transition-all duration-700"
                       />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -227,7 +227,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block mb-2">Étape 02</span>
                   <h2 className="text-[1.9rem] leading-tight font-serif font-bold text-neutral-900 tracking-tighter">L'Agenda.</h2>
                 </div>
-                <button onClick={() => setStep(1)} className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-400 hover:text-neutral-900 flex items-center gap-2">
+                <button onClick={() => setStep(1)} className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] text-neutral-400 hover:text-neutral-900 flex items-center gap-2">
                   <ChevronLeft size={14} /> Modifier
                 </button>
               </div>
@@ -324,11 +324,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 </div>
 
                 <div className="flex justify-between items-center gap-4 pt-6">
-                  <button onClick={() => setStep(2)} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-100 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-50">RETOUR</button>
+                  <button onClick={() => setStep(2)} className="inline-flex items-center justify-center px-8 py-3 border border-neutral-100 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-50">RETOUR</button>
                   <button 
                     disabled={!formData.firstName || !formData.email} 
                     onClick={() => setStep(4)} 
-                    className="flex-1 inline-flex items-center justify-center px-8 py-3.5 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-800"
+                    className="flex-1 inline-flex items-center justify-center px-8 py-3 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-800"
                   >
                     VÉRIFIER
                   </button>
@@ -367,11 +367,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 <button 
                   onClick={completeBooking} 
                   disabled={isSubmitting} 
-                  className="w-full inline-flex items-center justify-center px-8 py-4 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-800 shadow-2xl gap-4"
+                  className="w-full inline-flex items-center justify-center px-8 py-4 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-800 shadow-2xl gap-4"
                 >
                   {isSubmitting ? <Loader2 className="animate-spin" /> : <>CONFIRMER LA RÉSERVATION <CheckCircle2 size={18} /></>}
                 </button>
-                <button onClick={() => setStep(3)} className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 hover:text-neutral-900 transition-colors">Retour</button>
+                <button onClick={() => setStep(3)} className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] text-neutral-300 hover:text-neutral-900 transition-colors">Retour</button>
               </div>
             </motion.div>
           )}

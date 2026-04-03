@@ -171,7 +171,7 @@ export default function TherapistDashboard() {
                 <button
                   key={item.id}
                   onClick={() => { setActiveTab(item.id); setSelectedDate(null); }}
-                  className={`px-8 py-2.5 text-[10px] font-sans font-bold uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
+                  className={`px-6 py-2.5 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-bold uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
                     activeTab === item.id 
                       ? "bg-neutral-900 text-white shadow-lg" 
                       : "text-neutral-400 hover:text-neutral-900"
@@ -186,7 +186,7 @@ export default function TherapistDashboard() {
               className="bg-neutral-900 text-white px-8 py-3 rounded-full hover:bg-neutral-800 transition-all flex items-center gap-3 shadow-xl active:scale-95"
             >
               <Plus size={16} strokeWidth={2.5} />
-              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em]">Nouveau Soin</span>
+              <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-bold uppercase tracking-[0.2em]">Nouveau Soin</span>
             </button>
         </div>
 
@@ -220,7 +220,7 @@ export default function TherapistDashboard() {
                     <h3 className="text-4xl font-serif font-bold tracking-tight">Planning du jour</h3>
                     <div className="bg-white px-8 py-3 rounded-full border border-neutral-100 flex items-center gap-4">
                       <Clock size={14} className="text-neutral-400" />
-                      <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-600">
+                      <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.3em] text-neutral-600">
                         {isClient ? format(new Date(), 'EEEE d MMMM', { locale: fr }) : '...'}
                       </span>
                     </div>
@@ -274,7 +274,7 @@ export default function TherapistDashboard() {
                           <p className="text-2xl font-serif font-bold mb-3">Aucun rendez-vous aujourd'hui</p>
                           <p className="text-sm text-neutral-400 italic">Un moment de calme pour votre propre sérénité.</p>
                         </div>
-                        <button onClick={() => openNew()} className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 hover:underline">Planifier un soin</button>
+                        <button onClick={() => openNew()} className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 hover:underline">Planifier un soin</button>
                       </div>
                     )}
                   </div>
@@ -329,9 +329,9 @@ export default function TherapistDashboard() {
                  <div className="p-10 border-b border-neutral-50 flex items-center justify-between bg-neutral-50/20">
                     <div className="flex items-center gap-10">
                        {selectedDate ? (
-                         <button onClick={() => setSelectedDate(null)} className="text-neutral-900 flex items-center gap-4 hover:bg-neutral-50 px-6 py-3 rounded-full transition-all border border-neutral-200">
+                         <button onClick={() => setSelectedDate(null)} className="text-neutral-900 flex items-center gap-4 hover:bg-neutral-50 px-6 py-2.5 rounded-full transition-all border border-neutral-200">
                            <ChevronLeft size={16} strokeWidth={2.5} />
-                           <span className="text-[10px] font-sans font-black uppercase tracking-[0.2em]">Retour au mois</span>
+                           <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.2em]">Retour au mois</span>
                          </button>
                        ) : (
                          <div className="flex items-center gap-10">
@@ -359,13 +359,13 @@ export default function TherapistDashboard() {
                        const dateStr = format(day, 'yyyy-MM-dd');
                        const dayBookings = appointments.filter(a => a.startTime.startsWith(dateStr));
                        const isToday = isSameDay(day, new Date());
-                       const currentMonth = isSameMonth(day, viewDate);
+                       const currentMonthOnly = isSameMonth(day, viewDate);
                        
                        return (
                          <div 
                           key={dateStr} 
                           onClick={() => setSelectedDate(dateStr)} 
-                          className={`h-40 p-6 cursor-pointer group border-r border-b border-neutral-50 hover:bg-neutral-50 transition-all relative ${!currentMonth ? 'opacity-10 grayscale' : ''}`}
+                          className={`h-40 p-6 cursor-pointer group border-r border-b border-neutral-50 hover:bg-neutral-50 transition-all relative ${!currentMonthOnly ? 'opacity-10 grayscale' : ''}`}
                          >
                             <span className={`w-10 h-10 flex items-center justify-center rounded-2xl text-xs font-sans font-bold transition-all ${isToday ? 'bg-neutral-900 text-white shadow-xl' : 'text-neutral-400 group-hover:bg-white group-hover:text-neutral-900'}`}>{format(day, 'd')}</span>
                             <div className="mt-6 flex flex-col gap-2.5">
@@ -413,7 +413,7 @@ export default function TherapistDashboard() {
                               ) : (
                                 <button onClick={() => openNew(selectedDate)} className="w-full h-full border-2 border-dashed border-neutral-50 rounded-[3rem] flex items-center justify-center gap-4 text-neutral-200 hover:text-neutral-900 hover:border-neutral-900/20 hover:bg-white transition-all group/btn">
                                   <Plus size={20} className="group-hover/btn:scale-110 transition-transform" />
-                                  <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em]">Créneau Disponible</span>
+                                  <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.4em]">Créneau Disponible</span>
                                 </button>
                               )}
                             </div>
@@ -466,7 +466,7 @@ export default function TherapistDashboard() {
                              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                              <span className="text-[10px] font-sans font-black uppercase tracking-[0.2em] text-neutral-600">Fidélité {clientBookings.length % 11}/10</span>
                            </div>
-                           <button className="text-[10px] font-sans font-black uppercase tracking-[0.2em] text-neutral-300 hover:text-neutral-900 transition-colors">Dossier <ArrowRight size={12} className="inline ml-1" /></button>
+                           <button className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.2em] text-neutral-300 hover:text-neutral-900 transition-colors">Dossier <ArrowRight size={12} className="inline ml-1" /></button>
                         </div>
                      </div>
                    )})}
@@ -547,12 +547,12 @@ export default function TherapistDashboard() {
               <div className="mt-16 flex flex-col gap-6 pt-12 border-t border-neutral-100">
                 <button 
                   onClick={handleSave} disabled={!formData.firstName}
-                  className="bg-neutral-900 text-white py-4 rounded-full text-[10px] font-sans font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-neutral-800 transition-all disabled:opacity-20"
+                  className="bg-neutral-900 text-white py-4 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-neutral-800 transition-all disabled:opacity-20"
                 >
                   {editingId ? "Mettre à jour le Dossier" : "Enregistrer le Soin"}
                 </button>
                 {editingId && (
-                  <button onClick={() => handleDelete(editingId)} className="flex items-center justify-center gap-3 text-rose-500 py-3 rounded-full text-[10px] font-sans font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
+                  <button onClick={() => handleDelete(editingId)} className="flex items-center justify-center gap-3 text-rose-500 py-3 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
                     <Trash2 size={16} /> Supprimer Définitivement
                   </button>
                 )}

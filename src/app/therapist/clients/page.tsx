@@ -30,7 +30,7 @@ export default function ClientsCRM() {
             <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-400 block mb-2">GESTION PATIENTS</span>
             <h1 className="text-4xl font-serif font-bold text-neutral-900">Base Patients</h1>
           </div>
-          <Button className="rounded-full bg-neutral-900 text-white px-8 py-3 text-[10px] font-sans font-black uppercase tracking-[0.2em] gap-3">
+          <Button className="rounded-full bg-neutral-900 text-white px-8 py-3 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.2em] gap-3">
             <Plus className="h-4 w-4" /> Nouveau Patient
           </Button>
         </header>

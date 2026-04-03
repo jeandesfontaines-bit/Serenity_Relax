@@ -79,7 +79,7 @@ export default function HomePage() {
           
           {/* TEXTE À GAUCHE */}
           <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left order-2 lg:order-1">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start pt-16">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start pt-20">
               <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">L'Engagement João.</span>
               <h1 className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.5rem] font-serif font-medium text-neutral-900 tracking-tighter">
                 L'Art du<br />
@@ -99,7 +99,7 @@ export default function HomePage() {
                  <span className="font-cursive text-[1.5rem] text-neutral-900 block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
-                <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
+                <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
                   Réserver un soin
                 </button>
               </div>
@@ -172,7 +172,7 @@ export default function HomePage() {
               <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white md:text-[0.8125rem] lg:text-[0.875rem]">
+              <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
                 Réserver un soin
               </button>
             </div>
@@ -296,7 +296,7 @@ const ServiceCard = ({ s, onClick }: { s: any, onClick: () => void }) => (
         src={s.image} 
         fill
         unoptimized
-        className="object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-0" 
+        className="object-cover transition-transform duration-1000 group-hover:scale-110" 
         alt={s.name}
       />
     </div>

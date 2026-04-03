@@ -52,7 +52,7 @@ export default function ClientPortal() {
           <ShieldCheck className="h-20 w-20 text-neutral-100 mx-auto mb-10" />
           <h1 className="text-4xl font-serif font-bold mb-6 text-neutral-900">Espace Privé</h1>
           <p className="text-neutral-500 mb-10 italic font-sans">Identifiez-vous pour accéder à vos rituels et recommandations.</p>
-          <Button asChild className="w-full rounded-full py-4 bg-neutral-900 text-white font-sans font-black uppercase tracking-[0.3em] text-[10px]">
+          <Button asChild className="w-full rounded-full py-4 bg-neutral-900 text-white font-sans font-black uppercase tracking-[0.3em] text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem]">
             <Link href="/login">Se Connecter</Link>
           </Button>
         </div>
@@ -74,8 +74,8 @@ export default function ClientPortal() {
             </h1>
             <p className="text-neutral-500 mt-6 italic font-sans text-lg">Retrouvez l'historique de vos soins et vos avantages fidélité.</p>
           </div>
-          <Button asChild className="rounded-full px-12 py-4 bg-neutral-900 text-white font-sans font-black uppercase tracking-[0.3em] text-[10px] shadow-2xl shadow-neutral-900/10">
-            <Link href="/booking">Réserver un soin</Link>
+          <Button asChild className="rounded-full px-8 py-3 bg-neutral-900 text-white font-sans font-black uppercase tracking-[0.3em] text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] shadow-2xl shadow-neutral-900/10">
+            <Link href="/">Réserver un soin</Link>
           </Button>
         </header>
 
@@ -108,7 +108,7 @@ export default function ClientPortal() {
                           <Badge className="mt-6 rounded-full px-5 py-2 bg-emerald-50 text-emerald-700 border-none font-sans font-black uppercase tracking-[0.2em] text-[9px]">{apt.status}</Badge>
                         </div>
                         <div className="flex flex-wrap gap-4 mt-12">
-                          <Button variant="outline" className="rounded-full px-8 py-3 border-neutral-200 text-[10px] font-sans font-black uppercase tracking-[0.2em] hover:bg-neutral-900 hover:text-white transition-all">Gérer le rendez-vous</Button>
+                          <Button variant="outline" className="rounded-full px-8 py-3 border-neutral-200 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.2em] hover:bg-neutral-900 hover:text-white transition-all">Gérer le rendez-vous</Button>
                         </div>
                       </div>
                     </div>
@@ -128,7 +128,7 @@ export default function ClientPortal() {
                   return (
                     <div key={apt.id} className="bg-white border-none shadow-sm rounded-[3rem] p-10 flex flex-col md:flex-row items-center justify-between gap-10 transition-all duration-500 hover:shadow-xl">
                       <div className="flex items-center gap-10">
-                        <div className="h-20 w-20 rounded-[2rem] bg-neutral-50 flex flex-col items-center justify-center text-neutral-900">
+                        <div className="h-20 w-20 rounded-[2rem] bg-neutral-50 flex items-center justify-center text-neutral-900">
                           <span className="text-2xl font-serif font-bold leading-none">{format(aptDate, 'd')}</span>
                           <span className="text-[9px] font-sans font-black uppercase tracking-[0.2em] opacity-40 mt-1">{format(aptDate, 'MMM', { locale: fr })}</span>
                         </div>
@@ -139,7 +139,7 @@ export default function ClientPortal() {
                       </div>
                       <div className="flex items-center gap-12">
                         <p className="font-serif font-bold text-2xl">CHF {service?.price || 0}</p>
-                        <Button variant="ghost" className="rounded-full px-8 py-3 bg-neutral-50 hover:bg-neutral-900 hover:text-white transition-all text-[10px] font-sans font-black uppercase tracking-[0.3em] flex items-center gap-3">
+                        <Button variant="ghost" className="rounded-full px-8 py-3 bg-neutral-50 hover:bg-neutral-900 hover:text-white transition-all text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.3em] flex items-center gap-3">
                           <Download size={14} /> Facture
                         </Button>
                       </div>
