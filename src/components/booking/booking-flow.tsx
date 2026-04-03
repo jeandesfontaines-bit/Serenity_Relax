@@ -7,15 +7,12 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { 
-  Calendar as CalendarIcon, 
-  Clock, 
   ChevronRight, 
   ChevronLeft, 
   CheckCircle2, 
   Info,
   Loader2,
   MessageCircle,
-  MapPin,
   X
 } from 'lucide-react';
 import { format, addMinutes, isSameDay, startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, isSameMonth, isBefore, startOfDay } from 'date-fns';
@@ -67,15 +64,15 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
   const handleServiceSelect = (service: Service) => {
     setSelectedService(service);
-    setTimeout(() => setStep(2), 400);
+    setTimeout(() => setStep(2), 300);
   };
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
-    setTimeout(() => setStep(3), 500);
+    setTimeout(() => setStep(3), 400);
   };
 
-  const times = ['08:30', '10:00', '11:30', '13:00', '14:30', '16:00', '17:30', '19:00'];
+  const times = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18:30', '20:00'];
 
   const handlePrevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
   const handleNextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
@@ -138,9 +135,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
     }
   };
 
+  const stepLabels = ["Choix du soin", "Date & Heure", "Coordonnées", "Vérification"];
+
   if (step === 5) {
     return (
-      <div className="px-8 text-center animate-in zoom-in-95 duration-700 h-full flex flex-col justify-center">
+      <div className="px-8 text-center h-screen flex flex-col justify-center bg-white">
         <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8">
           <CheckCircle2 size={48} strokeWidth={1.5} />
         </div>
@@ -152,11 +151,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
             href="https://wa.me/41783336823" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="w-full inline-flex items-center justify-center px-8 py-3 bg-emerald-600 border border-emerald-600 text-white rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 gap-3"
+            className="w-full inline-flex items-center justify-center px-8 py-3.5 bg-emerald-600 text-white rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 gap-3"
           >
             <MessageCircle size={16} /> CONFIRMER WHATSAPP
           </a>
-          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-8 py-3 border border-neutral-200 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
+          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
             RETOUR
           </button>
         </div>
@@ -165,39 +164,42 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
   }
 
   return (
-    <div className="px-6 md:px-12 font-sans pb-24">
-      <div className="flex items-center justify-center mb-12 gap-3">
-        {[1, 2, 3, 4].map((s) => (
-          <React.Fragment key={s}>
-            <div className={`w-2.5 h-2.5 rounded-full transition-all duration-700 ${step >= s ? 'bg-neutral-900 scale-125' : 'bg-neutral-100'}`} />
-            {s < 4 && <div className={`w-8 h-[1px] ${step > s ? 'bg-neutral-900' : 'bg-neutral-100'}`} />}
-          </React.Fragment>
-        ))}
+    <div className="font-sans min-h-screen bg-white">
+      {/* HEADER FIXE */}
+      <div className="px-8 md:px-12 pt-12 pb-10 border-b border-neutral-100 mb-10">
+        <div className="max-w-4xl mx-auto flex justify-between items-start">
+          <div>
+            <h1 className="text-[2.2rem] font-serif font-bold text-neutral-900 tracking-tighter leading-none mb-3">Réserver un soin</h1>
+            <p className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300">
+              GENÈVE STUDIO — {step}/4
+            </p>
+          </div>
+          {/* Le bouton Close est géré par le Sheet component dans page.tsx */}
+        </div>
       </div>
 
-      <div className="space-y-12">
+      <div className="max-w-4xl mx-auto px-8 md:px-12">
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div 
               key="step1" 
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-              className="space-y-8"
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+              className="space-y-10"
             >
-              <div>
-                <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block mb-2 md:text-[0.75rem]">Étape 01</span>
-                <h2 className="text-[1.9rem] leading-tight font-serif font-bold text-neutral-900 tracking-tighter">Votre Rituel.</h2>
+              <div className="flex flex-col gap-2">
+                <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300">1. SÉLECTIONNER UN RITUEL</span>
               </div>
 
-              <div className="grid grid-cols-1 gap-2">
+              <div className="grid grid-cols-1 gap-3">
                 {services.map((s) => (
                   <button
                     key={s.id}
                     onClick={() => handleServiceSelect(s)}
-                    className={`group p-3 rounded-2xl border text-left transition-all duration-500 flex items-center gap-4 bg-white
+                    className={`group p-4 rounded-2xl border text-left transition-all duration-500 flex items-center gap-6 bg-white
                       ${selectedService?.id === s.id ? 'border-neutral-900 shadow-xl' : 'border-neutral-50 hover:border-neutral-200'}
                     `}
                   >
-                    <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0">
+                    <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0">
                       <Image 
                         src={s.image || ''} 
                         fill 
@@ -206,11 +208,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         className="object-cover"
                       />
                     </div>
-                    <div className="flex-1 min-w-0 flex items-center justify-between gap-4">
-                      <h4 className="text-[0.95rem] leading-snug font-serif font-medium tracking-tight text-neutral-900 truncate">{s.name.split(' - ')[0]}</h4>
-                      <div className="flex items-center gap-4 shrink-0">
-                        <span className="text-[0.6rem] font-black uppercase tracking-[0.15em] text-neutral-300">{s.duration}</span>
-                        <span className="text-[0.95rem] font-serif font-medium text-neutral-900">CHF {s.price}</span>
+                    <div className="flex-1 min-w-0 flex items-center justify-between gap-6">
+                      <h4 className="text-[1.05rem] leading-snug font-serif font-medium tracking-tight text-neutral-900 truncate">{s.name.split(' - ')[0]}</h4>
+                      <div className="flex items-center gap-6 shrink-0">
+                        <span className="text-[0.65rem] font-black uppercase tracking-[0.15em] text-neutral-300">{s.duration}</span>
+                        <span className="text-[1.05rem] font-serif font-medium text-neutral-900">CHF {s.price}</span>
                       </div>
                     </div>
                   </button>
@@ -222,126 +224,166 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
           {step === 2 && (
             <motion.div 
               key="step2" 
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-              className="space-y-10"
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+              className="space-y-12"
             >
-              <div className="flex justify-between items-end gap-6">
-                <div>
-                  <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block mb-2">Étape 02</span>
-                  <h2 className="text-[1.9rem] leading-tight font-serif font-bold text-neutral-900 tracking-tighter">L'Agenda.</h2>
-                </div>
-                <button onClick={() => setStep(1)} className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] text-neutral-400 hover:text-neutral-900 flex items-center gap-2">
-                  <ChevronLeft size={14} /> Modifier
-                </button>
-              </div>
+              <button 
+                onClick={() => setStep(1)} 
+                className="text-[0.7rem] font-black uppercase tracking-[0.18em] text-neutral-300 hover:text-neutral-900 flex items-center gap-3 transition-colors"
+              >
+                <ChevronLeft size={16} /> MODIFIER LE SOIN ({selectedService?.name.split(' - ')[0].toUpperCase()})
+              </button>
 
-              <div className="bg-white rounded-[2.5rem] shadow-sm border border-neutral-50 overflow-hidden">
-                <div className="flex items-center justify-between p-6 border-b border-neutral-50">
-                  <h3 className="text-[1.1rem] font-serif font-bold text-neutral-900 capitalize">
-                    {currentMonth.toLocaleString('fr-FR', { month: 'long', year: 'numeric' })}
-                  </h3>
-                  <div className="flex gap-2">
-                    <button onClick={handlePrevMonth} className="p-2 hover:bg-neutral-50 rounded-full transition-all text-neutral-300 hover:text-neutral-900"><ChevronLeft size={20} /></button>
-                    <button onClick={handleNextMonth} className="p-2 hover:bg-neutral-50 rounded-full transition-all text-neutral-300 hover:text-neutral-900"><ChevronRight size={20} /></button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                {/* COLONNE CALENDRIER */}
+                <div className="space-y-10">
+                  <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300 block">1. SÉLECTIONNER UNE DATE</span>
+                  
+                  <div className="space-y-8">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-[1.3rem] font-serif font-bold text-neutral-900 capitalize">
+                        {currentMonth.toLocaleString('fr-FR', { month: 'long', year: 'numeric' })}
+                      </h3>
+                      <div className="flex gap-4">
+                        <button onClick={handlePrevMonth} className="p-2 hover:bg-neutral-50 rounded-full transition-all text-neutral-300 hover:text-neutral-900"><ChevronLeft size={20} /></button>
+                        <button onClick={handleNextMonth} className="p-2 hover:bg-neutral-50 rounded-full transition-all text-neutral-300 hover:text-neutral-900"><ChevronRight size={20} /></button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-7 text-center text-[0.7rem] font-black text-neutral-200 uppercase tracking-[0.2em] mb-4">
+                      {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(d => <div key={d}>{d}</div>)}
+                    </div>
+
+                    <div className="grid grid-cols-7 gap-y-2">
+                      {days.map((day, i) => {
+                        const isSelected = selectedDate && isSameDay(day, selectedDate);
+                        const isPast = isBefore(day, startOfDay(new Date()));
+                        const currentMonthOnly = isSameMonth(day, currentMonth);
+                        
+                        // Mock de disponibilité pour le visuel
+                        const availability = isPast ? 'none' : (day.getDate() % 3 === 0 ? 'medium' : day.getDate() % 5 === 0 ? 'full' : 'low');
+
+                        return (
+                          <div key={i} className="flex flex-col items-center gap-1">
+                            <button
+                              disabled={isPast || !currentMonthOnly}
+                              onClick={() => { setSelectedDate(day); setSelectedTime(null); }}
+                              className={`w-10 h-10 flex items-center justify-center rounded-full text-[1rem] font-sans font-medium transition-all relative
+                                ${!currentMonthOnly ? 'opacity-0 pointer-events-none' : ''}
+                                ${isPast ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-900 hover:bg-neutral-50'}
+                                ${isSelected ? 'bg-neutral-900 text-white shadow-xl scale-110' : ''}
+                              `}
+                            >
+                              {format(day, 'd')}
+                            </button>
+                            {currentMonthOnly && !isPast && (
+                              <div className={`w-1.5 h-1.5 rounded-full ${availability === 'low' ? 'bg-emerald-400' : availability === 'medium' ? 'bg-amber-400' : 'bg-rose-400'}`} />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* LÉGENDE */}
+                    <div className="flex items-center gap-6 pt-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        <span className="text-[0.65rem] font-black uppercase tracking-[0.1em] text-neutral-300">LIBRE</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                        <span className="text-[0.65rem] font-black uppercase tracking-[0.1em] text-neutral-300">MOYEN</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+                        <span className="text-[0.65rem] font-black uppercase tracking-[0.1em] text-neutral-300">COMPLET</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-7 text-center text-[0.7rem] font-black text-neutral-300 uppercase tracking-[0.28em] py-4 bg-neutral-50/50">
-                  {['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'].map(d => <div key={d}>{d}</div>)}
-                </div>
-                <div className="grid grid-cols-7 p-4 gap-2">
-                  {days.map((day, i) => {
-                    const isSelected = selectedDate && isSameDay(day, selectedDate);
-                    const isPast = isBefore(day, startOfDay(new Date()));
-                    const currentMonthOnly = isSameMonth(day, currentMonth);
-                    return (
+
+                {/* COLONNE HEURES */}
+                <div className="space-y-10">
+                  <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300 block">2. CHOISIR L'HEURE</span>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    {times.map((t) => (
                       <button
-                        key={i}
-                        disabled={isPast || !currentMonthOnly}
-                        onClick={() => { setSelectedDate(day); setSelectedTime(null); }}
-                        className={`h-10 flex items-center justify-center rounded-xl text-sm font-bold transition-all
-                          ${!currentMonthOnly ? 'opacity-0 pointer-events-none' : ''}
-                          ${isPast ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-900 hover:bg-neutral-50'}
-                          ${isSelected ? 'bg-neutral-900 text-white shadow-xl scale-110 !hover:bg-neutral-900' : ''}
+                        key={t}
+                        disabled={!selectedDate}
+                        onClick={() => handleTimeSelect(t)}
+                        className={`py-6 px-4 rounded-2xl transition-all duration-500 font-sans font-bold text-[1.1rem] tracking-tight
+                          ${!selectedDate ? 'bg-neutral-50/50 text-neutral-200 cursor-not-allowed' : 
+                            selectedTime === t ? 'bg-neutral-900 text-white shadow-xl' : 'bg-neutral-50/50 text-neutral-900 hover:bg-neutral-100'}
                         `}
                       >
-                        {format(day, 'd')}
+                        {t}
                       </button>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
               </div>
-
-              <AnimatePresence>
-                {selectedDate && (
-                  <motion.section initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                    <label className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block">Créneaux Disponibles</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      {times.map((t) => (
-                        <button
-                          key={t}
-                          onClick={() => handleTimeSelect(t)}
-                          className={`py-4 px-4 rounded-xl border-2 transition-all duration-500 font-serif font-medium tracking-tight text-[1.1rem]
-                            ${selectedTime === t ? 'bg-neutral-900 border-neutral-900 text-white shadow-xl' : 'bg-white border-neutral-50 text-neutral-900 hover:border-neutral-200'}
-                          `}
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
-                  </motion.section>
-                )}
-              </AnimatePresence>
             </motion.div>
           )}
 
           {step === 3 && (
             <motion.div 
               key="step3" 
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-              className="space-y-10"
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+              className="space-y-12"
             >
-              <div>
-                <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-300 block mb-2">Étape 03</span>
-                <h2 className="text-[1.9rem] leading-tight font-serif font-bold text-neutral-900 tracking-tighter">Coordonnées.</h2>
-              </div>
+              <button 
+                onClick={() => setStep(2)} 
+                className="text-[0.7rem] font-black uppercase tracking-[0.18em] text-neutral-300 hover:text-neutral-900 flex items-center gap-3 transition-colors"
+              >
+                <ChevronLeft size={16} /> RETOUR AU CALENDRIER
+              </button>
 
-              <div className="bg-white p-8 rounded-[2.5rem] border border-neutral-50 space-y-8">
-                <div className="grid grid-cols-1 gap-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input placeholder="Prénom" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-serif text-[1rem] italic" />
-                    <Input placeholder="Nom" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-serif text-[1rem] italic" />
-                  </div>
-                  <Input type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-sans font-medium" />
-                  <Input type="tel" placeholder="Mobile" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-sans font-medium" />
-                </div>
+              <div className="space-y-10">
+                <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300 block">3. VOS COORDONNÉES</span>
                 
-                <div className="pt-8 border-t border-neutral-50">
-                  <h3 className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-900 mb-6 flex items-center gap-3">
-                    <Info size={16} className="text-neutral-200" /> Conditions & informations
-                  </h3>
-                  <div className="space-y-4 text-[0.8125rem] leading-relaxed text-neutral-400 italic font-sans mb-8">
+                <div className="grid grid-cols-1 gap-6 max-w-2xl">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label className="text-[0.65rem] font-black uppercase tracking-widest text-neutral-400 ml-4">PRÉNOM</Label>
+                      <Input value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-serif text-[1rem] italic" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[0.65rem] font-black uppercase tracking-widest text-neutral-400 ml-4">NOM</Label>
+                      <Input value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-serif text-[1rem] italic" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[0.65rem] font-black uppercase tracking-widest text-neutral-400 ml-4">EMAIL</Label>
+                    <Input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-sans font-medium" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[0.65rem] font-black uppercase tracking-widest text-neutral-400 ml-4">MOBILE</Label>
+                    <Input type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="h-14 rounded-2xl bg-neutral-50 border-none px-6 font-sans font-medium" />
+                  </div>
+                </div>
+
+                <div className="pt-10 border-t border-neutral-100 max-w-2xl">
+                   <div className="space-y-6 text-[0.85rem] leading-relaxed text-neutral-400 italic font-sans mb-10">
                     <p>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation. Elles ne remplacent en aucun cas un avis ou un traitement médical.</p>
                     <p>En réservant une séance, vous confirmez être en bonne condition physique et ne pas avoir de contre-indication au massage.</p>
-                    <p>En cas de doute, n’hésitez pas à demander l’avis de votre médecin.</p>
-                    <p>Toute annulation ou modification doit être effectuée au minimum 24h à l’avance.</p>
-                    <p>En cas d’annulation tardive ou d’absence, la séance pourra être facturée.</p>
+                    <p>Toute annulation ou modification doit être effectuée au minimum 24h à l’avance. En cas d’annulation tardive ou d’absence, la séance pourra être facturée.</p>
                   </div>
-                  <div className="flex items-start space-x-3 bg-neutral-50 p-6 rounded-2xl">
-                    <Checkbox id="terms" checked={acceptedConditions} onCheckedChange={(checked) => setAcceptedConditions(checked === true)} />
-                    <Label htmlFor="terms" className="text-[0.75rem] font-sans font-bold text-neutral-900 cursor-pointer leading-tight">
+                  <div className="flex items-start space-x-4 bg-neutral-50 p-8 rounded-[2rem]">
+                    <Checkbox id="terms" checked={acceptedConditions} onCheckedChange={(checked) => setAcceptedConditions(checked === true)} className="mt-1" />
+                    <Label htmlFor="terms" className="text-[0.8rem] font-sans font-bold text-neutral-900 cursor-pointer leading-tight">
                       J'accepte les conditions et confirme mon état de santé pour cette séance.
                     </Label>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center gap-4 pt-6">
-                  <button onClick={() => setStep(2)} className="inline-flex items-center justify-center px-8 py-3 bg-white text-neutral-900 border border-neutral-100 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-50">RETOUR</button>
+                <div className="pt-10">
                   <button 
                     disabled={!formData.firstName || !formData.email || !acceptedConditions} 
                     onClick={() => setStep(4)} 
-                    className="flex-1 inline-flex items-center justify-center px-8 py-3 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-800 disabled:opacity-20"
+                    className="w-full max-w-2xl inline-flex items-center justify-center px-12 py-4 bg-neutral-900 text-white rounded-full text-[0.7rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 disabled:opacity-20"
                   >
-                    VÉRIFIER
+                    VÉRIFIER LE RÉCAPITULATIF
                   </button>
                 </div>
               </div>
@@ -351,38 +393,38 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
           {step === 4 && (
             <motion.div 
               key="step4" 
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-              className="space-y-10 text-center"
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+              className="space-y-12 text-center"
             >
-              <div className="inline-flex w-16 h-16 bg-neutral-50 rounded-full items-center justify-center text-neutral-900 mb-4">
+              <div className="inline-flex w-16 h-16 bg-neutral-50 rounded-full items-center justify-center text-neutral-900 mb-6">
                 <Info size={24} />
               </div>
-              <h2 className="text-[1.9rem] leading-tight font-serif font-bold text-neutral-900 tracking-tighter">Vérifiez votre rituel.</h2>
+              <h2 className="text-[2.2rem] font-serif font-bold text-neutral-900 tracking-tighter leading-none">Récapitulatif de votre rituel.</h2>
               
-              <div className="text-left bg-white p-8 rounded-[2.5rem] border border-neutral-50 shadow-sm space-y-8">
+              <div className="text-left bg-neutral-50/50 p-10 rounded-[3rem] space-y-10 max-w-2xl mx-auto">
                 <div className="space-y-4">
-                  <p className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest">SOIN & RENDEZ-VOUS</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-medium tracking-tight text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
-                  <p className="text-[1rem] font-sans font-light italic text-neutral-500">
+                  <p className="text-[0.65rem] font-black text-neutral-300 uppercase tracking-[0.2em]">SOIN & RENDEZ-VOUS</p>
+                  <p className="text-[1.3rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
+                  <p className="text-[1.1rem] font-sans font-medium text-neutral-500">
                     {selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : ''} à {selectedTime}
                   </p>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest">VOS COORDONNÉES</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-medium tracking-tight text-neutral-900">{formData.firstName} {formData.lastName}</p>
-                  <p className="text-[1rem] font-sans font-light italic text-neutral-500">{formData.email}</p>
+                  <p className="text-[0.65rem] font-black text-neutral-300 uppercase tracking-[0.2em]">VOS COORDONNÉES</p>
+                  <p className="text-[1.3rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{formData.firstName} {formData.lastName}</p>
+                  <p className="text-[1.1rem] font-sans font-medium text-neutral-500">{formData.email}</p>
                 </div>
               </div>
 
-              <div className="pt-10 flex flex-col gap-4">
+              <div className="pt-10 max-w-2xl mx-auto space-y-6">
                 <button 
                   onClick={completeBooking} 
                   disabled={isSubmitting} 
-                  className="w-full inline-flex items-center justify-center px-8 py-4 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-800 shadow-2xl gap-4"
+                  className="w-full inline-flex items-center justify-center px-12 py-5 bg-neutral-900 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 shadow-2xl gap-4"
                 >
-                  {isSubmitting ? <Loader2 className="animate-spin" /> : <>CONFIRMER LA RÉSERVATION <CheckCircle2 size={18} /></>}
+                  {isSubmitting ? <Loader2 className="animate-spin" /> : <>CONFIRMER LA RÉSERVATION <CheckCircle2 size={20} /></>}
                 </button>
-                <button onClick={() => setStep(3)} className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] text-neutral-300 hover:text-neutral-900 transition-colors">Retour</button>
+                <button onClick={() => setStep(3)} className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300 hover:text-neutral-900 transition-colors">RETOUR</button>
               </div>
             </motion.div>
           )}
