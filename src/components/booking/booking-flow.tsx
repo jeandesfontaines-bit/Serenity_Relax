@@ -174,7 +174,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               GENÈVE STUDIO — {step}/4
             </p>
           </div>
-          {/* Le bouton Close est géré par le Sheet component dans page.tsx */}
         </div>
       </div>
 
@@ -251,7 +250,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                     </div>
 
                     <div className="grid grid-cols-7 text-center text-[0.7rem] font-black text-neutral-200 uppercase tracking-[0.2em] mb-4">
-                      {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(d => <div key={d}>{d}</div>)}
+                      {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => <div key={`${d}-${i}`}>{d}</div>)}
                     </div>
 
                     <div className="grid grid-cols-7 gap-y-2">
