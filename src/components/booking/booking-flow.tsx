@@ -207,10 +207,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                       />
                     </div>
                     <div className="flex-1 min-w-0 flex items-center justify-between gap-4">
-                      <h4 className="text-[0.95rem] leading-snug font-serif font-bold text-neutral-900 truncate">{s.name.split(' - ')[0]}</h4>
+                      <h4 className="text-[0.95rem] leading-snug font-serif font-medium tracking-tight text-neutral-900 truncate">{s.name.split(' - ')[0]}</h4>
                       <div className="flex items-center gap-4 shrink-0">
                         <span className="text-[0.6rem] font-black uppercase tracking-[0.15em] text-neutral-300">{s.duration}</span>
-                        <span className="text-[0.95rem] font-serif font-bold text-neutral-900">CHF {s.price}</span>
+                        <span className="text-[0.95rem] font-serif font-medium text-neutral-900">CHF {s.price}</span>
                       </div>
                     </div>
                   </button>
@@ -280,7 +280,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         <button
                           key={t}
                           onClick={() => handleTimeSelect(t)}
-                          className={`py-4 px-4 rounded-xl border-2 transition-all duration-500 font-serif font-bold text-[1.1rem]
+                          className={`py-4 px-4 rounded-xl border-2 transition-all duration-500 font-serif font-medium tracking-tight text-[1.1rem]
                             ${selectedTime === t ? 'bg-neutral-900 border-neutral-900 text-white shadow-xl' : 'bg-white border-neutral-50 text-neutral-900 hover:border-neutral-200'}
                           `}
                         >
@@ -335,7 +335,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 </div>
 
                 <div className="flex justify-between items-center gap-4 pt-6">
-                  <button onClick={() => setStep(2)} className="inline-flex items-center justify-center px-8 py-3 border border-neutral-100 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-50">RETOUR</button>
+                  <button onClick={() => setStep(2)} className="inline-flex items-center justify-center px-8 py-3 bg-white text-neutral-900 border border-neutral-100 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all hover:bg-neutral-50">RETOUR</button>
                   <button 
                     disabled={!formData.firstName || !formData.email || !acceptedConditions} 
                     onClick={() => setStep(4)} 
@@ -362,14 +362,14 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               <div className="text-left bg-white p-8 rounded-[2.5rem] border border-neutral-50 shadow-sm space-y-8">
                 <div className="space-y-4">
                   <p className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest">SOIN & RENDEZ-VOUS</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
+                  <p className="text-[1.1rem] leading-snug font-serif font-medium tracking-tight text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
                   <p className="text-[1rem] font-sans font-light italic text-neutral-500">
                     {selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : ''} à {selectedTime}
                   </p>
                 </div>
                 <div className="space-y-4">
                   <p className="text-[0.7rem] font-black text-neutral-300 uppercase tracking-widest">VOS COORDONNÉES</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900">{formData.firstName} {formData.lastName}</p>
+                  <p className="text-[1.1rem] leading-snug font-serif font-medium tracking-tight text-neutral-900">{formData.firstName} {formData.lastName}</p>
                   <p className="text-[1rem] font-sans font-light italic text-neutral-500">{formData.email}</p>
                 </div>
               </div>
