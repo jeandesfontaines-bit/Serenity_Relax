@@ -55,7 +55,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                   <Link 
                     key={link.id} 
                     href={link.href} 
-                    className={`flex items-center gap-2 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] transition-colors md:text-[0.8125rem] lg:text-[0.875rem] ${pathname === link.href ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
+                    className={`flex items-center gap-2 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-colors md:text-[0.7rem] lg:text-[0.75rem] ${pathname === link.href ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
                   >
                     <link.icon size={12} /> {link.label}
                   </Link>
@@ -65,14 +65,14 @@ export function Navbar({ onBookingClick }: NavbarProps) {
               <>
                 <Link 
                   href="/client/portal" 
-                  className={`flex items-center gap-2 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] transition-all md:text-[0.8125rem] lg:text-[0.875rem] ${pathname === '/client/portal' ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
+                  className={`flex items-center gap-2 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all md:text-[0.7rem] lg:text-[0.75rem] ${pathname === '/client/portal' ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
                 >
                   <User size={12} strokeWidth={2.5} />
                   Espace Privé
                 </Link>
                 <button 
                   onClick={onBookingClick}
-                  className="flex items-center gap-2 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-6 py-2 rounded-full border border-neutral-900 md:text-[0.8125rem] lg:text-[0.875rem] text-neutral-900 hover:bg-neutral-900 hover:text-white"
+                  className="flex items-center gap-2 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-6 py-2 rounded-full border border-neutral-900 md:text-[0.7rem] lg:text-[0.75rem] text-neutral-900 hover:bg-neutral-900 hover:text-white"
                 >
                   <Calendar size={12} strokeWidth={2.5} />
                   Réserver
@@ -102,19 +102,19 @@ export function Navbar({ onBookingClick }: NavbarProps) {
             >
               {isTherapistArea ? (
                 adminLinks.map((link) => (
-                  <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-3 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.8125rem] lg:text-[0.875rem]">
+                  <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-3 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.7rem] lg:text-[0.75rem]">
                     <link.icon size={14} /> {link.label}
                   </Link>
                 ))
               ) : (
                 <>
-                  <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.8125rem] lg:text-[0.875rem]">
+                  <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.7rem] lg:text-[0.75rem]">
                     <User size={16} strokeWidth={2.5} />
                     Espace Privé
                   </Link>
                   <button 
                     onClick={() => { setIsMenuOpen(false); onBookingClick?.(); }} 
-                    className="flex items-center justify-center gap-4 text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-4 w-full md:text-[0.8125rem] lg:text-[0.875rem]"
+                    className="flex items-center justify-center gap-4 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-4 w-full md:text-[0.7rem] lg:text-[0.75rem]"
                   >
                     <Calendar size={16} strokeWidth={2.5} />
                     Réserver
@@ -123,7 +123,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
               )}
               
               {user && !user.isAnonymous && (
-                <button onClick={handleSignOut} className="text-center text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] text-rose-500 pt-4 border-t border-neutral-100 md:text-[0.8125rem] lg:text-[0.875rem]">Déconnexion</button>
+                <button onClick={handleSignOut} className="text-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-rose-500 pt-4 border-t border-neutral-100 md:text-[0.7rem] lg:text-[0.75rem]">Déconnexion</button>
               )}
             </motion.div>
           )}
