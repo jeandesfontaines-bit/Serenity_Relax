@@ -12,6 +12,7 @@ import { Navbar } from '@/components/navbar';
 import { SERVICES } from '@/lib/types';
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
+const HERO_BG = "https://picsum.photos/seed/massage-ambience/1920/1080";
 
 const FAQS = [
   { q: "Les soins sont-ils remboursés ?", a: "Oui, je suis agréé ASCA & RME. Veuillez vérifier auprès de votre assurance complémentaire pour connaître vos modalités de remboursement." },
@@ -98,8 +99,21 @@ export default function HomePage() {
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-neutral-900 z-[120] origin-left" style={{ scaleX }} />
 
       {/* SECTION HÉROS */}
-      <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-32 pb-24 bg-white relative border-b border-neutral-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+      <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-32 pb-24 relative border-b border-neutral-50 overflow-hidden">
+        {/* Background Overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src={HERO_BG}
+            alt="Ambiance Serenity Relax"
+            fill
+            priority
+            unoptimized
+            className="object-cover opacity-[0.07]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
+        </div>
+
+        <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
           
           {/* TEXTE À GAUCHE */}
           <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left order-2 lg:order-1">
