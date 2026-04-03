@@ -185,16 +185,16 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 <h2 className="text-[1.9rem] leading-tight font-serif font-bold text-neutral-900 tracking-tighter">Votre Rituel.</h2>
               </div>
 
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 {services.map((s) => (
                   <button
                     key={s.id}
                     onClick={() => handleServiceSelect(s)}
-                    className={`group p-6 rounded-[2rem] border text-left transition-all duration-500 flex items-center gap-6 bg-white
+                    className={`group p-4 rounded-2xl border text-left transition-all duration-500 flex items-center gap-4 bg-white
                       ${selectedService?.id === s.id ? 'border-neutral-900 shadow-xl' : 'border-neutral-50 hover:border-neutral-200'}
                     `}
                   >
-                    <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0">
+                    <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0">
                       <Image 
                         src={s.image || ''} 
                         fill 
@@ -203,11 +203,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         className="object-cover transition-all duration-700 grayscale-0"
                       />
                     </div>
-                    <div className="flex-1">
-                      <h4 className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900 leading-tight">{s.name.split(' - ')[0]}</h4>
-                      <div className="flex items-center justify-between mt-1">
-                        <span className="text-[0.7rem] font-black uppercase tracking-[0.28em] text-neutral-400">{s.duration}</span>
-                        <span className="text-[1.1rem] font-serif font-bold text-neutral-900">CHF {s.price}</span>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-[1rem] leading-snug font-serif font-bold text-neutral-900 truncate">{s.name.split(' - ')[0]}</h4>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400">{s.duration}</span>
+                        <span className="text-[1rem] font-serif font-bold text-neutral-900">CHF {s.price}</span>
                       </div>
                     </div>
                   </button>
