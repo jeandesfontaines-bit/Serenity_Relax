@@ -4,7 +4,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Service } from '@/lib/types';
-import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { 
   Calendar as CalendarIcon, 
@@ -17,8 +16,8 @@ import {
   Loader2,
   Mail,
   Phone,
-  MapPin,
-  MessageCircle
+  MessageCircle,
+  MapPin
 } from 'lucide-react';
 import { format, addMinutes, isSameDay, startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, isSameMonth, isBefore, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -52,11 +51,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
     lastName: '', 
     email: '', 
     phone: '', 
-    address: '', 
-    city: '',
-    postalCode: '',
-    country: 'Suisse',
-    dob: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -77,18 +71,29 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
   // Auto-advance to Step 2 when service is selected
   const handleServiceSelect = (service: Service) => {
     setSelectedService(service);
-    setTimeout(() => setStep(2), 400);
   };
+
+  useEffect(() => {
+    if (selectedService && step === 1) {
+      const timer = setTimeout(() => setStep(2), 400);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedService, step]);
 
   // Auto-advance to Step 3 when time is selected
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
-    setTimeout(() => setStep(3), 500);
   };
+
+  useEffect(() => {
+    if (selectedDate && selectedTime && step === 2) {
+      const timer = setTimeout(() => setStep(3), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedDate, selectedTime, step]);
 
   const times = ['08:30', '10:00', '11:30', '13:00', '14:30', '16:00', '17:30', '19:00'];
 
-  // Calendar Logic
   const handlePrevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
   const handleNextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
 
@@ -136,11 +141,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone,
-        addressStreet: formData.address,
-        addressCity: formData.city,
-        addressPostalCode: formData.postalCode,
-        addressCountry: formData.country,
-        dateOfBirth: formData.dob,
         loyaltySessionsCompleted: 0,
         isNextSessionFree: false,
         updatedAt: serverTimestamp()
@@ -183,7 +183,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-10 font-sans min-h-[70vh]">
-      {/* Barre de Progression */}
       <div className="flex items-center justify-center mb-16 gap-4">
         {[1, 2, 3, 4].map((s) => (
           <React.Fragment key={s}>
@@ -196,13 +195,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
         <div className="lg:col-span-8">
           <AnimatePresence mode="wait">
-            {/* ÉTAPE 1: MENU SIGNATURE */}
             {step === 1 && (
               <motion.div 
                 key="step1" 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
                 className="space-y-10"
               >
                 <div className="text-center lg:text-left">
@@ -219,7 +215,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         ${selectedService?.id === s.id ? 'border-neutral-900 shadow-2xl' : 'border-neutral-50 hover:border-neutral-200'}
                       `}
                     >
-                      <div className="relative w-20 h-20 rounded-2xl overflow-hidden shrink-0">
+                      <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0">
                         <Image 
                           src={s.image || ''} 
                           fill 
@@ -230,9 +226,9 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                       </div>
                       <div className="flex-1">
                         <h4 className="font-serif font-bold text-lg text-neutral-900 leading-tight">{s.name.split(' - ')[0]}</h4>
-                        <div className="flex items-center justify-between mt-2">
-                          <span className="text-[9px] font-black uppercase tracking-widest text-neutral-400">{s.duration}</span>
-                          <span className="font-serif font-bold text-neutral-900">CHF {s.price}</span>
+                        <div className="flex items-center justify-between mt-1">
+                          <span className="text-[8px] font-black uppercase tracking-widest text-neutral-400">{s.duration}</span>
+                          <span className="font-serif font-bold text-neutral-900 text-sm">CHF {s.price}</span>
                         </div>
                       </div>
                     </button>
@@ -241,22 +237,19 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               </motion.div>
             )}
 
-            {/* ÉTAPE 2: AGENDA & CRÉNEAUX */}
             {step === 2 && (
               <motion.div 
                 key="step2" 
-                initial={{ opacity: 0, x: 20 }} 
-                animate={{ opacity: 1, x: 0 }} 
-                exit={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 className="space-y-12"
               >
-                <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+                <div className="flex justify-between items-end gap-6">
                   <div>
                     <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 block mb-2">Étape 02</span>
                     <h2 className="text-4xl font-serif font-bold text-neutral-900 tracking-tighter">L'Agenda.</h2>
                   </div>
                   <button onClick={() => setStep(1)} className="text-[10px] font-black uppercase tracking-widest text-neutral-400 hover:text-neutral-900 flex items-center gap-2">
-                    <ChevronLeft size={14} /> Modifier le soin
+                    <ChevronLeft size={14} /> Modifier
                   </button>
                 </div>
 
@@ -278,13 +271,12 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                       const isSelected = selectedDate && isSameDay(day, selectedDate);
                       const isPast = isBefore(day, startOfDay(new Date()));
                       const currentMonthOnly = isSameMonth(day, currentMonth);
-                      
                       return (
                         <button
                           key={i}
                           disabled={isPast || !currentMonthOnly}
                           onClick={() => { setSelectedDate(day); setSelectedTime(null); }}
-                          className={`h-14 flex items-center justify-center rounded-2xl text-sm font-bold transition-all
+                          className={`h-12 flex items-center justify-center rounded-2xl text-sm font-bold transition-all
                             ${!currentMonthOnly ? 'opacity-0 pointer-events-none' : ''}
                             ${isPast ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-900 hover:bg-neutral-50'}
                             ${isSelected ? 'bg-neutral-900 text-white shadow-2xl scale-110 !hover:bg-neutral-900' : ''}
@@ -320,13 +312,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               </motion.div>
             )}
 
-            {/* ÉTAPE 3: COORDONNÉES */}
             {step === 3 && (
               <motion.div 
                 key="step3" 
-                initial={{ opacity: 0, x: 20 }} 
-                animate={{ opacity: 1, x: 0 }} 
-                exit={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 className="space-y-12"
               >
                 <div>
@@ -367,13 +356,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               </motion.div>
             )}
 
-            {/* ÉTAPE 4: RÉCAPITULATIF */}
             {step === 4 && (
               <motion.div 
                 key="step4" 
-                initial={{ opacity: 0, x: 20 }} 
-                animate={{ opacity: 1, x: 0 }} 
-                exit={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 className="space-y-12 text-center"
               >
                 <div className="inline-flex w-16 h-16 bg-neutral-50 rounded-full items-center justify-center text-neutral-900 mb-6">
@@ -411,11 +397,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
           </AnimatePresence>
         </div>
 
-        {/* RÉSUMÉ LATÉRAL */}
         {step < 5 && (
           <div className="lg:col-span-4">
             <div className="bg-white p-10 rounded-[3rem] border border-neutral-50 shadow-sm sticky top-32 space-y-10">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300">Votre Séance</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300">Résumé</h4>
               <div className="space-y-8">
                 <div className="flex gap-5">
                   <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-900 shrink-0">
@@ -432,7 +417,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                     <Clock size={20} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[9px] font-black text-neutral-300 uppercase tracking-widest mb-1">Soin choisi</p>
+                    <p className="text-[9px] font-black text-neutral-300 uppercase tracking-widest mb-1">Rituel</p>
                     <p className="text-sm font-serif font-bold text-neutral-900">{selectedService?.name.split(' - ')[0] || 'En attente...'}</p>
                     {selectedDate && <p className="text-xs text-neutral-400 mt-1">{format(selectedDate, 'd MMM')} {selectedTime ? ` à ${selectedTime}` : ''}</p>}
                   </div>
@@ -443,10 +428,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 <div className="flex justify-between items-center mb-10">
                   <span className="text-[10px] font-black text-neutral-300 uppercase tracking-widest">HONORAIRES</span>
                   <span className="text-3xl font-serif font-bold text-neutral-900">CHF {selectedService?.price || 0}</span>
-                </div>
-                <div className="p-6 bg-neutral-900 rounded-[2rem] text-white">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-2">Note</p>
-                  <p className="text-[11px] font-sans italic opacity-60 leading-relaxed">Confirmez votre séance par WhatsApp après validation pour sécuriser votre créneau.</p>
                 </div>
               </div>
             </div>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Navbar } from '@/components/navbar';
@@ -7,7 +8,7 @@ import { motion } from 'framer-motion';
 
 export default function BookingPage() {
   return (
-    <div className="min-h-screen bg-background pt-24 md:pt-32 pb-24 px-6">
+    <div className="min-h-screen bg-[#F7F7F2] pt-24 md:pt-32 pb-24 px-6">
       <Navbar />
       <div className="max-w-7xl mx-auto">
         <header className="text-center mb-16 md:mb-24">
@@ -23,10 +24,10 @@ export default function BookingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-primary mb-8 tracking-tighter leading-[0.9] uppercase"
+            className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-neutral-900 mb-8 tracking-tighter leading-[0.9] uppercase"
           >
             Réserver un <span className="italic font-medium text-neutral-500">moment.</span>
-          </h1>
+          </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
