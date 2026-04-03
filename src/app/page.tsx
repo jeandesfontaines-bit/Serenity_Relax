@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -7,21 +6,11 @@ import {
   Instagram, Linkedin, Brain, Zap, Activity, ShieldCheck
 } from "lucide-react";
 import Image from 'next/image';
+import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
-import { BookingDialog } from '@/components/booking/booking-dialog';
+import { SERVICES } from '@/lib/types';
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
-
-const HOME_SERVICES = [
-  { id: "1", name: "Bambous", tag: "Profond", desc: "Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75" },
-  { id: "2", name: "Draineur Lymphatique", tag: "Vitalité", desc: "Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75" },
-  { id: "3", name: "Aromathérapie", tag: "Sensoriel", desc: "Soin intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75" },
-  { id: "4", name: "Réflexologie Plantaire", tag: "Ciblé", desc: "Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75" },
-  { id: "5", name: "Sportif", tag: "Performance", desc: "Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75" },
-  { id: "6", name: "Thérapeutique", tag: "Signature", desc: "Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75" },
-  { id: "7", name: "Deep Relax", tag: "Détente", desc: "Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75" },
-  { id: "8", name: "Thaï", tag: "Dynamique", desc: "Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.", image: "https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75" }
-];
 
 const FAQS = [
   { q: "Les soins sont-ils remboursés ?", a: "Oui, je suis agréé ASCA & RME. Veuillez vérifier auprès de votre assurance complémentaire pour connaître vos modalités de remboursement." },
@@ -58,7 +47,7 @@ const BIOLOGICAL_IMPACTS = [
 ];
 
 const ServiceCard = ({ s }: { s: any }) => (
-  <BookingDialog serviceId={s.id}>
+  <Link href={`/booking?serviceId=${s.id}`}>
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -77,17 +66,17 @@ const ServiceCard = ({ s }: { s: any }) => (
 
       <div className="px-2 pb-20 space-y-3">
         <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
-          {s.tag}
+          {s.name.includes('Bambous') ? 'Profond' : s.name.includes('Draineur') ? 'Vitalité' : s.name.includes('Aroma') ? 'Sensoriel' : s.name.includes('Réflexologie') ? 'Ciblé' : s.name.includes('Sportif') ? 'Performance' : s.name.includes('Thérapeutique') ? 'Signature' : s.name.includes('Deep Relax') ? 'Détente' : 'Dynamique'}
         </span>
         <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tight leading-tight">
-          {s.name}
+          {s.name.split(' - ')[0]}
         </h3>
         <p className="text-[14px] text-neutral-500 font-sans font-medium leading-relaxed">
-          {s.desc}
+          {s.description}
         </p>
       </div>
     </motion.div>
-  </BookingDialog>
+  </Link>
 );
 
 export default function HomePage() {
@@ -150,11 +139,9 @@ export default function HomePage() {
                  <span className="font-cursive text-4xl text-neutral-900 block mt-4">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
-                <BookingDialog>
-                  <button className="high-end-button">
-                    Réserver un soin
-                  </button>
-                </BookingDialog>
+                <Link href="/booking" className="high-end-button">
+                  Réserver un soin
+                </Link>
               </div>
             </div>
           </div>
@@ -202,21 +189,19 @@ export default function HomePage() {
               <p className="text-neutral-600 text-base font-sans font-medium leading-relaxed italic mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <BookingDialog>
-                <button className="high-end-button">
-                  Réserver un soin
-                </button>
-              </BookingDialog>
+              <Link href="/booking" className="high-end-button">
+                Réserver un soin
+              </Link>
             </div>
 
             <div className="w-full lg:w-[68%] grid grid-cols-1 md:grid-cols-2 gap-x-12">
                <div className="flex flex-col gap-12 items-center md:items-end">
-                  {HOME_SERVICES.filter((_, i) => i % 2 === 0).map((s) => (
+                  {SERVICES.slice(0, 4).map((s) => (
                     <ServiceCard key={s.id} s={s} />
                   ))}
                </div>
                <div className="flex flex-col gap-12 md:pt-32 items-center md:items-start">
-                  {HOME_SERVICES.filter((_, i) => i % 2 !== 0).map((s) => (
+                  {SERVICES.slice(4, 8).map((s) => (
                     <ServiceCard key={s.id} s={s} />
                   ))}
                </div>

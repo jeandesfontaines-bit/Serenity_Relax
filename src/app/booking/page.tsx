@@ -3,28 +3,48 @@
 import { Navbar } from '@/components/navbar';
 import { BookingFlow } from '@/components/booking/booking-flow';
 import { SERVICES } from '@/lib/types';
+import { motion } from 'framer-motion';
 
 export default function BookingPage() {
   return (
     <div className="min-h-screen bg-background pt-24 md:pt-32 pb-24 px-6">
       <Navbar />
-      <div className="max-w-4xl mx-auto">
-        <header className="text-center mb-12 md:mb-16">
-          <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-white border border-black/5 rounded-full mb-8 shadow-sm">
+      <div className="max-w-7xl mx-auto">
+        <header className="text-center mb-16 md:mb-24">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-3 px-5 py-2.5 bg-white border border-black/5 rounded-full mb-8 shadow-sm"
+          >
             <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
             <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">Expérience Privée</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-sans font-bold text-primary mb-6 tracking-tighter leading-tight uppercase">
-            Réserver un <span className="italic font-medium">moment.</span>
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-primary mb-8 tracking-tighter leading-[0.9] uppercase"
+          >
+            Réserver un <span className="italic font-medium text-neutral-500">moment.</span>
           </h1>
-          <p className="text-muted-foreground text-base md:text-lg font-light max-w-lg mx-auto leading-relaxed italic">
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-muted-foreground text-lg md:text-xl font-light max-w-xl mx-auto leading-relaxed italic"
+          >
             Curate your personal journey of recovery. Securing your preferred time in our sanctuary is the first step to restoration.
-          </p>
+          </motion.p>
         </header>
 
-        <div className="bg-white p-1 shadow-2xl rounded-[3rem] shadow-black/[0.03] border border-white">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-white p-1 shadow-2xl rounded-[4rem] shadow-black/[0.02] border border-white overflow-hidden"
+        >
           <BookingFlow services={SERVICES} />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

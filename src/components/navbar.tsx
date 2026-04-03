@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -8,7 +7,6 @@ import { Menu, X, LogOut, LayoutGrid, Users, Wallet, User, Calendar } from 'luci
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { usePathname } from 'next/navigation';
-import { BookingDialog } from '@/components/booking/booking-dialog';
 
 export function Navbar() {
   const { user } = useUser();
@@ -66,12 +64,13 @@ export function Navbar() {
                 <User size={14} strokeWidth={2.5} />
                 Espace Privé
               </Link>
-              <BookingDialog>
-                <button className="flex items-center gap-3 text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 hover:opacity-60 transition-all cursor-pointer">
-                  <Calendar size={14} strokeWidth={2.5} />
-                  Réserver
-                </button>
-              </BookingDialog>
+              <Link 
+                href="/booking"
+                className="flex items-center gap-3 text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 hover:opacity-60 transition-all"
+              >
+                <Calendar size={14} strokeWidth={2.5} />
+                Réserver
+              </Link>
             </>
           )}
 
@@ -107,12 +106,10 @@ export function Navbar() {
                   <User size={16} strokeWidth={2.5} />
                   Espace Privé
                 </Link>
-                <BookingDialog>
-                  <button onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[11px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 w-full">
-                    <Calendar size={16} strokeWidth={2.5} />
-                    Réserver
-                  </button>
-                </BookingDialog>
+                <Link href="/booking" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[11px] font-sans font-black uppercase tracking-[0.3em] text-neutral-900 w-full">
+                  <Calendar size={16} strokeWidth={2.5} />
+                  Réserver
+                </Link>
               </>
             )}
             
