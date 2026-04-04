@@ -41,7 +41,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
 
   return (
     <div className="absolute top-8 left-0 right-0 z-[150] px-6">
-      <nav className="max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full px-8 py-3 md:py-4">
+      <nav className="max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full px-8 py-2 md:py-2.5">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
             <span className="font-sans font-bold text-[0.7rem] tracking-[0.3em] text-neutral-900 uppercase transition-all duration-500 md:text-[0.75rem] lg:text-[0.8rem]">SERENITY RELAX</span>
@@ -72,9 +72,8 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                 </Link>
                 <button 
                   onClick={onBookingClick}
-                  className="flex items-center gap-2 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-6 py-2 rounded-full border border-neutral-900 md:text-[0.7rem] lg:text-[0.75rem] text-neutral-900 hover:bg-neutral-900 hover:text-white"
+                  className="flex items-center justify-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-6 py-2 rounded-full border border-neutral-900 md:text-[0.7rem] lg:text-[0.75rem] text-neutral-900 hover:bg-neutral-900 hover:text-white"
                 >
-                  <Calendar size={12} strokeWidth={2.5} />
                   Réserver
                 </button>
               </>
@@ -114,9 +113,8 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                   </Link>
                   <button 
                     onClick={() => { setIsMenuOpen(false); onBookingClick?.(); }} 
-                    className="flex items-center justify-center gap-4 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-4 w-full md:text-[0.7rem] lg:text-[0.75rem]"
+                    className="flex items-center justify-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-4 w-full md:text-[0.7rem] lg:text-[0.75rem]"
                   >
-                    <Calendar size={16} strokeWidth={2.5} />
                     Réserver
                   </button>
                 </>
