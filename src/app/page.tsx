@@ -91,7 +91,7 @@ export default function HomePage() {
                 Découvrez une parenthèse de sérénité au cœur de Genève. Des soins sur-mesure conçus pour restaurer l'équilibre entre votre corps et votre esprit.
               </p>
               <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
-                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4 italic">
+                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4">
                    « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. »
                  </p>
                  <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
@@ -137,7 +137,7 @@ export default function HomePage() {
               <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-neutral-900 tracking-tighter mb-8">
                 L'Écho <span className="text-neutral-500 italic font-light">du Corps.</span>
               </h2>
-              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem]">
+              <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem]">
                 Au-delà de la détente, une influence mesurable sur votre santé globale et votre vitalité. Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
               </p>
             </header>
