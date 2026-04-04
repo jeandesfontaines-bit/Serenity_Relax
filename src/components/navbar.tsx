@@ -1,10 +1,9 @@
-
 'use client';
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, LogOut, LayoutGrid, Users, Wallet, User, Calendar } from 'lucide-react';
+import { Menu, X, LogOut, LayoutGrid, Users, Wallet } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { usePathname } from 'next/navigation';
@@ -41,7 +40,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
 
   return (
     <div className="absolute top-8 left-0 right-0 z-[150] px-6">
-      <nav className="max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full px-8 py-2 md:py-2.5">
+      <nav className="max-w-4xl mx-auto bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full px-8 py-2 md:py-2.5">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-baseline gap-1 md:gap-2 cursor-pointer group">
             <span className="font-sans font-bold text-[0.7rem] tracking-[0.3em] text-neutral-900 uppercase transition-all duration-500 md:text-[0.75rem] lg:text-[0.8rem]">SERENITY RELAX</span>
@@ -57,7 +56,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                     href={link.href} 
                     className={`flex items-center gap-2 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-colors md:text-[0.7rem] lg:text-[0.75rem] ${pathname === link.href ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
                   >
-                    <link.icon size={12} /> {link.label}
+                    {link.label}
                   </Link>
                 ))}
               </>
@@ -67,7 +66,6 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                   href="/client/portal" 
                   className={`flex items-center gap-2 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all md:text-[0.7rem] lg:text-[0.75rem] ${pathname === '/client/portal' ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
                 >
-                  <User size={12} strokeWidth={2.5} />
                   Espace Privé
                 </Link>
                 <button 
@@ -102,13 +100,12 @@ export function Navbar({ onBookingClick }: NavbarProps) {
               {isTherapistArea ? (
                 adminLinks.map((link) => (
                   <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-3 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.7rem] lg:text-[0.75rem]">
-                    <link.icon size={14} /> {link.label}
+                    {link.label}
                   </Link>
                 ))
               ) : (
                 <>
                   <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-4 text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.7rem] lg:text-[0.75rem]">
-                    <User size={16} strokeWidth={2.5} />
                     Espace Privé
                   </Link>
                   <button 

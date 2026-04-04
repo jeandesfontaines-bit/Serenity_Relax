@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -88,10 +87,7 @@ export default function HomePage() {
             </motion.div>
             
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
-              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">
-                Découvrez une parenthèse de sérénité au cœur de Genève. Des soins sur-mesure conçus pour restaurer l'équilibre entre votre corps et votre esprit.
-              </p>
-              <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
+              <div className="pl-8 border-l-2 border-neutral-900/10 py-2">
                  <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">
                    « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
                  </p>
@@ -111,7 +107,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: 20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[420px]"
+              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[340px]"
               style={{ borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' }}
             >
               <Image 
