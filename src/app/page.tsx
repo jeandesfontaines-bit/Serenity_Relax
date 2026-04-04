@@ -1,9 +1,10 @@
+
 'use client';
 
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  Instagram, Linkedin, Brain, Zap, Activity, ShieldCheck, Calendar
+  Brain, Zap, Activity, ShieldCheck, Calendar
 } from "lucide-react";
 import Image from 'next/image';
 import { Navbar } from '@/components/navbar';
@@ -73,31 +74,29 @@ export default function HomePage() {
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-neutral-900 z-[120] origin-left" style={{ scaleX }} />
 
       {/* SECTION HÉROS */}
-      <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 lg:px-8 pt-32 pb-24 relative border-b border-neutral-50 overflow-hidden bg-[#F9F8F6]">
-        <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
+      <section className="min-h-[85vh] flex flex-col justify-center px-6 md:px-12 pt-32 pb-24 relative border-b border-neutral-50 overflow-hidden bg-[#F9F8F6]">
+        <div className="max-w-5xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-16 relative z-10">
           
           {/* TEXTE À GAUCHE */}
-          <div className="w-full lg:w-[55%] space-y-12 text-center lg:text-left order-2 lg:order-1">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start pt-20">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-6 md:text-[0.75rem] lg:text-[0.8rem] mt-8">L'Engagement João.</span>
-              <h1 className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.5rem] font-serif font-medium text-neutral-900 tracking-tighter">
+          <div className="w-full lg:w-1/2 space-y-12 text-center lg:text-left order-2 lg:order-1">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">L'Engagement João.</span>
+              <h1 className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.2rem] font-serif font-medium text-neutral-900 tracking-tighter">
                 L'Art du<br />
                 <span className="text-neutral-500 italic font-light">Lâcher-Prise.</span>
               </h1>
             </motion.div>
             
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
-              <div className="pl-8 border-l-2 border-neutral-900/10 py-2">
+              <div className="pl-8 border-l border-neutral-900/10 py-2">
                  <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4">
-                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. »
-                 </p>
-                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">
-                   « Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
+                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
+                   Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
                  </p>
                  <span className="font-cursive text-[1.5rem] text-neutral-900 block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
               </div>
-              <div className="flex justify-center lg:justify-start pt-6">
-                <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-6 py-2.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
+              <div className="flex justify-center lg:justify-start pt-4">
+                <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-4 py-1.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
                   Réserver un soin
                 </button>
               </div>
@@ -105,12 +104,12 @@ export default function HomePage() {
           </div>
 
           {/* IMAGE À DROITE */}
-          <div className="w-full lg:w-[45%] flex justify-center lg:justify-end order-1 lg:order-2">
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-center order-1 lg:order-2">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, x: 20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[280px]"
+              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[240px] md:max-w-[260px]"
               style={{ borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' }}
             >
               <Image 
@@ -170,7 +169,7 @@ export default function HomePage() {
               <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-6 py-2.5 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-800">
+              <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-4 py-1.5 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-800">
                 Réserver un soin
               </button>
             </div>
@@ -252,10 +251,10 @@ export default function HomePage() {
               <h3 className="text-[0.7rem] font-sans font-black text-white/30 uppercase tracking-[0.3em] md:text-[0.75rem] lg:text-[0.8rem]">SOCIAL</h3>
               <div className="flex items-center justify-center gap-8">
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                  <Instagram size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
+                  <span className="text-[0.65rem] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors">Instagram</span>
                 </a>
                 <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                  <Linkedin size={20} className="text-white/30 hover:text-white transition-colors cursor-pointer" />
+                  <span className="text-[0.65rem] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors">Linkedin</span>
                 </a>
               </div>
             </div>
