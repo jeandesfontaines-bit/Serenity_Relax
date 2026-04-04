@@ -90,8 +90,7 @@ export default function HomePage() {
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
               <div className="pl-8 border-l border-neutral-900/10 py-2">
                  <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4">
-                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
-                   Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
+                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
                  </p>
                  <span className="font-cursive text-[1.5rem] text-neutral-900 block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
               </div>
@@ -224,7 +223,7 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-neutral-900 text-white pt-16 pb-20 px-6">
+      <footer className="bg-neutral-900 text-white pt-16 pb-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="text-center mb-12">
             <h2 className="text-[1.1rem] font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white md:text-[1.2rem] lg:text-[1.25rem]">SERENITY RELAX</h2>
@@ -258,9 +257,6 @@ export default function HomePage() {
                 </a>
               </div>
             </div>
-          </div>
-          <div className="mt-20">
-            <span className="font-cursive text-[1.5rem] text-white/20 md:text-[1.75rem] lg:text-[2rem]">João</span>
           </div>
         </div>
       </footer>
