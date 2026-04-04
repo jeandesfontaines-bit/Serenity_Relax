@@ -60,8 +60,8 @@
   }
 
   .high-end-button {
-    @apply inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full 
-           text-[10px] font-black uppercase tracking-[0.4em] transition-all duration-500
+    @apply inline-flex items-center justify-center px-6 py-2.5 border border-neutral-900 rounded-full 
+           text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500
            hover:bg-neutral-900 hover:text-white active:scale-95 cursor-pointer bg-transparent;
   }
 }

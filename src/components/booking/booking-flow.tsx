@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -135,8 +134,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
     }
   };
 
-  const stepLabels = ["Choix du soin", "Date & Heure", "Coordonnées", "Vérification"];
-
   if (step === 5) {
     return (
       <div className="px-8 text-center h-screen flex flex-col justify-center bg-white">
@@ -151,11 +148,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
             href="https://wa.me/41783336823" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="w-full inline-flex items-center justify-center px-8 py-3.5 bg-emerald-600 text-white rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 gap-3"
+            className="w-full inline-flex items-center justify-center px-6 py-2.5 bg-emerald-600 text-white rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 gap-3"
           >
             <MessageCircle size={16} /> CONFIRMER WHATSAPP
           </a>
-          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
+          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-6 py-2.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
             RETOUR
           </button>
         </div>
@@ -364,11 +361,17 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
                 <div className="pt-10 border-t border-neutral-100 max-w-2xl">
                    <div className="space-y-6 text-[0.85rem] leading-relaxed text-neutral-400 italic font-sans mb-10">
-                    <p>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation. Elles ne remplacent en aucun cas un avis ou un traitement médical.</p>
-                    <p>En réservant une séance, vous confirmez être en bonne condition physique et ne pas avoir de contre-indication au massage.</p>
-                    <p>Toute annulation ou modification doit être effectuée au minimum 24h à l’avance. En cas d’annulation tardive ou d’absence, la séance pourra être facturée.</p>
+                    <p>Conditions & informations</p>
+                    <ul className="list-disc pl-5 space-y-2 not-italic">
+                      <li>Les prestations proposées sont exclusivement dédiées au bien-être et à la relaxation.</li>
+                      <li>Elles ne remplacent en aucun cas un avis ou un traitement médical.</li>
+                      <li>En réservant une séance, vous confirmez être en bonne condition physique et ne pas avoir de contre-indication au massage.</li>
+                      <li>En cas de doute, n’hésitez pas à demander l’avis de votre médecin.</li>
+                      <li>Toute annulation ou modification doit être effectuée au minimum 24h à l’avance.</li>
+                      <li>En cas d’annulation tardive ou d’absence, la séance pourra être facturée.</li>
+                    </ul>
                   </div>
-                  <div className="flex items-start space-x-4 bg-neutral-50 p-8 rounded-[2rem]">
+                  <div className="flex items-start space-x-4 bg-neutral-50 p-6 rounded-[2rem]">
                     <Checkbox id="terms" checked={acceptedConditions} onCheckedChange={(checked) => setAcceptedConditions(checked === true)} className="mt-1" />
                     <Label htmlFor="terms" className="text-[0.8rem] font-sans font-bold text-neutral-900 cursor-pointer leading-tight">
                       J'accepte les conditions et confirme mon état de santé pour cette séance.
@@ -380,7 +383,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   <button 
                     disabled={!formData.firstName || !formData.email || !acceptedConditions} 
                     onClick={() => setStep(4)} 
-                    className="w-full max-w-2xl inline-flex items-center justify-center px-12 py-4 bg-neutral-900 text-white rounded-full text-[0.7rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 disabled:opacity-20"
+                    className="w-full max-w-2xl inline-flex items-center justify-center px-6 py-3 bg-neutral-900 text-white rounded-full text-[0.7rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 disabled:opacity-20"
                   >
                     VÉRIFIER LE RÉCAPITULATIF
                   </button>
@@ -400,7 +403,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               </div>
               <h2 className="text-[2.2rem] font-serif font-bold text-neutral-900 tracking-tighter leading-none">Récapitulatif de votre rituel.</h2>
               
-              <div className="text-left bg-neutral-50/50 p-10 rounded-[3rem] space-y-10 max-w-2xl mx-auto">
+              <div className="text-left bg-neutral-50/50 p-8 rounded-[3rem] space-y-10 max-w-2xl mx-auto">
                 <div className="space-y-4">
                   <p className="text-[0.65rem] font-black text-neutral-300 uppercase tracking-[0.2em]">SOIN & RENDEZ-VOUS</p>
                   <p className="text-[1.3rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
@@ -419,7 +422,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 <button 
                   onClick={completeBooking} 
                   disabled={isSubmitting} 
-                  className="w-full inline-flex items-center justify-center px-12 py-5 bg-neutral-900 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 shadow-2xl gap-4"
+                  className="w-full inline-flex items-center justify-center px-6 py-3.5 bg-neutral-900 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 shadow-2xl gap-4"
                 >
                   {isSubmitting ? <Loader2 className="animate-spin" /> : <>CONFIRMER LA RÉSERVATION <CheckCircle2 size={20} /></>}
                 </button>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -52,10 +51,10 @@ export default function InvoicingManagement() {
             <h1 className="text-4xl font-serif font-bold text-neutral-900">Gestion Comptable</h1>
           </div>
           <div className="flex gap-4">
-            <Button variant="outline" className="rounded-full gap-3 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] uppercase font-sans font-black tracking-[0.2em] px-8 py-3 border-neutral-200">
+            <Button variant="outline" className="rounded-full gap-3 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] uppercase font-sans font-black tracking-[0.18em] px-6 py-2 border-neutral-200">
               <ArrowUpRight className="h-4 w-4" /> Export CSV
             </Button>
-            <Button className="rounded-full bg-neutral-900 text-white gap-3 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] uppercase font-sans font-black tracking-[0.2em] px-8 py-3">
+            <Button className="rounded-full bg-neutral-900 text-white gap-3 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] uppercase font-sans font-black tracking-[0.18em] px-6 py-2">
               <FileCheck className="h-4 w-4" /> Traitement par Lot
             </Button>
           </div>

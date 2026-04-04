@@ -88,13 +88,16 @@ export default function HomePage() {
             
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
               <div className="pl-8 border-l-2 border-neutral-900/10 py-2">
+                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4">
+                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. »
+                 </p>
                  <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">
-                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
+                   « Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
                  </p>
                  <span className="font-cursive text-[1.5rem] text-neutral-900 block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
-                <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-8 py-3.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
+                <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-6 py-2.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
                   Réserver un soin
                 </button>
               </div>
@@ -107,7 +110,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95, x: 20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[340px]"
+              className="relative aspect-[4/5] overflow-hidden shadow-2xl w-full max-w-[280px]"
               style={{ borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' }}
             >
               <Image 
@@ -144,7 +147,7 @@ export default function HomePage() {
                   <div className="w-12 h-12 bg-neutral-50 rounded-2xl flex items-center justify-center text-neutral-900">
                     <impact.icon size={24} strokeWidth={1.5} />
                   </div>
-                  <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium tracking-tight text-neutral-900">{impact.title}</h4>
+                  <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium text-neutral-900 tracking-tight">{impact.title}</h4>
                   <p className="text-[0.8125rem] leading-relaxed md:text-[0.875rem] lg:text-[0.9375rem] text-neutral-500 font-sans font-medium">
                     {impact.desc}
                   </p>
@@ -167,7 +170,7 @@ export default function HomePage() {
               <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-600 md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
-              <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-8 py-3.5 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-800">
+              <button onClick={() => openBooking()} className="inline-flex items-center justify-center px-6 py-2.5 bg-neutral-900 text-white border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-800">
                 Réserver un soin
               </button>
             </div>
@@ -208,7 +211,7 @@ export default function HomePage() {
                   <div className="flex gap-12 items-start">
                     <span className="text-[0.7rem] font-sans font-black text-neutral-200 uppercase tracking-widest mt-2">0{i+1}</span>
                     <div className="space-y-6">
-                      <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium tracking-tight text-neutral-900">{f.q}</h4>
+                      <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium text-neutral-900 tracking-tight">{f.q}</h4>
                       <p className="text-[0.8125rem] leading-relaxed text-neutral-500 font-sans font-medium border-l-2 border-neutral-50 pl-8 max-w-xl md:text-[0.875rem] lg:text-[0.9375rem]">
                         {f.a}
                       </p>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -171,7 +170,7 @@ export default function TherapistDashboard() {
                 <button
                   key={item.id}
                   onClick={() => { setActiveTab(item.id); setSelectedDate(null); }}
-                  className={`px-6 py-2.5 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
+                  className={`px-5 py-2 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-widest rounded-full transition-all flex items-center gap-2 ${
                     activeTab === item.id 
                       ? "bg-neutral-900 text-white shadow-lg" 
                       : "text-neutral-400 hover:text-neutral-900"
@@ -183,10 +182,10 @@ export default function TherapistDashboard() {
             </nav>
             <button 
               onClick={() => openNew()}
-              className="bg-neutral-900 text-white px-8 py-3 rounded-full hover:bg-neutral-800 transition-all flex items-center gap-3 shadow-xl active:scale-95"
+              className="bg-neutral-900 text-white px-6 py-2.5 rounded-full hover:bg-neutral-800 transition-all flex items-center gap-3 shadow-xl active:scale-95"
             >
               <Plus size={16} strokeWidth={2.5} />
-              <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.2em]">Nouveau Soin</span>
+              <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.18em]">Nouveau Soin</span>
             </button>
         </div>
 
@@ -218,7 +217,7 @@ export default function TherapistDashboard() {
                 <div className="col-span-12 lg:col-span-8 space-y-10">
                   <div className="flex items-center justify-between px-2">
                     <h3 className="text-4xl font-serif font-bold tracking-tight">Planning du jour</h3>
-                    <div className="bg-white px-8 py-3 rounded-full border border-neutral-100 flex items-center gap-4">
+                    <div className="bg-white px-6 py-2 rounded-full border border-neutral-100 flex items-center gap-4">
                       <Clock size={14} className="text-neutral-400" />
                       <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.3em] text-neutral-600">
                         {isClient ? format(new Date(), 'EEEE d MMMM', { locale: fr }) : '...'}
@@ -329,7 +328,7 @@ export default function TherapistDashboard() {
                  <div className="p-10 border-b border-neutral-50 flex items-center justify-between bg-neutral-50/20">
                     <div className="flex items-center gap-10">
                        {selectedDate ? (
-                         <button onClick={() => setSelectedDate(null)} className="text-neutral-900 flex items-center gap-4 hover:bg-neutral-50 px-6 py-2.5 rounded-full transition-all border border-neutral-200">
+                         <button onClick={() => setSelectedDate(null)} className="text-neutral-900 flex items-center gap-4 hover:bg-neutral-50 px-5 py-2 rounded-full transition-all border border-neutral-200">
                            <ChevronLeft size={16} strokeWidth={2.5} />
                            <span className="text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.2em]">Retour au mois</span>
                          </button>
@@ -349,8 +348,8 @@ export default function TherapistDashboard() {
 
                  {!selectedDate ? (
                    <div className="grid grid-cols-7">
-                     {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map(d => (
-                       <div key={d} className="py-8 text-center text-[10px] font-sans font-black text-neutral-300 uppercase tracking-[0.3em] border-b border-neutral-50">{d}</div>
+                     {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((d, i) => (
+                       <div key={`${d}-${i}`} className="py-8 text-center text-[10px] font-sans font-black text-neutral-300 uppercase tracking-[0.3em] border-b border-neutral-50">{d}</div>
                      ))}
                      {eachDayOfInterval({
                        start: startOfWeek(startOfMonth(viewDate), { weekStartsOn: 1 }),
@@ -547,13 +546,13 @@ export default function TherapistDashboard() {
               <div className="mt-16 flex flex-col gap-6 pt-12 border-t border-neutral-100">
                 <button 
                   onClick={handleSave} disabled={!formData.firstName}
-                  className="bg-neutral-900 text-white py-4 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-neutral-800 transition-all disabled:opacity-20"
+                  className="bg-neutral-900 text-white py-3.5 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] shadow-2xl hover:bg-neutral-800 transition-all disabled:opacity-20"
                 >
-                  {editingId ? "Mettre à jour le Dossier" : "Enregistrer le Soin"}
+                  {editingId ? "Mettre à jour" : "Enregistrer"}
                 </button>
                 {editingId && (
-                  <button onClick={() => handleDelete(editingId)} className="flex items-center justify-center gap-3 text-rose-500 py-3 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
-                    <Trash2 size={16} /> Supprimer Définitivement
+                  <button onClick={() => handleDelete(editingId)} className="flex items-center justify-center gap-3 text-rose-500 py-2.5 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-widest hover:bg-rose-50 transition-all">
+                    <Trash2 size={16} /> Supprimer
                   </button>
                 )}
               </div>
