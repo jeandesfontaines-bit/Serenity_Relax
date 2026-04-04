@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -92,8 +91,8 @@ export default function HomePage() {
                 Découvrez une parenthèse de sérénité au cœur de Genève. Des soins sur-mesure conçus pour restaurer l'équilibre entre votre corps et votre esprit.
               </p>
               <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
-                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4">
-                   Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
+                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4 italic">
+                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. »
                  </p>
                  <p className="text-[1rem] font-sans font-light leading-relaxed italic text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">« Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
                  <span className="font-cursive text-[1.5rem] text-neutral-900 block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
