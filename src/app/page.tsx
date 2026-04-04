@@ -83,7 +83,7 @@ export default function HomePage() {
               <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-neutral-400 block mb-6 md:text-[0.75rem] lg:text-[0.8rem] mt-8">L'Engagement João.</span>
               <h1 className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.5rem] font-serif font-medium text-neutral-900 tracking-tighter">
                 L'Art du<br />
-                <span className="text-neutral-500 italic font-light">Lâcher-Prise Absolu.</span>
+                <span className="text-neutral-500 italic font-light">Lâcher-Prise.</span>
               </h1>
             </motion.div>
             
@@ -92,10 +92,9 @@ export default function HomePage() {
                 Découvrez une parenthèse de sérénité au cœur de Genève. Des soins sur-mesure conçus pour restaurer l'équilibre entre votre corps et votre esprit.
               </p>
               <div className="pl-8 border-l-2 border-neutral-900/10 py-2 hidden lg:block">
-                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem] mb-4">
-                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne.
+                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">
+                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
                  </p>
-                 <p className="text-[1rem] font-sans font-light leading-relaxed text-neutral-800 md:text-[1.08rem] lg:text-[1.15rem]">Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »</p>
                  <span className="font-cursive text-[1.5rem] text-neutral-900 block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-6">
