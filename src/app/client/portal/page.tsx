@@ -23,7 +23,7 @@ const WELLNESS_TIPS = [
 ];
 
 export default function ClientPortal() {
-  const { firestore } = useFirestore();
+  const firestore = useFirestore();
   const { user, isUserLoading } = useUser();
 
   const appointmentsQuery = useMemoFirebase(() => {

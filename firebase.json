@@ -1,0 +1,29 @@
+{
+  "apphosting": {
+    "backendId": "serenity-relax",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      ".next"
+    ]
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "europe-west6",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "auth": {
+    "providers": {
+      "anonymous": true,
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Serenity Relax",
+        "supportEmail": "jean.desfontaines@gmail.com"
+      }
+    }
+  }
+}

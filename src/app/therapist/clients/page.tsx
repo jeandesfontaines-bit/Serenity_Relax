@@ -11,7 +11,7 @@ import { collection } from 'firebase/firestore';
 import { Navbar } from '@/components/navbar';
 
 export default function ClientsCRM() {
-  const { firestore } = useFirestore();
+  const firestore = useFirestore();
 
   const clientsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -22,7 +22,6 @@ export default function ClientsCRM() {
 
   return (
     <div className="flex min-h-screen w-full bg-[#F7F7F2] pt-24">
-      <Navbar />
       <main className="p-10 space-y-10 max-w-7xl mx-auto w-full">
         <header className="flex items-center justify-between">
           <div>

@@ -263,7 +263,7 @@ export default function HomePage() {
 
       {/* SYSTEME DE RESERVATION (DRAWER) */}
       <Sheet open={bookingOpen} onOpenChange={setBookingOpen}>
-        <SheetContent side="right" className="w-full sm:max-w-[750px] p-0 border-none bg-white overflow-y-auto scrollbar-hide">
+        <SheetContent side="bottom" className="h-[80vh] w-[90%] max-w-[1500px] mx-auto rounded-t-[2.5rem] p-0 border-none bg-white overflow-y-auto scrollbar-hide shadow-[0_-10px_40px_rgba(0,0,0,0.15)]">
           <VisuallyHidden.Root>
             <SheetTitle>Réserver votre rituel Serenity Relax</SheetTitle>
           </VisuallyHidden.Root>

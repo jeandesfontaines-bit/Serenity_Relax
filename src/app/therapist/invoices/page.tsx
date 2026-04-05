@@ -15,7 +15,7 @@ import { updateDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { Navbar } from '@/components/navbar';
 
 export default function InvoicingManagement() {
-  const { firestore } = useFirestore();
+  const firestore = useFirestore();
   const [mounted, setMounted] = useState(false);
   const [currentPeriodFormatted, setCurrentPeriodFormatted] = useState('');
 
@@ -43,7 +43,6 @@ export default function InvoicingManagement() {
 
   return (
     <div className="flex min-h-screen w-full bg-[#F7F7F2] pt-24">
-      <Navbar />
       <main className="p-10 space-y-10 max-w-7xl mx-auto w-full">
         <header className="flex items-center justify-between">
           <div>

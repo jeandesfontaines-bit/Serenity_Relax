@@ -7,7 +7,7 @@ export type Service = {
   image?: string;
 };
 
-export type AppointmentStatus = 'Booked' | 'Completed' | 'Cancelled' | 'NoShow';
+export type AppointmentStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'NoShow';
 
 export type Client = {
   id: string;
@@ -34,6 +34,11 @@ export type Appointment = {
   startTime: string;
   endTime: string;
   status: AppointmentStatus;
+  clientName?: string;
+  firstName?: string;
+  lastName?: string;
+  clientNameSnapshot?: string;
+  phone?: string;
   clientMessage?: string;
   promoCodeId?: string;
   therapistNotes?: string;

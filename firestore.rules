@@ -1,106 +1,32 @@
-rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    /**
-     * AuraFlow Wellness Security Rules
-     * 
-     * Core Philosophy:
-     * This ruleset implements a dual-access model: therapist-administrative access and client-ownership access. 
-     * Authorization is decoupled from data hierarchy through denormalization, ensuring that security checks 
-     * are performant and do not require recursive document lookups (Authorization Independence).
-     * 
-     * Data Structure:
-     * - Client profiles are stored at /clients/{clientId} where {clientId} matches the Firebase Auth UID.
-     * - Appointments, Invoices, and AI Recommendations are stored in top-level collections to facilitate 
-     *   global therapist dashboards while including a 'clientId' field for secure client-specific querying.
-     * - Public-facing catalog data (Services, Schedules, Practice Settings) are globally readable but 
-     *   restricted to therapist-only writes.
-     */
-
-    // --- Helper Functions ---
-
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
+    // Helper to check if user is the therapist (João)
     function isTherapist() {
-      return isSignedIn() && exists(/databases/$(database)/documents/roles_therapist/$(request.auth.uid));
+      return request.auth != null && request.auth.token.email == 'jean.desfontaines@gmail.com';
     }
 
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
-    }
-
-    function isExistingOwner(userId, existingResource) {
-      return existingResource != null && isOwner(userId);
-    }
-
-    function isValidClientOwner() {
-      return isSignedIn() && request.resource.data.clientId == request.auth.uid;
-    }
-
-    function isImmutable(field) {
-      return request.resource.data[field] == resource.data[field];
-    }
-
-    // --- Collection Rules ---
-
-    match /clients/{clientId} {
-      allow get: if isOwner(clientId) || isTherapist();
-      allow list: if isTherapist();
-      allow create: if isOwner(clientId) && request.resource.data.id == clientId;
-      allow update: if (isExistingOwner(clientId, resource) || isTherapist()) && isImmutable('id');
-      allow delete: if isTherapist() && resource != null;
-    }
-
-    match /services/{serviceId} {
-      allow get, list: if true;
-      allow create, update, delete: if isTherapist();
-    }
-
+    // Appointments rules
     match /appointments/{appointmentId} {
-      allow get, list: if isTherapist() || (isSignedIn() && resource.data.clientId == request.auth.uid);
-      allow create: if isValidClientOwner() || isTherapist();
-      allow update: if isTherapist() || (isExistingOwner(resource.data.clientId, resource) && isImmutable('clientId'));
-      allow delete: if isTherapist() && resource != null;
+      allow create: if request.auth != null;
+      allow read, update, delete: if isTherapist() || (request.auth != null && resource.data.clientId == request.auth.uid);
     }
 
-    match /invoices/{invoiceId} {
-      allow get, list: if isTherapist() || (isSignedIn() && resource.data.clientId == request.auth.uid);
-      allow create: if isTherapist() || isValidClientOwner();
-      allow update: if isTherapist();
-      allow delete: if isTherapist();
+    // Clients rules
+    match /clients/{clientId} {
+      allow create, update: if request.auth != null && request.auth.uid == clientId;
+      allow read: if isTherapist() || (request.auth != null && request.auth.uid == clientId);
     }
 
-    match /therapist_schedules/{scheduleId} {
-      allow get, list: if true;
-      allow create, update, delete: if isTherapist();
+    // Availability rules (for the therapist dashboard)
+    match /availability/{slotId} {
+      allow read: if true; // Everyone can see available slots
+      allow write: if isTherapist();
     }
-
-    match /blocked_times/{blockedTimeId} {
-      allow get, list: if true;
-      allow create, update, delete: if isTherapist();
-    }
-
-    match /ai_recommendations/{recommendationId} {
-      allow get, list: if isTherapist() || (isSignedIn() && resource.data.clientId == request.auth.uid);
-      allow create, update, delete: if isTherapist();
-    }
-
-    match /promo_codes/{promoCodeId} {
-      allow get, list: if true;
-      allow create, update, delete: if isTherapist();
-    }
-
-    match /practice_settings/{settingsId} {
-      allow get, list: if true;
-      allow create, update, delete: if isTherapist();
-    }
-
-    match /roles_therapist/{uid} {
-      allow read: if isSignedIn() && request.auth.uid == uid;
-      allow write: if false;
+    
+    // Settings rules
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isTherapist();
     }
   }
 }
