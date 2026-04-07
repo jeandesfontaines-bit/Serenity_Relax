@@ -293,7 +293,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
       {/* RIGHT SIDE: Content */}
       <div className="w-full lg:w-[65%] p-8 md:p-12 lg:p-16 pb-24">
-        <div className="max-w-xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div 
@@ -301,21 +301,21 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
                 className="space-y-8"
               >
-                <div className="space-y-4 mb-6 text-center lg:text-left">
-                  <h3 className="text-[1.5rem] font-serif font-medium text-neutral-900">Le Menu Signature</h3>
+                <div className="space-y-3 mb-8 text-center lg:text-left">
+                  <h3 className="text-[1.5rem] md:text-[1.8rem] font-serif font-medium text-neutral-900 tracking-tight">Le Menu Signature</h3>
                   <p className="text-[0.85rem] font-sans text-neutral-500">Sélectionnez le rituel qui correspond à vos besoins d'aujourd'hui.</p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                   {services.map((s) => (
                     <button
                       key={s.id}
                       onClick={() => handleServiceSelect(s)}
-                      className={`group w-full flex items-center gap-6 p-4 rounded-3xl transition-all duration-500 text-left border
+                      className={`group w-full flex flex-col p-4 rounded-[2.5rem] transition-all duration-500 text-center border
                         ${selectedService?.id === s.id ? 'bg-neutral-50 border-neutral-900 shadow-sm ring-1 ring-neutral-900' : 'bg-white border-neutral-100 hover:border-neutral-300 hover:shadow-md'}
                       `}
                     >
-                      <div className="relative w-24 h-24 rounded-2xl overflow-hidden shrink-0 shadow-sm border border-neutral-50">
+                      <div className="relative w-full aspect-[4/3] rounded-[1.8rem] overflow-hidden mb-4 shrink-0 shadow-sm border border-neutral-50/50">
                         <Image 
                           src={s.image || ''} 
                           fill 
@@ -324,14 +324,14 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       </div>
-                      <div className="flex-1 flex flex-col justify-center pr-2">
-                        <h4 className="text-[1.05rem] leading-snug font-serif font-bold tracking-tight text-neutral-900 mb-1">{s.name.split(' - ')[0]}</h4>
-                        <p className="text-[0.7rem] font-sans text-neutral-500 line-clamp-2 leading-relaxed mb-3">
+                      <div className="flex-1 space-y-2 px-1">
+                        <h4 className="text-[1.05rem] leading-tight font-serif font-bold tracking-tight text-neutral-900">{s.name.split(' - ')[0]}</h4>
+                        <p className="text-[0.7rem] font-sans text-neutral-400 line-clamp-2 leading-relaxed h-8">
                           {s.description || "Rituel personnalisé et adapté."}
                         </p>
-                        <div className="flex items-center gap-5">
-                          <span className="text-[0.6rem] font-black uppercase tracking-[0.15em] text-neutral-400">{s.duration}</span>
-                          <span className="text-[0.95rem] font-serif font-bold text-neutral-900">CHF {s.price}</span>
+                        <div className="flex items-center justify-center gap-4 pt-1">
+                          <span className="text-[0.6rem] font-black uppercase tracking-[0.15em] text-neutral-300">{s.duration}</span>
+                          <span className="text-[1rem] font-serif font-bold text-neutral-900">CHF {s.price}</span>
                         </div>
                       </div>
                     </button>

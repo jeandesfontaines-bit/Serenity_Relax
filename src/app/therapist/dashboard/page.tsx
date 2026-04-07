@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   LayoutDashboard, CalendarRange, Users, Settings, Leaf, Activity, Target,
   Search, Bell, ChevronLeft, ChevronRight, Lock, Unlock, CheckCircle2,
-  X, Trash2, Clock, Plus, Cog, Power
+  X, Trash2, Clock, Plus, Cog, Power, Mail, FileText, History, User, CreditCard, Download
 } from 'lucide-react';
 import {
   format, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
@@ -51,7 +51,7 @@ export default function TherapistDashboard() {
   const { user, isUserLoading } = useUser();
 
   // Navigation
-  const [tab,  setTab]  = useState<'dashboard' | 'scheduler' | 'clients' | 'settings'>('scheduler');
+  const [tab,  setTab]  = useState<'dashboard' | 'scheduler' | 'clients' | 'settings' | 'accounting'>('scheduler');
   const [view, setView] = useState<'month' | 'week' | 'day'>('month');
   const [cur,  setCur]  = useState(new Date());
 
@@ -94,6 +94,9 @@ export default function TherapistDashboard() {
   const [clForm,     setClForm]     = useState({ firstName: '', lastName: '', email: '', phone: '', address: '', insurance: '' });
   const [clScaling,  setClScaling]  = useState(false); // For animation
   const [clSearch,   setClSearch]   = useState('');
+  const [selectedClient, setSelectedClient] = useState<any | null>(null);
+  const [isEditingClient, setIsEditingClient] = useState(false);
+  const [clEditForm, setClEditForm] = useState<any>({});
 
   // Hydration guard
   const [isClient, setIsClient] = useState(false);
@@ -243,6 +246,21 @@ export default function TherapistDashboard() {
     });
     setClModal(false);
     setClForm({ firstName: '', lastName: '', email: '', phone: '', address: '', insurance: '' });
+    setClScaling(false);
+  };
+
+  const openClientFolder = (c: any) => {
+    setSelectedClient(c);
+    setClEditForm(c);
+    setIsEditingClient(false);
+  };
+
+  const saveClientEdit = async () => {
+    if (!firestore || !selectedClient) return;
+    setClScaling(true);
+    await updateDoc(doc(firestore, 'clients', selectedClient.id), clEditForm);
+    setSelectedClient({ ...selectedClient, ...clEditForm });
+    setIsEditingClient(false);
     setClScaling(false);
   };
 
@@ -450,9 +468,14 @@ export default function TherapistDashboard() {
               {DAYS_F[isoDay(cur)]} <span className="text-blue-600">{cur.getDate()}</span>
             </h2>
           </div>
-          <button onClick={() => toggleDay(dStr)} className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${isOpen ? 'bg-red-50 text-red-500 hover:bg-red-100' : 'bg-blue-600 text-white shadow-lg shadow-blue-100'}`}>
-            {isOpen ? 'Fermer la journée' : 'Ouvrir les réservations'}
-          </button>
+          <div className="flex gap-3">
+            <button onClick={() => { setCfgDay(isoDay(cur)); setCfgOpen(true); }} className="bg-white border border-slate-100 p-3 rounded-2xl text-slate-400 hover:text-blue-600 hover:border-blue-100 transition shadow-sm" title="Ajouter un créneau">
+              <Plus size={20}/>
+            </button>
+            <button onClick={() => toggleDay(dStr)} className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${isOpen ? 'bg-red-50 text-red-500 hover:bg-red-100' : 'bg-blue-600 text-white shadow-lg shadow-blue-100'}`}>
+              {isOpen ? 'Fermer la journée' : 'Ouvrir les réservations'}
+            </button>
+          </div>
         </div>
         {isOpen ? (
           <div className="space-y-3">
@@ -512,82 +535,347 @@ export default function TherapistDashboard() {
     );
   };
 
-  const Dashboard = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 p-8 overflow-y-auto h-full">
-      <div className="lg:col-span-7 space-y-8">
-        <div className="flex justify-between items-center">
-          <h3 className="text-2xl font-black tracking-tight text-slate-800">Activité Récente</h3>
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-blue-100">Rapport Complet</button>
-        </div>
-        <div className="grid grid-cols-2 gap-6">
-          {[
-            { title: 'Drainage', desc: 'Séances actives', count: appointments.filter(e => (e.serviceId || '') === 'drainage').length || 12, g: 'from-blue-600 to-blue-400', icon: <Activity size={24}/> },
-            { title: 'Massage', desc: 'Nouveaux patients', count: appointments.filter(e => (e.serviceId || '') === 'massage').length || 7, g: 'from-violet-600 to-violet-400', icon: <Leaf size={24}/> },
-          ].map((s, i) => (
-            <div key={i} className={`bg-gradient-to-br ${s.g} p-7 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden`}>
-              <div className="relative z-10 flex flex-col gap-8">
-                <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">{s.icon}</div>
-                <div>
-                  <h4 className="text-lg font-black">{s.title}</h4>
-                  <p className="text-[10px] font-bold opacity-60 uppercase tracking-widest">{s.desc}</p>
-                </div>
-                <div className="text-4xl font-black">{s.count}</div>
-              </div>
-              <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"/>
+  const Dashboard = () => {
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
+    const todayAppts = appointments.filter(a => a.date === todayStr).sort((a,b) => (a.time || '').localeCompare(b.time || ''));
+    const nextAppts = appointments
+      .filter(a => (a.date || '') > todayStr)
+      .sort((a,b) => (a.date || '').localeCompare(b.date || '') || (a.time || '').localeCompare(b.time || ''))
+      .slice(0, 6);
+    const pendingPayments = appointments.filter(a => !a.paid).length;
+    
+    return (
+      <div className="flex-1 overflow-y-auto bg-[#F9F7F2] p-8">
+        <div className="max-w-7xl mx-auto space-y-12 pb-20">
+          
+          {/* Header Greeting */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <h2 className="text-3xl font-black text-slate-900 tracking-tight">Bonjour Joao 👋</h2>
+              <p className="text-slate-500 font-bold mt-1 uppercase text-[11px] tracking-widest">
+                Voici l'aperçu de votre journée du {format(new Date(), 'EEEE d MMMM', { locale: fr })}
+              </p>
             </div>
-          ))}
-        </div>
-        <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
-          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">Performance des Protocoles</h4>
-          {[
-            { label: "Taux d'occupation", prog: saturation, cls: 'text-blue-500', icon: <Target size={18}/> },
-            { label: 'Fidélisation patients', prog: 75, cls: 'text-violet-500', icon: <Activity size={18}/> },
-          ].map((s, i) => (
-            <div key={i} className="flex items-center justify-between mb-6 last:mb-0">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400">{s.icon}</div>
-                <span className="text-xs font-bold text-slate-700">{s.label}</span>
-              </div>
-              <CircProgress pct={s.prog} cls={s.cls}/>
+            <div className="grid grid-cols-2 gap-4">
+               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4 px-6">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0"><CalendarRange size={20}/></div>
+                  <div>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">RDV Aujourd'hui</p>
+                    <p className="text-xl font-black text-slate-900">{todayAppts.length}</p>
+                  </div>
+               </div>
+               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4 px-6">
+                  <div className="w-10 h-10 rounded-2xl bg-green-50 flex items-center justify-center text-green-600 shrink-0"><Activity size={20}/></div>
+                  <div>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Revenu Prévu</p>
+                    <p className="text-xl font-black text-slate-900">{todayAppts.reduce((s, a) => s + (a.price || 150), 0)} CHF</p>
+                  </div>
+               </div>
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="lg:col-span-5 space-y-8">
-        <div className="bg-slate-900 text-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200">
-          <h4 className="text-[10px] font-black uppercase opacity-40 tracking-widest mb-6">Prochains RDV</h4>
-          <div className="space-y-4">
-            {upcoming.length > 0 ? upcoming.map((e, i) => (
-              <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5">
-                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-black text-xs shrink-0">{e.time?.slice(0, 5)}</div>
-                <div className="min-w-0">
-                  <p className="text-[11px] font-black truncate">{e.title}</p>
-                  <p className="text-[9px] font-bold opacity-40">{e.date}</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            {/* Main Column: Timeline */}
+            <div className="lg:col-span-8 space-y-14">
+              
+              {/* Today Section */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight flex items-center gap-3">
+                  <Clock size={20} className="text-blue-600"/> Aujourd'hui
+                </h3>
+
+                <div className="space-y-4">
+                  {todayAppts.length > 0 ? todayAppts.map((appt) => (
+                    <div key={appt.id} className="group bg-white rounded-[2.5rem] p-7 border border-slate-100 shadow-sm hover:shadow-xl hover:border-blue-100 transition-all flex items-center gap-8 relative overflow-hidden">
+                      <div className="w-24 shrink-0 border-r border-slate-100 pr-8">
+                        <p className="text-2xl font-black text-slate-900 leading-none mb-1">{appt.time}</p>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">60 min</p>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-4 mb-2">
+                          <h4 className="text-lg font-black text-slate-800 truncate uppercase tracking-tight">{appt.title}</h4>
+                          <span className={`px-2.5 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest ${appt.paid ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-500 animate-pulse'}`}>
+                            {appt.paid ? 'Réglé' : 'À encaisser'}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <p className="text-[10px] font-black text-blue-600 uppercase tracking-[0.1em] flex items-center gap-2">
+                            <Leaf size={12}/> {appt.serviceName || 'Soin Signature'}
+                          </p>
+                          <div className="w-1 h-1 rounded-full bg-slate-300"/>
+                          <p className="text-[10px] font-bold text-slate-400 flex items-center gap-2">
+                            <Plus size={10}/> {appt.price || 150} CHF
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <button onClick={() => setSelectedAppt(appt)} className="w-12 h-12 rounded-2xl bg-blue-600 text-white shadow-xl shadow-blue-100 flex items-center justify-center hover:scale-110 transition active:scale-95">
+                          <User size={18}/>
+                        </button>
+                      </div>
+                    </div>
+                  )) : (
+                    <div className="bg-white/50 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-slate-200 py-16 text-center">
+                      <p className="text-sm font-bold text-slate-400 italic">Aucun rendez-vous aujourd'hui</p>
+                    </div>
+                  )}
                 </div>
-                <ChevronRight size={14} className="ml-auto opacity-20 shrink-0"/>
               </div>
-            )) : <p className="text-xs opacity-30 italic text-center py-4">Aucun rendez-vous à venir</p>}
+
+              {/* Upcoming Section */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight flex items-center gap-3">
+                  <CalendarRange size={20} className="text-violet-600"/> Agenda à venir
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {nextAppts.length > 0 ? nextAppts.map((appt) => (
+                    <div key={appt.id} className="bg-white/60 p-5 rounded-[2rem] border border-slate-100 flex items-center justify-between hover:bg-white hover:shadow-md transition-all group">
+                      <div className="flex items-center gap-5">
+                        <div className="w-12 h-14 bg-violet-50 text-violet-600 rounded-2xl flex flex-col items-center justify-center shrink-0 border border-violet-100/50">
+                           <span className="text-[10px] font-black uppercase leading-none opacity-60">
+                             {format(new Date(appt.date), 'MMM', { locale: fr })}
+                           </span>
+                           <span className="text-base font-black leading-none mt-1">
+                             {format(new Date(appt.date), 'd')}
+                           </span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[11px] font-black text-slate-900 truncate uppercase tracking-tight">{appt.title}</p>
+                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                            {appt.time} • {appt.serviceName || 'Soin'}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className="text-slate-200 group-hover:text-violet-400 group-hover:translate-x-1 transition-all"/>
+                    </div>
+                  )) : (
+                    <div className="col-span-2 py-10 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
+                      <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Fin de liste</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar Column */}
+            <div className="lg:col-span-4 space-y-8">
+              
+              <div className="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm space-y-8">
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <Cog size={12}/> Outils de Bord
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { e: '📅', l: 'Agenda', c: 'bg-blue-50 text-blue-600', fn: () => { setTab('scheduler'); setView('day'); } },
+                    { e: '👥', l: 'Patients', c: 'bg-violet-50 text-violet-600', fn: () => setTab('clients') },
+                    { e: '💰', l: 'Compta', c: 'bg-amber-50 text-amber-600', fn: () => setTab('accounting') },
+                    { e: '⚙️', l: 'Stats', c: 'bg-slate-50 text-slate-600', fn: () => setTab('dashboard') },
+                  ].map((a, i) => (
+                    <button key={i} onClick={a.fn} className="p-6 rounded-3xl border border-transparent hover:border-slate-100 hover:bg-slate-50 transition-all text-center group">
+                      <div className={`w-14 h-14 rounded-2xl ${a.c} flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition duration-300`}>{a.e}</div>
+                      <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">{a.l}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {pendingPayments > 0 && (
+                <div className="bg-slate-900 text-white rounded-[3rem] p-10 shadow-2xl shadow-slate-200 relative overflow-hidden group border border-white/5">
+                  <div className="absolute -right-6 -top-6 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"/>
+                  <h4 className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-6 flex items-center gap-2">
+                    <CreditCard size={12}/> Alerte Trésorerie
+                  </h4>
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-4xl font-black text-white">{pendingPayments}</span>
+                    <span className="text-sm font-bold opacity-40 uppercase tracking-widest">Impayés</span>
+                  </div>
+                  <p className="text-[11px] font-semibold opacity-50 leading-relaxed">Plusieurs dossiers sont en attente de règlement final.</p>
+                  <button onClick={() => setTab('accounting')} className="mt-10 w-full py-5 bg-white text-slate-900 rounded-[2rem] text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-blue-50 transition active:scale-95">Régulariser maintenant</button>
+                </div>
+              )}
+
+              <div className="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm relative overflow-hidden">
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-10">Taux de Remplissage</h4>
+                <div className="flex items-center justify-center mb-6">
+                  <div className="relative flex items-center justify-center">
+                    <svg className="w-32 h-32 transform -rotate-90">
+                      <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-slate-50"/>
+                      <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="12" fill="transparent" 
+                        strokeDasharray={364} 
+                        strokeDashoffset={364 - (364 * saturation) / 100}
+                        className={`${saturation > 80 ? 'text-red-500' : 'text-blue-600'} transition-all duration-1000 ease-out`}
+                      />
+                    </svg>
+                    <div className="absolute flex flex-col items-center">
+                      <span className="text-2xl font-black text-slate-900">{saturation}%</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-[10px] font-bold text-center text-slate-400 uppercase tracking-widest">Capacité de la journée</p>
+              </div>
+
+            </div>
           </div>
         </div>
-        <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
-          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Accès Rapide</h4>
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { icon: '📊', label: 'Rapport', fn: undefined },
-              { icon: '⚙️', label: 'Créneaux', fn: () => setCfgOpen(true) },
-              { icon: '👥', label: 'Patients', fn: undefined },
-              { icon: '📨', label: 'Messages', fn: undefined },
-            ].map((a, i) => (
-              <button key={i} onClick={a.fn} className="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-blue-50 hover:border-blue-200 transition-all text-center cursor-pointer">
-                <div className="text-2xl mb-2">{a.icon}</div>
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{a.label}</p>
+      </div>
+    );
+  };
+
+  const AccountingView = () => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterStatus, setFilterStatus] = useState<'all' | 'paid' | 'pending'>('all');
+
+    const filteredAppts = appointments.filter(a => {
+      const matchSearch = (a.title || '').toLowerCase().includes(searchTerm.toLowerCase());
+      const status = a.paid ? 'paid' : 'pending';
+      const matchStatus = filterStatus === 'all' || status === filterStatus;
+      return matchSearch && matchStatus;
+    }).sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+
+    const totalRevenue = filteredAppts.reduce((sum, a) => sum + (a.price || 150), 0);
+    const paidRevenue = filteredAppts.filter(a => a.paid).reduce((sum, a) => sum + (a.price || 150), 0);
+    const pendingRevenue = filteredAppts.filter(a => !a.paid).reduce((sum, a) => sum + (a.price || 150), 0);
+
+    const togglePayment = async (id: string, current: boolean) => {
+      try {
+        await updateDoc(doc(firestore, 'appointments', id), { paid: !current });
+      } catch (e) {
+        console.error("Error updating payment", e);
+      }
+    };
+
+    const exportToCSV = () => {
+      const headers = ['Client', 'Date', 'Heure', 'Service', 'Montant', 'Statut'];
+      const rows = filteredAppts.map(a => [
+        `"${a.title}"`,
+        a.date,
+        a.time,
+        `"${a.serviceName || 'Soin Signature'}"`,
+        (a.price || 150) + ' CHF',
+        a.paid ? 'Réglé' : 'En attente'
+      ]);
+      
+      const content = [headers, ...rows].map(e => e.join(',')).join('\n');
+      const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `comptabilite_${format(new Date(), 'yyyy-MM-dd')}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    return (
+      <div className="flex-1 flex flex-col overflow-hidden bg-white">
+        <div className="p-8 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end bg-white border-b border-slate-50 gap-4">
+          <div>
+            <h3 className="text-2xl font-black text-slate-800 tracking-tight">Comptabilité</h3>
+            <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mt-1">Gestion des factures et paiements</p>
+          </div>
+          <button onClick={exportToCSV} className="bg-slate-900 text-white px-8 py-4 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl shadow-slate-200 hover:scale-105 transition active:scale-95">
+            <Download size={16}/> Exporter CSV
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 p-8 pb-4 shrink-0">
+          <div className="bg-slate-50 p-6 rounded-[2rem] border border-slate-100">
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Sélection</p>
+            <div className="text-2xl font-black text-slate-900">{totalRevenue} CHF</div>
+            <p className="text-[10px] font-bold text-slate-400 mt-1">{filteredAppts.length} Transactions</p>
+          </div>
+          <div className="bg-green-50 p-6 rounded-[2rem] border border-green-100">
+            <p className="text-[9px] font-black text-green-600 uppercase tracking-widest mb-1">Réglé</p>
+            <div className="text-2xl font-black text-green-700">{paidRevenue} CHF</div>
+            <p className="text-[10px] font-bold text-green-500 mt-1">{filteredAppts.filter(a => a.paid).length} Paiements</p>
+          </div>
+          <div className="bg-amber-50 p-6 rounded-[2rem] border border-amber-100">
+            <p className="text-[9px] font-black text-amber-600 uppercase tracking-widest mb-1">En attente</p>
+            <div className="text-2xl font-black text-amber-700">{pendingRevenue} CHF</div>
+            <p className="text-[10px] font-bold text-amber-500 mt-1">{filteredAppts.filter(a => !a.paid).length} Impayés</p>
+          </div>
+        </div>
+
+        <div className="px-8 py-4 flex flex-col md:flex-row gap-4 shrink-0">
+          <div className="flex-1 bg-slate-50 rounded-2xl p-4 border border-slate-100 flex items-center gap-4 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+            <Search size={18} className="text-slate-300"/>
+            <input 
+              type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
+              placeholder="Rechercher un client..." 
+              className="bg-transparent border-none text-sm font-bold w-full outline-none text-slate-600 placeholder:text-slate-300"
+            />
+          </div>
+          <div className="flex bg-slate-100 p-1 rounded-2xl gap-1">
+            {(['all', 'paid', 'pending'] as const).map(s => (
+              <button key={s} onClick={() => setFilterStatus(s)} className={`view-btn ${filterStatus === s ? 'active' : ''}`}>
+                {s === 'all' ? 'Tous' : s === 'paid' ? 'Réglé' : 'Attente'}
               </button>
             ))}
           </div>
         </div>
+
+        <div className="flex-1 overflow-auto px-8 py-2 pb-20">
+          <div className="min-w-[800px]">
+            <table className="w-full text-left border-separate border-spacing-y-3">
+              <thead>
+                <tr className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                  <th className="px-5 pb-2">Patient</th>
+                  <th className="px-5 pb-2">Date & Heure</th>
+                  <th className="px-5 pb-2">Soin effecteur</th>
+                  <th className="px-5 pb-2 text-right">Montant</th>
+                  <th className="px-5 pb-2 text-center">Statut</th>
+                  <th className="px-5 pb-2 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredAppts.map(a => (
+                  <tr key={a.id} className="group transition-transform hover:scale-[1.01]">
+                    <td className="p-4 bg-white border-y border-l border-slate-100 rounded-l-[2rem] shadow-sm">
+                      <div className="font-extrabold text-sm text-slate-900 tracking-tight">{a.title}</div>
+                    </td>
+                    <td className="p-4 bg-white border-y border-slate-100 shadow-sm text-xs font-bold text-slate-500">
+                      {a.date} <span className="text-[10px] opacity-40 ml-2">{a.time}</span>
+                    </td>
+                    <td className="p-4 bg-white border-y border-slate-100 shadow-sm">
+                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{a.serviceName || 'Soin Signature'}</div>
+                    </td>
+                    <td className="p-4 bg-white border-y border-slate-100 shadow-sm text-right font-black text-slate-900">
+                      {a.price || 150} CHF
+                    </td>
+                    <td className="p-4 bg-white border-y border-slate-100 shadow-sm text-center">
+                      <button 
+                        onClick={() => togglePayment(a.id, !!a.paid)}
+                        className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
+                          a.paid ? 'bg-green-100 text-green-600' : 'bg-red-50 text-red-500 animate-pulse'
+                        }`}
+                      >
+                        {a.paid ? 'Confirmé' : 'Non Réglé'}
+                      </button>
+                    </td>
+                    <td className="p-4 bg-white border-y border-r border-slate-100 rounded-r-[2rem] shadow-sm text-right">
+                      <button className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-blue-600 hover:text-white text-slate-400 transition-all flex items-center justify-center mx-auto">
+                        <FileText size={16}/>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {filteredAppts.length === 0 && (
+            <div className="py-24 text-center">
+              <div className="w-20 h-20 bg-slate-50 rounded-[2rem] flex items-center justify-center mx-auto mb-6 text-slate-200">
+                <CreditCard size={32}/>
+              </div>
+              <p className="text-slate-400 font-bold italic">Aucune donnée correspondant aux critères.</p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const PatientsView = () => {
     const filtered = clients.filter(c => 
@@ -641,7 +929,22 @@ export default function TherapistDashboard() {
                     <span className="text-[11px] font-bold">{c.phone}</span>
                   </div>
                 </div>
-                <button className="w-full py-4 rounded-[1.5rem] border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 group-hover:border-blue-100 group-hover:bg-blue-50/50 transition-all flex items-center justify-center gap-2">
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="bg-slate-50 p-4 rounded-2xl flex flex-col items-center">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">RDV</span>
+                    <span className="text-sm font-bold text-slate-900">
+                      {appointments.filter(a => a.title === `${c.firstName} ${c.lastName}`).length}
+                    </span>
+                  </div>
+                  <div className="bg-slate-50 p-4 rounded-2xl flex flex-col items-center">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Dernier</span>
+                    <span className="text-xs font-bold text-slate-600">Aucun</span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => openClientFolder(c)}
+                  className="w-full py-4 rounded-[1.5rem] border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 group-hover:border-blue-100 group-hover:bg-blue-50/50 transition-all flex items-center justify-center gap-2"
+                >
                   Voir Dossier <ChevronRight size={12}/>
                 </button>
               </div>
@@ -702,10 +1005,11 @@ export default function TherapistDashboard() {
           <Leaf size={22} className="text-white"/>
         </div>
         {([
-          { id: 'dashboard', Icon: LayoutDashboard, label: 'Stats' },
-          { id: 'scheduler', Icon: CalendarRange, label: 'Agenda' },
-          { id: 'clients',   Icon: Users,          label: 'Patients' },
-          { id: 'settings',  Icon: Settings,       label: 'Réglages' },
+          { id: 'dashboard',  Icon: LayoutDashboard, label: 'Stats' },
+          { id: 'scheduler',  Icon: CalendarRange,   label: 'Agenda' },
+          { id: 'clients',    Icon: Users,           label: 'Patients' },
+          { id: 'accounting', Icon: CreditCard,      label: 'Compta' },
+          { id: 'settings',   Icon: Settings,        label: 'Réglages' },
         ] as const).map(n => (
           <button key={n.id} onClick={() => setTab(n.id)} className={`nav-pill ${tab === n.id ? 'active' : ''}`}>
             <n.Icon size={20} strokeWidth={tab === n.id ? 2.5 : 1.8} style={{ color: tab === n.id ? '#2D5BFF' : '#94a3b8' }}/>
@@ -763,7 +1067,7 @@ export default function TherapistDashboard() {
         <div className="flex-1 overflow-hidden flex flex-col">
           {tab === 'scheduler' ? (
             view === 'month' ? <MonthView/> : view === 'week' ? <WeekView/> : <DayView/>
-          ) : tab === 'clients' ? <PatientsView/> : <Dashboard/>}
+          ) : tab === 'clients' ? <PatientsView/> : tab === 'accounting' ? <AccountingView/> : <Dashboard/>}
         </div>
       </main>
 
@@ -955,6 +1259,28 @@ export default function TherapistDashboard() {
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-1">Heure</p>
                       <p className="text-sm font-bold text-slate-900">{selectedAppt.time}</p>
                     </div>
+                    <div className="col-span-2 p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center transition-all">
+                      <div>
+                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-1">État du Paiement</p>
+                        <p className={`text-sm font-black uppercase tracking-[0.05em] flex items-center gap-2 ${selectedAppt.paid ? 'text-green-600' : 'text-amber-500'}`}>
+                          <div className={`w-2 h-2 rounded-full ${selectedAppt.paid ? 'bg-green-500' : 'bg-amber-400'}`}/>
+                          {selectedAppt.paid ? 'Réglé' : 'En attente'}
+                        </p>
+                      </div>
+                      <button 
+                        onClick={async () => {
+                          try {
+                            await updateDoc(doc(firestore, 'appointments', selectedAppt.id), { paid: !selectedAppt.paid });
+                            setSelectedAppt({ ...selectedAppt, paid: !selectedAppt.paid });
+                          } catch (e) { console.error(e); }
+                        }}
+                        className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                          selectedAppt.paid ? 'bg-slate-200 text-slate-600 hover:bg-slate-300' : 'bg-green-600 text-white shadow-lg shadow-green-100 hover:bg-green-700'
+                        }`}
+                      >
+                        {selectedAppt.paid ? 'Passer en Attente' : 'Marquer comme Réglé'}
+                      </button>
+                    </div>
                   </div>
                   
                   <div className="space-y-3 pt-2">
@@ -1081,7 +1407,131 @@ export default function TherapistDashboard() {
 
             <div className="flex gap-4">
               <button onClick={() => setClModal(false)} className="flex-1 py-4 text-xs font-black text-slate-400 uppercase tracking-widest hover:text-slate-600 transition">Annuler</button>
-              <button onClick={saveClient} className="flex-1 py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm shadow-xl shadow-slate-200 hover:bg-slate-800 transition active:scale-95">Créer le Dossier</button>
+              <button 
+                onClick={saveClient} 
+                disabled={clScaling}
+                className="flex-1 py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm shadow-xl shadow-slate-200 hover:bg-slate-800 transition active:scale-95 disabled:opacity-50"
+              >
+                {clScaling ? 'Création...' : 'Créer le Dossier'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* ══ CLIENT FOLDER MODAL ══════════════════════════════════════════════ */}
+      {selectedClient && (
+        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm" onClick={() => setSelectedClient(null)}>
+          <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+            {/* Header */}
+            <div className="bg-slate-900 p-8 text-white relative">
+               <button onClick={() => setSelectedClient(null)} className="absolute top-8 right-8 text-white/40 hover:text-white transition"><X size={24}/></button>
+               <div className="flex items-center gap-6">
+                 <div className="w-20 h-20 rounded-3xl bg-blue-600 flex items-center justify-center text-3xl font-black">
+                   {(selectedClient.firstName?.[0] || '') + (selectedClient.lastName?.[0] || '')}
+                 </div>
+                 <div>
+                   <h2 className="text-3xl font-black tracking-tight">{selectedClient.firstName} {selectedClient.lastName}</h2>
+                   <p className="text-xs font-bold text-blue-400 uppercase tracking-widest mt-1">Dossier Patient #{selectedClient.id?.slice(0, 8)}</p>
+                 </div>
+               </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
+               {/* Info Column */}
+               <div className="space-y-8">
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-lg font-black text-slate-800">Informations</h3>
+                      <button onClick={() => setIsEditingClient(!isEditingClient)} className="text-xs font-black text-blue-600 uppercase tracking-widest hover:underline">
+                        {isEditingClient ? 'Annuler' : 'Modifier'}
+                      </button>
+                    </div>
+                    
+                    {!isEditingClient ? (
+                      <div className="space-y-4">
+                        {[
+                          { label: 'Email', val: selectedClient.email, icon: <Mail size={14}/> },
+                          { label: 'Téléphone', val: selectedClient.phone, icon: <Activity size={14}/> },
+                          { label: 'Adresse', val: selectedClient.address, icon: <Target size={14}/> },
+                          { label: 'Assurance', val: selectedClient.insurance, icon: <CheckCircle2 size={14}/> },
+                        ].map((it, i) => (
+                          <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                             <div className="flex items-center gap-2 text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                               {it.icon} {it.label}
+                             </div>
+                             <p className="text-sm font-bold text-slate-700">{it.val || 'Non renseigné'}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <input value={clEditForm.firstName} onChange={e => setClEditForm({...clEditForm, firstName: e.target.value})} className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm" placeholder="Prénom"/>
+                        <input value={clEditForm.lastName} onChange={e => setClEditForm({...clEditForm, lastName: e.target.value})} className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm" placeholder="Nom"/>
+                        <input value={clEditForm.email} onChange={e => setClEditForm({...clEditForm, email: e.target.value})} className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm" placeholder="Email"/>
+                        <input value={clEditForm.phone} onChange={e => setClEditForm({...clEditForm, phone: e.target.value})} className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm" placeholder="Téléphone"/>
+                        <input value={clEditForm.address} onChange={e => setClEditForm({...clEditForm, address: e.target.value})} className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm" placeholder="Adresse"/>
+                        <input value={clEditForm.insurance} onChange={e => setClEditForm({...clEditForm, insurance: e.target.value})} className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm" placeholder="Assurance"/>
+                        <button onClick={saveClientEdit} disabled={clScaling} className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-blue-100 hover:bg-blue-700 transition">
+                          {clScaling ? 'Enregistrement...' : 'Enregistrer'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="pt-6 border-t border-slate-100 space-y-3">
+                    <button onClick={() => alert('Confirmation envoyée à ' + selectedClient.email)} className="w-full py-4 bg-blue-50 text-blue-600 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-blue-100 transition flex items-center justify-center gap-3">
+                      <Mail size={14}/> Renvoyer Confirmation
+                    </button>
+                    <button onClick={() => alert('Facture générée')} className="w-full py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-100 transition flex items-center justify-center gap-3">
+                      <FileText size={14}/> Accès Factures
+                    </button>
+                  </div>
+               </div>
+
+               {/* Appointments Columns */}
+               <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-10">
+                 <div>
+                    <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-3"><Clock size={20} className="text-blue-500"/> Futur</h3>
+                    <div className="space-y-4">
+                      {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) >= startOfDay(new Date())).length > 0 ? (
+                        appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) >= startOfDay(new Date())).map(a => (
+                          <div key={a.id} className="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <p className="font-black text-sm text-slate-800">{a.time}</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{a.date}</p>
+                              </div>
+                              <span className="px-3 py-1 bg-green-50 text-green-600 text-[8px] font-black uppercase tracking-widest rounded-full">Confirmé</span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-xs text-slate-300 italic">Aucun rendez-vous futur</p>
+                      )}
+                    </div>
+                 </div>
+
+                 <div>
+                    <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-3"><History size={20} className="text-slate-400"/> Historique</h3>
+                    <div className="space-y-4">
+                      {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) < startOfDay(new Date())).length > 0 ? (
+                        appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) < startOfDay(new Date())).map(a => (
+                          <div key={a.id} className="p-4 bg-slate-50 border border-slate-100 rounded-2xl">
+                             <div className="flex justify-between items-start">
+                              <div>
+                                <p className="font-black text-sm text-slate-700">{a.time}</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{a.date}</p>
+                              </div>
+                              <FileText size={14} className="text-slate-300 cursor-pointer hover:text-blue-500 transition" onClick={() => alert('Facturing details...')}/>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-xs text-slate-300 italic">Aucun historique</p>
+                      )}
+                    </div>
+                 </div>
+               </div>
             </div>
           </div>
         </div>
