@@ -11,7 +11,7 @@ import {
   eachDayOfInterval, isSameDay, isSameMonth, startOfDay, addDays, getDay,
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { useFirestore, useAuth } from '@/firebase';
+import { useFirestore, useAuth, useUser } from '@/firebase';
 import {
   collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc, setDoc, serverTimestamp
 } from 'firebase/firestore';
@@ -48,6 +48,7 @@ const CircProgress = ({ pct, cls }: { pct: number; cls: string }) => {
 export default function TherapistDashboard() {
   const firestore = useFirestore();
   const auth      = useAuth();
+  const { user, isUserLoading } = useUser();
 
   // Navigation
   const [tab,  setTab]  = useState<'dashboard' | 'scheduler' | 'clients' | 'settings'>('scheduler');
@@ -657,7 +658,18 @@ export default function TherapistDashboard() {
     );
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // Hydration guard & Loading state
+  if (!isClient || isUserLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#F9F7F2]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin" />
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Chargement...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#F9F7F2', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{`
