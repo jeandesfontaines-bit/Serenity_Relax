@@ -13,8 +13,14 @@ service cloud.firestore {
 
     // Clients rules
     match /clients/{clientId} {
-      allow create, update: if request.auth != null && request.auth.uid == clientId;
-      allow read: if isTherapist() || (request.auth != null && request.auth.uid == clientId);
+      allow read, write: if isTherapist();
+      allow create, update, read: if request.auth != null && request.auth.uid == clientId;
+    }
+
+    // Configuration rules (for slots and other settings)
+    match /config/{configId} {
+      allow read: if true;
+      allow write: if isTherapist();
     }
 
     // Availability rules (for the therapist dashboard)
