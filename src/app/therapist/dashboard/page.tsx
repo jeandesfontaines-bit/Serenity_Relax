@@ -680,39 +680,40 @@ export default function TherapistDashboard() {
                 </div>
               </div>
 
-              {pendingPayments > 0 && (
-                <div className="bg-slate-900 text-white rounded-[3rem] p-10 shadow-2xl shadow-slate-200 relative overflow-hidden group border border-white/5">
-                  <div className="absolute -right-6 -top-6 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"/>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-6 flex items-center gap-2">
-                    <CreditCard size={12}/> Alerte Trésorerie
-                  </h4>
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-4xl font-black text-white">{pendingPayments}</span>
-                    <span className="text-sm font-bold opacity-40 uppercase tracking-widest">Impayés</span>
+              <div className="grid grid-cols-2 gap-8">
+                {pendingPayments > 0 && (
+                  <div className="bg-slate-900 text-white rounded-[3rem] p-8 shadow-2xl shadow-slate-200 relative overflow-hidden group border border-white/5 flex flex-col justify-between">
+                    <div className="absolute -right-6 -top-6 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"/>
+                    <div>
+                      <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
+                        <CreditCard size={12}/> Alerte
+                      </h4>
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-black text-white">{pendingPayments}</span>
+                        <span className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Impayés</span>
+                      </div>
+                    </div>
+                    <button onClick={() => setTab('accounting')} className="w-full py-3 bg-white text-slate-900 rounded-[1.5rem] text-[9px] font-black uppercase tracking-widest shadow-xl hover:bg-blue-50 transition active:scale-95">Régler</button>
                   </div>
-                  <p className="text-[11px] font-semibold opacity-50 leading-relaxed">Plusieurs dossiers sont en attente de règlement final.</p>
-                  <button onClick={() => setTab('accounting')} className="mt-10 w-full py-5 bg-white text-slate-900 rounded-[2rem] text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-blue-50 transition active:scale-95">Régulariser maintenant</button>
-                </div>
-              )}
+                )}
 
-              <div className="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm relative overflow-hidden">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-10">Taux de Remplissage</h4>
-                <div className="flex items-center justify-center mb-6">
-                  <div className="relative flex items-center justify-center">
-                    <svg className="w-32 h-32 transform -rotate-90">
-                      <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-slate-50"/>
-                      <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="12" fill="transparent" 
-                        strokeDasharray={364} 
-                        strokeDashoffset={364 - (364 * saturation) / 100}
+                <div className="bg-white rounded-[3rem] p-8 border border-slate-100 shadow-sm relative overflow-hidden flex flex-col items-center justify-center">
+                  <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-6 w-full text-left">Occupation</h4>
+                  <div className="relative flex items-center justify-center mb-4">
+                    <svg className="w-24 h-24 transform -rotate-90">
+                      <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-slate-50"/>
+                      <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" 
+                        strokeDasharray={264} 
+                        strokeDashoffset={264 - (264 * saturation) / 100}
                         className={`${saturation > 80 ? 'text-red-500' : 'text-blue-600'} transition-all duration-1000 ease-out`}
                       />
                     </svg>
                     <div className="absolute flex flex-col items-center">
-                      <span className="text-2xl font-black text-slate-900">{saturation}%</span>
+                      <span className="text-lg font-black text-slate-900">{saturation}%</span>
                     </div>
                   </div>
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Capacité</p>
                 </div>
-                <p className="text-[10px] font-bold text-center text-slate-400 uppercase tracking-widest">Capacité de la journée</p>
               </div>
 
             </div>
@@ -1134,19 +1135,25 @@ export default function TherapistDashboard() {
 
         {/* Upcoming */}
         <div className="flex-1">
-          <h3 className="font-extrabold text-[10px] uppercase tracking-widest mb-4 flex items-center gap-2 opacity-60">
-            <Clock size={12}/> Prochains RDV
+          <h3 className="font-extrabold text-[10px] uppercase tracking-widest mb-4 flex items-center justify-between opacity-60">
+            <span className="flex items-center gap-2"><Clock size={12}/> Prochains RDV</span>
+            <span className="text-[8px]">{upcoming.length} Sessions</span>
           </h3>
-          <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
             {upcoming.length > 0 ? upcoming.map(e => (
-              <div key={e.id} className="bg-white/10 p-3 rounded-2xl flex items-center justify-between border border-white/5">
-                <div className="min-w-0">
-                  <div className="text-[10px] font-black truncate">{e.title}</div>
-                  <div className="text-[8px] opacity-60 font-bold uppercase tracking-wider mt-0.5">{e.date} • {e.time}</div>
+              <div key={e.id} className="bg-white/10 p-4 rounded-3xl border border-white/5 flex flex-col justify-between aspect-square hover:bg-white/20 transition-all cursor-pointer group">
+                <div className="flex justify-between items-start">
+                   <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-blue-600 transition-colors">
+                      <User size={12}/>
+                   </div>
+                   <ChevronRight size={10} className="opacity-20 group-hover:opacity-100 transition-all"/>
                 </div>
-                <ChevronRight size={12} className="opacity-20 shrink-0 ml-2"/>
+                <div className="min-w-0">
+                  <div className="text-[10px] font-black truncate leading-tight uppercase tracking-tight">{e.title.split(' ')[0]}</div>
+                  <div className="text-[8px] opacity-60 font-bold uppercase tracking-wider mt-1">{e.time}</div>
+                </div>
               </div>
-            )) : <div className="text-[10px] text-center py-4 opacity-40 italic font-bold">Aucun rendez-vous à venir</div>}
+            )) : <div className="col-span-2 text-[10px] text-center py-4 opacity-40 italic font-bold">Aucun rendez-vous</div>}
           </div>
         </div>
 
@@ -1176,19 +1183,19 @@ export default function TherapistDashboard() {
               <button onClick={() => setEvModal(null)} className="bg-slate-50 p-3 rounded-2xl text-slate-300 hover:text-slate-600 transition tracking-tighter"><X size={20}/></button>
             </div>
             {evStep === 'choice' ? (
-              <div className="space-y-4">
-                <button onClick={() => setEvStep('book')} className="w-full flex items-center gap-5 p-5 border border-blue-50 rounded-2xl bg-blue-50/50 hover:bg-blue-100/50 transition text-left group">
-                  <div className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-100 group-hover:scale-110 transition shrink-0"><Users size={20}/></div>
-                  <div>
-                    <div className="font-extrabold text-sm text-blue-900">Réserver Client</div>
-                    <div className="text-[10px] text-blue-600 font-medium opacity-70">Nouveau rendez-vous</div>
+              <div className="grid grid-cols-2 gap-4">
+                <button onClick={() => setEvStep('book')} className="flex flex-col items-center justify-center gap-4 p-8 border border-blue-50 rounded-[2.5rem] bg-blue-50/50 hover:bg-blue-600 hover:text-white transition-all group aspect-square">
+                  <div className="w-14 h-14 bg-white text-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition shrink-0"><Users size={24}/></div>
+                  <div className="text-center">
+                    <div className="font-black text-sm uppercase tracking-tight">Réserver</div>
+                    <div className="text-[9px] font-bold opacity-60 mt-1 uppercase tracking-widest">Client</div>
                   </div>
                 </button>
-                <button onClick={saveBlock} className="w-full flex items-center gap-5 p-5 border border-slate-100 rounded-2xl bg-slate-50/50 hover:bg-slate-100 transition text-left group">
-                  <div className="w-12 h-12 bg-slate-800 text-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition shrink-0"><Lock size={16}/></div>
-                  <div>
-                    <div className="font-extrabold text-sm text-slate-900">Bloquer Créneau</div>
-                    <div className="text-[10px] text-slate-500 font-medium opacity-70">Rendre indisponible</div>
+                <button onClick={saveBlock} className="flex flex-col items-center justify-center gap-4 p-8 border border-slate-100 rounded-[2.5rem] bg-slate-50/50 hover:bg-slate-900 hover:text-white transition-all group aspect-square">
+                  <div className="w-14 h-14 bg-white text-slate-900 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition shrink-0"><Lock size={20}/></div>
+                  <div className="text-center">
+                    <div className="font-black text-sm uppercase tracking-tight">Bloquer</div>
+                    <div className="text-[9px] font-bold opacity-60 mt-1 uppercase tracking-widest">Indispo</div>
                   </div>
                 </button>
               </div>
@@ -1448,18 +1455,18 @@ export default function TherapistDashboard() {
                     </div>
                     
                     {!isEditingClient ? (
-                      <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
                         {[
                           { label: 'Email', val: selectedClient.email, icon: <Mail size={14}/> },
                           { label: 'Téléphone', val: selectedClient.phone, icon: <Activity size={14}/> },
                           { label: 'Adresse', val: selectedClient.address, icon: <Target size={14}/> },
                           { label: 'Assurance', val: selectedClient.insurance, icon: <CheckCircle2 size={14}/> },
                         ].map((it, i) => (
-                          <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                             <div className="flex items-center gap-2 text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                          <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col justify-center min-h-[80px]">
+                             <div className="flex items-center gap-2 text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5">
                                {it.icon} {it.label}
                              </div>
-                             <p className="text-sm font-bold text-slate-700">{it.val || 'Non renseigné'}</p>
+                             <p className="text-[11px] font-bold text-slate-700 truncate" title={it.val}>{it.val || '—'}</p>
                           </div>
                         ))}
                       </div>
@@ -1479,12 +1486,14 @@ export default function TherapistDashboard() {
                   </div>
                   
                   <div className="pt-6 border-t border-slate-100 space-y-3">
-                    <button onClick={() => alert('Confirmation envoyée à ' + selectedClient.email)} className="w-full py-4 bg-blue-50 text-blue-600 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-blue-100 transition flex items-center justify-center gap-3">
-                      <Mail size={14}/> Renvoyer Confirmation
+                  <div className="pt-6 border-t border-slate-100 grid grid-cols-2 gap-4">
+                    <button onClick={() => alert('Confirmation envoyée à ' + selectedClient.email)} className="py-4 bg-blue-50 text-blue-600 rounded-2xl font-bold text-[9px] uppercase tracking-widest hover:bg-blue-100 transition flex items-center justify-center gap-2 px-2">
+                      <Mail size={12}/> Confirm.
                     </button>
-                    <button onClick={() => alert('Facture générée')} className="w-full py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-100 transition flex items-center justify-center gap-3">
-                      <FileText size={14}/> Accès Factures
+                    <button onClick={() => alert('Facture générée')} className="py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-[9px] uppercase tracking-widest hover:bg-slate-100 transition flex items-center justify-center gap-2 px-2">
+                      <FileText size={12}/> Factures
                     </button>
+                  </div>
                   </div>
                </div>
 
