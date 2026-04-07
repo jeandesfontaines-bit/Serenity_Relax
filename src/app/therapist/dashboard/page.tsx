@@ -849,9 +849,16 @@ export default function TherapistDashboard() {
 
       {/* ══ EVENT MODAL ══════════════════════════════════════════════════════ */}
       {evModal && (
-        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-8">
-            <h2 className="text-2xl font-black mb-8 text-slate-900">Gérer le créneau</h2>
+        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm" onClick={() => setEvModal(null)}>
+          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-10 relative overflow-hidden" onClick={e => e.stopPropagation()}>
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-blue-600"/>
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h2 className="text-2xl font-black text-slate-900">Gérer le créneau</h2>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Options de disponibilité</p>
+              </div>
+              <button onClick={() => setEvModal(null)} className="bg-slate-50 p-3 rounded-2xl text-slate-300 hover:text-slate-600 transition tracking-tighter"><X size={20}/></button>
+            </div>
             {evStep === 'choice' ? (
               <div className="space-y-4">
                 <button onClick={() => setEvStep('book')} className="w-full flex items-center gap-5 p-5 border border-blue-50 rounded-2xl bg-blue-50/50 hover:bg-blue-100/50 transition text-left group">
@@ -868,9 +875,6 @@ export default function TherapistDashboard() {
                     <div className="text-[10px] text-slate-500 font-medium opacity-70">Rendre indisponible</div>
                   </div>
                 </button>
-                <div className="text-center mt-6">
-                  <button onClick={() => setEvModal(null)} className="text-[10px] font-bold text-slate-300 hover:text-slate-500 uppercase tracking-widest">Fermer</button>
-                </div>
               </div>
             ) : (
               <div className="space-y-6">
@@ -919,8 +923,8 @@ export default function TherapistDashboard() {
 
       {/* ══ APPOINTMENT DETAIL/EDIT MODAL ═══════════════════════════════════ */}
       {selectedAppt && (
-        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden">
+        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm" onClick={() => setSelectedAppt(null)}>
+          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden" onClick={e => e.stopPropagation()}>
             <div className="h-32 bg-blue-600 p-8 flex flex-col justify-end relative">
                <button onClick={() => { setSelectedAppt(null); setIsEditing(false); }} className="absolute top-6 right-6 text-white/50 hover:text-white transition"><X size={20}/></button>
                <h2 className="text-white text-[10px] font-black uppercase tracking-[0.2em] opacity-60 mb-1">Détails du RDV</h2>
@@ -975,10 +979,16 @@ export default function TherapistDashboard() {
 
       {/* ══ CONFIG MODAL ═════════════════════════════════════════════════════ */}
       {cfgOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-8">
-            <h2 className="text-2xl font-black mb-2 text-slate-900">Horaires Types</h2>
-            <p className="text-xs text-slate-500 mb-8 font-medium">Configurez les créneaux par défaut pour chaque journée.</p>
+        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm" onClick={() => setCfgOpen(false)}>
+          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-10 relative overflow-hidden" onClick={e => e.stopPropagation()}>
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-slate-900"/>
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h2 className="text-2xl font-black text-slate-900">Horaires Types</h2>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Configuration des créneaux</p>
+              </div>
+              <button onClick={() => setCfgOpen(false)} className="bg-slate-50 p-3 rounded-2xl text-slate-300 hover:text-slate-600 transition"><X size={20}/></button>
+            </div>
             <div className="flex border-b border-slate-100 mb-6 gap-1 overflow-x-auto">
               {DAYS_S.map((d, i) => (
                 <button key={i} onClick={() => setCfgDay(i)}
@@ -1016,8 +1026,8 @@ export default function TherapistDashboard() {
       )}
       {/* ══ ADD CLIENT MODAL ═════════════════════════════════════════════════ */}
       {clModal && (
-        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-[60] p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-lg p-10 relative overflow-hidden">
+        <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-[60] p-4 backdrop-blur-sm" onClick={() => setClModal(false)}>
+          <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-lg p-10 relative overflow-hidden" onClick={e => e.stopPropagation()}>
             <div className="absolute top-0 left-0 right-0 h-2 bg-blue-600"/>
             <div className="flex justify-between items-start mb-8">
               <div>
