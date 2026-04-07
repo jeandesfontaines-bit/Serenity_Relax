@@ -4,7 +4,7 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'SERENITY RELAX | Excellence Thérapeutique by João',
+  title: 'Serenity Relax Therapy',
   description: 'Un sanctuaire sensoriel confidentiel à Genève Cointrin pour la restauration physique et mentale.',
 };
 
