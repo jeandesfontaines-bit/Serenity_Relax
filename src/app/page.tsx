@@ -226,7 +226,7 @@ export default function HomePage() {
       <footer className="bg-neutral-900 text-white pt-16 pb-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="text-center mb-12">
-            <h2 className="text-[1.1rem] font-sans font-bold tracking-[0.4em] uppercase mb-4 text-white md:text-[1.2rem] lg:text-[1.25rem]">SERENITY RELAX</h2>
+            <h2 className="text-[1.1rem] font-sans font-bold tracking-[0.4em] mb-4 text-white md:text-[1.2rem] lg:text-[1.25rem]">Serenity Relax Therapy</h2>
             <p className="text-[0.7rem] font-sans font-medium italic tracking-[0.4em] text-white/50 uppercase md:text-[0.75rem] lg:text-[0.8rem]">EXCELLENCE THÉRAPEUTIQUE</p>
           </div>
 

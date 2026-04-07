@@ -83,7 +83,7 @@ export default function LoginPage() {
       >
         <div className="text-center mb-12">
           <Link href="/" className="inline-block mb-8">
-            <h1 className="text-3xl font-serif tracking-widest uppercase">Serenity Relax</h1>
+            <h1 className="text-3xl font-serif tracking-widest">Serenity Relax Therapy</h1>
             <div className="h-[1px] w-full bg-neutral-900 mt-1 scale-x-50" />
           </Link>
           <h2 className="text-2xl font-serif italic text-neutral-800">Espace Privé</h2>

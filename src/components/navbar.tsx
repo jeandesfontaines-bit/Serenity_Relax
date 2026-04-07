@@ -54,7 +54,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
       <nav className="max-w-[1200px] xl:max-w-6xl mx-auto bg-white/80 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.05)] rounded-full px-6 py-2.5 md:px-10 md:py-3.5">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-baseline gap-2 md:gap-3 cursor-pointer group">
-            <span className="whitespace-nowrap font-sans font-black text-[0.75rem] tracking-[0.2em] text-neutral-900 md:text-[0.85rem] lg:text-[1rem]">SERENITY RELAX THERAPY</span>
+            <span className="whitespace-nowrap font-sans font-black text-[0.75rem] tracking-[0.2em] text-neutral-900 md:text-[0.85rem] lg:text-[1rem]">Serenity Relax Therapy</span>
             <span className="whitespace-nowrap font-cursive text-[1.2rem] text-neutral-600 md:text-[1.4rem] lg:text-[1.6rem]">by João</span>
           </Link>
           

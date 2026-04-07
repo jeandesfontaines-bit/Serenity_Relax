@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+// Import font for premium look
+const FONT_IMPORT = "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap";
 import { Service } from '@/lib/types';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -61,19 +63,16 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
   const [availableSlots, setAvailableSlots] = useState<any[]>([]);
   const [appointments, setAppointments] = useState<any[]>([]);
 
-  const configSlots: Record<string, string[]> = {
-    "LUN": ["11:00", "13:30", "15:00", "16:30", "18:00"],
-    "MAR": ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
-    "MER": ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
-    "JEU": ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
-    "VEN": ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
-    "SAM": ["09:00", "10:30", "12:00"]
-  };
+  const [configSlots, setConfigSlots] = useState<Record<number, string[]>>({
+    0: [], 1: ["11:00", "13:30", "15:00", "16:30", "18:00"], 
+    2: ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
+    3: ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
+    4: ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
+    5: ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
+    6: ["09:00", "10:30", "12:00"]
+  });
 
-  const getAdjDay = (date: Date) => {
-    const days = ["DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"];
-    return days[date.getDay()];
-  };
+  const getAdjDay = (date: Date) => date.getDay();
 
   useEffect(() => {
     if (!firestore) return;
@@ -90,9 +89,15 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
       setAppointments(appts);
     });
 
+    // Listen to global config (slots)
+    const unsubConfig = onSnapshot(doc(firestore, 'config', 'slots'), (snap) => {
+      if (snap.exists()) setConfigSlots(snap.data() as any);
+    });
+
     return () => {
       unsubAvail();
       unsubAppts();
+      unsubConfig();
     };
   }, [firestore]);
 
@@ -252,6 +257,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
   return (
     <div className="font-sans min-h-full bg-white flex flex-col lg:flex-row relative">
+      <style>{`
+        @import url('${FONT_IMPORT}');
+        .font-sans { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+      `}</style>
       {/* LEFT SIDE: Header & Summary */}
       <div className="w-full lg:w-[35%] lg:sticky lg:top-0 h-fit lg:min-h-[80vh] bg-[#FAF9F6] p-8 md:p-12 lg:p-16 flex flex-col border-b lg:border-b-0 lg:border-r border-neutral-100/60 z-10">
         <h1 className="text-[2.4rem] md:text-[3rem] font-serif font-medium text-neutral-900 tracking-tighter leading-none mb-4">
@@ -381,7 +390,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                           const isBlocked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'blocked');
                           const isBooked = appointments.some(a => {
                              if (!a.startTime) return false;
-                             return a.startTime.startsWith(dateStr) && a.startTime.endsWith(t);
+                             return a.startTime.includes(`${dateStr}T${t}`);
                           });
                           return !isBlocked && !isBooked;
                         });
@@ -430,7 +439,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                           
                           const freeSlots = baseConfigSlots.filter(t => {
                             const isBlocked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'blocked');
-                            const isBooked = appointments.some(a => a.startTime && a.startTime.startsWith(dateStr) && a.startTime.endsWith(t));
+                            const isBooked = appointments.some(a => a.startTime && a.startTime.includes(`${dateStr}T${t}`));
                             return !isBlocked && !isBooked;
                           });
 
