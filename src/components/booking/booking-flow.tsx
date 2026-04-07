@@ -158,6 +158,8 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
       if (!finalUserId) throw new Error("Impossible d'établir une session sécurisée. Veuillez réessayer.");
 
       const appointmentId = `SR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const magicToken = Math.random().toString(36).substring(2, 10).toUpperCase() + Math.random().toString(36).substring(2, 10).toUpperCase();
+      
       const startTimeStr = `${format(selectedDate!, 'yyyy-MM-dd')}T${selectedTime}:00`;
       const durationMatch = selectedService!.duration.match(/\d+/);
       const duration = durationMatch ? parseInt(durationMatch[0]) : 60;
@@ -170,10 +172,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         serviceName: selectedService!.name,
         startTime: startTimeStr,
         endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
-        status: 'pending',
+        status: 'confirmed',
         clientMessage: formData.message,
         isLoyaltyFreeSession: false,
-        isConfirmed: false,
+        isConfirmed: true,
         firstName: formData.firstName,
         lastName: formData.lastName,
         clientNameSnapshot: `${formData.firstName} ${formData.lastName}`.trim(),
@@ -187,6 +189,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone,
+        magicToken: magicToken,
         updatedAt: serverTimestamp()
       };
 
@@ -205,7 +208,9 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
           clientPhone: formData.phone,
           serviceName: selectedService!.name,
           startTime: appointmentData.startTime,
-          duration: duration
+          duration: duration,
+          magicToken: magicToken,
+          clientId: finalUserId
         })
       }).catch(err => console.error("Erreur gérée silencieusement pour l'email:", err));
 

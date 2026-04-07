@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   LayoutDashboard, CalendarRange, Users, Settings, Leaf, Activity, Target,
   Search, Bell, ChevronLeft, ChevronRight, Lock, Unlock, CheckCircle2,
-  X, Trash2, Clock, Plus, Cog, Power, Mail, FileText, History, User, CreditCard, Download
+  X, Trash2, Clock, Plus, Cog, Power, Mail, FileText, History, User, CreditCard, Download, MessageCircle, MessageSquare
 } from 'lucide-react';
 import {
   format, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
@@ -1141,17 +1141,26 @@ export default function TherapistDashboard() {
           </h3>
           <div className="grid grid-cols-2 gap-3">
             {upcoming.length > 0 ? upcoming.map(e => (
-              <div key={e.id} className="bg-white/10 p-4 rounded-3xl border border-white/5 flex flex-col justify-between aspect-square hover:bg-white/20 transition-all cursor-pointer group">
-                <div className="flex justify-between items-start">
+              <div key={e.id} className="bg-white/10 p-4 rounded-3xl border border-white/5 flex flex-col justify-between aspect-square hover:bg-white/20 transition-all cursor-default group relative overflow-hidden">
+                <div className="flex justify-between items-start z-10">
                    <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-blue-600 transition-colors">
                       <User size={12}/>
                    </div>
-                   <ChevronRight size={10} className="opacity-20 group-hover:opacity-100 transition-all"/>
+                   <a 
+                    href={`https://wa.me/${(e.phone || '').replace(/[^0-9]/g, '')}?text=Bonjour%20${encodeURIComponent(e.clientNameSnapshot || e.title)},%20je%20vous%20contacte%20suite%20à%20votre%20réservation%20Serenity%20Relax.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center hover:scale-110 transition shadow-lg shadow-emerald-500/20 z-20"
+                    title="Contacter sur WhatsApp"
+                   >
+                    <MessageCircle size={14}/>
+                   </a>
                 </div>
-                <div className="min-w-0">
-                  <div className="text-[10px] font-black truncate leading-tight uppercase tracking-tight">{e.title.split(' ')[0]}</div>
-                  <div className="text-[8px] opacity-60 font-bold uppercase tracking-wider mt-1">{e.time}</div>
+                <div className="min-w-0 z-10">
+                  <div className="text-[10px] font-black truncate leading-tight uppercase tracking-tight text-white mb-0.5">{e.clientNameSnapshot || e.title}</div>
+                  <div className="text-[8px] opacity-60 font-bold uppercase tracking-wider text-blue-300">{format(new Date(e.startTime), 'HH:mm')}</div>
                 </div>
+                <div className="absolute -right-2 -bottom-2 w-16 h-16 bg-white/5 rounded-full blur-2xl group-hover:bg-blue-600/20 transition-colors"/>
               </div>
             )) : <div className="col-span-2 text-[10px] text-center py-4 opacity-40 italic font-bold">Aucun rendez-vous</div>}
           </div>

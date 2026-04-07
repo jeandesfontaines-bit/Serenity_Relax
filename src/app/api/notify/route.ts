@@ -10,7 +10,7 @@ const THERAPIST_EMAIL = 'jean.desfontaines@gmail.com';
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    const { appointmentId, clientName, clientEmail, clientPhone, serviceName, startTime, duration } = data;
+    const { appointmentId, clientName, clientEmail, clientPhone, serviceName, startTime, duration, magicToken, clientId } = data;
 
     if (!appointmentId || !clientEmail || !clientName) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -21,56 +21,70 @@ export async function POST(req: Request) {
     
     const waPhone = clientPhone ? clientPhone.replace(/[^0-9]/g, '') : '';
     const whatsappLink = waPhone ? `https://wa.me/${waPhone}?text=Bonjour%20${encodeURIComponent(clientName)},%20je%20vous%20contacte%20concernant%20votre%20soin%20du%20${dateStr}%20à%20${timeStr}.` : '';
+    
+    // Magic link for the client to access their account
+    const magicLink = `https://serenity-relax--serenity-relax-joao.us-central1.hosted.app/client/login?token=${magicToken}&email=${encodeURIComponent(clientEmail)}`;
 
     // If Resend is not configured, just log it (useful for development)
     if (!resend) {
       console.log('--- RESEND NOT CONFIGURED ---');
       console.log(`Would send Client Email to: ${clientEmail} for ${serviceName}`);
+      console.log(`Magic Link: ${magicLink}`);
       console.log(`Would send Admin Email to: ${THERAPIST_EMAIL} with WA Link: ${whatsappLink}`);
       return NextResponse.json({ success: true, warning: 'RESEND_API_KEY is not set. Emails logged to console instead.' });
     }
 
-    // 1. Send Email to the Client (Confirmation)
+    // 1. Send Email to the Client (Confirmation + Magic Link)
     const clientEmailPromise = resend.emails.send({
       from: 'Serenity Relax <booking@serenity-relax.com>', // MUST BE VERIFIED IN RESEND
       to: [clientEmail],
       subject: `Confirmation de votre soin : ${serviceName}`,
       html: `
-        <div style="font-family: sans-serif; color: #171717; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="font-family: sans-serif; color: #171717; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 12px;">
           <h1 style="font-family: serif; font-size: 24px;">Bonjour ${clientName},</h1>
-          <p>Nous vous confirmons votre réservation pour le soin : <strong>${serviceName}</strong>.</p>
-          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 12px; margin: 20px 0;">
-            <p style="margin: 0 0 10px 0;"><strong>Date :</strong> ${dateStr}</p>
-            <p style="margin: 0 0 10px 0;"><strong>Heure :</strong> ${timeStr}</p>
-            <p style="margin: 0;"><strong>Avenue de Mategnin 4, 1217 Meyrin</strong></p>
+          <p>Votre réservation pour <strong>${serviceName}</strong> est confirmée.</p>
+          
+          <div style="background-color: #f9f9f9; padding: 20px; border-radius: 12px; margin: 20px 0;">
+            <p style="margin: 0 0 10px 0;"><strong>📅 Date :</strong> ${dateStr}</p>
+            <p style="margin: 0 0 10px 0;"><strong>⏰ Heure :</strong> ${timeStr}</p>
+            <p style="margin: 0;"><strong>📍 Lieu :</strong> Avenue de Mategnin 4, 1217 Meyrin</p>
           </div>
-          <p>En cas d'empêchement, merci de nous avertir au minimum 24h à l'avance.</p>
-          <br/>
-          <p>Au plaisir de vous accueillir,</p>
-          <p><strong>Joao Manuel Castro Ramos - Serenity Relax</strong></p>
+
+          <div style="margin: 30px 0; text-align: center;">
+            <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Accédez à votre espace client pour voir vos réservations et vos factures :</p>
+            <a href="${magicLink}" style="display: inline-block; background-color: #000; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px;">
+              ACCÉDER À MON COMPTE
+            </a>
+          </div>
+
+          <p style="font-size: 13px; color: #888;">En cas d'empêchement, merci de nous avertir au minimum 24h à l'avance.</p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
+          <p style="font-size: 14px;"><strong>Joao Manuel Castro Ramos - Serenity Relax</strong></p>
         </div>
       `,
     });
 
     // 2. Send Notification Email to the Therapist (with WhatsApp Link)
     const adminEmailPromise = resend.emails.send({
-      from: 'Serenity Relax Bot <bot@serenity-relax.com>', // MUST BE VERIFIED IN RESEND
+      from: 'Serenity Relax CRM <bot@serenity-relax.com>', // MUST BE VERIFIED IN RESEND
       to: [THERAPIST_EMAIL],
-      subject: `Nouveau Rendez-vous : ${clientName} - ${dateStr}`,
+      subject: `NOUVEAU RITUEL : ${clientName}`,
       html: `
-        <div style="font-family: sans-serif; color: #171717;">
-          <h2 style="font-family: serif;">Nouvelle Réservation</h2>
-          <p><strong>Client:</strong> ${clientName}</p>
-          <p><strong>Email:</strong> ${clientEmail}</p>
-          <p><strong>Téléphone:</strong> ${clientPhone || 'Non renseigné'}</p>
-          <p><strong>Soin:</strong> ${serviceName}</p>
-          <p><strong>Date:</strong> ${dateStr} à ${timeStr}</p>
+        <div style="font-family: sans-serif; color: #171717; padding: 20px;">
+          <h2 style="font-family: serif;">Nouvelle Réservation Confirmée 🚀</h2>
+          <p><strong>Client :</strong> ${clientName}</p>
+          <p><strong>Email :</strong> ${clientEmail}</p>
+          <p><strong>Tel :</strong> ${clientPhone || 'Non renseigné'}</p>
+          <p><strong>Soin :</strong> ${serviceName}</p>
+          <p><strong>RDV :</strong> ${dateStr} à ${timeStr}</p>
           <br/>
-          ${whatsappLink ? `
-            <a href="${whatsappLink}" style="display: inline-block; background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">
-              Contacter sur WhatsApp
-            </a>
-          ` : '<p><i>Pas de téléphone fourni pour un contact WhatsApp.</i></p>'}
+          <div style="margin-top: 20px;">
+            ${whatsappLink ? `
+              <a href="${whatsappLink}" style="display: inline-block; background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; margin-right: 10px;">
+                CONTACTER SUR WHATSAPP
+              </a>
+            ` : ''}
+          </div>
         </div>
       `,
     });
