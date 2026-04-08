@@ -39,5 +39,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isTherapist();
     }
+
+    // Invoices rules
+    match /invoices/{invoiceId} {
+      allow read, write: if isTherapist();
+    }
   }
 }

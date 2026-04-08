@@ -26,7 +26,10 @@ const DAYS_F = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche
 // iso weekday: Mon=0 … Sun=6
 const isoDay = (d: Date) => { const v = d.getDay(); return v === 0 ? 6 : v - 1; };
 const fmt    = (d: Date) => format(d, 'yyyy-MM-dd');
-const fmtFR  = (d: Date) => format(d, 'd MMMM yyyy', { locale: fr });
+const fmtFR  = (d: Date) => {
+  if (isNaN(d.getTime())) return 'Date invalide';
+  return format(d, 'd MMMM yyyy', { locale: fr });
+};
 const wkStart = (d: Date) => { const c = new Date(d); c.setDate(c.getDate() - isoDay(c)); return c; };
 
 // ─── Circular progress ────────────────────────────────────────────────────────
@@ -79,6 +82,7 @@ export default function TherapistDashboard() {
   const [evName,  setEvName]  = useState('');
   const [evEmail, setEvEmail] = useState('');
   const [evPhone, setEvPhone] = useState('');
+  const [evService, setEvService] = useState('');
 
   // Config modal
   const [cfgOpen,  setCfgOpen]  = useState(false);
@@ -181,11 +185,14 @@ export default function TherapistDashboard() {
   };
 
   const openModal = (date: string, time: string) => {
-    setEvModal({ date, time }); setEvStep('choice'); setEvName(''); setEvEmail(''); setEvPhone('');
+    setEvModal({ date, time }); setEvStep('choice'); setEvName(''); setEvEmail(''); setEvPhone(''); setEvService('');
   };
 
   const saveBook = async () => {
-    if (!evName.trim() || !firestore || !evModal) return;
+    if (!evName.trim() || !firestore || !evModal || !evModal.date || !evModal.time) {
+      alert("Veuillez remplir le nom du client.");
+      return;
+    }
     
     try {
       // 1. Check/Create Client
@@ -213,16 +220,19 @@ export default function TherapistDashboard() {
       // 2. Create Appointment
       const apptId = `SR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
       const magicToken = Math.random().toString(36).substring(2, 15);
+      const selectedSvc = SERVICES.find(s => s.id === evService);
       const appointmentData = {
         date: evModal.date,
         time: evModal.time,
         startTime: `${evModal.date}T${evModal.time}:00`,
         clientId: clientId,
         clientNameSnapshot: evName.trim(),
-        clientEmail: evEmail.trim(), // Added email
-        phone: evPhone.trim(), // Added phone
+        clientEmail: evEmail.trim(),
+        phone: evPhone.trim(),
         title: evName.trim(),
-        price: 150, // Default price
+        serviceName: selectedSvc ? selectedSvc.name : '',
+        serviceId: evService,
+        price: selectedSvc ? selectedSvc.price : 150,
         status: 'confirmed',
         magicToken: magicToken,
         createdAt: serverTimestamp(),
@@ -230,6 +240,8 @@ export default function TherapistDashboard() {
 
       // 3. Create Invoice
       const invoiceId = `INV-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+      const svcPrice = selectedSvc ? selectedSvc.price : 150;
+      const svcName  = selectedSvc ? selectedSvc.name : 'Soin Serenity (Manuel)';
       const invoiceData = {
         id: invoiceId,
         invoiceNumber: invoiceId,
@@ -237,13 +249,13 @@ export default function TherapistDashboard() {
         clientNameSnapshot: evName.trim(),
         issueDate: evModal.date,
         dueDate: evModal.date,
-        totalAmount: 150,
+        totalAmount: svcPrice,
         status: 'Pending',
         appointmentId: apptId,
         items: [
           {
-            description: 'Soin Serenity (Manuel)',
-            amount: 150,
+            description: svcName,
+            amount: svcPrice,
             quantity: 1
           }
         ],
@@ -1199,7 +1211,7 @@ export default function TherapistDashboard() {
 
       {/* ══ EVENT MODAL ══════════════════════════════════════════════════════ */}
       {evModal && (
-        <div className="fixed inset-0 bg-[#222F3E]/40 overflow-y-auto flex items-center justify-center z-50 p-6 backdrop-blur-xl transition-all duration-500" onClick={() => setEvModal(null)}>
+        <div className="fixed inset-0 bg-[#222F3E]/40 overflow-y-auto flex items-center justify-center z-[90] p-6 backdrop-blur-xl transition-all duration-500" onClick={() => setEvModal(null)}>
           <div className="bg-white/95 rounded-[3rem] shadow-[0_30px_100px_rgba(0,0,0,0.1)] w-full max-w-xl p-14 relative overflow-hidden border border-white/50" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-start mb-12">
               <div>
@@ -1269,6 +1281,22 @@ export default function TherapistDashboard() {
                     </div>
                   </div>
 
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Prestation</label>
+                    <select
+                      value={evService}
+                      onChange={e => setEvService(e.target.value)}
+                      className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled>Choisir une prestation</option>
+                      {SERVICES.map(s => (
+                        <option key={s.id} value={s.id}>
+                          {s.name.split(' - ')[0]} — {s.price} CHF
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Date</label>
@@ -1291,7 +1319,7 @@ export default function TherapistDashboard() {
 
       {/* ══ APPOINTMENT DETAIL/EDIT MODAL ═══════════════════════════════════ */}
       {selectedAppt && (
-        <div className="fixed inset-0 bg-[#222F3E]/80 flex items-center justify-center z-50 p-4 backdrop-blur-md" onClick={() => setSelectedAppt(null)}>
+        <div className="fixed inset-0 bg-[#222F3E]/80 flex items-center justify-center z-[95] p-4 backdrop-blur-md" onClick={() => setSelectedAppt(null)}>
           <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden border-2 border-[#54A0FF]/10" onClick={e => e.stopPropagation()}>
             <div className="h-32 bg-gradient-to-r from-[#54A0FF] to-[#5F27CD] p-8 flex flex-col justify-end relative">
                <button onClick={() => { setSelectedAppt(null); setIsEditing(false); }} className="absolute top-6 right-6 text-white/50 hover:text-white transition"><X size={20}/></button>
@@ -1611,15 +1639,27 @@ export default function TherapistDashboard() {
                  <div>
                     <h3 className="text-lg font-medium text-[#222F3E] tracking-tighter mb-6 flex items-center gap-3"><Clock size={20} className="text-[#54A0FF]"/> Futur</h3>
                     <div className="space-y-4">
-                      {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) >= startOfDay(new Date())).length > 0 ? (
-                        appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) >= startOfDay(new Date())).map(a => (
-                          <div key={a.id} className="p-4 bg-white border border-[#54A0FF]/10 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div className="flex justify-between items-start">
+                      {appointments.filter(a => (a.clientId === selectedClient.id || a.title === `${selectedClient.firstName} ${selectedClient.lastName}`) && new Date(a.date) >= startOfDay(new Date())).length > 0 ? (
+                        appointments.filter(a => (a.clientId === selectedClient.id || a.title === `${selectedClient.firstName} ${selectedClient.lastName}`) && new Date(a.date) >= startOfDay(new Date())).sort((a,b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`)).map(a => (
+                          <div 
+                            key={a.id} 
+                            className="group p-4 bg-white border border-[#54A0FF]/10 rounded-2xl shadow-sm hover:shadow-lg hover:border-[#54A0FF]/40 transition-all cursor-pointer"
+                            onClick={() => {
+                              setSelectedAppt(a);
+                              setIsEditing(false);
+                            }}
+                          >
+                            <div className="flex justify-between items-start mb-2">
                               <div>
                                 <p className="font-black text-sm text-[#222F3E]">{a.time}</p>
                                 <p className="text-[10px] font-bold text-[#576574] uppercase tracking-[0.2em] mt-0.5">{a.date}</p>
                               </div>
                               <span className="px-3 py-1 bg-[#1DD1A1]/10 text-[#1DD1A1] text-[8px] font-black uppercase tracking-widest rounded-full">Confirmé</span>
+                            </div>
+                            <div className="flex items-center justify-between pt-2 border-t border-[#54A0FF]/5 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                              <span className="text-[9px] font-black text-[#54A0FF] uppercase tracking-widest flex items-center gap-1">
+                                <Edit3 size={10}/> Voir & Modifier
+                              </span>
                             </div>
                           </div>
                         ))
@@ -1646,23 +1686,6 @@ export default function TherapistDashboard() {
                         ))
                       ) : (
                         <p className="text-xs text-[#576574] italic">Aucun historique</p>
-                      )}
-                    </div>
-                    <div className="space-y-4">
-                      {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) < startOfDay(new Date())).length > 0 ? (
-                        appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) < startOfDay(new Date())).map(a => (
-                          <div key={a.id} className="p-4 bg-neutral-50 border border-neutral-100 rounded-2xl">
-                             <div className="flex justify-between items-start">
-                              <div>
-                                <p className="font-black text-sm text-neutral-700">{a.time}</p>
-                                <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.2em] mt-0.5">{a.date}</p>
-                              </div>
-                              <FileText size={14} className="text-neutral-300 cursor-pointer hover:text-neutral-600 transition" onClick={() => alert('Facturing details...')}/>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-xs text-neutral-300 italic">Aucun historique</p>
                       )}
                     </div>
                  </div>

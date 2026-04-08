@@ -87,7 +87,7 @@ export const SERVICES: Service[] = [
     description: 'Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.', 
     duration: '60 min', 
     price: 110,
-    image: 'https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(4).d7de7c4e.png&w=3840&q=75'
+    image: '/images/services/sportif.png'
   },
   { 
     id: '6', 
@@ -95,7 +95,7 @@ export const SERVICES: Service[] = [
     description: 'Soin ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.', 
     duration: '60 min', 
     price: 110,
-    image: 'https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(5).95f12a12.png&w=3840&q=75'
+    image: '/images/services/therapeutique.png'
   },
   { 
     id: '7', 
@@ -103,7 +103,7 @@ export const SERVICES: Service[] = [
     description: 'Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.', 
     duration: '60 min', 
     price: 120,
-    image: 'https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(6).40bca099.png&w=3840&q=75'
+    image: '/images/services/deep_relax.png'
   },
   { 
     id: '8', 
@@ -111,6 +111,6 @@ export const SERVICES: Service[] = [
     description: 'Technique dynamique combinant pressions profondes et étirements fluides pour relancer l\'énergie vitale.', 
     duration: '60 min', 
     price: 120,
-    image: 'https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(7).681b63b0.png&w=3840&q=75'
+    image: '/images/services/thai.png'
   },
 ];

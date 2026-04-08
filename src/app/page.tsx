@@ -167,9 +167,11 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ SERVICES ═══════════════════ */}
-      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 relative overflow-hidden">
-        {/* Subtle background gradient */}
-        <div className="absolute inset-0 opacity-30" style={{ background: 'linear-gradient(180deg, rgba(84,160,255,0.03), rgba(95,39,205,0.04), transparent)' }} />
+      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 relative">
+        {/* Subtle background gradient — overflow-hidden isolated so sticky works */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute inset-0 opacity-30" style={{ background: 'linear-gradient(180deg, rgba(84,160,255,0.03), rgba(95,39,205,0.04), transparent)' }} />
+        </div>
         
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
