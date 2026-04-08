@@ -80,7 +80,7 @@ export default function ClientDashboardPage() {
             {client?.firstName?.[0] || 'S'}
           </div>
           <div>
-            <h1 className="text-xl font-serif font-bold text-neutral-900">Bienvenue, {client?.firstName}</h1>
+            <h1 className="text-xl font-bold text-neutral-900">Bienvenue, {client?.firstName}</h1>
             <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400">VOTRE ESPACE BIEN-ÊTRE</p>
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function ClientDashboardPage() {
         {/* UPCOMING */}
         <section className="space-y-8">
           <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-            <h2 className="text-[1.2rem] font-serif font-bold text-neutral-900">Prochaines Séances</h2>
+            <h2 className="text-[1.2rem] font-bold text-neutral-900">Prochaines Séances</h2>
             <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[0.65rem] font-black uppercase tracking-widest">{upcoming.length} RITUEL(S)</span>
           </div>
 
@@ -113,7 +113,7 @@ export default function ClientDashboardPage() {
                     <span className="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-[0.65rem] font-black uppercase tracking-[0.1em]">CONFIRMÉ</span>
                   </div>
                   
-                  <h3 className="text-xl font-serif font-bold text-neutral-900 mb-2">{appt.serviceName.split(' - ')[0]}</h3>
+                  <h3 className="text-xl font-bold text-neutral-900 mb-2">{appt.serviceName.split(' - ')[0]}</h3>
                   <div className="space-y-3 text-[0.9rem] text-neutral-500 font-medium">
                     <div className="flex items-center gap-3">
                       <Clock size={16} className="text-neutral-400" />
@@ -133,7 +133,7 @@ export default function ClientDashboardPage() {
             </div>
           ) : (
             <div className="py-20 text-center bg-white rounded-[3rem] border border-neutral-100 border-dashed">
-              <p className="text-neutral-400 font-serif italic text-lg mb-6">Vous n'avez pas encore de rituel prévu.</p>
+              <p className="text-neutral-400 italic text-lg mb-6">Vous n'avez pas encore de rituel prévu.</p>
               <button 
                 onClick={() => router.push('/')}
                 className="px-10 py-4 bg-neutral-900 text-white rounded-full text-[0.7rem] font-black uppercase tracking-[0.2em] shadow-xl shadow-neutral-100"
@@ -147,7 +147,7 @@ export default function ClientDashboardPage() {
         {/* PAST & INVOICES */}
         <section className="space-y-8">
           <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-            <h2 className="text-[1.2rem] font-serif font-bold text-neutral-900">Historique & Factures</h2>
+            <h2 className="text-[1.2rem] font-bold text-neutral-900">Historique & Factures</h2>
             <span className="px-3 py-1 bg-neutral-100 text-neutral-400 rounded-full text-[0.65rem] font-black uppercase tracking-widest">{past.length} SÉANCE(S)</span>
           </div>
 
@@ -165,7 +165,7 @@ export default function ClientDashboardPage() {
                   {past.map(appt => (
                     <tr key={appt.id} className="group hover:bg-neutral-50 transition">
                       <td className="px-8 py-6">
-                        <div className="font-serif font-bold text-neutral-900 text-lg leading-tight mb-1">{appt.serviceName.split(' - ')[0]}</div>
+                        <div className="font-bold text-neutral-900 text-lg leading-tight mb-1">{appt.serviceName.split(' - ')[0]}</div>
                         <div className="text-[0.75rem] font-medium text-neutral-400 flex items-center gap-2">
                            {format(new Date(appt.startTime), 'd MMMM yyyy', { locale: fr })}
                         </div>
@@ -183,7 +183,7 @@ export default function ClientDashboardPage() {
                 </tbody>
               </table>
             ) : (
-               <div className="py-20 text-center text-neutral-400 font-serif italic text-lg">Aucun historique disponible.</div>
+               <div className="py-20 text-center text-neutral-400 italic text-lg">Aucun historique disponible.</div>
             )}
           </div>
         </section>

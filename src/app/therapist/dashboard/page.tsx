@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   LayoutDashboard, CalendarRange, Users, Settings, Leaf, Activity, Target,
   Search, Bell, ChevronLeft, ChevronRight, Lock, Unlock, CheckCircle2,
-  X, Trash2, Clock, Plus, Cog, Power, Mail, FileText, History, User, CreditCard, Download, MessageCircle, MessageSquare
+  X, Trash2, Clock, Plus, Cog, Power, Mail, FileText, History, User, CreditCard, Download, MessageCircle, MessageSquare, Edit3, ArrowUpRight
 } from 'lucide-react';
 import {
   format, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
@@ -15,6 +15,7 @@ import { useFirestore, useAuth, useUser } from '@/firebase';
 import {
   collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc, setDoc, serverTimestamp
 } from 'firebase/firestore';
+import { SERVICES } from '@/lib/types';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PRICE = 150;
@@ -76,6 +77,8 @@ export default function TherapistDashboard() {
   const [evModal, setEvModal] = useState<{ date: string; time: string } | null>(null);
   const [evStep,  setEvStep]  = useState<'choice' | 'book'>('choice');
   const [evName,  setEvName]  = useState('');
+  const [evEmail, setEvEmail] = useState('');
+  const [evPhone, setEvPhone] = useState('');
 
   // Config modal
   const [cfgOpen,  setCfgOpen]  = useState(false);
@@ -90,6 +93,10 @@ export default function TherapistDashboard() {
   const [editService, setEditService] = useState('');
   const [editPrice, setEditPrice] = useState(150);
   const [isSending, setIsSending] = useState(false);
+  
+  // Invoice state
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [isEditingInvoice, setIsEditingInvoice] = useState(false);
 
   // Clients state
   const [clients,    setClients]    = useState<any[]>([]);
@@ -131,7 +138,10 @@ export default function TherapistDashboard() {
     const unsubClients = onSnapshot(collection(firestore, 'clients'), snap =>
       setClients(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
 
-    return () => { unsubAvail(); unsubAppts(); unsubCfg(); unsubClients(); };
+    const unsubInvoices = onSnapshot(collection(firestore, 'invoices'), snap =>
+      setInvoices(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
+
+    return () => { unsubAvail(); unsubAppts(); unsubCfg(); unsubClients(); unsubInvoices(); };
   }, [firestore]);
 
   // Release drag on mouseup
@@ -171,24 +181,87 @@ export default function TherapistDashboard() {
   };
 
   const openModal = (date: string, time: string) => {
-    setEvModal({ date, time }); setEvStep('choice'); setEvName('');
+    setEvModal({ date, time }); setEvStep('choice'); setEvName(''); setEvEmail(''); setEvPhone('');
   };
 
   const saveBook = async () => {
     if (!evName.trim() || !firestore || !evModal) return;
-    const id = `SR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-    await setDoc(doc(firestore, 'appointments', id), {
-      date: evModal.date,
-      time: evModal.time,
-      startTime: `${evModal.date}T${evModal.time}:00`,
-      clientNameSnapshot: evName.trim(),
-      title: evName.trim(),
-      status: 'confirmed',
-      createdAt: serverTimestamp(),
-    });
-    setEvModal(null);
-    setEvName('');
-    setEvStep('choice');
+    
+    try {
+      // 1. Check/Create Client
+      let clientId = '';
+      const existingClient = clients.find(c => 
+        (c.firstName + ' ' + c.lastName).toLowerCase().trim() === evName.trim().toLowerCase()
+      );
+
+      if (existingClient) {
+        clientId = existingClient.id;
+      } else {
+        const parts = evName.trim().split(' ');
+        const firstName = parts[0];
+        const lastName = parts.slice(1).join(' ');
+        const clientRef = await addDoc(collection(firestore, 'clients'), {
+          firstName: firstName,
+          lastName: lastName || '',
+          email: evEmail.trim(),
+          phone: evPhone.trim(),
+          createdAt: serverTimestamp(),
+        });
+        clientId = clientRef.id;
+      }
+
+      // 2. Create Appointment
+      const apptId = `SR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const magicToken = Math.random().toString(36).substring(2, 15);
+      const appointmentData = {
+        date: evModal.date,
+        time: evModal.time,
+        startTime: `${evModal.date}T${evModal.time}:00`,
+        clientId: clientId,
+        clientNameSnapshot: evName.trim(),
+        clientEmail: evEmail.trim(), // Added email
+        phone: evPhone.trim(), // Added phone
+        title: evName.trim(),
+        price: 150, // Default price
+        status: 'confirmed',
+        magicToken: magicToken,
+        createdAt: serverTimestamp(),
+      };
+
+      // 3. Create Invoice
+      const invoiceId = `INV-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+      const invoiceData = {
+        id: invoiceId,
+        invoiceNumber: invoiceId,
+        clientId: clientId,
+        clientNameSnapshot: evName.trim(),
+        issueDate: evModal.date,
+        dueDate: evModal.date,
+        totalAmount: 150,
+        status: 'Pending',
+        appointmentId: apptId,
+        items: [
+          {
+            description: 'Soin Serenity (Manuel)',
+            amount: 150,
+            quantity: 1
+          }
+        ],
+        createdAt: serverTimestamp()
+      };
+
+      await Promise.all([
+        setDoc(doc(firestore, 'appointments', apptId), appointmentData),
+        setDoc(doc(firestore, 'invoices', invoiceId), invoiceData)
+      ]);
+
+      setEvModal(null);
+      setEvName('');
+      setEvStep('choice');
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la réservation.");
+    }
   };
 
   const saveBlock = async () => {
@@ -217,6 +290,16 @@ export default function TherapistDashboard() {
         serviceName: editService.trim(),
         price: editPrice
       });
+
+      // Update associated invoice
+      const linkedInv = invoices.find(inv => inv.appointmentId === selectedAppt.id);
+      if (linkedInv) {
+        await updateDoc(doc(firestore, 'invoices', linkedInv.id), {
+          totalAmount: editPrice,
+          items: [{ description: editService.trim(), amount: editPrice }]
+        });
+      }
+
       setIsEditing(false);
       setSelectedAppt(null); // Close modal on success
     } catch (err) {
@@ -315,7 +398,6 @@ export default function TherapistDashboard() {
   const openDates = availability.filter(s => s.type === 'day_opened').map(s => s.date);
   const totalSlots = openDates.reduce((acc, ds) => acc + (configSlots[isoDay(new Date(ds))] || []).length, 0);
   const bookedCount = appointments.filter(e => openDates.includes(e.date)).length;
-  const saturation = totalSlots === 0 ? 0 : Math.round((bookedCount / totalSlots) * 100);
 
   const mKey = cur.toISOString().slice(0, 7);
   const monthRevenue = appointments.filter(e => (e.date || '').startsWith(mKey)).length * PRICE;
@@ -354,8 +436,8 @@ export default function TherapistDashboard() {
 
     return (
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="grid grid-cols-7 bg-neutral-50/50 border-b border-neutral-100 shrink-0">
-          {DAYS_S.map(l => <div key={l} className="py-4 text-center text-[10px] font-black text-neutral-400 tracking-[0.2em]">{l}</div>)}
+        <div className="grid grid-cols-7 bg-white/50 border-b border-slate-100 shrink-0">
+          {DAYS_S.map(l => <div key={l} className="py-4 text-center text-[10px] font-black text-slate-400 tracking-[0.2em]">{l}</div>)}
         </div>
         <div className="grid grid-cols-7 flex-1 overflow-y-auto" style={{ gridAutoRows: 'minmax(105px, 1fr)' }}>
           {days.map((day, i) => {
@@ -369,10 +451,10 @@ export default function TherapistDashboard() {
 
             return (
               <div key={i}
-                className={`day-cell-m p-3 border-r border-b border-neutral-100 flex flex-col gap-1 transition-colors relative cursor-pointer
-                  ${!inMonth ? 'inactive-m opacity-40' : ''}
-                  ${inMonth && isToday ? 'bg-neutral-50' : ''}
-                  ${inMonth && !isOpen ? 'bg-neutral-100' : ''}
+                className={`day-cell-m p-5 border-r border-b border-slate-100 flex flex-col items-end gap-1 transition-all duration-300 relative cursor-pointer
+                  ${!inMonth ? 'bg-slate-50/50 opacity-20 cursor-default' : 'hover:bg-blue-50/30'}
+                  ${inMonth && isToday ? 'bg-blue-50/50' : ''}
+                  ${inMonth && !isOpen ? 'day-closed-stripes' : ''}
                 `}
                 onMouseDown={e => {
                   if (!inMonth) return;
@@ -383,35 +465,29 @@ export default function TherapistDashboard() {
                     e.preventDefault();
                   }
                 }}
-                onMouseEnter={() => {
-                  if (isDrag && inMonth) {
-                    if ((dragAct === 'open' && !isOpen) || (dragAct === 'close' && isOpen))
-                      toggleDay(dStr);
-                  }
-                }}
-                onClick={() => {
-                  if (!inMonth || blockMode) return;
-                  if (isOpen) { setCur(day); setView('day'); }
-                }}
+                onMouseEnter={() => { if (isDrag && inMonth) toggleDay(dStr); }}
+                onClick={() => { if (!blockMode && inMonth) { setCur(day); setView('day'); } }}
               >
-                {isToday && inMonth && <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t" style={{ background: 'linear-gradient(90deg, #54A0FF, #5F27CD)' }}/>}
-                <div className="flex justify-between items-center">
-                  <span className={
-                    isToday && inMonth
-                      ? 'w-7 h-7 text-white flex items-center justify-center rounded-lg font-black text-[10px]' + ' bg-[#54A0FF]'
-                      : !inMonth ? 'text-xs font-black text-neutral-300'
-                      : 'text-xs font-black text-neutral-600'
-                  }>{day.getDate()}</span>
-                  {inMonth && !isOpen && <span className="text-[8px] font-black text-neutral-400 uppercase tracking-widest bg-neutral-100 px-1.5 py-0.5 rounded">Off</span>}
-                </div>
-                {inMonth && isOpen && daySlots.length > 0 && (
-                  <div className="mt-auto">
-                    <div className="text-[9px] font-black uppercase tracking-wider mb-1" style={{ color: free > 0 ? '#222F3E' : '#94a3b8' }}>
-                      {free > 0 ? `${free} libres` : 'Complet'}
-                    </div>
-                    <div className="h-1 w-full bg-neutral-100 rounded-full overflow-hidden">
-                      <div className="h-full transition-all rounded-full" style={{ background: 'linear-gradient(90deg, #54A0FF, #5F27CD)', width: `${daySlots.length ? (booked / daySlots.length) * 100 : 0}%` }}/>
-                    </div>
+                <span className={`text-[12px] font-black tracking-tighter ${isToday ? 'bg-blue-600 text-white w-7 h-7 flex items-center justify-center rounded-lg shadow-lg' : inMonth ? 'text-slate-900' : 'text-slate-300'}`}>
+                  {day.getDate()}
+                </span>
+                
+                {inMonth && (
+                  <div className="mt-auto w-full flex flex-col gap-1.5">
+                    {isOpen ? (
+                      <div className="flex items-center justify-between w-full">
+                         <div className="flex flex-wrap gap-1">
+                            {Array.from({ length: Math.min(booked, 3) }).map((_, i) => (
+                              <div key={i} className="w-2 h-2 rounded-full bg-blue-500 shadow-sm shadow-blue-200"/>
+                            ))}
+                         </div>
+                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">
+                            {free > 0 ? `${free} Libre` : 'Plein'}
+                         </span>
+                      </div>
+                    ) : (
+                      <div className="text-[8px] font-black text-slate-300 uppercase tracking-[0.2em] text-right italic opacity-50">Fermé</div>
+                    )}
                   </div>
                 )}
               </div>
@@ -426,46 +502,31 @@ export default function TherapistDashboard() {
     const s    = wkStart(new Date(cur));
     const days = Array.from({ length: 7 }, (_, i) => addDays(s, i));
     return (
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="grid grid-cols-7 border-b border-neutral-100 shrink-0">
+      <div className="flex-1 flex flex-col overflow-hidden bg-slate-50/30">
+        <div className="grid grid-cols-7 border-b border-slate-100 shrink-0 bg-white">
           {days.map((d, i) => {
             const isToday = isSameDay(new Date(), d);
             return (
-              <div key={i} className={`py-3 text-center border-r border-neutral-100`} style={isToday ? { background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' } : {}}>
-                <p className={`text-[9px] font-black uppercase tracking-widest ${isToday ? 'text-neutral-400' : 'text-neutral-400'}`}>{DAYS_S[i]}</p>
-                <p className={`text-xl font-black mt-0.5 ${isToday ? 'text-white' : 'text-neutral-700'}`}>{d.getDate()}</p>
+              <div key={i} className={`py-6 text-center border-r border-slate-50 relative group transition-all`}>
+                <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${isToday ? 'text-blue-600' : 'text-slate-400'}`}>{DAYS_S[i]}</p>
+                <div className="flex flex-col items-center mt-2">
+                   <p className={`text-2xl leading-none ${isToday ? 'text-blue-600' : 'text-slate-900 opacity-80'}`}>{d.getDate()}</p>
+                   {isToday && <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 shadow-lg shadow-blue-200"/>}
+                </div>
               </div>
             );
           })}
         </div>
-        <div className="grid grid-cols-7 flex-1 overflow-y-auto">
+        <div className="grid grid-cols-7 flex-1 overflow-y-auto bg-slate-50/30">
           {days.map((d, i) => {
             const dStr    = fmt(d);
             const isOpen  = isDayOpen(dStr);
             const slots   = [...(configSlots[isoDay(d)] || [])].sort();
             return (
               <div key={i}
-                className={`border-r border-neutral-100 p-2 flex flex-col gap-1.5 min-h-[520px] transition-colors relative cursor-pointer
-                  ${!isOpen ? 'bg-neutral-100/50' : ''}
-                  ${blockMode ? 'hover:bg-neutral-50/50' : ''}
+                className={`border-r border-slate-100 p-4 flex flex-col gap-3 min-h-[600px] transition-all
+                  ${!isOpen ? 'day-closed-stripes' : ''}
                 `}
-                onMouseDown={e => {
-                  if (blockMode) {
-                    setIsDrag(true);
-                    setDragAct(isOpen ? 'close' : 'open');
-                    toggleDay(dStr);
-                    e.preventDefault();
-                  }
-                }}
-                onMouseEnter={() => {
-                  if (isDrag && blockMode) {
-                    if ((dragAct === 'open' && !isOpen) || (dragAct === 'close' && isOpen))
-                      toggleDay(dStr);
-                  }
-                }}
-                onClick={() => {
-                  if (blockMode) return;
-                }}
               >
                 {isOpen ? slots.map(t => {
                   const ev       = appointments.find(e => e.date === dStr && e.time === t);
@@ -476,22 +537,22 @@ export default function TherapistDashboard() {
                         if (blockMode) return;
                         ev ? setSelectedAppt(ev) : blocked ? toggleSlot(dStr, t) : openModal(dStr, t);
                       }}
-                      className={`p-2 rounded-xl text-[10px] font-bold border transition-all cursor-pointer
-                        ${ev ? 'border-transparent text-white shadow-md'
-                          : isOpen ? 'border-dashed border-neutral-200 bg-neutral-50/50 hover:bg-neutral-100'
-                            : 'bg-white border-neutral-100 text-neutral-500 hover:border-neutral-900 hover:text-neutral-900'}`}
+                      className={`week-slot p-4 rounded-2xl text-[11px] font-black border transition-all cursor-pointer shadow-sm
+                        ${ev ? 'bg-blue-600 border-transparent text-white shadow-blue-200/50'
+                          : blocked ? 'bg-slate-900 border-transparent text-white'
+                            : 'bg-white border-slate-100 text-slate-900 hover:border-blue-400 hover:text-blue-600'}`}
                     >
-                      <div className="flex justify-between items-center gap-1">
-                        <span>{t}</span>
-                        {ev && <CheckCircle2 size={8}/>}
-                        {blocked && !ev && <Lock size={8}/>}
+                      <div className="flex justify-between items-center">
+                        <span className="opacity-80 tracking-tight">{t}</span>
+                        {ev && <CheckCircle2 size={10}/>}
+                        {blocked && <Lock size={10}/>}
                       </div>
-                      {ev && <div className="mt-0.5 text-[8px] opacity-80 truncate">{ev.title}</div>}
+                      {ev && <div className="mt-2 text-[9px] font-bold uppercase tracking-tight truncate opacity-90">{ev.clientNameSnapshot || ev.title}</div>}
                     </div>
                   );
                 }) : (
-                  <div className="flex-1 flex items-center justify-center">
-                    <p className="text-[9px] font-black text-neutral-300 uppercase" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', letterSpacing: '0.1em' }}>Fermé</p>
+                  <div className="flex-1 flex items-center justify-center opacity-10">
+                    <Lock size={40} className="text-slate-900"/>
                   </div>
                 )}
               </div>
@@ -505,79 +566,102 @@ export default function TherapistDashboard() {
   const DayView = () => {
     const dStr   = fmt(cur);
     const isOpen = isDayOpen(dStr);
-    const slots  = [...(configSlots[isoDay(cur)] || [])].sort();
+    const dSlots  = [...(configSlots[isoDay(cur)] || [])].sort();
+    const dayName = format(cur, 'EEEE', { locale: fr });
+    const dayName2 = dayName.charAt(0).toUpperCase() + dayName.slice(1);
     return (
-      <div className="max-w-2xl mx-auto py-10 px-6 w-full overflow-y-auto">
-        <div className="flex justify-between items-end mb-8">
-          <div>
-            <p className="text-[10px] font-black text-neutral-900 uppercase tracking-[0.2em] mb-1 font-sans">Détail du planning</p>
-            <h2 className="text-2xl font-serif font-medium text-neutral-900 tracking-tighter">
-              {DAYS_F[isoDay(cur)]} <span className="text-neutral-500 italic font-light">{cur.getDate()}</span>
-            </h2>
-          </div>
-          <div className="flex gap-3">
-            <button onClick={() => { setCfgDay(isoDay(cur)); setCfgOpen(true); }} className="bg-white border border-neutral-100 p-3 rounded-2xl text-neutral-400 hover:text-neutral-900 hover:border-neutral-900 transition shadow-sm" title="Ajouter un créneau">
-              <Plus size={20}/>
-            </button>
-            <button onClick={() => toggleDay(dStr)} className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${isOpen ? 'bg-red-50 text-red-500 hover:bg-red-100' : 'text-white shadow-lg'}`} style={!isOpen ? { background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' } : {}}>
-              {isOpen ? 'Fermer la journée' : 'Ouvrir les réservations'}
-            </button>
-          </div>
-        </div>
-        {isOpen ? (
-          <div className="space-y-3">
-            {slots.length > 0 ? slots.map(t => {
-              const ev      = appointments.find(e => e.date === dStr && e.time === t);
-              const blocked = isSlotBlocked(dStr, t);
-              return (
-                <div key={t}
-                  className={`flex items-center gap-6 p-5 rounded-2xl border transition-all
-                    ${ev ? 'bg-neutral-50 border-neutral-100'
-                        : blocked ? 'bg-neutral-50 border-neutral-100 grayscale'
-                        : 'bg-white border-neutral-100 hover:border-neutral-900 group cursor-pointer'}`}
-                  onClick={() => !ev && !blocked && openModal(dStr, t)}
+      <div className="flex-1 flex flex-col overflow-hidden bg-white">
+        <div className="px-10 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+           <div>
+              <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1">Détail du planning</p>
+              <h3 className="text-3xl font-bold text-slate-900 tracking-tighter">
+                <span className="font-medium">{dayName2}</span>{' '}
+                <span className="text-blue-600">{cur.getDate()}</span>
+              </h3>
+           </div>
+           <div className="flex items-center gap-3">
+              {isOpen && (
+                <button
+                  onClick={() => openModal(dStr, (configSlots[isoDay(cur)] || [])[0] || '09:00')}
+                  className="w-10 h-10 rounded-2xl border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-all"
                 >
-                  <div className={`text-lg font-black w-16 shrink-0 transition-colors ${ev || blocked ? 'text-neutral-900' : 'text-neutral-300 group-hover:text-neutral-600'}`}>{t}</div>
-                  <div className="flex-1">
-                    {ev ? (
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-black text-sm text-neutral-900">{ev.title}</p>
-                          <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Rendez-vous</p>
-                        </div>
-                        <button onClick={e => { e.stopPropagation(); setSelectedAppt(ev); }} className="w-9 h-9 rounded-xl hover:bg-neutral-50 text-neutral-400 flex items-center justify-center transition"><ChevronRight size={16}/></button>
+                  <Plus size={18}/>
+                </button>
+              )}
+              <button 
+                onClick={() => toggleDay(dStr)} 
+                className={`flex items-center gap-2 px-6 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-300
+                  ${isOpen ? 'bg-rose-50 text-rose-500 border border-rose-100 hover:bg-rose-500 hover:text-white' : 'bg-slate-900 text-white hover:bg-blue-600'}`}
+              >
+                {isOpen ? <Power size={13}/> : <Plus size={13}/>}
+                {isOpen ? 'Fermer la journée' : 'Ouvrir les réservations'}
+              </button>
+           </div>
+        </div>
+        
+        <div className="flex-1 overflow-y-auto p-12 bg-white">
+           <div className="max-w-4xl mx-auto space-y-8">
+              {isOpen ? (
+                dSlots.map(t => {
+                  const ev = appointments.find(e => e.date === dStr && e.time === t);
+                  const blocked = isSlotBlocked(dStr, t);
+                  return (
+                    <div key={t} 
+                      onClick={() => { ev ? setSelectedAppt(ev) : blocked ? toggleSlot(dStr, t) : openModal(dStr, t); }}
+                      className={`group flex items-center gap-10 p-10 rounded-[2.5rem] border transition-all duration-500 cursor-pointer
+                      ${ev ? 'bg-blue-600 border-transparent text-white shadow-2xl shadow-blue-200 scale-[1.02]' 
+                        : blocked ? 'bg-slate-900 border-transparent text-white shadow-xl'
+                        : 'bg-slate-50 border-slate-100 hover:bg-white hover:border-blue-500 hover:shadow-2xl hover:scale-[1.01]'}`}
+                    >
+                      <div className="w-24 shrink-0 flex flex-col justify-center items-center gap-1 border-r border-current border-opacity-10 pr-10">
+                         <p className="text-2xl tracking-tight leading-none">{t}</p>
+                         <p className="text-[9px] font-black uppercase tracking-[0.3em] opacity-40">Début</p>
                       </div>
-                    ) : blocked ? (
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-black text-sm text-neutral-500">Bloqué</p>
-                          <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Indisponible</p>
-                        </div>
-                        <button onClick={e => { e.stopPropagation(); toggleSlot(dStr, t); }} className="w-9 h-9 rounded-xl hover:bg-neutral-50 text-neutral-900 flex items-center justify-center transition"><Unlock size={16}/></button>
+                      <div className="flex-1 min-w-0">
+                         {ev ? (
+                           <div className="flex items-center justify-between">
+                              <div className="space-y-1">
+                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-80">Rendez-vous Client</p>
+                                 <p className="text-2xl font-black truncate">{ev.clientNameSnapshot || ev.title}</p>
+                                 <div className="flex gap-4 opacity-70">
+                                    <div className="flex items-center gap-2"><Clock size={12}/> <span className="text-[10px] uppercase font-black tracking-widest">60 MIN</span></div>
+                                    <div className="flex items-center gap-2"><CreditCard size={12}/> <span className="text-[10px] uppercase font-black tracking-widest">{ev.paid ? 'Confirmé' : 'À régler'}</span></div>
+                                 </div>
+                              </div>
+
+                           </div>
+                         ) : blocked ? (
+                           <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-4">
+                                 <div className="p-3 rounded-2xl bg-white/10"><Lock size={18}/></div>
+                                 <p className="text-sm font-black uppercase tracking-widest opacity-80">Ce créneau est actuellement indisponible</p>
+                              </div>
+                           </div>
+                         ) : (
+                           <div className="flex items-center justify-between">
+                              <p className="text-sm font-black uppercase tracking-[0.4em] opacity-30 group-hover:opacity-100 group-hover:text-blue-600 transition-all">Disponible —</p>
+                              <div className="w-12 h-12 rounded-2xl border border-dashed border-slate-200 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all">
+                                 <Plus size={20} className="text-blue-600"/>
+                              </div>
+                           </div>
+                         )}
                       </div>
-                    ) : (
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs font-bold text-neutral-300 group-hover:text-neutral-500 transition uppercase tracking-widest">Créneau disponible</span>
-                        <div className="w-9 h-9 rounded-xl bg-neutral-50 text-neutral-400 flex items-center justify-center group-hover:bg-[#54A0FF] group-hover:text-white transition"><Plus size={16}/></div>
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="flex flex-col items-center justify-center py-32 bg-slate-50/50 rounded-[4rem] border-2 border-dashed border-slate-100">
+                   <div className="p-8 bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 mb-8 text-slate-200">
+                      <Clock size={64} strokeWidth={1}/>
+                   </div>
+                   <h3 className="text-2xl font-medium text-slate-900 mb-2">Le cabinet est fermé</h3>
+                   <button onClick={() => toggleDay(dStr)} className="px-12 py-5 bg-slate-900 text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-slate-900/10 hover:bg-blue-600 hover:shadow-blue-200 transition-all duration-500 active:scale-95">
+                      Activer la journée
+                   </button>
                 </div>
-              );
-            }) : (
-              <div className="text-center py-16 bg-neutral-50 rounded-[2rem] border border-dashed border-neutral-200">
-                <p className="text-neutral-400 font-bold italic">Aucun créneau configuré pour ce jour.</p>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="text-center py-20 bg-neutral-50 rounded-[3rem] border border-dashed border-neutral-200">
-            <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 text-neutral-300 shadow-sm"><Clock size={32}/></div>
-            <h3 className="text-xl font-serif font-medium text-neutral-900 mb-2">Journée fermée</h3>
-            <p className="text-sm font-medium text-neutral-400 mb-8">Aucun créneau n&apos;est disponible pour cette date.</p>
-            <button onClick={() => toggleDay(dStr)} className="text-white px-10 py-4 rounded-2xl font-black text-sm shadow-xl hover:scale-105 transition active:scale-95 uppercase tracking-wider" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}>Ouvrir les réservations</button>
-          </div>
-        )}
+              )}
+           </div>
+        </div>
       </div>
     );
   };
@@ -585,185 +669,119 @@ export default function TherapistDashboard() {
   const Dashboard = () => {
     const todayStr = format(new Date(), 'yyyy-MM-dd');
     const todayAppts = appointments.filter(a => a.date === todayStr).sort((a,b) => (a.time || '').localeCompare(b.time || ''));
-    const nextAppts = appointments
-      .filter(a => (a.date || '') > todayStr)
-      .sort((a,b) => (a.date || '').localeCompare(b.date || '') || (a.time || '').localeCompare(b.time || ''))
-      .slice(0, 6);
-    const pendingPayments = appointments.filter(a => !a.paid).length;
+    const pendingPaymentsCount = appointments.filter(a => !a.paid).length;
     
     return (
-      <div className="flex-1 overflow-y-auto bg-[#F9F8F6] p-8">
-        <div className="max-w-7xl mx-auto space-y-12 pb-20">
+      <div className="flex-1 overflow-y-auto bg-[#F8F9FA] p-10 lg:p-14">
+        <div className="max-w-[1400px] mx-auto space-y-12">
           
-          {/* Header Greeting */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-serif font-medium text-neutral-900 tracking-tighter">Bonjour Joao.</h2>
-              <p className="text-neutral-500 font-black uppercase text-[0.7rem] tracking-[0.2em]">
-                Aperçu du {format(new Date(), 'EEEE d MMMM', { locale: fr })}
-              </p>
+          {/* Summary Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-44">
+              <div className="w-12 h-12 rounded-2xl kpi-accent-1 flex items-center justify-center shadow-inner"><CalendarRange size={24}/></div>
+              <div>
+                <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Rendez-vous Aujourd'hui</p>
+                <p className="text-3xl font-black text-slate-900">{todayAppts.length}</p>
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-               <div className="bg-white p-4 rounded-3xl shadow-sm border border-neutral-100 flex items-center gap-4 px-6">
-                  <div className="w-10 h-10 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-900 shrink-0"><CalendarRange size={20}/></div>
-                  <div>
-                    <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest leading-none mb-1">RDV Aujourd'hui</p>
-                    <p className="text-xl font-black text-neutral-900">{todayAppts.length}</p>
-                  </div>
-               </div>
-               <div className="bg-white p-4 rounded-3xl shadow-sm border border-neutral-100 flex items-center gap-4 px-6">
-                  <div className="w-10 h-10 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-900 shrink-0"><Activity size={20}/></div>
-                  <div>
-                    <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest leading-none mb-1">Revenu Prévu</p>
-                    <p className="text-xl font-black text-neutral-900">{todayAppts.reduce((s, a) => s + (a.price || 150), 0)} CHF</p>
-                  </div>
-               </div>
+            <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-44">
+              <div className="w-12 h-12 rounded-2xl kpi-accent-2 flex items-center justify-center shadow-inner"><Activity size={24}/></div>
+              <div>
+                <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Revenu Prévu</p>
+                <p className="text-3xl font-black text-slate-900">{todayAppts.reduce((s, a) => s + (a.price || 150), 0)} <span className="text-lg font-bold opacity-30">CHF</span></p>
+              </div>
+            </div>
+            <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-44">
+              <div className="w-12 h-12 rounded-2xl kpi-accent-3 flex items-center justify-center shadow-inner"><Target size={24}/></div>
+              <div>
+                <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Impayés</p>
+                <div className="flex items-center gap-3">
+                  <p className="text-3xl font-black text-slate-900">{pendingPaymentsCount}</p>
+                  {pendingPaymentsCount > 0 && <span className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-[9px] font-black uppercase animate-pulse">Action requise</span>}
+                </div>
+              </div>
+            </div>
+            <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-44">
+              <div className="w-12 h-12 rounded-2xl kpi-accent-4 flex items-center justify-center shadow-inner"><Users size={24}/></div>
+              <div>
+                <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Total Clients</p>
+                <p className="text-3xl font-black text-slate-900">{clients.length}</p>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            
-            {/* Main Column: Timeline */}
-            <div className="lg:col-span-8 space-y-14">
-              
-              {/* Today Section */}
-              <div className="space-y-6">
-                <h3 className="text-lg font-serif font-medium text-neutral-800 tracking-tighter flex items-center gap-3">
-                  <Clock size={20} className="text-neutral-400"/> Aujourd'hui
-                </h3>
-
-                <div className="space-y-4">
-                  {todayAppts.length > 0 ? todayAppts.map((appt) => (
-                    <div 
-                      key={appt.id} 
-                      onClick={() => setSelectedAppt(appt)}
-                      className="group bg-white rounded-[2.5rem] p-7 border border-neutral-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-neutral-900 transition-all flex items-center gap-8 relative overflow-hidden cursor-pointer"
-                    >
-                      <div className="w-24 shrink-0 border-r border-neutral-100 pr-8">
-                        <p className="text-2xl font-black text-neutral-900 leading-none mb-1">{appt.time}</p>
-                        <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">60 min</p>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-4 mb-2">
-                          <h4 className="text-lg font-serif font-medium text-neutral-800 truncate tracking-tight">{appt.title}</h4>
-                          <span className={`px-2.5 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest ${appt.paid ? 'bg-neutral-100 text-neutral-600' : 'bg-red-50 text-red-500 animate-pulse'}`}>
-                            {appt.paid ? 'Réglé' : 'À encaisser'}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                            <Leaf size={12}/> {appt.serviceName || 'Soin Signature'}
-                          </p>
-                          <div className="w-1 h-1 rounded-full bg-neutral-300"/>
-                          <p className="text-[10px] font-bold text-neutral-400 flex items-center gap-2">
-                            <Plus size={10}/> {appt.price || 150} CHF
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                        <button onClick={() => setSelectedAppt(appt)} className="w-12 h-12 rounded-2xl text-white shadow-xl flex items-center justify-center hover:scale-110 transition active:scale-95" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}>
-                          <User size={18}/>
-                        </button>
-                      </div>
-                    </div>
-                  )) : (
-                    <div className="bg-white rounded-[3rem] border-2 border-dashed border-neutral-100 py-16 text-center">
-                      <p className="text-sm font-bold text-neutral-300 italic">Aucun rendez-vous aujourd'hui</p>
-                    </div>
-                  )}
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            {/* Today List */}
+            <div className="lg:col-span-2 space-y-8">
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-medium tracking-tight">Today's Timeline</h3>
+                <button onClick={() => { setTab('scheduler'); setView('day'); }} className="text-[10px] font-black font-sans text-blue-600 uppercase tracking-[0.2em] hover:opacity-70 transition">Tout voir</button>
               </div>
 
-              {/* Upcoming Section */}
-              <div className="space-y-6">
-                <h3 className="text-lg font-serif font-medium text-neutral-800 tracking-tighter flex items-center gap-3">
-                  <CalendarRange size={20} className="text-neutral-400"/> Agenda à venir
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {nextAppts.length > 0 ? nextAppts.map((appt) => (
-                    <div key={appt.id} className="bg-white p-5 rounded-[2rem] border border-neutral-100 flex items-center justify-between hover:bg-neutral-50 hover:shadow-md transition-all group">
-                      <div className="flex items-center gap-5">
-                        <div className="w-12 h-14 bg-neutral-50 text-neutral-900 rounded-2xl flex flex-col items-center justify-center shrink-0 border border-neutral-100">
-                           <span className="text-[10px] font-black uppercase leading-none opacity-30">
-                             {format(new Date(appt.date), 'MMM', { locale: fr })}
-                           </span>
-                           <span className="text-base font-black leading-none mt-1">
-                             {format(new Date(appt.date), 'd')}
-                           </span>
+              <div className="space-y-4">
+                {todayAppts.length > 0 ? todayAppts.map((appt, idx) => {
+                  const colors = ['border-blue-500', 'border-emerald-500', 'border-amber-500', 'border-purple-500', 'border-pink-500'];
+                  const bgColors = ['bg-blue-50/50', 'bg-emerald-50/50', 'bg-amber-50/50', 'bg-purple-50/50', 'bg-pink-50/50'];
+                  const colorIdx = idx % colors.length;
+                  
+                  return (
+                    <div key={appt.id} onClick={() => setSelectedAppt(appt)} className={`group premium-card p-6 flex items-center gap-8 rounded-[2rem] border-l-8 ${colors[colorIdx]} cursor-pointer`}>
+                      <div className="w-20 text-center flex flex-col items-center">
+                        <p className="text-xl font-black text-slate-900 leading-tight">{appt.time}</p>
+                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">60 MIN</p>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                           <h4 className="text-lg font-medium tracking-tight">{appt.title}</h4>
+                           {!appt.paid && <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"/>}
                         </div>
-                        <div className="min-w-0">
-                          <p className="text-[11px] font-black text-neutral-900 truncate uppercase tracking-tight">{appt.title}</p>
-                          <p className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest mt-1">
-                            {appt.time} • {appt.serviceName || 'Soin'}
-                          </p>
+                        <div className="flex items-center gap-6">
+                           <div className="flex items-center gap-2">
+                              <div className={`p-1.5 rounded-lg ${bgColors[colorIdx]}`}>
+                                <Leaf size={12} className={colors[colorIdx].replace('border-', 'text-')}/>
+                              </div>
+                              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{appt.serviceName || 'Soin Signature'}</span>
+                           </div>
+                           <div className="flex items-center gap-2">
+                              {appt.phone && <span className="text-[10px] font-bold text-slate-400">{appt.phone}</span>}
+                           </div>
                         </div>
                       </div>
-                      <ChevronRight size={14} className="text-neutral-200 group-hover:text-neutral-900 group-hover:translate-x-1 transition-all"/>
+                      <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                        <ChevronRight size={20}/>
+                      </div>
                     </div>
-                  )) : (
-                    <div className="col-span-2 py-10 text-center bg-neutral-50 rounded-3xl border border-dashed border-neutral-200">
-                      <p className="text-[10px] font-black text-neutral-300 uppercase tracking-[0.2em]">Fin de liste</p>
+                  );
+                }) : (
+                  <div className="py-20 bg-white rounded-[3rem] border border-dashed border-slate-200 text-center">
+                    <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-slate-200">
+                      <Clock size={32}/>
                     </div>
-                  )}
-                </div>
+                    <p className="text-slate-400 font-bold italic">Aucun rendez-vous aujourd'hui</p>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Sidebar Column */}
-            <div className="lg:col-span-4 space-y-8">
-              
-              <div className="bg-white rounded-[3rem] p-10 border border-neutral-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] space-y-8">
-                <h4 className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                  <Cog size={12}/> Liens Rapides
-                </h4>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { e: '👥', l: 'Nouveau Patient', c: 'bg-neutral-50 text-neutral-900', fn: () => setClModal(true) },
-                    { e: '📅', l: 'Nouv. Réservation', c: 'bg-neutral-100 text-neutral-900', fn: () => { setTab('scheduler'); setView('week'); } },
-                  ].map((a, i) => (
-                    <button key={i} onClick={a.fn} className="p-6 rounded-3xl border border-transparent hover:border-neutral-100 hover:bg-neutral-50 transition-all text-center group">
-                      <div className={`w-14 h-14 rounded-2xl ${a.c} flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition duration-300`}>{a.e}</div>
-                      <p className="text-[10px] font-black text-neutral-700 uppercase tracking-[0.2em]">{a.l}</p>
-                    </button>
-                  ))}
+            {/* Side Widgets */}
+            <div className="space-y-10">
+              <div className="premium-card p-10 rounded-[3rem] space-y-10">
+                <div className="flex items-center justify-between">
+                   <h3 className="text-lg font-medium tracking-tight">Quick Actions</h3>
+                   <Cog size={16} className="text-slate-300"/>
+                </div>
+                <div className="grid grid-cols-2 gap-6">
+                  <button onClick={() => setClModal(true)} className="flex flex-col items-center gap-4 group">
+                    <div className="w-16 h-16 rounded-[1.5rem] bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-sm"><Users size={24}/></div>
+                    <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Patient</span>
+                  </button>
+                  <button onClick={() => { setTab('scheduler'); setView('week'); }} className="flex flex-col items-center gap-4 group">
+                    <div className="w-16 h-16 rounded-[1.5rem] bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm"><Plus size={24}/></div>
+                    <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Booking</span>
+                  </button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-8">
-                {pendingPayments > 0 && (
-                  <div className="text-white rounded-[3rem] p-8 shadow-2xl relative overflow-hidden group border border-white/5 flex flex-col justify-between" style={{ background: 'linear-gradient(135deg, #FF6B6B, #EE5A53)', boxShadow: '0 10px 30px rgba(255,107,107,0.2)' }}>
-                    <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"/>
-                    <div>
-                      <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
-                        <CreditCard size={12}/> Alerte
-                      </h4>
-                      <div className="flex items-baseline gap-2 mb-1">
-                        <span className="text-3xl font-black text-white">{pendingPayments}</span>
-                        <span className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Impayés</span>
-                      </div>
-                    </div>
-                    <button onClick={() => setTab('accounting')} className="w-full py-3 bg-white text-[#EE5A53] rounded-[1.5rem] text-[9px] font-black uppercase tracking-widest shadow-xl hover:bg-neutral-50 transition active:scale-95">Régler</button>
-                  </div>
-                )}
-
-                <div className="bg-white rounded-[3rem] p-8 border border-neutral-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden flex flex-col items-center justify-center">
-                  <h4 className="text-[9px] font-black text-neutral-400 uppercase tracking-widest mb-6 w-full text-left">Occupation</h4>
-                  <div className="relative flex items-center justify-center mb-4">
-                    <svg className="w-24 h-24 transform -rotate-90">
-                      <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-neutral-50"/>
-                      <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" 
-                        strokeDasharray={264} 
-                        strokeDashoffset={264 - (264 * saturation) / 100}
-                        className={`${saturation > 80 ? 'text-red-500' : 'text-neutral-900'} transition-all duration-1000 ease-out`}
-                      />
-                    </svg>
-                    <div className="absolute flex flex-col items-center">
-                      <span className="text-lg font-black text-neutral-900">{saturation}%</span>
-                    </div>
-                  </div>
-                  <p className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest">Capacité</p>
-                </div>
-              </div>
 
             </div>
           </div>
@@ -822,7 +840,7 @@ export default function TherapistDashboard() {
       <div className="flex-1 flex flex-col overflow-hidden bg-white">
         <div className="p-8 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end bg-white border-b border-neutral-50 gap-4">
           <div>
-            <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tighter">Comptabilité</h3>
+            <h3 className="text-2xl font-medium text-neutral-900 tracking-tighter">Comptabilité</h3>
             <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] mt-1">Gestion des factures et paiements</p>
           </div>
           <button onClick={exportToCSV} className="text-white px-8 py-4 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl hover:scale-105 transition active:scale-95" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}>
@@ -884,6 +902,13 @@ export default function TherapistDashboard() {
                   <tr key={a.id} className="group transition-transform hover:scale-[1.01]">
                     <td className="p-4 bg-white border-y border-l border-neutral-100 rounded-l-[2rem] shadow-sm">
                       <div className="font-extrabold text-sm text-neutral-900 tracking-tight">{a.title}</div>
+                      {invoices.find(inv => inv.appointmentId === a.id) ? (
+                        <div className="text-[9px] font-black text-indigo-500 uppercase tracking-widest mt-1">
+                          #{invoices.find(inv => inv.appointmentId === a.id).invoiceNumber}
+                        </div>
+                      ) : (
+                        <div className="text-[9px] font-black text-neutral-300 uppercase tracking-widest mt-1">Sans Facture</div>
+                      )}
                     </td>
                     <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-xs font-bold text-neutral-500">
                       {a.date} <span className="text-[10px] opacity-40 ml-2">{a.time}</span>
@@ -905,7 +930,10 @@ export default function TherapistDashboard() {
                       </button>
                     </td>
                     <td className="p-4 bg-white border-y border-r border-neutral-100 rounded-r-[2rem] shadow-sm text-right">
-                      <button className="w-10 h-10 rounded-xl bg-neutral-50 hover:bg-[#54A0FF] hover:text-white text-neutral-400 transition-all flex items-center justify-center mx-auto">
+                      <button 
+                        onClick={() => setSelectedAppt(a)}
+                        className="w-10 h-10 rounded-xl bg-neutral-50 hover:bg-[#54A0FF] hover:text-white text-neutral-400 transition-all flex items-center justify-center mx-auto"
+                      >
                         <FileText size={16}/>
                       </button>
                     </td>
@@ -937,7 +965,7 @@ export default function TherapistDashboard() {
       <div className="flex-1 flex flex-col overflow-hidden bg-white">
         <div className="p-8 pb-4 flex justify-between items-end">
           <div>
-            <h3 className="text-2xl font-serif font-medium text-neutral-900 tracking-tighter">Base Patients</h3>
+            <h3 className="text-2xl font-medium text-neutral-900 tracking-tighter">Base Patients</h3>
             <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] mt-1">{filtered.length} Patients enregistrés</p>
           </div>
           <button onClick={() => setClModal(true)} className="text-white px-8 py-4 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl hover:scale-105 transition active:scale-95" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}>
@@ -1024,98 +1052,138 @@ export default function TherapistDashboard() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#F0F4F8', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div className="flex h-screen overflow-hidden text-[#222F3E]" style={{ background: '#F8F9FA', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
         * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
-        .sidebar-r { background: linear-gradient(180deg, #222F3E, #1a2535); border-radius: 3rem 0 0 3rem; box-shadow: -20px 0 60px rgba(0,0,0,0.15); }
-        .kpi-glass { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1rem; }
-        .day-cell-m { background: #fff; transition: background 0.15s; }
-        .day-cell-m:hover:not(.inactive-m):not(.blocked-m) { background: #f5f5f4; }
-        .inactive-m { background: #fafaf9 !important; cursor: default; }
-        .today-m { background: #fafaf9 !important; }
-        .blocked-m { background-image: repeating-linear-gradient(45deg,#f5f5f4,#f5f5f4 8px,#e5e5e5 8px,#e5e5e5 16px) !important; opacity: 0.7; }
-        .nav-pill { border-radius: 1rem; padding: 10px 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; border: none; cursor: pointer; background: transparent; transition: all 0.2s; width: 60px; }
-        .nav-pill:hover:not(.active) { background: #f5f5f4; }
-        .nav-pill.active { background: #f5f5f4; }
-        .view-btn { padding: 8px 18px; border-radius: 12px; border: none; cursor: pointer; font-family: inherit; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; transition: all 0.2s; color: #a3a3a3; background: transparent; }
-        .view-btn.active { background: linear-gradient(135deg, #54A0FF, #5F27CD); color: #fff; box-shadow: 0 4px 14px rgba(84,160,255,0.3); }
-        .mini-d { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 9px; font-weight: 700; cursor: pointer; transition: all 0.15s; margin: auto; }
-        .mini-d:hover { background: rgba(255,255,255,0.15); }
-        .mini-d.today { background: #54A0FF; color: #fff; font-weight: 900; }
-        button, input { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .premium-card { 
+          background: white; 
+          border: 1px solid rgba(0,0,0,0.03); 
+          box-shadow: 0 10px 40px rgba(0,0,0,0.02); 
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
+        
+        .sidebar-r { 
+          background: linear-gradient(165deg, #448AFF, #2979FF, #1565C0); 
+          box-shadow: -20px 0 80px rgba(68,138,255,0.1); 
+        }
+        
+        .glass-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        .glass-btn:hover { background: rgba(255,255,255,0.25); }
+        
+        .nav-pill { 
+          border-radius: 1.25rem; 
+          padding: 12px; 
+          display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+          gap: 6px; 
+          transition: all 0.3s; 
+          width: 72px; 
+          color: #94A3B8;
+        }
+        .nav-pill.active { background: #F1F5F9; color: #2563EB; }
+        .nav-pill.active svg { color: #2563EB !important; }
+        
+        .kpi-accent-1 { background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%); color: #0369A1; }
+        .kpi-accent-2 { background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); color: #15803D; }
+        .kpi-accent-3 { background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%); color: #B91C1C; }
+        .kpi-accent-4 { background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%); color: #7E22CE; }
+
+        .mini-d { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin: auto; }
+        .mini-d:hover:not(.today) { background: rgba(255,255,255,0.15); }
+        .mini-d.today { background: white; color: #2563EB !important; font-weight: 900; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        .view-btn { padding: 8px 20px; border-radius: 14px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.3s; color: #64748B; background: transparent; }
+        .view-btn.active { background: white; color: #2563EB; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+        .day-closed-stripes {
+          background-image: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 8px,
+            rgba(203,213,225,0.35) 8px,
+            rgba(203,213,225,0.35) 16px
+          );
+        }
       `}</style>
 
-      {/* ══ LEFT SIDEBAR ═════════════════════════════════════════════════════ */}
-      <aside className="w-24 bg-white border-r border-neutral-100 flex flex-col items-center py-10 gap-2 shrink-0 z-10">
-        <div className="w-12 h-12 rounded-[1.25rem] flex items-center justify-center shadow-xl mb-10" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)', boxShadow: '0 8px 25px rgba(84,160,255,0.3)' }}>
-          <Leaf size={22} className="text-white"/>
-        </div>
+      <aside className="w-28 bg-white border-r border-slate-100 flex flex-col items-center py-12 gap-1 shrink-0 z-10">
+
+        
         {([
           { id: 'dashboard',  Icon: LayoutDashboard, label: 'Stats' },
           { id: 'scheduler',  Icon: CalendarRange,   label: 'Agenda' },
           { id: 'clients',    Icon: Users,           label: 'Patients' },
           { id: 'accounting', Icon: CreditCard,      label: 'Compta' },
-          { id: 'settings',   Icon: Settings,        label: 'Créneaux' },
         ] as const).map(n => (
-          <button key={n.id} onClick={() => {
-            if (n.id === 'settings') {
-              setCfgOpen(true);
-            } else {
-              setTab(n.id as any);
-            }
-          }} className={`nav-pill ${tab === n.id ? 'active' : ''}`}>
-            <n.Icon size={20} strokeWidth={tab === n.id ? 2.5 : 1.8} style={{ color: tab === n.id ? '#54A0FF' : '#a3a3a3' }}/>
-            <span style={{ fontSize: 8, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em', color: tab === n.id ? '#54A0FF' : '#a3a3a3' }}>{n.label}</span>
+          <button key={n.id} onClick={() => setTab(n.id as any)} className={`nav-pill ${tab === n.id ? 'active' : ''}`}>
+            <n.Icon size={22} strokeWidth={tab === n.id ? 2.5 : 2}/>
+            <span className="text-[9px] font-black uppercase tracking-wider">{n.label}</span>
           </button>
         ))}
-        <div className="mt-auto">
-          <button onClick={() => auth?.signOut()} title="Déconnexion" className="w-9 h-9 rounded-xl bg-neutral-50 hover:bg-red-50 text-neutral-400 hover:text-red-500 flex items-center justify-center transition">
-            <Power size={14}/>
-          </button>
+
+        <div className="mt-auto space-y-4">
+          <button onClick={() => setCfgOpen(true)} className="p-4 hover:bg-slate-50 rounded-2xl transition text-slate-400 hover:text-slate-800"><Cog size={22}/></button>
+          <button onClick={() => auth?.signOut()} className="w-10 h-10 rounded-2xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition shadow-sm mx-auto"><Power size={18}/></button>
         </div>
       </aside>
 
       {/* ══ MAIN ═════════════════════════════════════════════════════════════ */}
       <main className="flex-1 flex flex-col overflow-hidden bg-white">
 
-        {/* Top nav */}
-        <nav className="h-14 border-b border-neutral-100 px-8 flex items-center justify-between bg-white shrink-0">
-          <div>
-            <h1 className="text-xl font-serif font-medium tracking-tighter text-neutral-900 leading-none">{tab === 'scheduler' ? hdr : 'Performance'}</h1>
-            <p className="text-[9px] font-black text-neutral-400 uppercase tracking-[0.2em] mt-0.5">
-              {tab === 'scheduler' ? (view === 'month' ? 'Vue Mensuelle' : view === 'week' ? 'Vue Hebdomadaire' : 'Vue Quotidienne') : 'Tableau de bord'}
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-neutral-50 px-4 py-2 rounded-2xl border border-neutral-100">
-              <Search size={14} className="text-neutral-300"/>
-              <input type="text" placeholder="Rechercher..." className="bg-transparent border-none text-[11px] font-bold w-36 outline-none text-neutral-600 placeholder:text-neutral-300"/>
+        <nav className="h-20 border-b border-slate-100 px-8 flex items-center justify-between bg-white shrink-0">
+          <div className="flex items-center gap-8">
+            <div>
+              <h1 className="text-xl font-medium tracking-tight text-slate-900 leading-none">{format(new Date(), 'd MMMM yyyy', { locale: fr })}</h1>
+              <p className="text-[9px] font-black text-blue-600 uppercase tracking-[0.15em] mt-1">{tab === 'scheduler' ? (view === 'month' ? 'Vue mensuelle' : view === 'week' ? 'Vue hebdomadaire' : 'Vue quotidienne') : ''}</p>
             </div>
+
+            {tab === 'scheduler' && (
+              <button 
+                onClick={() => {
+                  const nextMode = !blockMode;
+                  setBlockMode(nextMode);
+                  if (nextMode) setView('month');
+                }}
+                className={`ml-4 py-2.5 px-6 rounded-xl flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 border shadow-sm ${blockMode ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100 hover:border-slate-300'}`}
+              >
+                {blockMode ? <CheckCircle2 size={14}/> : <Edit3 size={14}/>}
+                {blockMode ? "Confirmer Changements" : 'Mode Édition Agenda'}
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-4">
             {tab === 'scheduler' && (
               <>
-                <div className="flex bg-neutral-100 p-1 rounded-2xl gap-1">
+                <div className="flex bg-slate-100 p-1 rounded-2xl gap-1">
                   {(['month', 'week', 'day'] as const).map(v => (
                     <button key={v} onClick={() => setView(v)} className={`view-btn ${view === v ? 'active' : ''}`}>
                       {v === 'month' ? 'Mois' : v === 'week' ? 'Semaine' : 'Jour'}
                     </button>
                   ))}
                 </div>
-                <div className="flex items-center gap-1 border-l border-neutral-100 pl-3">
-                  <button onClick={() => period(-1)} className="p-2 hover:bg-neutral-100 rounded-full transition text-neutral-400 hover:text-neutral-800"><ChevronLeft size={15}/></button>
-                  <button onClick={() => setCur(new Date())} className="px-3 py-1.5 text-[9px] font-black text-neutral-400 hover:text-neutral-900 transition uppercase tracking-wider">Aujourd&apos;hui</button>
-                  <button onClick={() => period(1)} className="p-2 hover:bg-neutral-100 rounded-full transition text-neutral-400 hover:text-neutral-800"><ChevronRight size={15}/></button>
+
+                <div className="flex items-center gap-1">
+                  <button onClick={() => period(-1)} className="w-8 h-8 flex items-center justify-center rounded-xl hover:bg-slate-100 text-slate-500 transition-all">
+                    <ChevronLeft size={16}/>
+                  </button>
+                  <button onClick={() => setCur(new Date())} className="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-100 transition-all">
+                    Aujourd'hui
+                  </button>
+                  <button onClick={() => period(1)} className="w-8 h-8 flex items-center justify-center rounded-xl hover:bg-slate-100 text-slate-500 transition-all">
+                    <ChevronRight size={16}/>
+                  </button>
                 </div>
               </>
             )}
-            <button onClick={() => setCfgOpen(true)} className="p-2 hover:bg-neutral-100 rounded-xl transition text-neutral-400 hover:text-neutral-700"><Cog size={17}/></button>
-            <div className="relative cursor-pointer ml-1">
-              <Bell size={17} className="text-neutral-400"/>
-              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 border border-white rounded-full"/>
-            </div>
+            
           </div>
         </nav>
 
@@ -1127,177 +1195,81 @@ export default function TherapistDashboard() {
         </div>
       </main>
 
-      {/* ══ RIGHT SIDEBAR ════════════════════════════════════════════════════ */}
-      <aside className="sidebar-r w-[360px] p-7 flex flex-col gap-5 text-white overflow-y-auto shrink-0">
 
-        {/* Profile */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-white/20 border-2 border-white/20 flex items-center justify-center font-black text-sm shadow-xl">SR</div>
-            <div>
-              <h2 className="text-sm font-extrabold leading-none">Admin Serenity</h2>
-              <p className="text-[10px] font-bold opacity-60 uppercase tracking-widest mt-1">Praticien</p>
-            </div>
-          </div>
-          <button onClick={() => setCfgOpen(true)} className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><Cog size={14}/></button>
-        </div>
-
-        {/* KPIs */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="kpi-glass">
-            <p className="text-[9px] font-black opacity-50 uppercase tracking-wider mb-1">Revenus Est.</p>
-            <div className="text-lg font-black">{monthRevenue} CHF</div>
-            <div className="text-[8px] text-green-400 font-bold mt-1">+12% vs mois d-1</div>
-          </div>
-          <div className="kpi-glass">
-            <p className="text-[9px] font-black opacity-50 uppercase tracking-wider mb-1">RDV Confirmés</p>
-            <div className="text-lg font-black">{weekAppts}</div>
-            <div className="text-[8px] text-neutral-400 font-bold mt-1">Cette semaine</div>
-          </div>
-        </div>
-
-        {/* Block mode toggle */}
-        <button onClick={() => {
-            const nextMode = !blockMode;
-            setBlockMode(nextMode);
-            if (nextMode) setView('month');
-          }}
-          className={`w-full py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-wider transition-all border ${blockMode ? 'bg-green-500 border-transparent shadow-lg' : 'bg-white/5 border-white/20 hover:bg-white/10'}`}>
-          {blockMode ? <CheckCircle2 size={14}/> : <Unlock size={14}/>}
-          {blockMode ? "Terminer l'édition" : 'Mode Édition Dates'}
-        </button>
-
-        {/* Mini calendar */}
-        <div className="bg-white/5 p-5 rounded-[2rem] border border-white/10">
-          <div className="flex justify-between items-center mb-4">
-            <p className="font-extrabold text-[10px] uppercase tracking-widest">Aperçu Rapide</p>
-            <span className="text-[9px] opacity-40 font-bold uppercase tracking-widest">{MONTHS_FR[mM].slice(0, 3)} {mY}</span>
-          </div>
-          <div className="grid grid-cols-7 text-center gap-y-1">
-            {['L','M','M','J','V','S','D'].map((l, i) => <div key={i} className="text-[8px] font-black opacity-30 pb-2">{l}</div>)}
-            {miniDays.map((day, i) => {
-              const isToday = isSameDay(new Date(), day);
-              const isSel   = isSameDay(cur, day);
-              const inM     = isSameMonth(day, cur);
-              return (
-                <div key={i}
-                  className={`mini-d ${(isToday || isSel) ? 'today' : ''}`}
-                  onClick={() => setCur(day)}
-                  style={{ color: !inM ? 'rgba(255,255,255,0.15)' : (isToday || isSel) ? '#171717' : 'rgba(255,255,255,0.7)' }}
-                >
-                  {day.getDate()}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Upcoming */}
-        <div className="flex-1">
-          <h3 className="font-extrabold text-[10px] uppercase tracking-widest mb-4 flex items-center justify-between opacity-60">
-            <span className="flex items-center gap-2"><Clock size={12}/> Prochains RDV</span>
-            <span className="text-[8px]">{upcoming.length} Sessions</span>
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            {upcoming.length > 0 ? upcoming.map(e => (
-              <div 
-                key={e.id} 
-                onClick={() => setSelectedAppt(e)}
-                className="bg-white/10 p-4 rounded-3xl border border-white/10 flex flex-col justify-between aspect-square hover:bg-white/[0.15] transition-all cursor-pointer group relative overflow-hidden backdrop-blur-sm"
-              >
-                <div className="flex justify-between items-start z-10">
-                   <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-[#54A0FF] group-hover:text-white transition-all duration-300">
-                      <User size={12}/>
-                   </div>
-                   <a 
-                    onClick={ev => ev.stopPropagation()}
-                    href={`https://wa.me/${(e.phone || '').replace(/[^0-9]/g, '')}?text=Bonjour%20${encodeURIComponent(e.clientNameSnapshot || e.title)},%20je%20vous%20contacte%20suite%20à%20votre%20réservation%20Serenity%20Relax.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-xl bg-[#1DD1A1] text-white flex items-center justify-center hover:scale-110 transition shadow-lg shadow-[#1DD1A1]/20 z-20"
-                    title="Contacter sur WhatsApp"
-                   >
-                    <MessageCircle size={14}/>
-                   </a>
-                </div>
-                <div className="min-w-0 z-10">
-                  <div className="text-[10px] font-black truncate leading-tight uppercase tracking-tight text-white mb-0.5">{e.clientNameSnapshot || e.title}</div>
-                  <div className="text-[8px] text-[#54A0FF] font-black uppercase tracking-wider">{format(new Date(e.startTime), 'HH:mm')}</div>
-                </div>
-                <div className="absolute -right-2 -bottom-2 w-16 h-16 bg-[#54A0FF]/10 rounded-full blur-2xl group-hover:bg-[#54A0FF]/20 transition-colors"/>
-              </div>
-            )) : <div className="col-span-2 text-[10px] text-center py-4 text-white/20 italic font-bold">Aucun rendez-vous</div>}
-          </div>
-        </div>
-
-        {/* Saturation bar */}
-        <div className="mt-auto pt-4 border-t border-white/10">
-          <p className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-2">Saturation Planning</p>
-          <div className="flex items-center gap-4">
-            <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${saturation}%`, background: saturation > 80 ? '#f87171' : saturation > 50 ? '#fbbf24' : '#4ade80' }}/>
-            </div>
-            <span className="text-xs font-black">{saturation}%</span>
-          </div>
-        </div>
-      </aside>
 
       {/* ══ EVENT MODAL ══════════════════════════════════════════════════════ */}
       {evModal && (
-        <div className="fixed inset-0 bg-[#222F3E]/80 flex items-center justify-center z-50 p-4 backdrop-blur-md" onClick={() => setEvModal(null)}>
-          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-10 relative overflow-hidden border-2 border-[#54A0FF]/10" onClick={e => e.stopPropagation()}>
-            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#54A0FF] to-[#5F27CD]"/>
-            <div className="flex justify-between items-start mb-8">
+        <div className="fixed inset-0 bg-[#222F3E]/40 overflow-y-auto flex items-center justify-center z-50 p-6 backdrop-blur-xl transition-all duration-500" onClick={() => setEvModal(null)}>
+          <div className="bg-white/95 rounded-[3rem] shadow-[0_30px_100px_rgba(0,0,0,0.1)] w-full max-w-xl p-14 relative overflow-hidden border border-white/50" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-start mb-12">
               <div>
-                <h2 className="text-2xl font-serif font-medium text-[#222F3E] tracking-tighter">Gérer le créneau</h2>
-                <p className="text-[10px] font-bold text-[#576574] uppercase tracking-[0.2em] mt-1">Options de disponibilité</p>
+                <h2 className="text-3xl font-medium text-slate-900 tracking-tighter">Gestion Créneau</h2>
+                <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] mt-2 italic">{fmtFR(new Date(evModal.date))} à {evModal.time}</p>
               </div>
-              <button onClick={() => setEvModal(null)} className="bg-[#54A0FF]/10 p-3 rounded-2xl text-[#54A0FF] hover:bg-[#54A0FF] hover:text-white transition-all duration-300 transform hover:rotate-90"><X size={20}/></button>
+              <button onClick={() => setEvModal(null)} className="bg-slate-50 p-4 rounded-2xl text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all duration-300 shadow-sm"><X size={24}/></button>
             </div>
             {evStep === 'choice' ? (
-              <div className="grid grid-cols-2 gap-4">
-                <button onClick={() => setEvStep('book')} className="flex flex-col items-center justify-center gap-4 p-8 border border-[#54A0FF]/10 rounded-[2.5rem] bg-[#54A0FF]/5 hover:bg-gradient-to-br hover:from-[#54A0FF] hover:to-[#5F27CD] hover:text-white transition-all duration-500 group shadow-lg hover:shadow-[#54A0FF]/20 aspect-square">
-                  <div className="w-14 h-14 bg-white text-[#54A0FF] rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition shrink-0"><Users size={24}/></div>
+              <div className="grid grid-cols-2 gap-8">
+                <button onClick={() => setEvStep('book')} className="premium-card p-10 rounded-[2.5rem] flex flex-col items-center gap-6 group">
+                  <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-[1.75rem] flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 shadow-inner shadow-blue-100/50"><Users size={32}/></div>
                   <div className="text-center">
-                    <div className="font-black text-sm uppercase tracking-tight">Réserver</div>
-                    <div className="text-[9px] font-bold opacity-60 mt-1 uppercase tracking-[0.2em]">Client</div>
+                    <div className="font-black text-sm uppercase tracking-[0.1em] text-slate-900 group-hover:text-blue-600 transition-colors">Réserver Client</div>
+                    <div className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest">Nouveau ou existant</div>
                   </div>
                 </button>
-                <button onClick={saveBlock} className="flex flex-col items-center justify-center gap-4 p-8 border border-[#1DD1A1]/10 rounded-[2.5rem] bg-[#1DD1A1]/5 hover:bg-gradient-to-br hover:from-[#1DD1A1] hover:to-[#10AC84] hover:text-white transition-all duration-500 group shadow-lg hover:shadow-[#1DD1A1]/20 aspect-square">
-                  <div className="w-14 h-14 bg-white text-[#1DD1A1] rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition shrink-0"><Lock size={20}/></div>
+                <button onClick={saveBlock} className="premium-card p-10 rounded-[2.5rem] flex flex-col items-center gap-6 group">
+                  <div className="w-20 h-20 bg-slate-50 text-slate-400 rounded-[1.75rem] flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-all duration-500 shadow-inner shadow-slate-200/50"><Lock size={32}/></div>
                   <div className="text-center">
-                    <div className="font-black text-sm uppercase tracking-tight">Bloquer</div>
-                    <div className="text-[9px] font-bold opacity-60 mt-1 uppercase tracking-[0.2em]">Indispo</div>
+                    <div className="font-black text-sm uppercase tracking-[0.1em] text-slate-900 group-hover:text-slate-900 transition-colors">Bloquer</div>
+                    <div className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest">Temps personnel</div>
                   </div>
                 </button>
               </div>
             ) : (
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Nom du client</label>
-                  <input
-                    autoFocus value={evName}
-                    onChange={e => setEvName(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && saveBook()}
-                    className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all placeholder:text-[#576574]/40"
-                    placeholder="Tapez pour rechercher ou ajouter..."
-                  />
-                  {evName && clients.filter(c => `${c.firstName} ${c.lastName}`.toLowerCase().includes(evName.toLowerCase())).length > 0 && (
-                    <div className="max-h-32 overflow-y-auto border border-neutral-100 rounded-2xl bg-white shadow-sm mt-2 p-1">
-                      {clients.filter(c => `${c.firstName} ${c.lastName}`.toLowerCase().includes(evName.toLowerCase())).map(c => (
-                        <button key={c.id} onClick={() => setEvName(`${c.firstName} ${c.lastName}`)} className="w-full p-3 text-left hover:bg-[#54A0FF]/10 rounded-xl flex items-center justify-between group transition-colors">
-                          <div>
-                            <p className="text-[11px] font-black text-[#222F3E]">{c.firstName} {c.lastName}</p>
-                            <p className="text-[9px] font-bold text-[#576574] uppercase tracking-[0.2em]">{c.phone || c.email}</p>
-                          </div>
-                          <ChevronRight size={14} className="text-[#54A0FF] opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"/>
-                        </button>
-                      ))}
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Nom du client</label>
+                    <input
+                      autoFocus value={evName}
+                      onChange={e => setEvName(e.target.value)}
+                      className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all placeholder:text-[#576574]/40"
+                      placeholder="Nom Complet"
+                    />
+                    {evName && clients.filter(c => `${c.firstName} ${c.lastName}`.toLowerCase().includes(evName.toLowerCase())).length > 0 && (
+                      <div className="max-h-32 overflow-y-auto border border-neutral-100 rounded-2xl bg-white shadow-sm mt-2 p-1">
+                        {clients.filter(c => `${c.firstName} ${c.lastName}`.toLowerCase().includes(evName.toLowerCase())).map(c => (
+                          <button key={c.id} onClick={() => { setEvName(`${c.firstName} ${c.lastName}`); setEvEmail(c.email || ''); setEvPhone(c.phone || ''); }} className="w-full p-3 text-left hover:bg-[#54A0FF]/10 rounded-xl flex items-center justify-between group transition-colors">
+                            <div>
+                              <p className="text-[11px] font-black text-[#222F3E]">{c.firstName} {c.lastName}</p>
+                              <p className="text-[9px] font-bold text-[#576574] uppercase tracking-[0.2em]">{c.phone || c.email}</p>
+                            </div>
+                            <ChevronRight size={14} className="text-[#54A0FF] opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"/>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Email (Optionnel)</label>
+                      <input
+                        value={evEmail}
+                        onChange={e => setEvEmail(e.target.value)}
+                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"
+                      />
                     </div>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Tél (Optionnel)</label>
+                      <input
+                        value={evPhone}
+                        onChange={e => setEvPhone(e.target.value)}
+                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Date</label>
                     <div className="px-4 py-3 bg-[#54A0FF]/5 rounded-xl text-xs font-bold text-[#54A0FF]">{evModal.date}</div>
@@ -1427,11 +1399,18 @@ export default function TherapistDashboard() {
                     </div>
                     <div className="space-y-2">
                       <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Prestation</label>
-                      <input 
+                      <select 
                         value={editService}
-                        onChange={e => setEditService(e.target.value)}
-                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"
-                      />
+                        onChange={e => {
+                          const svc = SERVICES.find(s => s.name === e.target.value);
+                          setEditService(e.target.value);
+                          if(svc && svc.price) setEditPrice(svc.price);
+                        }}
+                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all appearance-none"
+                      >
+                         <option value="" disabled>Choisir une prestation</option>
+                         {SERVICES.map(s => <option key={s.id} value={s.name}>{s.name.split(' - ')[0]}</option>)}
+                      </select>
                     </div>
                     <div className="space-y-2">
                       <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Prix (CHF)</label>
@@ -1457,11 +1436,11 @@ export default function TherapistDashboard() {
       {/* ══ CONFIG MODAL ═════════════════════════════════════════════════════ */}
       {cfgOpen && (
         <div className="fixed inset-0 bg-[#222F3E]/80 flex items-center justify-center z-50 p-4 backdrop-blur-md" onClick={() => setCfgOpen(false)}>
-          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-10 relative overflow-hidden border-2 border-[#FECA57]/10" onClick={e => e.stopPropagation()}>
+          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-10 relative overflow-hidden border-2 border-[#FECA57]/10" onClick={e => setCfgOpen(false)}>
             <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#FECA57] to-[#FF9F43]"/>
             <div className="flex justify-between items-start mb-8">
               <div>
-                <h2 className="text-2xl font-serif font-medium text-[#222F3E] tracking-tighter">Horaires Types</h2>
+                <h2 className="text-2xl font-medium text-[#222F3E] tracking-tighter">Horaires Types</h2>
                 <p className="text-[10px] font-bold text-[#576574] uppercase tracking-[0.2em] mt-1">Configuration des créneaux</p>
               </div>
               <button onClick={() => setCfgOpen(false)} className="bg-[#FECA57]/10 p-3 rounded-2xl text-[#FF9F43] hover:bg-[#FECA57] hover:text-white transition-all"><X size={20}/></button>
@@ -1508,7 +1487,7 @@ export default function TherapistDashboard() {
             <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#1DD1A1] to-[#10AC84]"/>
             <div className="flex justify-between items-start mb-8">
               <div>
-                <h2 className="text-2xl font-serif font-medium text-[#222F3E] tracking-tighter">Nouveau Patient</h2>
+                <h2 className="text-2xl font-medium text-[#222F3E] tracking-tighter">Nouveau Patient</h2>
                 <p className="text-xs font-bold text-[#576574] uppercase tracking-[0.2em] mt-1">Création de dossier</p>
               </div>
               <button onClick={() => setClModal(false)} className="bg-[#1DD1A1]/10 p-3 rounded-2xl text-[#1DD1A1] hover:bg-[#1DD1A1] hover:text-white transition-all"><X size={20}/></button>
@@ -1569,7 +1548,7 @@ export default function TherapistDashboard() {
                    {(selectedClient.firstName?.[0] || '') + (selectedClient.lastName?.[0] || '')}
                  </div>
                  <div>
-                   <h2 className="text-3xl font-serif font-medium tracking-tighter">{selectedClient.firstName} {selectedClient.lastName}</h2>
+                   <h2 className="text-3xl font-medium tracking-tighter">{selectedClient.firstName} {selectedClient.lastName}</h2>
                    <p className="text-xs font-bold text-white/60 uppercase tracking-[0.2em] mt-1">Dossier Patient #{selectedClient.id?.slice(0, 8)}</p>
                  </div>
                </div>
@@ -1580,7 +1559,7 @@ export default function TherapistDashboard() {
                <div className="space-y-8">
                   <div>
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-lg font-serif font-medium text-[#222F3E] tracking-tighter">Informations</h3>
+                      <h3 className="text-lg font-medium text-[#222F3E] tracking-tighter">Informations</h3>
                       <button onClick={() => setIsEditingClient(!isEditingClient)} className="text-xs font-black text-[#5F27CD] uppercase tracking-[0.2em] hover:underline">
                         {isEditingClient ? 'Annuler' : 'Modifier'}
                       </button>
@@ -1630,7 +1609,7 @@ export default function TherapistDashboard() {
                {/* Appointments Columns */}
                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-10">
                  <div>
-                    <h3 className="text-lg font-serif font-medium text-[#222F3E] tracking-tighter mb-6 flex items-center gap-3"><Clock size={20} className="text-[#54A0FF]"/> Futur</h3>
+                    <h3 className="text-lg font-medium text-[#222F3E] tracking-tighter mb-6 flex items-center gap-3"><Clock size={20} className="text-[#54A0FF]"/> Futur</h3>
                     <div className="space-y-4">
                       {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) >= startOfDay(new Date())).length > 0 ? (
                         appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) >= startOfDay(new Date())).map(a => (
@@ -1651,7 +1630,7 @@ export default function TherapistDashboard() {
                  </div>
 
                  <div>
-                    <h3 className="text-lg font-serif font-medium text-[#222F3E] tracking-tighter mb-6 flex items-center gap-3"><History size={20} className="text-[#5F27CD]"/> Historique</h3>
+                    <h3 className="text-lg font-medium text-[#222F3E] tracking-tighter mb-6 flex items-center gap-3"><History size={20} className="text-[#5F27CD]"/> Historique</h3>
                     <div className="space-y-4">
                       {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) < startOfDay(new Date())).length > 0 ? (
                         appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) < startOfDay(new Date())).map(a => (

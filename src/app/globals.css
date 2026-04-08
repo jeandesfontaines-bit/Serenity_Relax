@@ -56,7 +56,7 @@
     background: linear-gradient(160deg, #F0F4F8 0%, #FAFBFD 40%, #F8F5F0 100%);
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif font-medium tracking-tight;
+    @apply font-sans font-medium tracking-tight;
   }
   p, span, div, li, input, textarea, button {
     @apply font-sans;
