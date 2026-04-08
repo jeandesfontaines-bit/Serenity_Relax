@@ -89,6 +89,7 @@ export default function TherapistDashboard() {
   const [editName, setEditName] = useState('');
   const [editService, setEditService] = useState('');
   const [editPrice, setEditPrice] = useState(150);
+  const [isSending, setIsSending] = useState(false);
 
   // Clients state
   const [clients,    setClients]    = useState<any[]>([]);
@@ -221,6 +222,37 @@ export default function TherapistDashboard() {
     } catch (err) {
       console.error(err);
       alert("Erreur lors de l'enregistrement");
+    }
+  };
+
+  const resendEmail = async () => {
+    if (!selectedAppt) return;
+    setIsSending(true);
+    try {
+      const resp = await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          appointmentId: selectedAppt.id,
+          clientName: selectedAppt.clientNameSnapshot || selectedAppt.title,
+          clientEmail: selectedAppt.clientEmail,
+          clientPhone: selectedAppt.phone,
+          serviceName: selectedAppt.serviceName,
+          startTime: selectedAppt.startTime,
+          magicToken: selectedAppt.magicToken,
+          clientId: selectedAppt.clientId
+        })
+      });
+      if (resp.ok) {
+        alert("Confirmation renvoyée avec succès !");
+      } else {
+        alert("Erreur lors de l'envoi de l'email.");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Erreur réseau");
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -1369,6 +1401,13 @@ export default function TherapistDashboard() {
                       className="w-full py-4 bg-gradient-to-r from-[#54A0FF] to-[#0ABDE3] text-white rounded-2xl font-bold text-sm shadow-xl shadow-[#54A0FF]/25 hover:scale-[1.02] transition-all"
                     >
                       Modifier le rendez-vous
+                    </button>
+                    <button 
+                      onClick={resendEmail} 
+                      disabled={isSending || !selectedAppt.clientEmail}
+                      className="w-full py-4 bg-white border border-neutral-100 text-neutral-900 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-neutral-50 transition-all flex items-center justify-center gap-3"
+                    >
+                      {isSending ? 'Envoi...' : 'Renvoyer Confirmation'}
                     </button>
                     <button onClick={deleteEvent} className="w-full py-4 text-xs font-black text-[#FF6B6B] uppercase tracking-widest hover:bg-[#FF6B6B]/10 rounded-2xl transition">
                       Supprimer le rendez-vous

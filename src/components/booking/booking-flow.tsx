@@ -158,6 +158,8 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
       const duration = durationMatch ? parseInt(durationMatch[0]) : 60;
       const endTime = addMinutes(new Date(startTimeStr), duration);
 
+      const invoiceId = `INV-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+      
       const appointmentData = {
         id: appointmentId,
         clientId: finalUserId,
@@ -172,6 +174,8 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         firstName: formData.firstName,
         lastName: formData.lastName,
         clientNameSnapshot: `${formData.firstName} ${formData.lastName}`.trim(),
+        clientEmail: formData.email, // Added email
+        magicToken: magicToken, // Added magicToken
         phone: formData.phone,
         createdAt: serverTimestamp()
       };
@@ -186,9 +190,30 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         updatedAt: serverTimestamp()
       };
 
+      const invoiceData = {
+        id: invoiceId,
+        invoiceNumber: invoiceId,
+        clientId: finalUserId,
+        clientNameSnapshot: appointmentData.clientNameSnapshot,
+        issueDate: format(new Date(), 'yyyy-MM-dd'),
+        dueDate: format(new Date(), 'yyyy-MM-dd'),
+        totalAmount: selectedService!.price || 0,
+        status: 'Pending',
+        appointmentId: appointmentId,
+        items: [
+          {
+            description: selectedService!.name,
+            amount: selectedService!.price || 0,
+            quantity: 1
+          }
+        ],
+        createdAt: serverTimestamp()
+      };
+
       await Promise.all([
         setDoc(doc(firestore, 'appointments', appointmentId), appointmentData),
         setDoc(doc(firestore, 'clients', finalUserId), clientData, { merge: true }),
+        setDoc(doc(firestore, 'invoices', invoiceId), invoiceData),
         setDoc(doc(firestore, 'availability', appointmentId), {
            type: 'booked',
            date: format(selectedDate!, 'yyyy-MM-dd'),

@@ -41,6 +41,36 @@ export default function InvoicingManagement() {
     updateDocumentNonBlocking(doc(firestore, 'invoices', id), { status: nextStatus });
   };
 
+  const [selectedInv, setSelectedInv] = useState<any | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editAmount, setEditAmount] = useState(0);
+  const [editStatus, setEditStatus] = useState('');
+
+  const handleEdit = (inv: any) => {
+    setSelectedInv(inv);
+    setEditName(inv.clientNameSnapshot);
+    setEditAmount(inv.totalAmount);
+    setEditStatus(inv.status);
+    setIsEditing(true);
+  };
+
+  const saveInvoice = async () => {
+    if (!selectedInv || !firestore) return;
+    try {
+      await updateDocumentNonBlocking(doc(firestore, 'invoices', selectedInv.id), {
+        clientNameSnapshot: editName,
+        totalAmount: Number(editAmount),
+        status: editStatus
+      });
+      setIsEditing(false);
+      setSelectedInv(null);
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la sauvegarde.");
+    }
+  };
+
   return (
     <div className="flex min-h-screen w-full bg-[#F7F7F2] pt-24">
       <main className="p-10 space-y-10 max-w-7xl mx-auto w-full">
@@ -116,7 +146,10 @@ export default function InvoicingManagement() {
                         {inv.status === 'Paid' ? 'Reglée' : 'En Attente'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="pr-10 text-right">
+                    <TableCell className="pr-10 text-right space-x-2">
+                      <Button variant="ghost" className="rounded-full h-10 px-4 text-xs font-bold uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all" onClick={() => handleEdit(inv)}>
+                        Modifier
+                      </Button>
                       <Button variant="ghost" className="rounded-full h-12 w-12 hover:bg-neutral-900 hover:text-white transition-all duration-500">
                         <Download className="h-5 w-5" />
                       </Button>
@@ -127,7 +160,77 @@ export default function InvoicingManagement() {
             </Table>
           </CardContent>
         </Card>
+
+        {/* Edit Modal Overlay */}
+        {isEditing && (
+          <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+            <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-300">
+              <div className="p-10 space-y-8">
+                <header className="flex items-center justify-between">
+                  <h3 className="text-2xl font-serif font-bold text-neutral-900">Modifier la Facture</h3>
+                  <Button variant="ghost" size="icon" className="rounded-full" onClick={() => setIsEditing(false)}>
+                    <X className="h-5 w-5" />
+                  </Button>
+                </header>
+
+                <div className="space-y-6">
+                   <div className="space-y-2">
+                    <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">Patient</label>
+                    <input 
+                      value={editName}
+                      onChange={e => setEditName(e.target.value)}
+                      className="w-full px-6 py-4 bg-neutral-50 border-none rounded-2xl font-sans font-medium outline-none focus:ring-2 focus:ring-neutral-900 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">Montant (CHF)</label>
+                    <input 
+                      type="number"
+                      value={editAmount}
+                      onChange={e => setEditAmount(Number(e.target.value))}
+                      className="w-full px-6 py-4 bg-neutral-50 border-none rounded-2xl font-sans font-medium outline-none focus:ring-2 focus:ring-neutral-900 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">Statut</label>
+                    <select 
+                      value={editStatus}
+                      onChange={e => setEditStatus(e.target.value)}
+                      className="w-full px-6 py-4 bg-neutral-50 border-none rounded-2xl font-sans font-medium outline-none focus:ring-2 focus:ring-neutral-900 transition-all"
+                    >
+                      <option value="Pending">En Attente</option>
+                      <option value="Paid">Reglée</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 pt-4">
+                  <Button variant="ghost" className="flex-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em]" onClick={() => setIsEditing(false)}>Annuler</Button>
+                  <Button className="flex-1 rounded-full bg-neutral-900 text-white font-black text-[10px] uppercase tracking-[0.2em] py-6 shadow-xl" onClick={saveInvoice}>Enregistrer</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
 }
+
+const X = ({ className, ...props }: any) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="24" 
+    height="24" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+    {...props}
+  >
+    <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+  </svg>
+);
