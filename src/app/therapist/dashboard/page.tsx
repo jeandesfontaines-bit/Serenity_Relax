@@ -665,12 +665,11 @@ export default function TherapistDashboard() {
                 <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <Cog size={12}/> Outils de Bord
                 </h4>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   {[
                     { e: '📅', l: 'Agenda', c: 'bg-blue-50 text-blue-600', fn: () => { setTab('scheduler'); setView('day'); } },
                     { e: '👥', l: 'Patients', c: 'bg-violet-50 text-violet-600', fn: () => setTab('clients') },
                     { e: '💰', l: 'Compta', c: 'bg-amber-50 text-amber-600', fn: () => setTab('accounting') },
-                    { e: '⚙️', l: 'Stats', c: 'bg-slate-50 text-slate-600', fn: () => setTab('dashboard') },
                   ].map((a, i) => (
                     <button key={i} onClick={a.fn} className="p-6 rounded-3xl border border-transparent hover:border-slate-100 hover:bg-slate-50 transition-all text-center group">
                       <div className={`w-14 h-14 rounded-2xl ${a.c} flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition duration-300`}>{a.e}</div>
@@ -1010,9 +1009,15 @@ export default function TherapistDashboard() {
           { id: 'scheduler',  Icon: CalendarRange,   label: 'Agenda' },
           { id: 'clients',    Icon: Users,           label: 'Patients' },
           { id: 'accounting', Icon: CreditCard,      label: 'Compta' },
-          { id: 'settings',   Icon: Settings,        label: 'Réglages' },
+          { id: 'settings',   Icon: Settings,        label: 'Créneaux' },
         ] as const).map(n => (
-          <button key={n.id} onClick={() => setTab(n.id)} className={`nav-pill ${tab === n.id ? 'active' : ''}`}>
+          <button key={n.id} onClick={() => {
+            if (n.id === 'settings') {
+              setCfgOpen(true);
+            } else {
+              setTab(n.id as any);
+            }
+          }} className={`nav-pill ${tab === n.id ? 'active' : ''}`}>
             <n.Icon size={20} strokeWidth={tab === n.id ? 2.5 : 1.8} style={{ color: tab === n.id ? '#2D5BFF' : '#94a3b8' }}/>
             <span style={{ fontSize: 8, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em', color: tab === n.id ? '#2D5BFF' : '#94a3b8' }}>{n.label}</span>
           </button>
@@ -1102,7 +1107,11 @@ export default function TherapistDashboard() {
         </div>
 
         {/* Block mode toggle */}
-        <button onClick={() => setBlockMode(!blockMode)}
+        <button onClick={() => {
+            const nextMode = !blockMode;
+            setBlockMode(nextMode);
+            if (nextMode) setView('month');
+          }}
           className={`w-full py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-wider transition-all border ${blockMode ? 'bg-green-500 border-transparent shadow-lg' : 'bg-white/5 border-white/20 hover:bg-white/10'}`}>
           {blockMode ? <CheckCircle2 size={14}/> : <Unlock size={14}/>}
           {blockMode ? "Terminer l'édition" : 'Mode Édition Dates'}
