@@ -77,16 +77,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
   useEffect(() => {
     if (!firestore) return;
     
-    // Listen to availability (locks & day openings)
+    // Listen to availability (locks, day openings & booked slots)
     const unsubAvail = onSnapshot(collection(firestore, 'availability'), (snap: any) => {
       const slots = snap.docs.map((d: any) => ({ id: d.id, ...d.data() }));
       setAvailableSlots(slots);
-    });
-
-    // Listen to appointments (to avoid double booking)
-    const unsubAppts = onSnapshot(collection(firestore, 'appointments'), (snap: any) => {
-      const appts = snap.docs.map((d: any) => ({ id: d.id, ...d.data() }));
-      setAppointments(appts);
     });
 
     // Listen to global config (slots)
@@ -96,7 +90,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
     return () => {
       unsubAvail();
-      unsubAppts();
       unsubConfig();
     };
   }, [firestore]);
@@ -195,7 +188,13 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
       await Promise.all([
         setDoc(doc(firestore, 'appointments', appointmentId), appointmentData),
-        setDoc(doc(firestore, 'clients', finalUserId), clientData, { merge: true })
+        setDoc(doc(firestore, 'clients', finalUserId), clientData, { merge: true }),
+        setDoc(doc(firestore, 'availability', appointmentId), {
+           type: 'booked',
+           date: format(selectedDate!, 'yyyy-MM-dd'),
+           time: selectedTime,
+           appointmentId: appointmentId
+        })
       ]);
 
       fetch('/api/notify', {
@@ -393,10 +392,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         // Calculated slots count: base defined in config - (blocked + already booked)
                         const slotsForDay = !isOpened ? [] : baseConfigSlots.filter(t => {
                           const isBlocked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'blocked');
-                          const isBooked = appointments.some(a => {
-                             if (!a.startTime) return false;
-                             return a.startTime.includes(`${dateStr}T${t}`);
-                          });
+                          const isBooked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'booked');
                           return !isBlocked && !isBooked;
                         });
 
@@ -444,7 +440,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                           
                           const freeSlots = baseConfigSlots.filter(t => {
                             const isBlocked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'blocked');
-                            const isBooked = appointments.some(a => a.startTime && a.startTime.includes(`${dateStr}T${t}`));
+                            const isBooked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'booked');
                             return !isBlocked && !isBooked;
                           });
 
@@ -495,13 +491,16 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 </div>
 
                 <div className="space-y-10">
-                  <div className="grid grid-cols-1 gap-6">
+                  <form onSubmit={(e) => e.preventDefault()} autoComplete="off" data-lpignore="true" data-1p-ignore="true" className="grid grid-cols-1 gap-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                        <Label className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">PRÉNOM *</Label>
+                        <Label htmlFor="booking-fname" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">PRÉNOM *</Label>
                         <Input 
-                          name="firstName"
-                          autoComplete="given-name"
+                          id="booking-fname"
+                          name="booking_fname"
+                          autoComplete="off"
+                          spellCheck="false"
+                          data-1p-ignore="true"
                           value={formData.firstName} 
                           onChange={(e: any) => setFormData({...formData, firstName: e.target.value})} 
                           className="h-10 rounded-none bg-transparent border-none px-0 font-serif text-[1.2rem] italic shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
@@ -509,10 +508,13 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         />
                       </div>
                       <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                        <Label className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">NOM *</Label>
+                        <Label htmlFor="booking-lname" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">NOM *</Label>
                         <Input 
-                          name="lastName"
-                          autoComplete="family-name"
+                          id="booking-lname"
+                          name="booking_lname"
+                          autoComplete="off"
+                          spellCheck="false"
+                          data-1p-ignore="true"
                           value={formData.lastName} 
                           onChange={(e: any) => setFormData({...formData, lastName: e.target.value})} 
                           className="h-10 rounded-none bg-transparent border-none px-0 font-serif text-[1.2rem] italic shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
@@ -521,11 +523,14 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                       </div>
                     </div>
                     <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                      <Label className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">EMAIL *</Label>
+                      <Label htmlFor="booking-mail" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">EMAIL *</Label>
                       <Input 
-                        type="email" 
-                        name="email"
-                        autoComplete="email"
+                        id="booking-mail"
+                        type="text" 
+                        name="booking_mail"
+                        autoComplete="off"
+                        spellCheck="false"
+                        data-1p-ignore="true"
                         value={formData.email} 
                         onChange={(e: any) => setFormData({...formData, email: e.target.value})} 
                         className="h-10 rounded-none bg-transparent border-none px-0 font-sans font-medium text-[1.05rem] shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
@@ -533,18 +538,21 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                       />
                     </div>
                     <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                      <Label className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">MOBILE *</Label>
+                      <Label htmlFor="booking-tel" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">MOBILE *</Label>
                       <Input 
-                        type="tel" 
-                        name="phone"
-                        autoComplete="tel"
+                        id="booking-tel"
+                        type="text" 
+                        name="booking_tel"
+                        autoComplete="off"
+                        spellCheck="false"
+                        data-1p-ignore="true"
                         value={formData.phone} 
                         onChange={(e: any) => setFormData({...formData, phone: e.target.value})} 
                         className="h-10 rounded-none bg-transparent border-none px-0 font-sans font-medium text-[1.05rem] shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
                         placeholder="+41 78 000 00 00" 
                       />
                     </div>
-                  </div>
+                  </form>
 
                   <div className="bg-[#FAF9F6] p-6 sm:p-8 rounded-3xl">
                      <div className="space-y-4 text-[0.8rem] leading-relaxed text-neutral-500 font-sans mb-6">
@@ -565,7 +573,12 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
                   <button 
                     disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !acceptedConditions} 
-                    onClick={() => setStep(4)} 
+                    onClick={() => {
+                        if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+                            document.activeElement.blur();
+                        }
+                        setTimeout(() => setStep(4), 100);
+                    }} 
                     className="w-full inline-flex items-center justify-center px-6 py-4 bg-neutral-900 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_10px_30px_rgba(0,0,0,0.1)] gap-3"
                   >
                     VÉRIFIER LE RÉCAPITULATIF <ChevronRight size={16} />

@@ -23,10 +23,10 @@ service cloud.firestore {
       allow write: if isTherapist();
     }
 
-    // Availability rules (for the therapist dashboard)
+    // Availability rules (for the therapist dashboard & public booking locks)
     match /availability/{slotId} {
       allow read: if true; // Everyone can see available slots
-      allow write: if isTherapist();
+      allow write: if isTherapist() || (request.auth != null && request.resource.data.type == 'booked');
     }
     
     // Settings rules
