@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import { useFirestore, useCollection, useUser, useMemoFirebase } from '@/firebase';
-import { collection, query, where, orderBy } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, orderBy } from 'firebase/firestore';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -25,15 +26,47 @@ const WELLNESS_TIPS = [
 export default function ClientPortal() {
   const firestore = useFirestore();
   const { user, isUserLoading } = useUser();
+  const [sessionClientId, setSessionClientId] = useState<string | null>(null);
+  const [clientData, setClientData] = useState<any>(null);
+  const [isClientLoading, setIsClientLoading] = useState(true);
+
+  useEffect(() => {
+    // Check session storage
+    const storedId = sessionStorage.getItem('serenity_client_id');
+    setSessionClientId(storedId);
+
+    // If we have a stored ID, fetch the client data
+    async function fetchClient() {
+      if (firestore && storedId) {
+        try {
+          const clientDoc = await getDoc(doc(firestore, 'clients', storedId));
+          if (clientDoc.exists()) {
+            setClientData({ id: clientDoc.id, ...clientDoc.data() });
+          }
+        } catch (err) {
+          console.error("Error fetching client data:", err);
+        } finally {
+          setIsClientLoading(false);
+        }
+      } else {
+        setIsClientLoading(false);
+      }
+    }
+
+    fetchClient();
+  }, [firestore]);
+
+  const effectiveClientId = user?.uid || sessionClientId;
+  const effectiveName = user?.displayName?.split(' ')[0] || clientData?.firstName || 'Client';
 
   const appointmentsQuery = useMemoFirebase(() => {
-    if (!firestore || !user) return null;
+    if (!firestore || !effectiveClientId) return null;
     return query(
       collection(firestore, 'appointments'),
-      where('clientId', '==', user.uid),
+      where('clientId', '==', effectiveClientId),
       orderBy('startTime', 'desc')
     );
-  }, [firestore, user]);
+  }, [firestore, effectiveClientId]);
 
   const { data: appointments, isLoading: aptLoading } = useCollection(appointmentsQuery);
 
@@ -41,9 +74,11 @@ export default function ClientPortal() {
   const upcoming = appointments?.filter(apt => isAfter(new Date(apt.startTime), now)) || [];
   const past = appointments?.filter(apt => !isAfter(new Date(apt.startTime), now)) || [];
 
-  if (isUserLoading) return <div className="min-h-screen flex items-center justify-center bg-[#F7F7F2]"><Loader2 className="animate-spin text-neutral-300" /></div>;
+  const isLoading = isUserLoading || isClientLoading;
 
-  if (!user) {
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center bg-[#F7F7F2]"><Loader2 className="animate-spin text-neutral-300" /></div>;
+
+  if (!effectiveClientId) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F7F7F2] p-8 text-center">
         <Navbar />
@@ -69,7 +104,7 @@ export default function ClientPortal() {
               <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-400">VOTRE SANCTUAIRE</span>
             </div>
             <h1 className="text-6xl font-serif font-bold text-neutral-900 leading-none">
-              Bienvenue, <span className="text-neutral-500 italic font-light">{user.displayName?.split(' ')[0] || 'Client'}</span>
+              Bienvenue, <span className="text-neutral-500 italic font-light">{effectiveName}</span>
             </h1>
             <p className="text-neutral-500 mt-6 italic font-sans text-lg">Retrouvez l'historique de vos soins et vos avantages fidélité.</p>
           </div>

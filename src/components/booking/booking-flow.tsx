@@ -278,14 +278,14 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         <div className="space-y-8 mt-4 lg:mt-12 flex-1">
           <AnimatePresence>
             {selectedService && step > 1 && (
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                <motion.div key="summary-service" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                   <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">RITUEL SÉLECTIONNÉ</p>
                   <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900">{selectedService.name.split(' - ')[0]}</p>
                   <p className="text-[0.8rem] font-sans text-neutral-500 mt-1">{selectedService.duration} • CHF {selectedService.price}</p>
                 </motion.div>
             )}
             {selectedDate && selectedTime && step > 2 && (
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="pt-6 border-t border-neutral-200/60 mt-6">
+                <motion.div key="summary-datetime" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="pt-6 border-t border-neutral-200/60 mt-6">
                   <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">DATE & HEURE</p>
                   <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900 capitalize">{format(selectedDate, 'EEEE d MMMM', { locale: fr })}</p>
                   <p className="text-[0.8rem] font-sans text-neutral-500 mt-1">à {selectedTime}</p>

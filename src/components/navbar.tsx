@@ -1,13 +1,13 @@
-
 'use client';
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, LogOut, User as UserIcon, ShieldCheck } from 'lucide-react';
-import { useUser, useAuth } from '@/firebase';
+import { Menu, X, LogOut, User as UserIcon, ShieldCheck, Sparkles } from 'lucide-react';
+import { useUser, useAuth, useFirestore } from '@/firebase';
 import { signOut } from 'firebase/auth';
-import { usePathname } from 'next/navigation';
+import { doc, getDoc } from 'firebase/firestore';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface NavbarProps {
   onBookingClick?: () => void;
@@ -16,20 +16,40 @@ interface NavbarProps {
 export function Navbar({ onBookingClick }: NavbarProps) {
   const { user } = useUser();
   const auth = useAuth();
+  const firestore = useFirestore();
   const pathname = usePathname();
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [sessionClientId, setSessionClientId] = useState<string | null>(null);
+  const [clientName, setClientName] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    const storedId = sessionStorage.getItem('serenity_client_id');
+    setSessionClientId(storedId);
+
+    if (storedId && firestore) {
+      getDoc(doc(firestore, 'clients', storedId)).then(snap => {
+        if (snap.exists()) {
+          setClientName(snap.data().firstName);
+        }
+      });
+    }
+  }, [firestore]);
 
   if (!mounted) return null;
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth);
+      if (auth.currentUser) {
+        await signOut(auth);
+      }
+      sessionStorage.removeItem('serenity_client_id');
+      setSessionClientId(null);
+      setClientName(null);
       setIsMenuOpen(false);
+      router.push('/');
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -38,8 +58,16 @@ export function Navbar({ onBookingClick }: NavbarProps) {
   const isTherapistArea = pathname?.startsWith('/therapist');
   const isLoginPage = pathname === '/login';
 
-  // Check if current user is the therapist
   const isTherapist = user && user.email === 'jean.desfontaines@gmail.com';
+  const effectiveUser = user && !user.isAnonymous ? {
+    name: user.displayName?.split(' ')[0] || 'Profil',
+    photo: user.photoURL,
+    type: isTherapist ? 'therapist' : 'client'
+  } : sessionClientId ? {
+    name: clientName || 'Client',
+    photo: null,
+    type: 'client'
+  } : null;
 
   const adminLinks = [
     { id: "dashboard", label: "Accueil", href: "/therapist/dashboard" },
@@ -54,7 +82,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
       <nav className="max-w-[1200px] xl:max-w-6xl mx-auto bg-white/80 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.05)] rounded-full px-6 py-2.5 md:px-10 md:py-3.5">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-baseline gap-2 md:gap-3 cursor-pointer group">
-            <span className="whitespace-nowrap font-sans font-black text-[0.75rem] tracking-[0.2em] text-neutral-900 md:text-[0.85rem] lg:text-[1rem]">Serenity Relax Therapy</span>
+            <span className="whitespace-nowrap font-sans font-black text-[0.75rem] tracking-[0.2em] text-neutral-900 md:text-[0.85rem] lg:text-[1rem]">Serenity Relax</span>
             <span className="whitespace-nowrap font-cursive text-[1.2rem] text-neutral-600 md:text-[1.4rem] lg:text-[1.6rem]">by João</span>
           </Link>
           
@@ -82,6 +110,15 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                   </Link>
                 )}
 
+                {!isTherapist && effectiveUser && (
+                  <Link 
+                    href="/client/portal" 
+                    className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 hover:opacity-70 transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-2"
+                  >
+                    <Sparkles size={14} className="text-neutral-400" /> Mon Sanctuaire
+                  </Link>
+                )}
+
                 <button 
                   onClick={onBookingClick}
                   className="whitespace-nowrap flex items-center justify-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-5 py-2 rounded-full border border-neutral-900 md:text-[0.7rem] lg:text-[0.75rem] text-neutral-900 hover:bg-neutral-900 hover:text-white"
@@ -93,16 +130,16 @@ export function Navbar({ onBookingClick }: NavbarProps) {
 
             <div className="h-6 w-[1px] bg-neutral-200" />
 
-            {user && !user.isAnonymous ? (
+            {effectiveUser ? (
               <div className="flex items-center gap-3">
                 <div className="flex flex-col items-end justify-center">
-                   <span className="whitespace-nowrap text-[0.6rem] md:text-[0.65rem] uppercase tracking-widest font-black text-neutral-900 leading-none mb-1">{user.displayName?.split(' ')[0] || 'Profil'}</span>
+                   <span className="whitespace-nowrap text-[0.6rem] md:text-[0.65rem] uppercase tracking-widest font-black text-neutral-900 leading-none mb-1">{effectiveUser.name}</span>
                    <button onClick={handleSignOut} className="whitespace-nowrap text-[0.55rem] md:text-[0.6rem] uppercase tracking-widest font-bold text-rose-500 hover:text-rose-600 transition-colors leading-none">Déconnexion</button>
                 </div>
-                {user.photoURL ? (
-                  <img src={user.photoURL} alt="" className="w-9 h-9 rounded-full border border-neutral-100 shadow-sm object-cover" />
+                {effectiveUser.photo ? (
+                  <img src={effectiveUser.photo} alt="" className="w-9 h-9 rounded-full border border-neutral-100 shadow-sm object-cover" />
                 ) : (
-                  <div className="w-9 h-9 rounded-full bg-neutral-900 flex items-center justify-center text-white">
+                  <div className="w-9 h-9 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg">
                     <UserIcon size={14} />
                   </div>
                 )}
@@ -143,6 +180,13 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                       Dashboard Administrateur
                     </Link>
                   )}
+                  
+                  {effectiveUser && effectiveUser.type === 'client' && (
+                    <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.7rem] lg:text-[0.75rem]">
+                      Mon Sanctuaire
+                    </Link>
+                  )}
+
                   <button 
                     onClick={() => { setIsMenuOpen(false); onBookingClick?.(); }} 
                     className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-2.5 w-full md:text-[0.7rem] lg:text-[0.75rem]"
@@ -150,12 +194,17 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                     Réserver
                   </button>
                   
-                  {!user || user.isAnonymous ? (
+                  {!effectiveUser ? (
                     <Link href="/login" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 pt-4 border-t border-neutral-100">
                       Connexion
                     </Link>
                   ) : (
-                    <button onClick={handleSignOut} className="text-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-rose-500 pt-4 border-t border-neutral-100 md:text-[0.7rem] lg:text-[0.75rem]">Déconnexion</button>
+                    <div className="pt-4 border-t border-neutral-100 flex flex-col items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[0.65rem] font-black uppercase tracking-widest">{effectiveUser.name}</span>
+                      </div>
+                      <button onClick={handleSignOut} className="text-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-rose-500 md:text-[0.7rem] lg:text-[0.75rem]">Déconnexion</button>
+                    </div>
                   )}
                 </>
               )}
