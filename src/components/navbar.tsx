@@ -79,11 +79,11 @@ export function Navbar({ onBookingClick }: NavbarProps) {
 
   return (
     <div className="absolute top-6 left-0 right-0 z-40 px-6">
-      <nav className="max-w-[1200px] xl:max-w-6xl mx-auto bg-white/80 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.05)] rounded-full px-6 py-2.5 md:px-10 md:py-3.5">
+      <nav className="max-w-[1200px] xl:max-w-6xl mx-auto bg-white/70 backdrop-blur-2xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.06)] rounded-full px-6 py-2.5 md:px-10 md:py-3.5">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-baseline gap-2 md:gap-3 cursor-pointer group">
-            <span className="whitespace-nowrap font-sans font-black text-[0.75rem] tracking-[0.2em] text-neutral-900 md:text-[0.85rem] lg:text-[1rem]">Serenity Relax</span>
-            <span className="whitespace-nowrap font-cursive text-[1.2rem] text-neutral-600 md:text-[1.4rem] lg:text-[1.6rem]">by João</span>
+            <span className="whitespace-nowrap font-sans font-black text-[0.75rem] tracking-[0.2em] text-[#222F3E] md:text-[0.85rem] lg:text-[1rem]">Serenity Relax</span>
+            <span className="whitespace-nowrap font-cursive text-[1.2rem] text-[#5F27CD] md:text-[1.4rem] lg:text-[1.6rem]">by João</span>
           </Link>
           
           <div className="hidden md:flex items-center gap-6 lg:gap-8">
@@ -93,7 +93,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                   <Link 
                     key={link.id} 
                     href={link.href} 
-                    className={`whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-colors md:text-[0.7rem] lg:text-[0.75rem] ${pathname === link.href ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'}`}
+                    className={`whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-colors md:text-[0.7rem] lg:text-[0.75rem] ${pathname === link.href ? 'text-[#54A0FF]' : 'text-[#576574] hover:text-[#222F3E]'}`}
                   >
                     {link.label}
                   </Link>
@@ -104,7 +104,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                 {isTherapist && (
                   <Link 
                     href="/therapist/dashboard" 
-                    className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-amber-600 hover:text-amber-700 transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-1.5"
+                    className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#5F27CD] hover:text-[#5F27CD]/80 transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-1.5"
                   >
                     <ShieldCheck size={14} /> Dashboard
                   </Link>
@@ -113,33 +113,34 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                 {!isTherapist && effectiveUser && (
                   <Link 
                     href="/client/portal" 
-                    className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 hover:opacity-70 transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-2"
+                    className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] hover:text-[#54A0FF] transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-2"
                   >
-                    <Sparkles size={14} className="text-neutral-400" /> Mon Sanctuaire
+                    <Sparkles size={14} className="text-[#FECA57]" /> Mon Sanctuaire
                   </Link>
                 )}
 
                 <button 
                   onClick={onBookingClick}
-                  className="whitespace-nowrap flex items-center justify-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-5 py-2 rounded-full border border-neutral-900 md:text-[0.7rem] lg:text-[0.75rem] text-neutral-900 hover:bg-neutral-900 hover:text-white"
+                  className="whitespace-nowrap flex items-center justify-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-5 py-2 rounded-full md:text-[0.7rem] lg:text-[0.75rem] text-white"
+                  style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)', boxShadow: '0 4px 15px rgba(84,160,255,0.3)' }}
                 >
                   Réserver
                 </button>
               </>
             )}
 
-            <div className="h-6 w-[1px] bg-neutral-200" />
+            <div className="h-6 w-[1px] bg-[#C8D6E5]" />
 
             {effectiveUser ? (
               <div className="flex items-center gap-3">
                 <div className="flex flex-col items-end justify-center">
-                   <span className="whitespace-nowrap text-[0.6rem] md:text-[0.65rem] uppercase tracking-widest font-black text-neutral-900 leading-none mb-1">{effectiveUser.name}</span>
-                   <button onClick={handleSignOut} className="whitespace-nowrap text-[0.55rem] md:text-[0.6rem] uppercase tracking-widest font-bold text-rose-500 hover:text-rose-600 transition-colors leading-none">Déconnexion</button>
+                   <span className="whitespace-nowrap text-[0.6rem] md:text-[0.65rem] uppercase tracking-widest font-black text-[#222F3E] leading-none mb-1">{effectiveUser.name}</span>
+                   <button onClick={handleSignOut} className="whitespace-nowrap text-[0.55rem] md:text-[0.6rem] uppercase tracking-widest font-bold text-[#FF6B6B] hover:text-[#EE5A53] transition-colors leading-none">Déconnexion</button>
                 </div>
                 {effectiveUser.photo ? (
-                  <img src={effectiveUser.photo} alt="" className="w-9 h-9 rounded-full border border-neutral-100 shadow-sm object-cover" />
+                  <img src={effectiveUser.photo} alt="" className="w-9 h-9 rounded-full border-2 border-[#54A0FF]/20 shadow-sm object-cover" />
                 ) : (
-                  <div className="w-9 h-9 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-lg">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}>
                     <UserIcon size={14} />
                   </div>
                 )}
@@ -147,14 +148,14 @@ export function Navbar({ onBookingClick }: NavbarProps) {
             ) : (
               <Link 
                 href="/login" 
-                className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 hover:opacity-70 transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-2"
+                className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] hover:text-[#54A0FF] transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-2"
               >
                 Connexion
               </Link>
             )}
           </div>
           
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-neutral-900 p-1">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-[#222F3E] p-1">
             {isMenuOpen ? <X size={18}/> : <Menu size={18}/>}
           </button>
         </div>
@@ -169,41 +170,42 @@ export function Navbar({ onBookingClick }: NavbarProps) {
             >
               {isTherapistArea ? (
                 adminLinks.map((link) => (
-                  <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.7rem] lg:text-[0.75rem]">
+                  <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] py-2 md:text-[0.7rem] lg:text-[0.75rem]">
                     {link.label}
                   </Link>
                 ))
               ) : (
                 <>
                   {isTherapist && (
-                    <Link href="/therapist/dashboard" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-amber-600 py-2 md:text-[0.7rem] lg:text-[0.75rem]">
+                    <Link href="/therapist/dashboard" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#5F27CD] py-2 md:text-[0.7rem] lg:text-[0.75rem]">
                       Dashboard Administrateur
                     </Link>
                   )}
                   
                   {effectiveUser && effectiveUser.type === 'client' && (
-                    <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 md:text-[0.7rem] lg:text-[0.75rem]">
+                    <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] py-2 md:text-[0.7rem] lg:text-[0.75rem]">
                       Mon Sanctuaire
                     </Link>
                   )}
 
                   <button 
                     onClick={() => { setIsMenuOpen(false); onBookingClick?.(); }} 
-                    className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] bg-neutral-900 text-white rounded-full py-2.5 w-full md:text-[0.7rem] lg:text-[0.75rem]"
+                    className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-white rounded-full py-2.5 w-full md:text-[0.7rem] lg:text-[0.75rem]"
+                    style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}
                   >
                     Réserver
                   </button>
                   
                   {!effectiveUser ? (
-                    <Link href="/login" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-neutral-900 py-2 pt-4 border-t border-neutral-100">
+                    <Link href="/login" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] py-2 pt-4 border-t border-[#C8D6E5]/50">
                       Connexion
                     </Link>
                   ) : (
-                    <div className="pt-4 border-t border-neutral-100 flex flex-col items-center gap-4">
+                    <div className="pt-4 border-t border-[#C8D6E5]/50 flex flex-col items-center gap-4">
                       <div className="flex items-center gap-2">
                         <span className="text-[0.65rem] font-black uppercase tracking-widest">{effectiveUser.name}</span>
                       </div>
-                      <button onClick={handleSignOut} className="text-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-rose-500 md:text-[0.7rem] lg:text-[0.75rem]">Déconnexion</button>
+                      <button onClick={handleSignOut} className="text-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#FF6B6B] md:text-[0.7rem] lg:text-[0.75rem]">Déconnexion</button>
                     </div>
                   )}
                 </>
@@ -215,4 +217,3 @@ export function Navbar({ onBookingClick }: NavbarProps) {
     </div>
   );
 }
-
