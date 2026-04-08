@@ -87,6 +87,8 @@ export default function TherapistDashboard() {
   const [selectedAppt, setSelectedAppt] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState('');
+  const [editService, setEditService] = useState('');
+  const [editPrice, setEditPrice] = useState(150);
 
   // Clients state
   const [clients,    setClients]    = useState<any[]>([]);
@@ -208,11 +210,18 @@ export default function TherapistDashboard() {
 
   const saveEdit = async () => {
     if (!selectedAppt || !editName.trim() || !firestore) return;
-    await updateDoc(doc(firestore, 'appointments', selectedAppt.id), {
-      clientNameSnapshot: editName.trim()
-    });
-    setIsEditing(false);
-    setSelectedAppt(null); // Close modal on success
+    try {
+      await updateDoc(doc(firestore, 'appointments', selectedAppt.id), {
+        clientNameSnapshot: editName.trim(),
+        serviceName: editService.trim(),
+        price: editPrice
+      });
+      setIsEditing(false);
+      setSelectedAppt(null); // Close modal on success
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de l'enregistrement");
+    }
   };
 
   const addSlot = () => {
@@ -1350,8 +1359,16 @@ export default function TherapistDashboard() {
                   </div>
                   
                   <div className="space-y-3 pt-2">
-                    <button onClick={() => { setIsEditing(true); setEditName(selectedAppt.clientNameSnapshot || selectedAppt.title); }} className="w-full py-4 bg-gradient-to-r from-[#54A0FF] to-[#0ABDE3] text-white rounded-2xl font-bold text-sm shadow-xl shadow-[#54A0FF]/25 hover:scale-[1.02] transition-all">
-                      Modifier le contact
+                    <button 
+                      onClick={() => { 
+                        setIsEditing(true); 
+                        setEditName(selectedAppt.clientNameSnapshot || selectedAppt.title); 
+                        setEditService(selectedAppt.serviceName || 'Soin Signature');
+                        setEditPrice(selectedAppt.price || 150);
+                      }} 
+                      className="w-full py-4 bg-gradient-to-r from-[#54A0FF] to-[#0ABDE3] text-white rounded-2xl font-bold text-sm shadow-xl shadow-[#54A0FF]/25 hover:scale-[1.02] transition-all"
+                    >
+                      Modifier le rendez-vous
                     </button>
                     <button onClick={deleteEvent} className="w-full py-4 text-xs font-black text-[#FF6B6B] uppercase tracking-widest hover:bg-[#FF6B6B]/10 rounded-2xl transition">
                       Supprimer le rendez-vous
@@ -1366,6 +1383,23 @@ export default function TherapistDashboard() {
                       <input 
                         autoFocus value={editName}
                         onChange={e => setEditName(e.target.value)}
+                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Prestation</label>
+                      <input 
+                        value={editService}
+                        onChange={e => setEditService(e.target.value)}
+                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Prix (CHF)</label>
+                      <input 
+                        type="number"
+                        value={editPrice}
+                        onChange={e => setEditPrice(Number(e.target.value))}
                         className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"
                       />
                     </div>
