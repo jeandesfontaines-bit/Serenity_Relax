@@ -196,8 +196,14 @@ export default function TherapistDashboard() {
 
   const deleteEvent = async () => {
     if (!firestore || !selectedAppt) return;
-    await deleteDoc(doc(firestore, 'appointments', selectedAppt.id));
-    setSelectedAppt(null);
+    if (!window.confirm('Voulez-vous vraiment supprimer ce rendez-vous ? Cette action est irréversible.')) return;
+    try {
+      await deleteDoc(doc(firestore, 'appointments', selectedAppt.id));
+      setSelectedAppt(null);
+    } catch (err) {
+      console.error("Error deleting appointment:", err);
+      alert("Erreur lors de la suppression.");
+    }
   };
 
   const saveEdit = async () => {
@@ -587,7 +593,11 @@ export default function TherapistDashboard() {
 
                 <div className="space-y-4">
                   {todayAppts.length > 0 ? todayAppts.map((appt) => (
-                    <div key={appt.id} className="group bg-white rounded-[2.5rem] p-7 border border-neutral-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-neutral-900 transition-all flex items-center gap-8 relative overflow-hidden">
+                    <div 
+                      key={appt.id} 
+                      onClick={() => setSelectedAppt(appt)}
+                      className="group bg-white rounded-[2.5rem] p-7 border border-neutral-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-neutral-900 transition-all flex items-center gap-8 relative overflow-hidden cursor-pointer"
+                    >
                       <div className="w-24 shrink-0 border-r border-neutral-100 pr-8">
                         <p className="text-2xl font-black text-neutral-900 leading-none mb-1">{appt.time}</p>
                         <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">60 min</p>
@@ -1149,12 +1159,17 @@ export default function TherapistDashboard() {
           </h3>
           <div className="grid grid-cols-2 gap-3">
             {upcoming.length > 0 ? upcoming.map(e => (
-              <div key={e.id} className="bg-white/10 p-4 rounded-3xl border border-white/10 flex flex-col justify-between aspect-square hover:bg-white/[0.15] transition-all cursor-default group relative overflow-hidden backdrop-blur-sm">
+              <div 
+                key={e.id} 
+                onClick={() => setSelectedAppt(e)}
+                className="bg-white/10 p-4 rounded-3xl border border-white/10 flex flex-col justify-between aspect-square hover:bg-white/[0.15] transition-all cursor-pointer group relative overflow-hidden backdrop-blur-sm"
+              >
                 <div className="flex justify-between items-start z-10">
                    <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-[#54A0FF] group-hover:text-white transition-all duration-300">
                       <User size={12}/>
                    </div>
                    <a 
+                    onClick={ev => ev.stopPropagation()}
                     href={`https://wa.me/${(e.phone || '').replace(/[^0-9]/g, '')}?text=Bonjour%20${encodeURIComponent(e.clientNameSnapshot || e.title)},%20je%20vous%20contacte%20suite%20à%20votre%20réservation%20Serenity%20Relax.`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1283,11 +1298,38 @@ export default function TherapistDashboard() {
                       <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">Heure</p>
                       <p className="text-sm font-bold text-[#222F3E]">{selectedAppt.time}</p>
                     </div>
+
+                    {(selectedAppt.serviceName || selectedAppt.price) && (
+                      <div className="col-span-2 p-4 bg-[#54A0FF]/5 rounded-2xl border border-[#54A0FF]/10">
+                        <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">Prestation</p>
+                        <p className="text-sm font-bold text-[#222F3E] flex justify-between items-center">
+                          <span>{selectedAppt.serviceName || 'Soin Signature'}</span>
+                          <span className="text-[#54A0FF]">{selectedAppt.price || 150} CHF</span>
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedAppt.phone && (
+                      <div className="col-span-2 p-4 bg-[#54A0FF]/5 rounded-2xl border border-[#54A0FF]/10 flex justify-between items-center">
+                        <div>
+                          <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">Contact</p>
+                          <p className="text-sm font-bold text-[#222F3E]">{selectedAppt.phone}</p>
+                        </div>
+                        <a 
+                          href={`https://wa.me/${selectedAppt.phone.replace(/[^0-9]/g, '')}`}
+                          target="_blank" rel="noopener noreferrer"
+                          className="w-10 h-10 rounded-xl bg-[#1DD1A1] text-white flex items-center justify-center hover:scale-110 transition shadow-lg shadow-[#1DD1A1]/20"
+                        >
+                          <MessageCircle size={18}/>
+                        </a>
+                      </div>
+                    )}
+
                     <div className="col-span-2 p-4 bg-[#54A0FF]/5 rounded-2xl border border-[#54A0FF]/10 flex justify-between items-center transition-all">
                       <div>
                         <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">État du Paiement</p>
                         <p className={`text-sm font-black uppercase tracking-[0.05em] flex items-center gap-2 ${selectedAppt.paid ? 'text-[#1DD1A1]' : 'text-[#FECA57]'}`}>
-                          <div className={`w-2 h-2 rounded-full ${selectedAppt.paid ? 'bg-[#1DD1A1]' : 'bg-[#FECA57]'}`}/>
+                          <span className={`w-2 h-2 rounded-full ${selectedAppt.paid ? 'bg-[#1DD1A1]' : 'bg-[#FECA57]'}`}/>
                           {selectedAppt.paid ? 'Réglé' : 'En attente'}
                         </p>
                       </div>
@@ -1302,14 +1344,14 @@ export default function TherapistDashboard() {
                           selectedAppt.paid ? 'bg-[#576574]/10 text-[#576574] hover:bg-[#576574]/20' : 'bg-[#1DD1A1] text-white shadow-lg shadow-[#1DD1A1]/20 hover:scale-[1.05]'
                         }`}
                       >
-                        {selectedAppt.paid ? 'Passer en Attente' : 'Marquer comme Réglé'}
+                        {selectedAppt.paid ? 'Marquer Attente' : 'Marquer Réglé'}
                       </button>
                     </div>
                   </div>
                   
                   <div className="space-y-3 pt-2">
-                    <button onClick={() => { setIsEditing(true); setEditName(selectedAppt.title); }} className="w-full py-4 bg-gradient-to-r from-[#54A0FF] to-[#0ABDE3] text-white rounded-2xl font-bold text-sm shadow-xl shadow-[#54A0FF]/25 hover:scale-[1.02] transition-all">
-                      Modifier la réservation
+                    <button onClick={() => { setIsEditing(true); setEditName(selectedAppt.clientNameSnapshot || selectedAppt.title); }} className="w-full py-4 bg-gradient-to-r from-[#54A0FF] to-[#0ABDE3] text-white rounded-2xl font-bold text-sm shadow-xl shadow-[#54A0FF]/25 hover:scale-[1.02] transition-all">
+                      Modifier le contact
                     </button>
                     <button onClick={deleteEvent} className="w-full py-4 text-xs font-black text-[#FF6B6B] uppercase tracking-widest hover:bg-[#FF6B6B]/10 rounded-2xl transition">
                       Supprimer le rendez-vous
