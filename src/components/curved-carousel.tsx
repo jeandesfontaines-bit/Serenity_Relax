@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { SERVICES } from '@/lib/types';
+import { SERVICES, Service } from '@/lib/types';
 
 const TWEEN_FACTOR_BASE = 0.52;
 
@@ -31,13 +31,14 @@ export function CurvedCarousel() {
     const styles = emblaApi.scrollSnapList().map((scrollSnap, index) => {
       let diffToTarget = scrollSnap - scrollProgress;
       
-      if (!engine.indexGroups || !engine.indexGroups[index]) {
+      const registry = engine.slideRegistry;
+      if (!registry || !registry[index]) {
         return 0;
       }
 
-      const slidesInSnap = engine.indexGroups[index];
+      const slidesInSnap = registry[index];
 
-      slidesInSnap.forEach((slideIndex) => {
+      slidesInSnap.forEach((slideIndex: number) => {
         if (isScrollEvent && !slidesInView.includes(slideIndex)) return;
 
         if (engine.options.loop) {
@@ -73,8 +74,8 @@ export function CurvedCarousel() {
   }, [emblaApi, onScroll]);
 
   // Explicitly map therapeutic arts from number 1 to 6
-  const therapeuticArts = SERVICES.slice(0, 6).map((service, index) => {
-    const relevantImages = PlaceHolderImages.filter(img => 
+  const therapeuticArts = SERVICES.slice(0, 6).map((service: Service, index: number) => {
+    const relevantImages = PlaceHolderImages.filter((img: any) => 
       img.id !== 'hero-spa'
     );
     
@@ -91,7 +92,7 @@ export function CurvedCarousel() {
     <div className="relative w-full overflow-hidden py-12 px-4" style={{ perspective: '1200px' }}>
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-6 py-12">
-          {therapeuticArts.map((art, index) => (
+          {therapeuticArts.map((art: any, index: number) => (
             <div
               key={art.id}
               className="flex-[0_0_280px] min-w-0 relative aspect-[3/4]"

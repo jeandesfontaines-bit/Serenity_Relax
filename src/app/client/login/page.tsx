@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useFirestore } from '@/firebase';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 
-export default function ClientLoginPage() {
+function ClientLoginContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const firestore = useFirestore();
@@ -98,5 +99,19 @@ export default function ClientLoginPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ClientLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">
+          <Loader2 className="w-12 h-12 text-neutral-900 animate-spin" />
+        </div>
+      }
+    >
+      <ClientLoginContent />
+    </Suspense>
   );
 }
