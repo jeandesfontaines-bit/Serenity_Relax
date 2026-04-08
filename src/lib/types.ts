@@ -55,7 +55,7 @@ export const SERVICES: Service[] = [
     description: 'Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.', 
     duration: '60 min', 
     price: 110,
-    image: 'https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb.d0f88929.png&w=3840&q=75'
+    image: '/images/services/bambous.png'
   },
   { 
     id: '2', 
@@ -63,7 +63,7 @@ export const SERVICES: Service[] = [
     description: 'Technique de pompage douce pour revitaliser, détoxifier l\'organisme et relancer la circulation.', 
     duration: '60 min', 
     price: 110,
-    image: 'https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(1).cc6cf032.png&w=3840&q=75'
+    image: '/images/services/drainage.png'
   },
   { 
     id: '3', 
@@ -71,7 +71,7 @@ export const SERVICES: Service[] = [
     description: 'Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l\'esprit.', 
     duration: '60 min', 
     price: 110,
-    image: 'https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(2).8265cf32.png&w=3840&q=75'
+    image: '/images/services/aroma.png'
   },
   { 
     id: '4', 
@@ -79,7 +79,7 @@ export const SERVICES: Service[] = [
     description: 'Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l\'énergie des organes internes.', 
     duration: '30 min', 
     price: 60,
-    image: 'https://6000-firebase-studio-1772978180710.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FGemini_Generated_Image_4vxbi24vxbi24vxb%20(3).7bebd53b.png&w=3840&q=75'
+    image: '/images/services/reflexo.png'
   },
   { 
     id: '5', 

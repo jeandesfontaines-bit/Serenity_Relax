@@ -270,12 +270,12 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         <h1 className="text-[2.4rem] md:text-[3rem] font-serif font-medium text-neutral-900 tracking-tighter leading-none mb-4">
           Réserver<br/><span className="text-neutral-500 italic font-light">un rituel.</span>
         </h1>
-        <p className="text-[0.65rem] font-black uppercase tracking-[0.28em] text-neutral-400 mb-12">
+        <p className="text-[0.65rem] font-black uppercase tracking-[0.28em] text-neutral-400 mb-8">
           GENÈVE STUDIO — ÉTAPE {step}/4
         </p>
 
         {/* Dynamic Summary based on selection */}
-        <div className="space-y-8 mt-4 lg:mt-12 flex-1">
+        <div className="space-y-4 mt-2 lg:mt-6 flex-1">
           <AnimatePresence>
             {selectedService && step > 1 && (
                 <motion.div key="summary-service" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
@@ -296,7 +296,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
       </div>
 
       {/* RIGHT SIDE: Content */}
-      <div className="w-full lg:w-[65%] p-8 md:p-12 lg:p-16 pb-24">
+      <div className="w-full lg:w-[65%] p-6 md:p-8 lg:p-10 pb-12">
         <div className="max-w-3xl mx-auto">
           <AnimatePresence mode="wait">
             {step === 1 && (
@@ -305,21 +305,21 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
                 className="space-y-8"
               >
-                <div className="space-y-3 mb-8 text-center lg:text-left">
-                  <h3 className="text-[1.5rem] md:text-[1.8rem] font-serif font-medium text-neutral-900 tracking-tight">Le Menu Signature</h3>
+                <div className="space-y-2 mb-6 text-center lg:text-left">
+                  <h3 className="text-[1.3rem] md:text-[1.5rem] font-serif font-medium text-neutral-900 tracking-tight">Le Menu Signature</h3>
                   <p className="text-[0.85rem] font-sans text-neutral-500">Sélectionnez le rituel qui correspond à vos besoins d'aujourd'hui.</p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3">
                   {services.map((s) => (
                     <button
                       key={s.id}
                       onClick={() => handleServiceSelect(s)}
-                      className={`group w-full flex flex-col p-4 rounded-[2.5rem] transition-all duration-500 text-center border
-                        ${selectedService?.id === s.id ? 'bg-neutral-50 border-neutral-900 shadow-sm ring-1 ring-neutral-900' : 'bg-white border-neutral-100 hover:border-neutral-300 hover:shadow-md'}
+                      className={`group w-full flex flex-col p-1.5 rounded-2xl transition-all duration-500 text-center border
+                        ${selectedService?.id === s.id ? 'bg-neutral-50 border-neutral-900 shadow-sm ring-1 ring-neutral-900' : 'bg-white border-neutral-100 hover:border-neutral-300 hover:shadow-sm'}
                       `}
                     >
-                      <div className="relative w-full aspect-[4/3] rounded-[1.8rem] overflow-hidden mb-4 shrink-0 shadow-sm border border-neutral-50/50">
+                      <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-1.5 shrink-0 shadow-sm border border-neutral-50/50">
                         <Image 
                           src={s.image || ''} 
                           fill 
@@ -328,14 +328,11 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       </div>
-                      <div className="flex-1 space-y-2 px-1">
-                        <h4 className="text-[1.05rem] leading-tight font-serif font-bold tracking-tight text-neutral-900">{s.name.split(' - ')[0]}</h4>
-                        <p className="text-[0.7rem] font-sans text-neutral-400 line-clamp-2 leading-relaxed h-8">
-                          {s.description || "Rituel personnalisé et adapté."}
-                        </p>
-                        <div className="flex items-center justify-center gap-4 pt-1">
-                          <span className="text-[0.6rem] font-black uppercase tracking-[0.15em] text-neutral-300">{s.duration}</span>
-                          <span className="text-[1rem] font-serif font-bold text-neutral-900">CHF {s.price}</span>
+                      <div className="px-0.5 space-y-0.5">
+                        <h4 className="text-[0.75rem] leading-tight font-serif font-bold text-neutral-900 line-clamp-1">{s.name.split(' - ')[0]}</h4>
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="text-[0.5rem] font-black uppercase tracking-wider text-neutral-300">{s.duration}</span>
+                          <span className="text-[0.8rem] font-serif font-bold text-neutral-900">{s.price} CHF</span>
                         </div>
                       </div>
                     </button>
