@@ -663,13 +663,12 @@ export default function TherapistDashboard() {
               
               <div className="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm space-y-8">
                 <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                  <Cog size={12}/> Outils de Bord
+                  <Cog size={12}/> Liens Rapides
                 </h4>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   {[
-                    { e: '📅', l: 'Agenda', c: 'bg-blue-50 text-blue-600', fn: () => { setTab('scheduler'); setView('day'); } },
-                    { e: '👥', l: 'Patients', c: 'bg-violet-50 text-violet-600', fn: () => setTab('clients') },
-                    { e: '💰', l: 'Compta', c: 'bg-amber-50 text-amber-600', fn: () => setTab('accounting') },
+                    { e: '👥', l: 'Nouveau Patient', c: 'bg-violet-50 text-violet-600', fn: () => setClModal(true) },
+                    { e: '📅', l: 'Nouv. Réservation', c: 'bg-blue-50 text-blue-600', fn: () => { setTab('scheduler'); setView('week'); } },
                   ].map((a, i) => (
                     <button key={i} onClick={a.fn} className="p-6 rounded-3xl border border-transparent hover:border-slate-100 hover:bg-slate-50 transition-all text-center group">
                       <div className={`w-14 h-14 rounded-2xl ${a.c} flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition duration-300`}>{a.e}</div>
