@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   LayoutDashboard, CalendarRange, Users, Settings, Leaf, Activity, Target,
-  Search, Bell, ChevronLeft, ChevronRight, Lock, Unlock, CheckCircle2,
-  X, Trash2, Clock, Plus, Cog, Power, Mail, FileText, History, User, CreditCard, Download, MessageCircle, MessageSquare, Edit3, ArrowUpRight, Smartphone, Banknote
+  Search, Bell, ChevronLeft, ChevronRight, Lock, Unlock, CheckCircle2, Ban,
+  X, Trash2, Clock, Plus, Cog, Power, Mail, FileText, History, User, CreditCard, Download, MessageCircle, MessageSquare, Edit3, ArrowUpRight, Smartphone, Banknote, ArrowUpDown, Cloud, Moon, Columns, Eye
 } from 'lucide-react';
 import {
   format, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
@@ -48,6 +48,103 @@ const CircProgress = ({ pct, cls }: { pct: number; cls: string }) => {
   );
 };
 
+// ─── Appointment Detail View ──────────────────────────────────────────────
+const AppointmentDetailView = ({ appt, onClose }: { appt: any; onClose: () => void }) => {
+  return (
+    <div className="flex-1 bg-white flex flex-col overflow-hidden animate-in fade-in duration-500">
+      <div className="flex-1 overflow-y-auto p-12 lg:p-16">
+         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <div className="lg:col-span-4 space-y-10">
+               <div className="flex justify-between items-start gap-4">
+                 <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-[#5F27CD]/5 flex items-center justify-center text-[#5F27CD] text-2xl font-black shadow-inner">
+                       {appt.time?.split(':')[0]}
+                    </div>
+                    <div>
+                       <h3 className="text-xl font-extrabold tracking-tight text-slate-900 leading-tight">{appt.clientNameSnapshot || appt.title}</h3>
+                       <p className="text-[10px] font-black text-[#5F27CD] uppercase tracking-[0.2em] mt-1">{format(new Date(appt.date), 'd MMMM yyyy', { locale: fr })}</p>
+                    </div>
+                 </div>
+                 <button onClick={onClose} className="w-10 h-10 rounded-xl bg-rose-50 text-rose-500 border border-rose-100 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shadow-sm group shrink-0">
+                    <X size={18} className="group-hover:rotate-90 transition-transform"/>
+                 </button>
+               </div>
+
+               <div className="flex items-center gap-3 animate-in slide-in-from-top-2 duration-300">
+                   <button 
+                     onClick={() => {
+                       const phone = appt.clientPhoneSnapshot?.replace(/\D/g, '');
+                       const msg = `Bonjour ${appt.clientNameSnapshot}, je vous confirme votre rendez-vous le ${format(new Date(appt.date), 'dd MMMM', { locale: fr })} à ${appt.time}. Au plaisir !`;
+                       if (phone) window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+                     }}
+                     className="px-6 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center gap-3 font-black text-[10px] uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all shadow-sm group"
+                   >
+                     <MessageCircle size={14}/> WhatsApp
+                   </button>
+
+                   <button 
+                     onClick={() => alert("Confirmation envoyée")}
+                     className="px-6 h-12 rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center gap-3 font-black text-[10px] uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all shadow-sm group"
+                   >
+                     <Mail size={14}/> Confirmation
+                   </button>
+
+                   <button 
+                     onClick={() => alert("Facture envoyée")}
+                     className="px-6 h-12 rounded-2xl bg-slate-900 text-white flex items-center gap-3 font-black text-[10px] uppercase tracking-widest hover:bg-black transition-all shadow-sm group"
+                   >
+                     <FileText size={14}/> Facture
+                   </button>
+               </div>
+
+               <div className="space-y-4">
+                  {[
+                    { label: 'Soin', val: appt.serviceName || 'Soin Signature', icon: <Leaf size={16}/>, color: 'text-emerald-500' },
+                    { label: 'Prix', val: `${appt.price || 150} CHF`, icon: <CreditCard size={16}/>, color: 'text-blue-500' },
+                    { label: 'Téléphone', val: appt.phone || 'Non renseigné', icon: <Smartphone size={16}/>, color: 'text-orange-500' },
+                    { label: 'Email', val: appt.email || 'Non renseigné', icon: <Mail size={16}/>, color: 'text-indigo-500' },
+                    { label: 'Statut', val: appt.paid ? 'Réglé' : 'À régler', icon: <CheckCircle2 size={16}/>, color: appt.paid ? 'text-emerald-500' : 'text-orange-500' }
+                  ].map((it, i) => (
+                    <div key={i} className="flex items-center gap-6 p-6 bg-slate-50/50 rounded-3xl border border-slate-100 transition-all hover:bg-white hover:shadow-md">
+                       <div className={`w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center ${it.color} shadow-sm`}>
+                          {it.icon}
+                       </div>
+                       <div>
+                          <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">{it.label}</div>
+                          <div className="text-sm font-bold text-slate-900 uppercase tracking-tight">{it.val}</div>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+               
+
+            </div>
+
+            <div className="lg:col-span-8 space-y-10">
+               <div className="p-10 bg-slate-50/50 rounded-[3rem] border border-slate-100 space-y-6">
+                  <div className="flex items-center justify-between">
+                     <h4 className="text-[11px] font-black text-slate-900 uppercase tracking-[0.3em] flex items-center gap-3">
+                        <Edit3 size={16} className="text-[#5F27CD]"/> Notes de Séance
+                     </h4>
+                     <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest italic">Section Privée</span>
+                  </div>
+                  <textarea 
+                    placeholder="Saisissez vos notes cliniques ici..."
+                    className="w-full h-80 bg-white rounded-[2rem] p-8 border border-slate-100 shadow-inner outline-none focus:ring-4 focus:ring-[#5F27CD]/5 transition-all text-slate-600 font-medium leading-relaxed"
+                  />
+                  <div className="flex justify-end">
+                     <button className="px-10 h-14 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-indigo-100 hover:scale-[1.02] active:scale-95 transition-all">
+                        Sauvegarder les Notes
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+    </div>
+  );
+};
+
 // ─── Main component ───────────────────────────────────────────────────────────
 export default function TherapistDashboard() {
   const firestore = useFirestore();
@@ -55,9 +152,10 @@ export default function TherapistDashboard() {
   const { user, isUserLoading } = useUser();
 
   // Navigation
-  const [tab,  setTab]  = useState<'dashboard' | 'scheduler' | 'clients' | 'settings' | 'accounting' | 'client-detail'>('scheduler');
+  const [tab,  setTab]  = useState<'dashboard' | 'scheduler' | 'clients' | 'settings' | 'accounting' | 'client-detail' | 'config-slots'>('scheduler');
   const [view, setView] = useState<'month' | 'week' | 'day'>('month');
   const [cur,  setCur]  = useState(new Date());
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   // Drag-select mode
   const [blockMode, setBlockMode] = useState(false);
@@ -75,6 +173,9 @@ export default function TherapistDashboard() {
     5: ['09:00','10:30','12:00','14:00','15:30','17:00'],
     6: ['10:00','11:30','14:00'],
   });
+  const [monthlyGoal, setMonthlyGoal] = useState<number>(12000);
+  const [editingGoal, setEditingGoal] = useState(false);
+  const [tempGoal, setTempGoal] = useState('12000');
 
   // Modal state
   const [evModal, setEvModal] = useState<{ date: string; time: string } | null>(null);
@@ -105,13 +206,55 @@ export default function TherapistDashboard() {
   // Clients state
   const [clients,    setClients]    = useState<any[]>([]);
   const [clModal,    setClModal]    = useState(false);
-  const [clForm,     setClForm]     = useState({ firstName: '', lastName: '', email: '', phone: '', address: '', insurance: '' });
+  const [clForm,     setClForm]     = useState({ firstName: '', lastName: '', email: '', phone: '', phonePrefix: '+41', street: '', zip: '', city: '', canton: '', insurance: '' });
   const [clScaling,  setClScaling]  = useState(false); // For animation
   const [clSearch,   setClSearch]   = useState('');
   const [selectedClient, setSelectedClient] = useState<any | null>(null);
   const [isEditingClient, setIsEditingClient] = useState(false);
-  const [clEditForm, setClEditForm] = useState<any>({});
+  const [clEditForm, setClEditForm] = useState<any>({ firstName: '', lastName: '', email: '', phone: '', phonePrefix: '+41', street: '', zip: '', city: '', canton: '', insurance: '' });
+
+  const [showColPicker, setShowColPicker] = useState(false);
+  const [visibleCols, setVisibleCols] = useState<any>({
+    firstName: true,
+    lastName: true,
+    email: true,
+    phone: true,
+    street: false,
+    zip: false,
+    city: false,
+    canton: false,
+    insurance: true,
+    sessions: true
+  });
+  const updateGoal = async () => {
+    try {
+      if (!firestore) return;
+      await updateDoc(doc(firestore, 'settings', 'config'), { monthlyGoal: parseInt(tempGoal) || 12000 });
+      setMonthlyGoal(parseInt(tempGoal) || 12000);
+      setEditingGoal(false);
+    } catch (e) {
+      console.error(e);
+      alert("Erreur lors de la mise à jour de l'objectif");
+    }
+  };
+
+  useEffect(() => {
+    if (!firestore) return;
+    return onSnapshot(doc(firestore, 'settings', 'config'), (s) => {
+       if (s.exists()) setMonthlyGoal(s.data().monthlyGoal || 12000);
+    });
+  }, [firestore]);
+
   const [selectedInvoices, setSelectedInvoices] = useState<string[]>([]);
+  const [selectedClients, setSelectedClients] = useState<string[]>([]);
+  const [merging, setMerging] = useState(false);
+  const [addingSlotDay, setAddingSlotDay] = useState<number | null>(null);
+  const [acctFilter, setAcctFilter] = useState<'all' | 'paid' | 'pending' | 'overdue'>('all');
+  const [acctSearch, setAcctSearch] = useState('');
+  const [showExportPanel, setShowExportPanel] = useState(false);
+  const [exportFrom, setExportFrom] = useState('');
+  const [exportTo,   setExportTo]   = useState('');
+  const [actionSlot, setActionSlot] = useState<{date: string, time: string} | null>(null);
 
   // Hydration guard
   const [isClient, setIsClient] = useState(false);
@@ -148,6 +291,36 @@ export default function TherapistDashboard() {
 
     return () => { unsubAvail(); unsubAppts(); unsubCfg(); unsubClients(); unsubInvoices(); };
   }, [firestore]);
+
+  const exportToCSV = () => {
+    const useSelection = selectedInvoices.length > 0;
+    const filtered = appointments.filter(a => {
+      if (useSelection) return selectedInvoices.includes(a.id);
+      const isOverdue = !a.paid && a.date < format(new Date(), 'yyyy-MM-dd');
+      const isPending = !a.paid && a.date >= format(new Date(), 'yyyy-MM-dd');
+      const matchStatus = 
+        acctFilter === 'all' || 
+        (acctFilter === 'paid' && a.paid) ||
+        (acctFilter === 'overdue' && isOverdue) ||
+        (acctFilter === 'pending' && isPending);
+      const afterFrom = !exportFrom || a.date >= exportFrom;
+      const beforeTo = !exportTo || a.date <= exportTo;
+      return matchStatus && afterFrom && beforeTo;
+    });
+    const headers = ['Client', 'Date', 'Heure', 'Service', 'Montant', 'Statut'];
+    const rows = filtered.map(a => [`"${a.title}"`, a.date, a.time, `"${a.serviceName || 'Soin Signature'}"`, (a.price || 150) + ' CHF', a.paid ? 'Réglé' : 'En attente']);
+    const content = [headers, ...rows].map(e => e.join(',')).join('\n');
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `comptabilite_${format(new Date(), 'yyyy-MM-dd')}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setShowExportPanel(false);
+  };
 
   // Release drag on mouseup
   useEffect(() => {
@@ -320,6 +493,32 @@ export default function TherapistDashboard() {
     }
   };
 
+  const mergePatients = async (primaryId: string) => {
+    if (!firestore || !primaryId) return;
+    const targets = selectedClients.filter(id => id !== primaryId);
+    if (targets.length === 0) return;
+    if (!confirm(`Voulez-vous fusionner ces ${targets.length} comptes vers le profil principal ? Cette action est irréversible.`)) return;
+
+    try {
+      // Migrate appointments
+      const apptPromises = appointments
+        .filter(a => targets.includes(a.clientId))
+        .map(a => updateDoc(doc(firestore, 'appointments', a.id), { clientId: primaryId }));
+      
+      await Promise.all(apptPromises);
+
+      // Delete target clients
+      const clientPromises = targets.map(tid => deleteDoc(doc(firestore, 'clients', tid)));
+      await Promise.all(clientPromises);
+
+      setSelectedClients([]);
+      setMerging(false);
+      alert("Fusion réussie !");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur de fusion");
+    }
+  };
   const resendEmail = async () => {
     if (!selectedAppt) return;
     setIsSending(true);
@@ -364,6 +563,18 @@ export default function TherapistDashboard() {
   const removeSlot = (t: string) =>
     setConfigSlots(p => ({ ...p, [cfgDay]: (p[cfgDay] || []).filter(s => s !== t) }));
 
+  const addSlotD = (dayIdx: number, timeStr: string) => {
+    if (!timeStr) return;
+    setConfigSlots(p => {
+      const a = p[dayIdx] || [];
+      if (a.includes(timeStr)) return p;
+      return { ...p, [dayIdx]: [...a, timeStr].sort() };
+    });
+  };
+
+  const removeSlotD = (dayIdx: number, timeStr: string) =>
+    setConfigSlots(p => ({ ...p, [dayIdx]: (p[dayIdx] || []).filter(s => s !== timeStr) }));
+
   const applyToWeek = () => {
     const src = [...(configSlots[cfgDay] || [])];
     const n: Record<number, string[]> = {};
@@ -387,7 +598,7 @@ export default function TherapistDashboard() {
       createdAt: serverTimestamp(),
     });
     setClModal(false);
-    setClForm({ firstName: '', lastName: '', email: '', phone: '', address: '', insurance: '' });
+    setClForm({ firstName: '', lastName: '', email: '', phone: '', phonePrefix: '+41', street: '', zip: '', city: '', canton: '', insurance: '' });
     setClScaling(false);
   };
 
@@ -401,8 +612,11 @@ export default function TherapistDashboard() {
   const saveClientEdit = async () => {
     if (!firestore || !selectedClient) return;
     setClScaling(true);
-    await updateDoc(doc(firestore, 'clients', selectedClient.id), clEditForm);
-    setSelectedClient({ ...selectedClient, ...clEditForm });
+    await updateDoc(doc(firestore, 'clients', selectedClient.id), {
+      ...clEditForm,
+      fullPhone: `${clEditForm.phonePrefix}${clEditForm.phone}`
+    });
+    setSelectedClient({ ...selectedClient, ...clEditForm, fullPhone: `${clEditForm.phonePrefix}${clEditForm.phone}` });
     setIsEditingClient(false);
     setClScaling(false);
   };
@@ -467,7 +681,7 @@ export default function TherapistDashboard() {
                 className={`day-cell-m p-5 border-r border-b border-slate-100 flex flex-col items-end gap-1 transition-all duration-300 relative cursor-pointer
                   ${!inMonth ? 'bg-slate-50/50 opacity-20 cursor-default' : 'hover:bg-blue-50/30'}
                   ${inMonth && isToday ? 'bg-blue-50/50' : ''}
-                  ${inMonth && !isOpen ? 'day-closed-stripes' : ''}
+                  ${inMonth && !isOpen ? 'day-closed-stripes !bg-slate-200/50' : ''}
                 `}
                 onMouseDown={e => {
                   if (!inMonth) return;
@@ -499,7 +713,7 @@ export default function TherapistDashboard() {
                       <div className="text-[8px] font-black text-slate-300 uppercase tracking-[0.2em] text-right italic opacity-50">Fermé</div>
                     )}
                   </div>
-                )}
+                 )}
               </div>
             );
           })}
@@ -516,11 +730,27 @@ export default function TherapistDashboard() {
         <div className="grid grid-cols-7 border-b border-slate-100 shrink-0 bg-white">
           {days.map((d, i) => {
             const isToday = isSameDay(new Date(), d);
+            const dStr    = fmt(d);
+            const isOpen  = isDayOpen(dStr);
             return (
-              <div key={i} className={`py-6 text-center border-r border-slate-50 relative group transition-all`}>
+              <div key={i} 
+                className={`py-6 text-center border-r border-slate-50 relative group transition-all cursor-pointer hover:bg-slate-50
+                  ${!isOpen ? 'bg-slate-50' : 'bg-white'}
+                `}
+                onMouseDown={e => {
+                  if (blockMode) {
+                    setIsDrag(true);
+                    setDragAct(isOpen ? 'close' : 'open');
+                    toggleDay(dStr);
+                    e.preventDefault();
+                  }
+                }}
+                onMouseEnter={() => { if (isDrag) toggleDay(dStr); }}
+              >
+                {!isOpen && <div className="absolute inset-0 day-closed-stripes opacity-30 pointer-events-none"/>}
                 <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${isToday ? 'text-blue-600' : 'text-slate-400'}`}>{DAYS_S[i]}</p>
-                <div className="flex flex-col items-center mt-2">
-                   <p className={`text-2xl leading-none ${isToday ? 'text-blue-600' : 'text-slate-900 opacity-80'}`}>{d.getDate()}</p>
+                <div className="flex flex-col items-center mt-2 relative z-10">
+                   <p className={`text-2xl leading-none ${isToday ? 'text-blue-600' : '!text-slate-900 opacity-80'}`}>{d.getDate()}</p>
                    {isToday && <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 shadow-lg shadow-blue-200"/>}
                 </div>
               </div>
@@ -534,30 +764,77 @@ export default function TherapistDashboard() {
             const slots   = [...(configSlots[isoDay(d)] || [])].sort();
             return (
               <div key={i}
-                className={`border-r border-slate-100 p-4 flex flex-col gap-3 min-h-[600px] transition-all
-                  ${!isOpen ? 'day-closed-stripes' : ''}
+                className={`border-r border-slate-100 p-4 flex flex-col gap-3 min-h-[600px] transition-all relative
+                  ${!isOpen ? 'day-closed-stripes !bg-slate-200/50' : ''}
                 `}
+                onMouseDown={e => {
+                  if (blockMode && e.target === e.currentTarget) {
+                    setIsDrag(true);
+                    setDragAct(isOpen ? 'close' : 'open');
+                    toggleDay(dStr);
+                    e.preventDefault();
+                  }
+                }}
+                onMouseEnter={() => { if (isDrag) toggleDay(dStr); }}
               >
+                {!isOpen && <div className="absolute inset-0 bg-slate-50/40 pointer-events-none"/>}
                 {isOpen ? slots.map(t => {
                   const ev       = appointments.find(e => e.date === dStr && e.time === t);
                   const blocked  = isSlotBlocked(dStr, t);
+                  const isAct    = actionSlot?.date === dStr && actionSlot?.time === t;
                   return (
                     <div key={t}
                       onClick={(e) => {
-                        if (blockMode) return;
-                        ev ? setSelectedAppt(ev) : blocked ? toggleSlot(dStr, t) : openModal(dStr, t);
+                        if (blockMode) {
+                          if (!ev) toggleSlot(dStr, t);
+                          return;
+                        }
+                        if (ev) setSelectedAppt(ev);
+                        else if (blocked) toggleSlot(dStr, t);
+                        else setActionSlot(isAct ? null : { date: dStr, time: t });
                       }}
-                      className={`week-slot p-4 rounded-2xl text-[11px] font-black border transition-all cursor-pointer shadow-sm
-                        ${ev ? 'bg-blue-600 border-transparent text-white shadow-blue-200/50'
-                          : blocked ? 'bg-slate-900 border-transparent text-white'
-                            : 'bg-white border-slate-100 text-slate-900 hover:border-blue-400 hover:text-blue-600'}`}
+                      className={`week-slot p-4 rounded-2xl text-[11px] font-black transition-all duration-500 cursor-pointer relative overflow-hidden flex flex-col justify-center min-h-[60px]
+                        ${ev ? 'bg-blue-600 border-transparent text-white shadow-blue-200/50 shadow-sm'
+                          : blocked ? 'bg-slate-900 border-transparent text-white shadow-sm'
+                            : isAct ? 'bg-transparent border-transparent shadow-none'
+                              : 'bg-white border border-slate-100 text-slate-900 hover:border-blue-400 hover:text-blue-600 shadow-sm'}`}
                     >
-                      <div className="flex justify-between items-center">
-                        <span className="opacity-80 tracking-tight">{t}</span>
-                        {ev && <CheckCircle2 size={10}/>}
-                        {blocked && <Lock size={10}/>}
-                      </div>
-                      {ev && <div className="mt-2 text-[9px] font-bold uppercase tracking-tight truncate opacity-90">{ev.clientNameSnapshot || ev.title}</div>}
+                      {isAct ? (
+                        <div className="flex items-center gap-1.5 justify-center w-full animate-in zoom-in-95 fade-in duration-500">
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); openModal(dStr, t); setActionSlot(null); }}
+                            className="w-8 h-8 rounded-full shadow-sm hover:scale-110 active:scale-90 transition-all flex items-center justify-center bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white"
+                            title="Réserver"
+                          >
+                            <Plus size={14}/>
+                          </button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); toggleSlot(dStr, t); setActionSlot(null); }}
+                            className="w-8 h-8 rounded-full shadow-sm hover:scale-110 active:scale-90 transition-all flex items-center justify-center bg-slate-50 text-slate-500 hover:bg-slate-900 hover:text-white"
+                            title="Bloquer"
+                          >
+                            <Ban size={14}/>
+                          </button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); setActionSlot(null); }}
+                            className="w-8 h-8 rounded-full shadow-sm hover:scale-110 active:scale-90 transition-all flex items-center justify-center bg-stone-50 text-stone-400 hover:bg-stone-200"
+                            title="Annuler"
+                          >
+                            <X size={14}/>
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex items-center gap-2">
+                            <span className="opacity-80 tracking-tight shrink-0">{t}</span>
+                            {ev && <span className="text-[9px] font-black uppercase tracking-tight truncate opacity-90">— {ev.clientNameSnapshot || ev.title}</span>}
+                            <div className="ml-auto flex items-center gap-1 shrink-0">
+                               {ev && <CheckCircle2 size={10}/>}
+                               {blocked && <Lock size={10}/>}
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   );
                 }) : (
@@ -565,7 +842,31 @@ export default function TherapistDashboard() {
                     <Lock size={40} className="text-slate-900"/>
                   </div>
                 )}
+                {isOpen && (
+                  <div className="pt-2">
+                    {addingSlotDay === isoDay(d) ? (
+                      <input 
+                        type="time" 
+                        autoFocus
+                        onBlur={() => setAddingSlotDay(null)}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') { addSlotD(isoDay(d), e.currentTarget.value); setAddingSlotDay(null); }
+                          if (e.key === 'Escape') setAddingSlotDay(null);
+                        }} 
+                        className="w-full p-3 bg-white border border-slate-200 rounded-xl text-[11px] font-black text-slate-900 outline-none transition-all shadow-sm" 
+                      />
+                    ) : (
+                      <button 
+                        onClick={() => setAddingSlotDay(isoDay(d))}
+                        className="w-full py-2 text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center justify-center gap-2 hover:text-emerald-600 transition-all border-t border-slate-50 mt-2"
+                      >
+                        <Plus size={12}/> AJOUTER UN CRÉNEAU
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
+
             );
           })}
         </div>
@@ -574,6 +875,60 @@ export default function TherapistDashboard() {
   };
 
 
+
+  
+  const ConfigView = () => {
+    return (
+      <div className="flex-1 flex flex-col overflow-hidden bg-slate-50/30">
+        <div className="grid grid-cols-7 border-b border-slate-100 shrink-0 bg-white">
+          {DAYS_S.map((label, i) => (
+            <div key={i} className="py-6 text-center border-r border-slate-50">
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900">{label}</p>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-7 flex-1 overflow-y-auto bg-slate-50/30">
+          {DAYS_S.map((_, i) => {
+            const slots = [...(configSlots[i] || [])].sort();
+            return (
+              <div key={i} className="border-r border-slate-100 p-4 flex flex-col gap-3 min-h-[600px] transition-all relative">
+                <div className="flex-1 space-y-3">
+                  {slots.map(t => (
+                    <div key={t} className="week-slot p-4 rounded-2xl text-[11px] font-black border transition-all shadow-sm bg-white border-blue-100 text-blue-600 flex justify-between items-center group">
+                      <span>{t}</span>
+                      <button onClick={() => removeSlotD(i, t)} className="text-rose-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-all"><X size={14}/></button>
+                    </div>
+                  ))}
+                  {slots.length === 0 && <p className="text-center text-[9px] font-bold text-slate-300 italic py-4">Aucun créneau</p>}
+                </div>
+
+                <div className="pt-4 border-t border-slate-50 mt-auto">
+                  {addingSlotDay === i ? (
+                    <input 
+                      type="time" autoFocus
+                      onBlur={() => setAddingSlotDay(null)}
+                      onKeyDown={e => {
+                        if (e.key === "Enter") { addSlotD(i, e.currentTarget.value); setAddingSlotDay(null); }
+                        if (e.key === "Escape") setAddingSlotDay(null);
+                      }} 
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl text-[11px] font-black text-slate-900 outline-none transition-all shadow-sm" 
+                    />
+                  ) : (
+                    <button 
+                      onClick={() => setAddingSlotDay(i)}
+                      className="w-full py-3 text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center justify-center gap-2 hover:text-emerald-600 transition-all"
+                    >
+                      <Plus size={12}/> AJOUTER UN CRÉNEAU
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   const Dashboard = () => {
     const todayStr = format(new Date(), 'yyyy-MM-dd');
@@ -584,63 +939,34 @@ export default function TherapistDashboard() {
       <div className="flex-1 overflow-y-auto bg-[#F8F9FA] p-10 lg:p-14">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-8 space-y-10">
-            <div className="flex items-center justify-between">
-               <div>
-                  <h2 className="text-3xl font-medium tracking-tighter text-slate-900 leading-tight">Bonjour, <span className="font-black text-[#5F27CD]">Jean-Christophe</span></h2>
-                  <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mt-1">Plateforme Holistique Serenity & Relax</p>
-               </div>
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-48 group">
-                <div className="w-12 h-12 rounded-2xl kpi-accent-1 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform"><CalendarRange size={24}/></div>
-                <div>
-                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Aujourd'hui</p>
-                   <p className="text-4xl font-black text-slate-900 leading-none">{todayAppts.length}</p>
-                   <p className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em] mt-2">6 Heures de soins</p>
-                </div>
-              </div>
-              <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-48 group">
-                <div className="w-12 h-12 rounded-2xl kpi-accent-2 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform"><Activity size={24}/></div>
-                <div>
-                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Chiffre d'Affaire</p>
-                   <p className="text-4xl font-black text-slate-900 leading-none">{todayAppts.reduce((s, a) => s + (a.price || PRICE), 0)}<span className="text-lg opacity-30 ml-1">CHF</span></p>
-                   <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-[0.2em] mt-2">+12% vs hier</p>
-                </div>
-              </div>
-              <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-48 group">
-                <div className="w-12 h-12 rounded-2xl kpi-accent-3 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform"><Target size={24}/></div>
-                <div>
-                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Alertes Paiement</p>
-                   <p className="text-4xl font-black text-slate-900 leading-none">{pendingPaymentsCount}</p>
-                   <p className="text-[9px] font-bold text-rose-500 uppercase tracking-[0.2em] mt-2 animate-pulse">Action requise</p>
-                </div>
-              </div>
-            </div>
 
-            <div className="space-y-6">
+            <div className="space-y-6 pt-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-medium tracking-tight">Timeline du Jour</h3>
                 <button onClick={() => { setTab('scheduler'); setView('week'); }} className="text-[9px] font-black text-[#5F27CD] uppercase tracking-[0.3em] hover:opacity-70 transition">Accéder au planning complet</button>
               </div>
 
-              <div className="space-y-4">
-                {todayAppts.length > 0 ? todayAppts.map((appt, idx) => (
-                  <div key={appt.id} onClick={() => setSelectedAppt(appt)} className="group premium-card p-6 flex items-center gap-8 rounded-[2.5rem] transition-all duration-500 hover:border-[#5F27CD]/20 cursor-pointer overflow-hidden border-2 border-transparent">
-                     <div className="w-20 shrink-0 text-center border-r border-slate-100 pr-8">
-                        <p className="text-2xl font-black text-slate-900 leading-none">{appt.time}</p>
-                        <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1">60 MIN</p>
-                     </div>
-                     <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3">
-                           <h4 className="text-xl font-medium text-slate-900 truncate tracking-tighter">{appt.title}</h4>
-                           {!appt.paid && <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse ring-4 ring-rose-50"/>}
-                        </div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1">{appt.serviceName || 'Soin Signature'}</p>
-                     </div>
-                     <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-[#5F27CD] group-hover:text-white group-hover:rotate-12 transition-all duration-500">
-                        <ChevronRight size={20}/>
-                     </div>
+              <div className="space-y-3">
+                {todayAppts.length > 0 ? todayAppts.map((appt) => (
+                  <div key={appt.id} onClick={() => setSelectedAppt(appt)} className="group bg-white rounded-2xl border border-slate-100 p-5 flex items-center justify-between hover:shadow-xl hover:shadow-indigo-100/50 hover:border-indigo-100 transition-all duration-300 cursor-pointer">
+                    <div className="flex items-center gap-6">
+                      <div className="w-16 h-12 bg-slate-50 rounded-xl flex items-center justify-center font-black text-slate-900 text-xs shadow-inner">
+                        {appt.time}
+                      </div>
+                      <div className="space-y-0.5">
+                        <h4 className="font-extrabold text-[#222F3E] text-sm uppercase tracking-tight">{appt.clientNameSnapshot || appt.title}</h4>
+                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{appt.serviceName || 'Soin Signature'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                       <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${appt.paid ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600 animate-pulse'}`}>
+                         {appt.paid ? 'Payé' : 'À régler'}
+                       </div>
+                       <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-[#5F27CD] group-hover:text-white transition-all">
+                         <ChevronRight size={16}/>
+                       </div>
+                    </div>
                   </div>
                 )) : (
                   <div className="py-24 bg-white/50 rounded-[3rem] border-4 border-dashed border-slate-100/50 text-center">
@@ -653,38 +979,67 @@ export default function TherapistDashboard() {
           </div>
 
           <div className="lg:col-span-4 space-y-10">
-            <div className="premium-card p-10 rounded-[3rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-900/20 relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"/>
-               <h3 className="text-xl font-medium tracking-tighter mb-8 relative">Performance Hebdo</h3>
-               <div className="space-y-8 relative">
-                 <div className="flex items-center gap-6">
-                    <CircProgress pct={78} cls="text-emerald-400"/>
-                    <div>
-                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Occupation</p>
-                       <p className="text-xl font-black">78% de la capacité</p>
+            <div className="premium-card p-10 rounded-[3rem] bg-gradient-to-br from-[#0984E3] to-[#74B9FF] text-white shadow-2xl shadow-blue-900/10 relative overflow-hidden group">
+               <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:scale-110 transition-transform duration-700"/>
+               <div className="relative flex justify-between items-start">
+                  <div>
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-70 mb-1">Météo Cointrin</h3>
+                    <p className="text-3xl font-medium tracking-tighter">14°C</p>
+                    <p className="text-xs font-bold opacity-80 mt-1 uppercase tracking-widest">Partiellement Couvert</p>
+                  </div>
+                  <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-lg animate-pulse">
+                     <Cloud size={32} className="text-white"/>
+                  </div>
+               </div>
+               
+               <div className="grid grid-cols-3 gap-4 mt-10 relative">
+                  {[
+                    { h: '19:00', t: '12°', i: <Cloud size={14}/> },
+                    { h: '20:00', t: '11°', i: <Moon size={14}/> },
+                    { h: '21:00', t: '9°', i: <Moon size={14}/> },
+                  ].map((w,i) => (
+                    <div key={i} className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                      <p className="text-[8px] font-black opacity-60 mb-1">{w.h}</p>
+                      <div className="flex justify-center my-1">{w.i}</div>
+                      <p className="text-xs font-extrabold">{w.t}</p>
                     </div>
-                 </div>
-                 <div className="flex items-center gap-6">
-                    <CircProgress pct={92} cls="text-orange-400"/>
-                    <div>
-                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Satisfaction</p>
-                       <p className="text-xl font-black">9.2 / 10 score</p>
-                    </div>
-                 </div>
+                  ))}
                </div>
             </div>
 
-            <div className="premium-card p-10 rounded-[3rem] bg-white border border-slate-100 shadow-xl shadow-slate-200/20">
-               <h3 className="text-lg font-medium tracking-tight mb-8">Quick Actions</h3>
-               <div className="grid grid-cols-2 gap-6">
-                 <button onClick={() => setClModal(true)} className="flex flex-col items-center gap-4 group">
-                   <div className="w-16 h-16 rounded-[1.75rem] bg-[#54A0FF]/10 text-[#54A0FF] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#54A0FF] group-hover:text-white transition-all duration-500 shadow-inner shadow-[#54A0FF]/5"><Users size={24}/></div>
-                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Patient</span>
-                 </button>
-                 <button onClick={() => { setTab('scheduler'); setView('week'); }} className="flex flex-col items-center gap-4 group">
-                   <div className="w-16 h-16 rounded-[1.75rem] bg-[#5F27CD]/10 text-[#5F27CD] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#5F27CD] group-hover:text-white transition-all duration-500 shadow-inner shadow-[#5F27CD]/5"><CalendarRange size={24}/></div>
-                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Agenda</span>
-                 </button>
+            <div className="premium-card p-10 rounded-[3rem] border border-slate-100 bg-white shadow-xl shadow-slate-200/20">
+               <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-inner"><Target size={20}/></div>
+                    <div>
+                      <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Objectif du mois</h3>
+                      {editingGoal ? (
+                        <div className="flex items-center gap-2 mt-1">
+                          <input 
+                            type="number" 
+                            value={tempGoal} 
+                            onChange={e => setTempGoal(e.target.value)}
+                            onBlur={updateGoal}
+                            onKeyDown={e => e.key === 'Enter' && updateGoal()}
+                            autoFocus
+                            className="w-20 bg-slate-50 border-none text-[10px] font-black text-[#5F27CD] outline-none rounded-lg px-2 h-6"
+                          />
+                          <span className="text-[10px] font-bold text-slate-400">CHF</span>
+                        </div>
+                      ) : (
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                          {(appointments.filter(a => a.paid && a.date.startsWith(format(new Date(), 'yyyy-MM'))).reduce((s, a) => s + (a.price || 150), 0) / 1000).toFixed(1)}k / {(monthlyGoal / 1000).toFixed(0)}k CHF
+                          <button onClick={() => { setTempGoal(monthlyGoal.toString()); setEditingGoal(true); }} className="hover:text-indigo-600 transition-colors"><Edit3 size={12}/></button>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+               </div>
+               <div className="h-3 bg-slate-50 rounded-full overflow-hidden border border-slate-100 shadow-inner">
+                  <div 
+                    className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full shadow-lg shadow-indigo-200 transition-all duration-1000"
+                    style={{ width: `${Math.min(100, (appointments.filter(a => a.paid && a.date.startsWith(format(new Date(), 'yyyy-MM'))).reduce((s, a) => s + (a.price || 150), 0) / monthlyGoal) * 100)}%` }}
+                  />
                </div>
             </div>
           </div>
@@ -694,129 +1049,107 @@ export default function TherapistDashboard() {
   };
 
   const AccountingView = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [filterStatus, setFilterStatus] = useState<'all' | 'paid' | 'pending'>('all');
+    const [sortKey, setSortKey] = useState<'date' | 'title' | 'price' | 'status' | 'invoice' | 'service'>('date');
+    const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
+    const [displayCount, setDisplayCount] = useState(20);
+    const [payingId, setPayingId] = useState<string | null>(null);
+
+    const handleSort = (key: typeof sortKey) => {
+      if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
+      else { setSortKey(key); setSortDir('asc'); }
+    };
+
+    const SortIcon = ({ col }: { col: typeof sortKey }) => (
+      <span className={`ml-1 transition-opacity ${sortKey === col ? 'opacity-100' : 'opacity-20'}`}>
+        {sortKey === col && sortDir === 'asc' ? '↑' : '↓'}
+      </span>
+    );
 
     const filteredAppts = appointments.filter(a => {
-      const matchSearch = (a.title || '').toLowerCase().includes(searchTerm.toLowerCase());
-      const status = a.paid ? 'paid' : 'pending';
-      const matchStatus = filterStatus === 'all' || status === filterStatus;
+      const matchSearch = (a.title || '').toLowerCase().includes(acctSearch.toLowerCase());
+      const isOverdue = !a.paid && a.date < format(new Date(), 'yyyy-MM-dd');
+      const isPending = !a.paid && a.date >= format(new Date(), 'yyyy-MM-dd');
+      const matchStatus = 
+        acctFilter === 'all' || 
+        (acctFilter === 'paid' && a.paid) ||
+        (acctFilter === 'overdue' && isOverdue) ||
+        (acctFilter === 'pending' && isPending);
       return matchSearch && matchStatus;
-    }).sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+    }).sort((a, b) => {
+      let va: string | number = '', vb: string | number = '';
+      if (sortKey === 'date') { va = a.date || ''; vb = b.date || ''; }
+      else if (sortKey === 'title') { va = a.title || ''; vb = b.title || ''; }
+      else if (sortKey === 'price') { va = a.price || 150; vb = b.price || 150; }
+      else if (sortKey === 'status') { va = a.paid ? 1 : 0; vb = b.paid ? 1 : 0; }
+      else if (sortKey === 'service') { va = (a.serviceName || '').toLowerCase(); vb = (b.serviceName || '').toLowerCase(); }
+      else if (sortKey === 'invoice') {
+        const ia = invoices.find(i => i.appointmentId === a.id);
+        const ib = invoices.find(i => i.appointmentId === b.id);
+        va = ia?.invoiceNumber || ''; vb = ib?.invoiceNumber || '';
+      }
+      if (va < vb) return sortDir === 'asc' ? -1 : 1;
+      if (va > vb) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    const visibleAppts = filteredAppts.slice(0, displayCount);
+    const hasMore = displayCount < filteredAppts.length;
 
     const totalRevenue = filteredAppts.reduce((sum, a) => sum + (a.price || 150), 0);
     const paidRevenue = filteredAppts.filter(a => a.paid).reduce((sum, a) => sum + (a.price || 150), 0);
-    const pendingRevenue = filteredAppts.filter(a => !a.paid).reduce((sum, a) => sum + (a.price || 150), 0);
-
-    const [payingId, setPayingId] = useState<string | null>(null);
 
     const togglePayment = async (id: string, current: boolean, method?: string) => {
       try {
         const updateData: any = { paid: !current };
-        if (!current) {
-          updateData.paymentMethod = method || 'Inconnu';
-        } else {
-          updateData.paymentMethod = deleteField();
-        }
+        if (!current) updateData.paymentMethod = method || 'Inconnu';
+        else updateData.paymentMethod = deleteField();
         await updateDoc(doc(firestore, 'appointments', id), updateData);
         setPayingId(null);
-      } catch (e) {
-        console.error("Error updating payment", e);
-      }
+      } catch (e) { console.error('Error updating payment', e); }
     };
 
-    const exportToCSV = () => {
-      const filtered = appointments.filter(a => {
-        const status = a.paid ? 'paid' : 'pending';
-        return filterStatus === 'all' || status === filterStatus;
-      });
-      const headers = ['Client', 'Date', 'Heure', 'Service', 'Montant', 'Statut'];
-      const rows = filtered.map(a => [
-        `"${a.title}"`,
-        a.date,
-        a.time,
-        `"${a.serviceName || 'Soin Signature'}"`,
-        (a.price || 150) + ' CHF',
-        a.paid ? 'Réglé' : 'En attente'
-      ]);
-      const content = [headers, ...rows].map(e => e.join(',')).join('\n');
-      const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', `comptabilite_${format(new Date(), 'yyyy-MM-dd')}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    };
+    const ThCol = ({ col, label, right }: { col: typeof sortKey; label: string; right?: boolean }) => (
+      <th className={`px-5 pb-2 cursor-pointer select-none hover:text-slate-700 transition-colors ${right ? 'text-right' : ''}`} onClick={() => handleSort(col)}>
+        {label}<SortIcon col={col}/>
+      </th>
+    );
 
     return (
       <div className="flex-1 flex flex-col overflow-hidden bg-white">
-
-
-        <div className="px-8 py-4 flex flex-col md:flex-row gap-4 shrink-0">
-          <div className="flex-1 bg-neutral-50 rounded-2xl p-4 border border-neutral-100 flex items-center gap-4 focus-within:ring-2 focus-within:ring-neutral-900/10 transition-all">
-            <Search size={18} className="text-neutral-300"/>
-            <input 
-              type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-              placeholder="Rechercher un client..." 
-              className="bg-transparent border-none text-sm font-bold w-full outline-none text-neutral-600 placeholder:text-neutral-300"
-            />
-          </div>
-          <div className="flex bg-neutral-100 p-1 rounded-2xl gap-1">
-            {(['all', 'paid', 'pending'] as const).map(s => (
-              <button key={s} onClick={() => setFilterStatus(s)} className={`view-btn ${filterStatus === s ? 'active' : ''}`}>
-                {s === 'all' ? 'Tous' : s === 'paid' ? 'Réglé' : 'Attente'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-auto px-8 py-2 pb-20">
+        {/* ── table ─────────────────────────────────────────────── */}
+        <div className="flex-1 overflow-auto px-8 py-2 pb-10">
           <div className="min-w-[800px]">
-            <table className="w-full text-left border-separate border-spacing-y-3">
+            <table className="w-full text-left border-separate border-spacing-y-1">
               <thead>
                 <tr className="text-[9px] font-black text-neutral-400 uppercase tracking-[0.2em]">
-                  <th className="px-5 pb-2 w-10">
-                    <input 
-                      type="checkbox" 
-                      className="w-4 h-4 rounded border-neutral-300 transition-all cursor-pointer"
+                  <th className="px-5 pb-3 w-10">
+                    <input type="checkbox" className="w-4 h-4 rounded border-neutral-300 cursor-pointer"
                       checked={selectedInvoices.length === filteredAppts.length && filteredAppts.length > 0}
                       onChange={e => setSelectedInvoices(e.target.checked ? filteredAppts.map(a => a.id) : [])}
                     />
                   </th>
-                  <th className="px-5 pb-2">Patient</th>
-                  <th className="px-5 pb-2">N° Facture</th>
-                  <th className="px-5 pb-2">Date & Heure</th>
-                  <th className="px-5 pb-2">Soin effecteur</th>
-                  <th className="px-5 pb-2 text-right">Montant</th>
-                  <th className="px-5 pb-2 text-center">Statut</th>
-                  <th className="px-5 pb-2 text-right">Action</th>
+                  <ThCol col="title" label="Patient"/>
+                  <ThCol col="invoice" label="N° Facture"/>
+                  <ThCol col="date" label="Date & Heure"/>
+                  <ThCol col="service" label="Soin"/>
+                  <ThCol col="price" label="Montant" right/>
+                  <ThCol col="status" label="Statut"/>
+                  <th className="px-5 pb-3 text-right">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredAppts.map(a => {
+                {visibleAppts.map(a => {
                   const inv = invoices.find(inv => inv.appointmentId === a.id);
                   const isSel = selectedInvoices.includes(a.id);
                   return (
-                    <tr 
-                      key={a.id} 
-                      className={`group transition-transform hover:scale-[1.01] cursor-pointer ${isSel ? 'bg-blue-50/30' : ''}`}
-                      onClick={() => {
-                        if (inv) window.open("/therapist/invoice/" + inv.id, "_blank");
-                        else setSelectedAppt(a);
-                      }}
+                    <tr key={a.id}
+                      className={`group cursor-pointer transition-all ${isSel ? 'opacity-100' : 'opacity-90 hover:opacity-100'}`}
+                      onClick={() => { if (inv) window.open('/therapist/invoice/' + inv.id, '_blank'); else setSelectedAppt(a); }}
                     >
-                      <td className="p-4 bg-white border-y border-l border-neutral-100 rounded-l-[2rem] shadow-sm w-10" onClick={e => e.stopPropagation()}>
-                        <input 
-                          type="checkbox" 
-                          className="w-4 h-4 rounded border-neutral-200 transition-all cursor-pointer"
+                      <td className="p-4 bg-white border-y border-l border-neutral-100 rounded-l-2xl shadow-sm w-10" onClick={e => e.stopPropagation()}>
+                        <input type="checkbox" className="w-4 h-4 rounded border-neutral-200 cursor-pointer"
                           checked={isSel}
-                          onChange={() => {
-                            if (isSel) setSelectedInvoices(p => p.filter(x => x !== a.id));
-                            else setSelectedInvoices(p => [...p, a.id]);
-                          }}
+                          onChange={() => { if (isSel) setSelectedInvoices(p => p.filter(x => x !== a.id)); else setSelectedInvoices(p => [...p, a.id]); }}
                         />
                       </td>
                       <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
@@ -824,9 +1157,7 @@ export default function TherapistDashboard() {
                       </td>
                       <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
                         {inv ? (
-                          <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-[10px] font-black border border-indigo-100">
-                            #{inv.invoiceNumber}
-                          </span>
+                          <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-[10px] font-black border border-indigo-100">#{inv.invoiceNumber}</span>
                         ) : (
                           <span className="text-[9px] font-black text-neutral-300 uppercase tracking-widest italic">N/A</span>
                         )}
@@ -837,54 +1168,40 @@ export default function TherapistDashboard() {
                       <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
                         <div className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">{a.serviceName || 'Soin Signature'}</div>
                       </td>
-                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-right font-black text-neutral-900">
-                        {a.price || 150} CHF
-                      </td>
-                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-center">
+                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-right font-black text-neutral-900">{a.price || 150} CHF</td>
+                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
                         {a.paid ? (
-                          <div className="flex flex-col items-center gap-1 group/btn relative">
-                            <button 
-                              onClick={(e) => { e.stopPropagation(); togglePayment(a.id, true); }}
-                              className="px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all bg-emerald-50 text-emerald-600 hover:bg-rose-50 hover:text-rose-600"
-                            >
+                          <div className="relative group/btn">
+                            <button onClick={e => { e.stopPropagation(); togglePayment(a.id, true); }}
+                              className="px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-600 hover:bg-rose-50 hover:text-rose-600 transition-all">
                               Réglé via {a.paymentMethod || 'Inconnu'}
                             </button>
-                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 px-2 py-1 bg-neutral-900 text-white text-[8px] font-bold rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">Cliquer pour annuler</span>
+                            <span className="absolute -top-7 left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-900 text-white text-[8px] font-bold rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">Cliquer pour annuler</span>
                           </div>
                         ) : payingId === a.id ? (
-                          <div className="flex items-center justify-center gap-1 animate-in zoom-in-95 duration-200">
+                          <div className="flex items-center gap-1 animate-in zoom-in-95 duration-200">
                             {(['Twint', 'Card', 'Cash'] as const).map(m => (
-                              <button
-                                key={m}
-                                onClick={(e) => { e.stopPropagation(); togglePayment(a.id, false, m); }}
-                                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                  m === 'Twint' ? 'bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white' :
-                                  m === 'Card' ? 'bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white' :
-                                  'bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white'
-                                } shadow-sm hover:scale-110 active:scale-90`}
-                                title={m}
-                              >
+                              <button key={m} onClick={e => { e.stopPropagation(); togglePayment(a.id, false, m); }}
+                                className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm hover:scale-110 active:scale-90 transition-all ${m === 'Twint' ? 'bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white' : m === 'Card' ? 'bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white'}`}
+                                title={m}>
                                 {m === 'Twint' ? <Smartphone size={14}/> : m === 'Card' ? <CreditCard size={14}/> : <Banknote size={14}/>}
                               </button>
                             ))}
-                            <button 
-                              onClick={(e) => { e.stopPropagation(); setPayingId(null); }}
-                              className="w-8 h-8 rounded-lg bg-neutral-50 text-neutral-400 flex items-center justify-center hover:bg-neutral-100"
-                            >
-                              <X size={14}/>
-                            </button>
+                            <button onClick={e => { e.stopPropagation(); setPayingId(null); }} className="w-8 h-8 rounded-full bg-neutral-50 text-neutral-400 flex items-center justify-center hover:bg-neutral-100"><X size={14}/></button>
                           </div>
                         ) : (
-                          <button 
-                            onClick={(e) => { e.stopPropagation(); setPayingId(a.id); }}
-                            className="px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all bg-rose-50 text-rose-500 animate-pulse hover:bg-rose-500 hover:text-white"
-                          >
-                            Non Réglé
+                          <button onClick={e => { e.stopPropagation(); setPayingId(a.id); }}
+                            className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
+                              a.date < format(new Date(), 'yyyy-MM-dd') 
+                                ? 'bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white' 
+                                : 'bg-slate-50 text-slate-500 hover:bg-slate-500 hover:text-white'
+                            }`}>
+                            {a.date < format(new Date(), 'yyyy-MM-dd') ? 'En retard' : 'En attente'}
                           </button>
                         )}
                       </td>
-                      <td className="p-4 bg-white border-y border-r border-neutral-100 rounded-r-[2rem] shadow-sm text-right">
-                        <div className="w-10 h-10 rounded-xl bg-neutral-50 group-hover:bg-[#54A0FF] group-hover:text-white text-neutral-400 transition-all flex items-center justify-center mx-auto shadow-sm">
+                      <td className="p-4 bg-white border-y border-r border-neutral-100 rounded-r-2xl shadow-sm text-right">
+                        <div className="w-10 h-10 rounded-xl bg-neutral-50 group-hover:bg-indigo-600 group-hover:text-white text-neutral-400 transition-all flex items-center justify-center mx-auto shadow-sm">
                           <FileText size={16}/>
                         </div>
                       </td>
@@ -894,11 +1211,20 @@ export default function TherapistDashboard() {
               </tbody>
             </table>
           </div>
+
+          {/* infinite load */}
+          {hasMore && (
+            <div className="flex justify-center pt-6 pb-2">
+              <button onClick={() => setDisplayCount(c => c + 20)}
+                className="px-8 py-3.5 bg-slate-50 hover:bg-indigo-600 hover:text-white text-slate-500 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all border border-slate-100 hover:border-indigo-600 flex items-center gap-3">
+                <ChevronRight size={14} className="rotate-90"/> Charger plus ({filteredAppts.length - displayCount} restants)
+              </button>
+            </div>
+          )}
+
           {filteredAppts.length === 0 && (
             <div className="py-24 text-center">
-              <div className="w-20 h-20 bg-neutral-50 rounded-[2rem] flex items-center justify-center mx-auto mb-6 text-neutral-200">
-                <CreditCard size={32}/>
-              </div>
+              <div className="w-20 h-20 bg-neutral-50 rounded-[2rem] flex items-center justify-center mx-auto mb-6 text-neutral-200"><CreditCard size={32}/></div>
               <p className="text-neutral-400 font-bold italic">Aucune donnée correspondant aux critères.</p>
             </div>
           )}
@@ -907,55 +1233,126 @@ export default function TherapistDashboard() {
     );
   };
 
+
   const PatientsView = () => {
+    const [clSort, setClSort] = useState<{ key: string, dir: 'asc' | 'desc' }>({ key: 'firstName', dir: 'asc' });
+
     const filtered = clients.filter(c => 
       `${c.firstName} ${c.lastName}`.toLowerCase().includes(clSearch.toLowerCase()) ||
       (c.email || '').toLowerCase().includes(clSearch.toLowerCase())
     );
 
+    const sorted = [...filtered].sort((a, b) => {
+      let va = '', vb = '';
+      if (clSort.key === 'firstName') { va = a.firstName; vb = b.firstName; }
+      else if (clSort.key === 'lastName') { va = a.lastName; vb = b.lastName; }
+      else if (clSort.key === 'email') { va = a.email || ''; vb = b.email || ''; }
+      else if (clSort.key === 'phone') { va = a.phone || ''; vb = b.phone || ''; }
+      else if (clSort.key === 'insurance') { va = a.insurance || ''; vb = b.insurance || ''; }
+      else if (clSort.key === 'sessions') {
+        const sA = appointments.filter(apt => apt.clientId === a.id || apt.title === `${a.firstName} ${a.lastName}`).length;
+        const sB = appointments.filter(apt => apt.clientId === b.id || apt.title === `${b.firstName} ${b.lastName}`).length;
+        return clSort.dir === 'asc' ? sA - sB : sB - sA;
+      }
+      const res = va.localeCompare(vb);
+      return clSort.dir === 'asc' ? res : -res;
+    });
+
+    const SortIcon = ({ k }: { k: string }) => (
+      <button onClick={() => setClSort(prev => ({ key: k, dir: prev.key === k && prev.dir === 'asc' ? 'desc' : 'asc' }))} className={`ml-1 transition-all ${clSort.key === k ? 'text-indigo-600' : 'text-neutral-300 hover:text-neutral-500'}`}>
+        <ArrowUpDown size={10}/>
+      </button>
+    );
+
     return (
       <div className="flex-1 flex flex-col overflow-hidden bg-white">
-
-
         <div className="flex-1 overflow-auto px-8 py-2 pb-20">
           <div className="min-w-[800px]">
             <table className="w-full text-left border-separate border-spacing-y-3">
               <thead>
-                <tr className="text-[9px] font-black text-neutral-400 uppercase tracking-[0.2em]">
-                  <th className="px-5 pb-2">Patient</th>
-                  <th className="px-5 pb-2">Contact Email</th>
-                  <th className="px-5 pb-2">Téléphone</th>
-                  <th className="px-5 pb-2">Assurance</th>
-                  <th className="px-5 pb-2 text-center">Séances</th>
+                <tr className="text-[9px] font-black text-neutral-400 uppercase tracking-[0.2em] select-none">
+                  <th className="px-5 pb-2 w-10"></th>
+                  {visibleCols.firstName && <th className="px-5 pb-2 cursor-pointer hover:text-neutral-600 transition-colors" onClick={() => setClSort(prev => ({ key: 'firstName', dir: prev.key === 'firstName' && prev.dir === 'asc' ? 'desc' : 'asc' }))}>Prénom <SortIcon k="firstName"/></th>}
+                  {visibleCols.lastName && <th className="px-5 pb-2 cursor-pointer hover:text-neutral-600 transition-colors" onClick={() => setClSort(prev => ({ key: 'lastName', dir: prev.key === 'lastName' && prev.dir === 'asc' ? 'desc' : 'asc' }))}>Nom <SortIcon k="lastName"/></th>}
+                  {visibleCols.email && <th className="px-5 pb-2 cursor-pointer hover:text-neutral-600 transition-colors" onClick={() => setClSort(prev => ({ key: 'email', dir: prev.key === 'email' && prev.dir === 'asc' ? 'desc' : 'asc' }))}>Email <SortIcon k="email"/></th>}
+                  {visibleCols.phone && <th className="px-5 pb-2 cursor-pointer hover:text-neutral-600 transition-colors" onClick={() => setClSort(prev => ({ key: 'phone', dir: prev.key === 'phone' && prev.dir === 'asc' ? 'desc' : 'asc' }))}>Tél <SortIcon k="phone"/></th>}
+                  {visibleCols.street && <th className="px-5 pb-2">Rue</th>}
+                  {visibleCols.zip && <th className="px-5 pb-2 text-center">NPA</th>}
+                  {visibleCols.city && <th className="px-5 pb-2">Ville</th>}
+                  {visibleCols.canton && <th className="px-5 pb-2">Canton</th>}
+                  {visibleCols.insurance && <th className="px-5 pb-2 cursor-pointer hover:text-neutral-600 transition-colors" onClick={() => setClSort(prev => ({ key: 'insurance', dir: prev.key === 'insurance' && prev.dir === 'asc' ? 'desc' : 'asc' }))}>Assurance <SortIcon k="insurance"/></th>}
+                  {visibleCols.sessions && <th className="px-5 pb-2 text-center cursor-pointer hover:text-neutral-600 transition-colors" onClick={() => setClSort(prev => ({ key: 'sessions', dir: prev.key === 'sessions' && prev.dir === 'asc' ? 'desc' : 'asc' }))}>Séances <SortIcon k="sessions"/></th>}
                   <th className="px-5 pb-2 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map(c => {
+                {sorted.map(c => {
                   const sessions = appointments.filter(a => a.clientId === c.id || a.title === `${c.firstName} ${c.lastName}`).length;
+                  const isSel = selectedClients.includes(c.id);
                   return (
                     <tr 
                       key={c.id} 
                       className="group transition-transform hover:scale-[1.01] cursor-pointer"
                       onClick={() => openClientFolder(c)}
                     >
-                      <td className="p-4 bg-white border-y border-l border-neutral-100 rounded-l-[2rem] shadow-sm">
-                           <div className="font-extrabold text-sm text-neutral-900 tracking-tight uppercase">{c.firstName} {c.lastName}</div>
+                      <td className="p-4 bg-white border-y border-l border-neutral-100 rounded-l-[2rem] shadow-sm w-10" onClick={e => e.stopPropagation()}>
+                        <input type="checkbox" className="w-4 h-4 rounded border-neutral-200 cursor-pointer"
+                          checked={isSel}
+                          onChange={() => { if (isSel) setSelectedClients(p => p.filter(x => x !== c.id)); else setSelectedClients(p => [...p, c.id]); }}
+                        />
                       </td>
-                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-xs font-bold text-neutral-500">
-                        {c.email}
-                      </td>
-                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-xs font-bold text-neutral-500">
-                        {c.phone}
-                      </td>
-                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
-                        <span className="px-3 py-1 bg-neutral-50 text-neutral-400 rounded-lg text-[10px] font-black border border-neutral-100 group-hover:border-indigo-200 group-hover:text-indigo-600 transition-all">
-                          {c.insurance || '—'}
-                        </span>
-                      </td>
-                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-center font-black text-neutral-900">
-                        {sessions}
-                      </td>
+                      {visibleCols.firstName && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
+                           <div className="font-extrabold text-sm text-neutral-900 tracking-tight uppercase">{c.firstName}</div>
+                        </td>
+                      )}
+                      {visibleCols.lastName && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-xs font-bold text-neutral-500 uppercase">
+                          {c.lastName}
+                        </td>
+                      )}
+                      {visibleCols.email && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-xs font-bold text-neutral-500">
+                          {c.email}
+                        </td>
+                      )}
+                      {visibleCols.phone && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-xs font-bold text-neutral-500">
+                          {c.phone}
+                        </td>
+                      )}
+                      {visibleCols.street && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-[10px] font-bold text-neutral-400">
+                          {c.street || '—'}
+                        </td>
+                      )}
+                      {visibleCols.zip && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-center text-[10px] font-black text-neutral-900">
+                          {c.zip || '—'}
+                        </td>
+                      )}
+                      {visibleCols.city && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-[10px] font-bold text-neutral-400">
+                          {c.city || '—'}
+                        </td>
+                      )}
+                      {visibleCols.canton && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-[10px] font-bold text-neutral-400 italic">
+                          {c.canton || '—'}
+                        </td>
+                      )}
+                      {visibleCols.insurance && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
+                          <span className="px-3 py-1 bg-neutral-50 text-neutral-400 rounded-lg text-[10px] font-black border border-neutral-100 group-hover:border-indigo-200 group-hover:text-indigo-600 transition-all">
+                            {c.insurance || '—'}
+                          </span>
+                        </td>
+                      )}
+                      {visibleCols.sessions && (
+                        <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-center font-black text-neutral-900">
+                          {sessions}
+                        </td>
+                      )}
                       <td className="p-4 bg-white border-y border-r border-neutral-100 rounded-r-[2rem] shadow-sm text-right">
                         <div className="w-10 h-10 rounded-xl bg-neutral-50 group-hover:bg-indigo-600 group-hover:text-white text-neutral-400 transition-all flex items-center justify-center mx-auto shadow-sm">
                           <ChevronRight size={16}/>
@@ -997,8 +1394,8 @@ export default function TherapistDashboard() {
                   <div className="space-y-1">
                     {[
                       { key: 'email', label: 'Email', val: selectedClient.email, icon: <Mail size={16}/>, color: 'text-[#54A0FF]' },
-                      { key: 'phone', label: 'Téléphone', val: selectedClient.phone, icon: <Activity size={16}/>, color: 'text-[#1DD1A1]' },
-                      { key: 'address', label: 'Adresse', val: selectedClient.address, icon: <Target size={16}/>, color: 'text-[#FF9F43]' },
+                      { key: 'phone', label: 'Téléphone', val: selectedClient.fullPhone || `${selectedClient.phonePrefix || ''} ${selectedClient.phone || ''}`, icon: <Activity size={16}/>, color: 'text-[#1DD1A1]' },
+                      { key: 'address', label: 'Adresse', val: `${selectedClient.street || ''} ${selectedClient.zip || ''} ${selectedClient.city || ''} ${selectedClient.canton || ''}`, icon: <Target size={16}/>, color: 'text-[#FF9F43]' },
                       { key: 'insurance', label: 'Assurance', val: selectedClient.insurance, icon: <CheckCircle2 size={16}/>, color: 'text-[#5F27CD]' },
                     ].map((it, i) => (
                       <div 
@@ -1021,21 +1418,39 @@ export default function TherapistDashboard() {
                     <input value={clEditForm.firstName} onChange={e => setClEditForm({...clEditForm, firstName: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Prénom"/>
                     <input value={clEditForm.lastName} onChange={e => setClEditForm({...clEditForm, lastName: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Nom"/>
                     <input value={clEditForm.email} onChange={e => setClEditForm({...clEditForm, email: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Email"/>
-                    <input value={clEditForm.phone} onChange={e => setClEditForm({...clEditForm, phone: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Téléphone"/>
-                    <input value={clEditForm.address} onChange={e => setClEditForm({...clEditForm, address: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Adresse"/>
+                    <div className="grid grid-cols-3 gap-2">
+                       <select value={clEditForm.phonePrefix} onChange={e => setClEditForm({...clEditForm, phonePrefix: e.target.value})} className="px-3 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-xs outline-none focus:ring-4 focus:ring-[#5F27CD]/20 h-[50px]">
+                         <option value="+41">🇨🇭 +41</option>
+                         <option value="+33">🇫🇷 +33</option>
+                         <option value="+49">🇩🇪 +49</option>
+                         <option value="+39">🇮🇹 +39</option>
+                         <option value="+43">🇦🇹 +43</option>
+                         <option value="+423">🇱🇮 +423</option>
+                       </select>
+                       <input value={clEditForm.phone} onChange={e => setClEditForm({...clEditForm, phone: e.target.value})} className="col-span-2 px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="79 000 00 00"/>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                       <input value={clEditForm.street} onChange={e => setClEditForm({...clEditForm, street: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Rue et numéro"/>
+                       <input value={clEditForm.zip} onChange={e => setClEditForm({...clEditForm, zip: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="NPA (Code Postal)"/>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                       <input value={clEditForm.city} onChange={e => setClEditForm({...clEditForm, city: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Ville"/>
+                       <input value={clEditForm.canton} onChange={e => setClEditForm({...clEditForm, canton: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Canton"/>
+                    </div>
                     <input value={clEditForm.insurance} onChange={e => setClEditForm({...clEditForm, insurance: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Assurance"/>
                     <div className="flex gap-4">
                       <button onClick={() => setIsEditingClient(false)} className="flex-1 py-4 bg-neutral-100 text-neutral-400 rounded-xl font-bold text-xs uppercase">Annuler</button>
-                      <button onClick={saveClientEdit} disabled={clScaling} className="flex-2 py-4 bg-gradient-to-r from-[#341F97] to-[#5F27CD] text-white rounded-xl font-bold text-sm shadow-xl shadow-[#5F27CD]/20">
+                      <button onClick={saveClientEdit} disabled={clScaling} className="flex-[2] py-4 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-xl shadow-emerald-100/50 hover:scale-[1.02] active:scale-95 transition-all">
                         {clScaling ? '...' : 'Sauvegarder'}
                       </button>
                     </div>
                   </div>
                 )}
               </div>
+
               
               <div className="pt-6 border-t border-slate-100 grid grid-cols-2 gap-4">
-                <button onClick={() => alert('Confirmation envoyée')} className="h-14 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-sm hover:bg-indigo-600 hover:text-white transition-all flex items-center justify-center gap-3">
+                <button onClick={() => alert('Confirmation envoyée')} className="h-14 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-sm hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center gap-3">
                   <Mail size={16}/> CONFIRMER
                 </button>
                 <button onClick={() => alert('Facture générée')} className="h-14 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-slate-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
@@ -1049,7 +1464,7 @@ export default function TherapistDashboard() {
                  <h3 className="text-xl font-medium text-[#222F3E] tracking-tighter flex items-center gap-3"><Clock size={20} className="text-[#5F27CD]"/> Parcours Patient</h3>
                  <p className="text-[10px] font-black text-neutral-300 uppercase tracking-widest italic">Chronologie des séances</p>
               </div>
-              <div className="space-y-4">
+              <div className="divide-y divide-slate-100">
                 {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` || a.clientId === selectedClient.id).length > 0 ? (
                   appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` || a.clientId === selectedClient.id)
                     .sort((a,b) => `${b.date}T${b.time}`.localeCompare(`${a.date}T${a.time}`))
@@ -1057,34 +1472,38 @@ export default function TherapistDashboard() {
                       const isFut = new Date(a.date) >= startOfDay(new Date());
                       return (
                         <div 
-                          key={a.id} 
-                          className={`group p-6 bg-white border ${isFut ? 'border-blue-100 shadow-md' : 'border-neutral-100'} rounded-[2rem] hover:shadow-xl hover:border-blue-400 transition-all cursor-pointer flex items-center justify-between gap-6`}
+                          key={a.id}
+                          className="group flex items-center gap-6 py-5 px-2 hover:bg-slate-50 rounded-2xl transition-all cursor-pointer"
                           onClick={() => { setSelectedAppt(a); setIsEditing(false); }}
                         >
-                           <div className="flex items-center gap-6">
-                              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black ${isFut ? 'bg-blue-50 text-blue-600' : 'bg-neutral-50 text-neutral-400'}`}>
-                                 {a.time?.split(':')[0]}
-                              </div>
-                              <div>
-                                 <p className="font-black text-lg text-neutral-900 tracking-tight leading-none mb-2">{a.date}</p>
-                                 <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">{a.serviceName || 'Soin Signature'}</p>
-                              </div>
-                           </div>
-                           <div className="flex items-center gap-4">
-                              {a.paid && <span className="px-3 py-1 bg-green-50 text-green-600 border border-green-100 rounded-lg text-[8px] font-black uppercase tracking-widest">Payé</span>}
-                              <span className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border ${isFut ? 'bg-blue-600 text-white border-blue-600' : 'bg-neutral-50 text-neutral-400 border-neutral-100'}`}>
-                                 {isFut ? 'À Venir' : 'Honoré'}
-                              </span>
-                           </div>
+                          {/* timeline dot */}
+                          <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${isFut ? 'bg-indigo-500' : 'bg-slate-300'}`}/>
+                          {/* hour bubble */}
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black shrink-0 ${isFut ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-50 text-slate-400'}`}>
+                            {a.time?.split(':')[0]}h
+                          </div>
+                          {/* info */}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-black text-slate-900 leading-none mb-1">{a.date}</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">{a.serviceName || 'Soin Signature'}</p>
+                          </div>
+                          {/* badges */}
+                          <div className="flex items-center gap-3 shrink-0">
+                            {a.paid && <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Payé</span>}
+                            <span className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${isFut ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'}`}>
+                              {isFut ? 'À Venir' : 'Honoré'}
+                            </span>
+                          </div>
                         </div>
                       );
                     })
                 ) : (
-                  <div className="py-20 text-center bg-neutral-50 rounded-[3rem] border border-dashed border-neutral-200">
-                    <p className="text-xs text-[#576574] italic font-bold uppercase tracking-widest opacity-40">Aucune activité enregistrée</p>
+                  <div className="py-20 text-center">
+                    <p className="text-xs text-slate-300 font-black uppercase tracking-widest">Aucune activité enregistrée</p>
                   </div>
                 )}
               </div>
+
            </div>
         </div>
       </div>
@@ -1158,35 +1577,49 @@ export default function TherapistDashboard() {
           background-image: repeating-linear-gradient(
             -45deg,
             transparent,
-            transparent 8px,
-            rgba(203,213,225,0.35) 8px,
-            rgba(203,213,225,0.35) 16px
+            transparent 12px,
+            rgba(203,213,225,0.6) 12px,
+            rgba(203,213,225,0.6) 24px
+          );
+          background-color: #F1F5F9;
+        }
+        .day-closed-stripes-light {
+          background-image: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 12px,
+            rgba(203,213,225,0.08) 12px,
+            rgba(203,213,225,0.08) 24px
           );
         }
       `}</style>
 
-      <aside className="w-24 bg-white border-r border-slate-100 flex flex-col items-center py-10 gap-2 shrink-0 z-20 shadow-[20px_0_60px_rgba(0,0,0,0.02)]">
+      <aside className={`bg-white border-r border-slate-100 flex flex-col items-center py-10 gap-2 shrink-0 z-20 shadow-[20px_0_60px_rgba(0,0,0,0.02)] transition-all duration-300 ${sidebarExpanded ? 'w-24' : 'w-20'}`}>
         <div className="w-12 h-12 bg-gradient-to-br from-[#341F97] to-[#5F27CD] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-[#5F27CD]/20 mb-8">
           <Leaf size={24} strokeWidth={2.5}/>
         </div>
         
         {([
-          { id: 'dashboard',  Icon: LayoutDashboard, label: 'Tableau' },
+          { id: 'dashboard',  Icon: LayoutDashboard, label: 'HOME' },
           { id: 'scheduler',  Icon: CalendarRange,   label: 'Agenda' },
           { id: 'clients',    Icon: Users,           label: 'Patients' },
           { id: 'accounting', Icon: CreditCard,      label: 'Compta' },
         ] as const).map(n => (
           <button key={n.id} onClick={() => setTab(n.id as any)} className={`
-            nav-pill w-16 h-16 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all duration-300
+            nav-pill rounded-2xl flex flex-col items-center justify-center transition-all duration-300
+            ${sidebarExpanded ? 'w-16 h-16 gap-1' : 'w-12 h-12'}
             ${tab === n.id ? 'bg-[#5F27CD]/5 text-[#5F27CD] shadow-inner' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'}
           `}>
-             <n.Icon size={22} strokeWidth={tab === n.id ? 2.5 : 2}/>
-             <span className="text-[8px] font-black uppercase tracking-widest">{n.label}</span>
+             <n.Icon size={sidebarExpanded ? 22 : 20} strokeWidth={tab === n.id ? 2.5 : 2}/>
+             {sidebarExpanded && <span className="text-[8px] font-black uppercase tracking-widest">{n.label}</span>}
           </button>
         ))}
 
-        <div className="mt-auto space-y-4">
-          <button onClick={() => setCfgOpen(true)} className="w-12 h-12 flex items-center justify-center rounded-2xl text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all"><Settings size={22}/></button>
+        <div className="mt-auto space-y-4 flex flex-col items-center">
+          <button onClick={() => setSidebarExpanded(!sidebarExpanded)} className="w-12 h-12 flex items-center justify-center rounded-2xl text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all">
+            {sidebarExpanded ? <ChevronLeft size={22}/> : <ChevronRight size={22}/>}
+          </button>
+          
           <button onClick={() => auth?.signOut()} className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition shadow-sm"><Power size={20}/></button>
         </div>
       </aside>
@@ -1194,22 +1627,60 @@ export default function TherapistDashboard() {
       {/* ══ CONTENT & SIDE PANEL ══════════════════════════════════════════════ */}
       <div className="flex-1 flex overflow-hidden relative">
         <main className={`flex-1 flex flex-col overflow-hidden transition-all duration-500 ${selectedAppt ? 'mr-[450px]' : ''}`}>
-           <nav className="h-24 border-b border-slate-100 px-10 flex items-center justify-between bg-white shrink-0 relative shadow-sm">
-             <div className="flex items-center gap-10 flex-1">
-               <div className="flex items-center gap-6">
-                  {tab === 'client-detail' && (
-                    <button onClick={() => setTab('clients')} className="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 hover:bg-[#5F27CD] hover:text-white transition-all flex items-center justify-center shadow-sm">
-                      <ChevronRight size={20} className="rotate-180"/>
-                    </button>
-                  )}
-                  <h1 className="text-2xl font-black tracking-tighter text-slate-900 leading-none uppercase">
-                    {tab === 'scheduler' ? format(cur, 'MMMM yyyy', { locale: fr }) : tab === 'clients' ? 'PATIENTS' : tab === 'accounting' ? 'COMPTABILITÉ' : tab === 'client-detail' ? `${selectedClient?.firstName} ${selectedClient?.lastName}` : 'DASHBOARD'}
-                  </h1>
-               </div>
+           <nav className="h-24 border-b border-slate-100 px-10 flex items-center justify-between bg-white shrink-0 relative shadow-sm gap-8">
+             {/* Left Column: Context & Title */}
+             <div className="flex items-center gap-6 min-w-[280px]">
+               {(tab === 'client-detail' || selectedAppt) && (
+                 <button onClick={() => { 
+                   if (selectedAppt) setSelectedAppt(null);
+                   else setTab('clients'); 
+                 }} className="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 hover:bg-[#5F27CD] hover:text-white transition-all flex items-center justify-center shadow-sm shrink-0">
+                   <ChevronRight size={20} className="rotate-180"/>
+                 </button>
+               )}
+               <h1 className="text-2xl font-black tracking-tighter text-slate-900 leading-none uppercase shrink-0">
+                 {selectedAppt ? "DÉTAIL RENDEZ-VOUS" : tab === "config-slots" ? "CRÉNEAUX" : (tab === "scheduler" && view === "month") ? "VOTRE AGENDA" : (tab === "scheduler" ? format(cur, "MMMM yyyy", { locale: fr }) : tab === "clients" ? "PATIENTS" : tab === "accounting" ? "COMPTABILITÉ" : tab === "client-detail" ? `${selectedClient?.firstName} ${selectedClient?.lastName}` : "HOME")}
+               </h1>
 
-               {tab === 'clients' && (
-                 <div className="flex-1 max-w-lg mx-auto animate-in slide-in-from-top-2 duration-500">
-                   <div className="bg-neutral-50 rounded-2xl px-5 h-14 border border-neutral-100 flex items-center gap-4 focus-within:ring-4 focus-within:ring-indigo-100/50 transition-all shadow-inner">
+               {/* Left Badges */}
+               <div className="flex items-center gap-2">
+                 {(tab === 'scheduler' || tab === 'config-slots') && !selectedAppt && (
+                   <div className="flex h-12 bg-slate-100 p-1 rounded-2xl gap-1 shrink-0">
+                     {(['month', 'week'] as const).map(v => (
+                       <button key={v} onClick={() => { setView(v); setTab('scheduler'); }} className={`h-full px-5 flex items-center rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${view === v && tab !== 'config-slots' ? 'bg-white text-slate-900 shadow-sm shadow-slate-200' : 'text-slate-400 hover:text-slate-600'}`}>
+                         {v === 'month' ? 'Mois' : 'Semaine'}
+                       </button>
+                     ))}
+                   </div>
+                 )}
+                 {tab === 'accounting' && (
+                   <div className="flex items-center gap-2 shrink-0">
+                     <button
+                       onClick={() => setAcctFilter(f => f === 'overdue' ? 'all' : 'overdue')}
+                       className={`flex items-center gap-2 h-12 px-5 rounded-2xl border transition-all cursor-pointer ${acctFilter === 'overdue' ? 'bg-rose-500 border-rose-500 text-white shadow-md shadow-rose-100' : 'bg-rose-50 border-rose-100 hover:border-rose-300 text-rose-600'}`}>
+                       <span className={`w-1.5 h-1.5 rounded-full ${acctFilter === 'overdue' ? 'bg-white' : 'bg-rose-500 animate-pulse'}`} />
+                       <span className="text-[10px] font-black uppercase tracking-wider">{appointments.filter(a => !a.paid && a.date < format(new Date(), 'yyyy-MM-dd')).length} Retard</span>
+                     </button>
+                   </div>
+                 )}
+                 {tab === 'dashboard' && (
+                   <div className="flex items-center gap-2 shrink-0">
+                     <div className="flex items-center gap-2 h-12 px-5 rounded-2xl bg-blue-50 border border-blue-100 text-blue-600 font-black text-[10px] uppercase tracking-wider">
+                        <CalendarRange size={14}/> {appointments.filter(a => a.date === format(new Date(), 'yyyy-MM-dd')).length}
+                     </div>
+                     <div className="flex items-center gap-2 h-12 px-5 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 font-black text-[10px] uppercase tracking-wider">
+                        <Target size={14}/> {appointments.filter(a => !a.paid).length}
+                     </div>
+                   </div>
+                 )}
+               </div>
+             </div>
+
+             {/* Center Column: Search Bars */}
+             <div className="flex-1 flex justify-center px-4">
+               {tab === 'clients' && !selectedAppt && (
+                 <div className="w-full max-w-lg animate-in slide-in-from-top-2 duration-500">
+                   <div className="bg-neutral-50 rounded-2xl px-5 h-12 border border-neutral-100 flex items-center gap-4 focus-within:ring-4 focus-within:ring-indigo-100/50 transition-all shadow-inner">
                      <Search size={16} className="text-neutral-300"/>
                      <input 
                        type="text" value={clSearch} onChange={e => setClSearch(e.target.value)}
@@ -1219,127 +1690,145 @@ export default function TherapistDashboard() {
                    </div>
                  </div>
                )}
-                 
-                 {tab === 'accounting' && (
-                   <div className="flex items-center gap-2">
-                     <div className="flex items-center gap-2 px-3 py-1.5 bg-rose-50 border border-rose-100 rounded-xl">
-                       <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-                       <span className="text-[10px] font-black text-rose-600 uppercase tracking-wider">{appointments.filter(a => !a.paid).length} Factures en retard</span>
-                     </div>
-                     <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-xl">
-                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">{appointments.filter(a => a.paid).length} En règlements</span>
-                     </div>
+               {tab === 'accounting' && !selectedAppt && (
+                 <div className="w-full max-w-lg animate-in slide-in-from-top-2 duration-500">
+                   <div className="bg-neutral-50 rounded-2xl px-5 h-12 border border-neutral-100 flex items-center gap-4 focus-within:ring-4 focus-within:ring-indigo-100/50 transition-all shadow-inner">
+                     <Search size={16} className="text-neutral-300"/>
+                     <input 
+                       type="text" value={acctSearch} onChange={e => setAcctSearch(e.target.value)}
+                       placeholder="RECHERCHER DANS LA COMPTABILITÉ..." 
+                       className="bg-transparent border-none text-[10px] font-black w-full outline-none text-neutral-600 placeholder:text-neutral-300 tracking-widest"
+                     />
                    </div>
-                 )}
-               {tab === 'scheduler' && (
-                 <button 
-                   onClick={() => { setBlockMode(!blockMode); if (!blockMode) setView('month'); }}
-                   className={`py-3 px-6 rounded-2xl flex items-center gap-3 font-black text-[10px] uppercase tracking-[0.15em] transition-all border shadow-sm ${blockMode ? 'bg-emerald-50 border-emerald-200 text-emerald-600 ring-4 ring-emerald-50' : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-white hover:text-indigo-600'}`}
-                 >
-                   {blockMode ? <CheckCircle2 size={14}/> : <Edit3 size={14}/>}
-                   {blockMode ? "Confirmer" : 'Éditer Planning'}
-                 </button>
+                 </div>
+               )}
+               {(tab === 'scheduler' || tab === 'config-slots') && !selectedAppt && (
+                 <div className="flex items-center gap-1 mx-auto">
+                   <button onClick={() => period(-1)} className="w-12 h-12 flex items-center justify-center rounded-2xl hover:bg-slate-50 text-slate-400 border border-transparent hover:border-slate-100 transition-all"><ChevronLeft size={20}/></button>
+                   <button onClick={() => setCur(new Date())} className="h-12 px-5 text-[10px] font-black uppercase text-slate-500 hover:text-indigo-600 hover:bg-slate-50 rounded-2xl transition-all tracking-widest mx-1 flex items-center">Aujourd'hui</button>
+                   <button onClick={() => period(1)} className="w-12 h-12 flex items-center justify-center rounded-2xl hover:bg-slate-50 text-slate-400 border border-transparent hover:border-slate-100 transition-all"><ChevronRight size={20}/></button>
+                 </div>
                )}
              </div>
 
-             <div className="flex items-center gap-4">
-              {tab === 'clients' && (
-                <button 
-                  onClick={() => setClModal(true)} 
-                  className="bg-indigo-600 text-white px-8 h-14 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl shadow-indigo-100 hover:scale-[1.05] active:scale-95 transition-all"
-                >
-                  <Plus size={16}/> Nouveau Patient
-                </button>
-              )}
-              {tab === 'accounting' && selectedInvoices.length > 0 && (
-                <button 
-                  onClick={() => {
-                    const filtered = appointments.filter(a => selectedInvoices.includes(a.id));
-                    const headers = ['Client', 'Date', 'Heure', 'Service', 'Montant', 'Statut'];
-                    const rows = filtered.map(a => [`"${a.title}"`, a.date, a.time, `"${a.serviceName || 'Soin'}"`, (a.price || 150), a.paid ? 'Réglé' : 'Attente']);
-                    const content = [headers, ...rows].map(e => e.join(',')).join('\n');
-                    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a'); link.href = url; link.download = `compta_${format(new Date(),'yyyy-MM-dd')}.csv`; link.click();
-                  }}
-                  className="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl shadow-emerald-100 hover:scale-[1.05] active:scale-95 transition-all animate-in slide-in-from-right"
-                >
-                  <Download size={16}/> Exporter ({selectedInvoices.length})
-                </button>
-              )}
+             {/* Right Column: Actions */}
+             <div className="flex items-center gap-3 min-w-[280px] justify-end">
+                {tab === 'clients' && !selectedAppt && (
+                  <div className="flex items-center gap-3 animate-in fade-in slide-in-from-right-4 duration-500">
+                    {selectedClients.length >= 2 && (
+                      <button 
+                        onClick={() => setMerging(true)} 
+                        className="bg-rose-500 text-white px-8 h-12 rounded-2xl flex items-center gap-3 font-black text-[10px] uppercase tracking-[0.2em] shadow-[0_10px_30px_rgba(244,63,94,0.4)] hover:scale-[1.05] active:scale-95 transition-all border border-rose-400 animate-in zoom-in-90 duration-300"
+                      >
+                         Fusionner ({selectedClients.length})
+                      </button>
+                    )}
+                    
+                    <div className="relative">
+                      <button 
+                        onClick={() => setShowColPicker(!showColPicker)}
+                        className={`flex items-center justify-center w-12 h-12 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${showColPicker ? 'bg-slate-900 border-slate-900 text-white shadow-lg' : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-white hover:text-emerald-600 shadow-sm shadow-slate-100'}`}
+                      >
+                        <Columns size={18}/>
+                      </button>
+                      {showColPicker && (
+                        <>
+                          <div className="fixed inset-0 z-[40]" onClick={() => setShowColPicker(false)} />
+                          <div className="absolute right-0 top-16 z-[50] w-64 bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 animate-in zoom-in-95 duration-200">
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 text-center">Colonnes visibles</p>
+                            <div className="space-y-3">
+                              {[
+                                { k: 'firstName', label: 'Prénom' },
+                                { k: 'lastName', label: 'Nom' },
+                                { k: 'email', label: 'Email' },
+                                { k: 'phone', label: 'Téléphone' },
+                                { k: 'street', label: 'Rue' },
+                                { k: 'zip', label: 'NPA' },
+                                { k: 'city', label: 'Ville' },
+                                { k: 'canton', label: 'Canton' },
+                                { k: 'insurance', label: 'Assurance' },
+                                { k: 'sessions', label: 'Séances' }
+                              ].map(it => (
+                                <label key={it.k} className="flex items-center gap-4 cursor-pointer group">
+                                  <div className="relative flex items-center">
+                                    <input 
+                                      type="checkbox" checked={visibleCols[it.k]} 
+                                      onChange={() => setVisibleCols((p: any) => ({ ...p, [it.k]: !p[it.k] }))}
+                                      className="w-5 h-5 rounded-lg border-2 border-slate-200 checked:bg-indigo-600 checked:border-indigo-600 transition-all cursor-pointer accent-indigo-600"
+                                    />
+                                  </div>
+                                  <span className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${visibleCols[it.k] ? 'text-slate-900' : 'text-slate-300'}`}>{it.label}</span>
+                                </label>
+                              ))}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
 
-               {tab === 'scheduler' && (
-                 <div className="flex items-center gap-1">
-                   <div className="flex bg-slate-100 p-1 rounded-2xl gap-1 mr-4">
-                     {(['month', 'week'] as const).map(v => (
-                       <button key={v} onClick={() => setView(v)} className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${view === v ? 'bg-white text-slate-900 shadow-sm shadow-slate-200' : 'text-slate-400 hover:text-slate-600'}`}>
-                         {v === 'month' ? 'Mois' : 'Semaine'}
+                    <button 
+                      onClick={() => setClModal(true)} 
+                      className="h-12 px-8 rounded-2xl flex items-center gap-3 font-black text-[10px] uppercase tracking-widest transition-all bg-slate-50 border border-slate-200 text-slate-500 hover:bg-white hover:text-emerald-600 shadow-sm shadow-slate-100 hover:scale-[1.02] active:scale-95 shrink-0"
+                    >
+                      <Plus size={16}/> Nouveau Patient
+                    </button>
+                  </div>
+                )}
+
+               {tab === 'accounting' && (
+                 <div className="flex items-center gap-2 shrink-0">
+                   {showExportPanel && (
+                     <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-100 animate-in slide-in-from-right duration-300 h-12">
+                       <input type="date" value={exportFrom} onChange={e => setExportFrom(e.target.value)} className="bg-white rounded-xl h-full px-2 text-[10px] font-bold text-slate-500 border-none outline-none"/>
+                       <span className="text-slate-300">→</span>
+                       <input type="date" value={exportTo} onChange={e => setExportTo(e.target.value)} className="bg-white rounded-xl h-full px-2 text-[10px] font-bold text-slate-500 border-none outline-none"/>
+                       <button onClick={exportToCSV} className="h-full px-4 bg-indigo-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-700 transition-all flex items-center gap-1">
+                         <Download size={14}/> CSV
                        </button>
-                     ))}
-                   </div>
-                   <button onClick={() => period(-1)} className="w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-slate-50 text-slate-400 border border-transparent hover:border-slate-100 transition-all"><ChevronLeft size={20}/></button>
-                   <button onClick={() => setCur(new Date())} className="px-5 py-2.5 text-[10px] font-black uppercase text-slate-500 hover:text-indigo-600 hover:bg-slate-50 rounded-xl transition-all tracking-widest mx-2">Aujourd'hui</button>
-                   <button onClick={() => period(1)} className="w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-slate-50 text-slate-400 border border-transparent hover:border-slate-100 transition-all"><ChevronRight size={20}/></button>
-
-
-
-
+                     </div>
+                   )}
+                   <button onClick={() => setShowExportPanel(p => !p)}
+                     className={`h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 transition-all border shrink-0 ${showExportPanel ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-500 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'}`}>
+                     <Download size={14}/>
+                     {selectedInvoices.length > 0 ? `Exporter (${selectedInvoices.length})` : 'Exporter'}
+                   </button>
                  </div>
                )}
+                {tab === "scheduler" && !selectedAppt && (
+                  <div className="flex items-center gap-2 shrink-0 animate-in fade-in slide-in-from-right-4">
+                    <button onClick={() => setBlockMode(!blockMode)}
+                      className={`h-12 px-6 rounded-2xl flex items-center gap-3 font-black text-[10px] uppercase tracking-[0.15em] transition-all border shadow-sm shrink-0 ${blockMode ? "bg-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-200" : "bg-slate-50 border-slate-200 text-slate-500 hover:bg-white hover:text-emerald-600"}`}
+                    >
+                      {blockMode ? <CheckCircle2 size={14}/> : <Edit3 size={14}/>}
+                      {blockMode ? "Valider" : "Éditer"}
+                    </button>
+                    <button onClick={() => setTab("config-slots")} className="h-12 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex gap-2 items-center bg-slate-50 border border-slate-200 text-slate-500 hover:bg-white hover:text-emerald-600 shrink-0 shadow-sm shadow-slate-100">
+                      <Settings size={14}/> Créneaux
+                    </button>
+                  </div>
+                )}
+                {tab === "config-slots" && !selectedAppt && (
+                  <div className="flex items-center gap-2 shrink-0 animate-in fade-in slide-in-from-right-4">
+                    <button onClick={() => setTab("scheduler")} className="h-12 px-8 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3 shadow-xl shadow-slate-200 hover:scale-[1.05] active:scale-95 transition-all">
+                      <CalendarRange size={14}/> Retour Agenda
+                    </button>
+                  </div>
+                )}
              </div>
            </nav>
 
            <div className="flex-1 overflow-hidden flex flex-col">
-             {tab === 'scheduler' ? (view === 'month' ? <MonthView/> : <WeekView/>) : 
+             {selectedAppt ? <AppointmentDetailView appt={selectedAppt} onClose={() => setSelectedAppt(null)}/> : 
+              tab === 'scheduler' ? (view === 'month' ? <MonthView/> : <WeekView/>) : 
               tab === 'clients' ? <PatientsView/> : 
               tab === 'accounting' ? <AccountingView/> : 
               tab === 'client-detail' ? <ClientFolderView /> : 
+              tab === 'config-slots' ? <ConfigView/> :
               <Dashboard/>}
            </div>
         </main>
-
-        {/* ══ SLIDE-OVER DETAIL PANEL ══════════════════════════════════════════ */}
-        <div className={`fixed inset-y-0 right-0 w-[450px] bg-white shadow-[-20px_0_60px_rgba(0,0,0,0.05)] z-40 transform transition-transform duration-500 ease-in-out border-l border-slate-100 flex flex-col ${selectedAppt ? 'translate-x-0' : 'translate-x-full'}`}>
-            {selectedAppt && (
-              <div className="flex-1 flex flex-col overflow-hidden animate-in slide-in-from-right duration-500">
-                 <div className="h-20 bg-white border-b border-slate-100 px-8 flex items-center justify-between shrink-0">
-                    <p className="text-[10px] font-black text-[#5F27CD] uppercase tracking-[0.3em]">Détail Réservation</p>
-                    <button onClick={() => setSelectedAppt(null)} className="p-3 hover:bg-rose-50 hover:text-rose-500 rounded-xl transition text-slate-300"><X size={20}/></button>
-                 </div>
-                 <div className="flex-1 overflow-y-auto p-10 space-y-10">
-                    <div className="flex items-center gap-6">
-                       <div className="w-16 h-16 rounded-2xl bg-[#5F27CD]/5 flex items-center justify-center text-[#5F27CD] text-2xl font-black">
-                          {selectedAppt.time?.split(':')[0]}
-                       </div>
-                       <div>
-                          <h2 className="text-2xl font-medium tracking-tighter text-slate-900">{selectedAppt.clientNameSnapshot || selectedAppt.title}</h2>
-                          <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mt-1">{fmtFR(new Date(selectedAppt.date))}</p>
-                       </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                       {[
-                         { label: 'Soin', val: selectedAppt.serviceName || 'Soin Signature', icon: <Leaf size={14}/> },
-                         { label: 'Prix', val: `${selectedAppt.price || 150} CHF`, icon: <CreditCard size={14}/> },
-                         { label: 'Contact', val: selectedAppt.phone || 'Non renseigné', icon: <Activity size={14}/> },
-                         { label: 'Statut', val: selectedAppt.paid ? 'Réglé' : 'À régler', icon: <CheckCircle2 size={14}/>, color: selectedAppt.paid ? 'text-emerald-500' : 'text-orange-500' }
-                       ].map((it, i) => (
-                         <div key={i} className="p-5 bg-slate-50/50 rounded-2xl border border-slate-100 transition-all hover:bg-white hover:shadow-sm">
-                            <div className="flex items-center gap-2 text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5">{it.icon} {it.label}</div>
-                            <p className={`text-xs font-bold ${it.color || 'text-slate-900'}`}>{it.val}</p>
-                         </div>
-                       ))}
-                    </div>
-
-                    <div className="pt-10 border-t border-slate-100 space-y-4">
-                       <button onClick={() => setIsEditing(true)} className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-slate-900/10 hover:scale-[1.02] active:scale-95 transition-all">Modifier le Contact</button>
-                       <button onClick={deleteEvent} className="w-full py-4 text-rose-500 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-rose-50 rounded-2xl transition">Annuler le Rendez-vous</button>
-                    </div>
-                 </div>
-              </div>
-            )}
-        </div>
       </div>
+
       {/* ══ EVENT MODAL ══════════════════════════════════════════════════════ */}
       {evModal && (
         <div className="fixed inset-0 bg-[#222F3E]/40 overflow-y-auto flex items-center justify-center z-[90] p-6 backdrop-blur-xl transition-all duration-500" onClick={() => setEvModal(null)}>
@@ -1448,198 +1937,55 @@ export default function TherapistDashboard() {
         </div>
       )}
 
-      {/* ══ APPOINTMENT DETAIL/EDIT MODAL ═══════════════════════════════════ */}
-      {selectedAppt && (
-        <div className="fixed inset-0 bg-[#222F3E]/80 flex items-center justify-center z-[95] p-4 backdrop-blur-md" onClick={() => setSelectedAppt(null)}>
-          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden border-2 border-[#54A0FF]/10" onClick={e => e.stopPropagation()}>
-            <div className="h-32 bg-gradient-to-r from-[#54A0FF] to-[#5F27CD] p-8 flex flex-col justify-end relative">
-               <button onClick={() => { setSelectedAppt(null); setIsEditing(false); }} className="absolute top-6 right-6 text-white/50 hover:text-white transition"><X size={20}/></button>
-               <h2 className="text-white text-[10px] font-black uppercase tracking-[0.2em] opacity-60 mb-1">Détails du RDV</h2>
-               <p className="text-2xl font-black text-white truncate">{selectedAppt.title}</p>
-            </div>
-            
-            <div className="p-8 space-y-6">
-              {!isEditing ? (
-                <>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-[#54A0FF]/5 rounded-2xl border border-[#54A0FF]/10">
-                      <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">Date</p>
-                      <p className="text-sm font-bold text-[#222F3E]">{selectedAppt.date}</p>
-                    </div>
-                    <div className="p-4 bg-[#54A0FF]/5 rounded-2xl border border-[#54A0FF]/10">
-                      <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">Heure</p>
-                      <p className="text-sm font-bold text-[#222F3E]">{selectedAppt.time}</p>
-                    </div>
-
-                    {(selectedAppt.serviceName || selectedAppt.price) && (
-                      <div className="col-span-2 p-4 bg-[#54A0FF]/5 rounded-2xl border border-[#54A0FF]/10">
-                        <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">Prestation</p>
-                        <p className="text-sm font-bold text-[#222F3E] flex justify-between items-center">
-                          <span>{selectedAppt.serviceName || 'Soin Signature'}</span>
-                          <span className="text-[#54A0FF]">{selectedAppt.price || 150} CHF</span>
-                        </p>
-                      </div>
-                    )}
-
-                    {selectedAppt.phone && (
-                      <div className="col-span-2 p-4 bg-[#54A0FF]/5 rounded-2xl border border-[#54A0FF]/10 flex justify-between items-center">
-                        <div>
-                          <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">Contact</p>
-                          <p className="text-sm font-bold text-[#222F3E]">{selectedAppt.phone}</p>
-                        </div>
-                        <a 
-                          href={`https://wa.me/${selectedAppt.phone.replace(/[^0-9]/g, '')}`}
-                          target="_blank" rel="noopener noreferrer"
-                          className="w-10 h-10 rounded-xl bg-[#1DD1A1] text-white flex items-center justify-center hover:scale-110 transition shadow-lg shadow-[#1DD1A1]/20"
-                        >
-                          <MessageCircle size={18}/>
-                        </a>
-                      </div>
-                    )}
-
-                    <div className="col-span-2 p-4 bg-[#54A0FF]/5 rounded-2xl border border-[#54A0FF]/10 flex justify-between items-center transition-all">
-                      <div>
-                        <p className="text-[9px] font-black text-[#576574] uppercase tracking-wider mb-1">État du Paiement</p>
-                        <p className={`text-sm font-black uppercase tracking-[0.05em] flex items-center gap-2 ${selectedAppt.paid ? 'text-[#1DD1A1]' : 'text-[#FECA57]'}`}>
-                          <span className={`w-2 h-2 rounded-full ${selectedAppt.paid ? 'bg-[#1DD1A1]' : 'bg-[#FECA57]'}`}/>
-                          {selectedAppt.paid ? 'Réglé' : 'En attente'}
-                        </p>
-                      </div>
-                      <button 
-                        onClick={async () => {
-                          try {
-                            await updateDoc(doc(firestore, 'appointments', selectedAppt.id), { paid: !selectedAppt.paid });
-                            setSelectedAppt({ ...selectedAppt, paid: !selectedAppt.paid });
-                          } catch (e) { console.error(e); }
-                        }}
-                        className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                          selectedAppt.paid ? 'bg-[#576574]/10 text-[#576574] hover:bg-[#576574]/20' : 'bg-[#1DD1A1] text-white shadow-lg shadow-[#1DD1A1]/20 hover:scale-[1.05]'
-                        }`}
-                      >
-                        {selectedAppt.paid ? 'Marquer Attente' : 'Marquer Réglé'}
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3 pt-2">
-                    <button 
-                      onClick={() => { 
-                        setIsEditing(true); 
-                        setEditName(selectedAppt.clientNameSnapshot || selectedAppt.title); 
-                        setEditService(selectedAppt.serviceName || 'Soin Signature');
-                        setEditPrice(selectedAppt.price || 150);
-                      }} 
-                      className="w-full py-4 bg-gradient-to-r from-[#54A0FF] to-[#0ABDE3] text-white rounded-2xl font-bold text-sm shadow-xl shadow-[#54A0FF]/25 hover:scale-[1.02] transition-all"
-                    >
-                      Modifier le rendez-vous
-                    </button>
-                    <button 
-                      onClick={resendEmail} 
-                      disabled={isSending || !selectedAppt.clientEmail}
-                      className="w-full py-4 bg-white border border-neutral-100 text-neutral-900 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-neutral-50 transition-all flex items-center justify-center gap-3"
-                    >
-                      {isSending ? 'Envoi...' : 'Renvoyer Confirmation'}
-                    </button>
-                    <button onClick={deleteEvent} className="w-full py-4 text-xs font-black text-[#FF6B6B] uppercase tracking-widest hover:bg-[#FF6B6B]/10 rounded-2xl transition">
-                      Supprimer le rendez-vous
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Nom du client</label>
-                      <input 
-                        autoFocus value={editName}
-                        onChange={e => setEditName(e.target.value)}
-                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Prestation</label>
-                      <select 
-                        value={editService}
-                        onChange={e => {
-                          const svc = SERVICES.find(s => s.name === e.target.value);
-                          setEditService(e.target.value);
-                          if(svc && svc.price) setEditPrice(svc.price);
-                        }}
-                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all appearance-none"
-                      >
-                         <option value="" disabled>Choisir une prestation</option>
-                         {SERVICES.map(s => <option key={s.id} value={s.name}>{s.name.split(' - ')[0]}</option>)}
-                      </select>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="block text-[10px] font-black text-[#576574] uppercase tracking-[0.2em]">Prix (CHF)</label>
-                      <input 
-                        type="number"
-                        value={editPrice}
-                        onChange={e => setEditPrice(Number(e.target.value))}
-                        className="w-full px-5 py-4 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"
-                      />
-                    </div>
-                    <div className="flex gap-4 pt-4">
-                      <button onClick={() => setIsEditing(false)} className="flex-1 py-4 text-[10px] font-black text-[#576574] uppercase tracking-[0.2em] hover:text-[#222F3E] transition">Annuler</button>
-                      <button onClick={saveEdit} className="flex-1 py-4 bg-[#222F3E] text-white rounded-2xl font-bold text-sm shadow-xl hover:bg-[#341F97] transition-all">Enregistrer</button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ══ CONFIG MODAL ═════════════════════════════════════════════════════ */}
-      {cfgOpen && (
-        <div className="fixed inset-0 bg-[#222F3E]/80 flex items-center justify-center z-50 p-4 backdrop-blur-md" onClick={() => setCfgOpen(false)}>
-          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-10 relative overflow-hidden border-2 border-[#FECA57]/10" onClick={e => setCfgOpen(false)}>
-            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#FECA57] to-[#FF9F43]"/>
-            <div className="flex justify-between items-start mb-8">
+      
+      {/* ══ ADD CLIENT MODAL ═════════════════════════════════════════════════ */}
+      {/* ══ MERGE MODAL ══════════════════════════════════════════════════════ */}
+      {merging && (
+        <div className="fixed inset-0 bg-[#222F3E]/60 overflow-y-auto flex items-center justify-center z-[100] p-6 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setMerging(false)}>
+          <div className="bg-white rounded-[3rem] shadow-[0_30px_100px_rgba(0,0,0,0.1)] w-full max-w-2xl p-12 relative overflow-hidden border border-white/50" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-start mb-10">
               <div>
-                <h2 className="text-2xl font-medium text-[#222F3E] tracking-tighter">Horaires Types</h2>
-                <p className="text-[10px] font-bold text-[#576574] uppercase tracking-[0.2em] mt-1">Configuration des créneaux</p>
+                <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Fusionner les Profils</h3>
+                <p className="text-sm font-medium text-slate-400 mt-2">Choisissez le profil principal à conserver.</p>
               </div>
-              <button onClick={() => setCfgOpen(false)} className="bg-[#FECA57]/10 p-3 rounded-2xl text-[#FF9F43] hover:bg-[#FECA57] hover:text-white transition-all"><X size={20}/></button>
+              <button onClick={() => setMerging(false)} className="w-12 h-12 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-slate-100 transition-all"><X size={24}/></button>
             </div>
-            <div className="flex border-b border-[#54A0FF]/10 mb-6 gap-1 overflow-x-auto">
-              {DAYS_S.map((d, i) => (
-                <button key={i} onClick={() => setCfgDay(i)}
-                  className={`pb-3 px-3 text-[10px] font-black tracking-[0.2em] uppercase border-b-2 transition whitespace-nowrap ${cfgDay === i ? 'border-[#54A0FF] text-[#54A0FF]' : 'border-transparent text-[#576574] hover:text-[#222F3E]'}`}
-                >{d}</button>
-              ))}
+
+            <div className="space-y-3 mb-10">
+              {selectedClients.map(id => {
+                const c = clients.find(x => x.id === id);
+                if (!c) return null;
+                return (
+                  <button key={id} onClick={() => mergePatients(id)} className="w-full p-6 rounded-[2rem] bg-slate-50 border border-slate-100 flex items-center justify-between group hover:bg-[#5F27CD] hover:border-[#5F27CD] transition-all text-left">
+                    <div className="flex items-center gap-4">
+                       <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center group-hover:border-transparent transition-all">
+                         <User size={20} className="text-slate-400 group-hover:text-[#5F27CD]"/>
+                       </div>
+                       <div>
+                         <p className="font-extrabold text-slate-900 uppercase text-sm group-hover:text-white transition-all">{c.firstName} {c.lastName}</p>
+                         <p className="text-xs font-bold text-slate-400 group-hover:text-white/70 transition-all">{c.email || 'Pas d\'email'}</p>
+                       </div>
+                    </div>
+                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-[#5F27CD] opacity-0 group-hover:opacity-100 transition-all shadow-sm">
+                      <ChevronRight size={18}/>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
-            <div className="space-y-2 mb-6 max-h-52 overflow-y-auto pr-1">
-              {[...(configSlots[cfgDay] || [])].sort().map(s => (
-                <div key={s} className="flex justify-between items-center p-3 bg-[#54A0FF]/5 rounded-xl border border-[#54A0FF]/10">
-                  <span className="text-sm font-bold text-[#222F3E]">{s}</span>
-                  <button onClick={() => removeSlot(s)} className="text-[#FF6B6B] hover:scale-125 transition-transform"><X size={16}/></button>
-                </div>
-              ))}
-              {(configSlots[cfgDay] || []).length === 0 && (
-                <p className="text-center py-4 text-xs text-[#576574] italic font-bold">Aucun créneau configuré</p>
-              )}
-            </div>
-            <div className="flex gap-2 mb-8">
-              <input type="time" value={newTime} onChange={e => setNewTime(e.target.value)}
-                className="flex-1 px-4 py-3 bg-[#54A0FF]/5 border border-[#54A0FF]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#54A0FF]/20 transition-all"/>
-              <button onClick={addSlot} className="bg-[#54A0FF] text-white px-6 rounded-xl font-bold text-sm hover:bg-[#222F3E] transition-all">Ajouter</button>
-            </div>
-            <div className="flex flex-col gap-3 pt-5 border-t border-[#54A0FF]/10">
-              <button onClick={applyToWeek} className="text-xs text-[#576574] font-bold hover:text-[#54A0FF] py-2 rounded-lg transition-colors uppercase tracking-[0.2em]">
-                Appliquer à toute la semaine
-              </button>
-              <button onClick={saveConfig} disabled={savingCfg}
-                className="w-full py-4 bg-gradient-to-r from-[#54A0FF] to-[#5F27CD] text-white rounded-2xl font-bold text-sm shadow-xl shadow-[#54A0FF]/25 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-60">
-                {savingCfg ? 'Enregistrement…' : 'Enregistrer & Fermer'}
-              </button>
+
+            <div className="bg-rose-50 p-6 rounded-3xl border border-rose-100">
+               <div className="flex gap-3 text-rose-500">
+                 <Lock size={18} className="shrink-0 mt-0.5"/>
+                 <p className="text-xs font-bold leading-relaxed">Attention : Toutes les séances des autres profils seront transférées vers le profil choisi. Les profils secondaires seront définitivement supprimés.</p>
+               </div>
             </div>
           </div>
         </div>
       )}
-      {/* ══ ADD CLIENT MODAL ═════════════════════════════════════════════════ */}
+
       {clModal && (
         <div className="fixed inset-0 bg-[#222F3E]/80 flex items-center justify-center z-[60] p-4 backdrop-blur-md" onClick={() => setClModal(false)}>
           <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-2xl p-12 relative overflow-hidden border border-white/50" onClick={e => e.stopPropagation()}>
@@ -1666,11 +2012,33 @@ export default function TherapistDashboard() {
               </div>
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black text-[#576574] uppercase tracking-[0.2em] ml-1">Téléphone</label>
-                <input value={clForm.phone} onChange={e => setClForm({...clForm, phone: e.target.value})} className="w-full px-5 py-3.5 bg-neutral-50 border border-neutral-100 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-indigo-50 transition-all" placeholder="+41..."/>
+                <div className="grid grid-cols-3 gap-2">
+                  <select value={clForm.phonePrefix} onChange={e => setClForm({...clForm, phonePrefix: e.target.value})} className="px-3 py-3.5 bg-neutral-50 border border-neutral-100 rounded-2xl font-bold text-xs outline-none focus:ring-4 focus:ring-indigo-50 transition-all h-[54px]">
+                    <option value="+41">🇨🇭 +41</option>
+                    <option value="+33">🇫🇷 +33</option>
+                    <option value="+49">🇩🇪 +49</option>
+                    <option value="+39">🇮🇹 +39</option>
+                    <option value="+43">🇦🇹 +43</option>
+                    <option value="+423">🇱🇮 +423</option>
+                  </select>
+                  <input value={clForm.phone} onChange={e => setClForm({...clForm, phone: e.target.value})} className="col-span-2 px-5 py-3.5 bg-neutral-50 border border-neutral-100 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-indigo-50 transition-all" placeholder="79 000 00 00"/>
+                </div>
               </div>
               <div className="space-y-1.5 col-span-2">
-                <label className="text-[10px] font-black text-[#576574] uppercase tracking-[0.2em] ml-1">Adresse</label>
-                <input value={clForm.address} onChange={e => setClForm({...clForm, address: e.target.value})} className="w-full px-5 py-3.5 bg-neutral-50 border border-neutral-100 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-indigo-50 transition-all" placeholder="Adresse complète"/>
+                <label className="text-[10px] font-black text-[#576574] uppercase tracking-[0.2em] ml-1">Rue et numéro</label>
+                <input value={clForm.street} onChange={e => setClForm({...clForm, street: e.target.value})} className="w-full px-5 py-3.5 bg-neutral-50 border border-neutral-100 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-indigo-50 transition-all" placeholder="Ex: Rue de la Gare 12"/>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-[#576574] uppercase tracking-[0.2em] ml-1">Code Postal (NPA)</label>
+                <input value={clForm.zip} onChange={e => setClForm({...clForm, zip: e.target.value})} className="w-full px-5 py-3.5 bg-neutral-50 border border-neutral-100 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-indigo-50 transition-all" placeholder="1217"/>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-[#576574] uppercase tracking-[0.2em] ml-1">Ville</label>
+                <input value={clForm.city} onChange={e => setClForm({...clForm, city: e.target.value})} className="w-full px-5 py-3.5 bg-neutral-50 border border-neutral-100 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-indigo-50 transition-all" placeholder="Meyrin"/>
+              </div>
+              <div className="space-y-1.5 col-span-2">
+                <label className="text-[10px] font-black text-[#576574] uppercase tracking-[0.2em] ml-1">Canton</label>
+                <input value={clForm.canton} onChange={e => setClForm({...clForm, canton: e.target.value})} className="w-full px-5 py-3.5 bg-neutral-50 border border-neutral-100 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-indigo-50 transition-all" placeholder="Genève"/>
               </div>
               <div className="space-y-1.5 col-span-2">
                 <label className="text-[10px] font-black text-[#576574] uppercase tracking-[0.2em] ml-1">Assurance / Groupe</label>
@@ -1680,7 +2048,7 @@ export default function TherapistDashboard() {
 
             <div className="flex gap-4">
               <button onClick={() => setClModal(false)} className="flex-1 py-4 text-xs font-black text-[#576574] uppercase tracking-[0.2em] hover:text-[#222F3E] transition-colors">Annuler</button>
-              <button onClick={saveClient} disabled={clScaling} className="flex-1 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-sm shadow-xl shadow-indigo-100 hover:scale-[1.02] active:scale-95 transition-all">
+              <button onClick={saveClient} disabled={clScaling} className="flex-1 py-4 bg-emerald-600 text-white rounded-2xl font-bold text-sm shadow-xl shadow-emerald-100/50 hover:scale-[1.02] active:scale-95 transition-all">
                 {clScaling ? 'Création...' : 'Créer le Dossier'}
               </button>
             </div>
