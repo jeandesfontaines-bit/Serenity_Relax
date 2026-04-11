@@ -994,22 +994,25 @@ export default function TherapistDashboard() {
                 </div>
                 
                 {!isEditingClient ? (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
                     {[
-                      { key: 'email', label: 'Email', val: selectedClient.email, icon: <Mail size={14}/>, color: 'text-[#54A0FF]', bg: 'bg-[#54A0FF]/5', border: 'border-[#54A0FF]/10' },
-                      { key: 'phone', label: 'Téléphone', val: selectedClient.phone, icon: <Activity size={14}/>, color: 'text-[#1DD1A1]', bg: 'bg-[#1DD1A1]/5', border: 'border-[#1DD1A1]/10' },
-                      { key: 'address', label: 'Adresse', val: selectedClient.address, icon: <Target size={14}/>, color: 'text-[#FF9F43]', bg: 'bg-[#FF9F43]/5', border: 'border-[#FF9F43]/10' },
-                      { key: 'insurance', label: 'Assurance', val: selectedClient.insurance, icon: <CheckCircle2 size={14}/>, color: 'text-[#5F27CD]', bg: 'bg-[#5F27CD]/5', border: 'border-[#5F27CD]/10' },
+                      { key: 'email', label: 'Email', val: selectedClient.email, icon: <Mail size={16}/>, color: 'text-[#54A0FF]' },
+                      { key: 'phone', label: 'Téléphone', val: selectedClient.phone, icon: <Activity size={16}/>, color: 'text-[#1DD1A1]' },
+                      { key: 'address', label: 'Adresse', val: selectedClient.address, icon: <Target size={16}/>, color: 'text-[#FF9F43]' },
+                      { key: 'insurance', label: 'Assurance', val: selectedClient.insurance, icon: <CheckCircle2 size={16}/>, color: 'text-[#5F27CD]' },
                     ].map((it, i) => (
                       <div 
                         key={i} 
-                        onDoubleClick={() => { setClEditForm(selectedClient); setIsEditingClient(true); }}
-                        className={`p-4 ${it.bg} rounded-2xl border ${it.border} flex flex-col justify-center min-h-[80px] shadow-sm cursor-text hover:border-neutral-300 transition-all`}
+                        onClick={() => { setClEditForm(selectedClient); setIsEditingClient(true); }}
+                        className="group flex items-center gap-6 p-4 rounded-2xl hover:bg-slate-50 transition-all cursor-pointer"
                       >
-                         <div className={`flex items-center gap-2 text-[9px] font-black ${it.color} uppercase tracking-[0.2em] mb-1.5`}>
-                            {it.icon} {it.label}
+                         <div className={`w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center ${it.color} group-hover:bg-white transition-colors`}>
+                            {it.icon}
                          </div>
-                         <p className="text-[11px] font-bold text-[#222F3E] truncate" title={it.val}>{it.val || '—'}</p>
+                         <div className="flex-1 min-w-0">
+                            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">{it.label}</div>
+                            <p className="text-sm font-bold text-slate-900 truncate">{it.val || '—'}</p>
+                         </div>
                       </div>
                     ))}
                   </div>
@@ -1031,12 +1034,12 @@ export default function TherapistDashboard() {
                 )}
               </div>
               
-              <div className="pt-6 border-t border-[#5F27CD]/10 grid grid-cols-2 gap-4">
-                <button onClick={() => alert('Confirmation envoyée')} className="py-4 bg-[#54A0FF] text-white rounded-2xl font-bold text-[9px] uppercase tracking-[0.2em] shadow-lg shadow-[#54A0FF]/20 hover:scale-[1.05] transition-all flex items-center justify-center gap-2 px-2">
-                  <Mail size={12}/> Confirm.
+              <div className="pt-6 border-t border-slate-100 grid grid-cols-2 gap-4">
+                <button onClick={() => alert('Confirmation envoyée')} className="h-14 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-sm hover:bg-indigo-600 hover:text-white transition-all flex items-center justify-center gap-3">
+                  <Mail size={16}/> CONFIRMER
                 </button>
-                <button onClick={() => alert('Facture générée')} className="py-4 bg-[#5F27CD] text-white rounded-2xl font-bold text-[9px] uppercase tracking-[0.2em] shadow-lg shadow-[#5F27CD]/20 hover:scale-[1.05] transition-all flex items-center justify-center gap-2 px-2">
-                  <FileText size={12}/> Factures
+                <button onClick={() => alert('Facture générée')} className="h-14 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-slate-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
+                  <FileText size={16}/> FACTURES
                 </button>
               </div>
            </div>
@@ -1205,8 +1208,8 @@ export default function TherapistDashboard() {
                </div>
 
                {tab === 'clients' && (
-                 <div className="flex-1 max-w-2xl mx-auto animate-in slide-in-from-top-2 duration-500">
-                   <div className="bg-neutral-50 rounded-2xl px-5 py-2.5 border border-neutral-100 flex items-center gap-4 focus-within:ring-4 focus-within:ring-indigo-100/50 transition-all shadow-inner">
+                 <div className="flex-1 max-w-lg mx-auto animate-in slide-in-from-top-2 duration-500">
+                   <div className="bg-neutral-50 rounded-2xl px-5 h-14 border border-neutral-100 flex items-center gap-4 focus-within:ring-4 focus-within:ring-indigo-100/50 transition-all shadow-inner">
                      <Search size={16} className="text-neutral-300"/>
                      <input 
                        type="text" value={clSearch} onChange={e => setClSearch(e.target.value)}
@@ -1243,7 +1246,7 @@ export default function TherapistDashboard() {
               {tab === 'clients' && (
                 <button 
                   onClick={() => setClModal(true)} 
-                  className="bg-indigo-600 text-white px-8 py-3.5 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl shadow-indigo-100 hover:scale-[1.05] active:scale-95 transition-all"
+                  className="bg-indigo-600 text-white px-8 h-14 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl shadow-indigo-100 hover:scale-[1.05] active:scale-95 transition-all"
                 >
                   <Plus size={16}/> Nouveau Patient
                 </button>
@@ -1637,6 +1640,8 @@ export default function TherapistDashboard() {
         </div>
       )}
       {/* ══ ADD CLIENT MODAL ═════════════════════════════════════════════════ */}
+      {clModal && (
+        <div className="fixed inset-0 bg-[#222F3E]/80 flex items-center justify-center z-[60] p-4 backdrop-blur-md" onClick={() => setClModal(false)}>
           <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-2xl p-12 relative overflow-hidden border border-white/50" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-start mb-10">
               <div>
