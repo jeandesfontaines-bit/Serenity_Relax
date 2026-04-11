@@ -855,9 +855,11 @@ export default function TherapistDashboard() {
             <h3 className="text-2xl font-medium text-neutral-900 tracking-tighter">Comptabilité</h3>
             <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] mt-1">Gestion des factures et paiements</p>
           </div>
-          <button onClick={exportToCSV} className="text-white px-8 py-4 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl hover:scale-105 transition active:scale-95" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}>
-            <Download size={16}/> Exporter CSV
-          </button>
+          {selectedInvoices.length > 0 && (
+            <button onClick={exportToCSV} className="text-white px-8 py-4 rounded-2xl flex items-center gap-3 font-black text-[11px] uppercase tracking-widest shadow-xl hover:scale-105 transition active:scale-95 animate-in slide-in-from-right duration-500" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}>
+              <Download size={16}/> EXPORTER ({selectedInvoices.length})
+            </button>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 p-8 pb-4 shrink-0">
@@ -901,7 +903,16 @@ export default function TherapistDashboard() {
             <table className="w-full text-left border-separate border-spacing-y-3">
               <thead>
                 <tr className="text-[9px] font-black text-neutral-400 uppercase tracking-[0.2em]">
+                  <th className="px-5 pb-2 w-10">
+                    <input 
+                      type="checkbox" 
+                      className="w-4 h-4 rounded border-neutral-300 transition-all cursor-pointer"
+                      checked={selectedInvoices.length === filteredAppts.length && filteredAppts.length > 0}
+                      onChange={e => setSelectedInvoices(e.target.checked ? filteredAppts.map(a => a.id) : [])}
+                    />
+                  </th>
                   <th className="px-5 pb-2">Patient</th>
+                  <th className="px-5 pb-2">N° Facture</th>
                   <th className="px-5 pb-2">Date & Heure</th>
                   <th className="px-5 pb-2">Soin effecteur</th>
                   <th className="px-5 pb-2 text-right">Montant</th>
@@ -910,47 +921,68 @@ export default function TherapistDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {filteredAppts.map(a => (
-                  <tr key={a.id} className="group transition-transform hover:scale-[1.01]">
-                    <td className="p-4 bg-white border-y border-l border-neutral-100 rounded-l-[2rem] shadow-sm">
-                      <div className="font-extrabold text-sm text-neutral-900 tracking-tight">{a.title}</div>
-                      {invoices.find(inv => inv.appointmentId === a.id) ? (
-                        <div className="text-[9px] font-black text-indigo-500 uppercase tracking-widest mt-1">
-                          #{invoices.find(inv => inv.appointmentId === a.id).invoiceNumber}
+                {filteredAppts.map(a => {
+                  const inv = invoices.find(inv => inv.appointmentId === a.id);
+                  const isSel = selectedInvoices.includes(a.id);
+                  return (
+                    <tr 
+                      key={a.id} 
+                      className={`group transition-transform hover:scale-[1.01] cursor-pointer ${isSel ? 'bg-blue-50/30' : ''}`}
+                      onClick={() => {
+                        if (inv) window.open("/therapist/invoice/" + inv.id, "_blank");
+                        else setSelectedAppt(a);
+                      }}
+                    >
+                      <td className="p-4 bg-white border-y border-l border-neutral-100 rounded-l-[2rem] shadow-sm w-10" onClick={e => e.stopPropagation()}>
+                        <input 
+                          type="checkbox" 
+                          className="w-4 h-4 rounded border-neutral-200 transition-all cursor-pointer"
+                          checked={isSel}
+                          onChange={() => {
+                            if (isSel) setSelectedInvoices(p => p.filter(x => x !== a.id));
+                            else setSelectedInvoices(p => [...p, a.id]);
+                          }}
+                        />
+                      </td>
+                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
+                        <div className="font-extrabold text-sm text-neutral-900 tracking-tight uppercase">{a.title}</div>
+                      </td>
+                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
+                        {inv ? (
+                          <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-[10px] font-black border border-indigo-100">
+                            #{inv.invoiceNumber}
+                          </span>
+                        ) : (
+                          <span className="text-[9px] font-black text-neutral-300 uppercase tracking-widest italic">N/A</span>
+                        )}
+                      </td>
+                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-xs font-bold text-neutral-500">
+                        {a.date} <span className="text-[10px] opacity-40 ml-2">{a.time}</span>
+                      </td>
+                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
+                        <div className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">{a.serviceName || 'Soin Signature'}</div>
+                      </td>
+                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-right font-black text-neutral-900">
+                        {a.price || 150} CHF
+                      </td>
+                      <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-center">
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); togglePayment(a.id, !!a.paid); }}
+                          className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
+                            a.paid ? 'bg-neutral-100 text-neutral-600' : 'bg-red-50 text-red-500 animate-pulse'
+                          }`}
+                        >
+                          {a.paid ? 'Confirmé' : 'Non Réglé'}
+                        </button>
+                      </td>
+                      <td className="p-4 bg-white border-y border-r border-neutral-100 rounded-r-[2rem] shadow-sm text-right">
+                        <div className="w-10 h-10 rounded-xl bg-neutral-50 group-hover:bg-[#54A0FF] group-hover:text-white text-neutral-400 transition-all flex items-center justify-center mx-auto shadow-sm">
+                          <FileText size={16}/>
                         </div>
-                      ) : (
-                        <div className="text-[9px] font-black text-neutral-300 uppercase tracking-widest mt-1">Sans Facture</div>
-                      )}
-                    </td>
-                    <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-xs font-bold text-neutral-500">
-                      {a.date} <span className="text-[10px] opacity-40 ml-2">{a.time}</span>
-                    </td>
-                    <td className="p-4 bg-white border-y border-neutral-100 shadow-sm">
-                      <div className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">{a.serviceName || 'Soin Signature'}</div>
-                    </td>
-                    <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-right font-black text-neutral-900">
-                      {a.price || 150} CHF
-                    </td>
-                    <td className="p-4 bg-white border-y border-neutral-100 shadow-sm text-center">
-                      <button 
-                        onClick={() => togglePayment(a.id, !!a.paid)}
-                        className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
-                          a.paid ? 'bg-neutral-100 text-neutral-600' : 'bg-red-50 text-red-500 animate-pulse'
-                        }`}
-                      >
-                        {a.paid ? 'Confirmé' : 'Non Réglé'}
-                      </button>
-                    </td>
-                    <td className="p-4 bg-white border-y border-r border-neutral-100 rounded-r-[2rem] shadow-sm text-right">
-                      <button 
-                        onClick={() => setSelectedAppt(a)}
-                        className="w-10 h-10 rounded-xl bg-neutral-50 hover:bg-[#54A0FF] hover:text-white text-neutral-400 transition-all flex items-center justify-center mx-auto"
-                      >
-                        <FileText size={16}/>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -1588,20 +1620,21 @@ export default function TherapistDashboard() {
                   <div>
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-lg font-medium text-[#222F3E] tracking-tighter">Informations</h3>
-                      <button onClick={() => setIsEditingClient(!isEditingClient)} className="text-xs font-black text-[#5F27CD] uppercase tracking-[0.2em] hover:underline">
-                        {isEditingClient ? 'Annuler' : 'Modifier'}
-                      </button>
                     </div>
                     
                     {!isEditingClient ? (
                       <div className="grid grid-cols-2 gap-4">
                         {[
-                          { label: 'Email', val: selectedClient.email, icon: <Mail size={14}/>, color: 'text-[#54A0FF]', bg: 'bg-[#54A0FF]/5', border: 'border-[#54A0FF]/10' },
-                          { label: 'Téléphone', val: selectedClient.phone, icon: <Activity size={14}/>, color: 'text-[#1DD1A1]', bg: 'bg-[#1DD1A1]/5', border: 'border-[#1DD1A1]/10' },
-                          { label: 'Adresse', val: selectedClient.address, icon: <Target size={14}/>, color: 'text-[#FF9F43]', bg: 'bg-[#FF9F43]/5', border: 'border-[#FF9F43]/10' },
-                          { label: 'Assurance', val: selectedClient.insurance, icon: <CheckCircle2 size={14}/>, color: 'text-[#5F27CD]', bg: 'bg-[#5F27CD]/5', border: 'border-[#5F27CD]/10' },
+                          { key: 'email', label: 'Email', val: selectedClient.email, icon: <Mail size={14}/>, color: 'text-[#54A0FF]', bg: 'bg-[#54A0FF]/5', border: 'border-[#54A0FF]/10' },
+                          { key: 'phone', label: 'Téléphone', val: selectedClient.phone, icon: <Activity size={14}/>, color: 'text-[#1DD1A1]', bg: 'bg-[#1DD1A1]/5', border: 'border-[#1DD1A1]/10' },
+                          { key: 'address', label: 'Adresse', val: selectedClient.address, icon: <Target size={14}/>, color: 'text-[#FF9F43]', bg: 'bg-[#FF9F43]/5', border: 'border-[#FF9F43]/10' },
+                          { key: 'insurance', label: 'Assurance', val: selectedClient.insurance, icon: <CheckCircle2 size={14}/>, color: 'text-[#5F27CD]', bg: 'bg-[#5F27CD]/5', border: 'border-[#5F27CD]/10' },
                         ].map((it, i) => (
-                          <div key={i} className={`p-4 ${it.bg} rounded-2xl border ${it.border} flex flex-col justify-center min-h-[80px] shadow-sm`}>
+                          <div 
+                            key={i} 
+                            onDoubleClick={() => { setClEditForm(selectedClient); setIsEditingClient(true); }}
+                            className={`p-4 ${it.bg} rounded-2xl border ${it.border} flex flex-col justify-center min-h-[80px] shadow-sm cursor-text hover:border-neutral-300 transition-all`}
+                          >
                              <div className={`flex items-center gap-2 text-[9px] font-black ${it.color} uppercase tracking-[0.2em] mb-1.5`}>
                                 {it.icon} {it.label}
                              </div>
@@ -1610,16 +1643,19 @@ export default function TherapistDashboard() {
                         ))}
                       </div>
                     ) : (
-                      <div className="space-y-4">
+                      <div className="space-y-4 animate-in fade-in duration-300">
                         <input value={clEditForm.firstName} onChange={e => setClEditForm({...clEditForm, firstName: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Prénom"/>
                         <input value={clEditForm.lastName} onChange={e => setClEditForm({...clEditForm, lastName: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Nom"/>
                         <input value={clEditForm.email} onChange={e => setClEditForm({...clEditForm, email: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Email"/>
                         <input value={clEditForm.phone} onChange={e => setClEditForm({...clEditForm, phone: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Téléphone"/>
                         <input value={clEditForm.address} onChange={e => setClEditForm({...clEditForm, address: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Adresse"/>
                         <input value={clEditForm.insurance} onChange={e => setClEditForm({...clEditForm, insurance: e.target.value})} className="w-full px-5 py-3 bg-[#5F27CD]/5 border border-[#5F27CD]/20 rounded-xl font-bold text-sm outline-none focus:ring-4 focus:ring-[#5F27CD]/20" placeholder="Assurance"/>
-                        <button onClick={saveClientEdit} disabled={clScaling} className="w-full py-4 bg-gradient-to-r from-[#341F97] to-[#5F27CD] text-white rounded-xl font-bold text-sm shadow-xl shadow-[#5F27CD]/20 hover:scale-[1.02] transition-all">
-                          {clScaling ? 'Enregistrement...' : 'Enregistrer'}
-                        </button>
+                        <div className="flex gap-4">
+                          <button onClick={() => setIsEditingClient(false)} className="flex-1 py-4 bg-neutral-100 text-neutral-400 rounded-xl font-bold text-xs uppercase">Annuler</button>
+                          <button onClick={saveClientEdit} disabled={clScaling} className="flex-2 py-4 bg-gradient-to-r from-[#341F97] to-[#5F27CD] text-white rounded-xl font-bold text-sm shadow-xl shadow-[#5F27CD]/20">
+                            {clScaling ? '...' : 'Sauvegarder'}
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -1634,61 +1670,47 @@ export default function TherapistDashboard() {
                   </div>
                </div>
 
-               {/* Appointments Columns */}
-               <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-10">
-                 <div>
-                    <h3 className="text-lg font-medium text-[#222F3E] tracking-tighter mb-6 flex items-center gap-3"><Clock size={20} className="text-[#54A0FF]"/> Futur</h3>
-                    <div className="space-y-4">
-                      {appointments.filter(a => (a.clientId === selectedClient.id || a.title === `${selectedClient.firstName} ${selectedClient.lastName}`) && new Date(a.date) >= startOfDay(new Date())).length > 0 ? (
-                        appointments.filter(a => (a.clientId === selectedClient.id || a.title === `${selectedClient.firstName} ${selectedClient.lastName}`) && new Date(a.date) >= startOfDay(new Date())).sort((a,b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`)).map(a => (
-                          <div 
-                            key={a.id} 
-                            className="group p-4 bg-white border border-[#54A0FF]/10 rounded-2xl shadow-sm hover:shadow-lg hover:border-[#54A0FF]/40 transition-all cursor-pointer"
-                            onClick={() => {
-                              setSelectedAppt(a);
-                              setIsEditing(false);
-                            }}
-                          >
-                            <div className="flex justify-between items-start mb-2">
-                              <div>
-                                <p className="font-black text-sm text-[#222F3E]">{a.time}</p>
-                                <p className="text-[10px] font-bold text-[#576574] uppercase tracking-[0.2em] mt-0.5">{a.date}</p>
-                              </div>
-                              <span className="px-3 py-1 bg-[#1DD1A1]/10 text-[#1DD1A1] text-[8px] font-black uppercase tracking-widest rounded-full">Confirmé</span>
+               <div className="lg:col-span-2 space-y-8">
+                  <div className="flex items-center justify-between border-b border-[#5F27CD]/5 pb-4">
+                     <h3 className="text-xl font-medium text-[#222F3E] tracking-tighter flex items-center gap-3"><Clock size={20} className="text-[#5F27CD]"/> Parcours Patient</h3>
+                     <p className="text-[10px] font-black text-neutral-300 uppercase tracking-widest italic">Chronologie des séances</p>
+                  </div>
+                  <div className="space-y-4">
+                    {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` || a.clientId === selectedClient.id).length > 0 ? (
+                      appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` || a.clientId === selectedClient.id)
+                        .sort((a,b) => `${b.date}T${b.time}`.localeCompare(`${a.date}T${a.time}`))
+                        .map(a => {
+                          const isFut = new Date(a.date) >= startOfDay(new Date());
+                          return (
+                            <div 
+                              key={a.id} 
+                              className={`group p-6 bg-white border ${isFut ? 'border-blue-100 shadow-md' : 'border-neutral-100'} rounded-[2rem] hover:shadow-xl hover:border-blue-400 transition-all cursor-pointer flex items-center justify-between gap-6`}
+                              onClick={() => { setSelectedAppt(a); setIsEditing(false); }}
+                            >
+                               <div className="flex items-center gap-6">
+                                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black ${isFut ? 'bg-blue-50 text-blue-600' : 'bg-neutral-50 text-neutral-400'}`}>
+                                     {a.time?.split(':')[0]}
+                                  </div>
+                                  <div>
+                                     <p className="font-black text-lg text-neutral-900 tracking-tight leading-none mb-2">{a.date}</p>
+                                     <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">{a.serviceName || 'Soin Signature'}</p>
+                                  </div>
+                               </div>
+                               <div className="flex items-center gap-4">
+                                  {a.paid && <span className="px-3 py-1 bg-green-50 text-green-600 border border-green-100 rounded-lg text-[8px] font-black uppercase tracking-widest">Payé</span>}
+                                  <span className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border ${isFut ? 'bg-blue-600 text-white border-blue-600' : 'bg-neutral-50 text-neutral-400 border-neutral-100'}`}>
+                                     {isFut ? 'À Venir' : 'Honoré'}
+                                  </span>
+                               </div>
                             </div>
-                            <div className="flex items-center justify-between pt-2 border-t border-[#54A0FF]/5 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                              <span className="text-[9px] font-black text-[#54A0FF] uppercase tracking-widest flex items-center gap-1">
-                                <Edit3 size={10}/> Voir & Modifier
-                              </span>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-xs text-[#576574] italic">Aucun rendez-vous futur</p>
-                      )}
-                    </div>
-                 </div>
-
-                 <div>
-                    <h3 className="text-lg font-medium text-[#222F3E] tracking-tighter mb-6 flex items-center gap-3"><History size={20} className="text-[#5F27CD]"/> Historique</h3>
-                    <div className="space-y-4">
-                      {appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) < startOfDay(new Date())).length > 0 ? (
-                        appointments.filter(a => a.title === `${selectedClient.firstName} ${selectedClient.lastName}` && new Date(a.date) < startOfDay(new Date())).map(a => (
-                          <div key={a.id} className="p-4 bg-[#F8F9FA] border border-[#5F27CD]/10 rounded-2xl">
-                             <div className="flex justify-between items-start">
-                              <div>
-                                <p className="font-black text-sm text-[#576574]">{a.time}</p>
-                                <p className="text-[10px] font-bold text-[#576574]/60 uppercase tracking-[0.2em] mt-0.5">{a.date}</p>
-                              </div>
-                              <FileText size={14} className="text-[#5F27CD] cursor-pointer hover:scale-125 transition-all"/>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-xs text-[#576574] italic">Aucun historique</p>
-                      )}
-                    </div>
-                 </div>
+                          );
+                        })
+                    ) : (
+                      <div className="py-20 text-center bg-neutral-50 rounded-[3rem] border border-dashed border-neutral-200">
+                        <p className="text-xs text-[#576574] italic font-bold uppercase tracking-widest opacity-40">Aucune activité enregistrée</p>
+                      </div>
+                    )}
+                  </div>
                </div>
             </div>
           </div>

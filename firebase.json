@@ -8,7 +8,8 @@
       "firebase-debug.log",
       "firebase-debug.*.log",
       ".next"
-    ]
+    ],
+    "alwaysDeployFromSource": true
   },
   "firestore": {
     "database": "(default)",

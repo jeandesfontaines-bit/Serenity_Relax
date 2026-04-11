@@ -576,25 +576,8 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                     </div>
                   </form>
 
-                  <div className="bg-[#FAF9F6] p-6 sm:p-8 rounded-3xl">
-                     <div className="space-y-4 text-[0.8rem] leading-relaxed text-neutral-500 font-sans mb-6">
-                      <p className="font-bold text-neutral-900">Conditions de la séance</p>
-                      <ul className="list-disc pl-5 space-y-2">
-                        <li>Prestations dédiées au bien-être, non thérapeutiques ou médicales.</li>
-                        <li>Aucune contre-indication stricte au massage (en cas de doute, avis médical requis).</li>
-                        <li>Annulation minimum 24h à l'avance.</li>
-                      </ul>
-                    </div>
-                    <div className="flex items-start space-x-4 border-t border-neutral-200 pt-6">
-                      <Checkbox id="terms" checked={acceptedConditions} onCheckedChange={(checked: any) => setAcceptedConditions(checked === true)} className="mt-1" />
-                      <Label htmlFor="terms" className="text-[0.85rem] font-sans font-medium text-neutral-900 cursor-pointer leading-snug">
-                        J'accepte les conditions et je confirme ne pas avoir de problème de santé contre-indiquant cette séance.
-                      </Label>
-                    </div>
-                  </div>
-
                   <button 
-                    disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !acceptedConditions} 
+                    disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.phone} 
                     onClick={() => {
                         if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
                             document.activeElement.blur();
@@ -620,25 +603,42 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                 </div>
                 <h2 className="text-[2rem] sm:text-[2.4rem] font-serif font-bold text-neutral-900 tracking-tighter leading-none">C'est presque prêt.</h2>
                 
-                <div className="text-left bg-[#FAF9F6] p-8 rounded-3xl space-y-8">
-                  <div className="space-y-3">
-                    <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RITUEL CONFIRMÉ</p>
-                    <p className="text-[1.2rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
-                    <p className="text-[1rem] font-sans font-medium text-neutral-600">
-                      {selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : ''} à {selectedTime}
-                    </p>
+                <div className="text-left bg-[#FAF9F6] p-6 lg:p-8 rounded-3xl space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-6">
+                    <div className="space-y-2 flex-1">
+                      <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RITUEL CONFIRMÉ</p>
+                      <p className="text-[1.1rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
+                      <p className="text-[0.9rem] font-sans font-medium text-neutral-600">
+                        {selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : ''} à {selectedTime}
+                      </p>
+                    </div>
+                    <div className="space-y-2 flex-1 sm:border-l sm:border-neutral-200/60 sm:pl-6">
+                      <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RÉSERVÉ POUR</p>
+                      <p className="text-[1.1rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{formData.firstName} {formData.lastName}</p>
+                      <p className="text-[0.9rem] font-sans text-neutral-500">{formData.phone}</p>
+                    </div>
                   </div>
-                  <div className="border-t border-neutral-200/60 pt-8 space-y-3">
-                    <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RÉSERVÉ POUR</p>
-                    <p className="text-[1.2rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{formData.firstName} {formData.lastName}</p>
-                    <p className="text-[1rem] font-sans font-medium text-neutral-600">{formData.email} • {formData.phone}</p>
+
+                  <div className="border-t border-neutral-200/60 pt-5 mt-5">
+                     <p className="text-[0.75rem] font-bold text-neutral-900 mb-2">Conditions de la séance</p>
+                     <ul className="list-disc pl-4 space-y-1 text-[0.7rem] leading-relaxed text-neutral-500 font-sans mb-4">
+                        <li>Prestations dédiées au bien-être, non thérapeutiques ou médicales.</li>
+                        <li>Aucune contre-indication au massage (en cas de doute, avis médical requis).</li>
+                        <li>Annulation minimum 24h à l'avance.</li>
+                     </ul>
+                     <div className="flex items-start space-x-3 bg-white p-3 sm:p-4 rounded-xl border border-neutral-100">
+                      <Checkbox id="terms" checked={acceptedConditions} onCheckedChange={(checked: any) => setAcceptedConditions(checked === true)} className="mt-0.5" />
+                      <Label htmlFor="terms" className="text-[0.7rem] sm:text-[0.75rem] font-sans font-medium text-neutral-900 cursor-pointer leading-snug">
+                        J'accepte les conditions et je confirme ne pas avoir de problème de santé contre-indiquant cette séance.
+                      </Label>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <button 
                     onClick={completeBooking} 
-                    disabled={isSubmitting} 
+                    disabled={isSubmitting || !acceptedConditions} 
                     className="w-full inline-flex items-center justify-center px-6 py-4 bg-emerald-600 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-emerald-700 shadow-[0_10px_30px_rgba(5,150,105,0.2)] gap-3"
                   >
                     {isSubmitting ? <Loader2 className="animate-spin" /> : <>VALIDER DÉFINITIVEMENT <CheckCircle2 size={18} /></>}
