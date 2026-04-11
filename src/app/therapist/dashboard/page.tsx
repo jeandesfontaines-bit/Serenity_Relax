@@ -662,14 +662,8 @@ export default function TherapistDashboard() {
                   );
                 })
               ) : (
-                <div className="flex flex-col items-center justify-center py-32 bg-slate-50/50 rounded-[4rem] border-2 border-dashed border-slate-100">
-                   <div className="p-8 bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 mb-8 text-slate-200">
-                      <Clock size={64} strokeWidth={1}/>
-                   </div>
-                   <h3 className="text-2xl font-medium text-slate-900 mb-2">Le cabinet est fermé</h3>
-                   <button onClick={() => toggleDay(dStr)} className="px-12 py-5 bg-slate-900 text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-slate-900/10 hover:bg-blue-600 hover:shadow-blue-200 transition-all duration-500 active:scale-95">
-                      Activer la journée
-                   </button>
+                <div className="flex-1 flex items-center justify-center h-64 opacity-20">
+                  <Lock size={64} className="text-slate-900"/>
                 </div>
               )}
            </div>
@@ -682,109 +676,144 @@ export default function TherapistDashboard() {
     const todayStr = format(new Date(), 'yyyy-MM-dd');
     const todayAppts = appointments.filter(a => a.date === todayStr).sort((a,b) => (a.time || '').localeCompare(b.time || ''));
     const pendingPaymentsCount = appointments.filter(a => !a.paid).length;
-    
+
     return (
       <div className="flex-1 overflow-y-auto bg-[#F8F9FA] p-10 lg:p-14">
-        <div className="max-w-[1400px] mx-auto space-y-12">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* Summary Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-44">
-              <div className="w-12 h-12 rounded-2xl kpi-accent-1 flex items-center justify-center shadow-inner"><CalendarRange size={24}/></div>
-              <div>
-                <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Rendez-vous Aujourd'hui</p>
-                <p className="text-3xl font-black text-slate-900">{todayAppts.length}</p>
-              </div>
+          {/* Main Dashboard Area */}
+          <div className="lg:col-span-8 space-y-10">
+            <div className="flex items-center justify-between">
+               <div>
+                  <h2 className="text-3xl font-medium tracking-tighter text-slate-900 leading-tight">Bonjour, <span className="font-black text-[#5F27CD]">Jean-Christophe</span></h2>
+                  <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mt-1">Plateforme Holistique Serenity & Relax</p>
+               </div>
+               <div className="flex -space-x-3">
+                 {[1,2,3].map(i => (
+                   <div key={i} className="w-10 h-10 rounded-full bg-slate-200 border-2 border-[#F8F9FA] flex items-center justify-center text-[10px] font-black">{i}</div>
+                 ))}
+                 <div className="w-10 h-10 rounded-full bg-[#5F27CD] text-white border-2 border-[#F8F9FA] flex items-center justify-center text-[10px] font-black">+4</div>
+               </div>
             </div>
-            <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-44">
-              <div className="w-12 h-12 rounded-2xl kpi-accent-2 flex items-center justify-center shadow-inner"><Activity size={24}/></div>
-              <div>
-                <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Revenu Prévu</p>
-                <p className="text-3xl font-black text-slate-900">{todayAppts.reduce((s, a) => s + (a.price || 150), 0)} <span className="text-lg font-bold opacity-30">CHF</span></p>
+
+            {/* Metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-48 group">
+                <div className="w-12 h-12 rounded-2xl kpi-accent-1 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform"><CalendarRange size={24}/></div>
+                <div>
+                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Aujourd'hui</p>
+                   <p className="text-4xl font-black text-slate-900 leading-none">{todayAppts.length}</p>
+                   <p className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em] mt-2">6 Heures de soins</p>
+                </div>
               </div>
-            </div>
-            <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-44">
-              <div className="w-12 h-12 rounded-2xl kpi-accent-3 flex items-center justify-center shadow-inner"><Target size={24}/></div>
-              <div>
-                <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Impayés</p>
-                <div className="flex items-center gap-3">
-                  <p className="text-3xl font-black text-slate-900">{pendingPaymentsCount}</p>
-                  {pendingPaymentsCount > 0 && <span className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-[9px] font-black uppercase animate-pulse">Action requise</span>}
+              <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-48 group">
+                <div className="w-12 h-12 rounded-2xl kpi-accent-2 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform"><Activity size={24}/></div>
+                <div>
+                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Chiffre d'Affaire</p>
+                   <p className="text-4xl font-black text-slate-900 leading-none">{todayAppts.reduce((s, a) => s + (a.price || 150), 0)}<span className="text-lg opacity-30 ml-1">CHF</span></p>
+                   <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-[0.2em] mt-2">+12% vs hier</p>
+                </div>
+              </div>
+              <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-48 group">
+                <div className="w-12 h-12 rounded-2xl kpi-accent-3 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform"><Target size={24}/></div>
+                <div>
+                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Alertes Paiement</p>
+                   <p className="text-4xl font-black text-slate-900 leading-none">{pendingPaymentsCount}</p>
+                   <p className="text-[9px] font-bold text-rose-500 uppercase tracking-[0.2em] mt-2 animate-pulse">Action requise</p>
                 </div>
               </div>
             </div>
-            <div className="premium-card p-8 rounded-[2.5rem] flex flex-col justify-between h-44">
-              <div className="w-12 h-12 rounded-2xl kpi-accent-4 flex items-center justify-center shadow-inner"><Users size={24}/></div>
-              <div>
-                <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Total Clients</p>
-                <p className="text-3xl font-black text-slate-900">{clients.length}</p>
-              </div>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {/* Today List */}
-            <div className="lg:col-span-2 space-y-8">
+            {/* Timeline */}
+            <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-medium tracking-tight">Today's Timeline</h3>
-                <button onClick={() => { setTab('scheduler'); setView('day'); }} className="text-[10px] font-black font-sans text-blue-600 uppercase tracking-[0.2em] hover:opacity-70 transition">Tout voir</button>
+                <h3 className="text-xl font-medium tracking-tight">Timeline du Jour</h3>
+                <button onClick={() => { setTab('scheduler'); setView('day'); }} className="text-[9px] font-black text-[#5F27CD] uppercase tracking-[0.3em] hover:opacity-70 transition">Accéder au planning complet</button>
               </div>
 
               <div className="space-y-4">
-                {todayAppts.length > 0 ? todayAppts.map((appt, idx) => {
-                  const colors = ['border-blue-500', 'border-emerald-500', 'border-amber-500', 'border-purple-500', 'border-pink-500'];
-                  const bgColors = ['bg-blue-50/50', 'bg-emerald-50/50', 'bg-amber-50/50', 'bg-purple-50/50', 'bg-pink-50/50'];
-                  const colorIdx = idx % colors.length;
-                  
-                  return (
-                    <div key={appt.id} onClick={() => setSelectedAppt(appt)} className={`group premium-card p-6 flex items-center gap-8 rounded-[2rem] border-l-8 ${colors[colorIdx]} cursor-pointer`}>
-                      <div className="w-20 text-center flex flex-col items-center">
-                        <p className="text-xl font-black text-slate-900 leading-tight">{appt.time}</p>
-                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">60 MIN</p>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                           <h4 className="text-lg font-medium tracking-tight">{appt.title}</h4>
-                           {!appt.paid && <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"/>}
+                {todayAppts.length > 0 ? todayAppts.map((appt, idx) => (
+                  <div key={appt.id} onClick={() => setSelectedAppt(appt)} className="group premium-card p-6 flex items-center gap-8 rounded-[2.5rem] transition-all duration-500 hover:border-[#5F27CD]/20 cursor-pointer overflow-hidden border-2 border-transparent">
+                     <div className="w-20 shrink-0 text-center border-r border-slate-100 pr-8">
+                        <p className="text-2xl font-black text-slate-900 leading-none">{appt.time}</p>
+                        <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1">60 MIN</p>
+                     </div>
+                     <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3">
+                           <h4 className="text-xl font-medium text-slate-900 truncate tracking-tighter">{appt.title}</h4>
+                           {!appt.paid && <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse ring-4 ring-rose-50"/>}
                         </div>
-                        <div className="flex items-center gap-6">
-                           <div className="flex items-center gap-2">
-                              <div className={`p-1.5 rounded-lg ${bgColors[colorIdx]}`}>
-                                <Leaf size={12} className={colors[colorIdx].replace('border-', 'text-')}/>
-                              </div>
-                              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{appt.serviceName || 'Soin Signature'}</span>
-                           </div>
-                           <div className="flex items-center gap-2">
-                              {appt.phone && <span className="text-[10px] font-bold text-slate-400">{appt.phone}</span>}
-                           </div>
-                        </div>
-                      </div>
-                      <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1">{appt.serviceName || 'Soin Signature'}</p>
+                     </div>
+                     <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-[#5F27CD] group-hover:text-white group-hover:rotate-12 transition-all duration-500">
                         <ChevronRight size={20}/>
-                      </div>
-                    </div>
-                  );
-                }) : (
-                  <div className="py-20 bg-white rounded-[3rem] border border-dashed border-slate-200 text-center">
-                    <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-slate-200">
-                      <Clock size={32}/>
-                    </div>
-                    <p className="text-slate-400 font-bold italic">Aucun rendez-vous aujourd'hui</p>
+                     </div>
+                  </div>
+                )) : (
+                  <div className="py-24 bg-white/50 rounded-[3rem] border-4 border-dashed border-slate-100/50 text-center">
+                    <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 text-slate-200 shadow-sm"><Clock size={32} strokeWidth={1.5}/></div>
+                    <p className="text-slate-400 font-bold italic tracking-tight text-sm">Aucune activité programmée pour aujourd'hui.</p>
                   </div>
                 )}
               </div>
             </div>
+          </div>
 
-            {/* Side Widgets */}
-            <div className="space-y-10">
-              <div className="premium-card p-10 rounded-[3rem] space-y-10">
-                <div className="flex items-center justify-between">
-                   <h3 className="text-lg font-medium tracking-tight">Quick Actions</h3>
-                   <Cog size={16} className="text-slate-300"/>
-                </div>
-                <div className="grid grid-cols-2 gap-6">
-                  <button onClick={() => setClModal(true)} className="flex flex-col items-center gap-4 group">
-                    <div className="w-16 h-16 rounded-[1.5rem] bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-sm"><Users size={24}/></div>
+          {/* Right Statistics Sidebar */}
+          <div className="lg:col-span-4 space-y-10">
+            <div className="premium-card p-10 rounded-[3rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-900/20 relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"/>
+               <h3 className="text-xl font-medium tracking-tighter mb-8 relative">Performance Hebdo</h3>
+               
+               <div className="space-y-8 relative">
+                 <div className="flex items-center gap-6">
+                    <CircProgress pct={78} cls="text-emerald-400"/>
+                    <div>
+                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Occupation</p>
+                       <p className="text-xl font-black">78% de la capacité</p>
+                    </div>
+                 </div>
+                 <div className="flex items-center gap-6">
+                    <CircProgress pct={92} cls="text-orange-400"/>
+                    <div>
+                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Satisfaction</p>
+                       <p className="text-xl font-black">9.2 / 10 score</p>
+                    </div>
+                 </div>
+               </div>
+
+               <div className="mt-12 pt-8 border-t border-white/10">
+                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Prochains Objectifs</p>
+                 <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                       <div className="w-5 h-5 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-500"><CheckCircle2 size={12}/></div>
+                       <p className="text-xs font-medium text-slate-300">Finaliser les bilans patients</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                       <div className="w-5 h-5 rounded-lg bg-white/10 flex items-center justify-center text-white/40"><Clock size={12}/></div>
+                       <p className="text-xs font-medium text-slate-300">Relancer les factures tardives</p>
+                    </div>
+                 </div>
+               </div>
+            </div>
+
+            <div className="premium-card p-10 rounded-[3rem] bg-white border border-slate-100 shadow-xl shadow-slate-200/20">
+               <h3 className="text-lg font-medium tracking-tight mb-8">Quick Actions</h3>
+               <div className="grid grid-cols-2 gap-6">
+                 <button onClick={() => setClModal(true)} className="flex flex-col items-center gap-4 group">
+                   <div className="w-16 h-16 rounded-[1.75rem] bg-[#54A0FF]/10 text-[#54A0FF] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#54A0FF] group-hover:text-white transition-all duration-500 shadow-inner shadow-[#54A0FF]/5"><Users size={24}/></div>
+                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Nouveau Patient</span>
+                 </button>
+                 <button onClick={() => { setTab('scheduler'); setView('week'); }} className="flex flex-col items-center gap-4 group">
+                   <div className="w-16 h-16 rounded-[1.75rem] bg-[#5F27CD]/10 text-[#5F27CD] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#5F27CD] group-hover:text-white transition-all duration-500 shadow-inner shadow-[#5F27CD]/5"><CalendarRange size={24}/></div>
+                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Bloquer Journée</span>
+                 </button>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );er:text-white transition-all duration-300 shadow-sm"><Users size={24}/></div>
                     <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Patient</span>
                   </button>
                   <button onClick={() => { setTab('scheduler'); setView('week'); }} className="flex flex-col items-center gap-4 group">
@@ -1157,24 +1186,29 @@ export default function TherapistDashboard() {
         }
       `}</style>
 
-      <aside className="w-28 bg-white border-r border-slate-100 flex flex-col items-center py-12 gap-1 shrink-0 z-10">
-
+      <aside className="w-24 bg-white border-r border-slate-100 flex flex-col items-center py-10 gap-2 shrink-0 z-20 shadow-[20px_0_60px_rgba(0,0,0,0.02)]">
+        <div className="w-12 h-12 bg-gradient-to-br from-[#341F97] to-[#5F27CD] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-[#5F27CD]/20 mb-8">
+          <Leaf size={24} strokeWidth={2.5}/>
+        </div>
         
         {([
-          { id: 'dashboard',  Icon: LayoutDashboard, label: 'Stats' },
+          { id: 'dashboard',  Icon: LayoutDashboard, label: 'Tableau' },
           { id: 'scheduler',  Icon: CalendarRange,   label: 'Agenda' },
           { id: 'clients',    Icon: Users,           label: 'Patients' },
           { id: 'accounting', Icon: CreditCard,      label: 'Compta' },
         ] as const).map(n => (
-          <button key={n.id} onClick={() => setTab(n.id as any)} className={`nav-pill ${tab === n.id ? 'active' : ''}`}>
+          <button key={n.id} onClick={() => setTab(n.id as any)} className={`
+            nav-pill w-16 h-16 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all duration-300
+            ${tab === n.id ? 'bg-[#5F27CD]/5 text-[#5F27CD] shadow-inner' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'}
+          `}>
             <n.Icon size={22} strokeWidth={tab === n.id ? 2.5 : 2}/>
-            <span className="text-[9px] font-black uppercase tracking-wider">{n.label}</span>
+            <span className="text-[8px] font-black uppercase tracking-widest">{n.label}</span>
           </button>
         ))}
 
         <div className="mt-auto space-y-4">
-          <button onClick={() => setCfgOpen(true)} className="p-4 hover:bg-slate-50 rounded-2xl transition text-slate-400 hover:text-slate-800"><Cog size={22}/></button>
-          <button onClick={() => auth?.signOut()} className="w-10 h-10 rounded-2xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition shadow-sm mx-auto"><Power size={18}/></button>
+          <button onClick={() => setCfgOpen(true)} className="w-12 h-12 flex items-center justify-center rounded-2xl text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all"><Settings size={22}/></button>
+          <button onClick={() => auth?.signOut()} className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition shadow-sm"><Power size={20}/></button>
         </div>
       </aside>
 
