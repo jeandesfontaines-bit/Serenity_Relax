@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { X, Search, User, UserPlus, Calendar, Clock, CheckCircle2 } from 'lucide-react';
 import { Client } from '../types';
+import { SERVICES } from '@/lib/types';
 
 interface BookingModalProps {
   date?: string;
   time?: string;
   clients: Client[];
+  initialSearch?: string;
   onClose: () => void;
-  onBook: (clientId: string, service: string) => void;
+  onBook: (clientId: string, service: string, isNew?: boolean) => void;
 }
 
-export default function BookingModal({ date, time, clients, onClose, onBook }: BookingModalProps) {
+export default function BookingModal({ date, time, clients, initialSearch = '', onClose, onBook }: BookingModalProps) {
   const [step, setStep] = useState<'choice' | 'details'>('choice');
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-  const [selectedService, setSelectedService] = useState('Aromathérapie');
+  const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [selectedService, setSelectedService] = useState(SERVICES[2]?.name || 'Aromathérapie');
 
   const filtered = clients.filter(c => 
     `${c.firstName} ${c.lastName}`.toLowerCase().includes(search.toLowerCase())
@@ -71,12 +74,32 @@ export default function BookingModal({ date, time, clients, onClose, onBook }: B
                   </div>
                 ))}
                 
-                <button className="w-full flex items-center gap-4 p-4 rounded-2xl border border-dashed border-slate-200 text-slate-400 hover:border-indigo-300 hover:text-indigo-500 hover:bg-indigo-50/30 transition-all group">
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-white">
-                    <UserPlus size={18} />
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-widest">Créer un nouveau patient</span>
-                </button>
+                {filtered.length === 0 && search.trim() !== '' && (
+                  <button 
+                    onClick={() => {
+                        setIsCreatingNew(true);
+                        setStep('details');
+                    }}
+                    className="w-full flex items-center gap-4 p-5 rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/30 text-indigo-600 hover:border-indigo-400 hover:bg-indigo-50 transition-all group shadow-sm"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm">
+                      <UserPlus size={18} />
+                    </div>
+                    <div className="text-left">
+                       <span className="block text-[10px] font-black uppercase tracking-widest">Créer & Réserver pour :</span>
+                       <span className="block text-[13px] font-black uppercase tracking-tight">{search}</span>
+                    </div>
+                  </button>
+                )}
+
+                {filtered.length > 0 && (
+                  <button onClick={() => { setIsCreatingNew(true); setStep('details'); }} className="w-full flex items-center gap-4 p-4 rounded-2xl border border-dashed border-slate-200 text-slate-400 hover:border-indigo-300 hover:text-indigo-500 hover:bg-indigo-50/30 transition-all group">
+                    <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-white">
+                      <UserPlus size={18} />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-widest">Nouveau patient</span>
+                  </button>
+                )}
               </div>
             </div>
           ) : (
@@ -94,24 +117,31 @@ export default function BookingModal({ date, time, clients, onClose, onBook }: B
                <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Type de prestation</label>
                   <div className="grid grid-cols-2 gap-3">
-                    {['Aromathérapie', 'Réflexologie', 'Signature', 'Massage Sportif'].map(s => (
-                      <button 
-                        key={s} 
-                        onClick={() => setSelectedService(s)}
-                        className={`h-14 rounded-2xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest transition-all border
-                          ${selectedService === s ? 'bg-slate-900 text-white border-slate-900 shadow-xl' : 'bg-white text-slate-400 border-slate-100 hover:border-slate-300'}`}
-                      >
-                        {s}
-                      </button>
-                    ))}
+                    {SERVICES.map(s => {
+                      const displayName = s.name.split(' -')[0];
+                      return (
+                        <button 
+                          key={s.id} 
+                          onClick={() => setSelectedService(s.name)}
+                          className={`h-14 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all border px-2
+                            ${selectedService === s.name ? 'bg-slate-900 text-white border-slate-900 shadow-xl' : 'bg-white text-slate-400 border-slate-100 hover:border-slate-300'}`}
+                        >
+                          <span className="text-[10px] font-black uppercase tracking-widest truncate w-full text-center">{displayName}</span>
+                          <span className={`text-[8px] font-bold uppercase tracking-widest ${selectedService === s.name ? 'text-slate-300' : 'text-slate-300'}`}>{s.duration}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                </div>
 
-               <button 
-                onClick={() => selectedClient && onBook(selectedClient.id, selectedService)}
+                <button 
+                onClick={() => {
+                   if (isCreatingNew) onBook(search, selectedService, true);
+                   else if (selectedClient) onBook(selectedClient.id, selectedService);
+                }}
                 className="w-full h-16 bg-[#5F27CD] hover:bg-[#341F97] text-white rounded-[1.5rem] flex items-center justify-center gap-3 text-xs font-black uppercase tracking-[0.2em] shadow-2xl shadow-indigo-200 transition-all active:scale-95 mt-4"
                >
-                 <CheckCircle2 size={20} /> Confirmer la réservation
+                 <CheckCircle2 size={20} /> {isCreatingNew ? 'Créer & Confirmer' : 'Confirmer la réservation'}
                </button>
             </div>
           )}

@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
-import { 
-  ChevronLeft, ChevronRight, Calendar, Clock, FileText, CreditCard,
-  Plus, Phone, MapPin, ShieldCheck, Edit3, Trash2
-} from 'lucide-react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Calendar, FileText, CreditCard, Plus, Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
 import { Client, Appointment } from '../types';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -16,229 +13,402 @@ interface PatientDetailProps {
 }
 
 export default function PatientDetail({ client, onClose, appointments, onSelectAppt, onUpdateClient }: PatientDetailProps) {
-  const [activeTab, setActiveTab] = useState<'sessions' | 'notes' | 'billing' | 'profil'>('sessions');
-  const [editData, setEditData] = useState<Partial<Client>>({...client});
+  const [activeTab, setActiveTab] = useState<'sessions' | 'notes' | 'billing'>('sessions');
+  const [editData, setEditData] = useState<Partial<Client>>({ ...client });
 
-  const clientAppts = appointments
-    .filter(a => a.clientId === client.id || (a.clientNameSnapshot === `${client.firstName} ${client.lastName}`))
-    .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  useEffect(() => {
+    setEditData({ ...client });
+  }, [client]);
+
+  const updateField = useCallback((field: keyof Client, value: string) => {
+    const next = { ...editData, [field]: value };
+    setEditData(next);
+    onUpdateClient(client.id, next);
+  }, [client.id, editData, onUpdateClient]);
+
+  const clientAppts = useMemo(() =>
+    [...appointments]
+      .filter(a => a.clientId === client.id || a.clientNameSnapshot === `${client.firstName} ${client.lastName}`)
+      .sort((a, b) => {
+        if (!a.date && !b.date) return 0;
+        if (!a.date) return 1;
+        if (!b.date) return -1;
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }),
+    [appointments, client]
+  );
+
+  const completeAppts = clientAppts.filter(a => a.date && a.time);
+  const incompleteAppts = clientAppts.filter(a => !a.date || !a.time);
+
+  const totalDue = clientAppts
+    .filter(a => !a.paid && a.price)
+    .reduce((sum, a) => sum + (a.price || 0), 0);
+
+  const totalPaid = clientAppts
+    .filter(a => a.paid && a.price)
+    .reduce((sum, a) => sum + (a.price || 0), 0);
+
+  const unpaidCount = clientAppts.filter(a => !a.paid && a.date).length;
+  const lastAppt = completeAppts[0];
 
   return (
-    <div className="fixed inset-0 z-[150] flex items-end md:items-stretch justify-end pointer-events-none">
-      <div className="absolute inset-0 bg-[#222F3E]/40 backdrop-blur-sm pointer-events-auto md:hidden" onClick={onClose} />
-      
-      <div className="relative bg-[#FAFAFA] w-full md:w-[80vw] lg:w-[70vw] h-[95vh] md:h-full rounded-t-[2.5rem] md:rounded-none shadow-2xl pointer-events-auto overflow-hidden flex flex-col animate-in slide-in-from-bottom md:slide-in-from-right duration-500">
-        {/* Drawer Handle (Mobile Only) */}
-        <div className="md:hidden w-full flex justify-center pt-3 pb-1 shrink-0 bg-white">
-          <div className="w-12 h-1.5 bg-slate-100 rounded-full" />
-        </div>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#ECEEF8', fontFamily: "'Inter', sans-serif" }}>
 
-        {/* Topbar */}
-        <div className="h-20 md:h-24 bg-white border-b border-slate-100 px-6 md:px-12 flex items-center justify-between shrink-0 shadow-sm z-30">
-          <div className="flex items-center gap-4 md:gap-6">
-            <button onClick={onClose} className="w-10 h-10 md:w-14 md:h-14 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
-              <ChevronLeft size={18} className="md:w-5 md:h-5" />
+      {/* Topbar */}
+      <div style={{
+        background: '#fff',
+        height: 64,
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 24px',
+        gap: 16,
+        borderBottom: '1px solid #ECEEF8',
+        position: 'sticky',
+        top: 0,
+        zIndex: 20,
+        flexShrink: 0,
+      }}>
+        <button
+          onClick={onClose}
+          style={{
+            width: 36, height: 36, borderRadius: 10,
+            background: '#F4F5FB', border: 'none', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}
+        >
+          <ChevronLeft size={16} color="#6B7280" />
+        </button>
+
+        <span style={{ fontSize: 15, fontWeight: 700, color: '#1A1D2E', flex: 1 }}>
+          {client.lastName} {client.firstName}
+        </span>
+
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: 4, background: '#F4F5FB', borderRadius: 12, padding: 4 }}>
+          {[
+            { id: 'sessions' as const, label: 'Séances', count: clientAppts.length },
+            { id: 'notes' as const, label: 'Dossier' },
+            { id: 'billing' as const, label: 'Factures' },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                padding: '7px 16px',
+                borderRadius: 8,
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 12,
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                transition: 'all 0.15s',
+                background: activeTab === tab.id ? '#fff' : 'transparent',
+                color: activeTab === tab.id ? '#1A1D2E' : '#9CA3AF',
+                boxShadow: activeTab === tab.id ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+              }}
+            >
+              {tab.label}
+              {tab.count !== undefined && (
+                <span style={{
+                  background: '#6366F1', color: '#fff',
+                  fontSize: 9, fontWeight: 700,
+                  width: 17, height: 17, borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {tab.count}
+                </span>
+              )}
             </button>
-            <div>
-              <h1 className="text-lg md:text-2xl font-black tracking-tighter text-slate-900 uppercase leading-none">
-                {client.firstName} {client.lastName}
-              </h1>
-              <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Dossier #{client.id.slice(0, 5)}</p>
-            </div>
-          </div>
-          <button className="h-10 md:h-14 px-4 md:px-8 bg-slate-900 text-white rounded-xl md:rounded-2xl text-[8px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-slate-700 transition-all shadow-lg active:scale-95">
-            <Plus size={14} className="md:w-4 md:h-4" /> <span className="hidden sm:inline">Nouvelle Séance</span><span className="sm:hidden">Séance</span>
-          </button>
+          ))}
         </div>
+      </div>
 
-        <div className="flex-1 overflow-y-auto">
-          {/* Mobile Small Header */}
-          <div className="md:hidden px-6 py-4 flex items-center justify-between bg-white border-b border-slate-50">
-             <div className="flex items-center gap-3">
-                <div>
-                   <p className="text-[10px] font-black text-slate-900">{client.firstName} {client.lastName}</p>
-                   <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{client.phone || 'Pas de numéro'} · {clientAppts.length} séances</p>
+      {/* Body */}
+      <div style={{ flex: 1, display: 'flex', gap: 16, padding: 20, alignItems: 'flex-start' }}>
+
+        {/* Sidebar */}
+        <div style={{ width: 230, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+
+          {/* Profile card */}
+          <div style={{
+            background: '#fff', borderRadius: 16, padding: 20,
+            boxShadow: '0 2px 8px rgba(99,102,241,0.07)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
+          }}>
+            <div style={{
+              width: 56, height: 56, borderRadius: '50%',
+              background: 'linear-gradient(135deg,#6366F1,#818CF8)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 12,
+            }}>
+              {client.firstName?.[0]}{client.lastName?.[0]}
+            </div>
+
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#1A1D2E', marginBottom: 2 }}>
+              {client.lastName} {client.firstName}
+            </div>
+            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 14 }}>
+              Patient
+            </div>
+
+            {/* Editable fields */}
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+              {[
+                { icon: <Mail size={12} color="#C4C9E2" />, field: 'email' as keyof Client, placeholder: 'Email', type: 'email' },
+                { icon: <Phone size={12} color="#C4C9E2" />, field: 'phone' as keyof Client, placeholder: 'Téléphone', type: 'tel' },
+              ].map(({ icon, field, placeholder, type }) => (
+                <div key={field} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 0', borderTop: '1px solid #F4F5FB' }}>
+                  {icon}
+                  <input
+                    type={type}
+                    value={(editData[field] as string) || ''}
+                    onChange={e => updateField(field, e.target.value)}
+                    placeholder={placeholder}
+                    style={{
+                      flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                      fontSize: 11, color: '#6B7280', fontFamily: 'inherit',
+                    }}
+                  />
                 </div>
-             </div>
-             <button 
-               onClick={() => setActiveTab('profil')} 
-               className="h-8 px-4 bg-indigo-50 text-[#5F27CD] rounded-lg text-[8px] font-black uppercase tracking-widest border border-indigo-100"
-             >Détails</button>
+              ))}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 0', borderTop: '1px solid #F4F5FB' }}>
+                <MapPin size={12} color="#C4C9E2" />
+                <input
+                  type="text"
+                  value={(editData.zip as string) || ''}
+                  onChange={e => updateField('zip', e.target.value)}
+                  placeholder="NPA"
+                  style={{ width: 40, border: 'none', outline: 'none', background: 'transparent', fontSize: 11, color: '#6B7280', fontFamily: 'inherit' }}
+                />
+                <input
+                  type="text"
+                  value={(editData.city as string) || ''}
+                  onChange={e => updateField('city', e.target.value)}
+                  placeholder="Ville"
+                  style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 11, color: '#6B7280', fontFamily: 'inherit' }}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col md:flex-row h-full">
-            {/* Summary Card - Desktop Only Sidebar */}
-            <div className="hidden md:flex w-80 flex-col gap-6 shrink-0 p-8 border-r border-slate-100 bg-white/50">
-               <div className="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm">
-                  <h2 className="text-xl font-black text-slate-900 tracking-tighter uppercase mb-8 leading-tight">
-                    {client.firstName}<br/>{client.lastName}
-                  </h2>
-                  
-                  <div className="space-y-6">
-                     <div className="flex items-center gap-4 text-slate-600">
-                       <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-300"><Phone size={16} /></div>
-                       <span className="text-sm font-black">{client.phone || '—'}</span>
-                     </div>
-                     <div className="flex items-start gap-4 text-slate-600">
-                       <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-300 mt-1"><MapPin size={16} /></div>
-                       <span className="text-sm font-bold leading-tight">{client.street}<br/>{client.zip} {client.city}</span>
-                     </div>
-                  </div>
+          {/* Stat cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            {[
+              { num: clientAppts.length, label: 'Séances', colors: ['#6366F1', '#818CF8'] },
+              { num: `${totalDue}`, label: 'CHF dû', colors: ['#F43F5E', '#FB7185'] },
+              { num: `${totalPaid}`, label: 'CHF réglé', colors: ['#10B981', '#34D399'] },
+              { num: unpaidCount, label: 'En attente', colors: ['#F59E0B', '#FCD34D'] },
+            ].map(({ num, label, colors }) => (
+              <div key={label} style={{
+                borderRadius: 14, padding: '14px 12px',
+                background: `linear-gradient(135deg,${colors[0]},${colors[1]})`,
+              }}>
+                <div style={{ fontSize: 22, fontWeight: 700, color: '#fff', letterSpacing: '-0.5px', lineHeight: 1 }}>{num}</div>
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.75)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>{label}</div>
+              </div>
+            ))}
 
-                  <button 
-                    onClick={() => setActiveTab('profil')}
-                    className="w-full h-12 rounded-2xl bg-indigo-50 text-[#5F27CD] text-[11px] font-black uppercase tracking-widest hover:bg-indigo-100 transition-all mt-8 border border-indigo-100"
-                  >
-                    Voir le profil complet
-                  </button>
-               </div>
-
-               <div className="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm">
-                  <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-6 px-1">Statistiques</h3>
-                  <div className="space-y-4">
-                     <div className="flex justify-between items-center bg-slate-50/50 p-4 rounded-2xl">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Séances</span>
-                        <span className="text-2xl font-black text-slate-900">{clientAppts.length}</span>
-                     </div>
-                  </div>
-               </div>
-            </div>
-
-            {/* Content Area */}
-            <div className="flex-1 flex flex-col gap-4 md:gap-8 p-4 md:p-12 overflow-hidden">
-               {/* Tabs */}
-               <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] border border-slate-100 p-1.5 flex gap-1 shrink-0 shadow-sm overflow-x-auto no-scrollbar">
-                  {[
-                    { id: 'sessions', label: 'Séances', icon: Calendar },
-                    { id: 'notes', label: 'Dossier', icon: FileText },
-                    { id: 'profil', label: 'Profil', icon: Edit3 },
-                    { id: 'billing', label: 'Compta', icon: CreditCard },
-                  ].map(t => (
-                    <button
-                      key={t.id}
-                      onClick={() => setActiveTab(t.id as any)}
-                      className={`flex-1 h-12 md:h-16 min-w-[85px] rounded-xl md:rounded-2xl flex items-center justify-center gap-2 md:gap-3 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all
-                        ${activeTab === t.id ? 'bg-[#5F27CD] text-white shadow-xl shadow-indigo-100' : 'text-slate-400 hover:bg-slate-50'}`}
-                    >
-                      <t.icon size={14} /> {t.label}
-                    </button>
-                  ))}
-               </div>
-
-               <div className="flex-1 overflow-y-auto pr-1 md:pr-4 scrollbar-hide space-y-4">
-                  {activeTab === 'sessions' && (
-                    <div className="space-y-3 md:space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      {clientAppts.map(appt => (
-                        <div 
-                          key={appt.id} 
-                          onClick={() => onSelectAppt(appt)}
-                          className="group bg-white rounded-[2rem] border border-slate-100 p-5 md:p-8 flex items-center justify-between hover:shadow-2xl hover:shadow-indigo-100/50 transition-all cursor-pointer"
-                        >
-                          <div className="flex items-center gap-4 md:gap-10">
-                            <div className="w-14 h-14 md:w-20 md:h-20 rounded-[1.5rem] md:rounded-[2.5rem] bg-slate-50 flex flex-col items-center justify-center text-slate-900 font-black text-sm shadow-inner group-hover:bg-[#5F27CD] group-hover:text-white transition-all">
-                              <span className="text-xl md:text-2xl leading-none">{appt.date ? format(new Date(appt.date), 'dd') : '--'}</span>
-                              <span className="text-[7px] md:text-[9px] uppercase opacity-50 mt-1">{appt.date ? format(new Date(appt.date), 'MMM', { locale: fr }) : '??'}</span>
-                            </div>
-                            <div>
-                               <h4 className="font-black text-slate-900 uppercase tracking-tight text-sm md:text-xl">{appt.serviceName || 'Soin'}</h4>
-                               <div className="flex items-center gap-3 mt-1 md:mt-3">
-                                  <p className="text-[9px] md:text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5"><Clock size={12}/> {appt.time}</p>
-                                  <div className="w-1 h-1 bg-slate-200 rounded-full"/>
-                                  <p className="text-[9px] md:text-xs font-black text-[#5F27CD] uppercase tracking-widest">{appt.price} CHF</p>
-                               </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4 md:gap-6">
-                             <div className={`px-4 py-2 rounded-xl text-[8px] md:text-[10px] font-black uppercase tracking-widest border ${appt.paid ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-rose-50 text-rose-600 border-rose-100'}`}>
-                                {appt.paid ? 'RÉGLÉ' : 'DÛ'}
-                             </div>
-                             <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-[1.5rem] bg-slate-50 hidden md:flex items-center justify-center text-slate-300 group-hover:bg-slate-900 group-hover:text-white transition-all shadow-sm">
-                                <ChevronRight size={20} />
-                             </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {activeTab === 'notes' && (
-                     <div className="bg-white rounded-[2rem] md:rounded-[3.5rem] border border-slate-100 p-6 md:p-14 h-full min-h-[400px] shadow-sm animate-in fade-in duration-500">
-                        <div className="flex items-center justify-between mb-8 md:mb-12">
-                           <h3 className="text-base md:text-xl font-black text-slate-900 uppercase tracking-tight">Dossier Clinique</h3>
-                           <span className="px-3 py-1 bg-rose-50 rounded-lg text-[8px] md:text-[9px] font-black text-rose-500 uppercase tracking-widest flex items-center gap-2">
-                             <ShieldCheck size={14}/> Top Secret
-                           </span>
-                        </div>
-                        <textarea 
-                          defaultValue={client.notes}
-                          onChange={(e) => onUpdateClient(client.id, { notes: e.target.value })}
-                          className="w-full h-full min-h-[350px] p-6 md:p-12 bg-slate-50/50 rounded-[1.5rem] md:rounded-[2.5rem] border-2 border-transparent focus:border-indigo-100 focus:bg-white focus:outline-none text-slate-700 font-semibold leading-relaxed transition-all placeholder:text-slate-300"
-                          placeholder="Commencez à rédiger vos observations..."
-                        />
-                     </div>
-                  )}
-
-                  {activeTab === 'profil' && (
-                    <div className="bg-white rounded-[2rem] md:rounded-[3.5rem] border border-slate-100 p-6 md:p-14 shadow-sm animate-in fade-in duration-500">
-                       <div className="flex items-center justify-between mb-10 md:mb-14">
-                          <h3 className="text-base md:text-xl font-black text-slate-900 uppercase tracking-tight">Identité Patient</h3>
-                          <button 
-                            onClick={() => onUpdateClient(client.id, editData)}
-                            className="h-10 md:h-14 px-6 md:px-12 bg-[#5F27CD] text-white rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest shadow-xl shadow-indigo-100 hover:scale-105 active:scale-95 transition-all"
-                          >Enregistrer</button>
-                       </div>
-
-                       <div className="space-y-4 md:space-y-8">
-                          <div className="grid grid-cols-2 gap-4 md:gap-8">
-                             <div className="space-y-1 md:space-y-2">
-                                <label className="text-[8px] md:text-[10px] font-black text-slate-300 uppercase tracking-widest px-2">Prénom</label>
-                                <input type="text" value={editData.firstName} onChange={e => setEditData({...editData, firstName: e.target.value})} className="w-full h-12 md:h-16 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl px-5 text-sm font-black"/>
-                             </div>
-                             <div className="space-y-1 md:space-y-2">
-                                <label className="text-[8px] md:text-[10px] font-black text-slate-300 uppercase tracking-widest px-2">Nom</label>
-                                <input type="text" value={editData.lastName} onChange={e => setEditData({...editData, lastName: e.target.value})} className="w-full h-12 md:h-16 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl px-5 text-sm font-black"/>
-                             </div>
-                          </div>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-                             <div className="space-y-1 md:space-y-2">
-                                <label className="text-[8px] md:text-[10px] font-black text-slate-300 uppercase tracking-widest px-2">Email</label>
-                                <input type="email" value={editData.email} onChange={e => setEditData({...editData, email: e.target.value})} className="w-full h-12 md:h-16 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl px-5 text-sm font-black"/>
-                             </div>
-                             <div className="space-y-1 md:space-y-2">
-                                <label className="text-[8px] md:text-[10px] font-black text-slate-300 uppercase tracking-widest px-2">Téléphone</label>
-                                <input type="text" value={editData.phone} onChange={e => setEditData({...editData, phone: e.target.value})} className="w-full h-12 md:h-16 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl px-5 text-sm font-black"/>
-                             </div>
-                          </div>
-
-                          <div className="space-y-1 md:space-y-2">
-                             <label className="text-[8px] md:text-[10px] font-black text-slate-300 uppercase tracking-widest px-2">Adresse</label>
-                             <input type="text" value={editData.street} onChange={e => setEditData({...editData, street: e.target.value})} className="w-full h-12 md:h-16 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl px-5 text-sm font-black"/>
-                          </div>
-
-                          <div className="grid grid-cols-3 gap-3 md:gap-8">
-                             <div className="space-y-1 md:space-y-2">
-                                <label className="text-[8px] md:text-[10px] font-black text-slate-300 uppercase tracking-widest px-2">NPA</label>
-                                <input type="text" value={editData.zip} onChange={e => setEditData({...editData, zip: e.target.value})} className="w-full h-12 md:h-16 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl px-4 text-sm font-black"/>
-                             </div>
-                             <div className="col-span-2 space-y-1 md:space-y-2">
-                                <label className="text-[8px] md:text-[10px] font-black text-slate-300 uppercase tracking-widest px-2">Ville</label>
-                                <input type="text" value={editData.city} onChange={e => setEditData({...editData, city: e.target.value})} className="w-full h-12 md:h-16 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl px-5 text-sm font-black"/>
-                             </div>
-                          </div>
-                          
-                          <div className="mt-12 pt-12 border-t border-slate-50">
-                             <button className="flex items-center gap-3 text-[10px] font-black text-rose-500 uppercase tracking-widest hover:text-rose-700 transition-colors">
-                                <Trash2 size={16}/> Archiver ce patient
-                             </button>
-                          </div>
-                       </div>
-                    </div>
-                  )}
-               </div>
-            </div>
+            {lastAppt && (
+              <div style={{
+                gridColumn: '1/-1',
+                background: '#fff', borderRadius: 14, padding: '12px 14px',
+                boxShadow: '0 2px 8px rgba(99,102,241,0.07)',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              }}>
+                <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 500 }}>Dernière séance</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: '#6366F1' }}>
+                  {format(new Date(lastAppt.date), 'dd MMM yyyy', { locale: fr })}
+                </span>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Main content */}
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+
+          {activeTab === 'sessions' && (
+            <>
+              {/* Table header */}
+              <div style={{
+                background: '#fff', borderRadius: 14, padding: '10px 16px',
+                boxShadow: '0 1px 4px rgba(99,102,241,0.05)',
+                display: 'grid',
+                gridTemplateColumns: '110px 58px minmax(0,1fr) 90px 84px 32px',
+                gap: 8,
+              }}>
+                {['Date', 'Heure', 'Soin', 'Montant', 'Statut', ''].map(h => (
+                  <div key={h} style={{ fontSize: 10, fontWeight: 600, color: '#C4C9E2', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</div>
+                ))}
+              </div>
+
+              {/* Complete sessions */}
+              {completeAppts.map(appt => (
+                <SessionRow key={appt.id} appt={appt} onClick={() => onSelectAppt(appt)} />
+              ))}
+
+              {/* Incomplete sessions */}
+              {incompleteAppts.length > 0 && (
+                <>
+                  <div style={{ fontSize: 10, fontWeight: 600, color: '#C4C9E2', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 4px 2px' }}>
+                    Séances incomplètes
+                  </div>
+                  {incompleteAppts.map(appt => (
+                    <SessionRow key={appt.id} appt={appt} onClick={() => onSelectAppt(appt)} dim />
+                  ))}
+                </>
+              )}
+
+              {/* Empty state */}
+              {clientAppts.length === 0 && (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 0', gap: 12 }}>
+                  <div style={{ width: 56, height: 56, borderRadius: 16, background: '#EEF2FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Calendar size={24} color="#6366F1" />
+                  </div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#1A1D2E' }}>Aucune séance</div>
+                  <div style={{ fontSize: 13, color: '#9CA3AF' }}>Créez la première séance pour {client.firstName}</div>
+                  <button style={{
+                    display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px',
+                    background: 'linear-gradient(135deg,#6366F1,#818CF8)',
+                    color: '#fff', border: 'none', borderRadius: 12, fontSize: 13, fontWeight: 600, cursor: 'pointer', marginTop: 8,
+                  }}>
+                    <Plus size={16} /> Nouvelle séance
+                  </button>
+                </div>
+              )}
+
+              {/* Total */}
+              {totalDue > 0 && (
+                <div style={{
+                  background: 'linear-gradient(135deg,#FEF2F2,#FFF1F2)',
+                  border: '1px solid #FECDD3', borderRadius: 14, padding: '14px 16px',
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4,
+                }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: '#F43F5E', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Total non réglé</span>
+                  <span style={{ fontSize: 18, fontWeight: 700, color: '#DC2626', letterSpacing: '-0.5px' }}>{totalDue} CHF</span>
+                </div>
+              )}
+            </>
+          )}
+
+          {activeTab === 'notes' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{
+                background: '#fff', borderRadius: 14, padding: '14px 16px',
+                boxShadow: '0 2px 8px rgba(99,102,241,0.07)',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: '#1A1D2E' }}>Dossier clinique</span>
+                <span style={{
+                  display: 'flex', alignItems: 'center', gap: 6, padding: '5px 10px',
+                  background: '#FEE2E2', borderRadius: 20, fontSize: 10, fontWeight: 600, color: '#DC2626',
+                }}>
+                  <ShieldCheck size={12} /> Confidentiel
+                </span>
+              </div>
+              <textarea
+                value={client.notes || ''}
+                onChange={e => onUpdateClient(client.id, { notes: e.target.value })}
+                placeholder="Rédigez vos observations cliniques, historique, évolution du patient..."
+                style={{
+                  background: '#fff', borderRadius: 14, border: '2px solid #ECEEF8', padding: 20,
+                  fontSize: 13, color: '#374151', lineHeight: 1.7, resize: 'none', outline: 'none',
+                  minHeight: 400, fontFamily: 'inherit', boxShadow: '0 2px 8px rgba(99,102,241,0.05)',
+                  transition: 'border-color 0.15s',
+                }}
+                onFocus={e => e.target.style.borderColor = '#A5B4FC'}
+                onBlur={e => e.target.style.borderColor = '#ECEEF8'}
+              />
+            </div>
+          )}
+
+          {activeTab === 'billing' && (
+            <div style={{
+              background: '#fff', borderRadius: 16, padding: 40, textAlign: 'center',
+              boxShadow: '0 2px 8px rgba(99,102,241,0.07)',
+            }}>
+              <div style={{ width: 56, height: 56, borderRadius: 16, background: '#EEF2FF', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                <CreditCard size={24} color="#6366F1" />
+              </div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: '#1A1D2E', marginBottom: 8 }}>Facturation</div>
+              <div style={{ fontSize: 13, color: '#9CA3AF', maxWidth: 320, margin: '0 auto 24px', lineHeight: 1.6 }}>
+                Historique complet et export PDF en cours d'implémentation.
+              </div>
+              <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
+                <button style={{
+                  display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px',
+                  background: 'linear-gradient(135deg,#6366F1,#818CF8)',
+                  color: '#fff', border: 'none', borderRadius: 10, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                }}>
+                  <Plus size={14} /> Nouvelle facture
+                </button>
+                <button style={{
+                  padding: '10px 18px', background: '#F4F5FB', border: 'none',
+                  borderRadius: 10, fontSize: 12, fontWeight: 600, color: '#6B7280', cursor: 'pointer',
+                }}>
+                  Exporter PDF
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SessionRow({ appt, onClick, dim = false }: { appt: Appointment; onClick: () => void; dim?: boolean }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: '#fff',
+        borderRadius: 14,
+        padding: '13px 16px',
+        boxShadow: hovered ? '0 4px 16px rgba(99,102,241,0.13)' : '0 1px 4px rgba(99,102,241,0.05)',
+        transform: hovered && !dim ? 'translateY(-1px)' : 'none',
+        display: 'grid',
+        gridTemplateColumns: '110px 58px minmax(0,1fr) 90px 84px 32px',
+        gap: 8,
+        alignItems: 'center',
+        cursor: 'pointer',
+        transition: 'box-shadow 0.15s, transform 0.15s',
+        opacity: dim ? 0.5 : 1,
+      }}
+    >
+      <div style={{ fontSize: 12, fontWeight: 600, color: appt.date ? '#1A1D2E' : '#D1D5DB' }}>
+        {appt.date ? format(new Date(appt.date), 'dd MMM yyyy', { locale: fr }) : '—'}
+      </div>
+      <div style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 500 }}>
+        {appt.time || '—'}
+      </div>
+      <div style={{ fontSize: 12, color: '#4B5563', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {appt.serviceName || 'Consultation'}
+      </div>
+      <div style={{ fontSize: 13, fontWeight: 700, color: appt.price ? '#1A1D2E' : '#D1D5DB' }}>
+        {appt.price ? `${appt.price} CHF` : '—'}
+      </div>
+      <div>
+        {!appt.date ? (
+          <span style={{ display: 'inline-flex', padding: '4px 10px', borderRadius: 20, fontSize: 10, fontWeight: 600, background: '#F3F4F6', color: '#9CA3AF' }}>Incomplet</span>
+        ) : appt.paid ? (
+          <span style={{ display: 'inline-flex', padding: '4px 10px', borderRadius: 20, fontSize: 10, fontWeight: 600, background: '#D1FAE5', color: '#059669' }}>Réglé</span>
+        ) : (
+          <span style={{ display: 'inline-flex', padding: '4px 10px', borderRadius: 20, fontSize: 10, fontWeight: 600, background: '#FEE2E2', color: '#DC2626' }}>À payer</span>
+        )}
+      </div>
+      <div style={{
+        width: 28, height: 28, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: hovered ? '#EEF2FF' : '#F4F5FB', transition: 'background 0.15s',
+      }}>
+        <ChevronRight size={12} color={hovered ? '#6366F1' : '#9CA3AF'} />
       </div>
     </div>
   );

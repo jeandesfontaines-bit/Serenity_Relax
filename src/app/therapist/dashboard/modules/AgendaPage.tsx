@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Plus, Ban, Lock, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Ban, Lock, CheckCircle2, Settings2 as Settings, UserPlus, X, Smartphone, CreditCard, Banknote } from 'lucide-react';
 import { 
   format, isSameDay, isSameMonth, addDays, 
   startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek 
@@ -49,6 +49,7 @@ export default function AgendaPage({
   onOpenWeeklySettings
 }: AgendaPageProps) {
   const [pendingDates, setPendingDates] = useState<Set<string>>(new Set());
+  const [activeSlot, setActiveSlot] = useState<string | null>(null);
 
   const handleSaveAbsences = () => {
     pendingDates.forEach(d => onToggleDay(d));
@@ -108,19 +109,36 @@ export default function AgendaPage({
                 {isOpen ? slots.map(t => {
                   const ev = appointments.find(e => e.date === dStr && e.time === t);
                   const blocked = isSlotBlocked(dStr, t);
+                  const isActive = activeSlot === `${dStr}-${t}`;
+
                   return (
                     <div key={t}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         if (absenceMode) return;
                         if (blockMode) { if (!ev) toggleSlot(dStr, t); return; }
                         if (ev) onSelectAppt(ev);
-                        else onOpenSlot(dStr, t);
+                        else if (!isActive) setActiveSlot(`${dStr}-${t}`);
                       }}
-                      className={`p-4 rounded-2xl text-xs font-black transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col justify-center min-h-[64px] shadow-sm transform hover:scale-[1.02]
-                        ${ev ? 'bg-[#5F27CD] border-transparent text-white shadow-indigo-200/50'
-                          : blocked ? 'bg-slate-900 border-transparent text-white'
-                            : 'bg-white border border-slate-100 text-slate-900 hover:border-indigo-400 hover:text-indigo-600'}`}
+                      className={`p-4 rounded-2xl text-xs font-black transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col justify-center min-h-[64px]
+                        ${isActive ? 'bg-transparent border-transparent'
+                          : ev ? 'bg-[#5F27CD] border-transparent text-white shadow-indigo-200/50 shadow-sm transform hover:scale-[1.02]'
+                            : blocked ? 'bg-slate-900 border-transparent text-white shadow-sm transform hover:scale-[1.02]'
+                              : 'bg-white border border-slate-100 text-slate-900 hover:border-indigo-400 hover:text-indigo-600 shadow-sm transform hover:scale-[1.02]'}`}
                     >
+                      {isActive ? (
+                        <div className="flex items-center justify-center gap-2 animate-in zoom-in-95 duration-200">
+                          <button onClick={(e) => { e.stopPropagation(); onOpenSlot(dStr, t); setActiveSlot(null); }} className="w-9 h-9 rounded-full bg-white text-indigo-600 shadow-sm border border-indigo-100 flex items-center justify-center hover:bg-indigo-600 hover:text-white transition-all">
+                            <UserPlus size={16}/>
+                          </button>
+                          <button onClick={(e) => { e.stopPropagation(); toggleSlot(dStr, t); setActiveSlot(null); }} className="w-9 h-9 rounded-full bg-white text-slate-400 shadow-sm border border-slate-100 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all">
+                            <Lock size={14}/>
+                          </button>
+                          <button onClick={(e) => { e.stopPropagation(); setActiveSlot(null); }} className="w-9 h-9 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all">
+                            <X size={14}/>
+                          </button>
+                        </div>
+                      ) : (
                        <div className="flex items-center gap-2">
                         <span className="opacity-80 tracking-tight shrink-0 text-xs">{t}</span>
                         {ev && <span className="text-[10px] font-bold uppercase tracking-tight truncate opacity-90">— {ev.clientNameSnapshot || ev.title}</span>}
@@ -129,6 +147,7 @@ export default function AgendaPage({
                            {blocked && <Lock size={10}/>}
                         </div>
                       </div>
+                      )}
                     </div>
                   );
                 }) : (
@@ -215,23 +234,23 @@ export default function AgendaPage({
       {/* Topbar Sub (Controls) */}
       <div className="h-24 border-b border-slate-100 px-12 flex items-center justify-between shrink-0 bg-white shadow-sm z-30">
         <div className="flex items-center gap-10">
-          <h1 className="text-2xl font-black tracking-tighter text-slate-900 uppercase">
+          <h1 className="text-xl font-black tracking-[0.1em] text-slate-900 uppercase">
             {format(cur, "MMMM yyyy", { locale: fr }).toUpperCase()}
           </h1>
           
           <div className="flex items-center gap-2">
-            <div className="flex h-14 bg-slate-50 p-1.5 rounded-2xl gap-1 shadow-inner">
+            <div className="flex h-9 bg-slate-50 p-1 rounded-full gap-1 shadow-inner border border-slate-100">
               {(['month', 'week'] as const).map(v => (
-                <button key={v} onClick={() => onToggleView(v)} className={`h-full px-6 flex items-center rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${view === v ? 'bg-white text-slate-900 shadow-md' : 'text-slate-400 hover:text-slate-600'}`}>
+                <button key={v} onClick={() => onToggleView(v)} className={`h-full px-5 flex items-center rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${view === v ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>
                   {v === 'month' ? 'Mois' : 'Semaine'}
                 </button>
               ))}
             </div>
 
-            <div className="flex items-center gap-1 bg-slate-50 p-1.5 rounded-2xl shadow-inner">
-              <button onClick={() => onPeriod(-1)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-indigo-600 transition-all shadow-sm active:scale-90"><ChevronLeft size={18}/></button>
-              <button onClick={onToday} className="h-10 px-4 text-[9px] font-black uppercase text-slate-500 hover:text-indigo-600 transition-all tracking-widest font-black">Aujourd'hui</button>
-              <button onClick={() => onPeriod(1)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-indigo-600 transition-all shadow-sm active:scale-90"><ChevronRight size={18}/></button>
+            <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-full shadow-inner border border-slate-100">
+              <button onClick={() => onPeriod(-1)} className="w-7 h-7 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-indigo-600 transition-all shadow-sm active:scale-90"><ChevronLeft size={14}/></button>
+              <button onClick={onToday} className="h-7 px-3 text-[9px] font-black uppercase text-slate-500 hover:text-indigo-600 transition-all tracking-widest">Aujourd'hui</button>
+              <button onClick={() => onPeriod(1)} className="w-7 h-7 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-indigo-600 transition-all shadow-sm active:scale-90"><ChevronRight size={14}/></button>
             </div>
           </div>
         </div>
@@ -241,18 +260,19 @@ export default function AgendaPage({
             if (absenceMode) handleSaveAbsences();
             else { setAbsenceMode(true); setBlockMode(false); }
           }}
-            className={`h-14 px-6 rounded-2xl flex items-center gap-3 font-black text-[10px] uppercase tracking-widest transition-all border shadow-sm ${absenceMode ? "bg-rose-600 border-rose-600 text-white shadow-lg" : "bg-slate-50 border-slate-100 text-slate-400 hover:border-rose-200 hover:text-rose-500 hover:bg-rose-50"}`}
+            className={`h-9 px-4 rounded-full flex items-center gap-2 font-black text-[10px] uppercase tracking-[0.1em] transition-all border shadow-sm ${absenceMode ? "bg-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-100" : "bg-slate-50 border-slate-100 text-slate-400 hover:border-indigo-200 hover:text-indigo-500 hover:bg-indigo-50"}`}
           >
-            {absenceMode ? <CheckCircle2 size={16}/> : <Ban size={16}/>}
-            {absenceMode ? `Valider (${pendingDates.size})` : "Fermer Dates"}
+            {absenceMode ? <CheckCircle2 size={14}/> : <Ban size={14}/>}
+            {absenceMode ? `Valider (${pendingDates.size})` : "Gestion Dates"}
           </button>
 
           <button onClick={onOpenWeeklySettings}
-            className="h-14 px-8 rounded-2xl flex items-center gap-3 font-black text-[10px] uppercase tracking-widest transition-all border shadow-sm bg-slate-50 border-slate-100 text-slate-400 hover:bg-slate-100 hover:text-slate-600 active:scale-95"
+            className="h-9 px-4 rounded-full flex items-center gap-2 font-black text-[10px] uppercase tracking-[0.1em] transition-all border shadow-sm bg-slate-50 border-slate-100 text-slate-400 hover:bg-slate-100 hover:text-slate-600 active:scale-95"
           >
-            <Plus size={16}/>
+            <Settings size={14}/>
             Gérer Créneaux
           </button>
+
         </div>
       </div>
 

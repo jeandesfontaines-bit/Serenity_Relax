@@ -60,7 +60,7 @@ export default function TherapistDashboard() {
   const [absenceMode, setAbsenceMode] = useState(false);
   const [selectedAppt, setSelectedAppt] = useState<Appointment | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-  const [bookingData, setBookingData] = useState<{ date: string; time: string } | null>(null);
+  const [bookingData, setBookingData] = useState<{ date: string; time: string; initialSearch?: string } | null>(null);
   const [managingSlot, setManagingSlot] = useState<{ date: string; time: string; isBlocked: boolean } | null>(null);
   const [weeklySettingsOpen, setWeeklySettingsOpen] = useState(false);
 
@@ -150,7 +150,7 @@ export default function TherapistDashboard() {
             onToday={() => setCur(new Date())}
             onToggleView={setView}
             onSelectAppt={setSelectedAppt}
-            onOpenSlot={(date, time) => setManagingSlot({ date, time, isBlocked: isSlotBlocked(date, time) })}
+            onOpenSlot={(date, time) => setBookingData({ date, time })}
             appointments={appointments}
             configSlots={configSlots}
             isDayOpen={isDayOpen}
@@ -178,7 +178,7 @@ export default function TherapistDashboard() {
             clients={clients} 
             appointments={appointments}
             onSelectClient={setSelectedClient}
-            onNewClient={() => setBookingData({ date: fmt(new Date()), time: '09:00' })}
+            onNewClient={(name: string | undefined) => setBookingData({ date: fmt(new Date()), time: '09:00', initialSearch: name })}
             onMergeClients={handleMergeClients}
           />
         );
@@ -256,12 +256,34 @@ export default function TherapistDashboard() {
     await updateDoc(primaryRef, { ...mergedData, notes: combinedNotes });
   };
 
-  const handleBook = async (clientId: string, service: string) => {
+  const handleBook = async (clientId: string, service: string, isNew?: boolean) => {
     if (!firestore || !bookingData) return;
-    const client = clients.find(c => c.id === clientId);
+    
+    let finalClientId = clientId;
+    let finalClientName = "";
+
+    if (isNew) {
+      const parts = clientId.split(' ');
+      const lastName = parts.pop() || "";
+      const firstName = parts.join(' ') || lastName;
+      const docRef = await addDoc(collection(firestore, 'clients'), {
+        firstName,
+        lastName,
+        email: '',
+        phone: '',
+        notes: 'Créé via réservation rapide',
+        color: 'bg-indigo-100 text-indigo-700'
+      });
+      finalClientId = docRef.id;
+      finalClientName = `${firstName} ${lastName}`;
+    } else {
+      const client = clients.find(c => c.id === clientId);
+      finalClientName = `${client?.firstName} ${client?.lastName}`;
+    }
+
     await addDoc(collection(firestore, 'appointments'), {
-      clientId,
-      clientNameSnapshot: `${client?.firstName} ${client?.lastName}`,
+      clientId: finalClientId,
+      clientNameSnapshot: finalClientName,
       date: bookingData.date,
       time: bookingData.time,
       serviceName: service,
@@ -292,6 +314,14 @@ export default function TherapistDashboard() {
           appt={selectedAppt} 
           onClose={() => setSelectedAppt(null)} 
           appointments={appointments}
+          onGoToClient={(clientId) => {
+            const c = clients.find(c => c.id === clientId);
+            if (c) {
+              setSelectedClient(c);
+              setTab('clients');
+              setSelectedAppt(null); // Close the detail modal
+            }
+          }}
         />
       )}
       {bookingData && (
@@ -299,27 +329,13 @@ export default function TherapistDashboard() {
           date={bookingData.date} 
           time={bookingData.time}
           clients={clients}
+          initialSearch={bookingData.initialSearch}
           onClose={() => setBookingData(null)}
           onBook={handleBook}
         />
       )}
 
-      {managingSlot && (
-        <SlotManagement 
-          date={managingSlot.date}
-          time={managingSlot.time}
-          isBlocked={managingSlot.isBlocked}
-          onClose={() => setManagingSlot(null)}
-          onBook={() => {
-            setBookingData({ date: managingSlot.date, time: managingSlot.time });
-            setManagingSlot(null);
-          }}
-          onToggleBlock={() => {
-            toggleSlot(managingSlot.date, managingSlot.time);
-            setManagingSlot(null);
-          }}
-        />
-      )}
+      {/* SlotManagement removed as it is now handled inline in AgendaPage icons reveal */}
 
       {weeklySettingsOpen && (
         <WeeklySettingsModal 

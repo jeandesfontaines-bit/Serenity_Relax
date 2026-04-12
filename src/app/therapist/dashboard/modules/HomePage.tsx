@@ -34,17 +34,12 @@ export default function HomePage({
     <div className="flex-1 flex flex-col overflow-hidden bg-[#F8F9FA]">
       {/* Topbar */}
       <div className="h-20 bg-white border-b border-slate-100 px-8 flex items-center justify-between shrink-0 shadow-sm z-10">
-        <div>
-          <h1 className="text-xl font-black tracking-tight text-[#222F3E]">Bonjour 👋</h1>
-          <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-1">
-            {format(new Date(), 'EEEE d MMMM yyyy')}
-          </p>
-        </div>
+        <h1 className="text-xl font-black tracking-[0.1em] text-slate-900 uppercase">Home</h1>
         <div className="flex items-center gap-3">
-          <div onClick={() => onNavigate('scheduler')} className="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-2xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-indigo-100 transition-all border border-indigo-100 shadow-sm">
+          <div onClick={() => onNavigate('scheduler')} className="flex items-center gap-2 h-9 px-4 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-black uppercase tracking-[0.1em] cursor-pointer hover:bg-indigo-100 transition-all border border-indigo-100 shadow-sm">
             <Calendar size={14} /> {todayAppts.length} séances aujourd'hui
           </div>
-          <div onClick={() => onNavigate('accounting')} className="flex items-center gap-2 px-4 py-2 bg-rose-50 text-rose-600 rounded-2xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-rose-100 transition-all border border-rose-100 shadow-sm">
+          <div onClick={() => onNavigate('accounting')} className="flex items-center gap-2 h-9 px-4 bg-rose-50 text-rose-600 rounded-full text-[10px] font-black uppercase tracking-[0.1em] cursor-pointer hover:bg-rose-100 transition-all border border-rose-100 shadow-sm">
             <AlertCircle size={14} /> {latePayments.length} impayés
           </div>
         </div>
@@ -173,7 +168,7 @@ export default function HomePage({
               )}
               <button 
                 onClick={() => onNavigate('accounting')}
-                className="w-full h-12 bg-rose-500 hover:bg-rose-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest mt-2 transition-all shadow-lg shadow-rose-200 active:scale-95"
+                className="w-full h-9 bg-rose-500 hover:bg-rose-600 text-white rounded-full text-[10px] font-black uppercase tracking-[0.1em] mt-2 transition-all shadow-lg shadow-rose-200 active:scale-95"
               >
                 Gérer les impayés →
               </button>
