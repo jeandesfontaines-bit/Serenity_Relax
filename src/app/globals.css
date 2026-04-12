@@ -1,7 +1,7 @@
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* tailwindcss */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
   :root {
@@ -22,6 +22,21 @@
     --c-grayblue:    #C8D6E5;  /* Light Blue Ballerina */
     --c-slate:       #576574;  /* Fugu */
     --c-dark:        #222F3E;  /* Imperial */
+
+    /* New Vibrant & Flat Tokens */
+    --color-squash:       #f6b93b;
+    --color-mandarin:     #e55039;
+    --color-azraq:        #4a69bd;
+    --color-dupain:       #60a3bc;
+    --color-aurora:       #78e08f;
+    --color-iceland:      #fa983a;
+    --color-tomato:       #eb2f06;
+    --color-yue-guang:    #1e3799;
+    --color-good-sam:     #3c6382;
+    --color-waterfall:    #38ada9;
+    --color-jalapeno:     #b71540;
+    --color-sapphire:     #0c2461;
+    --color-reef:         #079992;
 
     /* ══════════ DESIGN TOKENS ══════════ */
     --background: 220 20% 97%;
@@ -60,6 +75,9 @@
   }
   p, span, div, li, input, textarea, button {
     @apply font-sans;
+  }
+  .font-cursive {
+    font-family: 'Meow Script', cursive;
   }
 }
 
@@ -148,32 +166,29 @@
   100% { left: 100%; }
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
 
-.hover-shine {
-  @apply relative overflow-hidden;
-}
+  .hover-shine {
+    @apply relative overflow-hidden;
+  }
 
-.hover-shine::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -100%;
-  width: 50%;
-  height: 200%;
-  background: rgba(255, 255, 255, 0.15);
-  transform: rotate(30deg);
-  transition: none;
-}
+  .hover-shine::after {
+    @apply absolute top-[-50%] left-[-100%] w-1/2 h-[200%];
+    content: '';
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transform: rotate(30deg);
+  }
 
-.hover-shine:hover::after {
-  animation: shine 0.6s ease-in-out forwards;
-}
-
-@layer base {
-  .font-cursive {
-    font-family: 'Meow Script', cursive;
+  .hover-shine:hover::after {
+    animation: shine 0.8s forwards;
   }
 }
+
