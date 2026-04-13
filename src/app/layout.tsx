@@ -14,13 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=DM+Serif+Display:ital@0;1&family=Meow+Script&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-sans antialiased selection:bg-primary/10">
+      <body className="font-sans antialiased selection:bg-primary/10" suppressHydrationWarning>
         <FirebaseClientProvider>
           {children}
           <Toaster />
