@@ -1,88 +1,114 @@
 import React from 'react';
-import { LayoutGrid, Calendar, Users, CreditCard } from 'lucide-react';
+import { LayoutGrid, Calendar, Users, CreditCard, Settings, FileText, BarChart3 } from 'lucide-react';
 
 interface AppLayoutProps {
   children: React.ReactNode;
   activePage: string;
   onNavigate: (page: string) => void;
-
 }
 
-const NAV = [
+const NAV_MAIN = [
+  { id: 'dashboard',  label: 'Tableau de bord', icon: LayoutGrid },
+  { id: 'clients',    label: 'Patients',        icon: Users },
+  { id: 'scheduler',  label: 'Agenda',          icon: Calendar },
+  { id: 'accounting', label: 'Facturation',     icon: CreditCard },
+];
+
+const NAV_SECONDARY = [
+  { id: 'documents',  label: 'Documents',   icon: FileText,  disabled: true },
+  { id: 'stats',      label: 'Statistiques', icon: BarChart3, disabled: true },
+];
+
+const NAV_MOBILE = [
   { id: 'dashboard',  label: 'Accueil',  icon: LayoutGrid },
-  { id: 'scheduler',  label: 'Agenda',   icon: Calendar   },
-  { id: 'clients',    label: 'Patients', icon: Users      },
+  { id: 'scheduler',  label: 'Agenda',   icon: Calendar },
+  { id: 'clients',    label: 'Patients', icon: Users },
   { id: 'accounting', label: 'Compta',   icon: CreditCard },
 ];
 
-/** Returns true when the nav item should be shown as active */
 function isActive(itemId: string, activePage: string) {
   if (itemId === 'clients' && activePage === 'client-detail') return true;
   return itemId === activePage;
 }
 
-export default function AppLayout({
-  children,
-  activePage,
-  onNavigate,
-
-}: AppLayoutProps) {
+export default function AppLayout({ children, activePage, onNavigate }: AppLayoutProps) {
   return (
     <div
-      className="flex h-screen bg-white overflow-hidden text-[#222F3E]"
-      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+      className="flex h-screen bg-slate-50 overflow-hidden"
+      style={{ fontFamily: "'Inter', sans-serif" }}
     >
       {/* ── SIDEBAR (desktop) ── */}
-      <nav
-        className="hidden sm:flex flex-col border-r border-slate-100 py-5 gap-1 bg-white shrink-0 shadow-sm z-20 w-[68px]"
-      >
+      <nav className="hidden sm:flex flex-col w-60 bg-white border-r border-slate-200 shrink-0 z-20">
+        {/* Logo / Brand */}
+        <div className="h-14 flex items-center px-5 border-b border-slate-100">
+          <span className="text-sm font-semibold text-slate-900 tracking-tight">Cabinet</span>
+        </div>
 
         {/* Main nav */}
-        <div className="flex-1 flex flex-col gap-1 px-3">
-          {NAV.map(({ id, label, icon: Icon }) => {
+        <div className="flex-1 px-3 py-4 space-y-1">
+          <p className="px-3 mb-2 text-[10px] font-medium text-slate-400 uppercase tracking-widest">Principal</p>
+          {NAV_MAIN.map(({ id, label, icon: Icon }) => {
             const active = isActive(id, activePage);
             return (
               <button
                 key={id}
                 onClick={() => onNavigate(id)}
-                title={label}
-                className={`group relative flex items-center justify-center h-11 rounded-xl transition-all duration-200
+                className={`group relative w-full flex items-center gap-3 h-10 px-3 rounded-lg text-sm transition-colors duration-150
                   ${active
-                    ? 'bg-[#5F27CD]/8 text-[#5F27CD]'
-                    : 'text-slate-400 hover:text-slate-700 hover:bg-slate-50'
+                    ? 'bg-indigo-50 text-indigo-700 font-medium'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
               >
                 {active && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-[#5F27CD] rounded-r-full" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-indigo-600 rounded-r-full" />
                 )}
-                <Icon
-                  size={18}
-                  strokeWidth={active ? 2.5 : 2}
-                  className="shrink-0"
-                />
+                <Icon size={17} strokeWidth={active ? 2.2 : 1.8} className="shrink-0" />
+                <span className="truncate">{label}</span>
               </button>
             );
           })}
+
+          <div className="pt-5">
+            <p className="px-3 mb-2 text-[10px] font-medium text-slate-400 uppercase tracking-widest">Outils</p>
+            {NAV_SECONDARY.map(({ id, label, icon: Icon, disabled }) => (
+              <button
+                key={id}
+                disabled={disabled}
+                className="group w-full flex items-center gap-3 h-10 px-3 rounded-lg text-sm text-slate-400 cursor-default"
+              >
+                <Icon size={17} strokeWidth={1.8} className="shrink-0" />
+                <span className="truncate">{label}</span>
+                {disabled && (
+                  <span className="ml-auto text-[9px] font-medium bg-slate-100 text-slate-400 px-1.5 py-0.5 rounded">Bientôt</span>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
-
+        {/* Bottom area */}
+        <div className="px-3 py-3 border-t border-slate-100">
+          <button
+            className="w-full flex items-center gap-3 h-10 px-3 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition-colors duration-150"
+          >
+            <Settings size={17} strokeWidth={1.8} className="shrink-0" />
+            <span>Paramètres</span>
+          </button>
+        </div>
       </nav>
 
       {/* ── BOTTOM NAV (mobile) ── */}
-      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-100 flex items-center justify-around px-2 h-16 shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
-        {NAV.map(({ id, label, icon: Icon }) => {
+      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 flex items-center justify-around h-14">
+        {NAV_MOBILE.map(({ id, label, icon: Icon }) => {
           const active = isActive(id, activePage);
           return (
             <button
               key={id}
               onClick={() => onNavigate(id)}
-              className={`flex flex-col items-center justify-center gap-1 w-16 h-12 rounded-2xl transition-all ${active ? 'text-[#5F27CD]' : 'text-slate-400'}`}
+              className={`flex flex-col items-center justify-center gap-0.5 w-16 h-12 transition-colors ${active ? 'text-indigo-600' : 'text-slate-400'}`}
             >
-              {active && (
-                <span className="absolute bottom-14 w-8 h-0.5 bg-[#5F27CD] rounded-full" />
-              )}
-              <Icon size={20} strokeWidth={active ? 2.5 : 2} />
-              <span className={`text-[8px] font-black uppercase tracking-wider ${active ? 'opacity-100' : 'opacity-60'}`}>
+              <Icon size={20} strokeWidth={active ? 2.2 : 1.8} />
+              <span className={`text-[9px] font-medium ${active ? 'text-indigo-600' : 'text-slate-500'}`}>
                 {label}
               </span>
             </button>
@@ -91,7 +117,7 @@ export default function AppLayout({
       </nav>
 
       {/* ── PAGE CONTENT ── */}
-      <div className="flex-1 flex flex-col overflow-hidden pb-16 sm:pb-0">
+      <div className="flex-1 flex flex-col overflow-hidden pb-14 sm:pb-0">
         {children}
       </div>
     </div>
