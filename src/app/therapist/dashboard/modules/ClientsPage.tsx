@@ -26,7 +26,7 @@ const ALL_COLUMNS: ColDef[] = [
 ];
 
 /* ── PROPS ── */
-interface PatientsPageProps {
+interface ClientsPageProps {
   clients: Client[];
   appointments: Appointment[];
   onSelectClient: (client: Client) => void;
@@ -37,9 +37,9 @@ interface PatientsPageProps {
 /* ──────────────────────────────────────────────
    MAIN COMPONENT
    ────────────────────────────────────────────── */
-export default function PatientsPage({
+export default function ClientsPage({
   clients, appointments, onSelectClient, onNewClient, onMergeClients,
-}: PatientsPageProps) {
+}: ClientsPageProps) {
   const [search, setSearch] = useState('');
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
     ['lastName', 'firstName', 'email', 'phone', 'city', 'sessions'],
@@ -241,9 +241,9 @@ export default function PatientsPage({
             {/* Rows */}
             <div className="flex-1 overflow-y-auto divide-y divide-slate-100">
               {filtered.map(p => (
-                <PatientRow
+                <ClientRow
                   key={p.id}
-                  patient={p}
+                  client={p}
                   sessionsCount={sessionsByClient.get(p.id) || 0}
                   isSelected={selectedClients.has(p.id)}
                   visibleColumns={visibleColumns}
@@ -258,9 +258,9 @@ export default function PatientsPage({
           {/* Mobile cards */}
           <div className="md:hidden flex-1 overflow-y-auto space-y-2 pb-4">
             {filtered.map(p => (
-              <PatientCard
+              <ClientCard
                 key={p.id}
-                patient={p}
+                client={p}
                 sessionsCount={sessionsByClient.get(p.id) || 0}
                 isSelected={selectedClients.has(p.id)}
                 onSelect={onSelectClient}
@@ -291,9 +291,9 @@ function Checkbox({ checked, onChange }: { checked: boolean; onChange: () => voi
   );
 }
 
-/* ── PATIENT ROW (desktop) ── */
-interface PatientRowProps {
-  patient: Client;
+/* ── CLIENT ROW (desktop) ── */
+interface ClientRowProps {
+  client: Client;
   sessionsCount: number;
   isSelected: boolean;
   visibleColumns: string[];
@@ -302,7 +302,7 @@ interface PatientRowProps {
   onToggle: (e: React.MouseEvent, id: string) => void;
 }
 
-function PatientRow({ patient: p, sessionsCount, isSelected, visibleColumns, gridTemplate, onSelect, onToggle }: PatientRowProps) {
+function ClientRow({ client: p, sessionsCount, isSelected, visibleColumns, gridTemplate, onSelect, onToggle }: ClientRowProps) {
   return (
     <div
       onClick={() => onSelect(p)}
@@ -350,11 +350,11 @@ function PatientRow({ patient: p, sessionsCount, isSelected, visibleColumns, gri
   );
 }
 
-/* ── PATIENT CARD (mobile) ── */
-function PatientCard({
-  patient: p, sessionsCount, isSelected, onSelect, onToggle,
+/* ── CLIENT CARD (mobile) ── */
+function ClientCard({
+  client: p, sessionsCount, isSelected, onSelect, onToggle,
 }: {
-  patient: Client;
+  client: Client;
   sessionsCount: number;
   isSelected: boolean;
   onSelect: (c: Client) => void;

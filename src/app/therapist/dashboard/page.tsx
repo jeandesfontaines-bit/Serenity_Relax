@@ -12,9 +12,9 @@ import {
 import AppLayout from './modules/AppLayout';
 import HomePage from './modules/HomePage';
 import AgendaPage from './modules/AgendaPage';
-import PatientsPage from './modules/PatientsPage';
+import ClientsPage from './modules/ClientsPage';
 import ComptaPage from './modules/ComptaPage';
-import PatientDetail from './modules/PatientDetail';
+import ClientDetail from './modules/ClientDetail';
 import AppointmentDetail from './modules/AppointmentDetail';
 import BookingModal from './modules/BookingModal';
 import SlotManagement from './modules/SlotManagement';
@@ -160,11 +160,12 @@ export default function TherapistDashboard() {
             absenceMode={absenceMode}
             setAbsenceMode={setAbsenceMode}
             onOpenWeeklySettings={() => setWeeklySettingsOpen(true)}
+            onMoveAppt={handleMoveAppt}
           />
         );
       case 'clients':
         return selectedClient ? (
-          <PatientDetail 
+          <ClientDetail 
             client={selectedClient} 
             onClose={() => setSelectedClient(null)} 
             appointments={appointments}
@@ -172,7 +173,7 @@ export default function TherapistDashboard() {
             onUpdateClient={handleUpdateClient}
           />
         ) : (
-          <PatientsPage 
+          <ClientsPage 
             clients={clients} 
             appointments={appointments}
             onSelectClient={setSelectedClient}
@@ -197,6 +198,11 @@ export default function TherapistDashboard() {
   const handleUpdateClient = async (id: string, data: Partial<Client>) => {
     if (!firestore) return;
     await updateDoc(doc(firestore, 'clients', id), data);
+  };
+
+  const handleMoveAppt = async (id: string, date: string, time: string) => {
+    if (!firestore) return;
+    await updateDoc(doc(firestore, 'appointments', id), { date, time });
   };
 
   const handleMergeClients = async (primaryId: string, secondaryIds: string[]) => {

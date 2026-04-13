@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 /* ── PROPS ── */
-interface PatientDetailProps {
+interface ClientDetailProps {
   client: Client;
   onClose: () => void;
   appointments: Appointment[];
@@ -19,9 +19,9 @@ interface PatientDetailProps {
 /* ══════════════════════════════════════════════════
    MAIN COMPONENT
    ══════════════════════════════════════════════════ */
-export default function PatientDetail({
+export default function ClientDetail({
   client, onClose, appointments, onSelectAppt, onUpdateClient,
-}: PatientDetailProps) {
+}: ClientDetailProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'sessions' | 'notes' | 'billing'>('overview');
   const [editData, setEditData] = useState<Partial<Client>>({ ...client });
 
@@ -159,13 +159,19 @@ export default function PatientDetail({
               value={lastAppt?.date ? format(new Date(lastAppt.date), 'd MMM', { locale: fr }) : '—'}
             />
             <StatCard
-              label="Prochaine session"
-              value={nextAppt?.date ? format(new Date(nextAppt.date), 'd MMM', { locale: fr }) : '—'}
+              label="Soin favori"
+              value={(() => {
+                const counts = clientAppts.reduce((acc, a) => {
+                  if (a.serviceName) acc[a.serviceName] = (acc[a.serviceName] || 0) + 1;
+                  return acc;
+                }, {} as Record<string, number>);
+                const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+                return top ? top[0].split(' ')[0] : '—';
+              })()}
             />
             <StatCard
-              label="Solde dû"
-              value={totalDue > 0 ? `${totalDue} CHF` : '0 CHF'}
-              accent={totalDue > 0 ? 'rose' : undefined}
+              label="Revenu total"
+              value={`${totalPaid + totalDue} CHF`}
             />
           </div>
 

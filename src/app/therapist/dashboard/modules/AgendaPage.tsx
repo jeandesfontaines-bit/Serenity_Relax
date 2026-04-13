@@ -3,11 +3,10 @@ import {
   ChevronLeft, ChevronRight, Plus, Ban, Lock, CheckCircle2,
   Clock, Settings, Calendar as CalendarIcon,
 } from 'lucide-react';
-import {
-  format, isSameDay, isSameMonth, addDays,
-  startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek,
-} from 'date-fns';
+import { format, isSameDay, isSameMonth, addDays, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { DndContext, useDraggable, useDroppable, DragOverlay, DragEndEvent } from '@dnd-kit/core';
+import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { Appointment } from '../types';
 
 /* ── CONSTANTS ── */
@@ -63,6 +62,7 @@ interface AgendaPageProps {
   absenceMode: boolean;
   setAbsenceMode: (m: boolean) => void;
   onOpenWeeklySettings: () => void;
+  onMoveAppt?: (id: string, date: string, time: string) => void;
 }
 
 /* ══════════════════════════════════════════════════
@@ -73,7 +73,7 @@ export default function AgendaPage({
   onSelectAppt, onOpenSlot, appointments,
   configSlots, isDayOpen, isSlotBlocked, toggleSlot, onToggleDay,
   blockMode, setBlockMode, absenceMode, setAbsenceMode,
-  onOpenWeeklySettings,
+  onOpenWeeklySettings, onMoveAppt,
 }: AgendaPageProps) {
   const [pendingDates, setPendingDates] = useState<Set<string>>(new Set());
 
@@ -217,6 +217,7 @@ export default function AgendaPage({
                 blockMode={blockMode}
                 pendingDates={pendingDates}
                 togglePending={togglePending}
+                onMoveAppt={onMoveAppt}
               />
             : <MonthView
                 cur={cur}
@@ -315,12 +316,13 @@ interface WeekTimeGridProps {
   blockMode: boolean;
   pendingDates: Set<string>;
   togglePending: (d: string) => void;
+  onMoveAppt?: (id: string, date: string, time: string) => void;
 }
 
 function WeekTimeGrid({
   cur, appointments, configSlots, isDayOpen, isSlotBlocked,
   toggleSlot, onSelectAppt, onOpenSlot, absenceMode, blockMode,
-  pendingDates, togglePending,
+  pendingDates, togglePending, onMoveAppt,
 }: WeekTimeGridProps) {
   const days = useMemo(() => {
     const s = wkStart(new Date(cur));
@@ -328,6 +330,21 @@ function WeekTimeGrid({
   }, [cur]);
 
   const gridHeight = HOURS.length * HOUR_H;
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const activeAppt = useMemo(() => activeId ? appointments.find(a => a.id === activeId) : null, [activeId, appointments]);
+
+  const handleDragStart = (event: any) => {
+    setActiveId(event.active.id);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    setActiveId(null);
+    const { active, over } = event;
+    if (over && active.id && onMoveAppt) {
+      const [newDate, newTime] = String(over.id).split('|');
+      onMoveAppt(String(active.id), newDate, newTime);
+    }
+  };
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-white">
@@ -366,11 +383,12 @@ function WeekTimeGrid({
 
       {/* Scrollable time grid */}
       <div className="flex-1 overflow-auto">
-        <div
-          className="grid relative"
-          style={{ gridTemplateColumns: '56px repeat(7, 1fr)', height: gridHeight }}
-        >
-          {/* Time labels column */}
+        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
+          <div
+            className="grid relative"
+            style={{ gridTemplateColumns: '56px repeat(7, 1fr)', height: gridHeight }}
+          >
+            {/* Time labels column */}
           <div className="border-r border-slate-100 relative">
             {HOURS.map(h => (
               <div
@@ -424,18 +442,16 @@ function WeekTimeGrid({
 
                   const top = getTop(t);
                   return (
-                    <button
+                    <DroppableSlot
                       key={t}
+                      id={`${dStr}|${t}`}
+                      top={top}
                       onClick={() => {
                         if (absenceMode) return;
                         if (blockMode) { toggleSlot(dStr, t); return; }
                         onOpenSlot(dStr, t);
                       }}
-                      className="absolute left-1 right-1 z-[2] rounded-md border border-dashed border-slate-200 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-300 transition-colors group flex items-center justify-center"
-                      style={{ top, height: getHeight(DEFAULT_DURATION) }}
-                    >
-                      <Plus size={14} className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
-                    </button>
+                    />
                   );
                 })}
 
@@ -465,19 +481,34 @@ function WeekTimeGrid({
                   const top = getTop(appt.time);
                   const height = getHeight(parseDuration(appt.duration));
                   return (
-                    <AppointmentBlock
+                    <DraggableAppointmentBlock
                       key={appt.id}
                       appt={appt}
                       top={top}
                       height={height}
                       onSelect={onSelectAppt}
+                      isDragging={activeId === appt.id}
+                      disabled={absenceMode || blockMode}
                     />
                   );
                 })}
               </div>
             );
           })}
+          
+          <DragOverlay zIndex={100} dropAnimation={null}>
+            {activeAppt ? (
+              <AppointmentBlock
+                appt={activeAppt}
+                top={0}
+                height={getHeight(parseDuration(activeAppt.duration))}
+                onSelect={() => {}}
+                className="shadow-2xl opacity-90 scale-[1.02]"
+              />
+            ) : null}
+          </DragOverlay>
         </div>
+        </DndContext>
       </div>
     </div>
   );
@@ -502,20 +533,21 @@ function getServiceColor(serviceName?: string) {
 }
 
 function AppointmentBlock({
-  appt, top, height, onSelect,
+  appt, top, height, onSelect, className = '',
 }: {
   appt: Appointment;
   top: number;
   height: number;
   onSelect: (a: Appointment) => void;
+  className?: string;
 }) {
   const isPaid = appt.paid;
   const c = getServiceColor(appt.serviceName);
 
   return (
     <div
-      onClick={() => onSelect(appt)}
-      className={`absolute left-1 right-1 z-[3] rounded-md px-2.5 py-1.5 cursor-pointer border transition-all hover:shadow-md overflow-hidden ${c.bg} ${c.border}`}
+      onClick={(e) => { e.stopPropagation(); onSelect(appt); }}
+      className={`absolute left-1 right-1 z-[3] rounded-md px-2.5 py-1.5 cursor-pointer border transition-all hover:shadow-md overflow-hidden ${c.bg} ${c.border} ${className}`}
       style={{ top, height: Math.max(height, 28) }}
     >
       <div className="flex items-start justify-between">
@@ -617,6 +649,40 @@ function MonthView({ cur, appointments, isDayOpen, absenceMode, pendingDates, to
           );
         })}
       </div>
+    </div>
+  );
+}
+
+/* ── DND-KIT WRAPPERS ── */
+function DroppableSlot({ id, onClick, top }: { id: string; onClick: () => void; top: number; }) {
+  const { isOver, setNodeRef } = useDroppable({ id });
+  return (
+    <button
+      ref={setNodeRef}
+      onClick={onClick}
+      className={`absolute left-1 right-1 z-[2] rounded-md border border-dashed transition-colors group flex items-center justify-center ${isOver ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-300'}`}
+      style={{ top, height: getHeight(DEFAULT_DURATION) }}
+    >
+      <Plus size={14} className={`transition-colors ${isOver ? 'text-emerald-500' : 'text-slate-300 group-hover:text-emerald-500'}`} />
+    </button>
+  );
+}
+
+function DraggableAppointmentBlock({ appt, top, height, onSelect, isDragging, disabled }: { appt: Appointment; top: number; height: number; onSelect: (a: Appointment) => void; isDragging: boolean; disabled: boolean; }) {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: appt.id,
+    data: { appt },
+    disabled
+  });
+
+  const style = transform ? {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    zIndex: 50,
+  } : undefined;
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={`${isDragging ? 'opacity-30' : ''}`}>
+      <AppointmentBlock appt={appt} top={top} height={height} onSelect={onSelect} className={`${isDragging ? 'pointer-events-none' : ''} ${!disabled ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}`} />
     </div>
   );
 }
