@@ -23,9 +23,7 @@ import WeeklySettingsModal from './modules/WeeklySettingsModal';
 // --- Types ---
 import { Appointment, Client, Invoice } from './types';
 
-// --- Legacy CSS ---
-import './appointment-view.css';
-import './patient-profile.css';
+// Legacy CSS removed — all modules now use Tailwind
 
 // --- Helpers ---
 const isoDay = (d: Date) => { const v = d.getDay(); return v === 0 ? 6 : v - 1; };

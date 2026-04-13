@@ -258,7 +258,7 @@ function AgendaSidebar({
         <h3 className="text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-2">Aujourd'hui</h3>
         <p className="text-2xl font-semibold text-slate-900">{todayAppts.length}</p>
         <p className="text-xs text-slate-500 mt-0.5">
-          rendez-vous planifié{todayAppts.length !== 1 ? 's' : ''}
+          session{todayAppts.length !== 1 ? 's' : ''} prévue{todayAppts.length !== 1 ? 's' : ''}
         </p>
       </div>
 
@@ -277,14 +277,14 @@ function AgendaSidebar({
                     {a.clientNameSnapshot || a.title}
                   </p>
                   <p className="text-[10px] text-slate-400 truncate">
-                    {a.serviceName || 'Séance'}
+                    {a.serviceName || 'Session'}
                   </p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-xs text-slate-400 italic">Aucune séance</p>
+          <p className="text-xs text-slate-400 italic">Aucune session</p>
         )}
       </div>
 
@@ -348,12 +348,12 @@ function WeekTimeGrid({
                 absenceMode ? 'cursor-pointer hover:bg-slate-50' : ''
               } ${isPending ? 'bg-rose-50' : !isOpen ? 'bg-slate-50' : ''}`}
             >
-              <p className={`text-[10px] font-medium uppercase tracking-wider ${isToday ? 'text-indigo-600' : 'text-slate-400'}`}>
+              <p className={`text-[10px] font-medium uppercase tracking-wider ${isToday ? 'text-emerald-600' : 'text-slate-400'}`}>
                 {DAYS_LABELS[i]}
               </p>
               <p className={`text-lg font-semibold mt-0.5 leading-none ${
                 isToday
-                  ? 'text-white bg-indigo-600 w-8 h-8 rounded-full flex items-center justify-center mx-auto'
+                  ? 'text-white bg-emerald-600 w-8 h-8 rounded-full flex items-center justify-center mx-auto'
                   : isOpen ? 'text-slate-900' : 'text-slate-400'
               }`}>
                 {d.getDate()}
@@ -431,10 +431,10 @@ function WeekTimeGrid({
                         if (blockMode) { toggleSlot(dStr, t); return; }
                         onOpenSlot(dStr, t);
                       }}
-                      className="absolute left-1 right-1 z-[2] rounded-md border border-dashed border-slate-200 bg-slate-50/50 hover:bg-indigo-50 hover:border-indigo-300 transition-colors group flex items-center justify-center"
+                      className="absolute left-1 right-1 z-[2] rounded-md border border-dashed border-slate-200 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-300 transition-colors group flex items-center justify-center"
                       style={{ top, height: getHeight(DEFAULT_DURATION) }}
                     >
-                      <Plus size={14} className="text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                      <Plus size={14} className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
                     </button>
                   );
                 })}
@@ -484,6 +484,23 @@ function WeekTimeGrid({
 }
 
 /* ── APPOINTMENT BLOCK ── */
+function getServiceColor(serviceName?: string) {
+  const colors: Record<string, { bg: string; border: string; text: string; muted: string }> = {
+    'Relaxation': { bg: 'bg-blue-50 hover:bg-blue-100', border: 'border-blue-200', text: 'text-blue-900', muted: 'text-blue-600' },
+    'Deep Tissue': { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' },
+    'Deep tissue': { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' },
+    'Sports massage': { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' },
+    'Sports': { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' },
+    'Therapeutic': { bg: 'bg-teal-50 hover:bg-teal-100', border: 'border-teal-200', text: 'text-teal-900', muted: 'text-teal-600' },
+    'Hot stone': { bg: 'bg-amber-50 hover:bg-amber-100', border: 'border-amber-200', text: 'text-amber-900', muted: 'text-amber-600' },
+    'Hot Stone': { bg: 'bg-amber-50 hover:bg-amber-100', border: 'border-amber-200', text: 'text-amber-900', muted: 'text-amber-600' },
+    'Pregnancy': { bg: 'bg-rose-50 hover:bg-rose-100', border: 'border-rose-200', text: 'text-rose-900', muted: 'text-rose-600' },
+    'Lymphatic': { bg: 'bg-cyan-50 hover:bg-cyan-100', border: 'border-cyan-200', text: 'text-cyan-900', muted: 'text-cyan-600' },
+    'Cranial': { bg: 'bg-violet-50 hover:bg-violet-100', border: 'border-violet-200', text: 'text-violet-900', muted: 'text-violet-600' },
+  };
+  return colors[serviceName || ''] || { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' };
+}
+
 function AppointmentBlock({
   appt, top, height, onSelect,
 }: {
@@ -493,27 +510,29 @@ function AppointmentBlock({
   onSelect: (a: Appointment) => void;
 }) {
   const isPaid = appt.paid;
+  const c = getServiceColor(appt.serviceName);
 
   return (
     <div
       onClick={() => onSelect(appt)}
-      className={`absolute left-1 right-1 z-[3] rounded-md px-2.5 py-1.5 cursor-pointer border transition-all hover:shadow-md overflow-hidden ${
-        isPaid
-          ? 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100'
-          : 'bg-indigo-50 border-indigo-200 hover:bg-indigo-100'
-      }`}
+      className={`absolute left-1 right-1 z-[3] rounded-md px-2.5 py-1.5 cursor-pointer border transition-all hover:shadow-md overflow-hidden ${c.bg} ${c.border}`}
       style={{ top, height: Math.max(height, 28) }}
     >
-      <p className={`text-xs font-medium leading-tight truncate ${isPaid ? 'text-emerald-900' : 'text-indigo-900'}`}>
-        {appt.clientNameSnapshot || appt.title}
-      </p>
+      <div className="flex items-start justify-between">
+        <p className={`text-xs font-medium leading-tight truncate ${c.text}`}>
+          {appt.clientNameSnapshot || appt.title}
+        </p>
+        {!isPaid && (
+          <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${c.muted} bg-current opacity-70`} title="Paiement en attente" />
+        )}
+      </div>
       {height >= 48 && (
-        <p className={`text-[10px] mt-0.5 truncate ${isPaid ? 'text-emerald-600' : 'text-indigo-600'}`}>
-          {appt.serviceName || 'Séance'}
+        <p className={`text-[10px] mt-0.5 truncate ${c.muted}`}>
+          {appt.serviceName || 'Session'}
         </p>
       )}
       {height >= 64 && (
-        <p className={`text-[10px] mt-0.5 ${isPaid ? 'text-emerald-500' : 'text-indigo-500'}`}>
+        <p className={`text-[10px] mt-0.5 ${c.muted} opacity-80`}>
           {appt.time} · {appt.price || 150} CHF
         </p>
       )}
@@ -577,7 +596,7 @@ function MonthView({ cur, appointments, isDayOpen, absenceMode, pendingDates, to
 
               <span className={`text-xs font-medium self-end ${
                 isToday
-                  ? 'text-white bg-indigo-600 w-6 h-6 rounded-full flex items-center justify-center'
+                  ? 'text-white bg-emerald-600 w-6 h-6 rounded-full flex items-center justify-center'
                   : inMonth ? 'text-slate-700' : 'text-slate-300'
               }`}>
                 {day.getDate()}
@@ -586,9 +605,9 @@ function MonthView({ cur, appointments, isDayOpen, absenceMode, pendingDates, to
               {inMonth && isOpen && booked > 0 && (
                 <div className="mt-auto flex flex-wrap gap-0.5 justify-end">
                   {Array.from({ length: Math.min(booked, 3) }).map((_, idx) => (
-                    <div key={idx} className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                    <div key={idx} className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                   ))}
-                  {booked > 3 && <span className="text-[8px] font-medium text-indigo-400">+{booked - 3}</span>}
+                  {booked > 3 && <span className="text-[8px] font-medium text-emerald-400">+{booked - 3}</span>}
                 </div>
               )}
               {inMonth && !isOpen && (

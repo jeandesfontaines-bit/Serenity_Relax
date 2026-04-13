@@ -1,8 +1,5 @@
 import React from 'react';
-import { 
-  X, Calendar, Clock, Lock, UserPlus, 
-  Trash2, AlertCircle, CheckCircle2 
-} from 'lucide-react';
+import { X, UserPlus, Lock, Clock, CheckCircle2, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -15,99 +12,98 @@ interface SlotManagementProps {
   onToggleBlock: () => void;
 }
 
-export default function SlotManagement({ 
-  date, 
-  time, 
-  isBlocked, 
-  onClose, 
-  onBook, 
-  onToggleBlock 
+export default function SlotManagement({
+  date, time, isBlocked, onClose, onBook, onToggleBlock,
 }: SlotManagementProps) {
   const d = new Date(date);
 
   return (
-    <div className="fixed inset-0 z-[150] flex items-end md:items-center justify-center pointer-events-none">
-      <div className="absolute inset-0 bg-[#222F3E]/40 backdrop-blur-sm pointer-events-auto" onClick={onClose} />
-      
-      <div className="relative bg-white w-full md:w-[480px] rounded-t-[2.5rem] md:rounded-[3rem] shadow-2xl pointer-events-auto overflow-hidden animate-in slide-in-from-bottom md:zoom-in-95 duration-300">
+    <div className="fixed inset-0 z-[150] flex items-end sm:items-center justify-center p-0 sm:p-6">
+      <div className="absolute inset-0 bg-slate-900/40" onClick={onClose} />
+
+      <div className="relative w-full sm:max-w-sm bg-white rounded-t-2xl sm:rounded-xl shadow-xl overflow-hidden">
+        {/* Mobile handle */}
+        <div className="sm:hidden flex justify-center pt-2.5 pb-1">
+          <div className="w-10 h-1 bg-slate-200 rounded-full" />
+        </div>
+
         {/* Header */}
-        <div className="p-8 pb-4 flex items-center justify-between">
-           <div className="flex items-center gap-4">
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${isBlocked ? 'bg-slate-900 text-white' : 'bg-indigo-50 text-[#5F27CD]'}`}>
-                 {isBlocked ? <Lock size={24}/> : <Calendar size={24}/>}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-900">Gestion du créneau</h2>
+            <p className="text-xs text-slate-500 mt-0.5 capitalize">
+              {format(d, 'EEEE d MMMM', { locale: fr })} · {time}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 transition-colors"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Actions */}
+        <div className="p-5 space-y-3">
+          {/* Book slot */}
+          {!isBlocked ? (
+            <button
+              onClick={onBook}
+              className="w-full flex items-center gap-3 p-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors text-left"
+            >
+              <div className="w-9 h-9 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
+                <UserPlus size={17} className="text-white" />
               </div>
               <div>
-                 <h2 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-none">Gestion Créneau</h2>
-                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5 flex items-center gap-2">
-                    {format(d, 'EEEE d MMMM', { locale: fr })} <span className="w-1 h-1 bg-slate-200 rounded-full"/> {time}
-                 </p>
+                <p className="text-sm font-medium text-white">Réserver une session</p>
+                <p className="text-xs text-emerald-200">Nouveau ou ancien client</p>
               </div>
-           </div>
-           <button onClick={onClose} className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-rose-500 hover:text-white transition-all shadow-sm">
-             <X size={20} />
-           </button>
+            </button>
+          ) : (
+            <div className="flex items-center gap-3 p-4 bg-slate-100 border border-slate-200 rounded-xl">
+              <div className="w-9 h-9 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
+                <Lock size={16} className="text-slate-500" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-700">Créneau bloqué</p>
+                <p className="text-xs text-slate-500">Non disponible à la réservation</p>
+              </div>
+            </div>
+          )}
+
+          {/* Block / unblock */}
+          <button
+            onClick={onToggleBlock}
+            className={`w-full flex items-center gap-3 p-4 rounded-xl border transition-colors text-left ${
+              isBlocked
+                ? 'bg-white border-emerald-200 hover:bg-emerald-50 text-emerald-700'
+                : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
+            }`}
+          >
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+              isBlocked ? 'bg-emerald-100' : 'bg-slate-100'
+            }`}>
+              {isBlocked
+                ? <CheckCircle2 size={16} className="text-emerald-600" />
+                : <Lock size={16} className="text-slate-500" />}
+            </div>
+            <div>
+              <p className="text-sm font-medium">
+                {isBlocked ? 'Libérer le créneau' : 'Bloquer le créneau'}
+              </p>
+              <p className="text-xs text-slate-500">
+                {isBlocked ? 'Rendre à nouveau disponible' : 'Empêcher toute réservation'}
+              </p>
+            </div>
+          </button>
         </div>
 
-        <div className="p-8 space-y-4">
-           {/* Primary Action */}
-           {!isBlocked ? (
-             <button 
-               onClick={onBook}
-               className="w-full group bg-[#5F27CD] hover:bg-[#341F97] p-6 rounded-[2rem] flex items-center justify-between transition-all shadow-xl shadow-indigo-100 active:scale-95"
-             >
-                <div className="flex items-center gap-5">
-                   <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white">
-                      <UserPlus size={22} />
-                   </div>
-                   <div className="text-left">
-                      <p className="text-white text-sm font-black uppercase tracking-tight">Réserver une séance</p>
-                      <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mt-0.5">Pour un nouveau ou ancien patient</p>
-                   </div>
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:bg-white/20 transition-all">
-                   <CheckCircle2 size={18} />
-                </div>
-             </button>
-           ) : (
-             <div className="bg-slate-900 p-8 rounded-[2rem] text-white flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4">
-                   <Lock size={32} />
-                </div>
-                <h3 className="text-lg font-black uppercase tracking-tight">Créneau Bloqué</h3>
-                <p className="text-xs text-white/50 font-medium mt-2 leading-relaxed">Ce créneau n'est pas disponible à la réservation.<br/>Voulez-vous le rendre à nouveau libre ?</p>
-             </div>
-           )}
-
-           {/* Toggle Block Action */}
-           <button 
-             onClick={onToggleBlock}
-             className={`w-full p-6 rounded-[2rem] border-2 transition-all flex items-center justify-between active:scale-95
-               ${isBlocked 
-                 ? 'bg-white border-emerald-100 hover:border-emerald-300 text-emerald-600' 
-                 : 'bg-white border-slate-100 hover:border-slate-300 text-slate-900'}`}
-           >
-              <div className="flex items-center gap-5">
-                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isBlocked ? 'bg-emerald-50' : 'bg-slate-50'}`}>
-                    {isBlocked ? <CheckCircle2 size={22} /> : <Lock size={22} />}
-                 </div>
-                 <div className="text-left">
-                    <p className="text-sm font-black uppercase tracking-tight">
-                       {isBlocked ? 'Libérer le créneau' : 'Bloquer le créneau'}
-                    </p>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                       {isBlocked ? 'Rendre réservable immédiatement' : 'Empêcher toute réservation'}
-                    </p>
-                 </div>
-              </div>
-           </button>
-        </div>
-
-        {/* Footer info */}
-        <div className="p-8 pt-0 flex gap-4">
-           <div className="flex-1 bg-slate-50/50 rounded-2xl p-4 flex items-center gap-3">
-              <Clock size={14} className="text-slate-300" />
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Durée standard: 60 min</span>
-           </div>
+        {/* Footer */}
+        <div className="px-5 pb-5">
+          <div className="flex items-center gap-2 text-xs text-slate-400 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2">
+            <Clock size={12} />
+            Durée standard : 60 min
+          </div>
         </div>
       </div>
     </div>

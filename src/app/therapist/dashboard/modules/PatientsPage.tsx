@@ -21,7 +21,7 @@ const ALL_COLUMNS: ColDef[] = [
   { id: 'phone',     label: 'Téléphone',  minWidth: '140px', flex: '1fr' },
   { id: 'city',      label: 'Ville',      minWidth: '120px', flex: '1fr' },
   { id: 'canton',    label: 'Canton',     minWidth: '80px',  flex: '0.6fr', align: 'center' },
-  { id: 'sessions',  label: 'Séances',    minWidth: '80px',  flex: '0.6fr', align: 'center' },
+  { id: 'sessions',  label: 'Sessions',    minWidth: '80px',  flex: '0.6fr', align: 'center' },
   { id: 'insurance', label: 'Assurance',  minWidth: '140px', flex: '1fr' },
 ];
 
@@ -121,7 +121,7 @@ export default function PatientsPage({
       {/* ── PAGE HEADER ── */}
       <header className="h-14 border-b border-slate-200 bg-white px-6 sm:px-10 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-4 sm:gap-6 min-w-0 flex-1">
-          <h1 className="text-sm font-semibold text-slate-900 shrink-0">Patients</h1>
+          <h1 className="text-sm font-semibold text-slate-900 shrink-0">Clients</h1>
           <div className="relative flex-1 max-w-sm min-w-0">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
@@ -129,7 +129,7 @@ export default function PatientsPage({
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Rechercher…"
-              className="w-full h-8 bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300 focus:bg-white transition-all duration-150"
+              className="w-full h-8 bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-300 focus:bg-white transition-all duration-150"
             />
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function PatientsPage({
                       className="w-full h-8 flex items-center justify-between text-sm px-3 hover:bg-slate-50 text-slate-600 transition-colors"
                     >
                       {col.label}
-                      {visibleColumns.includes(col.id) && <CheckCircle2 size={13} className="text-indigo-500" />}
+                      {visibleColumns.includes(col.id) && <CheckCircle2 size={13} className="text-emerald-500" />}
                     </button>
                   ))}
                 </div>
@@ -170,33 +170,33 @@ export default function PatientsPage({
           {selectedClients.size > 1 && (
             <button
               onClick={handleMerge}
-              className="flex items-center gap-1.5 h-8 px-3 bg-indigo-50 text-indigo-600 border border-indigo-200 rounded-lg text-xs font-medium hover:bg-indigo-100 transition-colors duration-150"
+              className="flex items-center gap-1.5 h-8 px-3 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg text-xs font-medium hover:bg-emerald-100 transition-colors duration-150"
             >
               <GitPullRequest size={13} />
               Fusionner ({selectedClients.size})
             </button>
           )}
 
-          {/* New patient */}
+          {/* New client */}
           <button
             onClick={() => onNewClient()}
-            className="flex items-center gap-1.5 h-8 px-3 bg-indigo-600 text-white rounded-lg text-xs font-medium hover:bg-indigo-700 transition-colors duration-150"
+            className="flex items-center gap-1.5 h-8 px-3 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors duration-150"
           >
             <Plus size={14} />
-            <span className="hidden sm:inline">Nouveau patient</span>
+            <span className="hidden sm:inline">Nouveau client</span>
           </button>
         </div>
       </header>
 
       {/* ── SELECTION BAR ── */}
       {selectedClients.size > 0 && (
-        <div className="h-10 bg-indigo-50 border-b border-indigo-100 px-6 sm:px-10 flex items-center justify-between shrink-0">
-          <span className="text-xs font-medium text-indigo-700">
+        <div className="h-10 bg-emerald-50 border-b border-emerald-100 px-6 sm:px-10 flex items-center justify-between shrink-0">
+          <span className="text-xs font-medium text-emerald-700">
             {selectedClients.size} sélectionné{selectedClients.size > 1 ? 's' : ''}
           </span>
           <button
             onClick={() => setSelectedClients(new Set())}
-            className="text-xs font-medium text-indigo-500 hover:text-indigo-700 flex items-center gap-1 transition-colors"
+            className="text-xs font-medium text-emerald-500 hover:text-emerald-700 flex items-center gap-1 transition-colors"
           >
             <X size={12} /> Désélectionner
           </button>
@@ -232,7 +232,7 @@ export default function PatientsPage({
                     className={`py-2 px-2 text-[11px] font-medium text-slate-500 cursor-pointer hover:text-slate-700 transition-colors flex items-center gap-1 ${col?.align === 'center' ? 'justify-center' : 'justify-start'}`}
                   >
                     {col?.label}
-                    {sortField === colId && <ArrowUpDown size={11} className="text-indigo-500" />}
+                    {sortField === colId && <ArrowUpDown size={11} className="text-emerald-500" />}
                   </div>
                 );
               })}
@@ -284,7 +284,7 @@ function Checkbox({ checked, onChange }: { checked: boolean; onChange: () => voi
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`w-4 h-4 rounded border-[1.5px] cursor-pointer transition-colors duration-150 flex items-center justify-center ${checked ? 'bg-indigo-600 border-indigo-600' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+      className={`w-4 h-4 rounded border-[1.5px] cursor-pointer transition-colors duration-150 flex items-center justify-center ${checked ? 'bg-emerald-600 border-emerald-600' : 'border-slate-300 bg-white hover:border-slate-400'}`}
     >
       {checked && <span className="text-white text-[8px] leading-none">✓</span>}
     </div>
@@ -306,7 +306,7 @@ function PatientRow({ patient: p, sessionsCount, isSelected, visibleColumns, gri
   return (
     <div
       onClick={() => onSelect(p)}
-      className={`grid px-4 h-12 items-center cursor-pointer transition-colors duration-150 group hover:bg-slate-50 ${isSelected ? 'bg-indigo-50/50' : ''}`}
+      className={`grid px-4 h-12 items-center cursor-pointer transition-colors duration-150 group hover:bg-slate-50 ${isSelected ? 'bg-emerald-50/50' : ''}`}
       style={{ gridTemplateColumns: gridTemplate }}
     >
       <div className="flex justify-center">
@@ -317,7 +317,7 @@ function PatientRow({ patient: p, sessionsCount, isSelected, visibleColumns, gri
 
       {visibleColumns.map(colId => {
         if (colId === 'lastName') return (
-          <span key={colId} className="text-sm font-medium text-slate-900 truncate group-hover:text-indigo-700 transition-colors">
+          <span key={colId} className="text-sm font-medium text-slate-900 truncate group-hover:text-emerald-700 transition-colors">
             {p.lastName}
           </span>
         );
@@ -363,7 +363,7 @@ function PatientCard({
   return (
     <div
       onClick={() => onSelect(p)}
-      className={`bg-white border border-slate-200 rounded-xl p-4 transition-colors duration-150 cursor-pointer ${isSelected ? 'ring-1 ring-indigo-300 bg-indigo-50/30' : ''}`}
+      className={`bg-white border border-slate-200 rounded-xl p-4 transition-colors duration-150 cursor-pointer ${isSelected ? 'ring-1 ring-emerald-300 bg-emerald-50/30' : ''}`}
     >
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-3 min-w-0">
@@ -394,7 +394,7 @@ function SessionBadge({ count }: { count: number }) {
     ? 'bg-slate-100 text-slate-500'
     : count < 5
       ? 'bg-blue-50 text-blue-700'
-      : 'bg-indigo-100 text-indigo-700';
+      : 'bg-emerald-100 text-emerald-700';
 
   return (
     <span className={`inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium ${style}`}>
@@ -411,15 +411,15 @@ function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?:
         <Users size={24} className="text-slate-400" />
       </div>
       <div>
-        <p className="text-sm font-medium text-slate-700 mb-1">Aucun patient trouvé</p>
+        <p className="text-sm font-medium text-slate-700 mb-1">Aucun client trouvé</p>
         {search && <p className="text-sm text-slate-400">pour «&#8239;{search}&#8239;»</p>}
       </div>
       <button
         onClick={() => onNewClient(search)}
-        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors duration-150"
+        className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors duration-150"
       >
         <Plus size={15} />
-        Créer ce patient
+        Créer ce client
       </button>
     </div>
   );
