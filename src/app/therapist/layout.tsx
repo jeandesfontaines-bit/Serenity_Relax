@@ -22,7 +22,7 @@ export default function TherapistLayout({
 
   if (!user) return (
     <div className="h-screen flex items-center justify-center bg-[#F8F5F0]">
-       <div className="w-16 h-16 border-4 border-[#5F27CD]/20 border-t-[#5F27CD] rounded-full animate-spin" />
+       <div className="w-16 h-16 border-4 border-[#059669]/20 border-t-[#059669] rounded-full animate-spin" />
     </div>
   );
 

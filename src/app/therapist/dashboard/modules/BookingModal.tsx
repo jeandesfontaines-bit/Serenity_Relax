@@ -62,10 +62,10 @@ export default function BookingModal({
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: '100%', opacity: 0, scale: 0.95 }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="relative w-full sm:max-w-xl glass rounded-t-[3rem] sm:rounded-[3rem] shadow-2xl flex flex-col max-h-[96vh] overflow-hidden border border-white/80"
+        className="relative w-full sm:max-w-xl glass rounded-t-[3rem] sm:rounded-xl shadow-2xl flex flex-col max-h-[96vh] overflow-hidden border border-white/80"
       >
         {/* HEADER IMPACT LUXE */}
-        <div className="relative bg-gradient-to-r from-[#5F27CD] via-[#0ABDE3] to-[#1DD1A1] p-10 lg:p-14 text-white overflow-hidden shrink-0">
+        <div className="relative bg-gradient-to-r from-[#059669] via-[#10B981] to-[#34D399] p-5 lg:p-8 text-white overflow-hidden shrink-0">
           <button
             onClick={onClose}
             className="absolute top-8 right-8 p-3 hover:bg-white/20 rounded-full transition-colors z-10"
@@ -82,7 +82,7 @@ export default function BookingModal({
                 <p className="text-[0.65rem] font-black uppercase tracking-[0.4em] opacity-70">Rituel de Réservation</p>
              </div>
              
-             <h2 className="text-4xl lg:text-5xl font-sans font-light leading-tight tracking-tight">
+             <h2 className="text-4xl lg:text-3xl font-sans font-light leading-tight tracking-tight">
                 {step === 'client' ? 'Désignation du Patient' : 'Choix du Rituel'}
              </h2>
              
@@ -104,7 +104,7 @@ export default function BookingModal({
                       return (
                         <div key={s.id} className="flex items-center gap-2">
                            <div className={`w-5 h-5 rounded-lg flex items-center justify-center text-[9px] font-black transition-all ${
-                             isActive ? 'bg-white text-[#5F27CD]' : isDone ? 'bg-[#1DD1A1] text-white' : 'bg-white/10 text-white/40'
+                             isActive ? 'bg-white text-[#059669]' : isDone ? 'bg-[#34D399] text-white' : 'bg-white/10 text-white/40'
                            }`}>
                              {isDone ? '✓' : i + 1}
                            </div>
@@ -115,7 +115,7 @@ export default function BookingModal({
              </div>
           </div>
           
-          <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none scale-150 rotate-12">
+          <div className="absolute top-0 right-0 p-5 opacity-10 pointer-events-none scale-150 rotate-12">
               <Calendar size={200} />
           </div>
         </div>
@@ -133,14 +133,14 @@ export default function BookingModal({
               >
                 {/* Search Bar */}
                 <div className="relative group">
-                  <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#5F27CD] transition-colors" />
+                  <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#059669] transition-colors" />
                   <input
                     type="text"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     autoFocus
                     placeholder="Chercher le profil du patient..."
-                    className="w-full h-14 bg-white border border-gray-100 rounded-2xl pl-12 pr-6 text-sm font-medium text-[#222F3E] placeholder:text-gray-300 focus:outline-none focus:ring-8 focus:ring-[#5F27CD]/5 shadow-sm transition-all focus:border-[#5F27CD]"
+                    className="w-full h-14 bg-white border border-gray-100 rounded-2xl pl-12 pr-6 text-sm font-medium text-[#222F3E] placeholder:text-gray-300 focus:outline-none focus:ring-8 focus:ring-[#059669]/5 shadow-sm transition-all focus:border-[#059669]"
                   />
                 </div>
 
@@ -153,10 +153,10 @@ export default function BookingModal({
                           key={c.id}
                           whileHover={{ x: 5 }}
                           onClick={() => handleSelectClient(c)}
-                          className="w-full flex items-center justify-between p-4 rounded-2xl bg-white hover:shadow-xl hover:shadow-indigo-50/50 transition-all border border-transparent group"
+                          className="w-full flex items-center justify-between p-4 rounded-2xl bg-white hover:shadow-xl hover:shadow-emerald-50/50 transition-all border border-transparent group"
                         >
                           <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#5F27CD] group-hover:bg-[#5F27CD] group-hover:text-white transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-[#059669] group-hover:bg-[#059669] group-hover:text-white transition-all">
                               <User size={18} />
                             </div>
                             <div className="text-left">
@@ -166,7 +166,7 @@ export default function BookingModal({
                               )}
                             </div>
                           </div>
-                          <ChevronRight size={16} className="text-gray-200 group-hover:text-[#5F27CD] transition-all" />
+                          <ChevronRight size={16} className="text-gray-200 group-hover:text-[#059669] transition-all" />
                         </motion.button>
                       ))}
                     </div>
@@ -175,19 +175,19 @@ export default function BookingModal({
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       onClick={handleSelectNew}
-                      className="w-full flex items-center gap-4 p-6 rounded-[2rem] border-2 border-dashed border-[#5F27CD]/20 bg-[#5F27CD]/5 hover:bg-[#5F27CD]/10 transition-all group"
+                      className="w-full flex items-center gap-4 p-6 rounded-xl border-2 border-dashed border-[#059669]/20 bg-[#059669]/5 hover:bg-[#059669]/10 transition-all group"
                     >
-                      <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-[#5F27CD] shadow-lg">
+                      <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-[#059669] shadow-lg">
                         <UserPlus size={20} />
                       </div>
                       <div className="text-left">
-                        <p className="text-[0.65rem] font-black uppercase tracking-widest text-[#5F27CD]">Nouveau profil détecté</p>
+                        <p className="text-[0.65rem] font-black uppercase tracking-widest text-[#059669]">Nouveau profil détecté</p>
                         <p className="text-lg font-sans font-medium text-[#222F3E] break-all">Créer et inscrire « {search} »</p>
                       </div>
                     </motion.button>
                   ) : (
                     <div className="py-12 text-center space-y-4">
-                        <div className="w-16 h-16 bg-gray-50 rounded-[2rem] mx-auto flex items-center justify-center text-gray-200">
+                        <div className="w-16 h-16 bg-gray-50 rounded-xl mx-auto flex items-center justify-center text-gray-200">
                              <User size={30} />
                         </div>
                         <p className="text-xs font-bold text-gray-300 uppercase tracking-widest">Saisissez un nom pour commencer</p>
@@ -198,7 +198,7 @@ export default function BookingModal({
                 {filtered.length > 0 && (
                    <button
                     onClick={handleSelectNew}
-                    className="w-full h-14 flex items-center justify-center gap-3 rounded-2xl border border-dashed border-gray-200 text-gray-400 hover:text-[#5F27CD] hover:border-[#5F27CD] transition-all text-xs font-black uppercase tracking-widest"
+                    className="w-full h-14 flex items-center justify-center gap-3 rounded-2xl border border-dashed border-gray-200 text-gray-400 hover:text-[#059669] hover:border-[#059669] transition-all text-xs font-black uppercase tracking-widest"
                   >
                     <UserPlus size={16} />
                     Inscrire un nouveau patient
@@ -214,21 +214,21 @@ export default function BookingModal({
                 className="space-y-8"
               >
                 {/* Identity Recap */}
-                <div className="flex items-center justify-between p-6 bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-indigo-100/10">
+                <div className="flex items-center justify-between p-6 bg-white rounded-xl border border-gray-100 shadow-xl shadow-emerald-100/10">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center text-lg font-sans shadow-lg">
+                    <div className="w-12 h-12 rounded-2xl bg-[#059669] text-white flex items-center justify-center text-lg font-sans shadow-lg">
                       {isCreatingNew ? search[0]?.toUpperCase() : selectedClient?.lastName?.[0]}
                     </div>
                     <div>
                       <p className="text-lg font-sans font-medium text-[#222F3E]">
                         {isCreatingNew ? search : `${selectedClient?.firstName} ${selectedClient?.lastName}`}
                       </p>
-                      {isCreatingNew && <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#1DD1A1]">Nouveau Dossier</p>}
+                      {isCreatingNew && <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#34D399]">Nouveau Dossier</p>}
                     </div>
                   </div>
                   <button
                     onClick={() => setStep('client')}
-                    className="text-[0.6rem] font-black uppercase tracking-widest text-gray-400 hover:text-[#5F27CD] transition-all px-4 py-2 bg-gray-50 rounded-xl"
+                    className="text-[0.6rem] font-black uppercase tracking-widest text-gray-400 hover:text-[#059669] transition-all px-4 py-2 bg-gray-50 rounded-xl"
                   >
                     Changer
                   </button>
@@ -245,10 +245,10 @@ export default function BookingModal({
                         <button
                           key={s.id}
                           onClick={() => setSelectedService(s.name)}
-                          className={`p-5 rounded-[2rem] border transition-all text-left flex flex-col justify-between h-32 relative overflow-hidden group ${
+                          className={`p-5 rounded-xl border transition-all text-left flex flex-col justify-between h-32 relative overflow-hidden group ${
                             isSelected
-                              ? 'bg-[#222F3E] border-[#222F3E] text-white shadow-2xl shadow-indigo-200'
-                              : 'bg-white border-gray-100 text-[#222F3E] hover:border-[#5F27CD]/30'
+                              ? 'bg-[#222F3E] border-[#222F3E] text-white shadow-2xl shadow-emerald-200'
+                              : 'bg-white border-gray-100 text-[#222F3E] hover:border-[#059669]/30'
                           }`}
                         >
                           <div className={`absolute top-0 right-0 p-4 opacity-10 transition-transform duration-700 ${isSelected ? 'scale-150' : 'group-hover:scale-125'}`}>
@@ -273,7 +273,7 @@ export default function BookingModal({
                 {/* Action Button */}
                 <button
                   onClick={handleConfirm}
-                  className="w-full btn-luxe flex items-center gap-4 shadow-2xl shadow-indigo-100 py-6"
+                  className="w-full btn-luxe flex items-center gap-4 shadow-2xl shadow-emerald-100 py-6"
                 >
                   <CheckCircle2 size={20} />
                   <span>{isCreatingNew ? 'Confirmer le Nouveau Dossier' : 'Sceller le Rendez-vous'}</span>

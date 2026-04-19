@@ -98,41 +98,41 @@ export default function InvoicesPage() {
         <div className="max-w-7xl mx-auto space-y-12">
           
           {/* ── HEADER IMPACT LUXE ── */}
-          <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 bg-white/40 backdrop-blur-3xl p-12 rounded-[3.5rem] border border-white shadow-2xl shadow-indigo-100/10 relative overflow-hidden">
+          <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 bg-white/40 backdrop-blur-3xl p-12 rounded-xl border border-white shadow-2xl shadow-emerald-100/10 relative overflow-hidden">
             <div className="space-y-4 relative z-10">
               <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center shadow-lg"><FileText size={20} /></div>
-                  <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Gestion Administrative</p>
+                  <div className="w-10 h-10 rounded-2xl bg-[#059669] text-white flex items-center justify-center shadow-lg"><FileText size={20} /></div>
+                  <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#059669]">Gestion Administrative</p>
               </div>
-              <h1 className="title-luxe text-5xl md:text-7xl leading-none">Invoices <br/><span className="italic font-sans opacity-40">Archive.</span></h1>
+              <h1 className="title-luxe text-2xl md:text-3xl leading-none">Invoices <br/><span className="italic font-sans opacity-40">Archive.</span></h1>
             </div>
 
             <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4 relative z-10">
               <div className="relative group flex-1 md:min-w-[320px]">
-                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#5F27CD] transition-colors" size={18} />
+                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#059669] transition-colors" size={18} />
                   <input 
                     type="text" 
                     placeholder="Rechercher une facture..." 
                     value={search}
                     onChange={e => setSearch(e.target.value)}
-                    className="w-full h-16 bg-white/60 border border-white rounded-full pl-16 pr-8 text-lg  focus:outline-none focus:ring-8 focus:ring-indigo-50 transition-all shadow-sm"
+                    className="w-full h-16 bg-white/60 border border-white rounded-full pl-16 pr-8 text-lg  focus:outline-none focus:ring-8 focus:ring-emerald-50 transition-all shadow-sm"
                   />
               </div>
             </div>
           </header>
 
           {/* ── INVOICE LEDGER ── */}
-          <div className="dash-card p-0 overflow-hidden border border-white/80">
+          <div className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden border border-white/80">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-50/50">
-                    <th className="px-10 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Identifiant</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Identifiant</th>
                     <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Destinataire</th>
                     <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Émission</th>
                     <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Montant</th>
                     <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Statut</th>
-                    <th className="px-10 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400 text-right">Actions</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -144,7 +144,7 @@ export default function InvoicesPage() {
                       transition={{ delay: i * 0.05 }}
                       className="group hover:bg-[#F8F5F0]/50 transition-colors"
                     >
-                      <td className="px-10 py-8 font-bold text-[#222F3E] text-sm">{inv.id}</td>
+                      <td className="px-6 py-8 font-bold text-[#222F3E] text-sm">{inv.id}</td>
                       <td className="px-6 py-8 font-sans font-bold text-lg">{inv.client}</td>
                       <td className="px-6 py-8 text-sm text-gray-400 font-medium">{inv.date}</td>
                       <td className="px-6 py-8">
@@ -156,20 +156,20 @@ export default function InvoicesPage() {
                           {inv.status === 'paid' ? 'Réglé' : 'En Attente'}
                         </div>
                       </td>
-                      <td className="px-10 py-8 text-right space-x-3">
+                      <td className="px-6 py-8 text-right space-x-3">
                         <button 
                           onClick={() => generatePDF(inv)}
-                          className="p-3 text-gray-300 hover:text-[#5F27CD] hover:bg-white rounded-xl transition-all shadow-sm"
+                          className="p-3 text-gray-300 hover:text-[#059669] hover:bg-white rounded-xl transition-all shadow-sm"
                         >
                           <Download size={20} />
                         </button>
                         <button 
                           onClick={() => resendEmail(inv)}
-                          className="p-3 text-gray-300 hover:text-[#5F27CD] hover:bg-white rounded-xl transition-all shadow-sm"
+                          className="p-3 text-gray-300 hover:text-[#059669] hover:bg-white rounded-xl transition-all shadow-sm"
                         >
                           <Send size={20} />
                         </button>
-                        <button className="p-3 text-gray-300 hover:text-[#5F27CD] transition-colors">
+                        <button className="p-3 text-gray-300 hover:text-[#059669] transition-colors">
                           <ChevronRight size={20} />
                         </button>
                       </td>

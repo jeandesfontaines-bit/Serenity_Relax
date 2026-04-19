@@ -58,10 +58,10 @@ export default function ClientsPage({
       <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-white/40 backdrop-blur-3xl p-6 rounded-2xl border border-white shadow-lg">
         <div className="space-y-2">
            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-[#5F27CD] text-white flex items-center justify-center shadow-md"><Users size={16} /></div>
-              <p className="text-[0.55rem] font-black uppercase tracking-[0.2em] text-[#5F27CD]">Gestion Clientèle</p>
+              <div className="w-8 h-8 rounded-xl bg-[#059669] text-white flex items-center justify-center shadow-md"><Users size={16} /></div>
+              <p className="text-[0.55rem] font-black uppercase tracking-[0.2em] text-[#059669]">Gestion Clientèle</p>
            </div>
-           <h1 className="title-luxe text-3xl leading-none">Dossiers Patients</h1>
+           <h1 className="title-luxe text-2xl md:text-3xl leading-none">Dossiers Patients</h1>
         </div>
 
         <div className="w-full md:w-auto flex flex-col sm:flex-row gap-3">
@@ -72,7 +72,7 @@ export default function ClientsPage({
               placeholder="Rechercher..." 
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full h-12 bg-white/60 border border-white rounded-xl pl-12 pr-6 text-sm focus:outline-none focus:ring-4 focus:ring-indigo-50/50 transition-all"
+              className="w-full h-12 bg-white/60 border border-white rounded-xl pl-12 pr-6 text-sm focus:outline-none focus:ring-4 focus:ring-emerald-50/50 transition-all"
              />
           </div>
           <button onClick={() => onNewClient()} className="btn-luxe flex items-center gap-2 px-6 py-3">
@@ -94,7 +94,7 @@ export default function ClientsPage({
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ delay: i * 0.02 }}
                 onClick={() => onSelectClient(client)}
-                className="dash-card p-6 group cursor-pointer border border-white/80 hover:border-[#5F27CD]/30 relative overflow-hidden flex flex-col"
+                className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm group cursor-pointer border border-white/80 hover:border-[#059669]/30 relative overflow-hidden flex flex-col"
               >
                 {/* Visual Accent */}
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -102,12 +102,12 @@ export default function ClientsPage({
                 </div>
 
                 <div className="flex justify-between items-start mb-6">
-                   <div className="w-12 h-12 bg-[#F8F5F0] rounded-xl flex items-center justify-center text-lg font-bold text-[#222F3E] group-hover:bg-[#5F27CD] group-hover:text-white transition-all duration-500 shadow-sm">
+                   <div className="w-12 h-12 bg-[#F8F5F0] rounded-xl flex items-center justify-center text-lg font-bold text-[#222F3E] group-hover:bg-[#059669] group-hover:text-white transition-all duration-500 shadow-sm">
                       {client.firstName[0]}{client.lastName[0]}
                    </div>
                    <div className="flex flex-col items-end">
                       <span className="text-[0.55rem] font-black uppercase tracking-widest text-gray-400">Séances</span>
-                      <p className="text-2xl font-bold text-[#222F3E] group-hover:text-[#5F27CD] transition-colors">{sessions}</p>
+                      <p className="text-2xl font-bold text-[#222F3E] group-hover:text-[#059669] transition-colors">{sessions}</p>
                    </div>
                 </div>
 
@@ -117,7 +117,7 @@ export default function ClientsPage({
                        <span className="px-3 py-1 bg-white/50 rounded-lg text-[0.6rem] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
                           <MapPin size={10} /> {client.city || 'Genève'}
                        </span>
-                       <span className="px-3 py-1 bg-white/50 rounded-lg text-[0.6rem] font-black uppercase tracking-widest text-[#0ABDE3] flex items-center gap-2">
+                       <span className="px-3 py-1 bg-white/50 rounded-lg text-[0.6rem] font-black uppercase tracking-widest text-[#10B981] flex items-center gap-2">
                           <ShieldCheck size={10} /> {client.insurance || 'Sans ASS'}
                        </span>
                    </div>
@@ -128,7 +128,7 @@ export default function ClientsPage({
                       <Phone size={12} />
                       <span className="text-[0.65rem] font-medium">{client.phone || '-'}</span>
                    </div>
-                   <button className="flex items-center justify-end gap-1 text-[0.55rem] font-black uppercase tracking-widest text-[#5F27CD] group-hover:translate-x-1 transition-transform">
+                   <button className="flex items-center justify-end gap-1 text-[0.55rem] font-black uppercase tracking-widest text-[#059669] group-hover:translate-x-1 transition-transform">
                       Dossier <ChevronRight size={12} />
                    </button>
                 </div>

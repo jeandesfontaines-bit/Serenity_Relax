@@ -63,7 +63,7 @@ export default function ClientDetail({
       <motion.header 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-[#5F27CD] via-[#0ABDE3] to-[#1DD1A1] p-10 lg:p-14 text-white relative shrink-0"
+        className="bg-gradient-to-r from-[#059669] via-[#10B981] to-[#34D399] p-5 lg:p-8 text-white relative shrink-0"
       >
         <button
           onClick={onClose}
@@ -74,12 +74,12 @@ export default function ClientDetail({
 
         <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-8 mt-6">
           <div className="flex flex-col sm:flex-row items-center gap-8">
-            <div className="w-24 h-24 rounded-[2.5rem] bg-white text-[#5F27CD] flex items-center justify-center text-5xl font-sans shadow-2xl">
+            <div className="w-24 h-24 rounded-[1.5rem] bg-white text-[#059669] flex items-center justify-center text-3xl font-sans shadow-2xl">
               {client.lastName?.[0]}{client.firstName?.[0]}
             </div>
             <div className="text-center sm:text-left">
               <p className="text-[0.65rem] font-black uppercase tracking-[0.4em] opacity-70 mb-2">Dossier Patient Confidentiel</p>
-              <h1 className="text-5xl lg:text-6xl font-sans font-light leading-tight tracking-tight">
+              <h1 className="text-3xl lg:text-3xl font-sans font-light leading-tight tracking-tight">
                 {client.lastName} {client.firstName}
               </h1>
             </div>
@@ -92,7 +92,7 @@ export default function ClientDetail({
                 onClick={() => setActiveTab(tab.id)}
                 className={`h-10 px-6 flex items-center gap-2 rounded-xl text-[0.65rem] font-black uppercase tracking-widest transition-all ${
                   activeTab === tab.id
-                    ? 'bg-white text-[#5F27CD] shadow-lg'
+                    ? 'bg-white text-[#059669] shadow-lg'
                     : 'text-white hover:bg-white/10'
                 }`}
               >
@@ -111,7 +111,7 @@ export default function ClientDetail({
             onClick={() => setActiveTab(tab.id)}
             className={`px-8 py-5 text-[0.6rem] font-black uppercase tracking-widest whitespace-nowrap border-b-2 transition-all ${
               activeTab === tab.id
-                ? 'border-[#5F27CD] text-[#5F27CD] bg-indigo-50/20'
+                ? 'border-[#059669] text-[#059669] bg-emerald-50/20'
                 : 'border-transparent text-gray-400'
             }`}
           >
@@ -122,7 +122,7 @@ export default function ClientDetail({
 
       {/* ── CONTENT ── */}
       <main className="flex-1 overflow-auto bg-white/20 scrollbar-hide relative">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-indigo-50/10 to-transparent pointer-events-none" />
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-emerald-50/10 to-transparent pointer-events-none" />
         
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-10 space-y-10">
 
@@ -133,7 +133,7 @@ export default function ClientDetail({
             className="dash-card flex flex-col sm:flex-row items-center sm:items-start justify-between gap-8"
           >
             <div className="flex flex-col sm:flex-row items-center gap-8">
-              <div className="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-[#1DD1A1] to-[#0ABDE3] text-white flex items-center justify-center text-4xl font-sans shadow-2xl shadow-cyan-100">
+              <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-[#34D399] to-[#10B981] text-white flex items-center justify-center text-4xl font-sans shadow-2xl shadow-cyan-100">
                 {client.lastName?.[0]}{client.firstName?.[0]}
               </div>
               <div className="text-center sm:text-left">
@@ -143,17 +143,17 @@ export default function ClientDetail({
                 <div className="flex flex-wrap justify-center sm:justify-start gap-x-8 gap-y-3 mt-4 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">
                   {editData.email && (
                     <span className="flex items-center gap-2">
-                       <Mail size={14} className="text-[#5F27CD]" /> {editData.email}
+                       <Mail size={14} className="text-[#059669]" /> {editData.email}
                     </span>
                   )}
                   {editData.phone && (
                     <span className="flex items-center gap-2">
-                      <Phone size={14} className="text-[#0ABDE3]" /> {editData.phone}
+                      <Phone size={14} className="text-[#10B981]" /> {editData.phone}
                     </span>
                   )}
                   {(editData.city || editData.canton) && (
                     <span className="flex items-center gap-2">
-                      <MapPin size={14} className="text-[#1DD1A1]" /> {editData.city}{editData.canton ? `, ${editData.canton}` : ''}
+                      <MapPin size={14} className="text-[#34D399]" /> {editData.city}{editData.canton ? `, ${editData.canton}` : ''}
                     </span>
                   )}
                 </div>
@@ -161,7 +161,7 @@ export default function ClientDetail({
             </div>
             
             <div className="hidden sm:block">
-                <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1DD1A1]/10 text-[#1DD1A1] text-[0.6rem] font-black uppercase tracking-widest">
+                <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#34D399]/10 text-[#34D399] text-[0.6rem] font-black uppercase tracking-widest">
                     <ShieldCheck size={12} /> Patient Régulier
                 </span>
             </div>
@@ -169,12 +169,12 @@ export default function ClientDetail({
 
           {/* Stats Metrics Row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <StatCard label="Ritual" value={String(clientAppts.length)} icon={Calendar} color="#5F27CD" />
+            <StatCard label="Ritual" value={String(clientAppts.length)} icon={Calendar} color="#059669" />
             <StatCard
               label="Dernière visite"
               value={lastAppt?.date ? format(new Date(lastAppt.date), 'd MMM yyyy', { locale: fr }) : 'Nouvel arrivant'}
               icon={Clock}
-              color="#0ABDE3"
+              color="#10B981"
             />
             <StatCard
               label="Soin favori"
@@ -193,7 +193,7 @@ export default function ClientDetail({
               label="Contribution"
               value={`${totalPaid + totalDue} CHF`}
               icon={Wallet}
-              color="#1DD1A1"
+              color="#34D399"
             />
           </div>
 
@@ -231,7 +231,7 @@ function StatCard({ label, value, icon: Icon, color }: { label: string; value: s
   return (
     <motion.div 
       whileHover={{ y: -5 }}
-      className="bg-white/80 p-8 rounded-[2.5rem] border border-white shadow-xl shadow-indigo-100/10 transition-all"
+      className="bg-white/80 p-8 rounded-[1.5rem] border border-white shadow-xl shadow-emerald-100/10 transition-all"
     >
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: color + '15', color }}>
@@ -258,7 +258,7 @@ function OverviewTab({
   onUpdateClient: (id: string, data: Partial<Client>) => void;
 }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
       {/* Client Info Hub */}
       <div className="dash-card">
         <h3 className="text-xl font-sans font-medium text-[#222F3E] mb-8">Informations d&apos;identité</h3>
@@ -272,10 +272,10 @@ function OverviewTab({
       </div>
 
       {/* Therapy Context */}
-      <div className="dash-card border-l-4 border-[#5F27CD]">
+      <div className="dash-card border-l-4 border-[#059669]">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-xl font-sans font-medium text-[#222F3E]">Contexte Thérapeutique</h3>
-          <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#5F27CD]/5 text-[#5F27CD] text-[0.6rem] font-black uppercase tracking-widest">
+          <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#059669]/5 text-[#059669] text-[0.6rem] font-black uppercase tracking-widest">
             <ShieldCheck size={12} /> Confidentialité Maximale
           </span>
         </div>
@@ -283,7 +283,7 @@ function OverviewTab({
           value={client.notes || ''}
           onChange={e => onUpdateClient(client.id, { notes: e.target.value })}
           placeholder="Rédigez les notes, préférences, contre-indications et évolutions du patient..."
-          className="w-full h-80 bg-white/40 border border-white rounded-[2rem] p-6 text-sm text-[#222F3E] placeholder:text-gray-300 resize-none focus:outline-none focus:ring-4 focus:ring-[#5F27CD]/5 focus:border-[#5F27CD] transition-all leading-relaxed"
+          className="w-full h-80 bg-white/40 border border-white rounded-xl p-6 text-sm text-[#222F3E] placeholder:text-gray-300 resize-none focus:outline-none focus:ring-4 focus:ring-[#059669]/5 focus:border-[#059669] transition-all leading-relaxed"
         />
       </div>
     </div>
@@ -300,14 +300,14 @@ function EditableField({
     <div className="group relative">
       <div className="flex items-center justify-between p-4 py-5 border-b border-gray-100 group-last:border-none hover:bg-white/40 transition-all rounded-xl">
         <div className="flex items-center gap-3 shrink-0">
-          {icon && <span className="text-gray-300 group-hover:text-[#5F27CD] transition-colors">{icon}</span>}
+          {icon && <span className="text-gray-300 group-hover:text-[#059669] transition-colors">{icon}</span>}
           <span className="text-[0.65rem] font-black uppercase tracking-[0.1em] text-gray-400">{label}</span>
         </div>
         <input
           type={type}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="text-sm font-bold text-[#222F3E] text-right bg-transparent border-none outline-none focus:ring-0 placeholder:text-gray-200 min-w-0 flex-1 hover:text-[#5F27CD]"
+          className="text-sm font-bold text-[#222F3E] text-right bg-transparent border-none outline-none focus:ring-0 placeholder:text-gray-200 min-w-0 flex-1 hover:text-[#059669]"
           placeholder="—"
         />
       </div>
@@ -338,7 +338,7 @@ function SessionsTab({
   if (clientAppts.length === 0) {
     return (
       <div className="dash-card py-24 text-center space-y-6">
-        <div className="w-20 h-20 bg-gray-50 rounded-[2rem] mx-auto flex items-center justify-center text-gray-200">
+        <div className="w-20 h-20 bg-gray-50 rounded-xl mx-auto flex items-center justify-center text-gray-200">
             <Calendar size={40} strokeWidth={1} />
         </div>
         <div>
@@ -372,19 +372,19 @@ function SessionsTab({
                 {appt.date ? format(new Date(appt.date), 'dd MMM yyyy', { locale: fr }) : 'Non planifié'}
               </span>
               <span className="text-xs font-bold text-gray-400">{appt.time || '—'}</span>
-              <span className="text-base font-sans font-medium text-[#222F3E] group-hover:text-[#5F27CD] transition-colors truncate">{appt.serviceName || 'Session'}</span>
+              <span className="text-base font-sans font-medium text-[#222F3E] group-hover:text-[#059669] transition-colors truncate">{appt.serviceName || 'Session'}</span>
               <span className="text-sm font-bold text-[#222F3E]">{appt.price || 0}<span className="text-[10px] ml-0.5 opacity-40">CHF</span></span>
               
               <div className="flex">
                   <span className={`h-8 px-4 rounded-xl flex items-center text-[0.6rem] font-black uppercase tracking-widest border transition-all ${
-                    appt.paid ? 'bg-emerald-50 text-[#1DD1A1] border-emerald-100' : 'bg-rose-50 text-[#FF6B6B] border-red-100 shadow-sm shadow-red-50'
+                    appt.paid ? 'bg-emerald-50 text-[#34D399] border-emerald-100' : 'bg-rose-50 text-[#FF6B6B] border-red-100 shadow-sm shadow-red-50'
                   }`}>
                     {appt.paid ? 'Réglé' : 'À Encaisser'}
                   </span>
               </div>
               
               <div className="flex justify-end">
-                <ChevronRight size={18} className="text-gray-200 group-hover:text-[#5F27CD] group-hover:translate-x-1 transition-all" />
+                <ChevronRight size={18} className="text-gray-200 group-hover:text-[#059669] group-hover:translate-x-1 transition-all" />
               </div>
             </div>
           ))}
@@ -395,7 +395,7 @@ function SessionsTab({
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-rose-50 border border-red-100 rounded-[2.5rem] px-8 py-8 flex items-center justify-between shadow-xl shadow-red-50"
+          className="bg-rose-50 border border-red-100 rounded-[1.5rem] px-8 py-8 flex items-center justify-between shadow-xl shadow-red-50"
         >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-[#FF6B6B] text-white flex items-center justify-center shadow-lg shadow-red-100">
@@ -423,13 +423,13 @@ function AlertCircle() { return <svg width="20" height="20" viewBox="0 0 24 24" 
 function NotesTab({ client, onUpdateClient }: { client: Client; onUpdateClient: (id: string, data: Partial<Client>) => void }) {
   return (
     <div className="space-y-6">
-      <div className="dash-card border-none !bg-gradient-to-br from-[#5F27CD] to-[#0ABDE3] p-10 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
+      <div className="dash-card border-none !bg-gradient-to-br from-[#059669] to-[#10B981] p-5 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-5 opacity-10 pointer-events-none">
             <FileText size={180} />
         </div>
         <div className="relative z-10 space-y-4 max-w-xl">
             <div className="flex items-center gap-3">
-                 <ShieldCheck size={24} className="text-[#1DD1A1]" />
+                 <ShieldCheck size={24} className="text-[#34D399]" />
                  <h3 className="text-2xl font-sans font-medium">Sanctuaire de Suivi</h3>
             </div>
             <p className="text-sm opacity-80 leading-relaxed font-medium">Ce dossier contient l&apos;historique clinique confidentiel de {client.firstName}. Toutes les notes sont cryptées et réservées à votre usage professionnel exclusif.</p>
@@ -440,7 +440,7 @@ function NotesTab({ client, onUpdateClient }: { client: Client; onUpdateClient: 
         value={client.notes || ''}
         onChange={e => onUpdateClient(client.id, { notes: e.target.value })}
         placeholder="Rédigez l'évolution thérapeutique, les observations cliniques et les futurs axes de traitement..."
-        className="w-full min-h-[500px] glass rounded-[3rem] p-12 text-base text-[#222F3E] leading-relaxed placeholder:text-gray-300 resize-none focus:outline-none focus:ring-8 focus:ring-[#5F27CD]/5 border border-white shadow-2xl"
+        className="w-full min-h-[500px] glass rounded-xl p-12 text-base text-[#222F3E] leading-relaxed placeholder:text-gray-300 resize-none focus:outline-none focus:ring-8 focus:ring-[#059669]/5 border border-white shadow-2xl"
       />
     </div>
   );
@@ -464,8 +464,8 @@ function BillingTab({
     <div className="space-y-12">
       {/* Financial Summary Dashboard */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="dash-card bg-[#1DD1A1]/5 border-[#1DD1A1]/10">
-          <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#1DD1A1] mb-2">Total Honoraires Encaissés</p>
+        <div className="dash-card bg-[#34D399]/5 border-[#34D399]/10">
+          <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#34D399] mb-2">Total Honoraires Encaissés</p>
           <p className="text-4xl font-sans font-medium text-[#222F3E]">{totalPaid}<span className="text-base ml-1 opacity-50">CHF</span></p>
         </div>
         <div className="dash-card bg-[#FF6B6B]/5 border-red-100 shadow-xl shadow-red-50/20">
@@ -478,7 +478,7 @@ function BillingTab({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Unpaid Transactions */}
         <div className="space-y-6">
           <h3 className="text-xl font-sans font-medium text-[#FF6B6B] px-2 flex items-center gap-3">
@@ -505,10 +505,10 @@ function BillingTab({
 
         {/* Paid History */}
         <div className="space-y-6">
-          <h3 className="text-xl font-sans font-medium text-[#1DD1A1] px-2 flex items-center gap-3">
+          <h3 className="text-xl font-sans font-medium text-[#34D399] px-2 flex items-center gap-3">
               <CheckCircle2 size={20} /> Historique des Honoraires
           </h3>
-          <div className="dash-card !p-0 overflow-hidden border-[#1DD1A1]/10 bg-[#1DD1A1]/[0.02]">
+          <div className="dash-card !p-0 overflow-hidden border-[#34D399]/10 bg-[#34D399]/[0.02]">
             {paidAppts.length > 0 ? (
                 <div className="divide-y divide-gray-50">
                     {paidAppts.slice(0, 10).map(a => (
@@ -519,7 +519,7 @@ function BillingTab({
                             </div>
                             <div className="text-right">
                                 <span className="text-lg font-sans font-medium text-[#222F3E]">{a.price}<span className="text-xs ml-0.5 opacity-40">CHF</span></span>
-                                {a.paymentMethod && <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#1DD1A1] mt-1">{a.paymentMethod}</p>}
+                                {a.paymentMethod && <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#34D399] mt-1">{a.paymentMethod}</p>}
                             </div>
                         </div>
                     ))}

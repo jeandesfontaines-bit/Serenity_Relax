@@ -34,7 +34,7 @@ export default function ClientsCRM() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto space-y-12 pb-32">
+    <div className="max-w-7xl mx-auto space-y-6 pb-12">
       
       {/* ── HEADER ── */}
       <motion.header 
@@ -46,15 +46,15 @@ export default function ClientsCRM() {
         
         <div className="space-y-3 relative z-10">
            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><Sparkles size={10} /></div>
-              <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#0ABDE3]">CRM Haute-Fidélité</p>
+              <div className="w-6 h-6 rounded-md bg-[#059669] text-white flex items-center justify-center animate-pulse"><Sparkles size={10} /></div>
+              <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#10B981]">CRM Haute-Fidélité</p>
            </div>
            <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Bio-Dossiers <br/><span className="italic font-sans opacity-40 text-[#F8F5F0]">Patients.</span></h2>
            <p className="text-[0.65rem] text-gray-400 font-sans italic max-w-md leading-relaxed">La mémoire sensorielle et clinique de votre Sanctuaire.</p>
         </div>
         
         <div className="flex gap-4 relative z-10">
-           <button className="btn-luxe flex items-center gap-2 px-6 py-3 text-xs shadow-md shadow-indigo-200/20">
+           <button className="btn-luxe flex items-center gap-2 px-6 py-3 text-xs shadow-md shadow-emerald-200/20">
               <Plus size={16} /> Nouveau Patient
            </button>
         </div>
@@ -62,16 +62,16 @@ export default function ClientsCRM() {
 
       <div className="flex flex-col md:flex-row gap-3">
          <div className="flex-1 relative group">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-[#5F27CD] transition-colors" size={16} />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-[#059669] transition-colors" size={16} />
             <input 
               type="text" 
               placeholder="Rechercher... (nom, email)" 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white border border-gray-100 rounded-xl px-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-50 shadow-sm hover:shadow-md transition-all font-sans italic"
+              className="w-full bg-white border border-gray-100 rounded-xl px-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-50 shadow-sm hover:shadow-md transition-all font-sans italic"
             />
          </div>
-         <button className="px-6 py-3 bg-white border border-gray-100 rounded-xl text-gray-400 flex items-center gap-2 hover:text-[#5F27CD] transition-all shadow-sm text-xs">
+         <button className="px-6 py-3 bg-white border border-gray-100 rounded-xl text-gray-400 flex items-center gap-2 hover:text-[#059669] transition-all shadow-sm text-xs">
             <Filter size={14} /> Filtres
          </button>
       </div>
@@ -87,18 +87,18 @@ export default function ClientsCRM() {
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ delay: i * 0.05 }}
               onClick={() => router.push(`/therapist/clients/${client.id}`)}
-              className="dash-card p-5 bg-white border border-white hover:shadow-md transition-all duration-300 cursor-pointer group relative overflow-hidden"
+              className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group relative overflow-hidden"
             >
-               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform text-[#5F27CD]"><User size={60} /></div>
+               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform text-[#059669]"><User size={60} /></div>
                
                <div className="space-y-4 relative z-10">
                   <div className="flex justify-between items-start">
-                     <span className="px-3 py-1 bg-indigo-50 text-[#5F27CD] rounded-lg text-[0.5rem] font-black uppercase tracking-widest">{client.fidelityLevel || 'Argent'}</span>
-                     <ArrowRight size={14} className="text-gray-200 group-hover:text-[#5F27CD] group-hover:translate-x-1 transition-all" />
+                     <span className="px-3 py-1 bg-emerald-50 text-[#059669] rounded-lg text-[0.5rem] font-black uppercase tracking-widest">{client.fidelityLevel || 'Argent'}</span>
+                     <ArrowRight size={14} className="text-gray-200 group-hover:text-[#059669] group-hover:translate-x-1 transition-all" />
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-sans font-medium text-[#222F3E] group-hover:text-[#5F27CD] transition-colors">{client.name}</h3>
+                    <h3 className="text-lg font-sans font-medium text-[#222F3E] group-hover:text-[#059669] transition-colors">{client.name}</h3>
                     <p className="text-[0.65rem] text-gray-400 font-sans italic mt-0.5">{client.email}</p>
                   </div>
 

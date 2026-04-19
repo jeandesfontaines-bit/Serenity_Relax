@@ -17,7 +17,7 @@ export function BookingDialog({ children, serviceId }: BookingDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto p-0 rounded-[3rem] border-none bg-background scrollbar-hide">
+      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto p-0 rounded-xl border-none bg-background scrollbar-hide">
         <VisuallyHidden.Root>
           <DialogTitle>Réserver un soin Serenity Relax</DialogTitle>
         </VisuallyHidden.Root>

@@ -62,44 +62,44 @@ export default function RemindersSystem() {
       <div className="min-h-screen bg-[#F8F5F0] pt-32 pb-24 px-6 md:px-12">
         <div className="max-w-6xl mx-auto space-y-12">
           
-          <button onClick={() => router.push('/therapist/dashboard')} className="flex items-center gap-3 text-gray-400 font-black text-[0.65rem] uppercase tracking-widest hover:text-[#5F27CD] transition-colors">
+          <button onClick={() => router.push('/therapist/dashboard')} className="flex items-center gap-3 text-gray-400 font-black text-[0.65rem] uppercase tracking-widest hover:text-[#059669] transition-colors">
             <ArrowLeft size={16} /> Retour Dashboard
           </button>
 
-          <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10 bg-white/40 backdrop-blur-3xl p-12 rounded-[3.5rem] border border-white shadow-2xl shadow-indigo-100/10">
+          <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-5 bg-white/40 backdrop-blur-3xl p-12 rounded-xl border border-white shadow-2xl shadow-emerald-100/10">
             <div className="space-y-4">
                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><Bell size={20} /></div>
-                  <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Centre de Communications</p>
+                  <div className="w-10 h-10 rounded-2xl bg-[#059669] text-white flex items-center justify-center animate-pulse"><Bell size={20} /></div>
+                  <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#059669]">Centre de Communications</p>
                </div>
-               <h1 className="title-luxe text-5xl md:text-7xl leading-none">Rappels <br/><span className="italic font-sans opacity-40">Auto-Bio.</span></h1>
+               <h1 className="title-luxe text-2xl md:text-3xl leading-none">Rappels <br/><span className="italic font-sans opacity-40">Auto-Bio.</span></h1>
             </div>
             
             <button
               onClick={sendAllPending}
               disabled={pendingReminders.length === 0}
-              className={`flex items-center gap-4 px-12 py-7 text-lg rounded-[2.5rem] font-black uppercase tracking-[0.2em] transition-all ${pendingReminders.length > 0 ? 'bg-[#222F3E] text-white shadow-2xl shadow-indigo-200/50 hover:scale-105 active:scale-95' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}
+              className={`flex items-center gap-4 px-12 py-4 text-lg rounded-[1.5rem] font-black uppercase tracking-[0.2em] transition-all ${pendingReminders.length > 0 ? 'bg-[#222F3E] text-white shadow-2xl shadow-emerald-200/50 hover:scale-105 active:scale-95' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}
             >
-              <Send size={24} className={pendingReminders.length > 0 ? "text-[#0ABDE3]" : ""} /> Envoyer {pendingReminders.length} Rappels
+              <Send size={24} className={pendingReminders.length > 0 ? "text-[#10B981]" : ""} /> Envoyer {pendingReminders.length} Rappels
             </button>
           </header>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="dash-card p-10 bg-white shadow-sm border border-white relative overflow-hidden group">
+            <div className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm shadow-sm border border-white relative overflow-hidden group">
                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity"><Clock size={80} /></div>
-               <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-amber-600 mb-4">En Attente d&apos;Action</p>
-               <p className="text-6xl font-light text-[#222F3E]">{pendingReminders.length}</p>
+               <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-slate-600 mb-4">En Attente d&apos;Action</p>
+               <p className="text-3xl font-light text-[#222F3E]">{pendingReminders.length}</p>
             </div>
-            <div className="dash-card p-10 bg-[#222F3E] text-white shadow-2xl relative overflow-hidden group">
+            <div className="dash-card p-6 bg-[#222F3E] text-white shadow-2xl relative overflow-hidden group">
                <div className="absolute top-0 right-0 p-8 opacity-10"><CheckCircle size={80} /></div>
-               <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-[#1DD1A1] mb-4">Rituels Confirmés (Aujourd&apos;hui)</p>
-               <p className="text-6xl font-light text-white">{sentReminders.length}</p>
+               <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-[#34D399] mb-4">Rituels Confirmés (Aujourd&apos;hui)</p>
+               <p className="text-3xl font-light text-white">{sentReminders.length}</p>
             </div>
           </div>
 
           <div className="space-y-12">
             <h2 className="text-3xl font-sans font-light flex items-center gap-4 text-[#222F3E]">
-               <Sparkles className="text-amber-500" /> Flux de Relances Actives
+               <Sparkles className="text-slate-500" /> Flux de Relances Actives
             </h2>
 
             <div className="grid grid-cols-1 gap-6">
@@ -111,10 +111,10 @@ export default function RemindersSystem() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="dash-card p-8 md:p-12 border border-white flex flex-col md:flex-row justify-between items-center gap-10 group hover:shadow-2xl transition-all"
+                    className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm md:p-12 border border-white flex flex-col md:flex-row justify-between items-center gap-5 group hover:shadow-2xl transition-all"
                   >
                     <div className="flex items-center gap-8 w-full md:w-auto">
-                       <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center ${reminder.type === 'invoice' ? 'bg-amber-50 text-amber-600' : 'bg-indigo-50 text-indigo-600'}`}>
+                       <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center ${reminder.type === 'invoice' ? 'bg-slate-50 text-slate-600' : 'bg-emerald-50 text-emerald-600'}`}>
                           {reminder.type === 'invoice' ? <Mail size={24} /> : <Calendar size={24} />}
                        </div>
                        <div className="space-y-2">
@@ -125,9 +125,9 @@ export default function RemindersSystem() {
                     
                     <button 
                        onClick={() => sendReminder(reminder.id)}
-                       className="w-full md:w-auto px-10 py-6 glass border border-gray-100 rounded-[2rem] text-[0.65rem] font-black uppercase tracking-widest text-[#222F3E] hover:bg-white hover:shadow-xl transition-all flex items-center justify-center gap-4 group"
+                       className="w-full md:w-auto px-6 py-6 glass border border-gray-100 rounded-xl text-[0.65rem] font-black uppercase tracking-widest text-[#222F3E] hover:bg-white hover:shadow-xl transition-all flex items-center justify-center gap-4 group"
                     >
-                       <Send size={18} className="text-[#5F27CD] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                       <Send size={18} className="text-[#059669] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                        Lancer le Rappel
                     </button>
                   </motion.div>

@@ -80,7 +80,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
         <nav className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
           <Link href="/" className="flex items-baseline gap-1.5 hover:opacity-80 transition-opacity">
             <span className="font-sans font-black tracking-[0.15em] text-[#222F3E] text-base">SERENITY</span>
-            <span className="font-cursive text-xl text-[#5F27CD]">Relax</span>
+            <span className="font-cursive text-xl text-[#059669]">Relax</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
@@ -89,7 +89,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                 <Link 
                   key={link.id} 
                   href={link.href} 
-                  className={`text-[0.65rem] font-sans font-black uppercase tracking-widest transition-colors ${pathname === link.href ? 'text-[#5F27CD]' : 'text-[#576574] hover:text-[#222F3E]'}`}
+                  className={`text-[0.65rem] font-sans font-black uppercase tracking-widest transition-colors ${pathname === link.href ? 'text-[#059669]' : 'text-[#576574] hover:text-[#222F3E]'}`}
                 >
                   {link.label}
                 </Link>
@@ -97,7 +97,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
             ) : (
               <>
                 {isTherapist && (
-                  <Link href="/therapist/dashboard" className="text-[0.65rem] font-sans font-black uppercase tracking-widest text-[#5F27CD] flex items-center gap-1.5">
+                  <Link href="/therapist/dashboard" className="text-[0.65rem] font-sans font-black uppercase tracking-widest text-[#059669] flex items-center gap-1.5">
                     <ShieldCheck size={14} /> Dashboard
                   </Link>
                 )}
@@ -108,7 +108,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                 )}
                 <button
                   onClick={onBookingClick}
-                  className="px-5 py-2 rounded-lg font-black uppercase text-[0.65rem] tracking-widest bg-gradient-to-r from-[#5F27CD] to-[#0ABDE3] text-white shadow-sm hover:brightness-110 active:scale-95 transition-all"
+                  className="px-5 py-2 rounded-lg font-black uppercase text-[0.65rem] tracking-widest bg-gradient-to-r from-[#059669] to-[#10B981] text-white shadow-sm hover:brightness-110 active:scale-95 transition-all"
                 >
                   Réserver
                 </button>
@@ -124,13 +124,13 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                 {effectiveUser.photo ? (
                   <img src={effectiveUser.photo} alt="" className="w-8 h-8 rounded-lg object-cover border border-white shadow-sm" />
                 ) : (
-                  <div className="w-8 h-8 rounded-lg bg-[#F8F5F0] text-[#5F27CD] flex items-center justify-center border border-gray-100">
+                  <div className="w-8 h-8 rounded-lg bg-[#F8F5F0] text-[#059669] flex items-center justify-center border border-gray-100">
                     <UserIcon size={14} />
                   </div>
                 )}
               </div>
             ) : (
-              <Link href="/login" className="text-[0.65rem] font-sans font-black uppercase tracking-widest text-[#222F3E] hover:text-[#5F27CD]">Connexion</Link>
+              <Link href="/login" className="text-[0.65rem] font-sans font-black uppercase tracking-widest text-[#222F3E] hover:text-[#059669]">Connexion</Link>
             )}
           </div>
 
@@ -167,7 +167,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                   <button onClick={() => { onBookingClick?.(); setIsMenuOpen(false); }} className="text-left">Réserver</button>
                 )}
                 {isTherapist && (
-                  <Link href="/therapist/dashboard" onClick={() => setIsMenuOpen(false)} className="text-[#5F27CD]">Dashboard</Link>
+                  <Link href="/therapist/dashboard" onClick={() => setIsMenuOpen(false)} className="text-[#059669]">Dashboard</Link>
                 )}
               </div>
 

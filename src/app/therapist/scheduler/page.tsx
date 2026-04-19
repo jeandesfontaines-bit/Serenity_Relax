@@ -4,15 +4,19 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar as CalendarIcon, Clock, Plus,
-  ChevronLeft, ChevronRight, User,
-  CheckCircle, AlertCircle, FileText, Sparkles, LayoutGrid
+  ChevronLeft, ChevronRight, User, Lock,
+  CheckCircle, AlertCircle, FileText, Sparkles, LayoutGrid, Settings, Bell
 } from 'lucide-react';
+import WeeklySettingsModal from '../dashboard/modules/WeeklySettingsModal';
 import { Navbar } from '@/components/navbar';
 import { useFirestore, useUser } from '@/firebase';
 import {
   collection,
   onSnapshot,
   addDoc,
+  updateDoc,
+  setDoc,
+  doc,
   Timestamp,
   query,
   orderBy
@@ -30,6 +34,11 @@ export default function ProfessionalScheduler() {
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showConfig, setShowConfig] = useState(false);
+  const [configSlots, setConfigSlots] = useState<Record<number, string[]>>({});
+  
+  const [showCloseDayModal, setShowCloseDayModal] = useState(false);
+  const [closedDate, setClosedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
 
   // FORM STATE
   const [newAppt, setNewAppt] = useState({
@@ -53,7 +62,11 @@ export default function ProfessionalScheduler() {
       setClients(snap.docs.map(d => ({ id: d.id, ...d.data() })));
     });
 
-    return () => { unsubAppts(); unsubClients(); };
+    const unsubConfig = onSnapshot(doc(firestore, 'config', 'slots'), (snap) => {
+      if (snap.exists()) setConfigSlots(snap.data() as any);
+    });
+
+    return () => { unsubAppts(); unsubClients(); unsubConfig(); };
   }, [firestore]);
 
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(startOfWeek(currentDate, { weekStartsOn: 1 }), i));
@@ -81,6 +94,33 @@ export default function ProfessionalScheduler() {
     }
   };
 
+  const handleCloseDay = async () => {
+    if (!firestore || !closedDate) return;
+    try {
+      await addDoc(collection(firestore, 'appointments'), {
+        date: closedDate,
+        time: '00:00',
+        clientName: 'FERMÉ / OFF',
+        service: 'Indisponibilité exceptionnelle',
+        status: 'blocked',
+        paid: false,
+        createdAt: Timestamp.now()
+      });
+      setShowCloseDayModal(false);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const sendApptReminder = (appt: any) => {
+    const subject = encodeURIComponent(`Rappel de RDV : Serenity Relax`);
+    const dateStr = getApptDate(appt);
+    const timeStr = getApptTime(appt);
+    const clientName = appt.firstName || appt.clientNameSnapshot || appt.clientName || 'Cher/Chère patient(e)';
+    const body = encodeURIComponent(`Bonjour ${clientName},\n\nNous avons le plaisir de vous rappeler votre rendez-vous pour le soin suivant :\n- Prestation : ${appt.service || appt.serviceName}\n- Date : ${dateStr}\n- Heure : ${timeStr}\n\nLieu : Chemin de Joinville 26, 1216 Cointrin.\n\nAu plaisir de vous accueillir dans notre sanctuaire,\n\nSereinement,\nL'équipe Serenity Relax`);
+    window.location.href = `mailto:${appt.email || ''}?subject=${subject}&body=${body}`;
+  };
+
   const generateInvoice = (appt: any) => {
     const doc = new jsPDF();
     doc.setFontSize(24);
@@ -99,7 +139,7 @@ export default function ProfessionalScheduler() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-12 pb-32">
+    <div className="max-w-7xl mx-auto space-y-6 pb-12">
       {/* ── HEADER NAVIGATION ── */}
       <motion.header
         initial={{ opacity: 0, scale: 0.98 }}
@@ -110,16 +150,16 @@ export default function ProfessionalScheduler() {
         <div className="relative z-10 flex flex-col lg:flex-row justify-between items-center gap-6">
           <div className="space-y-3 text-center lg:text-left">
             <div className="flex items-center gap-2 justify-center lg:justify-start">
-              <div className="w-6 h-6 rounded-md bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><Sparkles size={10} /></div>
-              <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#0ABDE3]">Chronos Sanctuary</p>
+              <div className="w-6 h-6 rounded-md bg-[#059669] text-white flex items-center justify-center animate-pulse"><Sparkles size={10} /></div>
+              <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#10B981]">Chronos Sanctuary</p>
             </div>
             <h2 className="title-luxe text-2xl md:text-3xl text-white">Votre Agenda <span className="italic font-sans opacity-40">Pro.</span></h2>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="flex bg-white/10 p-1.5 rounded-full backdrop-blur-md">
-              <button onClick={() => setView('week')} className={`px-5 py-2.5 rounded-full text-[0.6rem] font-black uppercase tracking-widest transition-all ${view === 'week' ? 'bg-[#5F27CD] text-white shadow-md' : 'text-white/60 hover:text-white'}`}>Semaine</button>
-              <button onClick={() => setView('month')} className={`px-5 py-2.5 rounded-full text-[0.6rem] font-black uppercase tracking-widest transition-all ${view === 'month' ? 'bg-[#5F27CD] text-white shadow-md' : 'text-white/60 hover:text-white'}`}>Mois</button>
+              <button onClick={() => setView('week')} className={`px-5 py-2.5 rounded-full text-[0.6rem] font-black uppercase tracking-widest transition-all ${view === 'week' ? 'bg-[#059669] text-white shadow-md' : 'text-white/60 hover:text-white'}`}>Semaine</button>
+              <button onClick={() => setView('month')} className={`px-5 py-2.5 rounded-full text-[0.6rem] font-black uppercase tracking-widest transition-all ${view === 'month' ? 'bg-[#059669] text-white shadow-md' : 'text-white/60 hover:text-white'}`}>Mois</button>
             </div>
 
             <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full">
@@ -128,7 +168,15 @@ export default function ProfessionalScheduler() {
               <button onClick={() => shiftDate(1)} className="p-2 rounded-full hover:bg-white/10 transition-all"><ChevronRight size={16} /></button>
             </div>
 
-            <button onClick={() => setShowModal(true)} className="btn-luxe flex items-center gap-2 px-6 py-3 text-xs shadow-md shadow-indigo-200/20 whitespace-nowrap">
+            <button onClick={() => setShowConfig(true)} className="flex items-center gap-2 p-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all shadow-md shadow-emerald-200/20 whitespace-nowrap text-xs border border-white/10">
+              <Settings size={16} /> Créneaux Types
+            </button>
+
+            <button onClick={() => setShowCloseDayModal(true)} className="flex items-center gap-2 p-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/40 text-rose-100 transition-all shadow-md whitespace-nowrap text-xs border border-rose-500/20 font-bold">
+              <Lock size={16} /> Fermer un Jour
+            </button>
+
+            <button onClick={() => setShowModal(true)} className="btn-luxe flex items-center gap-2 px-6 py-3 text-xs shadow-md shadow-emerald-200/20 whitespace-nowrap">
               <Plus size={16} /> Nouvelle Séance
             </button>
           </div>
@@ -145,27 +193,38 @@ export default function ProfessionalScheduler() {
               const isToday = isSameDay(day, new Date());
 
               return (
-                <div key={i} className={`dash-card p-4 min-h-[400px] flex flex-col gap-3 border ${isToday ? 'border-[#5F27CD] ring-4 ring-indigo-50 shadow-2xl' : 'border-white bg-white/60'}`}>
+                <div key={i} className={`dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm min-h-[400px] flex flex-col gap-3 border ${isToday ? 'border-[#059669] ring-4 ring-emerald-50 shadow-2xl' : 'border-white bg-white/60'}`}>
                   <div className="text-center pb-4 border-b border-gray-50">
                     <p className="text-[0.6rem] font-black uppercase tracking-widest text-gray-400">{format(day, 'EEEE', { locale: fr })}</p>
-                    <p className={`text-2xl mt-1 font-sans ${isToday ? 'text-[#5F27CD] font-bold' : 'text-[#222F3E]'}`}>{format(day, 'd')}</p>
+                    <p className={`text-2xl mt-1 font-sans ${isToday ? 'text-[#059669] font-bold' : 'text-[#222F3E]'}`}>{format(day, 'd')}</p>
                   </div>
                   <div className="flex-1 space-y-3">
                     {dayAppts.length === 0 ? (
                       <div className="h-full flex items-center justify-center opacity-10 py-10"><Clock size={40} className="text-gray-300" /></div>
                     ) : (
                       dayAppts.map((appt) => (
-                        <div key={appt.id} className="p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all group relative">
-                          <div className={`absolute top-0 left-0 w-1 h-full ${appt.paid ? 'bg-emerald-400' : 'bg-amber-400'}`} />
-                          <div className="flex justify-between items-start mb-2">
-                            <span className="text-[0.65rem] font-black text-[#5F27CD]">{getApptTime(appt)}</span>
-                            {appt.paid ? <CheckCircle className="text-emerald-400" size={14} /> : <AlertCircle className="text-amber-400" size={14} />}
+                        <div key={appt.id} className={`p-4 bg-white rounded-2xl border ${appt.status === 'blocked' ? 'border-rose-100 bg-rose-50/30 line-through opacity-80' : 'border-gray-100'} shadow-sm hover:shadow-md transition-all group relative`}>
+                          <div className={`absolute top-0 left-0 w-1 h-full ${appt.status === 'blocked' ? 'bg-rose-400' : appt.paid ? 'bg-emerald-400' : 'bg-slate-400'}`} />
+                          
+                          {appt.status === 'blocked' ? (
+                             <div className="flex flex-col items-center justify-center py-2">
+                                <Lock size={20} className="text-rose-400 mb-2" />
+                                <p className="font-black text-xs text-rose-500 tracking-widest uppercase">FERMÉ OFF</p>
+                             </div>
+                          ) : (
+                             <>
+                              <div className="flex justify-between items-start mb-2">
+                            <span className="text-[0.65rem] font-black text-[#059669]">{getApptTime(appt)}</span>
+                            {appt.paid ? <CheckCircle className="text-emerald-400" size={14} /> : <AlertCircle className="text-slate-400" size={14} />}
                           </div>
                           <p className="font-bold text-sm text-[#222F3E] break-words">{appt.clientName || appt.clientNameSnapshot || appt.firstName || 'Client'}</p>
                           <p className="text-[0.6rem] text-gray-400 font-sans italic truncate">{appt.service || appt.serviceName}</p>
                           <div className="mt-4 flex gap-2">
-                            <button onClick={() => generateInvoice(appt)} className="w-full py-2 rounded-lg bg-indigo-50 text-[#5F27CD] hover:bg-[#5F27CD] hover:text-white transition-all flex items-center justify-center gap-1 text-[0.55rem] font-black uppercase tracking-widest"><FileText size={12} /> Reçu</button>
-                          </div>
+                            <button onClick={() => generateInvoice(appt)} className="w-1/2 justify-center py-2 rounded-lg bg-emerald-50 text-[#059669] hover:bg-[#059669] hover:text-white transition-all flex items-center gap-1 text-[0.55rem] font-black uppercase tracking-widest"><FileText size={12} /> Reçu</button>
+                            <button onClick={() => sendApptReminder(appt)} className="w-1/2 justify-center py-2 rounded-lg bg-slate-50 text-slate-600 hover:bg-slate-500 hover:text-white transition-all flex items-center gap-1 text-[0.55rem] font-black uppercase tracking-widest"><Bell size={12} /> Rappel</button>
+                              </div>
+                             </>
+                          )}
                         </div>
                       ))
                     )}
@@ -180,7 +239,7 @@ export default function ProfessionalScheduler() {
           <motion.div key="month-view" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
             <div className="grid grid-cols-7 gap-1.5 sm:gap-4">
               {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map(d => (
-                <div key={d} className="text-[0.55rem] sm:text-[0.65rem] font-black tracking-widest text-[#5F27CD] text-center uppercase py-2 bg-indigo-50/50 rounded-xl">{d.substring(0, 3)}</div>
+                <div key={d} className="text-[0.55rem] sm:text-[0.65rem] font-black tracking-widest text-[#059669] text-center uppercase py-2 bg-emerald-50/50 rounded-xl">{d.substring(0, 3)}</div>
               ))}
               {monthDays.map((day, i) => {
                 const dayStr = format(day, 'yyyy-MM-dd');
@@ -192,15 +251,15 @@ export default function ProfessionalScheduler() {
                   <div 
                     key={i} 
                     onClick={() => { setCurrentDate(day); setView('week'); }}
-                    className={`aspect-square sm:aspect-auto sm:min-h-[140px] p-2 sm:p-4 rounded-xl sm:rounded-[2rem] border transition-all cursor-pointer group flex flex-col justify-between ${!isSelectedMonth ? 'opacity-30 bg-gray-50/50 border-transparent' : isToday ? 'border-[#5F27CD] bg-[#F8F5F0] shadow-sm' : 'border-gray-100 bg-white hover:border-[#5F27CD] hover:shadow-lg'}`}
+                    className={`aspect-square sm:aspect-auto sm:min-h-[80px] p-1 sm:p-2 rounded-xl sm:rounded-xl border transition-all cursor-pointer group flex flex-col justify-between ${!isSelectedMonth ? 'opacity-30 bg-gray-50/50 border-transparent' : isToday ? 'border-[#059669] bg-[#F8F5F0] shadow-sm' : 'border-gray-100 bg-white hover:border-[#059669] hover:shadow-lg'}`}
                   >
                     <div className="text-right">
-                      <p className={`text-sm sm:text-2xl font-sans ${isToday ? 'text-[#5F27CD] font-bold' : 'text-[#222F3E]'}`}>{format(day, 'd')}</p>
+                      <p className={`text-sm sm:text-lg font-sans ${isToday ? 'text-[#059669] font-bold' : 'text-[#222F3E]'}`}>{format(day, 'd')}</p>
                     </div>
                     <div className="flex-1 overflow-hidden mt-1 sm:mt-2 space-y-1">
                       {dayAppts.slice(0, 3).map((appt, j) => (
-                        <div key={j} className="text-[0.5rem] sm:text-xs font-bold px-1 sm:px-2 py-0.5 sm:py-1 rounded bg-indigo-50 text-[#5F27CD] truncate leading-tight">
-                          {getApptTime(appt)} - {appt.clientNameSnapshot?.split(' ')[0] || appt.clientName?.split(' ')[0] || 'RDV'}
+                        <div key={j} className={`text-[0.5rem] sm:text-xs font-bold px-1 sm:px-2 py-0.5 sm:py-1 rounded truncate leading-tight ${appt.status === 'blocked' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-50 text-[#059669]'}`}>
+                          {appt.status === 'blocked' ? 'FERMÉ' : `${getApptTime(appt)} - ${appt.clientNameSnapshot?.split(' ')[0] || appt.clientName?.split(' ')[0] || 'RDV'}`}
                         </div>
                       ))}
                       {dayAppts.length > 3 && <div className="text-[0.5rem] font-black text-gray-400 pl-1">+{dayAppts.length - 3} soins</div>}
@@ -219,18 +278,18 @@ export default function ProfessionalScheduler() {
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 sm:p-12">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowModal(false)} className="absolute inset-0 bg-[#222F3E]/80 backdrop-blur-2xl" />
             <motion.div initial={{ opacity: 0, scale: 0.9, y: 40 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 40 }} className="w-full max-w-xl bg-white rounded-2xl p-6 lg:p-8 shadow-2xl relative z-10 overflow-hidden">
-              <h2 className="title-luxe text-3xl mb-2">Inscrire une Séance</h2>
+              <h2 className="title-luxe text-2xl md:text-3xl mb-2">Inscrire une Séance</h2>
               <p className="text-sm text-gray-500 font-sans italic mb-8">Réservez un espace de sérénité.</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                 <div className="space-y-2">
-                  <label className="text-[0.55rem] font-black uppercase tracking-widest text-[#5F27CD] ml-2">Client</label>
-                  <select className="w-full p-4 glass rounded-xl bg-white border border-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-50 text-sm" onChange={(e) => { const c = clients.find(cl => cl.id === e.target.value); setNewAppt(prev => ({ ...prev, clientId: e.target.value, clientName: c?.name || '' })); }}>
+                  <label className="text-[0.55rem] font-black uppercase tracking-widest text-[#059669] ml-2">Client</label>
+                  <select className="w-full p-4 glass rounded-xl bg-white border border-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-50 text-sm" onChange={(e) => { const c = clients.find(cl => cl.id === e.target.value); setNewAppt(prev => ({ ...prev, clientId: e.target.value, clientName: c?.name || '' })); }}>
                     <option value="">Sélectionner un patient...</option>
                     {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[0.55rem] font-black uppercase tracking-widest text-[#5F27CD] ml-2">Service</label>
+                  <label className="text-[0.55rem] font-black uppercase tracking-widest text-[#059669] ml-2">Service</label>
                   <select className="w-full p-4 glass rounded-xl bg-white border border-gray-100 focus:outline-none text-sm" value={newAppt.service} onChange={(e) => setNewAppt(prev => ({ ...prev, service: e.target.value }))}>
                     <option>Massage Sensoriel 90 min</option>
                     <option>Rituel Énergétique 60 min</option>
@@ -238,20 +297,60 @@ export default function ProfessionalScheduler() {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[0.55rem] font-black uppercase tracking-widest text-[#5F27CD] ml-2">Date</label>
+                  <label className="text-[0.55rem] font-black uppercase tracking-widest text-[#059669] ml-2">Date</label>
                   <input type="date" value={newAppt.date} onChange={e => setNewAppt(prev => ({ ...prev, date: e.target.value }))} className="w-full p-4 glass rounded-xl text-sm" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[0.55rem] font-black uppercase tracking-widest text-[#5F27CD] ml-2">Heure</label>
+                  <label className="text-[0.55rem] font-black uppercase tracking-widest text-[#059669] ml-2">Heure</label>
                   <input type="time" value={newAppt.time} onChange={e => setNewAppt(prev => ({ ...prev, time: e.target.value }))} className="w-full p-4 glass rounded-xl text-sm" />
                 </div>
               </div>
               <div className="flex gap-4">
                 <button onClick={() => setShowModal(false)} className="flex-1 py-4 rounded-xl border border-gray-100 text-gray-400 font-bold hover:bg-gray-50 transition-all text-sm">Annuler</button>
-                <button onClick={handleAddAppointment} className="flex-[2] py-4 rounded-xl bg-[#5F27CD] text-white font-bold hover:bg-[#4834d4] transition-all shadow-lg text-sm">Enregistrer</button>
+                <button onClick={handleAddAppointment} className="flex-[2] py-4 rounded-xl bg-[#059669] text-white font-bold hover:bg-[#4834d4] transition-all shadow-lg text-sm">Enregistrer</button>
               </div>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* ── CLOSE DAY MODAL ── */}
+      <AnimatePresence>
+        {showCloseDayModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 sm:p-12">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowCloseDayModal(false)} className="absolute inset-0 bg-[#222F3E]/80 backdrop-blur-2xl" />
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 40 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 40 }} className="w-full max-w-sm bg-white rounded-2xl p-6 lg:p-8 shadow-2xl relative z-10 overflow-hidden text-center">
+              <div className="w-16 h-16 bg-rose-100 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lock size={24} />
+              </div>
+              <h2 className="title-luxe text-2xl mb-2 text-[#222F3E]">Bloquer un Jour</h2>
+              <p className="text-xs text-gray-500 font-sans italic mb-8">Marquez cette date comme indisponible (OFF).</p>
+              
+              <input type="date" value={closedDate} onChange={e => setClosedDate(e.target.value)} className="w-full p-4 mb-6 bg-gray-50 border border-gray-100 rounded-xl text-center text-xl font-bold font-sans text-[#222F3E] focus:outline-none focus:ring-2 focus:ring-rose-200 transition-all" />
+              
+              <div className="flex gap-4">
+                <button onClick={() => setShowCloseDayModal(false)} className="flex-1 py-4 rounded-xl border border-gray-100 text-gray-400 font-bold hover:bg-gray-50 transition-all text-xs uppercase tracking-widest">Annuler</button>
+                <button onClick={handleCloseDay} className="flex-[2] py-4 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-all shadow-lg text-xs uppercase tracking-widest">Confirmer (OFF)</button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ── SETTINGS MODAL ── */}
+      <AnimatePresence>
+        {showConfig && (
+          <WeeklySettingsModal 
+            initialSlots={configSlots} 
+            onClose={() => setShowConfig(false)}
+            onSave={async (slots) => {
+              if (firestore) {
+                await setDoc(doc(firestore, 'config', 'slots'), slots);
+                setShowConfig(false);
+                alert("✅ Vos disponibilités configurées ! Le module de réservation client est à jour.");
+              }
+            }} 
+          />
         )}
       </AnimatePresence>
     </div>

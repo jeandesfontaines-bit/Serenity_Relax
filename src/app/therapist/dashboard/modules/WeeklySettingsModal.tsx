@@ -63,10 +63,10 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: '100%', opacity: 0, scale: 0.95 }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="relative w-full sm:max-w-xl glass rounded-t-[3rem] sm:rounded-[3rem] shadow-2xl flex flex-col max-h-[94vh] border border-white/80"
+        className="relative w-full sm:max-w-xl glass rounded-t-[3rem] sm:rounded-xl shadow-2xl flex flex-col max-h-[94vh] border border-white/80"
       >
         {/* HEADER IMPACT LUXE */}
-        <div className="relative bg-gradient-to-r from-[#5F27CD] via-[#0ABDE3] to-[#1DD1A1] p-10 lg:p-14 text-white overflow-hidden shrink-0">
+        <div className="relative bg-gradient-to-r from-[#059669] via-[#10B981] to-[#34D399] p-5 lg:p-8 text-white overflow-hidden shrink-0">
           <button
             onClick={onClose}
             className="absolute top-8 right-8 p-3 hover:bg-white/20 rounded-full transition-colors z-10"
@@ -82,18 +82,18 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 </div>
                 <div>
                    <p className="text-[0.65rem] font-black uppercase tracking-[0.4em] opacity-70">Configuration Récurrente</p>
-                   <h2 className="text-4xl lg:text-5xl font-sans font-light leading-tight tracking-tight">Horaires Types</h2>
+                   <h2 className="text-4xl lg:text-3xl font-sans font-light leading-tight tracking-tight">Horaires Types</h2>
                 </div>
              </div>
           </div>
           
-          <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none scale-150 -rotate-12 translate-x-20">
+          <div className="absolute top-0 right-0 p-5 opacity-10 pointer-events-none scale-150 -rotate-12 translate-x-20">
               <Clock size={240} />
           </div>
         </div>
 
         {/* Day Tabs Navigation */}
-        <div className="flex border-b border-white/40 bg-white/40 px-6 shrink-0 overflow-x-auto scrollbar-hide">
+        <div className="grid grid-cols-7 border-b border-white/40 bg-white/40 sm:px-2 shrink-0">
           {DAYS.map(day => {
             const count = (slots[day.id] || []).length;
             const isActive = activeDay === day.id;
@@ -101,11 +101,11 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               <button
                 key={day.id}
                 onClick={() => setActiveDay(day.id)}
-                className={`relative py-5 px-6 transition-all flex items-center gap-3 group ${
-                  isActive ? 'text-[#5F27CD]' : 'text-gray-400'
+                className={`relative py-4 px-1 sm:px-2 transition-all flex flex-col items-center justify-center gap-1 group ${
+                  isActive ? 'text-[#059669]' : 'text-gray-400'
                 }`}
               >
-                <span className={`text-[0.65rem] font-black uppercase tracking-widest transition-all ${isActive ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'}`}>
+                <span className={`text-[0.6rem] font-black uppercase tracking-wider transition-all ${isActive ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'}`}>
                   {day.label.slice(0, 3)}
                 </span>
                 <AnimatePresence>
@@ -114,7 +114,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         className={`text-[10px] font-black w-6 h-6 rounded-lg flex items-center justify-center shadow-sm ${
-                          isActive ? 'bg-[#5F27CD] text-white' : 'bg-white text-gray-400'
+                          isActive ? 'bg-[#059669] text-white' : 'bg-white text-gray-400'
                         }`}
                      >
                        {count}
@@ -124,7 +124,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 {isActive && (
                   <motion.div 
                     layoutId="day-accent"
-                    className="absolute bottom-0 left-6 right-6 h-1 bg-[#5F27CD] rounded-t-full shadow-[0_0_10px_rgba(95,39,205,0.4)]" 
+                    className="absolute bottom-0 left-6 right-6 h-1 bg-[#059669] rounded-t-full shadow-[0_0_10px_rgba(95,39,205,0.4)]" 
                   />
                 )}
               </button>
@@ -133,7 +133,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         </div>
 
         {/* Slots Content Area */}
-        <div className="flex-1 overflow-y-auto px-10 lg:px-14 py-10 scrollbar-hide min-h-[400px]">
+        <div className="flex-1 overflow-y-auto px-6 lg:px-14 py-10 scrollbar-hide min-h-[400px]">
           <AnimatePresence mode="popLayout">
             {(slots[activeDay] || []).length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
@@ -144,10 +144,10 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="flex items-center justify-between p-4 bg-white/60 border border-white hover:bg-white hover:shadow-xl hover:shadow-indigo-50/50 rounded-2xl group transition-all"
+                    className="flex items-center justify-between p-4 bg-white/60 border border-white hover:bg-white hover:shadow-xl hover:shadow-emerald-50/50 rounded-2xl group transition-all"
                   >
                     <div className="flex items-center gap-3">
-                      <Clock size={16} className="text-[#0ABDE3]" />
+                      <Clock size={16} className="text-[#10B981]" />
                       <span className="text-base font-sans font-medium text-[#222F3E]">{time}</span>
                     </div>
                     <button
@@ -161,7 +161,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               </div>
             ) : (
               <div className="py-20 text-center space-y-4">
-                <div className="w-16 h-16 bg-gray-50 rounded-[2rem] mx-auto flex items-center justify-center text-gray-200">
+                <div className="w-16 h-16 bg-gray-50 rounded-xl mx-auto flex items-center justify-center text-gray-200">
                     <Clock size={30} />
                 </div>
                 <p className="text-xs font-bold text-gray-300 uppercase tracking-widest italic">Aucun créneau ce jour</p>
@@ -170,7 +170,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
           </AnimatePresence>
 
           {/* New Slot Input */}
-          <div className="flex gap-4 items-center bg-white/40 p-3 rounded-[2.5rem] border border-white shadow-xl shadow-indigo-100/10">
+          <div className="flex gap-4 items-center bg-white/40 p-3 rounded-[1.5rem] border border-white shadow-xl shadow-emerald-100/10">
             <div className="flex-1 px-4">
               <input
                 type="time"
@@ -181,7 +181,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
             </div>
             <button
               onClick={handleAddSlot}
-              className="h-14 px-8 bg-[#222F3E] text-white rounded-[2rem] text-[0.65rem] font-black uppercase tracking-widest hover:bg-[#5F27CD] shadow-lg transition-all flex items-center gap-3 active:scale-95"
+              className="h-14 px-8 bg-[#222F3E] text-white rounded-xl text-[0.65rem] font-black uppercase tracking-widest hover:bg-[#059669] shadow-lg transition-all flex items-center gap-3 active:scale-95"
             >
               <Plus size={18} />
               Ajouter
@@ -190,10 +190,10 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         </div>
 
         {/* Global Actions Footer */}
-        <div className="px-10 lg:px-14 pb-14 pt-6 glass border-t border-white/60 flex flex-col items-center gap-6 shrink-0">
+        <div className="px-6 lg:px-14 pb-14 pt-6 glass border-t border-white/60 flex flex-col items-center gap-6 shrink-0">
           <button
             onClick={handleCopyToWeek}
-            className="flex items-center gap-3 text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#0ABDE3] hover:text-[#5F27CD] transition-all group"
+            className="flex items-center gap-3 text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#10B981] hover:text-[#059669] transition-all group"
           >
             <Copy size={14} className="group-hover:rotate-12 transition-transform" />
             Synchroniser toute la semaine
@@ -201,7 +201,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
           
           <button
             onClick={() => onSave(slots)}
-            className="w-full btn-luxe py-6 flex items-center gap-4 shadow-2xl shadow-indigo-100"
+            className="w-full btn-luxe py-6 flex items-center gap-4 shadow-2xl shadow-emerald-100"
           >
             <CheckCircle2 size={20} />
             <span>Valider la Configuration Globale</span>

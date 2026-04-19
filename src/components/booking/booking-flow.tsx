@@ -32,10 +32,10 @@ interface BookingFlowProps {
 }
 
 const LEVELS = [
-  { id: 'serenite', name: 'Sérénité', discount: 0.05, min: 0, color: '#5F27CD' },
-  { id: 'harmonie', name: 'Harmonie', discount: 0.10, min: 500, color: '#0ABDE3' },
-  { id: 'equilibre', name: 'Équilibre', discount: 0.15, min: 1000, color: '#1DD1A1' },
-  { id: 'zen', name: 'Zen Master', discount: 0.20, min: 2000, color: '#FF9F43' },
+  { id: 'serenite', name: 'Sérénité', discount: 0.05, min: 0, color: '#059669' },
+  { id: 'harmonie', name: 'Harmonie', discount: 0.10, min: 500, color: '#10B981' },
+  { id: 'equilibre', name: 'Équilibre', discount: 0.15, min: 1000, color: '#34D399' },
+  { id: 'zen', name: 'Zen Master', discount: 0.20, min: 2000, color: '#0F766E' },
 ];
 
 export function BookingFlow({ services, initialServiceId, onClose }: BookingFlowProps) {
@@ -171,7 +171,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-emerald-100/50">
           <CheckCircle2 size={32} />
         </motion.div>
-        <h2 className="title-luxe text-2xl mb-2">Rituel Confirmé</h2>
+        <h2 className="title-luxe text-2xl md:text-3xl mb-2">Rituel Confirmé</h2>
         <p className="text-sm italic text-gray-500 mb-8 max-w-sm">Votre espace de sérénité est réservé. Référence : <span className="text-[#222F3E] font-bold">{bookingRef}</span></p>
         <button onClick={() => window.location.reload()} className="btn-luxe px-8 py-3 text-xs">Retour à l'accueil</button>
       </div>
@@ -191,7 +191,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
       {/* ── LEFT: RITUAL SUMMARY (BIO-SIDEBAR) ── */}
       <div className="w-[35%] bg-[#F8F5F0] border-r border-gray-100 p-8 hidden lg:flex flex-col">
         <div className="mb-8">
-          <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#5F27CD] mb-2">Rituel en cours</p>
+          <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#059669] mb-2">Rituel en cours</p>
           <h2 className="text-2xl font-light text-[#222F3E] tracking-tight leading-none">Votre Chemin<br/><span className="italic">vers le Soi.</span></h2>
         </div>
 
@@ -201,7 +201,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
             <div className="space-y-8 relative z-10">
               {/* Step 1: Service */}
               <div className={`flex gap-4 transition-opacity ${step < 1 ? 'opacity-20' : 'opacity-100'}`}>
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 1 ? 'bg-[#5F27CD] text-white shadow-md' : 'bg-white border text-gray-300'}`}>01</div>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 1 ? 'bg-[#059669] text-white shadow-md' : 'bg-white border text-gray-300'}`}>01</div>
                 <div>
                   <p className="text-[0.5rem] font-black uppercase tracking-widest text-gray-400 mb-0.5">Rituel</p>
                   <p className="text-sm text-[#222F3E]">{selectedService?.name || 'Sélectionner un soin'}</p>
@@ -209,16 +209,16 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
               </div>
               {/* Step 2: Date */}
               <div className={`flex gap-4 transition-opacity ${step < 2 ? 'opacity-20' : 'opacity-100'}`}>
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 2 ? 'bg-[#5F27CD] text-white shadow-md' : 'bg-white border text-gray-300'}`}>02</div>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 2 ? 'bg-[#059669] text-white shadow-md' : 'bg-white border text-gray-300'}`}>02</div>
                 <div>
                   <p className="text-[0.5rem] font-black uppercase tracking-widest text-gray-400 mb-0.5">Moment</p>
                   <p className="text-sm text-[#222F3E]">{selectedDate ? format(selectedDate, 'EEEE d MMM', { locale: fr }) : 'Choisir une date'}</p>
-                  {selectedTime && <p className="text-[0.5rem] text-[#0ABDE3] font-bold mt-0.5 uppercase tracking-widest">À {selectedTime}</p>}
+                  {selectedTime && <p className="text-[0.5rem] text-[#10B981] font-bold mt-0.5 uppercase tracking-widest">À {selectedTime}</p>}
                 </div>
               </div>
               {/* Step 3: Identity */}
               <div className={`flex gap-4 transition-opacity ${step < 3 ? 'opacity-20' : 'opacity-100'}`}>
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 3 ? 'bg-[#5F27CD] text-white shadow-md' : 'bg-white border text-gray-300'}`}>03</div>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 3 ? 'bg-[#059669] text-white shadow-md' : 'bg-white border text-gray-300'}`}>03</div>
                 <div>
                   <p className="text-[0.5rem] font-black uppercase tracking-widest text-gray-400 mb-0.5">Identité</p>
                   <p className="text-sm text-[#222F3E]">{formData.firstName ? `${formData.firstName} ${formData.lastName}` : 'Vos coordonnées'}</p>
@@ -245,7 +245,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
       </div>
 
       {/* ── RIGHT: INTERACTIVE CONTENT ── */}
-      <div className="flex-1 overflow-auto p-6 lg:p-10 scrollbar-hide">
+      <div className="flex-1 overflow-auto p-6 lg:p-5 scrollbar-hide">
         <div className="max-w-xl mx-auto h-full flex flex-col">
           <AnimatePresence mode="wait">
             {/* STEP 1: SERVICES GRID */}
@@ -261,7 +261,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                       key={s.id}
                       whileHover={{ y: -4 }}
                       onClick={() => { setSelectedService(s); setStep(2); }}
-                      className={`dash-card p-3 text-left border transition-all ${selectedService?.id === s.id ? 'ring-2 ring-[#1DD1A1] border-transparent' : 'border-gray-50'}`}
+                      className={`dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm text-left border transition-all ${selectedService?.id === s.id ? 'ring-2 ring-[#34D399] border-transparent' : 'border-gray-50'}`}
                     >
                       <div className="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-sm">
                         <Image src={s.image || ''} fill alt={s.name} className="object-cover" />
@@ -269,7 +269,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                       <p className="text-xs font-bold text-[#222F3E] line-clamp-1 px-1">{s.name}</p>
                       <div className="flex items-center justify-between mt-1 px-1">
                         <span className="text-[0.5rem] font-bold text-gray-300 uppercase">{s.duration}</span>
-                        <span className="text-sm font-medium text-[#5F27CD]">{s.price} CHF</span>
+                        <span className="text-sm font-medium text-[#059669]">{s.price} CHF</span>
                       </div>
                     </motion.button>
                   ))}
@@ -282,7 +282,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
               <motion.div key="st2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                 <div className="flex justify-between items-center">
                    <h3 className="text-xl font-medium text-[#222F3E] flex items-center gap-2">
-                      <Clock className="text-[#5F27CD]" size={20} /> Votre Moment
+                      <Clock className="text-[#059669]" size={20} /> Votre Moment
                    </h3>
                    <button onClick={handleBack} className="text-[0.5rem] font-black uppercase tracking-widest text-gray-400 hover:text-[#222F3E]">Retour</button>
                 </div>
@@ -312,12 +312,12 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                           className={`aspect-square rounded-xl flex flex-col items-center justify-center text-[0.7rem] font-bold transition-all ${
                             isSameDay(day, selectedDate!) ? 'bg-[#222F3E] text-white shadow-lg' : 
                             !isSameMonth(day, currentMonth) ? 'opacity-0 pointer-events-none' :
-                            isPast || isBooked ? 'text-gray-100 cursor-not-allowed' : 'bg-[#F8F5F0] text-gray-600 hover:bg-[#5F27CD] hover:text-white'
+                            isPast || isBooked ? 'text-gray-100 cursor-not-allowed' : 'bg-[#F8F5F0] text-gray-600 hover:bg-[#059669] hover:text-white'
                           }`}
                         >
                           {format(day, 'd')}
                           {!isPast && isSameMonth(day, currentMonth) && !isBooked && (
-                            <div className={`w-0.5 h-0.5 rounded-full mt-0.5 ${isSameDay(day, selectedDate!) ? 'bg-[#0ABDE3]' : 'bg-[#1DD1A1]'}`} />
+                            <div className={`w-0.5 h-0.5 rounded-full mt-0.5 ${isSameDay(day, selectedDate!) ? 'bg-[#10B981]' : 'bg-[#34D399]'}`} />
                           )}
                         </button>
                       );
@@ -334,7 +334,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                           <button
                             key={t}
                             onClick={() => { setSelectedTime(t); setStep(3); }}
-                            className={`py-3 rounded-xl text-[0.8rem] font-bold border transition-all ${selectedTime === t ? 'bg-[#222F3E] text-white border-transparent' : 'bg-white text-gray-500 border-gray-100 hover:border-[#5F27CD]'}`}
+                            className={`py-3 rounded-xl text-[0.8rem] font-bold border transition-all ${selectedTime === t ? 'bg-[#222F3E] text-white border-transparent' : 'bg-white text-gray-500 border-gray-100 hover:border-[#059669]'}`}
                           >
                             {t}
                           </button>
@@ -355,8 +355,8 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
-                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">PRÉNOM</label>
+                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#059669] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#059669]">PRÉNOM</label>
                       <input 
                         type="text" 
                         value={formData.firstName || user?.displayName?.split(' ')[0] || ''} 
@@ -365,8 +365,8 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                         placeholder="Ex: Clara"
                       />
                    </div>
-                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
-                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">NOM</label>
+                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#059669] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#059669]">NOM</label>
                       <input 
                         type="text" 
                         value={formData.lastName || user?.displayName?.split(' ').slice(1).join(' ') || ''} 
@@ -375,8 +375,8 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                         placeholder="Ex: Miller"
                       />
                    </div>
-                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
-                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">MOBILE</label>
+                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#059669] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#059669]">MOBILE</label>
                       <input 
                         type="tel" 
                         value={formData.phone} 
@@ -385,8 +385,8 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                         placeholder="+41 78 000 00 00"
                       />
                    </div>
-                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
-                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">EMAIL</label>
+                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#059669] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#059669]">EMAIL</label>
                       <input 
                         type="email" 
                         value={formData.email || user?.email || ''} 
@@ -395,8 +395,8 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                         placeholder="Ex: clara@example.com"
                       />
                    </div>
-                   <div className="md:col-span-2 space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
-                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">VOTRE INTENTION</label>
+                   <div className="md:col-span-2 space-y-1.5 border-b border-gray-100 focus-within:border-[#059669] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#059669]">VOTRE INTENTION</label>
                       <textarea 
                         rows={2}
                         value={formData.message} 
@@ -426,22 +426,22 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
             {step === 4 && (
               <motion.div key="st4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
                 <div className="text-center space-y-3">
-                   <div className="w-12 h-12 bg-indigo-50 text-[#5F27CD] rounded-full mx-auto flex items-center justify-center">
+                   <div className="w-12 h-12 bg-emerald-50 text-[#059669] rounded-full mx-auto flex items-center justify-center">
                       <ShieldCheck size={20} />
                    </div>
                    <h3 className="title-luxe text-xl leading-none">Récapitulatif</h3>
                    <p className="text-[0.65rem] text-gray-400 italic">Prêt pour vous.</p>
                 </div>
 
-                <div className="dash-card p-6 space-y-6 bg-[#222F3E] text-white">
+                <div className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm space-y-6 bg-[#222F3E] text-white">
                    <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-[0.5rem] font-bold tracking-[0.2em] text-[#0ABDE3] uppercase mb-1">RITUEL</p>
+                        <p className="text-[0.5rem] font-bold tracking-[0.2em] text-[#10B981] uppercase mb-1">RITUEL</p>
                         <h4 className="text-lg font-light">{selectedService?.name}</h4>
-                        <p className="text-[#1DD1A1] font-bold text-[0.6rem] mt-0.5 uppercase tracking-widest">{selectedService?.duration}</p>
+                        <p className="text-[#34D399] font-bold text-[0.6rem] mt-0.5 uppercase tracking-widest">{selectedService?.duration}</p>
                       </div>
                       <div className="text-right">
-                         <p className="text-[0.5rem] font-bold tracking-[0.2em] text-[#0ABDE3] uppercase mb-1">MONTANT</p>
+                         <p className="text-[0.5rem] font-bold tracking-[0.2em] text-[#10B981] uppercase mb-1">MONTANT</p>
                          <div className="flex flex-col items-end">
                             {clientLevel.discount > 0 && <span className="text-[0.6rem] line-through opacity-30">{selectedService?.price} CHF</span>}
                             <span className="text-2xl font-light text-white">{discountedPrice} CHF</span>
@@ -453,7 +453,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                       <div>
                          <p className="text-[0.5rem] font-bold tracking-[0.15em] text-gray-400 uppercase mb-1">MOMENT</p>
                          <p className="text-sm">{format(selectedDate!, 'EEEE d MMMM', { locale: fr })}</p>
-                         <p className="text-[0.6rem] text-[#1DD1A1]">À {selectedTime}</p>
+                         <p className="text-[0.6rem] text-[#34D399]">À {selectedTime}</p>
                       </div>
                       <div>
                          <p className="text-[0.5rem] font-bold tracking-[0.15em] text-gray-400 uppercase mb-1">ACCUEIL POUR</p>
@@ -469,7 +469,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                     id="accept" 
                     checked={acceptedTerms}
                     onChange={e => setAcceptedTerms(e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded border-gray-300 text-[#5F27CD] focus:ring-[#5F27CD]"
+                    className="mt-1 w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669]"
                   />
                    <label htmlFor="accept" className="text-[0.6rem] text-gray-600 leading-relaxed cursor-pointer selection:bg-none">
                       Je confirme avoir pris connaissance des conditions d'annulation (24h) et l'absence de contre-indications médicales.

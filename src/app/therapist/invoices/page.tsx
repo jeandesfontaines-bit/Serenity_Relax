@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Send, Search, Filter, Plus, TrendingUp, CreditCard, Banknote, Smartphone, FileText, ChevronRight, CheckCircle2, AlertCircle, Clock, PieChart, Table, Bell, Mail } from 'lucide-react';
 import jsPDF from 'jspdf';
-import { Navbar } from '@/components/navbar';
 import { useRouter } from 'next/navigation';
 import { useFirestore, useUser } from '@/firebase';
 import { collection, query, onSnapshot, orderBy, updateDoc, doc } from 'firebase/firestore';
@@ -155,16 +154,15 @@ export default function ProInvoicesPage() {
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen bg-[#F8F5F0] pt-16 pb-12 px-4 md:px-8">
+      <div className="min-h-screen bg-[#F8F5F0] pt-6 pb-12 px-4 md:px-8">
         <div className="max-w-7xl mx-auto space-y-12">
           
           {/* ── SOVEREIGN HEADER ── */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4 bg-[#222F3E] text-white p-6 rounded-xl shadow-xl relative overflow-hidden">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-md bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><FileText size={10} /></div>
-                  <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#0ABDE3]">Gestion de Cabinet</p>
+                  <div className="w-6 h-6 rounded-md bg-[#059669] text-white flex items-center justify-center animate-pulse"><FileText size={10} /></div>
+                  <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#10B981]">Gestion de Cabinet</p>
               </div>
               <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Factures <span className="italic font-sans opacity-40">Grand Livre.</span></h2>
             </div>
@@ -188,24 +186,24 @@ export default function ProInvoicesPage() {
 
           {/* ── KINETIC STAT CARDS ── */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="dash-card p-5 border border-white relative group">
-              <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#1DD1A1] mb-3">CA (Mois)</p>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm border border-white relative group">
+              <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#34D399] mb-3">CA (Mois)</p>
               <div className="flex items-baseline gap-2">
                  <span className="text-3xl font-light text-[#222F3E]">{totalCA}</span>
                  <span className="text-sm font-bold opacity-20">CHF</span>
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="dash-card p-5 border border-white relative group">
-              <p className="text-[0.5rem] font-black uppercase tracking-widest text-amber-600 mb-3">En Attente</p>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm border border-white relative group">
+              <p className="text-[0.5rem] font-black uppercase tracking-widest text-slate-600 mb-3">En Attente</p>
               <div className="flex items-baseline gap-2">
-                 <span className="text-3xl font-light text-amber-600">{pendingTotal}</span>
+                 <span className="text-3xl font-light text-slate-600">{pendingTotal}</span>
                  <span className="text-sm font-bold opacity-20">CHF</span>
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="dash-card p-5 bg-[#222F3E] text-white relative group shadow-lg">
-              <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#0ABDE3] mb-3">Volume</p>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="dash-card p-6 bg-[#222F3E] text-white relative group shadow-lg">
+              <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#10B981] mb-3">Volume</p>
               <div className="flex items-baseline gap-2">
                  <span className="text-4xl font-light">{invoices.length}</span>
                  <span className="text-sm font-bold opacity-30">Dossiers</span>
@@ -216,24 +214,24 @@ export default function ProInvoicesPage() {
           {/* ── FILTERS & SEARCH ── */}
           <div className="flex flex-col lg:flex-row gap-3">
             <div className="flex-1 relative group">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-[#5F27CD] transition-colors" size={16} />
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-[#059669] transition-colors" size={16} />
               <input
                 type="text"
                 placeholder="Rechercher un dossier..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full bg-white border border-gray-100 rounded-xl pl-12 pr-6 py-3 text-sm font-sans italic focus:outline-none focus:ring-2 focus:ring-indigo-50 transition-all"
+                className="w-full bg-white border border-gray-100 rounded-xl pl-12 pr-6 py-3 text-sm font-sans italic focus:outline-none focus:ring-2 focus:ring-emerald-50 transition-all"
               />
             </div>
             <div className="flex bg-white p-1 rounded-xl border border-gray-100 shadow-sm">
-              <button onClick={() => setStatusFilter('all')} className={`px-5 py-2.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all ${statusFilter === 'all' ? 'bg-[#5F27CD] text-white shadow-md' : 'text-gray-400 hover:text-[#222F3E]'}`}>Toutes</button>
+              <button onClick={() => setStatusFilter('all')} className={`px-5 py-2.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all ${statusFilter === 'all' ? 'bg-[#059669] text-white shadow-md' : 'text-gray-400 hover:text-[#222F3E]'}`}>Toutes</button>
               <button onClick={() => setStatusFilter('paid')} className={`px-5 py-2.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all ${statusFilter === 'paid' ? 'bg-emerald-500 text-white shadow-md' : 'text-gray-400 hover:text-[#222F3E]'}`}>Payées</button>
-              <button onClick={() => setStatusFilter('pending')} className={`px-5 py-2.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all ${statusFilter === 'pending' ? 'bg-amber-500 text-white shadow-md' : 'text-gray-400 hover:text-[#222F3E]'}`}>Attente</button>
+              <button onClick={() => setStatusFilter('pending')} className={`px-5 py-2.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all ${statusFilter === 'pending' ? 'bg-slate-500 text-white shadow-md' : 'text-gray-400 hover:text-[#222F3E]'}`}>Attente</button>
             </div>
           </div>
 
           {/* ── PRO LEDGER TABLE ── */}
-          <div className="dash-card p-0 overflow-hidden border border-white/80">
+          <div className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden border border-white/80">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
@@ -254,14 +252,14 @@ export default function ProInvoicesPage() {
                         initial={{ opacity: 0 }} 
                         animate={{ opacity: 1 }} 
                         transition={{ delay: i * 0.05 }}
-                        className={`group hover:bg-[#F8F5F0]/50 transition-colors ${selectedInvoices.includes(inv.id) ? 'bg-[#5F27CD]/5' : ''}`}
+                        className={`group hover:bg-[#F8F5F0]/50 transition-colors ${selectedInvoices.includes(inv.id) ? 'bg-[#059669]/5' : ''}`}
                       >
                         <td className="px-4 py-4 text-center">
                            <input 
                              type="checkbox" 
                              checked={selectedInvoices.includes(inv.id)}
                              onChange={() => toggleSelect(inv.id)}
-                             className="w-4 h-4 rounded border-gray-200 text-[#5F27CD] focus:ring-[#5F27CD]"
+                             className="w-4 h-4 rounded border-gray-200 text-[#059669] focus:ring-[#059669]"
                            />
                         </td>
                         <td className="px-4 py-4 font-bold text-[#222F3E] text-xs">{inv.id}</td>
@@ -274,22 +272,22 @@ export default function ProInvoicesPage() {
                           <button
                             onClick={() => inv.status === 'pending' && setExpandedId(expandedId === inv.id ? null : inv.id)}
                             className={`inline-flex px-4 py-1.5 rounded-lg text-[0.5rem] font-black uppercase tracking-widest transition-all ${
-                              inv.status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600 hover:brightness-95 active:scale-95'
+                              inv.status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-50 text-slate-600 hover:brightness-95 active:scale-95'
                             }`}
                           >
                             {inv.status === 'paid' ? `Payée • ${inv.method}` : 'Action'}
                           </button>
                         </td>
                         <td className="px-4 py-4 text-right space-x-2">
-                          <button onClick={() => generateProPDF(inv)} className="p-2 bg-white border border-gray-100 rounded-lg text-gray-400 hover:text-[#5F27CD] transition-all" title="PDF"><Download size={14} /></button>
+                          <button onClick={() => generateProPDF(inv)} className="p-2 bg-white border border-gray-100 rounded-lg text-gray-400 hover:text-[#059669] transition-all" title="PDF"><Download size={14} /></button>
                           <button 
                             onClick={() => inv.status === 'pending' && sendReminder(inv)} 
-                            className={`p-2 border rounded-lg transition-all ${inv.status === 'pending' ? 'bg-amber-50 border-amber-100 text-amber-500 hover:bg-amber-100' : 'bg-gray-50 border-gray-100 text-gray-200 cursor-not-allowed'}`}
+                            className={`p-2 border rounded-lg transition-all ${inv.status === 'pending' ? 'bg-slate-50 border-slate-100 text-slate-500 hover:bg-slate-100' : 'bg-gray-50 border-gray-100 text-gray-200 cursor-not-allowed'}`}
                             title="Rappel"
                           >
                              <Bell size={14} />
                           </button>
-                          <button onClick={() => router.push(`/therapist/invoice/${inv.id}`)} className="p-2 bg-white border border-gray-100 rounded-lg text-gray-400 hover:text-[#5F27CD] transition-all" title="Détails"><ChevronRight size={14} /></button>
+                          <button onClick={() => router.push(`/therapist/invoice/${inv.id}`)} className="p-2 bg-white border border-gray-100 rounded-lg text-gray-400 hover:text-[#059669] transition-all" title="Détails"><ChevronRight size={14} /></button>
                         </td>
                       </motion.tr>
 
@@ -304,9 +302,9 @@ export default function ProInvoicesPage() {
                             <td colSpan={7} className="bg-gray-50/50 p-4 border-b border-gray-100">
                               <div className="flex flex-wrap gap-3 justify-center">
                                 {[
-                                  { label: 'Twint', icon: Smartphone, color: '#5F27CD' },
-                                  { label: 'Carte', icon: CreditCard, color: '#0ABDE3' },
-                                  { label: 'Espèces', icon: Banknote, color: '#1DD1A1' },
+                                  { label: 'Twint', icon: Smartphone, color: '#059669' },
+                                  { label: 'Carte', icon: CreditCard, color: '#10B981' },
+                                  { label: 'Espèces', icon: Banknote, color: '#34D399' },
                                 ].map((m) => (
                                   <motion.button
                                     key={m.label}
@@ -338,10 +336,10 @@ export default function ProInvoicesPage() {
                 initial={{ opacity: 0, y: 100 }} 
                 animate={{ opacity: 1, y: 0 }} 
                 exit={{ opacity: 0, y: 100 }}
-                className="fixed bottom-12 left-1/2 -translate-x-1/2 bg-[#222F3E] text-white px-10 py-6 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-10 z-[100] border border-white/10 backdrop-blur-3xl"
+                className="fixed bottom-12 left-1/2 -translate-x-1/2 bg-[#222F3E] text-white px-6 py-6 rounded-[1.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-5 z-[100] border border-white/10 backdrop-blur-3xl"
               >
                 <div className="flex items-center gap-4">
-                   <div className="w-10 h-10 rounded-full bg-[#5F27CD] flex items-center justify-center font-black text-xs">{selectedInvoices.length}</div>
+                   <div className="w-10 h-10 rounded-full bg-[#059669] flex items-center justify-center font-black text-xs">{selectedInvoices.length}</div>
                    <p className="text-[0.65rem] font-black uppercase tracking-widest opacity-60">Dossiers Sélectionnés</p>
                 </div>
                 <div className="h-8 w-px bg-white/10" />
@@ -349,7 +347,7 @@ export default function ProInvoicesPage() {
                   onClick={bulkReminder}
                   className="flex items-center gap-3 px-8 py-3 bg-white/10 hover:bg-white/20 rounded-full text-[0.65rem] font-black uppercase tracking-widest transition-all"
                 >
-                  <Mail size={16} className="text-[#0ABDE3]" /> Envoyer Relances Groupées
+                  <Mail size={16} className="text-[#10B981]" /> Envoyer Relances Groupées
                 </button>
                 <button 
                    onClick={() => setSelectedInvoices([])}
