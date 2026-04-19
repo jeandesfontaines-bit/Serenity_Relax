@@ -1,144 +1,268 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useFirestore } from '@/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { Printer, Mail, CheckCircle2 } from 'lucide-react';
-import { useParams } from 'next/navigation';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Send, ArrowLeft, CreditCard, Banknote, Smartphone, CheckCircle, Clock, Edit, Sparkles, User, FileText, ChevronRight } from 'lucide-react';
+import jsPDF from 'jspdf';
+import { useRouter, useParams } from 'next/navigation';
+import { Navbar } from '@/components/navbar';
 
-export default function InvoicePage() {
+export default function InvoiceDetail() {
+  const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
-  const firestore = useFirestore();
-  const [invoice, setInvoice] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [isSending, setIsSending] = useState(false);
-  const [sent, setSent] = useState(false);
+  const invoiceId = params.id as string;
 
-  const sendByEmail = async () => {
-    setIsSending(true);
-    // Simulation d'envoi
-    await new Promise(r => setTimeout(r, 1500));
-    setIsSending(false);
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
+  const [invoice, setInvoice] = useState({
+    id: invoiceId || 'INV-20260413-001',
+    client: 'Marie Dupont',
+    date: '13 avril 2026',
+    amount: 180,
+    status: 'pending' as 'paid' | 'pending',
+    paymentMethod: null as string | null,
+    service: 'Massage sensoriel 90 min',
+    notes: 'Cliente très détendue après la séance. A demandé de privilégier les huiles de lavande la prochaine fois.',
+  });
+
+  const [expanded, setExpanded] = useState(false);
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
+
+  const generatePDF = () => {
+    try {
+        const doc = new jsPDF();
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(24);
+        doc.setTextColor(95, 39, 205); 
+        doc.text('SERENITY RELAX', 20, 30);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text('Excellence Thérapeutique • Genève Cointrin', 20, 38);
+        
+        doc.setDrawColor(240, 240, 240);
+        doc.line(20, 45, 190, 45);
+        
+        doc.setTextColor(34, 47, 62);
+        doc.setFontSize(12);
+        doc.text(`Facture N° : ${invoice.id}`, 20, 55);
+        doc.text(`Date d'Émission : ${invoice.date}`, 20, 62);
+        
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text('DESTINATAIRE', 20, 80);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
+        doc.text(invoice.client, 20, 88);
+        
+        doc.setFillColor(248, 245, 240);
+        doc.rect(20, 100, 170, 40, 'F');
+        
+        doc.setFont("helvetica", "bold");
+        doc.text('DÉSIGNATION', 30, 112);
+        doc.text('MONTANT (CHF)', 140, 112);
+        
+        doc.setFont("helvetica", "normal");
+        doc.text(invoice.service, 30, 125);
+        doc.text(`${invoice.amount}.00`, 154, 125);
+        
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(95, 39, 205);
+        doc.text(`TOTAL RÉGLÉ : ${invoice.amount} CHF`, 20, 170);
+        
+        if (invoice.status === 'paid') {
+           doc.setFontSize(10);
+           doc.setTextColor(29, 209, 161);
+           doc.text(`Moyen de paiement : ${invoice.paymentMethod}`, 20, 180);
+        }
+
+        doc.setFontSize(10);
+        doc.setTextColor(150, 150, 150);
+        doc.text('Agrément ASCA/RME. Merci pour votre confiance.', 20, 280);
+        
+        doc.save(`facture-${invoice.id}.pdf`);
+    } catch (e) {
+        console.error("PDF Fail:", e);
+    }
   };
 
-  useEffect(() => {
-    if (!firestore || !id) return;
-    const fetchInvoice = async () => {
-      try {
-        const docRef = doc(firestore, 'invoices', id);
-        const snapshot = await getDoc(docRef);
-        if (snapshot.exists()) {
-          setInvoice(snapshot.data());
-        } else {
-          console.error("Invoice not found");
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchInvoice();
-  }, [firestore, id]);
+  const resendEmail = () => {
+    alert(`📧 Email de confirmation renvoyé à ${invoice.client}`);
+  };
 
-  if (loading) return <div className="min-h-screen bg-slate-50 flex items-center justify-center font-sans tracking-widest text-[10px] uppercase font-black text-slate-400">Chargement de la facture...</div>;
-  if (!invoice) return <div className="min-h-screen bg-slate-50 flex items-center justify-center font-sans tracking-widest text-[10px] uppercase font-black text-red-400">Facture introuvable</div>;
+  const markAsPaid = (method: string) => {
+    setInvoice(prev => ({ ...prev, status: 'paid', paymentMethod: method }));
+    setExpanded(false);
+  };
+
+  const saveNotes = () => {
+    setIsEditingNotes(false);
+    // Ici tu ajouterais l'appel Firebase updateDoc
+  };
 
   return (
-    <div className="min-h-screen bg-slate-100 font-sans flex flex-col items-center py-10 print:py-0 print:bg-white overflow-hidden">
-      <div className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] flex flex-col relative print:shadow-none print:w-full print:h-auto">
-
-        {/* Action Bar (No Print) */}
-        <div className="p-10 flex justify-between items-center bg-slate-50 border-b border-slate-100 print:hidden no-print">
-          <div className="flex gap-4">
-            <button onClick={() => window.print()} className="px-8 py-4 bg-slate-900 text-white rounded-[1.5rem] font-black text-[11px] uppercase tracking-widest hover:bg-black transition-all flex items-center gap-3">
-              <Printer size={18} /> Imprimer / PDF
-            </button>
-            <button
-              onClick={sendByEmail}
-              disabled={isSending || sent}
-              className={`px-8 py-4 ${sent ? 'bg-emerald-500 text-white' : 'bg-white border border-slate-200 text-slate-600'} rounded-[1.5rem] font-black text-[11px] uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center gap-3`}
-            >
-              {sent ? <CheckCircle2 size={18} /> : <Mail size={18} />}
-              {isSending ? 'Envoi...' : sent ? 'Facture Envoyée' : 'Envoyer par Email'}
-            </button>
-          </div>
-          <button onClick={() => window.close()} className="px-8 py-4 bg-white border border-slate-200 text-slate-400 rounded-[1.5rem] font-black text-[11px] uppercase tracking-widest hover:text-slate-900 transition-all flex items-center gap-3">
-            Fermer
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-[#F8F5F0] pt-32 pb-24 px-6 md:px-12">
+        <div className="max-w-4xl mx-auto space-y-10">
+          
+          <button 
+            onClick={() => router.back()} 
+            className="flex items-center gap-3 text-gray-400 font-black text-[0.65rem] uppercase tracking-widest hover:text-[#5F27CD] transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" /> Retour à l&apos;archive
           </button>
-        </div>
 
-        {/* Invoice Content */}
-        <div className="flex-1 p-20 lg:p-24 bg-white print:p-0">
-          <div className="flex justify-between items-start mb-24">
-            <div>
-              <h1 className="text-4xl font-black text-slate-900 uppercase tracking-normal mb-4">Facture</h1>
-              <p className="text-lg font-bold text-slate-400">#{invoice.invoiceNumber}</p>
-            </div>
-            <div className="text-right">
-              <p className="font-black text-slate-900 uppercase text-xs tracking-widest">Serenity & Relax Therapy</p>
-              <p className="text-[10px] font-bold text-slate-400 mt-1 italic">Route d'Exemple 123, Lausanne</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-20 mb-24 pb-12 border-b border-slate-100">
-            <div>
-              <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-4">Patienté facturé</p>
-              <p className="text-2xl font-black text-slate-900 mb-2">{invoice.clientNameSnapshot}</p>
-              <p className="text-sm font-medium text-slate-500">Dossier #{invoice.clientId?.slice(0, 8)}</p>
-              <p className="text-sm font-medium text-slate-500">Assurance : Complémentaire</p>
-            </div>
-            <div className="text-right">
-              <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-4">Calendrier</p>
-              <div className="space-y-1">
-                <p className="text-sm font-bold text-slate-900 uppercase">Émission : {invoice.issueDate}</p>
-                <p className="text-sm font-bold text-red-500 uppercase">Échéance : Sous 10 jours</p>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="dash-card p-12 lg:p-16 border border-white relative overflow-hidden">
+            
+            {/* ── HEADER SENSORIEL ── */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10 border-b border-gray-100 pb-12 mb-12">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 rounded-xl bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><FileText size={16} /></div>
+                   <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Facturation Détaillée</p>
+                </div>
+                <h1 className="title-luxe text-5xl md:text-6xl">{invoice.id}</h1>
+              </div>
+              <div className="text-right">
+                <p className="text-lg font-serif italic text-gray-400">{invoice.date}</p>
+                <p className="text-6xl font-light text-[#222F3E] mt-2">{invoice.amount} <small className="text-xl font-black opacity-20">CHF</small></p>
               </div>
             </div>
-          </div>
 
-          <table className="w-full text-left mb-24">
-            <thead>
-              <tr className="border-b-4 border-slate-900">
-                <th className="py-6 text-[10px] font-black text-slate-900 uppercase tracking-widest">Description du soin</th>
-                <th className="py-6 text-right text-[10px] font-black text-slate-900 uppercase tracking-widest">Quantité</th>
-                <th className="py-6 text-right text-[10px] font-black text-slate-900 uppercase tracking-widest">Montant</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {(invoice.items || []).map((item: any, idx: number) => (
-                <tr key={idx}>
-                  <td className="py-8">
-                    <p className="font-bold text-slate-900">{item.description}</p>
-                    <p className="text-[10px] text-slate-400 mt-1 uppercase">Code Prestation : 1001</p>
-                  </td>
-                  <td className="py-8 text-right font-bold text-slate-600">{item.quantity}</td>
-                  <td className="py-8 text-right font-black text-slate-900">{item.amount} CHF</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
+              <div className="space-y-8">
+                <div>
+                  <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Patient Souverain</p>
+                  <div className="flex items-center gap-4">
+                     <div className="w-12 h-12 bg-[#F8F5F0] rounded-2xl flex items-center justify-center text-[#5F27CD]"><User size={24} /></div>
+                     <p className="text-3xl font-serif font-medium text-[#222F3E]">{invoice.client}</p>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Rituel Pratiqué</p>
+                  <div className="flex items-center gap-4">
+                     <div className="w-12 h-12 bg-[#F8F5F0] rounded-2xl flex items-center justify-center text-[#0ABDE3]"><Sparkles size={24} /></div>
+                     <p className="text-xl font-serif text-[#222F3E]">{invoice.service}</p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="mt-auto pt-12 border-t border-slate-100 grid grid-cols-2">
-            <div className="max-w-xs">
-              <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-4">Conditions</p>
-              <p className="text-[10px] font-bold text-slate-400 italic">Paiement par virement bancaire ou QR-code. Merci de mentionner le numéro de facture #{invoice.invoiceNumber}.</p>
+              {/* ── TIMELINE PAIEMENT ── */}
+              <div className="space-y-8">
+                <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-gray-400 mb-6 flex items-center gap-3">
+                  <Clock className="w-4 h-4" /> Chronologie des Flux
+                </p>
+                <div className="relative pl-10 space-y-12">
+                   <div className="absolute left-3 top-2 bottom-2 w-[1px] bg-gray-100" />
+                   
+                   <div className="relative">
+                      <div className="absolute -left-10 top-0 w-6 h-6 bg-gray-100 border-4 border-white rounded-full flex items-center justify-center" />
+                      <div>
+                         <p className="text-sm font-bold text-[#222F3E]">Émission de la Facture</p>
+                         <p className="text-xs text-gray-400 font-medium italic mt-1">{invoice.date}</p>
+                      </div>
+                   </div>
+
+                   {invoice.status === 'paid' && (
+                     <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="relative">
+                        <div className="absolute -left-10 top-0 w-6 h-6 bg-[#1DD1A1] border-4 border-white rounded-full flex items-center justify-center shadow-lg shadow-emerald-100" />
+                        <div>
+                           <p className="text-sm font-bold text-[#1DD1A1]">Règlement Confirmé</p>
+                           <p className="text-xs text-emerald-600 font-bold uppercase tracking-widest mt-1">Via {invoice.paymentMethod} • Flux Actif</p>
+                        </div>
+                     </motion.div>
+                   )}
+                </div>
+              </div>
             </div>
-            <div className="text-right flex flex-col justify-center gap-2">
-              <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Montant Total</p>
-              <p className="text-6xl font-black text-slate-900 tracking-tighter">{invoice.totalAmount} <span className="text-2xl opacity-20">CHF</span></p>
-            </div>
-          </div>
-        </div>
 
-        {/* Footer Sign (Print Only) */}
-        <div className="hidden print:block p-20 border-t border-slate-100 text-center">
-          <p className="text-[9px] font-bold text-slate-300 uppercase tracking-widest">Facture générée automatiquement par le système Serenity Relax V2</p>
+            {/* ── ACTIONS DE PAIEMENT INLINE ── */}
+            {invoice.status === 'pending' && (
+              <div className="mt-20">
+                <button
+                  onClick={() => setExpanded(!expanded)}
+                  className="w-full h-24 bg-amber-50 text-amber-700 rounded-[2rem] border border-amber-100 flex items-center justify-between px-10 group hover:bg-amber-100 transition-all font-serif italic text-xl"
+                >
+                  <span className="flex items-center gap-4"><CreditCard className="animate-pulse" /> Marquer comme réglé</span>
+                  <ChevronRight size={20} className={`transition-transform duration-500 ${expanded ? 'rotate-90' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {expanded && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="mt-6 grid grid-cols-3 gap-6"
+                    >
+                      {[
+                        { label: 'Twint', icon: Smartphone, color: '#5F27CD' },
+                        { label: 'Carte', icon: CreditCard, color: '#0ABDE3' },
+                        { label: 'Espèces', icon: Banknote, color: '#1DD1A1' },
+                      ].map((m) => (
+                        <motion.button
+                          key={m.label}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => markAsPaid(m.label)}
+                          className="flex flex-col items-center justify-center gap-5 py-10 glass rounded-[2.5rem] border border-white hover:border-[#5F27CD]/20 transition-all shadow-sm"
+                        >
+                          <m.icon size={36} style={{ color: m.color }} />
+                          <span className="font-black uppercase tracking-[0.2em] text-[0.65rem] text-[#222F3E]">{m.label}</span>
+                        </motion.button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {/* ── NOTES DYNAMIQUES ── */}
+            <div className="mt-20 border-t border-gray-50 pt-16">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-4">
+                   <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-gray-400">Notes & Observations</p>
+                </div>
+                <button
+                  onClick={() => isEditingNotes ? saveNotes() : setIsEditingNotes(true)}
+                  className="flex items-center gap-3 text-[#5F27CD] text-[0.6rem] font-black uppercase tracking-widest hover:underline"
+                >
+                  <Edit size={14} /> {isEditingNotes ? 'Terminer' : 'Éditer'}
+                </button>
+              </div>
+
+              {isEditingNotes ? (
+                <textarea
+                  autoFocus
+                  value={invoice.notes}
+                  onChange={(e) => setInvoice({ ...invoice, notes: e.target.value })}
+                  rows={6}
+                  className="w-full bg-white/60 backdrop-blur-md border border-[#5F27CD]/20 p-8 rounded-[2.5rem] text-xl font-serif italic focus:outline-none focus:ring-8 focus:ring-indigo-50 transition-all resize-none shadow-inner"
+                />
+              ) : (
+                <div className="bg-[#F8F5F0]/60 p-10 rounded-[2.5rem] text-gray-600 font-serif italic text-xl leading-relaxed italic border border-white">
+                  {invoice.notes}
+                </div>
+              )}
+            </div>
+
+            {/* ── ACTIONS FINALES ── */}
+            <div className="mt-20 flex flex-col sm:flex-row gap-6">
+              <button onClick={generatePDF} className="flex-1 btn-luxe flex items-center justify-center gap-4 py-8 text-lg">
+                <Download size={24} /> Télécharger l&apos;Acte PDF
+              </button>
+              <button 
+                onClick={resendEmail} 
+                className="flex-1 flex items-center justify-center gap-4 py-8 text-[0.7rem] font-black uppercase tracking-[0.2em] border border-gray-200 rounded-[2rem] hover:bg-white hover:shadow-xl transition-all"
+              >
+                <Send size={20} className="text-gray-400" /> Renvoyer par Email
+              </button>
+            </div>
+
+          </motion.div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

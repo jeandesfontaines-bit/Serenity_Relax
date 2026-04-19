@@ -10,9 +10,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-        serif: ['"DM Serif Display"', 'serif'],
-        cursive: ['"Meow Script"', 'cursive'],
+        sans: ['var(--font-plus-jakarta)', 'sans-serif'],
+        serif: ['var(--font-dm-serif)', 'serif'],
+        cursive: ['var(--font-meow)', 'cursive'],
         code: ['monospace'],
       },
       colors: {

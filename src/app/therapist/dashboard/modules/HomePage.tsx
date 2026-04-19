@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
-import { Calendar, AlertCircle, Clock, ChevronRight, Target, Edit3, TrendingUp } from 'lucide-react';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Calendar, Users, DollarSign, Clock, LayoutGrid, Target, Sparkles } from 'lucide-react';
 import { Appointment } from '../types';
 
 interface HomePageProps {
@@ -12,250 +13,175 @@ interface HomePageProps {
   onEditGoal: () => void;
 }
 
-export default function HomePage({
-  appointments,
-  monthlyGoal,
-  onSelectAppt,
-  onNavigate,
-  onEditGoal,
-}: HomePageProps) {
-  const todayStr = format(new Date(), 'yyyy-MM-dd');
-  const currentMonth = format(new Date(), 'yyyy-MM');
+export default function HomePage({ appointments, monthlyGoal, onSelectAppt, onNavigate, onEditGoal }: HomePageProps) {
+  const today = new Date().toISOString().split('T')[0];
+  const todayAppts = appointments.filter(a => a.date === today).sort((a, b) => a.time.localeCompare(b.time));
 
-  const todayAppts = useMemo(() =>
-    appointments
-      .filter(a => a.date === todayStr)
-      .sort((a, b) => (a.time || '').localeCompare(b.time || '')),
-    [appointments, todayStr],
-  );
-
-  const latePayments = useMemo(() =>
-    appointments.filter(a => !a.paid && a.date && a.date < todayStr),
-    [appointments, todayStr],
-  );
-
-  const paidThisMonth = useMemo(() =>
-    appointments
-      .filter(a => a.paid && a.date && a.date.startsWith(currentMonth))
-      .reduce((sum, a) => sum + (a.price || 150), 0),
-    [appointments, currentMonth],
-  );
-
-  const todayRevenue = todayAppts.reduce((s, a) => s + (a.price || 150), 0);
-  const progress = Math.min(100, (paidThisMonth / monthlyGoal) * 100);
+  const totalToday = todayAppts.length;
+  const revenueToday = todayAppts.reduce((sum, a) => sum + (a.price || 0), 0);
+  
+  // Calculate current month's total revenue for goal tracking
+  const currentMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
+  const monthRevenue = appointments
+    .filter(a => a.date.startsWith(currentMonth))
+    .reduce((sum, a) => sum + (a.price || 0), 0);
+  
+  const goalPercent = Math.min(Math.round((monthRevenue / monthlyGoal) * 100), 100);
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      {/* Page header */}
-      <header className="h-14 border-b border-slate-200 bg-white px-6 sm:px-10 flex items-center justify-between shrink-0">
-        <h1 className="text-sm font-semibold text-slate-900">Tableau de bord</h1>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => onNavigate('scheduler')}
-            className="flex items-center gap-1.5 h-8 px-3 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+    <div className="max-w-7xl mx-auto space-y-12">
+      {/* ── WELCOME SECTION LUXE ── */}
+      <motion.header 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center gap-6 mb-12 sm:mb-16"
+      >
+        <span className="text-6xl sm:text-7xl animate-float">🌿</span>
+        <div>
+          <h1 className="title-luxe text-5xl sm:text-7xl leading-tight">Bonjour João 👋</h1>
+          <p className="text-xl sm:text-2xl text-gray-500  mt-1">Ton sanctuaire est prêt.</p>
+        </div>
+      </motion.header>
+
+      {/* STATS GRID */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <motion.div 
+          className="bg-white/80 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white hover:shadow-2xl transition-all duration-500 group" 
+          whileHover={{ y: -10 }}
+        >
+          <div className="flex justify-between items-start">
+            <div className="space-y-4">
+              <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-[#54A0FF]">Flux du jour</p>
+              <p className="text-5xl font-serif font-medium">{totalToday}</p>
+              <p className="text-xs font-bold text-gray-400">Rendez-vous prévus</p>
+            </div>
+            <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-[#5F27CD] group-hover:scale-110 transition-transform">
+              <Calendar className="w-6 h-6" />
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="bg-white/80 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white hover:shadow-2xl transition-all duration-500 group" 
+          whileHover={{ y: -10 }}
+        >
+          <div className="flex justify-between items-start">
+            <div className="space-y-4">
+              <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-[#1DD1A1]">CA Journalier</p>
+              <p className="text-5xl font-serif font-medium">{revenueToday}<span className="text-xl ml-1">CHF</span></p>
+              <p className="text-xs font-bold text-gray-400">Restaurations générées</p>
+            </div>
+            <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-[#1DD1A1] group-hover:scale-110 transition-transform">
+              <DollarSign className="w-6 h-6" />
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="bg-white/80 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white hover:shadow-2xl transition-all duration-500 group relative overflow-hidden" 
+          whileHover={{ y: -10 }}
+        >
+          <div className="flex justify-between items-start relative z-10">
+            <div className="space-y-4">
+              <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-[#FF9F43]">Précision Objectif</p>
+              <p className="text-5xl font-serif font-medium">{goalPercent}<span className="text-xl ml-1">%</span></p>
+              <button 
+                onClick={onEditGoal} 
+                className="text-[0.55rem] font-black uppercase tracking-widest bg-white/60 hover:bg-white px-3 py-1.5 rounded-lg border border-gray-100 transition-colors"
+              >
+                Cible: {monthlyGoal} CHF
+              </button>
+            </div>
+            <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-[#FF9F43] group-hover:scale-110 transition-transform">
+              <Target className="w-6 h-6" />
+            </div>
+          </div>
+          {/* Progress gauge visual at bottom of card */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-100/50">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: `${goalPercent}%` }}
+              className="h-full bg-gradient-to-r from-[#FF9F43] to-[#FF6B6B]"
+            />
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="bg-white/80 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white hover:shadow-2xl transition-all duration-500 group" 
+          whileHover={{ y: -10 }}
+        >
+          <div className="flex justify-between items-start">
+            <div className="space-y-4">
+              <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-[#0ABDE3]">Fidélité Mensuelle</p>
+              <p className="text-5xl font-serif font-medium">42</p>
+              <p className="text-xs font-bold text-gray-400">Patients ce mois</p>
+            </div>
+            <div className="w-12 h-12 bg-cyan-50 rounded-2xl flex items-center justify-center text-[#0ABDE3] group-hover:scale-110 transition-transform">
+              <Users className="w-6 h-6" />
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* AGENDA SECTION */}
+      <div className="space-y-8 pt-8 px-2">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-serif font-medium text-[#222F3E] tracking-tight">Agenda du <span className="italic">jour</span></h2>
+            <p className="text-sm font-sans font-medium text-[#576574]">Optimisation de votre temps de soin.</p>
+          </div>
+          <button 
+            onClick={() => onNavigate('scheduler')} 
+            className="flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#222F3E] text-white text-[0.7rem] font-black uppercase tracking-widest hover:bg-[#5F27CD] transition-all hover:shadow-xl hover:shadow-indigo-100 active:scale-95 self-start sm:self-auto"
           >
-            <Calendar size={13} />
-            {todayAppts.length} séances aujourd'hui
+            Vue calendrier complet <Calendar className="w-4 h-4 ml-1" />
           </button>
-          {latePayments.length > 0 && (
-            <button
-              onClick={() => onNavigate('accounting')}
-              className="flex items-center gap-1.5 h-8 px-3 text-xs font-medium text-rose-600 bg-rose-50 rounded-lg hover:bg-rose-100 transition-colors"
-            >
-              <AlertCircle size={13} />
-              {latePayments.length} impayé{latePayments.length > 1 ? 's' : ''}
-            </button>
+        </div>
+
+        <div className="space-y-6">
+          {todayAppts.length > 0 ? (
+            todayAppts.map((appt) => (
+              <motion.div
+                key={appt.id}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                onClick={() => onSelectAppt(appt)}
+                className="bg-white/60 backdrop-blur-md rounded-[2.5rem] p-6 flex flex-col sm:flex-row sm:items-center gap-6 cursor-pointer border border-transparent hover:border-white hover:bg-white hover:shadow-xl transition-all duration-500 group relative"
+              >
+                <div className="flex items-center gap-6 flex-1">
+                  <div className="w-20 text-center py-2 bg-white rounded-2xl border border-gray-50 shadow-sm group-hover:bg-indigo-50 transition-colors">
+                    <p className="text-2xl font-serif font-medium text-[#5F27CD] tracking-tight">{appt.time}</p>
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <p className="text-xl font-serif font-medium text-[#222F3E] tracking-tight group-hover:text-[#5F27CD] transition-colors">{appt.clientNameSnapshot || 'Patient'}</p>
+                    <div className="flex items-center gap-2 text-gray-400">
+                      <Clock className="w-3 h-3" />
+                      <p className="text-[0.75rem] font-bold uppercase tracking-widest leading-none">{appt.serviceName || appt.title || 'Soin Thérapeutique'}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between sm:justify-end gap-6 sm:pl-6 sm:border-l border-gray-100">
+                  <div className="flex flex-col items-end">
+                    <span className={`inline-block px-4 py-1.5 rounded-xl text-[0.65rem] font-black uppercase tracking-wider ${appt.paid ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-600'}`}>
+                      {appt.paid ? 'Règlement effectué' : 'Action de paiement'}
+                    </span>
+                    <p className="text-base font-serif font-medium mt-1 text-gray-500">{appt.price || 150} CHF</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <div className="bg-white/40 backdrop-blur-md rounded-[3rem] border border-dashed border-gray-200 py-24 text-center space-y-4">
+              <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto text-gray-300">
+                <LayoutGrid className="w-8 h-8" />
+              </div>
+              <p className="text-xl  text-gray-400">Aucune session prévue pour aujourd&apos;hui — magnifique respiration !</p>
+            </div>
           )}
         </div>
-      </header>
-
-      {/* Content */}
-      <main className="flex-1 overflow-auto">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 py-6 sm:py-8">
-          {/* Stats row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <StatCard
-              label="Séances aujourd'hui"
-              value={String(todayAppts.length)}
-              sub={`${todayRevenue} CHF prévus`}
-              accent="indigo"
-            />
-            <StatCard
-              label="Revenus ce mois"
-              value={`${(paidThisMonth / 1000).toFixed(1)}K`}
-              sub={`Objectif : ${(monthlyGoal / 1000).toFixed(0)}K CHF`}
-              accent="emerald"
-              action={
-                <button onClick={onEditGoal} className="text-slate-400 hover:text-slate-600 transition-colors">
-                  <Edit3 size={13} />
-                </button>
-              }
-            />
-            <StatCard
-              label="Impayés"
-              value={String(latePayments.length)}
-              sub={`${latePayments.reduce((s, a) => s + (a.price || 150), 0)} CHF total`}
-              accent="rose"
-            />
-          </div>
-
-          {/* Progress bar */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 mb-8">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Target size={15} className="text-indigo-600" />
-                <span className="text-xs font-medium text-slate-700">Progression mensuelle</span>
-              </div>
-              <span className="text-xs font-medium text-slate-500">{progress.toFixed(0)}%</span>
-            </div>
-            <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-indigo-600 rounded-full transition-all duration-700"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Two-column layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8">
-            {/* Timeline */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-slate-900">
-                  Séances du jour
-                </h2>
-                <button
-                  onClick={() => onNavigate('scheduler')}
-                  className="text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
-                >
-                  Voir l'agenda →
-                </button>
-              </div>
-
-              {todayAppts.length > 0 ? (
-                <div className="space-y-2">
-                  {todayAppts.map(appt => (
-                    <div
-                      key={appt.id}
-                      onClick={() => onSelectAppt(appt)}
-                      className="group bg-white border border-slate-200 rounded-xl px-5 py-4 flex items-center justify-between hover:border-slate-300 hover:shadow-sm cursor-pointer transition-all duration-150"
-                    >
-                      <div className="flex items-center gap-4 min-w-0">
-                        <div className="w-16 h-10 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center text-xs font-semibold text-slate-700">
-                          {appt.time}
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-slate-900 truncate">
-                            {appt.clientNameSnapshot || appt.title}
-                          </p>
-                          <p className="text-xs text-slate-500 truncate">
-                            {appt.serviceName || 'Séance'}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 shrink-0">
-                        <span className={`px-2.5 py-1 rounded-md text-[10px] font-medium ${appt.paid
-                          ? 'bg-emerald-50 text-emerald-700'
-                          : 'bg-amber-50 text-amber-700'
-                        }`}>
-                          {appt.paid ? 'Payé' : 'À régler'}
-                        </span>
-                        <ChevronRight size={15} className="text-slate-300 group-hover:text-slate-500 transition-colors" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white border border-slate-200 rounded-xl py-16 text-center">
-                  <Clock size={28} className="text-slate-300 mx-auto mb-3" strokeWidth={1.5} />
-                  <p className="text-sm text-slate-500">Aucune séance programmée aujourd'hui</p>
-                </div>
-              )}
-            </div>
-
-            {/* Urgent payments */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-slate-900">
-                  Paiements en retard
-                </h2>
-                <button
-                  onClick={() => onNavigate('accounting')}
-                  className="text-xs font-medium text-rose-600 hover:text-rose-700 transition-colors"
-                >
-                  Gérer →
-                </button>
-              </div>
-
-              <div className="bg-white border border-slate-200 rounded-xl divide-y divide-slate-100">
-                {latePayments.length > 0 ? (
-                  <>
-                    {latePayments.slice(0, 5).map(a => (
-                      <div
-                        key={a.id}
-                        onClick={() => onSelectAppt(a)}
-                        className="px-5 py-3.5 flex items-center justify-between hover:bg-slate-50 cursor-pointer transition-colors"
-                      >
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-slate-900 truncate">
-                            {a.clientNameSnapshot || a.title}
-                          </p>
-                          <p className="text-xs text-slate-500">{a.date}</p>
-                        </div>
-                        <span className="text-sm font-semibold text-rose-600 shrink-0">
-                          {a.price || 150} CHF
-                        </span>
-                      </div>
-                    ))}
-                    {latePayments.length > 5 && (
-                      <div className="px-5 py-3 text-center">
-                        <span className="text-xs text-slate-400">
-                          + {latePayments.length - 5} autres
-                        </span>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="py-10 text-center">
-                    <TrendingUp size={24} className="text-emerald-400 mx-auto mb-2" />
-                    <p className="text-sm text-slate-500">Aucun impayé</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-}
-
-/* ── STAT CARD ── */
-function StatCard({
-  label, value, sub, accent, action,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-  accent: 'indigo' | 'emerald' | 'rose';
-  action?: React.ReactNode;
-}) {
-  const colors = {
-    indigo: 'bg-indigo-50 text-indigo-700',
-    emerald: 'bg-emerald-50 text-emerald-700',
-    rose: 'bg-rose-50 text-rose-700',
-  };
-
-  return (
-    <div className="bg-white border border-slate-200 rounded-xl p-5">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-medium text-slate-500">{label}</span>
-        {action}
       </div>
-      <div className="flex items-baseline gap-2">
-        <span className={`text-2xl font-semibold ${colors[accent].split(' ')[1]}`}>{value}</span>
-      </div>
-      <p className="text-xs text-slate-400 mt-1">{sub}</p>
     </div>
   );
 }

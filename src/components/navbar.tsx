@@ -19,6 +19,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
   const firestore = useFirestore();
   const pathname = usePathname();
   const router = useRouter();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [sessionClientId, setSessionClientId] = useState<string | null>(null);
@@ -31,9 +32,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
 
     if (storedId && firestore) {
       getDoc(doc(firestore, 'clients', storedId)).then(snap => {
-        if (snap.exists()) {
-          setClientName(snap.data().firstName);
-        }
+        if (snap.exists()) setClientName(snap.data().firstName);
       });
     }
   }, [firestore]);
@@ -42,9 +41,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
 
   const handleSignOut = async () => {
     try {
-      if (auth.currentUser) {
-        await signOut(auth);
-      }
+      if (auth?.currentUser) await signOut(auth);
       sessionStorage.removeItem('serenity_client_id');
       setSessionClientId(null);
       setClientName(null);
@@ -57,8 +54,8 @@ export function Navbar({ onBookingClick }: NavbarProps) {
 
   const isTherapistArea = pathname?.startsWith('/therapist');
   const isLoginPage = pathname === '/login';
-
   const isTherapist = user && user.email === 'jean.desfontaines@gmail.com';
+  
   const effectiveUser = user && !user.isAnonymous ? {
     name: user.displayName?.split(' ')[0] || 'Profil',
     photo: user.photoURL,
@@ -78,142 +75,116 @@ export function Navbar({ onBookingClick }: NavbarProps) {
   if (isLoginPage) return null;
 
   return (
-    <div className="absolute top-6 left-0 right-0 z-40 px-6">
-      <nav className="max-w-[1200px] xl:max-w-6xl mx-auto bg-white/70 backdrop-blur-2xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.06)] rounded-full px-6 py-2.5 md:px-10 md:py-3.5">
-        <div className="flex justify-between items-center">
-          <Link href="/" className="flex items-baseline gap-2 md:gap-3 cursor-pointer group">
-            <span className="whitespace-nowrap font-sans font-black text-[0.75rem] tracking-[0.2em] text-[#222F3E] md:text-[0.85rem] lg:text-[1rem]">Serenity Relax</span>
-            <span className="whitespace-nowrap font-cursive text-[1.2rem] text-[#5F27CD] md:text-[1.4rem] lg:text-[1.6rem]">by João</span>
+    <>
+      <div className="sticky top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm">
+        <nav className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+          <Link href="/" className="flex items-baseline gap-1.5 hover:opacity-80 transition-opacity">
+            <span className="font-sans font-black tracking-[0.15em] text-[#222F3E] text-base">SERENITY</span>
+            <span className="font-cursive text-xl text-[#5F27CD]">Relax</span>
           </Link>
-          
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+
+          <div className="hidden md:flex items-center gap-6">
             {isTherapistArea ? (
-              <>
-                {adminLinks.map((link) => (
-                  <Link 
-                    key={link.id} 
-                    href={link.href} 
-                    className={`whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-colors md:text-[0.7rem] lg:text-[0.75rem] ${pathname === link.href ? 'text-[#54A0FF]' : 'text-[#576574] hover:text-[#222F3E]'}`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </>
+              adminLinks.map((link) => (
+                <Link 
+                  key={link.id} 
+                  href={link.href} 
+                  className={`text-[0.65rem] font-sans font-black uppercase tracking-widest transition-colors ${pathname === link.href ? 'text-[#5F27CD]' : 'text-[#576574] hover:text-[#222F3E]'}`}
+                >
+                  {link.label}
+                </Link>
+              ))
             ) : (
               <>
                 {isTherapist && (
-                  <Link 
-                    href="/therapist/dashboard" 
-                    className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#5F27CD] hover:text-[#5F27CD]/80 transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-1.5"
-                  >
+                  <Link href="/therapist/dashboard" className="text-[0.65rem] font-sans font-black uppercase tracking-widest text-[#5F27CD] flex items-center gap-1.5">
                     <ShieldCheck size={14} /> Dashboard
                   </Link>
                 )}
-
                 {!isTherapist && effectiveUser && (
-                  <Link 
-                    href="/client/portal" 
-                    className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] hover:text-[#54A0FF] transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-2"
-                  >
+                  <Link href="/client/portal" className="text-[0.65rem] font-sans font-black uppercase tracking-widest text-[#222F3E] flex items-center gap-1.5">
                     <Sparkles size={14} className="text-[#FECA57]" /> Mon Sanctuaire
                   </Link>
                 )}
-
-                <button 
+                <button
                   onClick={onBookingClick}
-                  className="whitespace-nowrap flex items-center justify-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-5 py-2 rounded-full md:text-[0.7rem] lg:text-[0.75rem] text-white"
-                  style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)', boxShadow: '0 4px 15px rgba(84,160,255,0.3)' }}
+                  className="px-5 py-2 rounded-lg font-black uppercase text-[0.65rem] tracking-widest bg-gradient-to-r from-[#5F27CD] to-[#0ABDE3] text-white shadow-sm hover:brightness-110 active:scale-95 transition-all"
                 >
                   Réserver
                 </button>
               </>
             )}
 
-            <div className="h-6 w-[1px] bg-[#C8D6E5]" />
-
             {effectiveUser ? (
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col items-end justify-center">
-                   <span className="whitespace-nowrap text-[0.6rem] md:text-[0.65rem] uppercase tracking-widest font-black text-[#222F3E] leading-none mb-1">{effectiveUser.name}</span>
-                   <button onClick={handleSignOut} className="whitespace-nowrap text-[0.55rem] md:text-[0.6rem] uppercase tracking-widest font-bold text-[#FF6B6B] hover:text-[#EE5A53] transition-colors leading-none">Déconnexion</button>
+              <div className="flex items-center gap-3 pl-4 border-l border-gray-100">
+                <div className="text-right">
+                  <p className="text-[0.55rem] font-black uppercase tracking-widest text-[#222F3E]">{effectiveUser.name}</p>
+                  <button onClick={handleSignOut} className="text-[0.5rem] font-bold uppercase text-[#FF6B6B] hover:underline">Déconnexion</button>
                 </div>
                 {effectiveUser.photo ? (
-                  <img src={effectiveUser.photo} alt="" className="w-9 h-9 rounded-full border-2 border-[#54A0FF]/20 shadow-sm object-cover" />
+                  <img src={effectiveUser.photo} alt="" className="w-8 h-8 rounded-lg object-cover border border-white shadow-sm" />
                 ) : (
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}>
+                  <div className="w-8 h-8 rounded-lg bg-[#F8F5F0] text-[#5F27CD] flex items-center justify-center border border-gray-100">
                     <UserIcon size={14} />
                   </div>
                 )}
               </div>
             ) : (
-              <Link 
-                href="/login" 
-                className="whitespace-nowrap text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] hover:text-[#54A0FF] transition-all md:text-[0.7rem] lg:text-[0.75rem] flex items-center gap-2"
-              >
-                Connexion
-              </Link>
+              <Link href="/login" className="text-[0.65rem] font-sans font-black uppercase tracking-widest text-[#222F3E] hover:text-[#5F27CD]">Connexion</Link>
             )}
           </div>
-          
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-[#222F3E] p-1">
-            {isMenuOpen ? <X size={18}/> : <Menu size={18}/>}
-          </button>
-        </div>
 
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="absolute top-full left-0 right-0 mt-4 bg-white/95 backdrop-blur-2xl shadow-2xl rounded-[2rem] border border-white/20 p-8 flex flex-col gap-6 md:hidden text-center overflow-hidden"
-            >
-              {isTherapistArea ? (
-                adminLinks.map((link) => (
-                  <Link key={link.id} href={link.href} onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] py-2 md:text-[0.7rem] lg:text-[0.75rem]">
-                    {link.label}
-                  </Link>
-                ))
-              ) : (
-                <>
-                  {isTherapist && (
-                    <Link href="/therapist/dashboard" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#5F27CD] py-2 md:text-[0.7rem] lg:text-[0.75rem]">
-                      Dashboard Administrateur
-                    </Link>
-                  )}
-                  
-                  {effectiveUser && effectiveUser.type === 'client' && (
-                    <Link href="/client/portal" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] py-2 md:text-[0.7rem] lg:text-[0.75rem]">
-                      Mon Sanctuaire
-                    </Link>
-                  )}
-
-                  <button 
-                    onClick={() => { setIsMenuOpen(false); onBookingClick?.(); }} 
-                    className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-white rounded-full py-2.5 w-full md:text-[0.7rem] lg:text-[0.75rem]"
-                    style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }}
-                  >
-                    Réserver
-                  </button>
-                  
-                  {!effectiveUser ? (
-                    <Link href="/login" onClick={() => setIsMenuOpen(false)} className="text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#222F3E] py-2 pt-4 border-t border-[#C8D6E5]/50">
-                      Connexion
-                    </Link>
-                  ) : (
-                    <div className="pt-4 border-t border-[#C8D6E5]/50 flex flex-col items-center gap-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[0.65rem] font-black uppercase tracking-widest">{effectiveUser.name}</span>
-                      </div>
-                      <button onClick={handleSignOut} className="text-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] text-[#FF6B6B] md:text-[0.7rem] lg:text-[0.75rem]">Déconnexion</button>
-                    </div>
-                  )}
-                </>
-              )}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            <motion.div animate={{ rotate: isMenuOpen ? 180 : 0 }}>
+              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </div>
+          </button>
+        </nav>
+      </div>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 backdrop-blur-xl z-[999] md:hidden"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <motion.div
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+              className="bg-white rounded-b-[2rem] px-6 pt-24 pb-10 flex flex-col gap-6 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex flex-col gap-4 text-xl font-black uppercase tracking-tighter">
+                <Link href="/" onClick={() => setIsMenuOpen(false)}>Accueil</Link>
+                {!isTherapistArea && (
+                  <button onClick={() => { onBookingClick?.(); setIsMenuOpen(false); }} className="text-left">Réserver</button>
+                )}
+                {isTherapist && (
+                  <Link href="/therapist/dashboard" onClick={() => setIsMenuOpen(false)} className="text-[#5F27CD]">Dashboard</Link>
+                )}
+              </div>
+
+              <div className="pt-6 border-t border-gray-100">
+                {effectiveUser ? (
+                  <div className="flex items-center justify-between">
+                    <span className="font-black uppercase tracking-widest text-sm">{effectiveUser.name}</span>
+                    <button onClick={handleSignOut} className="font-bold uppercase text-[#FF6B6B] text-xs">Déconnexion</button>
+                  </div>
+                ) : (
+                  <Link href="/login" onClick={() => setIsMenuOpen(false)} className="text-lg font-black uppercase tracking-tighter">Connexion</Link>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

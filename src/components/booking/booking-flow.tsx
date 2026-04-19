@@ -1,46 +1,46 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
-// Import font for premium look
-const FONT_IMPORT = "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap";
-import { Service } from '@/lib/types';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronRight, 
   ChevronLeft, 
   CheckCircle2, 
-  Info,
+  Sparkles, 
+  Clock, 
+  Calendar as CalendarIcon, 
+  Trophy, 
+  ShieldCheck, 
+  MessageSquare, 
+  User, 
   Loader2,
-  MessageCircle,
-  X
+  X,
+  CreditCard
 } from 'lucide-react';
 import { format, addMinutes, isSameDay, startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, isSameMonth, isBefore, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { toast } from '@/hooks/use-toast';
+import { Service } from '@/lib/types';
 import { useFirestore, useUser, useAuth } from '@/firebase';
-import { 
-  doc, 
-  serverTimestamp, 
-  collection, 
-  onSnapshot, 
-  setDoc,
-  addDoc
-} from 'firebase/firestore';
-import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { doc, serverTimestamp, collection, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 import { signInAnonymously } from 'firebase/auth';
-import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 interface BookingFlowProps {
   services: Service[];
   initialServiceId?: string;
+  onClose?: () => void;
 }
 
-export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
+const LEVELS = [
+  { id: 'serenite', name: 'Sérénité', discount: 0.05, min: 0, color: '#5F27CD' },
+  { id: 'harmonie', name: 'Harmonie', discount: 0.10, min: 500, color: '#0ABDE3' },
+  { id: 'equilibre', name: 'Équilibre', discount: 0.15, min: 1000, color: '#1DD1A1' },
+  { id: 'zen', name: 'Zen Master', discount: 0.20, min: 2000, color: '#FF9F43' },
+];
+
+export function BookingFlow({ services, initialServiceId, onClose }: BookingFlowProps) {
   const firestore = useFirestore();
-  const { user } = useUser();
+  const { user, isUserLoading: userLoading } = useUser();
   const auth = useAuth();
   
   const [step, setStep] = useState(1);
@@ -48,21 +48,17 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [acceptedConditions, setAcceptedConditions] = useState(false);
   
-  const [formData, setFormData] = useState({
-    firstName: '', 
-    lastName: '', 
-    email: '', 
-    phone: '', 
-    message: ''
-  });
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingRef, setBookingRef] = useState<string | null>(null);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+
+  // Loyalty State
+  const [clientPoints, setClientPoints] = useState(0);
+  const [clientLevel, setClientLevel] = useState(LEVELS[0]);
 
   const [availableSlots, setAvailableSlots] = useState<any[]>([]);
-  const [appointments, setAppointments] = useState<any[]>([]);
-
   const [configSlots, setConfigSlots] = useState<Record<number, string[]>>({
     0: [], 1: ["11:00", "13:30", "15:00", "16:30", "18:00"], 
     2: ["09:00", "10:30", "13:30", "15:00", "16:30", "18:00"],
@@ -72,578 +68,423 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
     6: ["09:00", "10:30", "12:00"]
   });
 
-  const getAdjDay = (date: Date) => date.getDay();
-
   useEffect(() => {
     if (!firestore) return;
-    
-    // Listen to availability (locks, day openings & booked slots)
-    const unsubAvail = onSnapshot(collection(firestore, 'availability'), (snap: any) => {
-      const slots = snap.docs.map((d: any) => ({ id: d.id, ...d.data() }));
-      setAvailableSlots(slots);
+    const unsubAvail = onSnapshot(collection(firestore, 'availability'), (snap) => {
+      setAvailableSlots(snap.docs.map(d => ({ id: d.id, ...d.data() })));
     });
-
-    // Listen to global config (slots)
     const unsubConfig = onSnapshot(doc(firestore, 'config', 'slots'), (snap) => {
       if (snap.exists()) setConfigSlots(snap.data() as any);
     });
-
-    return () => {
-      unsubAvail();
-      unsubConfig();
-    };
+    return () => { unsubAvail(); unsubConfig(); };
   }, [firestore]);
 
   useEffect(() => {
-    if (initialServiceId) {
-      const found = services.find(s => s.id === initialServiceId);
-      if (found) {
-        setSelectedService(found);
-        setStep(2);
+    async function fetchLoyalty() {
+      if (!user?.uid || !firestore) return;
+      const d = await getDoc(doc(firestore, 'clients', user.uid));
+      if (d.exists()) {
+        const p = d.data().points || 0;
+        setClientPoints(p);
+        const level = LEVELS.reduce((acc, l) => (p >= l.min ? l : acc), LEVELS[0]);
+        setClientLevel(level);
       }
+    }
+    if (!userLoading && user) fetchLoyalty();
+  }, [user, userLoading, firestore]);
+
+  useEffect(() => {
+    if (initialServiceId && services.length) {
+      const found = services.find(s => s.id === initialServiceId);
+      if (found) { setSelectedService(found); setStep(2); }
     }
   }, [initialServiceId, services]);
 
-  useEffect(() => {
-    if (user && !user.isAnonymous && !formData.firstName) {
-      setFormData(prev => ({
-        ...prev,
-        firstName: user.displayName?.split(' ')[0] || '',
-        lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
-        email: user.email || ''
-      }));
+  const discountedPrice = selectedService ? Math.round(selectedService.price * (1 - clientLevel.discount)) : 0;
+
+  const handleNext = () => setStep(prev => prev + 1);
+  const handleBack = () => setStep(prev => prev - 1);
+
+  const completeBooking = async () => {
+    if (!firestore || !selectedService || !selectedDate || !selectedTime) return;
+    setIsSubmitting(true);
+
+    try {
+      let finalUserId = user?.uid;
+      if (!finalUserId && auth) {
+        const cred = await signInAnonymously(auth);
+        finalUserId = cred.user.uid;
+      }
+      if (!finalUserId) throw new Error("Session inaccessible.");
+
+      const appointmentId = `SR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const startTimeStr = `${format(selectedDate, 'yyyy-MM-dd')}T${selectedTime}:00`;
+      const duration = parseInt(selectedService.duration) || 60;
+      const endTime = addMinutes(new Date(startTimeStr), duration);
+
+      const appointmentData = {
+        id: appointmentId,
+        clientId: finalUserId,
+        serviceId: selectedService.id,
+        serviceName: selectedService.name,
+        startTime: startTimeStr,
+        endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
+        status: 'confirmed',
+        firstName: formData.firstName || user?.displayName?.split(' ')[0] || 'Anonyme',
+        lastName: formData.lastName || user?.displayName?.split(' ').slice(1).join(' ') || '',
+        email: formData.email || user?.email || '',
+        phone: formData.phone,
+        clientMessage: formData.message,
+        priceSnapshot: discountedPrice,
+        discountApplied: clientLevel.discount,
+        pointsEarned: Math.round(discountedPrice * 0.5),
+        createdAt: serverTimestamp()
+      };
+
+      await Promise.all([
+        setDoc(doc(firestore, 'appointments', appointmentId), appointmentData),
+        setDoc(doc(firestore, 'availability', appointmentId), {
+           type: 'booked',
+           date: format(selectedDate, 'yyyy-MM-dd'),
+           time: selectedTime,
+           appointmentId
+        })
+      ]);
+
+      setBookingRef(appointmentId);
+      setStep(5);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
     }
-  }, [user, formData.firstName]);
-
-  const handleServiceSelect = (service: Service) => {
-    setSelectedService(service);
-    setTimeout(() => setStep(2), 300);
   };
-
-  const handleTimeSelect = (time: string) => {
-    setSelectedTime(time);
-    setTimeout(() => setStep(3), 400);
-  };
-
-  const times = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18:30', '20:00'];
-
-  const handlePrevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
-  const handleNextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
 
   const days = eachDayOfInterval({
     start: startOfWeek(startOfMonth(currentMonth), { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(currentMonth), { weekStartsOn: 1 })
   });
 
-  const completeBooking = async () => {
-    if (!firestore) return;
-    setIsSubmitting(true);
-
-    try {
-      let finalUserId = user?.uid;
-      
-      // If no user or anonymous, ensure we have an auth session
-      if (!finalUserId && auth) {
-        const cred = await signInAnonymously(auth);
-        finalUserId = cred.user.uid;
-      }
-
-      if (!finalUserId) throw new Error("Impossible d'établir une session sécurisée. Veuillez réessayer.");
-
-      const appointmentId = `SR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-      const magicToken = Math.random().toString(36).substring(2, 10).toUpperCase() + Math.random().toString(36).substring(2, 10).toUpperCase();
-      
-      const startTimeStr = `${format(selectedDate!, 'yyyy-MM-dd')}T${selectedTime}:00`;
-      const durationMatch = selectedService!.duration.match(/\d+/);
-      const duration = durationMatch ? parseInt(durationMatch[0]) : 60;
-      const endTime = addMinutes(new Date(startTimeStr), duration);
-
-      const invoiceId = `INV-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
-      
-      const appointmentData = {
-        id: appointmentId,
-        clientId: finalUserId,
-        serviceId: selectedService!.id,
-        serviceName: selectedService!.name,
-        startTime: startTimeStr,
-        endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
-        status: 'confirmed',
-        clientMessage: formData.message,
-        isLoyaltyFreeSession: false,
-        isConfirmed: true,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        clientNameSnapshot: `${formData.firstName} ${formData.lastName}`.trim(),
-        clientEmail: formData.email, // Added email
-        magicToken: magicToken, // Added magicToken
-        phone: formData.phone,
-        createdAt: serverTimestamp()
-      };
-
-      const clientData = {
-        id: finalUserId,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        magicToken: magicToken,
-        updatedAt: serverTimestamp()
-      };
-
-      const invoiceData = {
-        id: invoiceId,
-        invoiceNumber: invoiceId,
-        clientId: finalUserId,
-        clientNameSnapshot: appointmentData.clientNameSnapshot,
-        issueDate: format(new Date(), 'yyyy-MM-dd'),
-        dueDate: format(new Date(), 'yyyy-MM-dd'),
-        totalAmount: selectedService!.price || 0,
-        status: 'Pending',
-        appointmentId: appointmentId,
-        items: [
-          {
-            description: selectedService!.name,
-            amount: selectedService!.price || 0,
-            quantity: 1
-          }
-        ],
-        createdAt: serverTimestamp()
-      };
-
-      await Promise.all([
-        setDoc(doc(firestore, 'appointments', appointmentId), appointmentData),
-        setDoc(doc(firestore, 'clients', finalUserId), clientData, { merge: true }),
-        setDoc(doc(firestore, 'invoices', invoiceId), invoiceData),
-        setDoc(doc(firestore, 'availability', appointmentId), {
-           type: 'booked',
-           date: format(selectedDate!, 'yyyy-MM-dd'),
-           time: selectedTime,
-           appointmentId: appointmentId
-        })
-      ]);
-
-      fetch('/api/notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          appointmentId,
-          clientName: appointmentData.clientNameSnapshot,
-          clientEmail: formData.email,
-          clientPhone: formData.phone,
-          serviceName: selectedService!.name,
-          startTime: appointmentData.startTime,
-          duration: duration,
-          magicToken: magicToken,
-          clientId: finalUserId
-        })
-      }).catch(err => console.error("Erreur gérée silencieusement pour l'email:", err));
-
-      setBookingRef(appointmentId);
-      setStep(5);
-      
-      toast({
-        title: "Réservation confirmée",
-        description: "Votre rituel a bien été enregistré.",
-      });
-
-    } catch (err: any) {
-      console.error('Booking error:', err);
-      toast({ 
-        variant: 'destructive', 
-        title: 'Erreur de réservation', 
-        description: err.message || "Une erreur est survenue. Veuillez vérifier votre connexion." 
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   if (step === 5) {
     return (
-      <div className="px-8 text-center h-screen flex flex-col justify-center bg-white">
-        <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8">
-          <CheckCircle2 size={48} strokeWidth={1.5} />
-        </div>
-        <h2 className="text-[2.4rem] font-serif font-bold text-neutral-900 mb-4 tracking-tighter">Réservé.</h2>
-        <p className="text-[1rem] leading-relaxed font-sans italic text-neutral-500 mb-10">Référence de votre rituel : <span className="font-bold text-neutral-900">{bookingRef}</span></p>
-        
-        <div className="space-y-4 max-w-sm mx-auto w-full">
-          <a 
-            href="https://wa.me/41783336823" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="w-full inline-flex items-center justify-center px-6 py-2.5 bg-emerald-600 text-white rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 gap-3"
-          >
-            <MessageCircle size={16} /> CONFIRMER WHATSAPP
-          </a>
-          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-6 py-2.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
-            RETOUR
-          </button>
-        </div>
+      <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-white">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-emerald-100/50">
+          <CheckCircle2 size={32} />
+        </motion.div>
+        <h2 className="title-luxe text-2xl mb-2">Rituel Confirmé</h2>
+        <p className="text-sm italic text-gray-500 mb-8 max-w-sm">Votre espace de sérénité est réservé. Référence : <span className="text-[#222F3E] font-bold">{bookingRef}</span></p>
+        <button onClick={() => window.location.reload()} className="btn-luxe px-8 py-3 text-xs">Retour à l'accueil</button>
       </div>
     );
   }
 
   return (
-    <div className="font-sans min-h-full bg-white flex flex-col lg:flex-row relative">
-      <style>{`
-        @import url('${FONT_IMPORT}');
-        .font-sans { font-family: 'Plus Jakarta Sans', sans-serif !important; }
-      `}</style>
-      {/* LEFT SIDE: Header & Summary */}
-      <div className="w-full lg:w-[35%] lg:sticky lg:top-0 h-fit lg:min-h-[80vh] bg-[#FAF9F6] p-8 md:p-12 lg:p-16 flex flex-col border-b lg:border-b-0 lg:border-r border-neutral-100/60 z-10">
-        <h1 className="text-[2.4rem] md:text-[3rem] font-serif font-medium text-neutral-900 tracking-tighter leading-none mb-4">
-          Réserver<br/><span className="text-neutral-500 italic font-light">un rituel.</span>
-        </h1>
-        <p className="text-[0.65rem] font-black uppercase tracking-[0.28em] text-neutral-400 mb-8">
-          GENÈVE STUDIO — ÉTAPE {step}/4
-        </p>
+    <div className="flex h-full min-h-[80vh] bg-white overflow-hidden relative">
+      <AnimatePresence>
+        {onClose && (
+          <button onClick={onClose} className="absolute top-6 right-6 z-50 p-2 hover:bg-gray-100 rounded-full transition-all">
+            <X size={20} className="text-gray-400" />
+          </button>
+        )}
+      </AnimatePresence>
 
-        {/* Dynamic Summary based on selection */}
-        <div className="space-y-4 mt-2 lg:mt-6 flex-1">
-          <AnimatePresence>
-            {selectedService && step > 1 && (
-                <motion.div key="summary-service" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                  <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">RITUEL SÉLECTIONNÉ</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900">{selectedService.name.split(' - ')[0]}</p>
-                  <p className="text-[0.8rem] font-sans text-neutral-500 mt-1">{selectedService.duration} • CHF {selectedService.price}</p>
-                </motion.div>
-            )}
-            {selectedDate && selectedTime && step > 2 && (
-                <motion.div key="summary-datetime" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="pt-6 border-t border-neutral-200/60 mt-6">
-                  <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">DATE & HEURE</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900 capitalize">{format(selectedDate, 'EEEE d MMMM', { locale: fr })}</p>
-                  <p className="text-[0.8rem] font-sans text-neutral-500 mt-1">à {selectedTime}</p>
-                </motion.div>
-            )}
-          </AnimatePresence>
+      {/* ── LEFT: RITUAL SUMMARY (BIO-SIDEBAR) ── */}
+      <div className="w-[35%] bg-[#F8F5F0] border-r border-gray-100 p-8 hidden lg:flex flex-col">
+        <div className="mb-8">
+          <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#5F27CD] mb-2">Rituel en cours</p>
+          <h2 className="text-2xl font-light text-[#222F3E] tracking-tight leading-none">Votre Chemin<br/><span className="italic">vers le Soi.</span></h2>
         </div>
+
+        <div className="flex-1 space-y-6">
+          <div className="relative">
+            <div className="absolute left-3 top-0 bottom-0 w-px bg-gray-200" />
+            <div className="space-y-8 relative z-10">
+              {/* Step 1: Service */}
+              <div className={`flex gap-4 transition-opacity ${step < 1 ? 'opacity-20' : 'opacity-100'}`}>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 1 ? 'bg-[#5F27CD] text-white shadow-md' : 'bg-white border text-gray-300'}`}>01</div>
+                <div>
+                  <p className="text-[0.5rem] font-black uppercase tracking-widest text-gray-400 mb-0.5">Rituel</p>
+                  <p className="text-sm text-[#222F3E]">{selectedService?.name || 'Sélectionner un soin'}</p>
+                </div>
+              </div>
+              {/* Step 2: Date */}
+              <div className={`flex gap-4 transition-opacity ${step < 2 ? 'opacity-20' : 'opacity-100'}`}>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 2 ? 'bg-[#5F27CD] text-white shadow-md' : 'bg-white border text-gray-300'}`}>02</div>
+                <div>
+                  <p className="text-[0.5rem] font-black uppercase tracking-widest text-gray-400 mb-0.5">Moment</p>
+                  <p className="text-sm text-[#222F3E]">{selectedDate ? format(selectedDate, 'EEEE d MMM', { locale: fr }) : 'Choisir une date'}</p>
+                  {selectedTime && <p className="text-[0.5rem] text-[#0ABDE3] font-bold mt-0.5 uppercase tracking-widest">À {selectedTime}</p>}
+                </div>
+              </div>
+              {/* Step 3: Identity */}
+              <div className={`flex gap-4 transition-opacity ${step < 3 ? 'opacity-20' : 'opacity-100'}`}>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-black ${step >= 3 ? 'bg-[#5F27CD] text-white shadow-md' : 'bg-white border text-gray-300'}`}>03</div>
+                <div>
+                  <p className="text-[0.5rem] font-black uppercase tracking-widest text-gray-400 mb-0.5">Identité</p>
+                  <p className="text-sm text-[#222F3E]">{formData.firstName ? `${formData.firstName} ${formData.lastName}` : 'Vos coordonnées'}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Loyalty Badge in Sidebar */}
+        {user && (
+          <div className="mt-auto p-4 bg-white/60 backdrop-blur-md rounded-2xl border border-white shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-md" style={{ backgroundColor: clientLevel.color }}>
+                <Trophy size={14} className="text-white" />
+              </div>
+              <div>
+                <p className="text-[8px] font-black uppercase tracking-widest text-[#222F3E]">{clientLevel.name}</p>
+                <p className="text-[0.5rem] font-bold text-emerald-500 uppercase tracking-widest">-{clientLevel.discount * 100}%</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* RIGHT SIDE: Content */}
-      <div className="w-full lg:w-[65%] p-6 md:p-8 lg:p-10 pb-12">
-        <div className="max-w-3xl mx-auto">
+      {/* ── RIGHT: INTERACTIVE CONTENT ── */}
+      <div className="flex-1 overflow-auto p-6 lg:p-10 scrollbar-hide">
+        <div className="max-w-xl mx-auto h-full flex flex-col">
           <AnimatePresence mode="wait">
+            {/* STEP 1: SERVICES GRID */}
             {step === 1 && (
-              <motion.div 
-                key="step1" 
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-8"
-              >
-                <div className="space-y-2 mb-6 text-center lg:text-left">
-                  <h3 className="text-[1.3rem] md:text-[1.5rem] font-serif font-medium text-neutral-900 tracking-tight">Le Menu Signature</h3>
-                  <p className="text-[0.85rem] font-sans text-neutral-500">Sélectionnez le rituel qui correspond à vos besoins d'aujourd'hui.</p>
+              <motion.div key="st1" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} className="space-y-8">
+                <div className="text-center lg:text-left">
+                  <h3 className="text-xl font-medium text-[#222F3E]">Menu Signature</h3>
+                  <p className="text-[0.65rem] text-gray-400 mt-1 italic">Quel voyage souhaitez-vous entreprendre ?</p>
                 </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3">
-                  {services.map((s) => (
-                    <button
+                <div className="grid grid-cols-2 gap-4">
+                  {services.map(s => (
+                    <motion.button
                       key={s.id}
-                      onClick={() => handleServiceSelect(s)}
-                      className={`group w-full flex flex-col p-1.5 rounded-2xl transition-all duration-500 text-center border
-                        ${selectedService?.id === s.id ? 'bg-neutral-50 border-neutral-900 shadow-sm ring-1 ring-neutral-900' : 'bg-white border-neutral-100 hover:border-neutral-300 hover:shadow-sm'}
-                      `}
+                      whileHover={{ y: -4 }}
+                      onClick={() => { setSelectedService(s); setStep(2); }}
+                      className={`dash-card p-3 text-left border transition-all ${selectedService?.id === s.id ? 'ring-2 ring-[#1DD1A1] border-transparent' : 'border-gray-50'}`}
                     >
-                      <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-1.5 shrink-0 shadow-sm border border-neutral-50/50">
-                        <Image 
-                          src={s.image || ''} 
-                          fill 
-                          unoptimized 
-                          alt={s.name} 
-                          className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
+                      <div className="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-sm">
+                        <Image src={s.image || ''} fill alt={s.name} className="object-cover" />
                       </div>
-                      <div className="px-0.5 space-y-0.5">
-                        <h4 className="text-[0.75rem] leading-tight font-serif font-bold text-neutral-900 line-clamp-1">{s.name.split(' - ')[0]}</h4>
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="text-[0.5rem] font-black uppercase tracking-wider text-neutral-300">{s.duration}</span>
-                          <span className="text-[0.8rem] font-serif font-bold text-neutral-900">{s.price} CHF</span>
-                        </div>
+                      <p className="text-xs font-bold text-[#222F3E] line-clamp-1 px-1">{s.name}</p>
+                      <div className="flex items-center justify-between mt-1 px-1">
+                        <span className="text-[0.5rem] font-bold text-gray-300 uppercase">{s.duration}</span>
+                        <span className="text-sm font-medium text-[#5F27CD]">{s.price} CHF</span>
                       </div>
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               </motion.div>
             )}
 
+            {/* STEP 2: CHRONOLOGY */}
             {step === 2 && (
-              <motion.div 
-                key="step2" 
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-12"
-              >
-                <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-                  <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300">DISPONIBILITÉS</span>
-                  <button 
-                    onClick={() => setStep(1)} 
-                    className="text-[0.65rem] font-black uppercase tracking-[0.18em] text-neutral-400 hover:text-neutral-900 flex items-center gap-2 transition-colors"
-                  >
-                    <ChevronLeft size={14} /> CHANGER LE SOIN
-                  </button>
+              <motion.div key="st2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
+                <div className="flex justify-between items-center">
+                   <h3 className="text-xl font-medium text-[#222F3E] flex items-center gap-2">
+                      <Clock className="text-[#5F27CD]" size={20} /> Votre Moment
+                   </h3>
+                   <button onClick={handleBack} className="text-[0.5rem] font-black uppercase tracking-widest text-gray-400 hover:text-[#222F3E]">Retour</button>
                 </div>
 
-                <div className="space-y-12">
-                  {/* CALENDRIER */}
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-[1.2rem] font-serif font-bold text-neutral-900 capitalize">
-                        {currentMonth.toLocaleString('fr-FR', { month: 'long', year: 'numeric' })}
-                      </h3>
-                      <div className="flex gap-2">
-                        <button onClick={handlePrevMonth} className="p-2 bg-neutral-50 hover:bg-neutral-100 rounded-full transition-all text-neutral-900"><ChevronLeft size={16} /></button>
-                        <button onClick={handleNextMonth} className="p-2 bg-neutral-50 hover:bg-neutral-100 rounded-full transition-all text-neutral-900"><ChevronRight size={16} /></button>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-7 text-center text-[0.65rem] font-black text-neutral-300 uppercase tracking-[0.2em] mb-4">
-                      {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => <div key={`${d}-${i}`}>{d}</div>)}
-                    </div>
-
-                    <div className="grid grid-cols-7 gap-y-3">
-                      {days.map((day, i) => {
-                        const isSelected = selectedDate && isSameDay(day, selectedDate);
-                        const isPast = isBefore(day, startOfDay(new Date()));
-                        const currentMonthOnly = isSameMonth(day, currentMonth);
-                        
-                        const dateStr = format(day, 'yyyy-MM-dd');
-                        const dayOfWeek = getAdjDay(day);
-                        const baseConfigSlots = configSlots[dayOfWeek] || [];
-                        
-                        const isOpened = availableSlots.some(s => s.date === dateStr && s.type === 'day_opened');
-                        
-                        // Calculated slots count: base defined in config - (blocked + already booked)
-                        const slotsForDay = !isOpened ? [] : baseConfigSlots.filter(t => {
-                          const isBlocked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'blocked');
-                          const isBooked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'booked');
-                          return !isBlocked && !isBooked;
-                        });
-
-                        const slotsCount = slotsForDay.length;
-                        
-                        let availability = 'none';
-                        if (!isPast && isOpened) {
-                          if (slotsCount === 0) availability = 'full';
-                          else if (slotsCount <= 2) availability = 'medium';
-                          else availability = 'low';
-                        }
-
-                        return (
-                          <div key={i} className="flex flex-col items-center gap-1.5">
-                            <button
-                              disabled={isPast || !currentMonthOnly || slotsCount === 0}
-                              onClick={() => { setSelectedDate(day); setSelectedTime(null); }}
-                              className={`w-10 h-10 flex items-center justify-center rounded-full text-[0.95rem] font-sans font-medium transition-all relative
-                                ${!currentMonthOnly ? 'opacity-0 pointer-events-none' : ''}
-                                ${isPast || slotsCount === 0 ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-900 bg-neutral-50 hover:bg-neutral-100'}
-                                ${isSelected ? 'bg-neutral-900 text-white shadow-lg hover:bg-neutral-800' : ''}
-                              `}
-                            >
-                              {format(day, 'd')}
-                            </button>
-                            {currentMonthOnly && !isPast && (
-                              <div className={`w-1.5 h-1.5 rounded-full ${availability === 'low' ? 'bg-emerald-400' : availability === 'medium' ? 'bg-amber-400' : 'bg-neutral-200'}`} />
-                            )}
-                          </div>
-                        );
-                      })}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-base font-bold capitalize">{format(currentMonth, 'MMMM yyyy', { locale: fr })}</h4>
+                    <div className="flex gap-1">
+                       <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} className="p-1.5 glass rounded-full hover:bg-white transition-all"><ChevronLeft size={14} /></button>
+                       <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} className="p-1.5 glass rounded-full hover:bg-white transition-all"><ChevronRight size={14} /></button>
                     </div>
                   </div>
+                  <div className="grid grid-cols-7 gap-1.5">
+                    {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(d => <div key={d} className="text-[0.5rem] font-black text-gray-300 text-center py-1">{d}</div>)}
+                    {days.map(day => {
+                      const isPast = isBefore(day, startOfDay(new Date()));
+                      const dateStr = format(day, 'yyyy-MM-dd');
+                      const dayOfWeek = day.getDay();
+                      const slots = configSlots[dayOfWeek] || [];
+                      const isBooked = slots.length === 0;
 
-                  {/* COLONNE HEURES */}
-                  <AnimatePresence>
-                    {selectedDate && (
-                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="space-y-6 pt-6 border-t border-neutral-100">
-                        <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300 block">HEURES DISPONIBLES</span>
-                        
-                        {selectedDate && (() => {
-                          const dateStr = format(selectedDate, 'yyyy-MM-dd');
-                          const dayOfWeek = getAdjDay(selectedDate);
-                          const baseConfigSlots = configSlots[dayOfWeek] || [];
-                          
-                          const freeSlots = baseConfigSlots.filter(t => {
-                            const isBlocked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'blocked');
-                            const isBooked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'booked');
-                            return !isBlocked && !isBooked;
-                          });
-
-                          if (freeSlots.length > 0) {
-                            return (
-                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                {freeSlots.map((t) => (
-                                  <button
-                                    key={t}
-                                    onClick={() => handleTimeSelect(t)}
-                                    className={`py-4 px-4 rounded-2xl transition-all duration-300 font-sans tracking-tight text-center
-                                      ${selectedTime === t ? 'bg-neutral-900 text-white shadow-lg font-bold text-[1.05rem]' : 'bg-neutral-50 text-neutral-900 hover:bg-neutral-100 font-medium text-[1.05rem]'}
-                                    `}
-                                  >
-                                    {t}
-                                  </button>
-                                ))}
-                              </div>
-                            );
-                          }
-                          return (
-                            <div className="py-8 text-center bg-neutral-50 rounded-2xl">
-                              <p className="text-[0.8rem] font-serif italic text-neutral-400">Aucun créneau disponible pour cette journée.</p>
-                            </div>
-                          );
-                        })()}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      return (
+                        <button
+                          key={day.toISOString()}
+                          disabled={isPast || !isSameMonth(day, currentMonth) || isBooked}
+                          onClick={() => setSelectedDate(day)}
+                          className={`aspect-square rounded-xl flex flex-col items-center justify-center text-[0.7rem] font-bold transition-all ${
+                            isSameDay(day, selectedDate!) ? 'bg-[#222F3E] text-white shadow-lg' : 
+                            !isSameMonth(day, currentMonth) ? 'opacity-0 pointer-events-none' :
+                            isPast || isBooked ? 'text-gray-100 cursor-not-allowed' : 'bg-[#F8F5F0] text-gray-600 hover:bg-[#5F27CD] hover:text-white'
+                          }`}
+                        >
+                          {format(day, 'd')}
+                          {!isPast && isSameMonth(day, currentMonth) && !isBooked && (
+                            <div className={`w-0.5 h-0.5 rounded-full mt-0.5 ${isSameDay(day, selectedDate!) ? 'bg-[#0ABDE3]' : 'bg-[#1DD1A1]'}`} />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
+
+                <AnimatePresence>
+                  {selectedDate && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="pt-6 border-t border-gray-100 space-y-4">
+                      <p className="text-[0.55rem] font-black uppercase tracking-widest text-gray-400">Heures Disponibles</p>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        {(configSlots[selectedDate.getDay()] || []).map(t => (
+                          <button
+                            key={t}
+                            onClick={() => { setSelectedTime(t); setStep(3); }}
+                            className={`py-3 rounded-xl text-[0.8rem] font-bold border transition-all ${selectedTime === t ? 'bg-[#222F3E] text-white border-transparent' : 'bg-white text-gray-500 border-gray-100 hover:border-[#5F27CD]'}`}
+                          >
+                            {t}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
 
+            {/* STEP 3: IDENTITY */}
             {step === 3 && (
-              <motion.div 
-                key="step3" 
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-10"
-              >
-                <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-                  <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300">VOS COORDONNÉES</span>
-                  <button 
-                    onClick={() => setStep(2)} 
-                    className="text-[0.65rem] font-black uppercase tracking-[0.18em] text-neutral-400 hover:text-neutral-900 flex items-center gap-2 transition-colors"
-                  >
-                    <ChevronLeft size={14} /> CHANGER LA DATE
-                  </button>
+              <motion.div key="st3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
+                 <div className="flex justify-between items-center">
+                   <h3 className="text-xl font-medium text-[#222F3E]">Vos Coordonnées</h3>
+                   <button onClick={handleBack} className="text-[0.55rem] font-black uppercase tracking-widest text-gray-400 hover:text-[#222F3E]">Retour</button>
                 </div>
 
-                <div className="space-y-10">
-                  <form onSubmit={(e) => e.preventDefault()} autoComplete="off" data-lpignore="true" data-1p-ignore="true" className="grid grid-cols-1 gap-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                        <Label htmlFor="booking-fname" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">PRÉNOM *</Label>
-                        <Input 
-                          id="booking-fname"
-                          name="booking_fname"
-                          autoComplete="off"
-                          spellCheck="false"
-                          data-1p-ignore="true"
-                          value={formData.firstName} 
-                          onChange={(e: any) => setFormData({...formData, firstName: e.target.value})} 
-                          className="h-10 rounded-none bg-transparent border-none px-0 font-serif text-[1.2rem] italic shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
-                          placeholder="Ex: Marie" 
-                        />
-                      </div>
-                      <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                        <Label htmlFor="booking-lname" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">NOM *</Label>
-                        <Input 
-                          id="booking-lname"
-                          name="booking_lname"
-                          autoComplete="off"
-                          spellCheck="false"
-                          data-1p-ignore="true"
-                          value={formData.lastName} 
-                          onChange={(e: any) => setFormData({...formData, lastName: e.target.value})} 
-                          className="h-10 rounded-none bg-transparent border-none px-0 font-serif text-[1.2rem] italic shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
-                          placeholder="Ex: Dupont" 
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                      <Label htmlFor="booking-mail" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">EMAIL *</Label>
-                      <Input 
-                        id="booking-mail"
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">PRÉNOM</label>
+                      <input 
                         type="text" 
-                        name="booking_mail"
-                        autoComplete="off"
-                        spellCheck="false"
-                        data-1p-ignore="true"
-                        value={formData.email} 
-                        onChange={(e: any) => setFormData({...formData, email: e.target.value})} 
-                        className="h-10 rounded-none bg-transparent border-none px-0 font-sans font-medium text-[1.05rem] shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
-                        placeholder="marie.dupont@email.com" 
+                        value={formData.firstName || user?.displayName?.split(' ')[0] || ''} 
+                        onChange={e => setFormData({...formData, firstName: e.target.value})}
+                        className="w-full bg-transparent p-0 border-none italic text-sm focus:outline-none" 
+                        placeholder="Ex: Clara"
                       />
-                    </div>
-                    <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                      <Label htmlFor="booking-tel" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">MOBILE *</Label>
-                      <Input 
-                        id="booking-tel"
+                   </div>
+                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">NOM</label>
+                      <input 
                         type="text" 
-                        name="booking_tel"
-                        autoComplete="off"
-                        spellCheck="false"
-                        data-1p-ignore="true"
+                        value={formData.lastName || user?.displayName?.split(' ').slice(1).join(' ') || ''} 
+                        onChange={e => setFormData({...formData, lastName: e.target.value})}
+                        className="w-full bg-transparent p-0 border-none italic text-sm focus:outline-none" 
+                        placeholder="Ex: Miller"
+                      />
+                   </div>
+                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">MOBILE</label>
+                      <input 
+                        type="tel" 
                         value={formData.phone} 
-                        onChange={(e: any) => setFormData({...formData, phone: e.target.value})} 
-                        className="h-10 rounded-none bg-transparent border-none px-0 font-sans font-medium text-[1.05rem] shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
-                        placeholder="+41 78 000 00 00" 
+                        onChange={e => setFormData({...formData, phone: e.target.value})}
+                        className="w-full bg-transparent p-0 border-none text-sm focus:outline-none" 
+                        placeholder="+41 78 000 00 00"
                       />
-                    </div>
-                  </form>
-
-                  <button 
-                    disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.phone} 
-                    onClick={() => {
-                        if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
-                            document.activeElement.blur();
-                        }
-                        setTimeout(() => setStep(4), 100);
-                    }} 
-                    className="w-full inline-flex items-center justify-center px-6 py-4 bg-neutral-900 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_10px_30px_rgba(0,0,0,0.1)] gap-3"
-                  >
-                    VÉRIFIER LE RÉCAPITULATIF <ChevronRight size={16} />
-                  </button>
+                   </div>
+                   <div className="space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">EMAIL</label>
+                      <input 
+                        type="email" 
+                        value={formData.email || user?.email || ''} 
+                        onChange={e => setFormData({...formData, email: e.target.value})}
+                        className="w-full bg-transparent p-0 border-none italic text-sm focus:outline-none" 
+                        placeholder="Ex: clara@example.com"
+                      />
+                   </div>
+                   <div className="md:col-span-2 space-y-1.5 border-b border-gray-100 focus-within:border-[#5F27CD] transition-colors pb-1.5">
+                      <label className="text-[0.5rem] font-black tracking-widest text-[#5F27CD]">VOTRE INTENTION</label>
+                      <textarea 
+                        rows={2}
+                        value={formData.message} 
+                        onChange={e => setFormData({...formData, message: e.target.value})}
+                        className="w-full bg-transparent p-0 border-none italic text-sm focus:outline-none resize-none" 
+                        placeholder="Une remarque ?"
+                      />
+                   </div>
                 </div>
+
+                <button 
+                  onClick={() => setStep(4)} 
+                  disabled={
+                    !(formData.firstName || user?.displayName?.split(' ')[0]) ||
+                    !(formData.lastName || user?.displayName?.split(' ').slice(1).join(' ')) ||
+                    !formData.phone ||
+                    !(formData.email || user?.email)
+                  }
+                  className="btn-luxe w-full py-4 text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Suivant <ChevronRight size={14} />
+                </button>
               </motion.div>
             )}
 
+            {/* STEP 4: INTENTION REVELATION (CONFIRMATION) */}
             {step === 4 && (
-              <motion.div 
-                key="step4" 
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-12 text-center"
-              >
-                <div className="inline-flex w-16 h-16 bg-[#FAF9F6] rounded-full items-center justify-center text-neutral-900 mb-2">
-                  <CheckCircle2 size={24} />
-                </div>
-                <h2 className="text-[2rem] sm:text-[2.4rem] font-serif font-bold text-neutral-900 tracking-tighter leading-none">C'est presque prêt.</h2>
-                
-                <div className="text-left bg-[#FAF9F6] p-6 lg:p-8 rounded-3xl space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:justify-between gap-6">
-                    <div className="space-y-2 flex-1">
-                      <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RITUEL CONFIRMÉ</p>
-                      <p className="text-[1.1rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
-                      <p className="text-[0.9rem] font-sans font-medium text-neutral-600">
-                        {selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : ''} à {selectedTime}
-                      </p>
-                    </div>
-                    <div className="space-y-2 flex-1 sm:border-l sm:border-neutral-200/60 sm:pl-6">
-                      <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RÉSERVÉ POUR</p>
-                      <p className="text-[1.1rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{formData.firstName} {formData.lastName}</p>
-                      <p className="text-[0.9rem] font-sans text-neutral-500">{formData.phone}</p>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-neutral-200/60 pt-5 mt-5">
-                     <p className="text-[0.75rem] font-bold text-neutral-900 mb-2">Conditions de la séance</p>
-                     <ul className="list-disc pl-4 space-y-1 text-[0.7rem] leading-relaxed text-neutral-500 font-sans mb-4">
-                        <li>Prestations dédiées au bien-être, non thérapeutiques ou médicales.</li>
-                        <li>Aucune contre-indication au massage (en cas de doute, avis médical requis).</li>
-                        <li>Annulation minimum 24h à l'avance.</li>
-                     </ul>
-                     <div className="flex items-start space-x-3 bg-white p-3 sm:p-4 rounded-xl border border-neutral-100">
-                      <Checkbox id="terms" checked={acceptedConditions} onCheckedChange={(checked: any) => setAcceptedConditions(checked === true)} className="mt-0.5" />
-                      <Label htmlFor="terms" className="text-[0.7rem] sm:text-[0.75rem] font-sans font-medium text-neutral-900 cursor-pointer leading-snug">
-                        J'accepte les conditions et je confirme ne pas avoir de problème de santé contre-indiquant cette séance.
-                      </Label>
-                    </div>
-                  </div>
+              <motion.div key="st4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+                <div className="text-center space-y-3">
+                   <div className="w-12 h-12 bg-indigo-50 text-[#5F27CD] rounded-full mx-auto flex items-center justify-center">
+                      <ShieldCheck size={20} />
+                   </div>
+                   <h3 className="title-luxe text-xl leading-none">Récapitulatif</h3>
+                   <p className="text-[0.65rem] text-gray-400 italic">Prêt pour vous.</p>
                 </div>
 
-                <div className="space-y-3">
-                  <button 
-                    onClick={completeBooking} 
-                    disabled={isSubmitting || !acceptedConditions} 
-                    className="w-full inline-flex items-center justify-center px-6 py-4 bg-emerald-600 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-emerald-700 shadow-[0_10px_30px_rgba(5,150,105,0.2)] gap-3"
+                <div className="dash-card p-6 space-y-6 bg-[#222F3E] text-white">
+                   <div className="flex justify-between items-start">
+                      <div>
+                        <p className="text-[0.5rem] font-bold tracking-[0.2em] text-[#0ABDE3] uppercase mb-1">RITUEL</p>
+                        <h4 className="text-lg font-light">{selectedService?.name}</h4>
+                        <p className="text-[#1DD1A1] font-bold text-[0.6rem] mt-0.5 uppercase tracking-widest">{selectedService?.duration}</p>
+                      </div>
+                      <div className="text-right">
+                         <p className="text-[0.5rem] font-bold tracking-[0.2em] text-[#0ABDE3] uppercase mb-1">MONTANT</p>
+                         <div className="flex flex-col items-end">
+                            {clientLevel.discount > 0 && <span className="text-[0.6rem] line-through opacity-30">{selectedService?.price} CHF</span>}
+                            <span className="text-2xl font-light text-white">{discountedPrice} CHF</span>
+                         </div>
+                      </div>
+                   </div>
+
+                   <div className="pt-6 border-t border-white/10 flex flex-wrap gap-8">
+                      <div>
+                         <p className="text-[0.5rem] font-bold tracking-[0.15em] text-gray-400 uppercase mb-1">MOMENT</p>
+                         <p className="text-sm">{format(selectedDate!, 'EEEE d MMMM', { locale: fr })}</p>
+                         <p className="text-[0.6rem] text-[#1DD1A1]">À {selectedTime}</p>
+                      </div>
+                      <div>
+                         <p className="text-[0.5rem] font-bold tracking-[0.15em] text-gray-400 uppercase mb-1">ACCUEIL POUR</p>
+                         <p className="  text-sm">{formData.firstName || user?.displayName} {formData.lastName}</p>
+                         <p className="text-[0.6rem] opacity-50">{formData.phone}</p>
+                      </div>
+                   </div>
+                </div>
+
+                <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-2xl">
+                   <input 
+                    type="checkbox" 
+                    id="accept" 
+                    checked={acceptedTerms}
+                    onChange={e => setAcceptedTerms(e.target.checked)}
+                    className="mt-1 w-4 h-4 rounded border-gray-300 text-[#5F27CD] focus:ring-[#5F27CD]"
+                  />
+                   <label htmlFor="accept" className="text-[0.6rem] text-gray-600 leading-relaxed cursor-pointer selection:bg-none">
+                      Je confirme avoir pris connaissance des conditions d'annulation (24h) et l'absence de contre-indications médicales.
+                   </label>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                   <button onClick={handleBack} className="py-4 rounded-xl border border-gray-100 text-gray-500 font-bold text-[0.6rem] uppercase tracking-widest">Retour</button>
+                   <button 
+                    disabled={!acceptedTerms || isSubmitting}
+                    onClick={completeBooking}
+                    className="btn-luxe py-4 text-[0.6rem] font-black uppercase tracking-widest flex items-center justify-center gap-2 disabled:opacity-30"
                   >
-                    {isSubmitting ? <Loader2 className="animate-spin" /> : <>VALIDER DÉFINITIVEMENT <CheckCircle2 size={18} /></>}
-                  </button>
-                  <button onClick={() => setStep(3)} className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-400 hover:text-neutral-900 transition-colors pt-2 block w-full">RETOUR</button>
+                    {isSubmitting ? <Loader2 className="animate-spin" size={14} /> : <>Confirmer <Sparkles size={14} /></>}
+                   </button>
                 </div>
               </motion.div>
             )}
