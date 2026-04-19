@@ -212,6 +212,7 @@ export default function AgendaPage({
                 isDayOpen={isDayOpen}
                 isSlotBlocked={isSlotBlocked}
                 toggleSlot={toggleSlot}
+                onToggleDay={onToggleDay}
                 onSelectAppt={onSelectAppt}
                 onOpenSlot={onOpenSlot}
                 absenceMode={absenceMode}
@@ -318,12 +319,13 @@ interface WeekTimeGridProps {
   pendingDates: Set<string>;
   togglePending: (d: string) => void;
   onMoveAppt?: (id: string, date: string, time: string) => void;
+  onToggleDay: (d: string) => void;
 }
 
 function WeekTimeGrid({
   cur, appointments, configSlots, isDayOpen, isSlotBlocked,
   toggleSlot, onSelectAppt, onOpenSlot, absenceMode, blockMode,
-  pendingDates, togglePending, onMoveAppt,
+  pendingDates, togglePending, onMoveAppt, onToggleDay,
 }: WeekTimeGridProps) {
   const days = useMemo(() => {
     const s = wkStart(new Date(cur));
@@ -349,34 +351,42 @@ function WeekTimeGrid({
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-white">
-      {/* Day column headers */}
-      <div className="grid shrink-0 border-b border-slate-200" style={{ gridTemplateColumns: '56px repeat(7, 1fr)' }}>
-        {/* Empty corner */}
-        <div className="border-r border-slate-100" />
-        {days.map((d, i) => {
+      {/* Header Row */}
+      <div className="flex border-b border-slate-200">
+        <div className="w-16 border-r border-slate-200" />
+        {days.map(d => {
           const dStr = fmt(d);
-          const isToday = isSameDay(new Date(), d);
-          const isOpen = isDayOpen(dStr);
-          const isPending = pendingDates.has(dStr);
+          const isToday = dStr === fmt(new Date());
+          const open = isDayOpen(dStr);
+          const dayAppts = appointments.filter(a => a.date === dStr);
+          const slotsCount = (configSlots[isoDay(d)] || []).length;
+          const occupancy = slotsCount > 0 ? Math.round((dayAppts.length / slotsCount) * 100) : 0;
+
           return (
-            <div
-              key={i}
-              onClick={() => absenceMode && togglePending(dStr)}
-              className={`py-3 text-center border-r border-slate-100 transition-colors ${
-                absenceMode ? 'cursor-pointer hover:bg-slate-50' : ''
-              } ${isPending ? 'bg-rose-50' : !isOpen ? 'bg-slate-50' : ''}`}
-            >
-              <p className={`text-[10px] font-medium uppercase tracking-wider ${isToday ? 'text-emerald-600' : 'text-slate-400'}`}>
-                {DAYS_LABELS[i]}
-              </p>
-              <p className={`text-lg font-semibold mt-0.5 leading-none ${
-                isToday
-                  ? 'text-white bg-emerald-600 w-8 h-8 rounded-full flex items-center justify-center mx-auto'
-                  : isOpen ? 'text-slate-900' : 'text-slate-400'
-              }`}>
-                {d.getDate()}
-              </p>
-              {isPending && <div className="w-1.5 h-1.5 rounded-full bg-rose-500 mx-auto mt-1" />}
+            <div key={dStr} className="flex-1 min-w-0 border-r border-slate-100 last:border-r-0 py-3 relative">
+              <div className={`mx-auto w-10 h-10 rounded-full flex flex-col items-center justify-center transition-all ${isToday ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-900 group-hover:bg-slate-50'}`}>
+                <span className="text-[10px] font-bold uppercase tracking-tight opacity-70">{DAYS_LABELS[isoDay(d)]}</span>
+                <span className="text-[15px] font-bold leading-none">{format(d, 'd')}</span>
+              </div>
+              {open && slotsCount > 0 && (
+                <div className="mt-2 px-4">
+                  <div className="h-1 bg-slate-100 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-500 rounded-full ${occupancy > 80 ? 'bg-rose-500' : occupancy > 40 ? 'bg-amber-500' : 'bg-emerald-500'}`} 
+                      style={{ width: `${occupancy}%` }} 
+                    />
+                  </div>
+                </div>
+              )}
+              {onToggleDay && (
+                <button 
+                  onClick={() => onToggleDay(dStr)}
+                  className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center transition-colors ${open ? 'text-slate-200 hover:text-emerald-500' : 'text-rose-500 bg-rose-50'}`}
+                  title={open ? "Fermer la journée" : "Ouvrir la journée"}
+                >
+                  <CheckCircle2 size={12} fill={open ? "currentColor" : "none"} />
+                </button>
+              )}
             </div>
           );
         })}
@@ -435,12 +445,10 @@ function WeekTimeGrid({
                   </div>
                 )}
 
-                {/* Available slot markers (empty slots) */}
+                {/* Slots rendering */}
                 {isOpen && daySlots.map(t => {
                   const [h, m] = t.split(':').map(Number);
                   const slotMinutes = h * 60 + m;
-                  
-                  // Vérification si le créneau est occupé par la durée d'un autre RDV
                   const isBusy = dayAppts.some(a => {
                     const [ah, am] = (a.time || '00:00').split(':').map(Number);
                     const startMin = ah * 60 + am;
@@ -448,41 +456,50 @@ function WeekTimeGrid({
                     const endMin = startMin + duration;
                     return slotMinutes >= startMin && slotMinutes < endMin;
                   });
-
                   const blocked = isSlotBlocked(dStr, t);
-                  if (isBusy || blocked) return null;
-
-                  const top = getTop(t);
-                  return (
-                    <DroppableSlot
-                      key={t}
-                      id={`${dStr}|${t}`}
-                      top={top}
-                      onClick={() => {
-                        if (absenceMode) return;
-                        if (blockMode) { toggleSlot(dStr, t); return; }
-                        onOpenSlot(dStr, t);
-                      }}
-                    />
-                  );
-                })}
-
-                {/* Blocked slot markers */}
-                {isOpen && daySlots.map(t => {
-                  if (!isSlotBlocked(dStr, t)) return null;
-                  const hasAppt = dayAppts.some(a => a.time === t);
-                  if (hasAppt) return null;
+                  if (isBusy) return null;
 
                   return (
-                    <div
-                      key={`block-${t}`}
-                      onClick={() => {
-                        if (!absenceMode) toggleSlot(dStr, t);
-                      }}
-                      className="absolute left-1 right-1 z-[2] rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center cursor-pointer hover:bg-slate-200 transition-colors"
-                      style={{ top: getTop(t), height: getHeight(DEFAULT_DURATION) }}
+                    <div 
+                      key={`${dStr}-${t}`} 
+                      className={`absolute left-0 right-0 group transition-all ${blocked ? 'bg-slate-50/80 z-10' : ''}`}
+                      style={{ top: getTop(t), height: HOUR_H }}
                     >
-                      <Lock size={12} className="text-slate-400" />
+                      <div className={`absolute inset-x-1.5 inset-y-1 rounded-xl border-2 border-dashed flex items-center justify-center gap-2 transition-all ${
+                        blocked 
+                          ? 'border-slate-200 bg-white/40' 
+                          : 'border-transparent hover:border-slate-100 hover:bg-slate-50/50'
+                      }`}>
+                        {!blocked && !absenceMode && (
+                          <>
+                            <button 
+                              onClick={() => onOpenSlot(dStr, t)}
+                              className="w-8 h-8 rounded-full bg-white border border-slate-200 text-indigo-600 shadow-sm opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
+                              title="Nouvelle séance"
+                            >
+                              <Plus size={16} />
+                            </button>
+                            <button 
+                              onClick={() => toggleSlot(dStr, t)}
+                              className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-400 shadow-sm opacity-0 group-hover:opacity-100 hover:text-rose-600 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
+                              title="Bloquer le créneau"
+                            >
+                              <Ban size={14} />
+                            </button>
+                          </>
+                        )}
+                        {blocked && (
+                          <div className="flex flex-col items-center gap-1">
+                            <Lock size={14} className="text-slate-300" />
+                            <button 
+                              onClick={() => toggleSlot(dStr, t)}
+                              className="text-[9px] font-bold text-indigo-500 hover:underline hover:text-indigo-700"
+                            >
+                              DÉBLOQUER
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   );
                 })}

@@ -41,6 +41,23 @@ export default function HomePage({
     [appointments, currentMonth],
   );
 
+  const realPaid = paidThisMonth;
+
+  const projectedRevenue = useMemo(() => {
+    const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    const currentDay = Math.max(1, new Date().getDate());
+    return Math.round((realPaid / currentDay) * daysInMonth);
+  }, [realPaid]);
+
+  const topService = useMemo(() => {
+    const counts = appointments.reduce((acc, a) => {
+      if (a.serviceName) acc[a.serviceName] = (acc[a.serviceName] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    const top = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
+    return top ? top[0] : 'N/A';
+  }, [appointments]);
+
   const todayRevenue = todayAppts.reduce((s, a) => s + (a.price || 150), 0);
   const progress = Math.min(100, (paidThisMonth / monthlyGoal) * 100);
 
@@ -73,7 +90,7 @@ export default function HomePage({
       <main className="flex-1 overflow-auto">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-10 py-6 sm:py-8">
           {/* Stats row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
             <StatCard
               label="Séances aujourd'hui"
               value={String(todayAppts.length)}
@@ -81,8 +98,8 @@ export default function HomePage({
               accent="indigo"
             />
             <StatCard
-              label="Revenus ce mois"
-              value={`${(paidThisMonth / 1000).toFixed(1)}K`}
+              label="Encaissé (Mois)"
+              value={`${(realPaid / 1000).toFixed(1)}K`}
               sub={`Objectif : ${(monthlyGoal / 1000).toFixed(0)}K CHF`}
               accent="emerald"
               action={
@@ -92,10 +109,17 @@ export default function HomePage({
               }
             />
             <StatCard
-              label="Impayés"
-              value={String(latePayments.length)}
-              sub={`${latePayments.reduce((s, a) => s + (a.price || 150), 0)} CHF total`}
-              accent="rose"
+              label="Projection fin de mois"
+              value={`${(projectedRevenue / 1000).toFixed(1)}K`}
+              sub={projectedRevenue >= monthlyGoal ? "Objectif en vue ! 🚀" : "Besoin de boost 📈"}
+              accent="indigo"
+              isProjected
+            />
+            <StatCard
+              label="Soin n°1"
+              value={topService.split(' ')[0]}
+              sub="Soin le plus demandé"
+              accent="indigo"
             />
           </div>
 
@@ -232,13 +256,14 @@ export default function HomePage({
 
 /* ── STAT CARD ── */
 function StatCard({
-  label, value, sub, accent, action,
+  label, value, sub, accent, action, isProjected
 }: {
   label: string;
   value: string;
   sub: string;
   accent: 'indigo' | 'emerald' | 'rose';
   action?: React.ReactNode;
+  isProjected?: boolean;
 }) {
   const colors = {
     indigo: 'bg-indigo-50 text-indigo-700',
@@ -247,15 +272,18 @@ function StatCard({
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-5">
+    <div className={`bg-white border border-slate-200 rounded-xl p-5 ${isProjected ? 'bg-gradient-to-br from-white to-indigo-50/30' : ''}`}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-medium text-slate-500">{label}</span>
+        <span className="text-xs font-medium text-slate-500 flex items-center gap-1.5">
+          {label}
+          {isProjected && <TrendingUp size={12} className="text-indigo-500 animate-pulse" />}
+        </span>
         {action}
       </div>
       <div className="flex items-baseline gap-2">
         <span className={`text-2xl font-semibold ${colors[accent].split(' ')[1]}`}>{value}</span>
       </div>
-      <p className="text-xs text-slate-400 mt-1">{sub}</p>
+      <p className="text-[10px] font-medium text-slate-400 mt-1 uppercase tracking-tight">{sub}</p>
     </div>
   );
 }
