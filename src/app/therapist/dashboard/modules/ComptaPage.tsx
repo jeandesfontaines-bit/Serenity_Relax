@@ -2,14 +2,17 @@ import React, { useState, useMemo, useCallback } from 'react';
 import {
   Search, Download, FileText, Smartphone,
   CreditCard, Banknote, X, ArrowUpDown, Printer, Calendar,
-  ChevronRight,
+  ChevronRight, Bell, Send, Settings
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
-import { Appointment, Invoice } from '../types';
+import { Appointment, Invoice, Client } from '../types';
 
 interface ComptaPageProps {
   appointments: Appointment[];
+  clients: Client[];
   invoices: Invoice[];
+  reminderTemplate: string;
+  onUpdateReminder: (val: string) => void;
   onTogglePayment: (id: string, current: boolean, method?: string) => void;
   onSelectAppt: (appt: Appointment) => void;
 }
@@ -23,7 +26,7 @@ const STATUS_CONFIG = {
 };
 
 export default function ComptaPage({
-  appointments, invoices, onTogglePayment, onSelectAppt,
+  appointments, clients, invoices, reminderTemplate, onUpdateReminder, onTogglePayment, onSelectAppt,
 }: ComptaPageProps) {
   const [search, setSearch] = useState('');
   const [sortField, setSortField] = useState<SortField>('date');
@@ -34,6 +37,7 @@ export default function ComptaPage({
   });
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showDateRange, setShowDateRange] = useState(false);
+  const [showTemplateEditor, setShowTemplateEditor] = useState(false);
   const [payingId, setPayingId] = useState<string | null>(null);
 
   const todayStr = format(new Date(), 'yyyy-MM-dd');
@@ -99,6 +103,26 @@ export default function ComptaPage({
 
   const handlePrint = (id: string) => {
     window.open(`/therapist/invoice/${id}`, '_blank');
+  };
+
+  const handleReminder = (appt: Appointment) => {
+    const firstName = appt.clientNameSnapshot?.split(' ')[0] || 'Client';
+    
+    // Remplacement des variables dans le template
+    let message = reminderTemplate
+      .replace(/{firstName}/g, firstName)
+      .replace(/{date}/g, appt.date || '')
+      .replace(/{price}/g, (appt.price || 0).toString());
+
+    // On va chercher le numéro dans la fiche client
+    const client = clients.find(c => c.id === appt.clientId);
+    const phone = client?.phone?.replace(/\D/g, '') || '';
+    
+    const whatsappUrl = phone 
+      ? `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+      : `https://wa.me/?text=${encodeURIComponent(message)}`;
+      
+    window.open(whatsappUrl, '_blank');
   };
 
   const handleExport = () => {
@@ -170,6 +194,14 @@ export default function ComptaPage({
           )}
 
           <button
+            onClick={() => setShowTemplateEditor(!showTemplateEditor)}
+            className={`flex items-center justify-center w-8 h-8 border rounded-lg transition-colors ${showTemplateEditor ? 'bg-indigo-50 border-indigo-200 text-indigo-600' : 'bg-white border-slate-200 text-slate-400 hover:text-slate-600'}`}
+            title="Réglages Relance"
+          >
+            <Settings size={14} />
+          </button>
+
+          <button
             onClick={() => {
               if (selectedIds.size > 0 || showDateRange) {
                 handleExport();
@@ -185,6 +217,27 @@ export default function ComptaPage({
           </button>
         </div>
       </header>
+
+      {/* ── TEMPLATE EDITOR ── */}
+      {showTemplateEditor && (
+        <div className="bg-indigo-50/50 border-b border-indigo-100 px-6 sm:px-10 py-4 shrink-0 overflow-hidden animate-in slide-in-from-top duration-200">
+           <div className="max-w-2xl">
+              <div className="flex items-center justify-between mb-2">
+                 <h3 className="text-[10px] font-bold text-indigo-900 uppercase tracking-widest flex items-center gap-2">
+                    <Smartphone size={12}/> Message de relance WhatsApp
+                 </h3>
+                 <span className="text-[9px] text-indigo-400 font-medium italic">Variables : &#123;firstName&#125;, &#123;date&#125;, &#123;price&#125;</span>
+              </div>
+              <textarea 
+                value={reminderTemplate}
+                onChange={(e) => onUpdateReminder(e.target.value)}
+                rows={3}
+                className="w-full text-xs p-3 rounded-xl border border-indigo-200 bg-white shadow-sm focus:ring-2 focus:ring-indigo-100 focus:outline-none text-slate-700 leading-relaxed"
+              />
+              <p className="mt-2 text-[9px] text-indigo-400">Le message sera automatiquement mis à jour avec le nom du client et les détails de sa séance.</p>
+           </div>
+        </div>
+      )}
 
       {/* ── SUMMARY BAR ── */}
       <div className="h-10 bg-white border-b border-slate-200 px-6 sm:px-10 flex items-center gap-6 shrink-0">
@@ -296,7 +349,16 @@ export default function ComptaPage({
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-1">
+                    <div className="flex gap-1" onClick={e => e.stopPropagation()}>
+                      {status === 'late' && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleReminder(a); }}
+                          className="w-7 h-7 rounded-lg bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-500 hover:bg-rose-500 hover:text-white transition-all duration-150"
+                          title="Relancer"
+                        >
+                          <Bell size={13} />
+                        </button>
+                      )}
                       <button
                         onClick={() => handlePrint(a.id)}
                         className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:border-slate-300 transition-colors duration-150"

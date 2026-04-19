@@ -12,11 +12,13 @@ interface AppointmentDetailProps {
   appt: Appointment;
   onClose: () => void;
   appointments: Appointment[];
+  followupTemplate?: string;
+  onSendWhatsApp?: (appt: Appointment, type: 'followup' | 'confirmation') => void;
   onGoToClient?: (clientId: string) => void;
 }
 
 export default function AppointmentDetail({
-  appt, onClose, appointments = [], onGoToClient,
+  appt, onClose, appointments = [], followupTemplate, onSendWhatsApp, onGoToClient,
 }: AppointmentDetailProps) {
   const firestore = useFirestore();
   const current = appointments.find(a => a.id === appt.id) || appt;
@@ -114,8 +116,20 @@ export default function AppointmentDetail({
             {/* Payment status */}
             <div className="bg-white border border-slate-200 rounded-[16px] p-5 shadow-sm">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Paiement</p>
+                <div className="flex-1">
+                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5 flex justify-between items-center">
+                    Paiement
+                    {onSendWhatsApp && (
+                      <button 
+                        onClick={() => onSendWhatsApp(current, 'followup')}
+                        className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 transition-colors"
+                        title="Envoyer le suivi WhatsApp"
+                      >
+                        <Smartphone size={12} />
+                        <span className="text-[9px] font-bold uppercase tracking-tight">Relancer / Suivi</span>
+                      </button>
+                    )}
+                  </p>
                   {showPaymentSelector ? (
                     <div className="flex items-center gap-2 flex-wrap">
                       {(['Twint', 'Card', 'Cash'] as const).map(m => (

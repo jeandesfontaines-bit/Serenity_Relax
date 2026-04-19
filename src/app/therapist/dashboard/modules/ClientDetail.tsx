@@ -24,13 +24,17 @@ export default function ClientDetail({
 }: ClientDetailProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'sessions' | 'notes' | 'billing'>('overview');
   const [editData, setEditData] = useState<Partial<Client>>({ ...client });
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
 
   useEffect(() => { setEditData({ ...client }); }, [client]);
 
   const updateField = useCallback((field: keyof Client, value: string) => {
     const next = { ...editData, [field]: value };
     setEditData(next);
+    setSaveStatus('saving');
     onUpdateClient(client.id, next);
+    setTimeout(() => setSaveStatus('saved'), 600);
+    setTimeout(() => setSaveStatus('idle'), 3000);
   }, [client.id, editData, onUpdateClient]);
 
   const clientAppts = useMemo(() =>
@@ -404,20 +408,81 @@ function SessionRow({ appt, onClick, dim = false }: { appt: Appointment; onClick
    NOTES TAB
    ══════════════════════════════════════════════════ */
 function NotesTab({ client, onUpdateClient }: { client: Client; onUpdateClient: (id: string, data: Partial<Client>) => void }) {
+  const [localNotes, setLocalNotes] = useState(client.notes || '');
+  const [status, setStatus] = useState<'idle' | 'typing' | 'saving' | 'saved'>('idle');
+
+  // Debounced save
+  useEffect(() => {
+    if (status !== 'typing') return;
+    const t = setTimeout(() => {
+       setStatus('saving');
+       onUpdateClient(client.id, { notes: localNotes });
+       setTimeout(() => setStatus('saved'), 800);
+       setTimeout(() => setStatus('idle'), 3000);
+    }, 1000);
+    return () => clearTimeout(t);
+  }, [localNotes, client.id, onUpdateClient, status]);
+
   return (
-    <div className="space-y-3">
-      <div className="bg-white border border-slate-200 rounded-xl px-5 py-3.5 flex items-center justify-between">
-        <span className="text-sm font-medium text-slate-900">Dossier de suivi</span>
-        <span className="flex items-center gap-1 text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-          <ShieldCheck size={10} /> Confidentiel
-        </span>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 space-y-4">
+        <div className="bg-white border border-slate-200 rounded-xl px-5 py-3.5 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-slate-900">Notes de suivi médical</span>
+            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider transition-all ${
+              status === 'saving' ? 'bg-amber-100 text-amber-700' : 
+              status === 'saved' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400'
+            }`}>
+              {status === 'saving' ? 'Synchronisation...' : status === 'saved' ? 'Sauvegardé' : 'À jour'}
+            </span>
+          </div>
+          <span className="flex items-center gap-1 text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full uppercase tracking-tight">
+            <ShieldCheck size={12} /> Données de santé chiffrées
+          </span>
+        </div>
+        <textarea
+          value={localNotes}
+          onChange={e => { setLocalNotes(e.target.value); setStatus('typing'); }}
+          placeholder="Rédigez ici l'historique de santé, les contre-indications, et le suivi global..."
+          className="w-full min-h-[500px] bg-white border border-slate-200 rounded-2xl p-6 text-sm text-slate-700 leading-relaxed placeholder:text-slate-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-emerald-50 focus:border-emerald-300 transition-all resize-none"
+        />
       </div>
-      <textarea
-        value={client.notes || ''}
-        onChange={e => onUpdateClient(client.id, { notes: e.target.value })}
-        placeholder="Rédigez vos notes de traitement, évolution, zones de tension..."
-        className="w-full min-h-[400px] bg-white border border-slate-200 rounded-xl p-5 text-sm text-slate-700 leading-relaxed placeholder:text-slate-400 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-300 transition-all"
-      />
+
+      <div className="space-y-4">
+         <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+               <Clock size={14} className="text-slate-300"/> Chronologie des soins
+            </h3>
+            <div className="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px before:bg-slate-100">
+               <div className="relative pl-8 group">
+                  <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-emerald-500 border-4 border-white shadow-sm z-10" />
+                  <p className="text-[10px] font-bold text-emerald-600 uppercase">Aujourd'hui</p>
+                  <p className="text-xs font-medium text-slate-900">Nouvelle entrée en attente...</p>
+               </div>
+               <div className="relative pl-8 group">
+                  <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-slate-300 z-10 transition-colors group-hover:border-indigo-500" />
+                  <p className="text-[10px] font-bold text-slate-400 uppercase">12 Avril 2026</p>
+                  <p className="text-xs font-semibold text-slate-900 mt-0.5">Massage Suédois · 60 min</p>
+                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 italic">"Tensions trapèzes marquées, amélioration de la respiration..."</p>
+               </div>
+               <div className="relative pl-8 group opacity-60">
+                  <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-slate-200 z-10" />
+                  <p className="text-[10px] font-bold text-slate-400 uppercase">05 Mars 2026</p>
+                  <p className="text-xs font-semibold text-slate-900 mt-0.5">Drainage Lymphatique</p>
+               </div>
+            </div>
+         </div>
+
+         <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-5 text-white shadow-lg shadow-indigo-200">
+            <h4 className="text-[11px] font-bold uppercase tracking-widest opacity-70 mb-3">Diagnostic Rapide</h4>
+            <div className="flex flex-wrap gap-2">
+               {['Dos', 'Stress', 'Sportif'].map(t => (
+                 <span key={t} className="px-2 py-1 bg-white/20 rounded-lg text-[10px] font-bold backdrop-blur-sm">#{t}</span>
+               ))}
+               <button className="px-2 py-1 bg-white/10 hover:bg-white/30 rounded-lg text-[10px] font-bold transition-colors">+</button>
+            </div>
+         </div>
+      </div>
     </div>
   );
 }

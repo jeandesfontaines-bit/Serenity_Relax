@@ -309,10 +309,15 @@ function ClientRow({ client: p, sessionsCount, isSelected, visibleColumns, gridT
       className={`grid px-4 h-12 items-center cursor-pointer transition-colors duration-150 group hover:bg-slate-50 ${isSelected ? 'bg-emerald-50/50' : ''}`}
       style={{ gridTemplateColumns: gridTemplate }}
     >
-      <div className="flex justify-center">
-        <Checkbox checked={isSelected} onChange={() => {}} />
-        {/* We intercept click in the parent div via onToggle */}
-        <div className="absolute inset-0" onClick={(e) => { e.stopPropagation(); onToggle(e, p.id); }} style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
+      <div className="flex justify-center items-center h-full">
+        <Checkbox 
+          checked={isSelected} 
+          onChange={() => {}} 
+        />
+        <div 
+          className="absolute w-8 h-8 cursor-pointer z-[10]" 
+          onClick={(e) => { e.stopPropagation(); onToggle(e, p.id); }} 
+        />
       </div>
 
       {visibleColumns.map(colId => {

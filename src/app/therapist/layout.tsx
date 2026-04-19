@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
-import AppLayout from './dashboard/modules/AppLayout';
 
 export default function TherapistLayout({
   children,
@@ -14,8 +13,8 @@ export default function TherapistLayout({
   const router = useRouter();
 
   useEffect(() => {
-    // Sécurité stricte Thérapeute
-    if (!user || user.email !== 'jean.desfontaines@gmail.com') {
+    // Sécurité Thérapeute
+    if (user === null) {
       router.push('/login');
     }
   }, [user, router]);
@@ -26,5 +25,5 @@ export default function TherapistLayout({
     </div>
   );
 
-  return <AppLayout>{children}</AppLayout>;
+  return <>{children}</>;
 }

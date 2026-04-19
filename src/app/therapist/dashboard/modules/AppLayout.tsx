@@ -8,10 +8,11 @@ interface AppLayoutProps {
 }
 
 const NAV_MAIN = [
-  { id: 'dashboard',  label: 'Tableau de bord', icon: LayoutGrid },
-  { id: 'clients',    label: 'Clients',         icon: Users },
-  { id: 'scheduler',  label: 'Agenda',          icon: Calendar },
-  { id: 'accounting', label: 'Facturation',     icon: CreditCard },
+  { id: 'dashboard',  label: 'Home',        icon: LayoutGrid },
+  { id: 'scheduler',  label: 'Agenda',      icon: Calendar },
+  { id: 'clients',    label: 'Clients',     icon: Users },
+  { id: 'accounting', label: 'Facturation', icon: CreditCard },
+  { id: 'settings',   label: 'Réglages',    icon: Settings },
 ];
 
 const NAV_SECONDARY = [
