@@ -125,7 +125,7 @@ export default function InvoiceDetail() {
                 <h1 className="title-luxe text-5xl md:text-6xl">{invoice.id}</h1>
               </div>
               <div className="text-right">
-                <p className="text-lg font-serif italic text-gray-400">{invoice.date}</p>
+                <p className="text-lg font-sans italic text-gray-400">{invoice.date}</p>
                 <p className="text-6xl font-light text-[#222F3E] mt-2">{invoice.amount} <small className="text-xl font-black opacity-20">CHF</small></p>
               </div>
             </div>
@@ -136,14 +136,14 @@ export default function InvoiceDetail() {
                   <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Patient Souverain</p>
                   <div className="flex items-center gap-4">
                      <div className="w-12 h-12 bg-[#F8F5F0] rounded-2xl flex items-center justify-center text-[#5F27CD]"><User size={24} /></div>
-                     <p className="text-3xl font-serif font-medium text-[#222F3E]">{invoice.client}</p>
+                     <p className="text-3xl font-sans font-medium text-[#222F3E]">{invoice.client}</p>
                   </div>
                 </div>
                 <div>
                   <p className="text-[0.6rem] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Rituel Pratiqué</p>
                   <div className="flex items-center gap-4">
                      <div className="w-12 h-12 bg-[#F8F5F0] rounded-2xl flex items-center justify-center text-[#0ABDE3]"><Sparkles size={24} /></div>
-                     <p className="text-xl font-serif text-[#222F3E]">{invoice.service}</p>
+                     <p className="text-xl font-sans text-[#222F3E]">{invoice.service}</p>
                   </div>
                 </div>
               </div>
@@ -182,7 +182,7 @@ export default function InvoiceDetail() {
               <div className="mt-20">
                 <button
                   onClick={() => setExpanded(!expanded)}
-                  className="w-full h-24 bg-amber-50 text-amber-700 rounded-[2rem] border border-amber-100 flex items-center justify-between px-10 group hover:bg-amber-100 transition-all font-serif italic text-xl"
+                  className="w-full h-24 bg-amber-50 text-amber-700 rounded-[2rem] border border-amber-100 flex items-center justify-between px-10 group hover:bg-amber-100 transition-all font-sans italic text-xl"
                 >
                   <span className="flex items-center gap-4"><CreditCard className="animate-pulse" /> Marquer comme réglé</span>
                   <ChevronRight size={20} className={`transition-transform duration-500 ${expanded ? 'rotate-90' : ''}`} />
@@ -238,10 +238,10 @@ export default function InvoiceDetail() {
                   value={invoice.notes}
                   onChange={(e) => setInvoice({ ...invoice, notes: e.target.value })}
                   rows={6}
-                  className="w-full bg-white/60 backdrop-blur-md border border-[#5F27CD]/20 p-8 rounded-[2.5rem] text-xl font-serif italic focus:outline-none focus:ring-8 focus:ring-indigo-50 transition-all resize-none shadow-inner"
+                  className="w-full bg-white/60 backdrop-blur-md border border-[#5F27CD]/20 p-8 rounded-[2.5rem] text-xl font-sans italic focus:outline-none focus:ring-8 focus:ring-indigo-50 transition-all resize-none shadow-inner"
                 />
               ) : (
-                <div className="bg-[#F8F5F0]/60 p-10 rounded-[2.5rem] text-gray-600 font-serif italic text-xl leading-relaxed italic border border-white">
+                <div className="bg-[#F8F5F0]/60 p-10 rounded-[2.5rem] text-gray-600 font-sans italic text-xl leading-relaxed italic border border-white">
                   {invoice.notes}
                 </div>
               )}

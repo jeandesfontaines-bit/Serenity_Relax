@@ -103,11 +103,11 @@ export default function AppointmentDetail({
               <div className="grid grid-cols-2 gap-6">
                 <div className="dash-card p-6 border-l-4 border-[#5F27CD]">
                   <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Prestation</p>
-                  <p className="text-xl font-serif font-medium text-[#222F3E]">{current.serviceName || 'Rituel Sensoriel'}</p>
+                  <p className="text-xl font-sans font-medium text-[#222F3E]">{current.serviceName || 'Rituel Sensoriel'}</p>
                 </div>
                 <div className="dash-card p-6 border-l-4 border-[#0ABDE3]">
                   <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Valeur</p>
-                  <p className="text-3xl font-serif font-medium text-[#222F3E]">{current.price || 150}<span className="text-xs ml-1 opacity-50 font-sans uppercase">chf</span></p>
+                  <p className="text-3xl font-sans font-medium text-[#222F3E]">{current.price || 150}<span className="text-xs ml-1 opacity-50 font-sans uppercase">chf</span></p>
                 </div>
               </div>
 
@@ -151,7 +151,7 @@ export default function AppointmentDetail({
                             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${current.paid ? 'bg-[#1DD1A1]/10 text-[#1DD1A1]' : 'bg-orange-50 text-[#FF9F43]'}`}>
                                {current.paid ? <CreditCard size={20} /> : <Banknote size={20} />}
                             </div>
-                            <span className={`text-lg font-serif font-medium ${current.paid ? 'text-[#1DD1A1]' : 'text-[#FF9F43]'}`}>
+                            <span className={`text-lg font-sans font-medium ${current.paid ? 'text-[#1DD1A1]' : 'text-[#FF9F43]'}`}>
                                {current.paid ? `Encaissement validé via ${current.paymentMethod}` : 'Transaction en attente'}
                             </span>
                           </div>
@@ -174,12 +174,12 @@ export default function AppointmentDetail({
                       <ShieldCheck size={24} />
                     </div>
                     <div>
-                      <p className="text-base font-serif font-medium text-[#222F3E]">Consulter le Dossier Patient</p>
+                      <p className="text-base font-sans font-medium text-[#222F3E]">Consulter le Dossier Patient</p>
                       <p className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest">{sessionCount} séances enregistrées</p>
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                      <p className={`text-xl font-serif font-medium ${totalDue > 0 ? 'text-[#FF6B6B]' : 'text-[#1DD1A1]'}`}>{totalDue} CHF</p>
+                      <p className={`text-xl font-sans font-medium ${totalDue > 0 ? 'text-[#FF6B6B]' : 'text-[#1DD1A1]'}`}>{totalDue} CHF</p>
                       <p className="text-[0.6rem] font-black uppercase tracking-widest opacity-30">Solde dû</p>
                   </div>
                 </button>
@@ -189,11 +189,11 @@ export default function AppointmentDetail({
           <div className="grid grid-cols-2 gap-6 pt-4">
             <div className="text-center space-y-1">
               <p className="text-[0.6rem] font-black uppercase tracking-widest text-gray-400">Total Séances</p>
-              <p className="text-3xl font-serif font-medium text-[#222F3E]">{sessionCount}</p>
+              <p className="text-3xl font-sans font-medium text-[#222F3E]">{sessionCount}</p>
             </div>
             <div className="text-center space-y-1">
               <p className="text-[0.6rem] font-black uppercase tracking-widest text-gray-400">Solde Patient</p>
-              <p className={`text-3xl font-serif font-medium ${totalDue > 0 ? 'text-[#FF6B6B]' : 'text-[#1DD1A1]'}`}>
+              <p className={`text-3xl font-sans font-medium ${totalDue > 0 ? 'text-[#FF6B6B]' : 'text-[#1DD1A1]'}`}>
                 {totalDue}<span className="text-xs ml-0.5 opacity-50">CHF</span>
               </p>
             </div>

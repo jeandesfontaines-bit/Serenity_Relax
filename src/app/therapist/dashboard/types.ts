@@ -20,19 +20,24 @@ export interface Client {
 export interface Appointment {
   id: string;
   clientId?: string;
-  date: string;
-  time: string;
-  title: string;
+  date?: string;
+  time?: string;
+  startTime?: string;
+  endTime?: string;
+  title?: string;
   serviceName?: string;
   price?: number;
+  priceSnapshot?: number;
   paid?: boolean;
   paymentMethod?: string;
-  status?: 'upcoming' | 'done' | 'late' | 'honoré' | 'A VENIR' | 'RÉGLÉ';
+  status?: string;
   clientNameSnapshot?: string;
   duration?: string;
   phone?: string;
   email?: string;
   notes?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface Invoice {

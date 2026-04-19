@@ -59,8 +59,8 @@ export default function AnalyticsDashboard() {
               <div className="w-10 h-10 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><BarChart3 size={20} /></div>
               <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Pulse Intelligence</p>
            </div>
-           <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Vision <br/><span className="italic font-serif opacity-40">Holistique.</span></h2>
-           <p className="text-sm text-gray-400 font-serif italic max-w-md">Tableau de bord exécutif & flux mensuel.</p>
+           <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Vision <br/><span className="italic font-sans opacity-40">Holistique.</span></h2>
+           <p className="text-sm text-gray-400 font-sans italic max-w-md">Tableau de bord exécutif & flux mensuel.</p>
         </div>
         
         <div className="dash-card bg-[#222F3E] text-white p-6 flex flex-col justify-between h-40 w-full lg:w-64 shadow-xl shadow-indigo-200/20">
@@ -108,8 +108,8 @@ export default function AnalyticsDashboard() {
       <div className="dash-card p-12 bg-white border border-white space-y-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-2">
-             <h2 className="text-3xl font-serif font-medium text-[#222F3E]">Pulse Hebdomadaire</h2>
-             <p className="text-sm text-gray-400 font-serif italic">Taux d&apos;occupation (éveil) & Flux financiers (abondance).</p>
+             <h2 className="text-3xl font-sans font-medium text-[#222F3E]">Pulse Hebdomadaire</h2>
+             <p className="text-sm text-gray-400 font-sans italic">Taux d&apos;occupation (éveil) & Flux financiers (abondance).</p>
           </div>
           <div className="px-8 py-4 bg-gray-50/50 border border-gray-100 rounded-full text-[0.65rem] font-black uppercase tracking-widest text-gray-400">
              Semaine du 13 au 19 Avril 2026

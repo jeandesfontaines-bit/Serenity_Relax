@@ -93,7 +93,7 @@ export default function AgendaPage({
               <div className="w-10 h-10 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><CalendarIcon size={20} /></div>
               <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Planification Thérapeutique</p>
            </div>
-           <h1 className="title-luxe text-5xl md:text-6xl leading-none">Flux du <br/><span className="italic font-serif opacity-40">Sanctuaire.</span></h1>
+           <h1 className="title-luxe text-5xl md:text-6xl leading-none">Flux du <br/><span className="italic font-sans opacity-40">Sanctuaire.</span></h1>
         </div>
 
         <div className="flex bg-white/60 p-2 rounded-full border border-white shadow-sm">
@@ -136,7 +136,7 @@ export default function AgendaPage({
       {/* Liste des rendez-vous DU JOUR SÉLECTIONNÉ */}
       <div className="space-y-10">
         <div className="flex justify-between items-center px-4">
-           <h2 className="text-3xl font-serif font-light flex items-center gap-4 text-[#222F3E]">
+           <h2 className="text-3xl font-sans font-light flex items-center gap-4 text-[#222F3E]">
               <Sparkles className="text-[#5F27CD]" /> Rituels du {format(new Date(selectedDate), 'EEEE d MMMM', { locale: fr })}
            </h2>
            <button

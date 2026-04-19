@@ -33,7 +33,8 @@ export default function ProInvoicesPage() {
   const pendingTotal = invoices.filter(i => i.status === 'pending').reduce((sum, i) => sum + i.amount, 0);
 
   const filteredInvoices = invoices.filter(inv => {
-    const matchesSearch = inv.client.toLowerCase().includes(search.toLowerCase());
+    const clientName = inv.client || inv.clientName || 'Inconnu';
+    const matchesSearch = clientName.toLowerCase().includes(search.toLowerCase());
     if (statusFilter === 'paid') return matchesSearch && inv.status === 'paid';
     if (statusFilter === 'pending') return matchesSearch && inv.status === 'pending';
     return matchesSearch;
@@ -63,7 +64,7 @@ export default function ProInvoicesPage() {
         doc.setFont("helvetica", "bold");
         doc.text('DESTINATAIRE', 20, 70);
         doc.setFont("helvetica", "normal");
-        doc.text(inv.client, 20, 78);
+        doc.text(inv.client || inv.clientName || 'Client Inconnu', 20, 78);
         doc.text(`Date : ${inv.date}`, 20, 84);
         
         doc.setFillColor(248, 245, 240);
@@ -98,8 +99,8 @@ export default function ProInvoicesPage() {
     const headers = ["ID", "Client", "Date", "Service", "Montant", "Statut", "Methode"];
     const rows = invoices.map(inv => [
       inv.id,
-      inv.client,
-      inv.date,
+      inv.client || inv.clientName || 'Inconnu',
+      inv.date || 'N/A',
       inv.service,
       inv.amount,
       inv.status,
@@ -165,7 +166,7 @@ export default function ProInvoicesPage() {
                   <div className="w-6 h-6 rounded-md bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><FileText size={10} /></div>
                   <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#0ABDE3]">Gestion de Cabinet</p>
               </div>
-              <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Factures <span className="italic font-serif opacity-40">Grand Livre.</span></h2>
+              <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Factures <span className="italic font-sans opacity-40">Grand Livre.</span></h2>
             </div>
             
             <div className="flex gap-3">
@@ -221,7 +222,7 @@ export default function ProInvoicesPage() {
                 placeholder="Rechercher un dossier..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full bg-white border border-gray-100 rounded-xl pl-12 pr-6 py-3 text-sm font-serif italic focus:outline-none focus:ring-2 focus:ring-indigo-50 transition-all"
+                className="w-full bg-white border border-gray-100 rounded-xl pl-12 pr-6 py-3 text-sm font-sans italic focus:outline-none focus:ring-2 focus:ring-indigo-50 transition-all"
               />
             </div>
             <div className="flex bg-white p-1 rounded-xl border border-gray-100 shadow-sm">
@@ -264,8 +265,8 @@ export default function ProInvoicesPage() {
                            />
                         </td>
                         <td className="px-4 py-4 font-bold text-[#222F3E] text-xs">{inv.id}</td>
-                        <td className="px-4 py-4 text-sm font-serif font-medium text-[#222F3E]">{inv.client}</td>
-                        <td className="px-4 py-4 text-xs text-gray-400 font-serif italic">{inv.service}</td>
+                        <td className="px-4 py-4 text-sm font-sans font-medium text-[#222F3E]">{inv.client || inv.clientName || <span className="text-gray-300 italic">Inconnu</span>}</td>
+                        <td className="px-4 py-4 text-xs text-gray-400 font-sans italic">{inv.service}</td>
                         <td className="px-4 py-4 text-right">
                           <span className="text-lg font-light text-[#222F3E]">{inv.amount} <small className="text-[0.6rem] opacity-20 font-black">CHF</small></span>
                         </td>

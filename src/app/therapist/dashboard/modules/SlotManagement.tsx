@@ -52,7 +52,7 @@ export default function SlotManagement({
               </button>
           </div>
           
-          <h2 className="text-xl font-serif font-medium text-[#222F3E]">Gestion du Créneau</h2>
+          <h2 className="text-xl font-sans font-medium text-[#222F3E]">Gestion du Créneau</h2>
           <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#5F27CD] mt-1 capitalize opacity-70">
             {format(d, 'EEEE d MMMM', { locale: fr })} • {time}
           </p>
@@ -75,7 +75,7 @@ export default function SlotManagement({
                         <UserPlus size={20} className="text-white" />
                     </div>
                     <div className="text-left">
-                        <p className="text-base font-serif font-medium">Réserver une Séance</p>
+                        <p className="text-base font-sans font-medium">Réserver une Séance</p>
                         <p className="text-[0.6rem] font-black uppercase tracking-widest opacity-60">Nouveau ou Ancien Patient</p>
                     </div>
                 </div>
@@ -92,7 +92,7 @@ export default function SlotManagement({
                   <Lock size={20} className="text-gray-300" />
                 </div>
                 <div>
-                  <p className="text-base font-serif font-medium text-gray-400">Créneau Inactif</p>
+                  <p className="text-base font-sans font-medium text-gray-400">Créneau Inactif</p>
                   <p className="text-[0.6rem] font-black uppercase tracking-widest text-gray-300">Non disponible à la réservation</p>
                 </div>
               </motion.div>
@@ -118,7 +118,7 @@ export default function SlotManagement({
                 : <Lock size={20} className="text-gray-300" />}
             </div>
             <div>
-              <p className="text-base font-serif font-medium">
+              <p className="text-base font-sans font-medium">
                 {isBlocked ? 'Libérer le sanctuaire' : 'Bloquer le créneau'}
               </p>
               <p className="text-[0.6rem] font-black uppercase tracking-widest opacity-60">

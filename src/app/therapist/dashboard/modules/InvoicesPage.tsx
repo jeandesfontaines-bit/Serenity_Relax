@@ -101,7 +101,7 @@ export default function InvoicesPage() {
               <div className="w-10 h-10 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center shadow-lg"><FileText size={20} /></div>
               <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Gestion Administrative</p>
            </div>
-           <h1 className="title-luxe text-5xl md:text-7xl leading-none">Invoices <br/><span className="italic font-serif opacity-40">Archive.</span></h1>
+           <h1 className="title-luxe text-5xl md:text-7xl leading-none">Invoices <br/><span className="italic font-sans opacity-40">Archive.</span></h1>
         </div>
 
         <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4 relative z-10">
@@ -112,7 +112,7 @@ export default function InvoicesPage() {
                 placeholder="Rechercher une facture..." 
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full h-16 bg-white/60 border border-white rounded-full pl-16 pr-8 text-lg font-serif italic focus:outline-none focus:ring-8 focus:ring-indigo-50 transition-all shadow-sm"
+                className="w-full h-16 bg-white/60 border border-white rounded-full pl-16 pr-8 text-lg font-sans italic focus:outline-none focus:ring-8 focus:ring-indigo-50 transition-all shadow-sm"
               />
            </div>
         </div>
@@ -142,7 +142,7 @@ export default function InvoicesPage() {
                   className="group hover:bg-[#F8F5F0]/50 transition-colors"
                 >
                   <td className="px-10 py-8 font-bold text-[#222F3E] text-sm">{inv.id}</td>
-                  <td className="px-6 py-8 font-serif font-bold text-lg">{inv.client}</td>
+                  <td className="px-6 py-8 font-sans font-bold text-lg">{inv.client}</td>
                   <td className="px-6 py-8 text-sm text-gray-400 font-medium">{inv.date}</td>
                   <td className="px-6 py-8">
                      <span className="text-2xl font-light text-[#222F3E]">{inv.amount} <small className="text-[10px] opacity-30 font-black">CHF</small></span>

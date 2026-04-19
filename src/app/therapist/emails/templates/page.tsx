@@ -129,7 +129,7 @@ export default function EmailTemplates() {
            <button onClick={() => router.push('/therapist/emails')} className="flex items-center gap-3 text-gray-400 font-black text-[0.65rem] uppercase tracking-widest hover:text-[#5F27CD] transition-colors mb-4">
              <ArrowLeft size={16} /> Flux Automatiques
            </button>
-           <h1 className="title-luxe text-5xl md:text-7xl leading-none">Studio de <br/><span className="italic font-serif opacity-40">Rédaction.</span></h1>
+           <h1 className="title-luxe text-5xl md:text-7xl leading-none">Studio de <br/><span className="italic font-sans opacity-40">Rédaction.</span></h1>
         </div>
         
         <div className="flex gap-4">
@@ -157,7 +157,7 @@ export default function EmailTemplates() {
                key={key}
                onClick={() => setSelectedKey(key as keyof typeof templatesData)}
                className={`w-full text-left p-6 rounded-[2rem] border border-white transition-all flex items-center justify-between group ${
-                 selectedKey === key ? 'bg-[#222F3E] text-white shadow-2xl' : 'bg-white/60 hover:bg-white text-gray-400 font-serif italic'
+                 selectedKey === key ? 'bg-[#222F3E] text-white shadow-2xl' : 'bg-white/60 hover:bg-white text-gray-400 font-sans italic'
                }`}
              >
                <span className="text-[0.65rem] font-black uppercase tracking-widest leading-tight">{t.name}</span>
@@ -166,7 +166,7 @@ export default function EmailTemplates() {
            ))}
 
            <section className="dash-card p-8 bg-[#222F3E] text-white space-y-6 mt-6">
-              <h3 className="text-lg font-serif font-medium flex items-center gap-3 text-[#0ABDE3]">
+              <h3 className="text-lg font-sans font-medium flex items-center gap-3 text-[#0ABDE3]">
                  <Type size={18} /> Particules
               </h3>
               <div className="grid grid-cols-2 gap-3">
@@ -188,7 +188,7 @@ export default function EmailTemplates() {
            <section className="dash-card p-10 bg-white/60 backdrop-blur-3xl border border-white space-y-8 h-full">
               <div className="flex items-center gap-4 text-[#5F27CD]">
                  <Code size={20} />
-                 <h2 className="text-xl font-serif font-medium text-[#222F3E]">Édition HTML</h2>
+                 <h2 className="text-xl font-sans font-medium text-[#222F3E]">Édition HTML</h2>
               </div>
 
               <div className="space-y-6">
@@ -198,7 +198,7 @@ export default function EmailTemplates() {
                       type="text"
                       value={current.subject}
                       onChange={(e) => updateField('subject', e.target.value)}
-                      className="w-full bg-white border border-gray-100 rounded-2xl px-6 py-4 text-base font-serif italic text-[#222F3E] focus:outline-none focus:ring-4 focus:ring-indigo-50 transition-all shadow-inner"
+                      className="w-full bg-white border border-gray-100 rounded-2xl px-6 py-4 text-base font-sans italic text-[#222F3E] focus:outline-none focus:ring-4 focus:ring-indigo-50 transition-all shadow-inner"
                     />
                  </div>
 
@@ -221,7 +221,7 @@ export default function EmailTemplates() {
            <div className="sticky top-10 space-y-6">
               <div className="dash-card p-8 bg-white border border-white space-y-6 overflow-hidden flex flex-col shadow-2xl shadow-indigo-100/20">
                  <div className="flex justify-between items-center">
-                    <h3 className="text-xl font-serif font-medium text-[#222F3E] flex items-center gap-3"><Eye size={20} className="text-[#5F27CD]" /> Miroir Dynamique</h3>
+                    <h3 className="text-xl font-sans font-medium text-[#222F3E] flex items-center gap-3"><Eye size={20} className="text-[#5F27CD]" /> Miroir Dynamique</h3>
                     <div className="flex gap-2">
                       <button onClick={() => setViewMode('desktop')} className={`p-3 rounded-xl transition-all ${viewMode === 'desktop' ? 'bg-[#222F3E] text-white shadow-lg' : 'bg-gray-50 text-gray-300'}`}><Monitor size={16} /></button>
                       <button onClick={() => setViewMode('mobile')} className={`p-3 rounded-xl transition-all ${viewMode === 'mobile' ? 'bg-[#222F3E] text-white shadow-lg' : 'bg-gray-50 text-gray-300'}`}><Smartphone size={16} /></button>

@@ -82,7 +82,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 </div>
                 <div>
                    <p className="text-[0.65rem] font-black uppercase tracking-[0.4em] opacity-70">Configuration Récurrente</p>
-                   <h2 className="text-4xl lg:text-5xl font-serif font-light leading-tight tracking-tight">Horaires Types</h2>
+                   <h2 className="text-4xl lg:text-5xl font-sans font-light leading-tight tracking-tight">Horaires Types</h2>
                 </div>
              </div>
           </div>
@@ -148,7 +148,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                   >
                     <div className="flex items-center gap-3">
                       <Clock size={16} className="text-[#0ABDE3]" />
-                      <span className="text-base font-serif font-medium text-[#222F3E]">{time}</span>
+                      <span className="text-base font-sans font-medium text-[#222F3E]">{time}</span>
                     </div>
                     <button
                       onClick={() => handleRemoveSlot(time)}
@@ -176,7 +176,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 type="time"
                 value={newTime}
                 onChange={e => setNewTime(e.target.value)}
-                className="w-full h-12 bg-transparent text-xl font-serif font-medium text-[#222F3E] focus:outline-none focus:ring-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60"
+                className="w-full h-12 bg-transparent text-xl font-sans font-medium text-[#222F3E] focus:outline-none focus:ring-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60"
               />
             </div>
             <button

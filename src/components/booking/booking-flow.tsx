@@ -296,7 +296,7 @@ export function BookingFlow({ services, initialServiceId, onClose }: BookingFlow
                     </div>
                   </div>
                   <div className="grid grid-cols-7 gap-1.5">
-                    {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(d => <div key={d} className="text-[0.5rem] font-black text-gray-300 text-center py-1">{d}</div>)}
+                    {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, idx) => <div key={idx} className="text-[0.5rem] font-black text-gray-300 text-center py-1">{d}</div>)}
                     {days.map(day => {
                       const isPast = isBefore(day, startOfDay(new Date()));
                       const dateStr = format(day, 'yyyy-MM-dd');

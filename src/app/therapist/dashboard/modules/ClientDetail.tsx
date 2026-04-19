@@ -74,12 +74,12 @@ export default function ClientDetail({
 
         <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-8 mt-6">
           <div className="flex flex-col sm:flex-row items-center gap-8">
-            <div className="w-24 h-24 rounded-[2.5rem] bg-white text-[#5F27CD] flex items-center justify-center text-5xl font-serif shadow-2xl">
+            <div className="w-24 h-24 rounded-[2.5rem] bg-white text-[#5F27CD] flex items-center justify-center text-5xl font-sans shadow-2xl">
               {client.lastName?.[0]}{client.firstName?.[0]}
             </div>
             <div className="text-center sm:text-left">
               <p className="text-[0.65rem] font-black uppercase tracking-[0.4em] opacity-70 mb-2">Dossier Patient Confidentiel</p>
-              <h1 className="text-5xl lg:text-6xl font-serif font-light leading-tight tracking-tight">
+              <h1 className="text-5xl lg:text-6xl font-sans font-light leading-tight tracking-tight">
                 {client.lastName} {client.firstName}
               </h1>
             </div>
@@ -133,11 +133,11 @@ export default function ClientDetail({
             className="dash-card flex flex-col sm:flex-row items-center sm:items-start justify-between gap-8"
           >
             <div className="flex flex-col sm:flex-row items-center gap-8">
-              <div className="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-[#1DD1A1] to-[#0ABDE3] text-white flex items-center justify-center text-4xl font-serif shadow-2xl shadow-cyan-100">
+              <div className="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-[#1DD1A1] to-[#0ABDE3] text-white flex items-center justify-center text-4xl font-sans shadow-2xl shadow-cyan-100">
                 {client.lastName?.[0]}{client.firstName?.[0]}
               </div>
               <div className="text-center sm:text-left">
-                <h2 className="text-4xl font-serif font-medium text-[#222F3E]">
+                <h2 className="text-4xl font-sans font-medium text-[#222F3E]">
                   {client.lastName} {client.firstName}
                 </h2>
                 <div className="flex flex-wrap justify-center sm:justify-start gap-x-8 gap-y-3 mt-4 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">
@@ -239,7 +239,7 @@ function StatCard({ label, value, icon: Icon, color }: { label: string; value: s
         </div>
         <p className="text-[0.6rem] font-black uppercase tracking-widest text-gray-400">{label}</p>
       </div>
-      <p className="text-xl font-serif font-medium text-[#222F3E]">
+      <p className="text-xl font-sans font-medium text-[#222F3E]">
         {value}
       </p>
     </motion.div>
@@ -261,7 +261,7 @@ function OverviewTab({
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
       {/* Client Info Hub */}
       <div className="dash-card">
-        <h3 className="text-xl font-serif font-medium text-[#222F3E] mb-8">Informations d&apos;identité</h3>
+        <h3 className="text-xl font-sans font-medium text-[#222F3E] mb-8">Informations d&apos;identité</h3>
         <div className="space-y-2">
           <EditableField icon={<Mail size={14} />} label="Email" value={editData.email || ''} onChange={v => updateField('email', v)} type="email" />
           <EditableField icon={<Phone size={14} />} label="Téléphone" value={editData.phone || ''} onChange={v => updateField('phone', v)} type="tel" />
@@ -274,7 +274,7 @@ function OverviewTab({
       {/* Therapy Context */}
       <div className="dash-card border-l-4 border-[#5F27CD]">
         <div className="flex items-center justify-between mb-8">
-          <h3 className="text-xl font-serif font-medium text-[#222F3E]">Contexte Thérapeutique</h3>
+          <h3 className="text-xl font-sans font-medium text-[#222F3E]">Contexte Thérapeutique</h3>
           <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#5F27CD]/5 text-[#5F27CD] text-[0.6rem] font-black uppercase tracking-widest">
             <ShieldCheck size={12} /> Confidentialité Maximale
           </span>
@@ -342,7 +342,7 @@ function SessionsTab({
             <Calendar size={40} strokeWidth={1} />
         </div>
         <div>
-            <p className="text-xl font-serif font-medium text-[#222F3E]">Aucune séance enregistrée</p>
+            <p className="text-xl font-sans font-medium text-[#222F3E]">Aucune séance enregistrée</p>
             <p className="text-[0.6rem] font-black uppercase tracking-widest text-gray-400 mt-2">Le voyage de {clientFirstName} commence aujourd&apos;hui</p>
         </div>
       </div>
@@ -372,7 +372,7 @@ function SessionsTab({
                 {appt.date ? format(new Date(appt.date), 'dd MMM yyyy', { locale: fr }) : 'Non planifié'}
               </span>
               <span className="text-xs font-bold text-gray-400">{appt.time || '—'}</span>
-              <span className="text-base font-serif font-medium text-[#222F3E] group-hover:text-[#5F27CD] transition-colors truncate">{appt.serviceName || 'Session'}</span>
+              <span className="text-base font-sans font-medium text-[#222F3E] group-hover:text-[#5F27CD] transition-colors truncate">{appt.serviceName || 'Session'}</span>
               <span className="text-sm font-bold text-[#222F3E]">{appt.price || 0}<span className="text-[10px] ml-0.5 opacity-40">CHF</span></span>
               
               <div className="flex">
@@ -403,11 +403,11 @@ function SessionsTab({
             </div>
             <div>
                 <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#FF6B6B]">Action Financière Requise</p>
-                <p className="text-2xl font-serif font-medium text-[#222F3E]">Solde débiteur à régulariser</p>
+                <p className="text-2xl font-sans font-medium text-[#222F3E]">Solde débiteur à régulariser</p>
             </div>
           </div>
           <div className="text-right">
-              <p className="text-4xl font-serif font-medium text-[#FF6B6B] leading-none mb-1">{totalDue}<span className="text-base ml-1 opacity-50">CHF</span></p>
+              <p className="text-4xl font-sans font-medium text-[#FF6B6B] leading-none mb-1">{totalDue}<span className="text-base ml-1 opacity-50">CHF</span></p>
           </div>
         </motion.div>
       )}
@@ -430,7 +430,7 @@ function NotesTab({ client, onUpdateClient }: { client: Client; onUpdateClient: 
         <div className="relative z-10 space-y-4 max-w-xl">
             <div className="flex items-center gap-3">
                  <ShieldCheck size={24} className="text-[#1DD1A1]" />
-                 <h3 className="text-2xl font-serif font-medium">Sanctuaire de Suivi</h3>
+                 <h3 className="text-2xl font-sans font-medium">Sanctuaire de Suivi</h3>
             </div>
             <p className="text-sm opacity-80 leading-relaxed font-medium">Ce dossier contient l&apos;historique clinique confidentiel de {client.firstName}. Toutes les notes sont cryptées et réservées à votre usage professionnel exclusif.</p>
         </div>
@@ -466,22 +466,22 @@ function BillingTab({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="dash-card bg-[#1DD1A1]/5 border-[#1DD1A1]/10">
           <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#1DD1A1] mb-2">Total Honoraires Encaissés</p>
-          <p className="text-4xl font-serif font-medium text-[#222F3E]">{totalPaid}<span className="text-base ml-1 opacity-50">CHF</span></p>
+          <p className="text-4xl font-sans font-medium text-[#222F3E]">{totalPaid}<span className="text-base ml-1 opacity-50">CHF</span></p>
         </div>
         <div className="dash-card bg-[#FF6B6B]/5 border-red-100 shadow-xl shadow-red-50/20">
           <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#FF6B6B] mb-2">Encours à Percevoir</p>
-          <p className="text-4xl font-serif font-medium text-[#FF6B6B]">{totalDue}<span className="text-base ml-1 opacity-50">CHF</span></p>
+          <p className="text-4xl font-sans font-medium text-[#FF6B6B]">{totalDue}<span className="text-base ml-1 opacity-50">CHF</span></p>
         </div>
         <div className="dash-card">
           <p className="text-[0.6rem] font-black uppercase tracking-widest text-gray-400 mb-2">Factures en suspens</p>
-          <p className="text-4xl font-serif font-medium text-[#222F3E]">{unpaidCount}<span className="text-base ml-1 opacity-50">Dossiers</span></p>
+          <p className="text-4xl font-sans font-medium text-[#222F3E]">{unpaidCount}<span className="text-base ml-1 opacity-50">Dossiers</span></p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Unpaid Transactions */}
         <div className="space-y-6">
-          <h3 className="text-xl font-serif font-medium text-[#FF6B6B] px-2 flex items-center gap-3">
+          <h3 className="text-xl font-sans font-medium text-[#FF6B6B] px-2 flex items-center gap-3">
               <TrendingUp size={20} /> Transactions en Attente
           </h3>
           <div className="dash-card !p-0 overflow-hidden">
@@ -490,10 +490,10 @@ function BillingTab({
                     {unpaidAppts.map(a => (
                         <div key={a.id} className="p-6 flex items-center justify-between hover:bg-white transition-all">
                             <div>
-                                <p className="text-base font-serif font-medium text-[#222F3E]">{a.serviceName || 'Session'}</p>
+                                <p className="text-base font-sans font-medium text-[#222F3E]">{a.serviceName || 'Session'}</p>
                                 <p className="text-[0.65rem] font-black uppercase tracking-widest text-gray-400 mt-1">{a.date ? format(new Date(a.date), 'dd MMM yyyy', { locale: fr }) : '—'}</p>
                             </div>
-                            <span className="text-2xl font-serif font-medium text-[#FF6B6B]">{a.price}<span className="text-xs ml-0.5 opacity-40">CHF</span></span>
+                            <span className="text-2xl font-sans font-medium text-[#FF6B6B]">{a.price}<span className="text-xs ml-0.5 opacity-40">CHF</span></span>
                         </div>
                     ))}
                 </div>
@@ -505,7 +505,7 @@ function BillingTab({
 
         {/* Paid History */}
         <div className="space-y-6">
-          <h3 className="text-xl font-serif font-medium text-[#1DD1A1] px-2 flex items-center gap-3">
+          <h3 className="text-xl font-sans font-medium text-[#1DD1A1] px-2 flex items-center gap-3">
               <CheckCircle2 size={20} /> Historique des Honoraires
           </h3>
           <div className="dash-card !p-0 overflow-hidden border-[#1DD1A1]/10 bg-[#1DD1A1]/[0.02]">
@@ -514,11 +514,11 @@ function BillingTab({
                     {paidAppts.slice(0, 10).map(a => (
                         <div key={a.id} className="p-6 flex items-center justify-between hover:bg-white transition-all">
                             <div>
-                                <p className="text-base font-serif font-medium text-[#222F3E] opacity-70">{a.serviceName || 'Session'}</p>
+                                <p className="text-base font-sans font-medium text-[#222F3E] opacity-70">{a.serviceName || 'Session'}</p>
                                 <p className="text-[0.65rem] font-black uppercase tracking-widest text-gray-400 mt-1">{a.date ? format(new Date(a.date), 'dd MMM yyyy', { locale: fr }) : '—'}</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-lg font-serif font-medium text-[#222F3E]">{a.price}<span className="text-xs ml-0.5 opacity-40">CHF</span></span>
+                                <span className="text-lg font-sans font-medium text-[#222F3E]">{a.price}<span className="text-xs ml-0.5 opacity-40">CHF</span></span>
                                 {a.paymentMethod && <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#1DD1A1] mt-1">{a.paymentMethod}</p>}
                             </div>
                         </div>

@@ -72,7 +72,7 @@ export default function RemindersSystem() {
                   <div className="w-10 h-10 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><Bell size={20} /></div>
                   <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Centre de Communications</p>
                </div>
-               <h1 className="title-luxe text-5xl md:text-7xl leading-none">Rappels <br/><span className="italic font-serif opacity-40">Auto-Bio.</span></h1>
+               <h1 className="title-luxe text-5xl md:text-7xl leading-none">Rappels <br/><span className="italic font-sans opacity-40">Auto-Bio.</span></h1>
             </div>
             
             <button
@@ -98,7 +98,7 @@ export default function RemindersSystem() {
           </div>
 
           <div className="space-y-12">
-            <h2 className="text-3xl font-serif font-light flex items-center gap-4 text-[#222F3E]">
+            <h2 className="text-3xl font-sans font-light flex items-center gap-4 text-[#222F3E]">
                <Sparkles className="text-amber-500" /> Flux de Relances Actives
             </h2>
 
@@ -118,7 +118,7 @@ export default function RemindersSystem() {
                           {reminder.type === 'invoice' ? <Mail size={24} /> : <Calendar size={24} />}
                        </div>
                        <div className="space-y-2">
-                          <p className="text-2xl font-serif font-medium text-[#222F3E]">{reminder.title}</p>
+                          <p className="text-2xl font-sans font-medium text-[#222F3E]">{reminder.title}</p>
                           <p className="description-luxe text-gray-400 italic line-clamp-1">{reminder.description}</p>
                        </div>
                     </div>
@@ -137,7 +137,7 @@ export default function RemindersSystem() {
               {pendingReminders.length === 0 && (
                 <div className="py-20 text-center space-y-4">
                    <CheckCircle className="mx-auto text-emerald-100" size={60} />
-                   <p className="text-xl font-serif italic text-gray-300">Tous vos patients ont été prévenus.</p>
+                   <p className="text-xl font-sans italic text-gray-300">Tous vos patients ont été prévenus.</p>
                 </div>
               )}
             </div>

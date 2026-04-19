@@ -49,8 +49,8 @@ export default function ClientsCRM() {
               <div className="w-6 h-6 rounded-md bg-[#5F27CD] text-white flex items-center justify-center animate-pulse"><Sparkles size={10} /></div>
               <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#0ABDE3]">CRM Haute-Fidélité</p>
            </div>
-           <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Bio-Dossiers <br/><span className="italic font-serif opacity-40 text-[#F8F5F0]">Patients.</span></h2>
-           <p className="text-[0.65rem] text-gray-400 font-serif italic max-w-md leading-relaxed">La mémoire sensorielle et clinique de votre Sanctuaire.</p>
+           <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Bio-Dossiers <br/><span className="italic font-sans opacity-40 text-[#F8F5F0]">Patients.</span></h2>
+           <p className="text-[0.65rem] text-gray-400 font-sans italic max-w-md leading-relaxed">La mémoire sensorielle et clinique de votre Sanctuaire.</p>
         </div>
         
         <div className="flex gap-4 relative z-10">
@@ -68,7 +68,7 @@ export default function ClientsCRM() {
               placeholder="Rechercher... (nom, email)" 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white border border-gray-100 rounded-xl px-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-50 shadow-sm hover:shadow-md transition-all font-serif italic"
+              className="w-full bg-white border border-gray-100 rounded-xl px-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-50 shadow-sm hover:shadow-md transition-all font-sans italic"
             />
          </div>
          <button className="px-6 py-3 bg-white border border-gray-100 rounded-xl text-gray-400 flex items-center gap-2 hover:text-[#5F27CD] transition-all shadow-sm text-xs">
@@ -98,8 +98,8 @@ export default function ClientsCRM() {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-serif font-medium text-[#222F3E] group-hover:text-[#5F27CD] transition-colors">{client.name}</h3>
-                    <p className="text-[0.65rem] text-gray-400 font-serif italic mt-0.5">{client.email}</p>
+                    <h3 className="text-lg font-sans font-medium text-[#222F3E] group-hover:text-[#5F27CD] transition-colors">{client.name}</h3>
+                    <p className="text-[0.65rem] text-gray-400 font-sans italic mt-0.5">{client.email}</p>
                   </div>
 
                   <div className="pt-6 border-t border-gray-50 flex justify-between items-center text-[0.55rem] font-black uppercase tracking-widest text-gray-400">

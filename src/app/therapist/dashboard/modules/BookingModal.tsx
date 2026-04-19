@@ -82,7 +82,7 @@ export default function BookingModal({
                 <p className="text-[0.65rem] font-black uppercase tracking-[0.4em] opacity-70">Rituel de Réservation</p>
              </div>
              
-             <h2 className="text-4xl lg:text-5xl font-serif font-light leading-tight tracking-tight">
+             <h2 className="text-4xl lg:text-5xl font-sans font-light leading-tight tracking-tight">
                 {step === 'client' ? 'Désignation du Patient' : 'Choix du Rituel'}
              </h2>
              
@@ -182,7 +182,7 @@ export default function BookingModal({
                       </div>
                       <div className="text-left">
                         <p className="text-[0.65rem] font-black uppercase tracking-widest text-[#5F27CD]">Nouveau profil détecté</p>
-                        <p className="text-lg font-serif font-medium text-[#222F3E] break-all">Créer et inscrire « {search} »</p>
+                        <p className="text-lg font-sans font-medium text-[#222F3E] break-all">Créer et inscrire « {search} »</p>
                       </div>
                     </motion.button>
                   ) : (
@@ -216,11 +216,11 @@ export default function BookingModal({
                 {/* Identity Recap */}
                 <div className="flex items-center justify-between p-6 bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-indigo-100/10">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center text-lg font-serif shadow-lg">
+                    <div className="w-12 h-12 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center text-lg font-sans shadow-lg">
                       {isCreatingNew ? search[0]?.toUpperCase() : selectedClient?.lastName?.[0]}
                     </div>
                     <div>
-                      <p className="text-lg font-serif font-medium text-[#222F3E]">
+                      <p className="text-lg font-sans font-medium text-[#222F3E]">
                         {isCreatingNew ? search : `${selectedClient?.firstName} ${selectedClient?.lastName}`}
                       </p>
                       {isCreatingNew && <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#1DD1A1]">Nouveau Dossier</p>}
@@ -255,7 +255,7 @@ export default function BookingModal({
                               <Sparkles size={40} />
                           </div>
                           
-                          <p className={`text-base font-serif font-medium leading-tight ${isSelected ? 'text-white' : 'text-[#222F3E]'}`}>
+                          <p className={`text-base font-sans font-medium leading-tight ${isSelected ? 'text-white' : 'text-[#222F3E]'}`}>
                             {displayName}
                           </p>
                           <div className="flex items-center gap-3">

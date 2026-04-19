@@ -87,10 +87,10 @@ export default function NewInvoicePage() {
                      <div className="w-10 h-10 rounded-2xl bg-[#5F27CD] text-white flex items-center justify-center shadow-lg"><Plus size={20} /></div>
                      <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Nouvelle Émission</p>
                   </div>
-                  <h1 className="title-luxe text-5xl md:text-7xl">Création <br/><span className="font-serif italic opacity-40">de Facture.</span></h1>
+                  <h1 className="title-luxe text-5xl md:text-7xl">Création <br/><span className="font-sans italic opacity-40">de Facture.</span></h1>
                </div>
                <div className="hidden md:block text-right">
-                  <p className="text-sm font-serif italic text-gray-400">Archivage Immédiat</p>
+                  <p className="text-sm font-sans italic text-gray-400">Archivage Immédiat</p>
                   <p className="text-3xl font-light text-[#222F3E] mt-2">Dossier N° {Date.now().toString().slice(-6)}</p>
                </div>
             </div>
@@ -107,7 +107,7 @@ export default function NewInvoicePage() {
                        placeholder="Nom complet du patient..." 
                        value={invoice.clientName}
                        onChange={e => setInvoice(prev => ({ ...prev, clientName: e.target.value }))}
-                       className="w-full h-20 bg-white/60 border border-white rounded-[2rem] pl-20 pr-10 text-xl font-serif italic focus:outline-none focus:ring-8 focus:ring-indigo-50 transition-all"
+                       className="w-full h-20 bg-white/60 border border-white rounded-[2rem] pl-20 pr-10 text-xl font-sans italic focus:outline-none focus:ring-8 focus:ring-indigo-50 transition-all"
                      />
                   </div>
                </div>
