@@ -1,119 +1,101 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Search, Plus, ShieldCheck, ArrowRight, Users, 
-  User, Calendar, Clock, Sparkles, Filter 
-} from 'lucide-react';
+import Link from 'next/link';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Search, Plus, ShieldCheck, ArrowRight, Users } from 'lucide-react';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
 import { Navbar } from '@/components/navbar';
-import { useRouter } from 'next/navigation';
-import { useFirestore } from '@/firebase';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 
 export default function ClientsCRM() {
-  const router = useRouter();
   const firestore = useFirestore();
 
-  const [search, setSearch] = useState('');
-  const [clients, setClients] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!firestore) return;
-    const unsub = onSnapshot(collection(firestore, 'clients'), (snap) => {
-      setClients(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-      setLoading(false);
-    });
-    return unsub;
+  const clientsQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'clients');
   }, [firestore]);
 
-  const filteredClients = clients.filter(c => 
-    c.name?.toLowerCase().includes(search.toLowerCase()) || 
-    c.email?.toLowerCase().includes(search.toLowerCase())
-  );
+  const { data: clients, isLoading } = useCollection(clientsQuery);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 pb-12">
-      
-      {/* ── HEADER ── */}
-      <motion.header 
-        initial={{ opacity: 0, scale: 0.98 }} 
-        animate={{ opacity: 1, scale: 1 }} 
-        className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 bg-[#222F3E] text-white p-6 rounded-xl shadow-xl relative overflow-hidden"
-      >
-        <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none -rotate-12"><Users size={150} /></div>
-        
-        <div className="space-y-3 relative z-10">
-           <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md bg-[#059669] text-white flex items-center justify-center animate-pulse"><Sparkles size={10} /></div>
-              <p className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-[#10B981]">CRM Haute-Fidélité</p>
-           </div>
-           <h2 className="title-luxe text-2xl md:text-3xl leading-none text-white">Bio-Dossiers <br/><span className="italic font-sans opacity-40 text-[#F8F5F0]">Patients.</span></h2>
-           <p className="text-[0.65rem] text-gray-400 font-sans italic max-w-md leading-relaxed">La mémoire sensorielle et clinique de votre Sanctuaire.</p>
-        </div>
-        
-        <div className="flex gap-4 relative z-10">
-           <button className="btn-luxe flex items-center gap-2 px-6 py-3 text-xs shadow-md shadow-emerald-200/20">
-              <Plus size={16} /> Nouveau Patient
-           </button>
-        </div>
-      </motion.header>
+    <div className="flex min-h-screen w-full bg-[#F7F7F2] pt-24">
+      <main className="p-10 space-y-10 max-w-7xl mx-auto w-full">
+        <header className="flex items-center justify-between">
+          <div>
+            <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-400 block mb-2">GESTION PATIENTS</span>
+            <h1 className="text-4xl font-serif font-bold text-neutral-900">Base Patients</h1>
+          </div>
+          <Button className="rounded-full bg-neutral-900 text-white px-6 py-2.5 text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-sans font-black uppercase tracking-[0.18em] gap-3">
+            <Plus className="h-4 w-4" /> Nouveau Patient
+          </Button>
+        </header>
 
-      <div className="flex flex-col md:flex-row gap-3">
-         <div className="flex-1 relative group">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-[#059669] transition-colors" size={16} />
-            <input 
-              type="text" 
-              placeholder="Rechercher... (nom, email)" 
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white border border-gray-100 rounded-xl px-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-50 shadow-sm hover:shadow-md transition-all font-sans italic"
-            />
-         </div>
-         <button className="px-6 py-3 bg-white border border-gray-100 rounded-xl text-gray-400 flex items-center gap-2 hover:text-[#059669] transition-all shadow-sm text-xs">
-            <Filter size={14} /> Filtres
-         </button>
-      </div>
-
-      {/* ── CLIENTS GRID ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <AnimatePresence>
-          {filteredClients.map((client, i) => (
-            <motion.div
-              key={client.id}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ delay: i * 0.05 }}
-              onClick={() => router.push(`/therapist/clients/${client.id}`)}
-              className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group relative overflow-hidden"
-            >
-               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform text-[#059669]"><User size={60} /></div>
-               
-               <div className="space-y-4 relative z-10">
-                  <div className="flex justify-between items-start">
-                     <span className="px-3 py-1 bg-emerald-50 text-[#059669] rounded-lg text-[0.5rem] font-black uppercase tracking-widest">{client.fidelityLevel || 'Argent'}</span>
-                     <ArrowRight size={14} className="text-gray-200 group-hover:text-[#059669] group-hover:translate-x-1 transition-all" />
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-sans font-medium text-[#222F3E] group-hover:text-[#059669] transition-colors">{client.name}</h3>
-                    <p className="text-[0.65rem] text-gray-400 font-sans italic mt-0.5">{client.email}</p>
-                  </div>
-
-                  <div className="pt-6 border-t border-gray-50 flex justify-between items-center text-[0.55rem] font-black uppercase tracking-widest text-gray-400">
-                     <div className="flex items-center gap-2">
-                        <Calendar size={12} />
-                        <span>Depuis {client.joinedAt || '20/03/2026'}</span>
-                     </div>
-                     <ShieldCheck className="text-emerald-400" size={14} />
-                  </div>
-               </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+        <Card className="rounded-[4rem] border-none shadow-sm bg-white overflow-hidden">
+          <CardHeader className="p-10 border-b border-neutral-50 flex flex-row items-center justify-between gap-10">
+            <div className="relative flex-1 max-w-xl">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-200" />
+              <Input placeholder="Rechercher par nom, email..." className="pl-16 rounded-full bg-neutral-50 border-none h-14 font-serif italic text-lg text-neutral-900 placeholder:text-neutral-200" />
+            </div>
+            <div className="hidden md:flex items-center gap-4 text-[9px] font-sans font-black text-neutral-400 uppercase tracking-[0.3em]">
+              <ShieldCheck className="h-5 w-5 text-emerald-500" /> Sécurisé par Swiss Health Standard
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent border-b border-neutral-50">
+                  <TableHead className="pl-10 h-16 font-sans font-black uppercase tracking-[0.2em] text-[10px] text-neutral-400">Identité</TableHead>
+                  <TableHead className="h-16 font-sans font-black uppercase tracking-[0.2em] text-[10px] text-neutral-400">Contact</TableHead>
+                  <TableHead className="h-16 font-sans font-black uppercase tracking-[0.2em] text-[10px] text-neutral-400">Assurance</TableHead>
+                  <TableHead className="h-16 font-sans font-black uppercase tracking-[0.2em] text-[10px] text-neutral-400 text-center">Séances</TableHead>
+                  <TableHead className="h-16 font-sans font-black uppercase tracking-[0.2em] text-[10px] text-neutral-400">Statut</TableHead>
+                  <TableHead className="pr-10 h-16"></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading && <TableRow><TableCell colSpan={6} className="text-center p-20 italic font-serif text-xl text-neutral-200">Consultation des archives...</TableCell></TableRow>}
+                {!isLoading && clients?.length === 0 && <TableRow><TableCell colSpan={6} className="text-center p-20 italic font-serif text-xl text-neutral-200">Aucun dossier patient enregistré.</TableCell></TableRow>}
+                {clients?.map((client) => (
+                  <TableRow key={client.id} className="hover:bg-neutral-50 transition-colors group">
+                    <TableCell className="pl-10 py-6">
+                      <div className="flex items-center gap-5">
+                        <div className="h-12 w-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-900 font-serif font-bold text-lg group-hover:bg-neutral-900 group-hover:text-white transition-all duration-500">
+                          {client.firstName[0]}{client.lastName[0]}
+                        </div>
+                        <span className="font-serif font-bold text-2xl text-neutral-900">{client.firstName} {client.lastName}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm font-sans">
+                        <p className="font-bold text-neutral-900">{client.email}</p>
+                        <p className="text-neutral-400 mt-1">{client.phone}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-[9px] px-4 py-1.5 bg-neutral-50 text-neutral-600 rounded-full font-sans font-black uppercase tracking-[0.2em]">{client.insuranceFundName || 'Non Spécifiée'}</span>
+                    </TableCell>
+                    <TableCell className="font-serif font-bold text-2xl text-center text-neutral-900">{client.loyaltySessionsCompleted || 0}</TableCell>
+                    <TableCell>
+                       <div className="flex items-center gap-2">
+                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                         <span className="text-[10px] font-sans font-black uppercase tracking-[0.2em] text-neutral-400">Actif</span>
+                       </div>
+                    </TableCell>
+                    <TableCell className="pr-10 text-right">
+                      <Button variant="ghost" className="rounded-full h-12 w-12 hover:bg-neutral-900 hover:text-white transition-all duration-500">
+                        <ArrowRight className="h-5 w-5" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </main>
     </div>
   );
 }

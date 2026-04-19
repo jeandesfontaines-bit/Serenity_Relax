@@ -1,42 +1,26 @@
-import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, DM_Serif_Display, Meow_Script } from 'next/font/google';
+import type {Metadata} from 'next';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { Toaster } from '@/components/ui/toaster';
 
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-plus-jakarta',
-  display: 'swap',
-});
-
-const dmSerif = DM_Serif_Display({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-dm-serif',
-  display: 'swap',
-});
-
-const meowScript = Meow_Script({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-meow',
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
-  title: 'Serenity Relax Therapy • Genève Cointrin',
-  description: 'Sanctuaire sensoriel confidentiel à Genève Cointrin',
+  title: 'Serenity Relax Therapy',
+  description: 'Un sanctuaire sensoriel confidentiel à Genève Cointrin pour la restauration physique et mentale.',
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="fr">
-      <body className={`${plusJakarta.variable} ${dmSerif.variable} ${meowScript.variable} antialiased`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=DM+Serif+Display:ital@0;1&family=Meow+Script&display=swap" rel="stylesheet" />
+      </head>
+      <body className="font-sans antialiased selection:bg-primary/10">
         <FirebaseClientProvider>
           {children}
           <Toaster />

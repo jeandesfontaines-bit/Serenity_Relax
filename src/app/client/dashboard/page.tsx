@@ -1,238 +1,194 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Calendar, Clock, Sparkles, Trophy, ArrowRight, Home, User, Heart, BarChart3, 
-  Plus, LogOut, ShieldCheck, MapPin, Droplets, Wind, Leaf, Download, ChevronRight, CheckCircle2, History as HistoryIcon, FileText
-} from 'lucide-react';
-import { Navbar } from '@/components/navbar';
-import { useUser, useAuth, useFirestore } from '@/firebase';
-import { signOut } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, query, where, getDocs, orderBy, limit, doc, getDoc } from 'firebase/firestore';
-import { format } from 'date-fns';
+import { useFirestore } from '@/firebase';
+import { doc, getDoc, collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { Calendar, Clock, MapPin, Receipt, ChevronRight, LogOut, Loader2, User, UserCircle2, ArrowUpRight } from 'lucide-react';
+import { format, isAfter, isBefore, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-const WELLNESS_TIPS = [
-  { id: 1, title: "Accueillez vos émotions", icon: Heart },
-  { id: 2, title: "Prenez votre temps", icon: Clock },
-  { id: 3, title: "Hydratez-vous", icon: Droplets },
-  { id: 4, title: "Choisissez la douceur", icon: Leaf },
-];
-
-export default function ClientDashboard() {
-  const { user, isUserLoading } = useUser();
-  const auth = useAuth();
-  const firestore = useFirestore();
+export default function ClientDashboardPage() {
   const router = useRouter();
-
+  const firestore = useFirestore();
+  const [client, setClient] = useState<any>(null);
   const [appointments, setAppointments] = useState<any[]>([]);
-  const [clientData, setClientData] = useState<any>(null);
-  const [fetching, setFetching] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchZenData() {
-      // Logic for session storage (anonymous booking)
-      const storedId = sessionStorage.getItem('serenity_client_id');
-      const effectiveId = user?.uid || storedId;
+    async function fetchData() {
+      if (!firestore) return;
 
-      if (!effectiveId || !firestore) {
-         setFetching(false);
-         return;
+      const clientId = sessionStorage.getItem('serenity_client_id');
+      if (!clientId) {
+        router.push('/client/login');
+        return;
       }
 
       try {
-        // Fetch Client Data
-        const cDoc = await getDoc(doc(firestore, 'clients', effectiveId));
-        if (cDoc.exists()) setClientData(cDoc.data());
+        setLoading(true);
+        // Fetch Client
+        const clientDoc = await getDoc(doc(firestore, 'clients', clientId));
+        if (clientDoc.exists()) {
+          setClient({ id: clientDoc.id, ...clientDoc.data() });
+        } else {
+          router.push('/client/login');
+          return;
+        }
 
         // Fetch Appointments
         const q = query(
           collection(firestore, 'appointments'),
-          where('clientId', '==', effectiveId),
-          orderBy('startTime', 'desc'),
-          limit(10)
+          where('clientId', '==', clientId),
+          orderBy('startTime', 'desc')
         );
-        const snapshot = await getDocs(q);
-        setAppointments(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        const snap = await getDocs(q);
+        setAppointments(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+
       } catch (err) {
-        console.error("Zen fetch error:", err);
+        console.error('Error fetching dashboard data:', err);
       } finally {
-        setFetching(false);
+        setLoading(false);
       }
     }
-    if (!isUserLoading) fetchZenData();
-  }, [user, isUserLoading, firestore]);
 
-  const handleLogout = async () => {
-    if (auth) await signOut(auth);
+    fetchData();
+  }, [firestore, router]);
+
+  const logout = () => {
     sessionStorage.removeItem('serenity_client_id');
     router.push('/');
   };
 
-  const points = clientData?.points || 820;
-  const upcoming = appointments.filter(a => new Date(a.startTime) >= new Date()).reverse();
-  const past = appointments.filter(a => new Date(a.startTime) < new Date());
-
-  if (isUserLoading || fetching) {
+  if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#F8F5F0]">
-        <div className="flex flex-col items-center gap-6">
-           <div className="w-16 h-16 border-4 border-[#5F27CD]/20 border-t-[#5F27CD] rounded-full animate-spin" />
-           <p className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-[#5F27CD] animate-pulse">Ouverture du Sanctuaire...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">
+        <Loader2 className="w-12 h-12 text-neutral-900 animate-spin" />
       </div>
     );
   }
 
+  const upcoming = appointments.filter(a => isAfter(new Date(a.startTime), startOfDay(new Date())));
+  const past = appointments.filter(a => isBefore(new Date(a.startTime), startOfDay(new Date())));
+
   return (
-    <>
-      <Navbar />
-      
-      {/* ── BACKGROUND ENGINE ── */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[#F8F5F0] via-[#F0EBE4] to-[#F8F5F0] overflow-hidden pointer-events-none z-0">
-        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.12, 0.08] }} transition={{ duration: 10, repeat: Infinity }} className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#5F27CD_0%,transparent_50%)]" />
-        <motion.div animate={{ scale: [1.2, 1, 1.2], opacity: [0.08, 0.12, 0.08] }} transition={{ duration: 12, repeat: Infinity }} className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,#0ABDE3_0%,transparent_50%)]" />
-      </div>
+    <div className="min-h-screen bg-[#FAF9F6] font-sans pb-24">
+      {/* HEADER */}
+      <header className="bg-white border-b border-neutral-100 px-8 py-8 md:px-12 lg:px-16 flex items-center justify-between sticky top-0 z-20">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-neutral-900 text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow-xl shadow-neutral-200">
+            {client?.firstName?.[0] || 'S'}
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-neutral-900">Bienvenue, {client?.firstName}</h1>
+            <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400">VOTRE ESPACE BIEN-ÊTRE</p>
+          </div>
+        </div>
+        <button 
+          onClick={logout}
+          className="p-3 bg-neutral-50 hover:bg-neutral-100 rounded-full transition-all text-neutral-400 hover:text-neutral-900 shadow-sm"
+          title="Se déconnecter"
+        >
+          <LogOut size={20} />
+        </button>
+      </header>
 
-      <div className="flex h-screen bg-transparent overflow-hidden relative z-10">
+      <main className="max-w-6xl mx-auto px-8 md:px-12 py-12 space-y-16">
         
-        {/* ── SIDEBAR ── */}
-        <div className="w-80 glass border-r border-white/40 hidden lg:flex flex-col backdrop-blur-3xl p-10">
-          <div className="mb-14">
-            <h1 className="text-2xl font-black tracking-widest text-[#222F3E]">SERENITY</h1>
-            <p className="text-[0.6rem] font-bold text-[#1DD1A1] uppercase tracking-[0.3em] mt-1">Espace Thérapeutique</p>
+        {/* UPCOMING */}
+        <section className="space-y-8">
+          <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
+            <h2 className="text-[1.2rem] font-bold text-neutral-900">Prochaines Séances</h2>
+            <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[0.65rem] font-black uppercase tracking-widest">{upcoming.length} RITUEL(S)</span>
           </div>
 
-          <nav className="flex-1 space-y-4">
-            <button className="flex items-center gap-4 w-full px-8 py-6 rounded-[2rem] bg-gradient-to-r from-[#5F27CD] to-[#0ABDE3] text-white shadow-2xl">
-               <Home size={18} /> <span className="text-xs font-black uppercase tracking-widest">Aperçu</span>
-            </button>
-            <button onClick={() => router.push('/client/profil')} className="flex items-center gap-4 w-full px-8 py-6 rounded-[2rem] text-gray-400 hover:bg-white transition-all">
-               <User size={18} /> <span className="text-xs font-black uppercase tracking-widest">Mon Identité</span>
-            </button>
-            <button onClick={() => router.push('/client/fidelite')} className="flex items-center gap-4 w-full px-8 py-6 rounded-[2rem] text-gray-400 hover:bg-white transition-all">
-               <Trophy size={18} /> <span className="text-xs font-black uppercase tracking-widest">Privilèges</span>
-            </button>
-            <button onClick={() => router.push('/client/invoices')} className="flex items-center gap-4 w-full px-8 py-6 rounded-[2rem] text-gray-400 hover:bg-white transition-all">
-               <FileText size={18} /> <span className="text-xs font-black uppercase tracking-widest">Mes Sessions</span>
-            </button>
-            <div className="pt-10 border-t border-white/20 mt-10">
-               <button onClick={() => router.push('/booking')} className="btn-luxe w-full py-6 flex justify-center items-center gap-3">
-                  <Plus size={18} /> Réserver un Soin
-               </button>
-            </div>
-          </nav>
-
-          <button onClick={handleLogout} className="mt-auto flex items-center gap-3 text-red-400 font-black text-[0.6rem] uppercase tracking-widest px-8">
-            <LogOut size={16} /> Quitter
-          </button>
-        </div>
-
-        {/* ── MAIN ── */}
-        <div className="flex-1 overflow-auto p-10 lg:p-20 scrollbar-hide">
-          <div className="max-w-6xl mx-auto space-y-24 pb-32">
-            
-            <header>
-               <h2 className="title-luxe text-6xl md:text-8xl leading-none">Bonjour, <br/>{user?.displayName?.split(' ')[0] || clientData?.firstName || 'Ami'} 👋</h2>
-               <p className="text-xl md:text-4xl text-gray-400 font-serif italic mt-8">Votre sanctuaire personnel est prêt.</p>
-            </header>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-               
-               {/* ── NEXT APPOINTMENT ── */}
-               <motion.div className="lg:col-span-12 dash-card p-12 border border-white/80 overflow-hidden relative">
-                  <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none -rotate-12"><Calendar size={200} /></div>
-                  <h3 className="text-2xl font-serif font-medium text-[#222F3E] flex items-center gap-3 mb-12"><Sparkles className="text-[#5F27CD]" /> Prochain Rituel</h3>
-                  
-                  {upcoming.length > 0 ? (
-                    <div className="flex flex-col md:flex-row gap-12 items-center bg-white/60 p-10 rounded-[3.5rem] border border-white shadow-xl relative z-10">
-                       <div className="text-center p-8 bg-[#F8F5F0] rounded-[2.5rem] min-w-[160px]">
-                          <p className="text-7xl font-light text-[#5F27CD] tracking-tighter leading-none">{new Date(upcoming[0].startTime).getDate()}</p>
-                          <p className="text-[0.65rem] font-black tracking-[0.3em] uppercase text-gray-400 mt-4">{format(new Date(upcoming[0].startTime), 'MMM', { locale: fr }).toUpperCase()}</p>
-                       </div>
-                       <div className="flex-1 space-y-4 text-center md:text-left">
-                          <p className="text-4xl font-serif font-light text-[#222F3E] leading-tight">{upcoming[0].serviceName}</p>
-                          <p className="text-xs font-black tracking-[0.2em] text-[#0ABDE3] uppercase">{format(new Date(upcoming[0].startTime), 'HH:mm')} • Studio Cointrin</p>
-                       </div>
-                       <div className="flex flex-col items-center gap-4">
-                          <span className="px-8 py-3 bg-emerald-50 text-emerald-600 rounded-2xl text-[0.65rem] font-black uppercase tracking-widest">Confirmé</span>
-                          <button className="text-[0.65rem] font-black uppercase tracking-widest text-[#5F27CD] hover:underline">Gérer →</button>
-                       </div>
+          {upcoming.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {upcoming.map(appt => (
+                <div key={appt.id} className="bg-white rounded-[2.5rem] p-8 border border-neutral-100 shadow-xl shadow-neutral-100 transition-all hover:scale-[1.02]">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="p-3 bg-[#FAF9F6] rounded-2xl text-neutral-900">
+                      <Calendar size={24} />
                     </div>
-                  ) : (
-                    <div className="py-16 text-center border-2 border-dashed border-gray-100 rounded-[3rem]">
-                       <p className="text-gray-300 font-serif italic italic text-xl">Aucun rituel prévu...</p>
-                       <button onClick={() => router.push('/booking')} className="text-[0.65rem] font-black text-[#5F27CD] uppercase tracking-widest mt-6 hover:underline">Réserver maintenant →</button>
-                    </div>
-                  )}
-               </motion.div>
-
-               {/* ── WELLNESS ADVICE & FIDELITY ── */}
-               <div className="lg:col-span-5 h-full">
-                  <section className="dash-card p-10 bg-[#222F3E] text-white space-y-10 h-full">
-                     <div>
-                        <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#0ABDE3] mb-4">L&apos;Accompagnement</p>
-                        <h3 className="text-3xl font-serif font-light italic text-[#F8F5F0]">Prolonger la Sérénité</h3>
-                     </div>
-                     <div className="space-y-6">
-                        {WELLNESS_TIPS.map(tip => (
-                          <div key={tip.id} className="flex gap-4 items-center group">
-                             <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-[#1DD1A1]/20 group-hover:text-[#1DD1A1] transition-all">
-                                <tip.icon size={16} />
-                             </div>
-                             <p className="text-[0.85rem] font-serif font-light text-gray-300">{tip.title}</p>
-                          </div>
-                        ))}
-                     </div>
-                  </section>
-               </div>
-
-               {/* ── HISTORY / STATS ── */}
-               <div className="lg:col-span-7 h-full">
-                  <div className="dash-card p-10 h-full border border-white">
-                     <h3 className="text-2xl font-serif font-medium text-[#222F3E] mb-10">Parcours Accomplis</h3>
-                     <div className="space-y-6">
-                        {past.slice(0, 4).map(apt => (
-                          <div key={apt.id} className="flex justify-between items-center group">
-                             <div className="flex gap-6 items-center">
-                                <div className="p-4 bg-[#F8F5F0] rounded-2xl text-[#222F3E]">
-                                   <HistoryIcon size={18} />
-                                </div>
-                                <div>
-                                   <p className="text-[0.95rem] font-serif font-bold text-[#222F3E]">{apt.serviceName}</p>
-                                   <p className="text-[0.6rem] font-black text-gray-300 uppercase tracking-widest">{format(new Date(apt.startTime), 'd MMMM yyyy', { locale: fr })}</p>
-                                </div>
-                             </div>
-                             <button className="p-3 hover:bg-[#F8F5F0] rounded-xl transition-colors text-gray-400 group-hover:text-[#5F27CD]"><Download size={16} /></button>
-                          </div>
-                        ))}
-                        {past.length === 0 && <p className="text-gray-300 italic text-center py-10">Votre histoire commence ici...</p>}
-                     </div>
+                    <span className="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-[0.65rem] font-black uppercase tracking-[0.1em]">CONFIRMÉ</span>
                   </div>
-               </div>
-
-             </div>
-
-             {/* ── SESSION HISTORY CTA ── */}
-             <motion.div 
-                whileHover={{ scale: 1.01 }}
-                onClick={() => router.push('/client/invoices')}
-                className="dash-card p-12 lg:p-16 border border-white hover:shadow-2xl transition-all cursor-pointer group bg-gradient-to-br from-white/40 to-[#F8F5F0]/20 flex flex-col md:flex-row justify-between items-center gap-10"
-             >
-                <div className="flex items-center gap-8">
-                   <div className="w-20 h-20 rounded-[2.5rem] bg-[#222F3E] text-white flex items-center justify-center group-hover:bg-[#5F27CD] transition-all shadow-xl shadow-indigo-100/10"><FileText size={32} /></div>
-                   <div className="space-y-2">
-                      <h3 className="text-4xl font-serif font-medium text-[#222F3E]">Mes Justificatifs & Factures</h3>
-                      <p className="text-xl text-gray-400 font-serif italic italic">Accédez à l&apos;intégralité de votre historique de soins en un clic.</p>
-                   </div>
+                  
+                  <h3 className="text-xl font-bold text-neutral-900 mb-2">{appt.serviceName.split(' - ')[0]}</h3>
+                  <div className="space-y-3 text-[0.9rem] text-neutral-500 font-medium">
+                    <div className="flex items-center gap-3">
+                      <Clock size={16} className="text-neutral-400" />
+                      <span>{format(new Date(appt.startTime), 'EEEE d MMMM', { locale: fr })} à {format(new Date(appt.startTime), 'HH:mm')}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <MapPin size={16} className="text-neutral-400" />
+                      <span>Avenue de Mategnin 4, 1217 Meyrin</span>
+                    </div>
+                  </div>
+                  <hr className="my-6 border-neutral-50" />
+                  <button className="w-full py-4 border border-neutral-900 rounded-full text-[0.7rem] font-black uppercase tracking-[0.15em] hover:bg-neutral-900 hover:text-white transition">
+                    MODIFIER OU ANNULER
+                  </button>
                 </div>
-                <ChevronRight size={40} className="text-gray-200 group-hover:text-[#5F27CD] group-hover:translate-x-2 transition-all" />
-             </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="py-20 text-center bg-white rounded-[3rem] border border-neutral-100 border-dashed">
+              <p className="text-neutral-400 italic text-lg mb-6">Vous n'avez pas encore de rituel prévu.</p>
+              <button 
+                onClick={() => router.push('/')}
+                className="px-10 py-4 bg-neutral-900 text-white rounded-full text-[0.7rem] font-black uppercase tracking-[0.2em] shadow-xl shadow-neutral-100"
+              >
+                RÉSERVER UN SOIN
+              </button>
+            </div>
+          )}
+        </section>
+
+        {/* PAST & INVOICES */}
+        <section className="space-y-8">
+          <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
+            <h2 className="text-[1.2rem] font-bold text-neutral-900">Historique & Factures</h2>
+            <span className="px-3 py-1 bg-neutral-100 text-neutral-400 rounded-full text-[0.65rem] font-black uppercase tracking-widest">{past.length} SÉANCE(S)</span>
           </div>
-        </div>
-      </div>
-    </>
+
+          <div className="bg-white rounded-[3rem] overflow-hidden border border-neutral-100 shadow-xl shadow-neutral-100">
+            {past.length > 0 ? (
+              <table className="w-full text-left">
+                <thead className="bg-[#FAF9F6]">
+                  <tr>
+                    <th className="px-8 py-5 text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400">Date & Soin</th>
+                    <th className="px-8 py-5 text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400">Status</th>
+                    <th className="px-8 py-5 text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400 text-right">Facture</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-50">
+                  {past.map(appt => (
+                    <tr key={appt.id} className="group hover:bg-neutral-50 transition">
+                      <td className="px-8 py-6">
+                        <div className="font-bold text-neutral-900 text-lg leading-tight mb-1">{appt.serviceName.split(' - ')[0]}</div>
+                        <div className="text-[0.75rem] font-medium text-neutral-400 flex items-center gap-2">
+                           {format(new Date(appt.startTime), 'd MMMM yyyy', { locale: fr })}
+                        </div>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className="px-3 py-1 bg-neutral-50 text-neutral-500 rounded-full text-[0.6rem] font-black uppercase tracking-widest">TERMINÉ</span>
+                      </td>
+                      <td className="px-8 py-6 text-right">
+                        <button className="inline-flex items-center gap-2 text-[0.7rem] font-black uppercase tracking-widest text-neutral-900 hover:text-emerald-600 transition group">
+                          TÉLÉCHARGER <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition translate-y-1 group-hover:translate-y-0" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+               <div className="py-20 text-center text-neutral-400 italic text-lg">Aucun historique disponible.</div>
+            )}
+          </div>
+        </section>
+
+      </main>
+    </div>
   );
 }

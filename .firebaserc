@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "serenity-relax-joao"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }

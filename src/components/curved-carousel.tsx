@@ -106,7 +106,7 @@ export function CurvedCarousel() {
                 transformStyle: 'preserve-3d',
               }}
             >
-              <div className="w-full h-full rounded-xl overflow-hidden shadow-2xl bg-muted group cursor-pointer transition-all duration-500 hover:shadow-primary/20">
+              <div className="w-full h-full rounded-[3rem] overflow-hidden shadow-2xl bg-muted group cursor-pointer transition-all duration-500 hover:shadow-primary/20">
                 <Image
                   src={art.image.imageUrl}
                   alt={art.displayName}
