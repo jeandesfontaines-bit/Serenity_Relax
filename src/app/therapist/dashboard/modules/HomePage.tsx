@@ -80,7 +80,7 @@ export default function HomePage({
         <div className="flex items-center gap-3">
           <button
             onClick={() => onNavigate('scheduler')}
-            className="flex items-center gap-1.5 h-8 px-3 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+            className="flex items-center gap-1.5 h-8 px-3 text-xs font-medium text-slate-900 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
           >
             <Calendar size={13} />
             {todayAppts.length} séances aujourd'hui
@@ -88,7 +88,7 @@ export default function HomePage({
           {latePayments.length > 0 && (
             <button
               onClick={() => onNavigate('accounting')}
-              className="flex items-center gap-1.5 h-8 px-3 text-xs font-medium text-rose-600 bg-rose-50 rounded-lg hover:bg-rose-100 transition-colors"
+              className="flex items-center gap-1.5 h-8 px-3 text-xs font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors border border-slate-200"
             >
               <AlertCircle size={13} />
               {latePayments.length} impayé{latePayments.length > 1 ? 's' : ''}
@@ -112,7 +112,7 @@ export default function HomePage({
               label="Encaissé (Mois)"
               value={`${(realPaid / 1000).toFixed(1)}K`}
               sub={`Objectif : ${(monthlyGoal / 1000).toFixed(0)}K CHF`}
-              accent="emerald"
+              accent="slate"
               action={
                 <button onClick={onEditGoal} className="text-slate-400 hover:text-slate-600 transition-colors">
                   <Edit3 size={13} />
@@ -137,8 +137,8 @@ export default function HomePage({
                 label="À encaisser"
                 value={`${unpaidCount}`}
                 sub={`${unpaidTotal} CHF en attente`}
-                accent="rose"
-                action={<ChevronRight size={14} className="text-rose-400 group-hover:translate-x-1 transition-transform" />}
+                accent="slate"
+                action={<ChevronRight size={14} className="text-slate-400 group-hover:translate-x-1 transition-transform" />}
               />
             </div>
           </div>
@@ -154,7 +154,7 @@ export default function HomePage({
             </div>
             <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-indigo-600 rounded-full transition-all duration-700"
+                className="h-full bg-slate-900 rounded-full transition-all duration-700"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -199,8 +199,8 @@ export default function HomePage({
                       </div>
                       <div className="flex items-center gap-3 shrink-0">
                         <span className={`px-2.5 py-1 rounded-md text-[10px] font-medium ${appt.paid
-                          ? 'bg-emerald-50 text-emerald-700'
-                          : 'bg-amber-50 text-amber-700'
+                          ? 'bg-slate-900 text-white'
+                          : 'bg-slate-100 text-slate-600 border border-slate-200'
                         }`}>
                           {appt.paid ? 'Payé' : 'À régler'}
                         </span>
@@ -261,8 +261,8 @@ export default function HomePage({
                   </>
                 ) : (
                   <div className="py-10 text-center">
-                    <TrendingUp size={24} className="text-emerald-400 mx-auto mb-2" />
-                    <p className="text-sm text-slate-500">Aucun impayé</p>
+                    <TrendingUp size={24} className="text-slate-200 mx-auto mb-2" />
+                    <p className="text-sm text-slate-500">Tout est en ordre</p>
                   </div>
                 )}
               </div>
@@ -281,14 +281,15 @@ function StatCard({
   label: string;
   value: string;
   sub: string;
-  accent: 'indigo' | 'emerald' | 'rose';
+  accent: 'indigo' | 'emerald' | 'rose' | 'slate';
   action?: React.ReactNode;
   isProjected?: boolean;
 }) {
   const colors = {
-    indigo: 'bg-indigo-50 text-indigo-700',
-    emerald: 'bg-emerald-50 text-emerald-700',
-    rose: 'bg-rose-50 text-rose-700',
+    slate: 'bg-slate-50 text-slate-900',
+    indigo: 'bg-slate-50 text-slate-900',
+    emerald: 'bg-slate-50 text-slate-900',
+    rose: 'bg-slate-50 text-slate-900',
   };
 
   return (

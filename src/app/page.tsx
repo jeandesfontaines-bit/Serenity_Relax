@@ -31,14 +31,14 @@ const BIOLOGICAL_IMPACTS = [
 ];
 
 const SERVICE_COLORS = [
-  { accent: "#5F27CD", light: "rgba(95,39,205,0.06)" },
-  { accent: "#0ABDE3", light: "rgba(10,189,227,0.06)" },
-  { accent: "#FF9F43", light: "rgba(255,159,67,0.06)" },
-  { accent: "#1DD1A1", light: "rgba(29,209,161,0.06)" },
-  { accent: "#F368E0", light: "rgba(243,104,224,0.06)" },
-  { accent: "#54A0FF", light: "rgba(84,160,255,0.06)" },
-  { accent: "#FF6B6B", light: "rgba(255,107,107,0.06)" },
-  { accent: "#FECA57", light: "rgba(254,202,87,0.06)" },
+  { accent: "#3C4247", light: "rgba(60,66,71,0.06)" }, // Slate
+  { accent: "#5B6B78", light: "rgba(91,107,120,0.06)" }, // Storm
+  { accent: "#4A5568", light: "rgba(74,85,104,0.06)" }, // Deep Grey
+  { accent: "#718096", light: "rgba(113,128,150,0.06)" }, // Muted Blue
+  { accent: "#3C4247", light: "rgba(60,66,71,0.06)" }, // Slate (repeat for unity)
+  { accent: "#5B6B78", light: "rgba(91,107,120,0.06)" }, // Storm
+  { accent: "#4A5568", light: "rgba(74,85,104,0.06)" }, // Deep Grey
+  { accent: "#718096", light: "rgba(113,128,150,0.06)" }, // Muted Blue
 ];
 
 export default function HomePage() {
@@ -62,35 +62,32 @@ export default function HomePage() {
   return (
     <div className="bg-white text-[#222F3E] selection:bg-[#54A0FF]/20 selection:text-[#222F3E] antialiased relative">
       <Navbar onBookingClick={() => openBooking()} />
-      
-      {/* Progress bar — vibrant gradient */}
-      <motion.div className="fixed top-0 left-0 right-0 h-1 z-[120] origin-left progress-gradient" style={{ scaleX }} />
 
       {/* ═══════════════════ HERO ═══════════════════ */}
       <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 pt-32 pb-24 relative overflow-hidden">
         {/* Animated background blobs */}
-        <div className="absolute top-[-20%] right-[-10%] w-[45%] aspect-square rounded-full blur-[120px] opacity-30" style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)' }} />
-        <div className="absolute bottom-[-20%] left-[-10%] w-[40%] aspect-square rounded-full blur-[120px] opacity-20" style={{ background: 'linear-gradient(135deg, #1DD1A1, #48DBFB)' }} />
-        <div className="absolute top-[20%] left-[40%] w-[20%] aspect-square rounded-full blur-[100px] opacity-15" style={{ background: 'linear-gradient(135deg, #F368E0, #FF9FF3)' }} />
+        <div className="absolute top-[-20%] right-[-10%] w-[45%] aspect-square rounded-full blur-[120px] opacity-[0.05]" style={{ background: 'linear-gradient(135deg, #3C4247, #5B6B78)' }} />
+        <div className="absolute bottom-[-20%] left-[-10%] w-[40%] aspect-square rounded-full blur-[120px] opacity-[0.03]" style={{ background: 'linear-gradient(135deg, #D7C9B5, #3C4247)' }} />
+        <div className="absolute top-[20%] left-[40%] w-[20%] aspect-square rounded-full blur-[100px] opacity-[0.02]" style={{ background: 'linear-gradient(135deg, #5B6B78, #D7C9B5)' }} />
 
         <div className="max-w-5xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-16 relative z-10">
           
           {/* TEXT LEFT */}
           <div className="w-full lg:w-1/2 space-y-12 text-center lg:text-left order-2 lg:order-1">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center lg:items-start">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#54A0FF] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">L'Engagement João.</span>
+            <div className="flex flex-col items-center lg:items-start">
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#5B6B78] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">L'Engagement João.</span>
               <h1 className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.2rem] font-serif font-medium text-[#222F3E] tracking-tighter">
                 L'Art du<br />
-                <span className="italic font-light" style={{ background: 'linear-gradient(135deg, #5F27CD, #54A0FF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Lâcher-Prise.</span>
+                <span className="italic font-light" style={{ background: 'linear-gradient(135deg, #3C4247, #5B6B78)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Lâcher-Prise.</span>
               </h1>
-            </motion.div>
+            </div>
             
             <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
-              <div className="pl-8 border-l-2 border-[#54A0FF]/30 py-2">
-                 <p className="text-[1rem] font-sans font-light leading-relaxed text-[#576574] md:text-[1.08rem] lg:text-[1.15rem] mb-4">
+              <div className="pl-8 border-l-2 border-[#3C4247]/20 py-2">
+                 <p className="text-[1rem] font-sans font-light leading-relaxed text-[#3C4247] md:text-[1.08rem] lg:text-[1.15rem] mb-4">
                    « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
                  </p>
-                 <span className="font-cursive text-[1.5rem] text-[#5F27CD] block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
+                 <span className="font-cursive text-[1.5rem] text-[#5B6B78] block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
               </div>
               <div className="flex justify-center lg:justify-start pt-4">
                 <button onClick={() => openBooking()} className="high-end-button">
@@ -102,14 +99,11 @@ export default function HomePage() {
 
           {/* IMAGE RIGHT */}
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-center order-1 lg:order-2">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, x: 20 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            <div 
               className="relative aspect-[4/5] overflow-hidden w-full max-w-[320px] md:max-w-[380px] lg:max-w-[420px]"
               style={{ 
                 borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%',
-                boxShadow: '0 20px 60px rgba(95, 39, 205, 0.15)'
+                boxShadow: '0 20px 60px rgba(60, 66, 71, 0.12)'
               }}
             >
               <Image 
@@ -121,8 +115,8 @@ export default function HomePage() {
                 priority
               />
               {/* Color overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#5F27CD]/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-700" />
-            </motion.div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#3C4247]/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-700" />
+            </div>
           </div>
 
         </div>
@@ -133,34 +127,32 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
             <header className="w-full lg:w-[40%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#0ABDE3] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">Impact Biologique</span>
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#5B6B78] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">Impact Biologique</span>
               <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-[#222F3E] tracking-tighter mb-8">
-                L'Écho <span className="italic font-light text-[#576574]">du Corps.</span>
+                L'Écho <span className="italic font-light text-[#3C4247]">du Corps.</span>
               </h2>
-              <p className="text-[1rem] font-sans font-light leading-relaxed text-[#576574] md:text-[1.08rem] lg:text-[1.15rem]">
+              <p className="text-[1rem] font-sans font-light leading-relaxed text-[#3C4247] md:text-[1.08rem] lg:text-[1.15rem]">
                 Au-delà de la détente, une influence mesurable sur votre santé globale et votre vitalité. Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
               </p>
             </header>
 
             <div className="w-full lg:w-[60%] grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
               {BIOLOGICAL_IMPACTS.map((impact) => (
-                <motion.div 
+                <div 
                   key={impact.id} 
                   className="space-y-6 group"
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.3 }}
                 >
                   <div 
                     className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg"
-                    style={{ background: impact.bg, color: impact.color }}
+                    style={{ background: '#F7F1E3', color: '#3C4247' }}
                   >
                     <impact.icon size={24} strokeWidth={1.5} />
                   </div>
                   <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium text-[#222F3E] tracking-tight">{impact.title}</h4>
-                  <p className="text-[0.8125rem] leading-relaxed md:text-[0.875rem] lg:text-[0.9375rem] text-[#576574] font-sans font-medium">
+                  <p className="text-[0.8125rem] leading-relaxed md:text-[0.875rem] lg:text-[0.9375rem] text-[#3C4247] font-sans font-medium">
                     {impact.desc}
                   </p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -168,20 +160,22 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ SERVICES ═══════════════════ */}
-      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 relative">
+      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 relative" style={{ background: '#F5F4F2' }}>
         {/* Subtle background gradient — overflow-hidden isolated so sticky works */}
+        {/* Synchronized background from Hero */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 opacity-30" style={{ background: 'linear-gradient(180deg, rgba(84,160,255,0.03), rgba(95,39,205,0.04), transparent)' }} />
+          <div className="absolute top-[-20%] left-[-10%] w-[45%] aspect-square rounded-full blur-[120px] opacity-[0.05]" style={{ background: 'linear-gradient(135deg, #5B6B78, #3C4247)' }} />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] aspect-square rounded-full blur-[120px] opacity-[0.03]" style={{ background: 'linear-gradient(135deg, #D7C9B5, #3C4247)' }} />
         </div>
         
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start text-center lg:text-left">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#F368E0] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">Menu Signature</span>
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#3C4247] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">Menu Signature</span>
               <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-[#222F3E] tracking-tighter mb-8">
-                Soins <br className="hidden lg:block"/> <span className="italic font-light text-[#576574]">exclusifs.</span>
+                Soins <br className="hidden lg:block"/> <span className="italic font-light text-[#3C4247]">exclusifs.</span>
               </h2>
-              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-[#576574] md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-sm">
+              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-[#3C4247] md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-sm">
                 Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
               </p>
               <button onClick={() => openBooking()} className="high-end-button">
@@ -210,25 +204,25 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
             <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#FF9F43] block mb-8 md:text-[0.75rem] lg:text-[0.8rem]">Assistance</span>
+              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#5B6B78] block mb-8 md:text-[0.75rem] lg:text-[0.8rem]">Assistance</span>
               <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-[#222F3E] tracking-tighter mb-8">
-                Questions <br /> <span className="italic font-light text-[#576574]">fréquentes.</span>
+                Questions <br /> <span className="italic font-light text-[#3C4247]">fréquentes.</span>
               </h2>
-              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-[#576574] md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-xs">
+              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-[#3C4247] md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-xs">
                 Tout ce qu'il faut savoir pour préparer votre visite dans notre sanctuaire de Cointrin.
               </p>
             </div>
 
             <div className="w-full lg:w-[68%] space-y-20">
               {FAQS.map((f, i) => {
-                const faqColors = ["#54A0FF", "#1DD1A1", "#F368E0", "#FF9F43"];
+                const faqColor = "#5B6B78"; // Storm
                 return (
                   <div key={i} className="group transition-all duration-500 border-b border-neutral-100 pb-16 last:border-0">
                     <div className="flex gap-12 items-start">
-                      <span className="text-[0.7rem] font-sans font-black uppercase tracking-widest mt-2" style={{ color: faqColors[i] }}>0{i+1}</span>
+                      <span className="text-[0.7rem] font-sans font-black uppercase tracking-widest mt-2" style={{ color: faqColor }}>0{i+1}</span>
                       <div className="space-y-6">
                         <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium text-[#222F3E] tracking-tight">{f.q}</h4>
-                        <p className="text-[0.8125rem] leading-relaxed text-[#576574] font-sans font-medium border-l-2 pl-8 max-w-xl md:text-[0.875rem] lg:text-[0.9375rem]" style={{ borderColor: faqColors[i] + '30' }}>
+                        <p className="text-[0.8125rem] leading-relaxed text-[#3C4247] font-sans font-medium border-l-2 pl-8 max-w-xl md:text-[0.875rem] lg:text-[0.9375rem]" style={{ borderColor: faqColor + '30' }}>
                           {f.a}
                         </p>
                       </div>
@@ -242,42 +236,25 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ FOOTER ═══════════════════ */}
-      <footer className="text-white pt-16 pb-12 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #222F3E, #2C3A4A)' }}>
-        {/* Decorative orbs */}
-        <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-[100px] opacity-10" style={{ background: '#54A0FF' }} />
-        <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full blur-[100px] opacity-10" style={{ background: '#5F27CD' }} />
-        
-        <div className="max-w-7xl mx-auto flex flex-col items-center relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-[1.1rem] font-sans font-bold tracking-[0.4em] mb-4 text-white md:text-[1.2rem] lg:text-[1.25rem]">Serenity Relax Therapy</h2>
-            <p className="text-[0.7rem] font-sans font-medium italic tracking-[0.4em] text-white/40 uppercase md:text-[0.75rem] lg:text-[0.8rem]">EXCELLENCE THÉRAPEUTIQUE</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-24 w-full text-center">
-            <div className="space-y-6">
-              <h3 className="text-[0.7rem] font-sans font-black text-[#54A0FF]/60 uppercase tracking-[0.3em] md:text-[0.75rem] lg:text-[0.8rem]">LOCALISATION</h3>
-              <div className="text-[0.8125rem] leading-relaxed font-sans text-white/40 space-y-2 md:text-[0.875rem] lg:text-[0.9375rem]">
-                <p>Alfa Business Center</p>
-                <p>Chemin de Joinville 26, 4ème étage</p>
-                <p>1216 Cointrin - Genève</p>
-              </div>
+      <footer className="text-white py-8 px-6 md:px-12" style={{ background: '#0F1114' }}>
+        <div className="max-w-7xl mx-auto">
+          {/* Brand */}
+          <p className="text-[1rem] font-sans font-black uppercase tracking-[0.2em] text-white text-center mb-6">Serenity Relax Therapy</p>
+          {/* 3 cols */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center border-t border-white/5 pt-6">
+            <div>
+              <p className="text-[0.9rem] font-sans font-black uppercase tracking-[0.28em] text-white/90 mb-3">Localisation</p>
+              <p className="text-[0.8rem] font-sans font-medium leading-relaxed text-white/70">Alfa Business Center<br/>Chemin de Joinville 26, 4ème étage<br/>1216 Cointrin — Genève</p>
             </div>
-            <div className="space-y-6">
-              <h3 className="text-[0.7rem] font-sans font-black text-[#1DD1A1]/60 uppercase tracking-[0.3em] md:text-[0.75rem] lg:text-[0.8rem]">CONTACT</h3>
-              <div className="text-[0.8125rem] leading-relaxed font-sans text-white/40 space-y-2 md:text-[0.875rem] lg:text-[0.9375rem]">
-                <p>+41 78 333 68 23</p>
-                <p>serenityrelaxtherapy@gmail.com</p>
-              </div>
+            <div>
+              <p className="text-[0.9rem] font-sans font-black uppercase tracking-[0.28em] text-white/90 mb-3">Contact</p>
+              <p className="text-[0.8rem] font-sans font-medium leading-relaxed text-white/70">+41 78 333 68 23<br/>serenityrelaxtherapy@gmail.com</p>
             </div>
-            <div className="space-y-6">
-              <h3 className="text-[0.7rem] font-sans font-black text-[#F368E0]/60 uppercase tracking-[0.3em] md:text-[0.75rem] lg:text-[0.8rem]">SOCIAL</h3>
-              <div className="flex items-center justify-center gap-8">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                  <span className="text-[0.65rem] font-black uppercase tracking-widest text-white/30 hover:text-[#F368E0] transition-colors">Instagram</span>
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                  <span className="text-[0.65rem] font-black uppercase tracking-widest text-white/30 hover:text-[#54A0FF] transition-colors">Linkedin</span>
-                </a>
+            <div>
+              <p className="text-[0.9rem] font-sans font-black uppercase tracking-[0.28em] text-white/90 mb-3">Social</p>
+              <div className="flex items-center justify-center gap-6">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-white/60 hover:text-[#D7C9B5] transition-colors">Instagram</a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-white/60 hover:text-[#D7C9B5] transition-colors">Linkedin</a>
               </div>
             </div>
           </div>
@@ -300,11 +277,7 @@ export default function HomePage() {
 const ServiceCard = ({ s, colorIdx, onClick }: { s: any, colorIdx: number, onClick: () => void }) => {
   const colors = SERVICE_COLORS[colorIdx % SERVICE_COLORS.length];
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -6 }}
+    <div 
       onClick={onClick}
       className="relative w-full max-w-[320px] bg-white rounded-[3rem] p-4 group cursor-pointer transition-all duration-500"
       style={{ 
@@ -317,7 +290,7 @@ const ServiceCard = ({ s, colorIdx, onClick }: { s: any, colorIdx: number, onCli
           src={s.image} 
           fill
           unoptimized
-          className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+          className="object-cover transition-transform duration-1000" 
           alt={s.name}
         />
         {/* Colored overlay on hover */}
@@ -337,7 +310,7 @@ const ServiceCard = ({ s, colorIdx, onClick }: { s: any, colorIdx: number, onCli
         <h3 className="text-[1.1rem] leading-snug font-serif font-medium text-[#222F3E] tracking-tight md:text-[1.2rem] lg:text-[1.25rem]">
           {simplifyServiceName(s.name)}
         </h3>
-        <p className="text-[0.8125rem] leading-relaxed text-[#576574] font-sans font-medium md:text-[0.875rem] lg:text-[0.9375rem]">
+        <p className="text-[0.8125rem] leading-relaxed text-[#3C4247] font-sans font-medium md:text-[0.875rem] lg:text-[0.9375rem]">
           {s.description}
         </p>
       </div>
@@ -347,6 +320,6 @@ const ServiceCard = ({ s, colorIdx, onClick }: { s: any, colorIdx: number, onCli
         className="absolute bottom-4 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500"
         style={{ background: `linear-gradient(90deg, ${colors.accent}, ${colors.accent}80)` }}
       />
-    </motion.div>
+    </div>
   );
 };

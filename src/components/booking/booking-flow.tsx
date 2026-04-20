@@ -260,25 +260,30 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
   };
 
   if (step === 5) {
+    const waMsg = `Bonjour Joao, je viens de réserver un rituel : ${simplifyServiceName(selectedService?.name || '')} le ${format(selectedDate!, 'EEEE d MMMM', { locale: fr })} à ${selectedTime}. Merci ! (Ref: ${bookingRef})`;
+    const waUrl = `https://wa.me/41783336823?text=${encodeURIComponent(waMsg)}`;
+
     return (
       <div className="px-8 text-center h-screen flex flex-col justify-center bg-white">
-        <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8">
+        <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8 animate-in zoom-in-50 duration-500">
           <CheckCircle2 size={48} strokeWidth={1.5} />
         </div>
-        <h2 className="text-[2.4rem] font-serif font-bold text-neutral-900 mb-4 tracking-tighter">Réservé.</h2>
-        <p className="text-[1rem] leading-relaxed font-sans italic text-neutral-500 mb-10">Référence de votre rituel : <span className="font-bold text-neutral-900">{bookingRef}</span></p>
+        <h2 className="text-[2.4rem] font-serif font-bold text-neutral-900 mb-4 tracking-tighter">Rituel réservé.</h2>
+        <p className="text-[1rem] leading-relaxed font-sans italic text-neutral-500 mb-10 max-w-sm mx-auto">
+          Votre réservation est enregistrée ! Un email de confirmation vient de vous être envoyé avec votre <b>Lien Magique</b> pour accéder à votre espace.
+        </p>
         
         <div className="space-y-4 max-w-sm mx-auto w-full">
           <a 
-            href="https://wa.me/41783336823" 
+            href={waUrl} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="w-full inline-flex items-center justify-center px-6 py-2.5 bg-emerald-600 text-white rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-emerald-700 gap-3"
+            className="w-full inline-flex items-center justify-center px-6 py-4 bg-[#25D366] text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:scale-105 shadow-xl shadow-emerald-100 gap-3"
           >
-            <MessageCircle size={16} /> CONFIRMER WHATSAPP
+            <MessageCircle size={18} /> CONFIRMER SUR WHATSAPP
           </a>
-          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-6 py-2.5 border border-neutral-900 rounded-full text-[0.65rem] md:text-[0.7rem] lg:text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:bg-neutral-900 hover:text-white">
-            RETOUR
+          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-6 py-2.5 text-neutral-300 hover:text-neutral-900 text-[0.65rem] font-black uppercase tracking-[0.18em] transition-all">
+            RETOUR AU SITE
           </button>
         </div>
       </div>
@@ -351,7 +356,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                           fill 
                           unoptimized 
                           alt={s.name} 
-                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="object-cover transition-transform duration-700"
                         />
                       </div>
                       <div className="px-0.5 space-y-0.5">
@@ -442,7 +447,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                               {format(day, 'd')}
                             </button>
                             {currentMonthOnly && !isPast && (
-                              <div className={`w-1.5 h-1.5 rounded-full ${availability === 'low' ? 'bg-emerald-400' : availability === 'medium' ? 'bg-amber-400' : 'bg-neutral-200'}`} />
+                              <div className={`w-1.5 h-1.5 rounded-full ${availability === 'low' ? 'bg-[#5B6B78]' : availability === 'medium' ? 'bg-[#3C4247]' : 'bg-neutral-200'}`} />
                             )}
                           </div>
                         );

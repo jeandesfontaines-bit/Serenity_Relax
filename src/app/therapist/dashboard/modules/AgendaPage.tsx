@@ -43,20 +43,14 @@ function parseDuration(d?: string | number): number {
 }
 
 function getServiceColor(serviceName?: string) {
+  // Mineral categories
   const colors: Record<string, { bg: string; border: string; text: string; muted: string }> = {
-    'Relaxation': { bg: 'bg-blue-50 hover:bg-blue-100', border: 'border-blue-200', text: 'text-blue-900', muted: 'text-blue-600' },
-    'Deep Tissue': { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' },
-    'Deep tissue': { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' },
-    'Sports massage': { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' },
-    'Sports': { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' },
-    'Therapeutic': { bg: 'bg-teal-50 hover:bg-teal-100', border: 'border-teal-200', text: 'text-teal-900', muted: 'text-teal-600' },
-    'Hot stone': { bg: 'bg-amber-50 hover:bg-amber-100', border: 'border-amber-200', text: 'text-amber-900', muted: 'text-amber-600' },
-    'Hot Stone': { bg: 'bg-amber-50 hover:bg-amber-100', border: 'border-amber-200', text: 'text-amber-900', muted: 'text-amber-600' },
-    'Pregnancy': { bg: 'bg-rose-50 hover:bg-rose-100', border: 'border-rose-200', text: 'text-rose-900', muted: 'text-rose-600' },
-    'Lymphatic': { bg: 'bg-cyan-50 hover:bg-cyan-100', border: 'border-cyan-200', text: 'text-cyan-900', muted: 'text-cyan-600' },
-    'Cranial': { bg: 'bg-violet-50 hover:bg-violet-100', border: 'border-violet-200', text: 'text-violet-900', muted: 'text-violet-600' },
+    'Relaxation': { bg: 'bg-slate-50 hover:bg-slate-100', border: 'border-slate-200', text: 'text-slate-900', muted: 'text-slate-600' },
+    'Storm': { bg: 'bg-slate-900/5 hover:bg-slate-900/10', border: 'border-slate-900/10', text: 'text-slate-900', muted: 'text-slate-700' },
+    'Sand': { bg: 'bg-[#D7C9B5]/10 hover:bg-[#D7C9B5]/20', border: 'border-[#D7C9B5]/30', text: 'text-[#3C4247]', muted: 'text-[#576574]' },
   };
-  return colors[serviceName || ''] || { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' };
+  // Default to a professional Slate
+  return { bg: 'bg-slate-50 hover:bg-slate-100', border: 'border-slate-200', text: 'text-slate-900', muted: 'text-slate-600' };
 }
 
 /* ── PROPS ── */
@@ -161,7 +155,7 @@ export default function AgendaPage({
           
           <button
             onClick={absenceMode ? handleSaveAbsences : () => { setAbsenceMode(true); setBlockMode(false); }}
-            className={`h-9 px-4 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-widest border transition-all ${absenceMode ? 'bg-rose-600 border-rose-600 text-white shadow-lg shadow-rose-100' : 'bg-white border-slate-200 text-slate-600 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200'}`}
+            className={`h-9 px-4 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-widest border transition-all ${absenceMode ? 'bg-[#3C4247] border-[#3C4247] text-white shadow-lg' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             {absenceMode ? <CheckCircle2 size={14} /> : <Ban size={14} />}
             <span className="hidden sm:inline">{absenceMode ? `Valider (${pendingDates.size})` : 'Absences'}</span>
@@ -242,9 +236,9 @@ function AgendaSidebar({ cur, appointments, view, onToggleView, onSelectAppt }: 
                   onClick={() => onSelectAppt(a)}
                   className="w-full flex items-start gap-3 p-2 rounded-xl text-left transition-all hover:bg-white hover:shadow-sm hover:border-slate-200 border border-transparent group active:scale-[0.98]"
                 >
-                  <div className="text-[10px] font-black text-indigo-600 bg-indigo-50 px-1.5 py-1 rounded-lg w-10 shrink-0 text-center group-hover:bg-indigo-600 group-hover:text-white transition-colors">{a.time}</div>
+                  <div className="text-[10px] font-black text-slate-900 bg-slate-100 px-1.5 py-1 rounded-lg w-10 shrink-0 text-center group-hover:bg-slate-900 group-hover:text-white transition-colors">{a.time}</div>
                   <div className="min-w-0">
-                    <p className="text-[11px] font-bold text-slate-800 truncate leading-tight group-hover:text-indigo-600">{a.clientNameSnapshot || a.title}</p>
+                    <p className="text-[11px] font-bold text-slate-800 truncate leading-tight group-hover:text-slate-900">{a.clientNameSnapshot || a.title}</p>
                     <p className="text-[9px] font-bold text-slate-400 truncate uppercase mt-0.5 tracking-tight">{a.serviceName || 'Session'}</p>
                   </div>
                 </button>
@@ -308,7 +302,7 @@ function WeekTimeGrid({
 
           return (
             <div key={dStr} className="flex-1 min-w-0 border-r border-slate-100 last:border-r-0 py-3 relative">
-              <div className={`mx-auto w-10 h-10 rounded-full flex flex-col items-center justify-center transition-all ${isToday ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-900'}`}>
+              <div className={`mx-auto w-10 h-10 rounded-full flex flex-col items-center justify-center transition-all ${isToday ? 'bg-slate-900 text-white shadow-md' : 'text-slate-900'}`}>
                 <span className="text-[10px] font-bold uppercase tracking-tight opacity-70">{DAYS_LABELS[isoDay(d)]}</span>
                 <span className="text-[15px] font-bold leading-none">{format(d, 'd')}</span>
               </div>
@@ -316,7 +310,7 @@ function WeekTimeGrid({
                 <div className="mt-2 px-4">
                   <div className="h-1 bg-slate-100 rounded-full overflow-hidden">
                     <div 
-                      className={`h-full transition-all duration-500 rounded-full ${occupancy > 80 ? 'bg-rose-500' : occupancy > 40 ? 'bg-amber-500' : 'bg-emerald-500'}`} 
+                      className={`h-full transition-all duration-500 rounded-full ${occupancy > 80 ? 'bg-slate-900' : occupancy > 40 ? 'bg-slate-500' : 'bg-slate-300'}`} 
                       style={{ width: `${occupancy}%` }} 
                     />
                   </div>
@@ -359,11 +353,11 @@ function WeekTimeGrid({
                       <div
                         key={t}
                         onClick={() => absenceMode ? togglePending(dStr) : (blockMode ? toggleSlot(dStr, t) : onOpenSlot(dStr, t))}
-                        className={`absolute left-0 right-0 z-[2] cursor-pointer transition-all border-l-2 ${isBlocked ? 'bg-rose-50/30 border-rose-300' : (isPending ? 'bg-indigo-50/50 border-indigo-400 animate-pulse' : 'hover:bg-indigo-50/30 border-transparent hover:border-indigo-300')}`}
+                        className={`absolute left-0 right-0 z-[2] cursor-pointer transition-all border-l-2 ${isBlocked ? 'bg-slate-100/50 border-slate-300' : (isPending ? 'bg-slate-900/10 border-slate-900 animate-pulse' : 'hover:bg-slate-50/50 border-transparent hover:border-slate-200')}`}
                         style={{ top: getTop(t), height: HOUR_H }}
                       >
                         <div className="p-1">
-                           <div className={`w-1.5 h-1.5 rounded-full ${isBlocked ? 'bg-rose-400' : (isPending ? 'bg-indigo-400' : 'bg-slate-200 opacity-0 group-hover:opacity-100')}`} />
+                           <div className={`w-1.5 h-1.5 rounded-full ${isBlocked ? 'bg-slate-400' : (isPending ? 'bg-slate-900' : 'bg-slate-200 opacity-0 group-hover:opacity-100')}`} />
                         </div>
                       </div>
                     );
@@ -469,12 +463,12 @@ function MonthView({ cur, appointments, isDayOpen, absenceMode, pendingDates, to
               className={`min-h-[120px] p-2 border-r border-b border-slate-100 relative transition-all ${!sameMonth ? 'bg-slate-50/30' : 'bg-white'} ${!open ? 'bg-rose-50/10' : ''} ${pending ? 'bg-indigo-50/50' : 'hover:bg-slate-50'}`}
             >
               <div className="flex justify-between items-start mb-1">
-                <span className={`text-[13px] font-black w-7 h-7 flex items-center justify-center rounded-full ${isToday ? 'bg-indigo-600 text-white shadow-md' : (sameMonth ? 'text-slate-900' : 'text-slate-300')}`}>{format(d, 'd')}</span>
+                <span className={`text-[13px] font-black w-7 h-7 flex items-center justify-center rounded-full ${isToday ? 'bg-slate-900 text-white shadow-md' : (sameMonth ? 'text-slate-900' : 'text-slate-300')}`}>{format(d, 'd')}</span>
                 {!open && sameMonth && <div className="text-[9px] font-black text-rose-500 uppercase">OFF</div>}
               </div>
               <div className="space-y-1 overflow-hidden">
                 {dayAppts.slice(0, 4).map((a: any) => (
-                  <div key={a.id} className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 truncate border border-emerald-100">{a.time} {a.clientNameSnapshot}</div>
+                  <div key={a.id} className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-slate-900 text-white truncate shadow-sm">{a.time} {a.clientNameSnapshot}</div>
                 ))}
                 {dayAppts.length > 4 && <div className="text-[9px] font-black text-slate-400 pl-1">+{dayAppts.length - 4} plus</div>}
               </div>

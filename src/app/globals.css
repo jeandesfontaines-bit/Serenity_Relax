@@ -5,38 +5,26 @@
 
 @layer base {
   :root {
-    /* ══════════ FLAT UI VIBRANT PALETTE ══════════ */
-    --c-pink:        #FF9FF3;  /* Jigglypuff */
-    --c-yellow:      #FECA57;  /* Casandora Yellow */
-    --c-red:         #FF6B6B;  /* Pastel Red */
-    --c-cyan:        #48DBFB;  /* Megaman */
-    --c-green:       #1DD1A1;  /* Wild Caribbean */
-    --c-magenta:     #F368E0;  /* Lián Hóng Lotus Pink */
-    --c-orange:      #FF9F43;  /* Double Dragon Skin */
-    --c-coral:       #EE5A53;  /* Amour */
-    --c-blue:        #0ABDE3;  /* Cyanite */
-    --c-teal:        #10AC84;  /* Dark Mountain Meadow */
-    --c-mint:        #00D2D3;  /* Jade Dust */
-    --c-joust:       #54A0FF;  /* Joust Blue */
-    --c-purple:      #5F27CD;  /* Nasu Purple */
-    --c-grayblue:    #C8D6E5;  /* Light Blue Ballerina */
-    --c-slate:       #576574;  /* Fugu */
-    --c-dark:        #222F3E;  /* Imperial */
-
-    /* New Vibrant & Flat Tokens */
-    --color-squash:       #f6b93b;
-    --color-mandarin:     #e55039;
-    --color-azraq:        #4a69bd;
-    --color-dupain:       #60a3bc;
-    --color-aurora:       #78e08f;
-    --color-iceland:      #fa983a;
-    --color-tomato:       #eb2f06;
-    --color-yue-guang:    #1e3799;
-    --color-good-sam:     #3c6382;
-    --color-waterfall:    #38ada9;
-    --color-jalapeno:     #b71540;
-    --color-sapphire:     #0c2461;
-    --color-reef:         #079992;
+    /* ══════════ MINERAL & EARTH PALETTE ══════════ */
+    --c-slate:       #3C4247;
+    --c-storm:       #5B6B78;
+    --c-sand:        #D7C9B5;
+    --c-earth:       #AC7D66;
+    --c-deep:        #2C3E50;
+    --c-muted:       #A3A3A3;
+    
+    /* Mapping Legacy to New for safety */
+    --c-pink:        var(--c-storm);
+    --c-yellow:      var(--c-sand);
+    --c-red:         #E55039; /* Keep a muted red for errors */
+    --c-cyan:        var(--c-storm);
+    --c-green:       var(--c-storm);
+    --c-magenta:     var(--c-slate);
+    --c-orange:      var(--c-earth);
+    --c-blue:        var(--c-storm);
+    --c-purple:      var(--c-slate);
+    --c-joust:       var(--c-storm);
+    --c-dark:        #171717;
 
     /* ══════════ DESIGN TOKENS ══════════ */
     --background: 220 20% 97%;
@@ -96,7 +84,7 @@
 
   /* Vibrant gradient backgrounds */
   .gradient-hero {
-    background: linear-gradient(135deg, var(--c-purple) 0%, var(--c-joust) 35%, var(--c-cyan) 65%, var(--c-mint) 100%);
+    background: linear-gradient(135deg, var(--c-slate) 0%, var(--c-storm) 100%);
   }
 
   .gradient-cta {
@@ -130,17 +118,17 @@
   }
 
   .high-end-button {
-    @apply inline-flex items-center justify-center px-6 py-2 rounded-full
-           text-[0.7rem] font-black uppercase tracking-[0.18em] transition-all duration-500
+    @apply inline-flex items-center justify-center px-8 py-3 rounded-full
+           text-[0.7rem] font-black uppercase tracking-[0.2em] transition-all duration-500
            active:scale-95 cursor-pointer;
-    background: linear-gradient(135deg, var(--c-joust), var(--c-purple));
+    background: #0F1114;
     color: white;
     border: none;
-    box-shadow: 0 4px 20px rgba(84, 160, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   }
   .high-end-button:hover {
-    box-shadow: 0 8px 30px rgba(84, 160, 255, 0.45);
-    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
   }
 
   /* Progress bar */

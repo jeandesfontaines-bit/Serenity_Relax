@@ -5,7 +5,7 @@ const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 // The therapist's email who should receive the whatsapp notifications
-const THERAPIST_EMAIL = 'jean.desfontaines@gmail.com'; 
+const THERAPIST_EMAIL = 'serenityrelaxtherapy@gmail.com'; 
 
 export async function POST(req: Request) {
   try {
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       }
 
       await resend.emails.send({
-        from: 'Serenity Relax <login@serenity-relax.com>',
+        from: 'Serenity Relax Therapy <login@serenity-relax.com>',
         to: [clientEmail],
         subject: `Lien de connexion : Votre Sanctuaire Serenity`,
         html: `
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
             <p style="font-size: 13px; color: #888;">Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p>
             <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
-            <p style="font-size: 14px;"><strong>Joao Manuel Castro Ramos - Serenity Relax</strong></p>
+            <p style="font-size: 14px;"><strong>Joao Manuel Castro Ramos - Serenity Relax Therapy</strong></p>
           </div>
         `,
       });
@@ -84,30 +84,56 @@ export async function POST(req: Request) {
 
     // A. Send Email to the Client (Confirmation + Magic Link)
     const clientEmailPromise = resend.emails.send({
-      from: 'Serenity Relax <booking@serenity-relax.com>',
+      from: 'Serenity Relax Therapy <booking@serenity-relax.com>',
       to: [clientEmail],
       subject: `Confirmation de votre soin : ${serviceName}`,
       html: `
-        <div style="font-family: sans-serif; color: #171717; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 12px;">
-          <h1 style="font-family: serif; font-size: 24px;">Bonjour ${clientName},</h1>
-          <p>Votre réservation pour <strong>${serviceName}</strong> est confirmée.</p>
-          
-          <div style="background-color: #f9f9f9; padding: 20px; border-radius: 12px; margin: 20px 0;">
-            <p style="margin: 0 0 10px 0;"><strong>📅 Date :</strong> ${dateStr}</p>
-            <p style="margin: 0 0 10px 0;"><strong>⏰ Heure :</strong> ${timeStr}</p>
-            <p style="margin: 0;"><strong>📍 Lieu :</strong> Avenue de Mategnin 4, 1217 Meyrin</p>
-          </div>
+        <div style="background-color: #FAF9F6; padding: 40px 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 40px; padding: 60px; shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <div style="text-align: center; margin-bottom: 40px;">
+              <h2 style="font-family: Georgia, serif; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: #171717; margin-bottom: 20px;">Serenity Relax</h2>
+              <div style="width: 40px; h-px: 1px; background-color: #E5E5E5; margin: 0 auto;"></div>
+            </div>
 
-          <div style="margin: 30px 0; text-align: center;">
-            <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Accédez à votre espace client pour voir vos réservations et vos factures :</p>
-            <a href="${magicLink}" style="display: inline-block; background-color: #000; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px;">
-              ACCÉDER À MON COMPTE
-            </a>
-          </div>
+            <h1 style="font-family: Georgia, serif; font-size: 32px; font-weight: normal; color: #171717; text-align: center; margin-bottom: 10px; letter-spacing: -0.02em;">Votre rituel est confirmé.</h1>
+            <p style="color: #666; text-align: center; font-size: 16px; margin-bottom: 40px; font-style: italic;">Bonjour ${clientName}, votre sanctuaire vous attend.</p>
 
-          <p style="font-size: 13px; color: #888;">En cas d'empêchement, merci de nous avertir au minimum 24h à l'avance.</p>
-          <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
-          <p style="font-size: 14px;"><strong>Joao Manuel Castro Ramos - Serenity Relax</strong></p>
+            <div style="background-color: #fcfcfc; border: 1px solid #f0f0f0; border-radius: 24px; padding: 32px; margin-bottom: 40px;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="padding-bottom: 20px;">
+                    <p style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #A3A3A3; margin: 0 0 8px 0;">Soin choisi</p>
+                    <p style="font-size: 18px; font-weight: bold; color: #171717; margin: 0;">${serviceName}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 20px;">
+                    <p style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #A3A3A3; margin: 0 0 8px 0;">Date & Heure</p>
+                    <p style="font-size: 16px; font-weight: medium; color: #171717; margin: 0;">${dateStr} à ${timeStr}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #A3A3A3; margin: 0 0 8px 0;">Lieu</p>
+                    <p style="font-size: 14px; font-weight: medium; color: #171717; margin: 0;">Alfa Business Center, Joinville 26, Cointrin</p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 40px;">
+              <p style="font-size: 14px; color: #666; margin-bottom: 24px;">Accédez à votre espace pour gérer votre séance :</p>
+              <a href="${magicLink}" style="display: inline-block; background-color: #171717; color: #ffffff; padding: 18px 36px; border-radius: 100px; text-decoration: none; font-size: 12px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase;">
+                Ouvrir mon compte
+              </a>
+            </div>
+
+            <div style="border-top: 1px solid #F0F0F0; padding-top: 40px; text-align: center;">
+              <p style="font-size: 12px; color: #A3A3A3; margin-bottom: 10px;">En cas d'empêchement, merci de nous avertir 24h à l'avance.</p>
+              <p style="font-size: 14px; font-weight: bold; color: #171717; margin: 0;">Joao Manuel Castro Ramos</p>
+              <p style="font-size: 12px; color: #A3A3A3; margin-top: 4px;">Serenity Relax</p>
+            </div>
+          </div>
         </div>
       `,
     });

@@ -110,17 +110,17 @@ export default function ComptaPage({
             <button className="h-9 px-4 bg-slate-50 border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-2">
               <Download size={14} /> Export CSV
             </button>
-            <button className="h-9 px-4 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center gap-2">
+            <button className="h-9 px-4 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all flex items-center gap-2">
               <Printer size={14} /> Impression Masse
             </button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <StatCard label="Mois en cours" value={`${stats.monthly}`} sub="Encaissé" accent="indigo" icon={<TrendingUp size={14}/>} />
-          <StatCard label="Année {currentYear}" value={`${stats.yearly}`} sub="Encaissé total" accent="emerald" icon={<TrendingUp size={14}/>} />
-          <StatCard label="À encaisser" value={`${stats.pending}`} sub={`${appointments.filter(a => !a.paid).length} séances`} accent="amber" icon={<AlertCircle size={14}/>} />
-          <StatCard label="Retards" value={`${stats.late}`} sub={`${stats.lateCount} factures`} accent="rose" icon={<AlertCircle size={14}/>} isWarning={stats.late > 0} />
+          <StatCard label="Mois en cours" value={`${stats.monthly}`} sub="Encaissé" accent="slate" icon={<TrendingUp size={14}/>} />
+          <StatCard label="Année {currentYear}" value={`${stats.yearly}`} sub="Encaissé total" accent="slate" icon={<TrendingUp size={14}/>} />
+          <StatCard label="À encaisser" value={`${stats.pending}`} sub={`${appointments.filter(a => !a.paid).length} séances`} accent="slate" icon={<AlertCircle size={14}/>} />
+          <StatCard label="Retards" value={`${stats.late}`} sub={`${stats.lateCount} factures`} accent="slate" icon={<AlertCircle size={14}/>} isWarning={stats.late > 0} />
         </div>
       </header>
 
@@ -192,7 +192,7 @@ export default function ComptaPage({
                   <tr key={appt.id} className="hover:bg-slate-50/50 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs ${appt.paid ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-50 text-slate-400'}`}>
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs ${appt.paid ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-400 border border-slate-100'}`}>
                           {appt.clientNameSnapshot?.substring(0, 2).toUpperCase()}
                         </div>
                         <div>
@@ -211,8 +211,8 @@ export default function ComptaPage({
                     <td className="px-6 py-4 text-center">
                       <span className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tighter transition-all ${
                         appt.paid 
-                          ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' 
-                          : (isLate ? 'bg-rose-50 text-rose-600 border border-rose-100 animate-pulse' : 'bg-slate-50 text-slate-400 border border-slate-100')
+                          ? 'bg-slate-900 text-white shadow-sm' 
+                          : (isLate ? 'bg-slate-50 text-slate-900 border-2 border-slate-900' : 'bg-slate-50 text-slate-400 border border-slate-100')
                       }`}>
                         {appt.paid ? 'Réglé' : (isLate ? 'En retard' : 'À encaisser')}
                       </span>
@@ -256,12 +256,13 @@ export default function ComptaPage({
 }
 
 /* ── STAT CARD ── */
-function StatCard({ label, value, sub, accent, icon, isWarning }: { label: string, value: string, sub: string, accent: 'indigo' | 'emerald' | 'rose' | 'amber', icon: React.ReactNode, isWarning?: boolean }) {
+function StatCard({ label, value, sub, accent, icon, isWarning }: { label: string, value: string, sub: string, accent: 'indigo' | 'emerald' | 'rose' | 'amber' | 'slate', icon: React.ReactNode, isWarning?: boolean }) {
   const colors = {
-    indigo: 'text-indigo-600 bg-indigo-50',
-    emerald: 'text-emerald-600 bg-emerald-50',
-    rose: 'text-rose-600 bg-rose-50',
-    amber: 'text-amber-600 bg-amber-50',
+    slate: 'text-slate-900 bg-slate-50',
+    indigo: 'text-slate-900 bg-slate-50',
+    emerald: 'text-slate-900 bg-slate-50',
+    rose: 'text-slate-900 bg-slate-50',
+    amber: 'text-slate-900 bg-slate-50',
   };
 
   return (

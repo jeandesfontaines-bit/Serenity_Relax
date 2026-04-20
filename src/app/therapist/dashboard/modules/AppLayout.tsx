@@ -56,12 +56,12 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
                 onClick={() => onNavigate(id)}
                 className={`group relative w-full flex items-center gap-3 h-10 px-3 rounded-lg text-sm transition-colors duration-150
                   ${active
-                    ? 'bg-emerald-50 text-emerald-700 font-medium'
+                    ? 'bg-slate-900 text-white font-medium shadow-lg shadow-slate-200'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
               >
                 {active && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-emerald-600 rounded-r-full" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-slate-900 rounded-r-full" />
                 )}
                 <Icon size={17} strokeWidth={active ? 2.2 : 1.8} className="shrink-0" />
                 <span className="truncate">{label}</span>
@@ -106,10 +106,10 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
             <button
               key={id}
               onClick={() => onNavigate(id)}
-              className={`flex flex-col items-center justify-center gap-0.5 w-16 h-12 transition-colors ${active ? 'text-emerald-600' : 'text-slate-400'}`}
+              className={`flex flex-col items-center justify-center gap-0.5 w-16 h-12 transition-colors ${active ? 'text-slate-900' : 'text-slate-400'}`}
             >
               <Icon size={20} strokeWidth={active ? 2.2 : 1.8} />
-              <span className={`text-[9px] font-medium ${active ? 'text-emerald-600' : 'text-slate-500'}`}>
+              <span className={`text-[9px] font-medium ${active ? 'text-slate-900' : 'text-slate-500'}`}>
                 {label}
               </span>
             </button>

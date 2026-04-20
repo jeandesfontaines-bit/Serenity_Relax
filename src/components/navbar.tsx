@@ -82,8 +82,8 @@ export function Navbar({ onBookingClick }: NavbarProps) {
       <nav className="max-w-[1200px] xl:max-w-6xl mx-auto bg-white/70 backdrop-blur-2xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.06)] rounded-full px-6 py-2.5 md:px-10 md:py-3.5">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-baseline gap-2 md:gap-3 cursor-pointer group">
-            <span className="whitespace-nowrap font-sans font-black text-[0.75rem] tracking-[0.2em] text-[#222F3E] md:text-[0.85rem] lg:text-[1rem]">Serenity Relax</span>
-            <span className="whitespace-nowrap font-cursive text-[1.2rem] text-[#5F27CD] md:text-[1.4rem] lg:text-[1.6rem]">by João</span>
+            <span className="whitespace-nowrap font-sans font-black uppercase text-[0.75rem] tracking-[0.2em] text-[#222F3E] md:text-[0.85rem] lg:text-[1rem]">Serenity Relax Therapy</span>
+            <span className="whitespace-nowrap font-cursive text-[1.2rem] text-[#5B6B78] md:text-[1.4rem] lg:text-[1.6rem]">by João</span>
           </Link>
           
           <div className="hidden md:flex items-center gap-6 lg:gap-8">
@@ -122,7 +122,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                 <button 
                   onClick={onBookingClick}
                   className="whitespace-nowrap flex items-center justify-center text-[0.65rem] font-sans font-black uppercase tracking-[0.18em] transition-all px-5 py-2 rounded-full md:text-[0.7rem] lg:text-[0.75rem] text-white"
-                  style={{ background: 'linear-gradient(135deg, #54A0FF, #5F27CD)', boxShadow: '0 4px 15px rgba(84,160,255,0.3)' }}
+                  style={{ background: '#0F1114', boxShadow: '0 4px 15px rgba(0,0,0,0.25)' }}
                 >
                   Réserver
                 </button>
