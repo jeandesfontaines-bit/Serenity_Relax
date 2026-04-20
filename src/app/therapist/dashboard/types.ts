@@ -27,7 +27,7 @@ export interface Appointment {
   price?: number;
   paid?: boolean;
   paymentMethod?: string;
-  status?: 'upcoming' | 'done' | 'late' | 'honoré' | 'A VENIR' | 'RÉGLÉ';
+  status?: 'upcoming' | 'done' | 'late' | 'honoré' | 'A VENIR' | 'RÉGLÉ' | 'cancelled';
   clientNameSnapshot?: string;
   duration?: string;
   phone?: string;

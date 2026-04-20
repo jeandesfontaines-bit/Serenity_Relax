@@ -36,10 +36,27 @@ function getTop(time: string): number {
 function getHeight(mins: number): number {
   return (mins / 60) * HOUR_H;
 }
-function parseDuration(d?: string): number {
+function parseDuration(d?: string | number): number {
   if (!d) return DEFAULT_DURATION;
-  const n = parseInt(d);
+  const n = typeof d === 'string' ? parseInt(d) : d;
   return isNaN(n) ? DEFAULT_DURATION : n;
+}
+
+function getServiceColor(serviceName?: string) {
+  const colors: Record<string, { bg: string; border: string; text: string; muted: string }> = {
+    'Relaxation': { bg: 'bg-blue-50 hover:bg-blue-100', border: 'border-blue-200', text: 'text-blue-900', muted: 'text-blue-600' },
+    'Deep Tissue': { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' },
+    'Deep tissue': { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' },
+    'Sports massage': { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' },
+    'Sports': { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' },
+    'Therapeutic': { bg: 'bg-teal-50 hover:bg-teal-100', border: 'border-teal-200', text: 'text-teal-900', muted: 'text-teal-600' },
+    'Hot stone': { bg: 'bg-amber-50 hover:bg-amber-100', border: 'border-amber-200', text: 'text-amber-900', muted: 'text-amber-600' },
+    'Hot Stone': { bg: 'bg-amber-50 hover:bg-amber-100', border: 'border-amber-200', text: 'text-amber-900', muted: 'text-amber-600' },
+    'Pregnancy': { bg: 'bg-rose-50 hover:bg-rose-100', border: 'border-rose-200', text: 'text-rose-900', muted: 'text-rose-600' },
+    'Lymphatic': { bg: 'bg-cyan-50 hover:bg-cyan-100', border: 'border-cyan-200', text: 'text-cyan-900', muted: 'text-cyan-600' },
+    'Cranial': { bg: 'bg-violet-50 hover:bg-violet-100', border: 'border-violet-200', text: 'text-violet-900', muted: 'text-violet-600' },
+  };
+  return colors[serviceName || ''] || { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' };
 }
 
 /* ── PROPS ── */
@@ -65,9 +82,6 @@ interface AgendaPageProps {
   onMoveAppt?: (id: string, date: string, time: string) => void;
 }
 
-/* ══════════════════════════════════════════════════
-   MAIN COMPONENT
-   ══════════════════════════════════════════════════ */
 export default function AgendaPage({
   view, cur, onPeriod, onToday, onToggleView,
   onSelectAppt, onOpenSlot, appointments,
@@ -77,7 +91,6 @@ export default function AgendaPage({
 }: AgendaPageProps) {
   const [pendingDates, setPendingDates] = useState<Set<string>>(new Set());
 
-  // Escape cancels absence mode
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && absenceMode) {
@@ -113,96 +126,61 @@ export default function AgendaPage({
   }, [view, cur]);
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-slate-50">
-      {/* ── HEADER ── */}
-      <header className="h-14 border-b border-slate-200 bg-white px-4 sm:px-6 flex items-center justify-between shrink-0">
-        {/* Left: view toggle */}
-        <div className="flex items-center gap-4 min-w-0">
-          <div className="hidden sm:flex h-8 bg-slate-100 p-0.5 rounded-lg">
+    <div className="flex-1 flex flex-col overflow-hidden bg-white">
+      {/* ── HEADER (Google Style) ── */}
+      <header className="h-16 border-b border-slate-200 bg-white px-4 sm:px-8 flex items-center justify-between shrink-0 shadow-sm z-10">
+        <div className="flex items-center gap-6">
+          <button
+            onClick={onToday}
+            className="h-9 px-4 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95"
+          >
+            Aujourd'hui
+          </button>
+
+          <div className="flex items-center gap-2">
+            <div className="flex items-center">
+              <button onClick={() => onPeriod(-1)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 transition-all"><ChevronLeft size={20} /></button>
+              <button onClick={() => onPeriod(1)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 transition-all"><ChevronRight size={20} /></button>
+            </div>
+            <h2 className="text-xl font-bold text-slate-900 tracking-tight ml-2 first-letter:uppercase">{titleLabel}</h2>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:flex bg-slate-100 p-1 rounded-xl">
             {(['week', 'month'] as const).map(v => (
               <button
                 key={v}
                 onClick={() => onToggleView(v)}
-                className={`h-full px-3 flex items-center rounded-md text-xs font-medium transition-colors ${
-                  view === v ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-                }`}
+                className={`h-8 px-4 flex items-center rounded-lg text-xs font-bold transition-all ${view === v ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
               >
                 {v === 'week' ? 'Semaine' : 'Mois'}
               </button>
             ))}
           </div>
-
-          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-            <div className="flex items-center gap-0.5">
-              <button
-                onClick={() => onPeriod(-1)}
-                className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-slate-100 text-slate-500 transition-colors"
-              >
-                <ChevronLeft size={16} />
-              </button>
-              <button
-                onClick={() => onPeriod(1)}
-                className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-slate-100 text-slate-500 transition-colors"
-              >
-                <ChevronRight size={16} />
-              </button>
-            </div>
-
-            <h2 className="text-sm font-semibold text-slate-900 capitalize truncate">
-              {titleLabel}
-            </h2>
-
-            <button
-              onClick={onToday}
-              className="h-7 px-2.5 text-xs font-medium text-slate-600 bg-white border border-slate-200 rounded-md hover:bg-slate-50 transition-colors hidden sm:block"
-            >
-              Aujourd'hui
-            </button>
-          </div>
-        </div>
-
-        {/* Right: actions */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => onToggleView(view === 'month' ? 'week' : 'month')}
-            className="sm:hidden h-8 px-2.5 bg-white border border-slate-200 rounded-md text-xs font-medium text-slate-600 transition-colors"
-          >
-            {view === 'month' ? 'Sem.' : 'Mois'}
-          </button>
-
+          
           <button
             onClick={absenceMode ? handleSaveAbsences : () => { setAbsenceMode(true); setBlockMode(false); }}
-            className={`h-8 px-2.5 rounded-md flex items-center gap-1.5 text-xs font-medium border transition-colors ${
-              absenceMode
-                ? 'bg-rose-600 border-rose-600 text-white'
-                : 'bg-white border-slate-200 text-slate-600 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200'
-            }`}
+            className={`h-9 px-4 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-widest border transition-all ${absenceMode ? 'bg-rose-600 border-rose-600 text-white shadow-lg shadow-rose-100' : 'bg-white border-slate-200 text-slate-600 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200'}`}
           >
-            {absenceMode ? <CheckCircle2 size={13} /> : <Ban size={13} />}
+            {absenceMode ? <CheckCircle2 size={14} /> : <Ban size={14} />}
             <span className="hidden sm:inline">{absenceMode ? `Valider (${pendingDates.size})` : 'Absences'}</span>
           </button>
 
-          <button
-            onClick={onOpenWeeklySettings}
-            className="h-8 px-2.5 rounded-md flex items-center gap-1.5 text-xs font-medium bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
-          >
-            <Settings size={13} />
-            <span className="hidden sm:inline">Créneaux</span>
-          </button>
+          <button onClick={onOpenWeeklySettings} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition-all"><Settings size={18} /></button>
         </div>
       </header>
 
       {/* ── CONTENT ── */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar (desktop only) */}
         <AgendaSidebar
           cur={cur}
           appointments={appointments}
           view={view}
           onToggleView={onToggleView}
+          onSelectAppt={onSelectAppt}
         />
 
-        {/* Main calendar area */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {view === 'week'
             ? <WeekTimeGrid
@@ -237,96 +215,66 @@ export default function AgendaPage({
   );
 }
 
-/* ══════════════════════════════════════════════════
-   SIDEBAR
-   ══════════════════════════════════════════════════ */
-function AgendaSidebar({
-  cur, appointments, view, onToggleView,
-}: {
-  cur: Date;
-  appointments: Appointment[];
-  view: string;
-  onToggleView: (v: 'month' | 'week') => void;
-}) {
+/* ── SIDEBAR ── */
+function AgendaSidebar({ cur, appointments, view, onToggleView, onSelectAppt }: any) {
   const todayStr = fmt(new Date());
   const todayAppts = useMemo(
-    () => appointments.filter(a => a.date === todayStr).sort((a, b) => (a.time || '').localeCompare(b.time || '')),
+    () => appointments.filter((a: any) => a.date === todayStr && a.status !== 'cancelled').sort((a: any, b: any) => (a.time || '').localeCompare(b.time || '')),
     [appointments, todayStr],
   );
 
   return (
-    <aside className="hidden lg:flex flex-col w-56 border-r border-slate-200 bg-white shrink-0">
-      {/* Today summary */}
-      <div className="p-4 border-b border-slate-100">
-        <h3 className="text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-2">Aujourd'hui</h3>
-        <p className="text-2xl font-semibold text-slate-900">{todayAppts.length}</p>
-        <p className="text-xs text-slate-500 mt-0.5">
-          session{todayAppts.length !== 1 ? 's' : ''} prévue{todayAppts.length !== 1 ? 's' : ''}
-        </p>
+    <aside className="hidden lg:flex flex-col w-60 bg-slate-50 border-r border-slate-200 shrink-0">
+      <div className="p-6 border-b border-slate-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Aujourd'hui</h3>
+        <p className="text-3xl font-black text-slate-900 leading-tight">{todayAppts.length}</p>
+        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">sessions prévues</p>
       </div>
 
-      {/* Upcoming today */}
-      <div className="flex-1 overflow-y-auto p-4">
-        <h3 className="text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-3">
-          Prochaines séances
-        </h3>
-        {todayAppts.length > 0 ? (
-          <div className="space-y-2">
-            {todayAppts.slice(0, 6).map(a => (
-              <div key={a.id} className="flex items-center gap-2.5 py-1.5">
-                <span className="text-xs font-medium text-slate-500 w-10 shrink-0">{a.time}</span>
-                <div className="min-w-0">
-                  <p className="text-xs font-medium text-slate-800 truncate">
-                    {a.clientNameSnapshot || a.title}
-                  </p>
-                  <p className="text-[10px] text-slate-400 truncate">
-                    {a.serviceName || 'Session'}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-xs text-slate-400 italic">Aucune session</p>
-        )}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div>
+          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 px-2">À venir</h3>
+          {todayAppts.length > 0 ? (
+            <div className="space-y-1">
+              {todayAppts.slice(0, 10).map((a: any) => (
+                <button
+                  key={a.id}
+                  onClick={() => onSelectAppt(a)}
+                  className="w-full flex items-start gap-3 p-2 rounded-xl text-left transition-all hover:bg-white hover:shadow-sm hover:border-slate-200 border border-transparent group active:scale-[0.98]"
+                >
+                  <div className="text-[10px] font-black text-indigo-600 bg-indigo-50 px-1.5 py-1 rounded-lg w-10 shrink-0 text-center group-hover:bg-indigo-600 group-hover:text-white transition-colors">{a.time}</div>
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-bold text-slate-800 truncate leading-tight group-hover:text-indigo-600">{a.clientNameSnapshot || a.title}</p>
+                    <p className="text-[9px] font-bold text-slate-400 truncate uppercase mt-0.5 tracking-tight">{a.serviceName || 'Session'}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="py-12 text-center rounded-2xl border-2 border-dashed border-slate-200">
+              <p className="text-[10px] text-slate-400 font-black uppercase">Libre</p>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Revenue */}
-      <div className="p-4 border-t border-slate-100">
-        <h3 className="text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-1">Revenus du jour</h3>
-        <p className="text-lg font-semibold text-slate-900">
-          {todayAppts.reduce((s, a) => s + (a.price || 150), 0)} CHF
+      <div className="p-5 border-t border-slate-200 bg-white">
+        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total prévu</h3>
+        <p className="text-xl font-black text-slate-900 flex items-baseline gap-1">
+          {todayAppts.reduce((s: number, a: any) => s + (a.price || 150), 0)}
+          <span className="text-[10px] text-slate-400">CHF</span>
         </p>
       </div>
     </aside>
   );
 }
 
-/* ══════════════════════════════════════════════════
-   WEEK TIME GRID (Calendly / Cron style)
-   ══════════════════════════════════════════════════ */
-interface WeekTimeGridProps {
-  cur: Date;
-  appointments: Appointment[];
-  configSlots: { [key: number]: string[] };
-  isDayOpen: (d: string) => boolean;
-  isSlotBlocked: (d: string, t: string) => boolean;
-  toggleSlot: (d: string, t: string) => void;
-  onSelectAppt: (a: Appointment) => void;
-  onOpenSlot: (d: string, t: string) => void;
-  absenceMode: boolean;
-  blockMode: boolean;
-  pendingDates: Set<string>;
-  togglePending: (d: string) => void;
-  onMoveAppt?: (id: string, date: string, time: string) => void;
-  onToggleDay: (d: string) => void;
-}
-
+/* ── WEEK VIEW ── */
 function WeekTimeGrid({
   cur, appointments, configSlots, isDayOpen, isSlotBlocked,
   toggleSlot, onSelectAppt, onOpenSlot, absenceMode, blockMode,
   pendingDates, togglePending, onMoveAppt, onToggleDay,
-}: WeekTimeGridProps) {
+}: any) {
   const days = useMemo(() => {
     const s = wkStart(new Date(cur));
     return Array.from({ length: 7 }, (_, i) => addDays(s, i));
@@ -334,12 +282,9 @@ function WeekTimeGrid({
 
   const gridHeight = HOURS.length * HOUR_H;
   const [activeId, setActiveId] = useState<string | null>(null);
-  const activeAppt = useMemo(() => activeId ? appointments.find(a => a.id === activeId) : null, [activeId, appointments]);
+  const activeAppt = useMemo(() => activeId ? appointments.find((a: any) => a.id === activeId) : null, [activeId, appointments]);
 
-  const handleDragStart = (event: any) => {
-    setActiveId(event.active.id);
-  };
-
+  const handleDragStart = (event: any) => setActiveId(event.active.id);
   const handleDragEnd = (event: DragEndEvent) => {
     setActiveId(null);
     const { active, over } = event;
@@ -351,20 +296,19 @@ function WeekTimeGrid({
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-white">
-      {/* Header Row */}
       <div className="flex border-b border-slate-200">
-        <div className="w-16 border-r border-slate-200" />
+        <div className="w-14 border-r border-slate-200" />
         {days.map(d => {
           const dStr = fmt(d);
           const isToday = dStr === fmt(new Date());
           const open = isDayOpen(dStr);
-          const dayAppts = appointments.filter(a => a.date === dStr);
+          const dayAppts = appointments.filter((a: any) => a.date === dStr && a.status !== 'cancelled');
           const slotsCount = (configSlots[isoDay(d)] || []).length;
           const occupancy = slotsCount > 0 ? Math.round((dayAppts.length / slotsCount) * 100) : 0;
 
           return (
             <div key={dStr} className="flex-1 min-w-0 border-r border-slate-100 last:border-r-0 py-3 relative">
-              <div className={`mx-auto w-10 h-10 rounded-full flex flex-col items-center justify-center transition-all ${isToday ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-900 group-hover:bg-slate-50'}`}>
+              <div className={`mx-auto w-10 h-10 rounded-full flex flex-col items-center justify-center transition-all ${isToday ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-900'}`}>
                 <span className="text-[10px] font-bold uppercase tracking-tight opacity-70">{DAYS_LABELS[isoDay(d)]}</span>
                 <span className="text-[15px] font-bold leading-none">{format(d, 'd')}</span>
               </div>
@@ -378,340 +322,166 @@ function WeekTimeGrid({
                   </div>
                 </div>
               )}
-              {onToggleDay && (
-                <button 
-                  onClick={() => onToggleDay(dStr)}
-                  className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center transition-colors ${open ? 'text-slate-200 hover:text-emerald-500' : 'text-rose-500 bg-rose-50'}`}
-                  title={open ? "Fermer la journée" : "Ouvrir la journée"}
-                >
-                  <CheckCircle2 size={12} fill={open ? "currentColor" : "none"} />
-                </button>
-              )}
             </div>
           );
         })}
       </div>
 
-      {/* Scrollable time grid */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto no-scrollbar">
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
-          <div
-            className="grid relative"
-            style={{ gridTemplateColumns: '56px repeat(7, 1fr)', height: gridHeight }}
-          >
-            {/* Time labels column */}
-          <div className="border-r border-slate-100 relative">
-            {HOURS.map(h => (
-              <div
-                key={h}
-                className="absolute right-0 pr-2 text-[10px] font-medium text-slate-400 -translate-y-1/2"
-                style={{ top: (h - START_HOUR) * HOUR_H }}
-              >
-                {String(h).padStart(2, '0')}:00
-              </div>
-            ))}
-          </div>
+          <div className="grid relative" style={{ gridTemplateColumns: '56px repeat(7, 1fr)', height: gridHeight }}>
+            <div className="border-r border-slate-100 relative">
+              {HOURS.map(h => (
+                <div key={h} className="absolute right-0 pr-2 text-[10px] font-medium text-slate-400 -translate-y-1/2" style={{ top: (h - START_HOUR) * HOUR_H }}>
+                  {String(h).padStart(2, '0')}:00
+                </div>
+              ))}
+            </div>
 
-          {/* Day columns */}
-          {days.map((d, dayIdx) => {
-            const dStr = fmt(d);
-            const isOpen = isDayOpen(dStr);
-            const daySlots = [...(configSlots[isoDay(d)] || [])].sort();
-            const dayAppts = appointments.filter(a => a.date === dStr);
+            {days.map((d, dayIdx) => {
+              const dStr = fmt(d);
+              const isOpen = isDayOpen(dStr);
+              const daySlots = [...(configSlots[isoDay(d)] || [])].sort();
+              const dayAppts = appointments.filter((a: any) => a.date === dStr);
 
-            return (
-              <div key={dayIdx} className="border-r border-slate-100 relative">
-                {/* Hour grid lines */}
-                {HOURS.map(h => (
-                  <div
-                    key={h}
-                    className="absolute left-0 right-0 border-t border-slate-100"
-                    style={{ top: (h - START_HOUR) * HOUR_H }}
-                  />
-                ))}
-                {/* Half-hour lines */}
-                {HOURS.map(h => (
-                  <div
-                    key={`${h}-half`}
-                    className="absolute left-0 right-0 border-t border-slate-50"
-                    style={{ top: (h - START_HOUR) * HOUR_H + HOUR_H / 2 }}
-                  />
-                ))}
+              return (
+                <div key={dayIdx} className="border-r border-slate-100 relative">
+                  {HOURS.map(h => <div key={h} className="absolute left-0 right-0 border-t border-slate-100" style={{ top: (h - START_HOUR) * HOUR_H }} />)}
+                  {!isOpen && <div className="absolute inset-0 bg-slate-50/80 z-[1] flex items-center justify-center"><Lock size={20} className="text-slate-300" /></div>}
+                  
+                  {isOpen && daySlots.map(t => {
+                    const isBlocked = isSlotBlocked(dStr, t);
+                    const isPending = pendingDates.has(dStr);
+                    const isBusy = dayAppts.some((a: any) => a.time === t && a.status !== 'cancelled');
+                    if (isBusy) return null;
 
-                {/* Closed day overlay */}
-                {!isOpen && (
-                  <div className="absolute inset-0 bg-slate-50/80 z-[1] flex items-center justify-center">
-                    <Lock size={20} className="text-slate-300" />
-                  </div>
-                )}
-
-                {/* Slots rendering */}
-                {isOpen && daySlots.map(t => {
-                  const [h, m] = t.split(':').map(Number);
-                  const slotMinutes = h * 60 + m;
-                  const isBusy = dayAppts.some(a => {
-                    const [ah, am] = (a.time || '00:00').split(':').map(Number);
-                    const startMin = ah * 60 + am;
-                    const duration = parseInt(a.duration || '60');
-                    const endMin = startMin + duration;
-                    return slotMinutes >= startMin && slotMinutes < endMin;
-                  });
-                  const blocked = isSlotBlocked(dStr, t);
-                  if (isBusy) return null;
-
-                  return (
-                    <div 
-                      key={`${dStr}-${t}`} 
-                      className={`absolute left-0 right-0 group transition-all ${blocked ? 'bg-slate-50/80 z-10' : ''}`}
-                      style={{ top: getTop(t), height: HOUR_H }}
-                    >
-                      <div className={`absolute inset-x-1.5 inset-y-1 rounded-xl border-2 border-dashed flex items-center justify-center gap-2 transition-all ${
-                        blocked 
-                          ? 'border-slate-200 bg-white/40' 
-                          : 'border-transparent hover:border-slate-100 hover:bg-slate-50/50'
-                      }`}>
-                        {!blocked && !absenceMode && (
-                          <>
-                            <button 
-                              onClick={() => onOpenSlot(dStr, t)}
-                              className="w-8 h-8 rounded-full bg-white border border-slate-200 text-indigo-600 shadow-sm opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
-                              title="Nouvelle séance"
-                            >
-                              <Plus size={16} />
-                            </button>
-                            <button 
-                              onClick={() => toggleSlot(dStr, t)}
-                              className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-400 shadow-sm opacity-0 group-hover:opacity-100 hover:text-rose-600 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
-                              title="Bloquer le créneau"
-                            >
-                              <Ban size={14} />
-                            </button>
-                          </>
-                        )}
-                        {blocked && (
-                          <div className="flex flex-col items-center gap-1">
-                            <Lock size={14} className="text-slate-300" />
-                            <button 
-                              onClick={() => toggleSlot(dStr, t)}
-                              className="text-[9px] font-bold text-indigo-500 hover:underline hover:text-indigo-700"
-                            >
-                              DÉBLOQUER
-                            </button>
-                          </div>
-                        )}
+                    return (
+                      <div
+                        key={t}
+                        onClick={() => absenceMode ? togglePending(dStr) : (blockMode ? toggleSlot(dStr, t) : onOpenSlot(dStr, t))}
+                        className={`absolute left-0 right-0 z-[2] cursor-pointer transition-all border-l-2 ${isBlocked ? 'bg-rose-50/30 border-rose-300' : (isPending ? 'bg-indigo-50/50 border-indigo-400 animate-pulse' : 'hover:bg-indigo-50/30 border-transparent hover:border-indigo-300')}`}
+                        style={{ top: getTop(t), height: HOUR_H }}
+                      >
+                        <div className="p-1">
+                           <div className={`w-1.5 h-1.5 rounded-full ${isBlocked ? 'bg-rose-400' : (isPending ? 'bg-indigo-400' : 'bg-slate-200 opacity-0 group-hover:opacity-100')}`} />
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
 
-                {/* Appointment blocks */}
-                {isOpen && dayAppts.map(appt => {
-                  if (!appt.time) return null;
-                  const top = getTop(appt.time);
-                  const height = getHeight(parseDuration(appt.duration));
-                  return (
-                    <DraggableAppointmentBlock
-                      key={appt.id}
-                      appt={appt}
-                      top={top}
-                      height={height}
-                      onSelect={onSelectAppt}
-                      isDragging={activeId === appt.id}
-                      disabled={absenceMode || blockMode}
-                    />
-                  );
-                })}
-              </div>
-            );
-          })}
-          
-          <DragOverlay zIndex={100} dropAnimation={null}>
-            {activeAppt ? (
-              <AppointmentBlock
-                appt={activeAppt}
-                top={0}
-                height={getHeight(parseDuration(activeAppt.duration))}
-                onSelect={() => {}}
-                className="shadow-2xl opacity-90 scale-[1.02]"
-              />
-            ) : null}
-          </DragOverlay>
-        </div>
+                  {isOpen && dayAppts.map((appt: any) => {
+                    if (!appt.time) return null;
+                    const top = getTop(appt.time);
+                    const height = getHeight(parseDuration(appt.duration));
+                    return (
+                      <DraggableAppointmentBlock
+                        key={appt.id}
+                        appt={appt}
+                        top={top}
+                        height={height}
+                        onSelect={onSelectAppt}
+                        isDragging={activeId === appt.id}
+                        disabled={absenceMode || blockMode}
+                      />
+                    );
+                  })}
+                  <DroppableColumn id={dStr} />
+                </div>
+              );
+            })}
+            
+            <DragOverlay zIndex={100} dropAnimation={null}>
+              {activeAppt ? <div className="p-3 bg-white border-2 border-indigo-500 rounded-xl shadow-2xl scale-[1.02] opacity-90 font-bold text-xs pointer-events-none">{activeAppt.clientNameSnapshot}</div> : null}
+            </DragOverlay>
+          </div>
         </DndContext>
       </div>
     </div>
   );
 }
 
-/* ── APPOINTMENT BLOCK ── */
-function getServiceColor(serviceName?: string) {
-  const colors: Record<string, { bg: string; border: string; text: string; muted: string }> = {
-    'Relaxation': { bg: 'bg-blue-50 hover:bg-blue-100', border: 'border-blue-200', text: 'text-blue-900', muted: 'text-blue-600' },
-    'Deep Tissue': { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' },
-    'Deep tissue': { bg: 'bg-indigo-50 hover:bg-indigo-100', border: 'border-indigo-200', text: 'text-indigo-900', muted: 'text-indigo-600' },
-    'Sports massage': { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' },
-    'Sports': { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' },
-    'Therapeutic': { bg: 'bg-teal-50 hover:bg-teal-100', border: 'border-teal-200', text: 'text-teal-900', muted: 'text-teal-600' },
-    'Hot stone': { bg: 'bg-amber-50 hover:bg-amber-100', border: 'border-amber-200', text: 'text-amber-900', muted: 'text-amber-600' },
-    'Hot Stone': { bg: 'bg-amber-50 hover:bg-amber-100', border: 'border-amber-200', text: 'text-amber-900', muted: 'text-amber-600' },
-    'Pregnancy': { bg: 'bg-rose-50 hover:bg-rose-100', border: 'border-rose-200', text: 'text-rose-900', muted: 'text-rose-600' },
-    'Lymphatic': { bg: 'bg-cyan-50 hover:bg-cyan-100', border: 'border-cyan-200', text: 'text-cyan-900', muted: 'text-cyan-600' },
-    'Cranial': { bg: 'bg-violet-50 hover:bg-violet-100', border: 'border-violet-200', text: 'text-violet-900', muted: 'text-violet-600' },
-  };
-  return colors[serviceName || ''] || { bg: 'bg-emerald-50 hover:bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-900', muted: 'text-emerald-600' };
+function DroppableColumn({ id }: any) {
+  const { setNodeRef } = useDroppable({ id });
+  return <div ref={setNodeRef} className="absolute inset-0" />;
 }
 
-function AppointmentBlock({
-  appt, top, height, onSelect, className = '',
-}: {
-  appt: Appointment;
-  top: number;
-  height: number;
-  onSelect: (a: Appointment) => void;
-  className?: string;
-}) {
-  const isPaid = appt.paid;
-  const c = getServiceColor(appt.serviceName);
+function DraggableAppointmentBlock({ appt, top, height, onSelect, isDragging, disabled }: any) {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: appt.id,
+    disabled: disabled || appt.status === 'cancelled',
+  });
+  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : undefined;
 
   return (
-    <div
-      onClick={(e) => { e.stopPropagation(); onSelect(appt); }}
-      className={`absolute left-1 right-1 z-[3] rounded-md px-2.5 py-1.5 cursor-pointer border transition-all hover:shadow-md overflow-hidden ${c.bg} ${c.border} ${className}`}
-      style={{ top, height: Math.max(height, 28) }}
-    >
-      <div className="flex items-start justify-between">
-        <p className={`text-xs font-medium leading-tight truncate ${c.text}`}>
-          {appt.clientNameSnapshot || appt.title}
-        </p>
-        {!isPaid && (
-          <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${c.muted} bg-current opacity-70`} title="Paiement en attente" />
-        )}
-      </div>
-      {height >= 48 && (
-        <p className={`text-[10px] mt-0.5 truncate ${c.muted}`}>
-          {appt.serviceName || 'Session'}
-        </p>
-      )}
-      {height >= 64 && (
-        <p className={`text-[10px] mt-0.5 ${c.muted} opacity-80`}>
-          {appt.time} · {appt.price || 150} CHF
-        </p>
-      )}
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={isDragging ? 'opacity-0' : ''}>
+      <AppointmentBlock appt={appt} top={top} height={height} onSelect={onSelect} />
     </div>
   );
 }
 
-/* ══════════════════════════════════════════════════
-   MONTH VIEW
-   ══════════════════════════════════════════════════ */
-interface MonthViewProps {
-  cur: Date;
-  appointments: Appointment[];
-  isDayOpen: (d: string) => boolean;
-  absenceMode: boolean;
-  pendingDates: Set<string>;
-  togglePending: (d: string) => void;
-  onToggleView: (v: 'month' | 'week') => void;
+function AppointmentBlock({ appt, top, height, onSelect }: any) {
+  const isCancelled = appt.status === 'cancelled';
+  const c = getServiceColor(appt.serviceName);
+  return (
+    <div
+      onClick={(e) => { e.stopPropagation(); onSelect(appt); }}
+      onPointerDown={(e) => e.stopPropagation()}
+      className={`absolute left-1 right-1 z-[3] rounded-md px-2.5 py-1.5 cursor-pointer border transition-all hover:shadow-md overflow-hidden ${isCancelled ? 'bg-slate-100 border-slate-200 grayscale opacity-80' : `${c.bg} ${c.border}`}`}
+      style={{ top, height: Math.max(height, 28) }}
+    >
+      <div className="flex items-start justify-between">
+        <p className={`text-xs font-bold leading-tight truncate ${isCancelled ? 'text-slate-400' : c.text}`}>{appt.clientNameSnapshot || appt.title}</p>
+        {!appt.paid && !isCancelled && <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${c.muted} bg-current opacity-70`} />}
+      </div>
+      {height >= 48 && <p className={`text-[10px] mt-0.5 truncate font-medium ${isCancelled ? 'text-slate-400' : c.muted}`}>{appt.serviceName || 'Session'}{isCancelled && ' (ANNULÉE)'}</p>}
+    </div>
+  );
 }
 
-function MonthView({ cur, appointments, isDayOpen, absenceMode, pendingDates, togglePending, onToggleView }: MonthViewProps) {
-  const days = useMemo(() => eachDayOfInterval({
-    start: startOfWeek(startOfMonth(cur), { weekStartsOn: 1 }),
-    end: endOfWeek(endOfMonth(cur), { weekStartsOn: 1 }),
-  }), [cur]);
+/* ── MONTH VIEW ── */
+function MonthView({ cur, appointments, isDayOpen, absenceMode, pendingDates, togglePending, onToggleView }: any) {
+  const days = useMemo(() => {
+    const start = startOfWeek(startOfMonth(cur), { weekStartsOn: 1 });
+    const end = endOfWeek(endOfMonth(cur), { weekStartsOn: 1 });
+    return eachDayOfInterval({ start, end });
+  }, [cur]);
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-white">
-      {/* Column headers */}
-      <div className="grid grid-cols-7 border-b border-slate-200 shrink-0">
+    <div className="flex-1 flex flex-col bg-white">
+      <div className="grid grid-cols-7 border-b border-slate-200">
         {DAYS_LABELS.map(d => (
-          <div key={d} className="py-2.5 text-center border-r border-slate-100">
-            <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">{d}</span>
-          </div>
+          <div key={d} className="py-2 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">{d}</div>
         ))}
       </div>
-
-      <div className="grid grid-cols-7 flex-1 overflow-auto">
-        {days.map((day, i) => {
-          const dStr = fmt(day);
-          const isOpen = isDayOpen(dStr);
-          const isPend = pendingDates.has(dStr);
-          const isToday = isSameDay(new Date(), day);
-          const inMonth = isSameMonth(day, cur);
-          const booked = appointments.filter(e => e.date === dStr).length;
+      <div className="grid grid-cols-7 flex-1 overflow-auto no-scrollbar">
+        {days.map((d, i) => {
+          const dStr = fmt(d);
+          const sameMonth = isSameMonth(d, cur);
+          const dayAppts = appointments.filter((a: any) => a.date === dStr && a.status !== 'cancelled');
+          const isToday = isSameDay(d, new Date());
+          const open = isDayOpen(dStr);
+          const pending = pendingDates.has(dStr);
 
           return (
             <div
               key={i}
-              onClick={() => {
-                if (!inMonth) return;
-                absenceMode ? togglePending(dStr) : onToggleView('week');
-              }}
-              className={`border-r border-b border-slate-100 p-2 flex flex-col min-h-[90px] transition-colors relative ${
-                !inMonth ? 'opacity-25 cursor-default' : 'cursor-pointer hover:bg-slate-50'
-              } ${isToday && inMonth ? 'bg-indigo-50/30' : ''
-              } ${!isOpen && inMonth ? 'bg-slate-50' : ''
-              } ${isPend ? 'bg-rose-50' : ''}`}
+              onClick={() => absenceMode ? togglePending(dStr) : (onToggleView('week'))}
+              className={`min-h-[120px] p-2 border-r border-b border-slate-100 relative transition-all ${!sameMonth ? 'bg-slate-50/30' : 'bg-white'} ${!open ? 'bg-rose-50/10' : ''} ${pending ? 'bg-indigo-50/50' : 'hover:bg-slate-50'}`}
             >
-              {isPend && <div className="absolute top-1.5 left-1.5 w-1.5 h-1.5 rounded-full bg-rose-500" />}
-
-              <span className={`text-xs font-medium self-end ${
-                isToday
-                  ? 'text-white bg-emerald-600 w-6 h-6 rounded-full flex items-center justify-center'
-                  : inMonth ? 'text-slate-700' : 'text-slate-300'
-              }`}>
-                {day.getDate()}
-              </span>
-
-              {inMonth && isOpen && booked > 0 && (
-                <div className="mt-auto flex flex-wrap gap-0.5 justify-end">
-                  {Array.from({ length: Math.min(booked, 3) }).map((_, idx) => (
-                    <div key={idx} className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  ))}
-                  {booked > 3 && <span className="text-[8px] font-medium text-emerald-400">+{booked - 3}</span>}
-                </div>
-              )}
-              {inMonth && !isOpen && (
-                <span className="mt-auto text-[8px] font-medium text-slate-300 italic self-end">Fermé</span>
-              )}
+              <div className="flex justify-between items-start mb-1">
+                <span className={`text-[13px] font-black w-7 h-7 flex items-center justify-center rounded-full ${isToday ? 'bg-indigo-600 text-white shadow-md' : (sameMonth ? 'text-slate-900' : 'text-slate-300')}`}>{format(d, 'd')}</span>
+                {!open && sameMonth && <div className="text-[9px] font-black text-rose-500 uppercase">OFF</div>}
+              </div>
+              <div className="space-y-1 overflow-hidden">
+                {dayAppts.slice(0, 4).map((a: any) => (
+                  <div key={a.id} className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 truncate border border-emerald-100">{a.time} {a.clientNameSnapshot}</div>
+                ))}
+                {dayAppts.length > 4 && <div className="text-[9px] font-black text-slate-400 pl-1">+{dayAppts.length - 4} plus</div>}
+              </div>
             </div>
           );
         })}
       </div>
-    </div>
-  );
-}
-
-/* ── DND-KIT WRAPPERS ── */
-function DroppableSlot({ id, onClick, top }: { id: string; onClick: () => void; top: number; }) {
-  const { isOver, setNodeRef } = useDroppable({ id });
-  return (
-    <button
-      ref={setNodeRef}
-      onClick={onClick}
-      className={`absolute left-1 right-1 z-[2] rounded-md border border-dashed transition-colors group flex items-center justify-center ${isOver ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-300'}`}
-      style={{ top, height: getHeight(DEFAULT_DURATION) }}
-    >
-      <Plus size={14} className={`transition-colors ${isOver ? 'text-emerald-500' : 'text-slate-300 group-hover:text-emerald-500'}`} />
-    </button>
-  );
-}
-
-function DraggableAppointmentBlock({ appt, top, height, onSelect, isDragging, disabled }: { appt: Appointment; top: number; height: number; onSelect: (a: Appointment) => void; isDragging: boolean; disabled: boolean; }) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: appt.id,
-    data: { appt },
-    disabled
-  });
-
-  const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    zIndex: 50,
-  } : undefined;
-
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={`${isDragging ? 'opacity-30' : ''}`}>
-      <AppointmentBlock appt={appt} top={top} height={height} onSelect={onSelect} className={`${isDragging ? 'pointer-events-none' : ''} ${!disabled ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}`} />
     </div>
   );
 }

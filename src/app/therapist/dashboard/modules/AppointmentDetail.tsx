@@ -1,12 +1,15 @@
+'use client';
+
 import React, { useState } from 'react';
 import {
-  X, Clock, Smartphone, CreditCard, Banknote, Calendar, ChevronRight,
+  X, Clock, Smartphone, CreditCard, Banknote, Calendar, ChevronRight, Edit3, Save, Trash2
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Appointment } from '../types';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { useFirestore } from '@/firebase';
+import { simplifyServiceName } from '@/lib/utils';
 
 interface AppointmentDetailProps {
   appt: Appointment;
@@ -23,18 +26,21 @@ export default function AppointmentDetail({
   const firestore = useFirestore();
   const current = appointments.find(a => a.id === appt.id) || appt;
   const [showPaymentSelector, setShowPaymentSelector] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    serviceName: current.serviceName || '',
+    price: current.price || 150
+  });
 
-  /* ── Computed patient context ── */
   const clientAppts = appointments
     .filter(a => a.clientId === appt.clientId || a.clientNameSnapshot === appt.clientNameSnapshot)
     .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
   const sessionCount = clientAppts.length;
   const totalDue = appointments
-    .filter(a => a.clientId === appt.clientId && !a.paid)
+    .filter(a => a.clientId === appt.clientId && !a.paid && (a.status as any) !== 'cancelled')
     .reduce((s, a) => s + (a.price || 150), 0);
 
-  /* ── Actions ── */
   const handleUpdatePayment = async (method: string) => {
     if (!firestore) return;
     await updateDoc(doc(firestore, 'appointments', appt.id), { paid: true, paymentMethod: method });
@@ -50,152 +56,188 @@ export default function AppointmentDetail({
     }
   };
 
+  const handleSaveEdit = async () => {
+    if (!firestore) return;
+    await updateDoc(doc(firestore, 'appointments', appt.id), {
+      serviceName: editData.serviceName,
+      price: Number(editData.price)
+    });
+    setIsEditing(false);
+  };
+
   const dateLabel = current.date
     ? format(new Date(current.date), 'EEEE d MMMM yyyy', { locale: fr })
     : 'Date inconnue';
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-        onClick={onClose}
-      />
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-md" onClick={onClose} />
 
-      {/* Panel */}
-      <div className="relative w-full sm:max-w-[28rem] bg-white rounded-t-[24px] sm:rounded-[24px] shadow-2xl flex flex-col overflow-hidden max-h-[94vh] sm:max-h-[85vh]">
-
-        {/* Mobile handle */}
-        <div className="sm:hidden flex justify-center pt-3 pb-2 shrink-0">
-          <div className="w-12 h-1.5 bg-slate-200 rounded-full" />
+      <div className="relative w-full sm:max-w-[400px] bg-white rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300">
+        
+        {/* Header - Clinical & Sharp */}
+        <div className="px-6 pt-8 pb-5 flex items-start justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 group">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight truncate uppercase">
+                {current.clientNameSnapshot?.split(' ')[1]} {current.clientNameSnapshot?.split(' ')[0]}
+              </h2>
+              <button 
+                onClick={() => setIsEditing(!isEditing)}
+                className="p-1.5 text-slate-300 hover:text-indigo-600 transition-colors"
+              >
+                <Edit3 size={16} />
+              </button>
+            </div>
+            <div className="flex items-center gap-2 mt-1.5 text-slate-400 font-bold text-[11px] uppercase tracking-wider">
+              <Calendar size={12} className="shrink-0" />
+              <span>{dateLabel}</span>
+              <span>•</span>
+              <Clock size={12} className="shrink-0" />
+              <span className="text-slate-900">{current.time}</span>
+            </div>
+          </div>
+          <button 
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:bg-slate-200 transition-colors"
+          >
+            <X size={18} />
+          </button>
         </div>
 
-        {/* ── LEFT: Appointment details ── */}
-        <div className="flex-1 flex flex-col overflow-y-auto">
-          {/* Header */}
-          <div className="flex items-start justify-between px-6 py-5 border-b border-slate-100">
-            <div>
-              <h2 className="text-[17px] font-semibold text-slate-900">
-                {current.clientNameSnapshot || current.title}
-              </h2>
-              <div className="flex items-center gap-2 mt-1">
-                <Calendar size={14} className="text-slate-400" />
-                <span className="text-[14px] text-slate-500 capitalize">{dateLabel}</span>
-                {current.time && (
-                  <>
-                    <span className="text-slate-300">·</span>
-                    <Clock size={14} className="text-slate-400" />
-                    <span className="text-[14px] font-medium text-slate-700">{current.time}</span>
-                  </>
+        <div className="px-6 pb-8 space-y-4">
+          
+          {/* Main Info Blocks */}
+          <div className="grid grid-cols-2 gap-3">
+             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 transition-all">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Soin</span>
+                {isEditing ? (
+                  <input 
+                    autoFocus
+                    value={editData.serviceName} 
+                    onChange={e => setEditData({...editData, serviceName: e.target.value})}
+                    className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  />
+                ) : (
+                  <p className="text-xs font-bold text-slate-700 leading-tight">{simplifyServiceName(current.serviceName || '')}</p>
                 )}
-              </div>
-            </div>
+             </div>
+             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 transition-all">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Tarif</span>
+                {isEditing ? (
+                  <div className="flex items-center gap-1">
+                    <input 
+                      type="number"
+                      value={editData.price} 
+                      onChange={e => setEditData({...editData, price: Number(e.target.value)})}
+                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                    />
+                    <span className="text-[10px] font-bold text-slate-400">CHF</span>
+                  </div>
+                ) : (
+                  <p className="text-sm font-black text-slate-900">{current.price || 150} <span className="text-[10px] text-slate-400">CHF</span></p>
+                )}
+             </div>
+          </div>
 
-            <button
-              onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 transition-colors"
+          {isEditing && (
+            <button 
+              onClick={handleSaveEdit}
+              className="w-full h-11 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-indigo-100 animate-in zoom-in-95"
             >
-              <X size={18} />
+              <Save size={14} /> Enregistrer
+            </button>
+          )}
+
+          {/* Payment Section - Ultra Compact */}
+          {!isEditing && (
+            <div className={`rounded-2xl border transition-all px-5 py-3 flex items-center justify-between ${current.paid ? 'bg-emerald-50 border-emerald-100' : 'bg-white border-slate-200 shadow-sm'}`}>
+              <div>
+                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block leading-none mb-1">Règlement</span>
+                <p className={`text-[11px] font-black uppercase tracking-tight ${current.paid ? 'text-emerald-600' : 'text-amber-500'}`}>
+                  {current.paid ? `PAYÉ ${current.paymentMethod ? `(${current.paymentMethod})` : ''}` : 'À ENCAISSER'}
+                </p>
+              </div>
+              
+              {!current.paid ? (
+                !showPaymentSelector ? (
+                  <button 
+                    onClick={() => setShowPaymentSelector(true)}
+                    className="h-9 px-5 bg-[#059669] hover:bg-[#047857] text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md transition-all active:scale-95"
+                  >
+                    Encaisser
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-1.5 animate-in slide-in-from-right-4">
+                    {(['Twint', 'Cash', 'Card'] as const).map(m => (
+                      <button
+                        key={m}
+                        onClick={() => handleUpdatePayment(m)}
+                        className="w-10 h-10 flex flex-col items-center justify-center bg-white border border-slate-200 rounded-lg hover:border-emerald-600 hover:text-emerald-600 transition-all group"
+                      >
+                        {m === 'Twint' ? <Smartphone size={12} /> : m === 'Cash' ? <Banknote size={12} /> : <CreditCard size={12} />}
+                        <span className="text-[7px] font-black uppercase mt-0.5">{m}</span>
+                      </button>
+                    ))}
+                    <button onClick={() => setShowPaymentSelector(false)} className="ml-1 text-slate-300 hover:text-rose-500"><X size={14} /></button>
+                  </div>
+                )
+              ) : (
+                <button onClick={handleTogglePaid} className="text-[9px] font-black text-rose-500 uppercase hover:underline opacity-50 hover:opacity-100">Annuler</button>
+              )}
+            </div>
+          )}
+
+          {/* Patient Shortcuts */}
+          <div className="grid grid-cols-1 gap-2">
+            <button 
+              onClick={() => onGoToClient?.(current.clientId!)}
+              className="w-full flex items-center justify-between h-12 px-5 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <Users size={15} className="text-slate-300 group-hover:text-indigo-600 transition-colors" />
+                <span className="text-[11px] font-black uppercase text-slate-600 tracking-wider">Accès dossier complet</span>
+              </div>
+              <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-0.5 transition-all" />
+            </button>
+            <button 
+              onClick={() => onSendWhatsApp?.(current, 'followup')}
+              className="w-full flex items-center justify-between h-12 px-5 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <Smartphone size={15} className="text-slate-300 group-hover:text-emerald-600 transition-colors" />
+                <span className="text-[11px] font-black uppercase text-slate-600 tracking-wider">Suivi / Rappel</span>
+              </div>
+              <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-0.5 transition-all" />
             </button>
           </div>
 
-          {/* Details */}
-          <div className="p-6 space-y-6 flex-1">
-            {/* Service + price row */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-slate-50 border border-slate-200 rounded-[14px] p-4 text-center sm:text-left">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Prestation</p>
-                <p className="text-[15px] font-medium text-slate-900">{current.serviceName || 'Session'}</p>
-              </div>
-              <div className="bg-slate-50 border border-slate-200 rounded-[14px] p-4 text-center sm:text-left">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Tarif</p>
-                <p className="text-[15px] font-semibold text-slate-900">{current.price || 150} CHF</p>
-              </div>
+          {/* Quick Stats - Compacted */}
+          <div className="flex gap-2 pt-2">
+            <div className="flex-1 bg-slate-50 border border-slate-100 rounded-2xl p-3 text-center">
+               <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Visites</span>
+               <span className="text-sm font-black text-slate-700">{sessionCount}</span>
             </div>
-
-            {/* Payment status */}
-            <div className="bg-white border border-slate-200 rounded-[16px] p-5 shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex-1">
-                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5 flex justify-between items-center">
-                    Paiement
-                    {onSendWhatsApp && (
-                      <button 
-                        onClick={() => onSendWhatsApp(current, 'followup')}
-                        className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 transition-colors"
-                        title="Envoyer le suivi WhatsApp"
-                      >
-                        <Smartphone size={12} />
-                        <span className="text-[9px] font-bold uppercase tracking-tight">Relancer / Suivi</span>
-                      </button>
-                    )}
-                  </p>
-                  {showPaymentSelector ? (
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {(['Twint', 'Card', 'Cash'] as const).map(m => (
-                        <button
-                          key={m}
-                          onClick={() => handleUpdatePayment(m)}
-                          className="flex items-center gap-1.5 h-10 px-4 rounded-full bg-white border border-slate-200 text-[14px] font-medium text-slate-600 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-colors"
-                        >
-                          {m === 'Twint' ? <Smartphone size={14} /> : m === 'Card' ? <CreditCard size={14} /> : <Banknote size={14} />}
-                          {m}
-                        </button>
-                      ))}
-                      <button onClick={() => setShowPaymentSelector(false)} className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center hover:bg-rose-100 hover:text-rose-600 transition-colors">
-                        <X size={14} />
-                      </button>
-                    </div>
-                  ) : (
-                    <p className={`text-[15px] font-medium ${current.paid ? 'text-emerald-600' : 'text-amber-600'}`}>
-                      {current.paid ? `Réglé${current.paymentMethod ? ` · ${current.paymentMethod}` : ''}` : 'En attente de paiement'}
-                    </p>
-                  )}
-                </div>
-                {!showPaymentSelector && (
-                  <button
-                    onClick={handleTogglePaid}
-                    className={`h-[42px] px-5 rounded-full text-[14px] font-medium border transition-colors ${
-                      current.paid
-                        ? 'bg-white border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-200'
-                        : 'bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-700'
-                    }`}
-                  >
-                    {current.paid ? 'Annuler' : 'Marquer réglé'}
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Go to client */}
-            {current.clientId && onGoToClient && (
-              <button
-                onClick={() => onGoToClient(current.clientId as string)}
-                className="w-full flex items-center justify-between p-5 bg-white border border-slate-200 rounded-[14px] hover:border-emerald-200 hover:shadow-md transition-all group"
-              >
-                <span className="text-[15px] font-medium text-slate-700 group-hover:text-emerald-700">
-                  Ouvrir le dossier client
-                </span>
-                <ChevronRight size={16} className="text-slate-400 group-hover:text-emerald-600 transition-colors" />
-              </button>
-            )}
-
-            {/* Client context summary */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-slate-50 border border-slate-200 rounded-[14px] p-4 text-center">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Sessions</p>
-                <p className="text-lg font-semibold text-slate-900">{sessionCount}</p>
-              </div>
-              <div className="bg-slate-50 border border-slate-200 rounded-[14px] p-4 text-center">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Solde dû</p>
-                <p className={`text-lg font-semibold ${totalDue > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
-                  {totalDue} CHF
-                </p>
-              </div>
+            <div className="flex-1 bg-slate-50 border border-slate-100 rounded-2xl p-3 text-center">
+               <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Balance</span>
+               <span className={`text-sm font-black ${totalDue > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
+                 {totalDue} <span className="text-[9px]">CHF</span>
+               </span>
             </div>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+// Support Icons Missing in Local Import
+function Users({ size, className }: { size: number; className?: string }) {
+  return (
+    <svg 
+      width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}
+    >
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
   );
 }

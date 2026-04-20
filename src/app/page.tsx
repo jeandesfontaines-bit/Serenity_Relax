@@ -12,6 +12,7 @@ import { SERVICES } from '@/lib/types';
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { BookingFlow } from "@/components/booking/booking-flow";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { simplifyServiceName } from "@/lib/utils";
 
 const MY_PHOTO = "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg";
 
@@ -334,7 +335,7 @@ const ServiceCard = ({ s, colorIdx, onClick }: { s: any, colorIdx: number, onCli
           {s.name.includes('Bambous') ? 'Profond' : s.name.includes('Draineur') ? 'Vitalité' : s.name.includes('Aroma') ? 'Sensoriel' : s.name.includes('Réflexologie') ? 'Ciblé' : s.name.includes('Sportif') ? 'Performance' : s.name.includes('Thérapeutique') ? 'Signature' : s.name.includes('Deep Relax') ? 'Détente' : 'Dynamique'}
         </span>
         <h3 className="text-[1.1rem] leading-snug font-serif font-medium text-[#222F3E] tracking-tight md:text-[1.2rem] lg:text-[1.25rem]">
-          {s.name.split(' - ')[0]}
+          {simplifyServiceName(s.name)}
         </h3>
         <p className="text-[0.8125rem] leading-relaxed text-[#576574] font-sans font-medium md:text-[0.875rem] lg:text-[0.9375rem]">
           {s.description}

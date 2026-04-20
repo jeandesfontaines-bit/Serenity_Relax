@@ -32,6 +32,7 @@ import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { signInAnonymously } from 'firebase/auth';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { simplifyServiceName } from '@/lib/utils';
 
 interface BookingFlowProps {
   services: Service[];
@@ -305,7 +306,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
             {selectedService && step > 1 && (
                 <motion.div key="summary-service" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                   <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">RITUEL SÉLECTIONNÉ</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900">{selectedService.name.split(' - ')[0]}</p>
+                  <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900">{simplifyServiceName(selectedService.name)}</p>
                   <p className="text-[0.8rem] font-sans text-neutral-500 mt-1">{selectedService.duration} • CHF {selectedService.price}</p>
                 </motion.div>
             )}
@@ -354,7 +355,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         />
                       </div>
                       <div className="px-0.5 space-y-0.5">
-                        <h4 className="text-[0.75rem] leading-tight font-serif font-bold text-neutral-900 line-clamp-1">{s.name.split(' - ')[0]}</h4>
+                        <h4 className="text-[0.75rem] leading-tight font-serif font-bold text-neutral-900 line-clamp-1">{simplifyServiceName(s.name)}</h4>
                         <div className="flex items-center justify-center gap-2">
                           <span className="text-[0.5rem] font-black uppercase tracking-wider text-neutral-300">{s.duration}</span>
                           <span className="text-[0.8rem] font-serif font-bold text-neutral-900">{s.price} CHF</span>
@@ -607,7 +608,7 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   <div className="flex flex-col sm:flex-row sm:justify-between gap-6">
                     <div className="space-y-2 flex-1">
                       <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RITUEL CONFIRMÉ</p>
-                      <p className="text-[1.1rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{selectedService?.name.split(' - ')[0]}</p>
+                      <p className="text-[1.1rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{simplifyServiceName(selectedService?.name || '')}</p>
                       <p className="text-[0.9rem] font-sans font-medium text-neutral-600">
                         {selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : ''} à {selectedTime}
                       </p>

@@ -3,12 +3,14 @@ import { Calendar, AlertCircle, Clock, ChevronRight, Target, Edit3, TrendingUp }
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Appointment } from '../types';
+import { simplifyServiceName } from '@/lib/utils';
 
 interface HomePageProps {
   appointments: Appointment[];
   monthlyGoal: number;
   onSelectAppt: (appt: Appointment) => void;
   onNavigate: (tab: string) => void;
+  onFilterCompta: (filter: 'unpaid' | 'late') => void;
   onEditGoal: () => void;
 }
 
@@ -17,6 +19,7 @@ export default function HomePage({
   monthlyGoal,
   onSelectAppt,
   onNavigate,
+  onFilterCompta,
   onEditGoal,
 }: HomePageProps) {
   const todayStr = format(new Date(), 'yyyy-MM-dd');
@@ -42,6 +45,14 @@ export default function HomePage({
   );
 
   const realPaid = paidThisMonth;
+
+  const { unpaidCount, unpaidTotal } = useMemo(() => {
+    const unpaid = appointments.filter(a => !a.paid && a.date && a.date <= todayStr);
+    return {
+      unpaidCount: unpaid.length,
+      unpaidTotal: unpaid.reduce((sum, a) => sum + (a.price || 150), 0)
+    };
+  }, [appointments, todayStr]);
 
   const projectedRevenue = useMemo(() => {
     const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
@@ -121,6 +132,15 @@ export default function HomePage({
               sub="Soin le plus demandé"
               accent="indigo"
             />
+            <div onClick={() => onFilterCompta('unpaid')} className="cursor-pointer group">
+              <StatCard
+                label="À encaisser"
+                value={`${unpaidCount}`}
+                sub={`${unpaidTotal} CHF en attente`}
+                accent="rose"
+                action={<ChevronRight size={14} className="text-rose-400 group-hover:translate-x-1 transition-transform" />}
+              />
+            </div>
           </div>
 
           {/* Progress bar */}
@@ -173,7 +193,7 @@ export default function HomePage({
                             {appt.clientNameSnapshot || appt.title}
                           </p>
                           <p className="text-xs text-slate-500 truncate">
-                            {appt.serviceName || 'Séance'}
+                            {simplifyServiceName(appt.serviceName || '')}
                           </p>
                         </div>
                       </div>
@@ -204,7 +224,7 @@ export default function HomePage({
                   Paiements en retard
                 </h2>
                 <button
-                  onClick={() => onNavigate('accounting')}
+                  onClick={() => onFilterCompta('late')}
                   className="text-xs font-medium text-rose-600 hover:text-rose-700 transition-colors"
                 >
                   Gérer →

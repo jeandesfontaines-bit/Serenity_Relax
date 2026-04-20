@@ -25,6 +25,11 @@
         "oAuthBrandDisplayName": "Serenity Relax",
         "supportEmail": "jean.desfontaines@gmail.com"
       }
-    }
+    },
+    "authorizedDomains": [
+      "serenity-relax-joao.firebaseapp.com",
+      "serenity-relax-joao.web.app",
+      "serenity-relax.com"
+    ]
   }
 }

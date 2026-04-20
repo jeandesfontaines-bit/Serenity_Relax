@@ -67,47 +67,45 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
           </button>
         </div>
 
-        {/* Day tabs */}
-        <div className="flex border-b border-slate-100 px-3 shrink-0 overflow-x-auto no-scrollbar">
-          {DAYS.slice(0, 6).map(day => {
+        {/* Day tabs - Included all 7 days */}
+        <div className="flex border-b border-slate-100 px-2 shrink-0 overflow-x-auto no-scrollbar bg-slate-50/30">
+          {DAYS.map(day => {
             const count = (slots[day.id] || []).length;
             return (
               <button
                 key={day.id}
                 onClick={() => setActiveDay(day.id)}
-                className={`relative py-4 px-4 text-[15px] whitespace-nowrap transition-colors flex items-center gap-1.5 ${
+                className={`relative py-3 px-3 text-[14px] whitespace-nowrap transition-colors flex flex-col items-center gap-1 min-w-[54px] flex-1 ${
                   activeDay === day.id
-                    ? 'text-indigo-600 border-b-2 border-indigo-600 -mb-px font-medium'
-                    : 'text-slate-500 hover:text-slate-700'
+                    ? 'text-indigo-600 font-bold'
+                    : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
-                {day.label}
-                <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-md ${
-                  activeDay === day.id ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-100 text-slate-500'
+                <span>{day.label}</span>
+                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-md ${
+                  activeDay === day.id ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-500'
                 }`}>
                   {count}
                 </span>
+                {activeDay === day.id && <div className="absolute bottom-0 left-0 right-0 h-1 bg-indigo-600 rounded-t-full" />}
               </button>
             );
           })}
         </div>
 
-        {/* Slots list */}
-        <div className="flex-1 overflow-y-auto px-6 py-6 min-h-[350px]">
+        {/* Slots list - Compacted */}
+        <div className="flex-1 overflow-y-auto px-6 py-4 min-h-[300px]">
           {(slots[activeDay] || []).length > 0 ? (
-            <div className="space-y-3 mb-6">
+            <div className="grid grid-cols-2 gap-2 mb-6">
               {slots[activeDay].map(time => (
                 <div
                   key={time}
-                  className="flex items-center justify-between px-5 py-3 bg-white border border-slate-200 rounded-full shadow-sm"
+                  className="flex items-center justify-between pl-4 pr-1 py-1.5 bg-slate-50 border border-slate-100 rounded-full group hover:border-indigo-200 transition-all"
                 >
-                  <div className="flex items-center gap-3 text-[16px] text-slate-800">
-                    <Clock size={18} className="text-slate-400" />
-                    {time}
-                  </div>
+                  <span className="text-[14px] font-bold text-slate-700">{time}</span>
                   <button
                     onClick={() => handleRemoveSlot(time)}
-                    className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 transition-colors"
+                    className="w-7 h-7 rounded-full flex items-center justify-center text-slate-300 hover:text-rose-600 transition-colors"
                   >
                     <X size={14} />
                   </button>
@@ -115,45 +113,42 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               ))}
             </div>
           ) : (
-            <div className="py-8 text-center mb-4">
-              <Clock size={28} className="text-slate-200 mx-auto mb-3" />
-              <p className="text-[15px] text-slate-400">Aucun créneau configuré</p>
+            <div className="py-12 text-center">
+              <Clock size={24} className="text-slate-200 mx-auto mb-2" />
+              <p className="text-[13px] text-slate-400 font-medium">Aucun créneau ce jour</p>
             </div>
           )}
 
           {/* Add slot */}
-          <div className="flex gap-3">
-            <div className="flex-1 relative">
-              <input
-                type="time"
-                value={newTime}
-                onChange={e => setNewTime(e.target.value)}
-                className="w-full h-[52px] bg-white border border-slate-200 shadow-sm rounded-full px-5 text-[16px] text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60"
-              />
-            </div>
+          <div className="flex gap-2 sticky bottom-0 bg-white pt-2">
+            <input
+              type="time"
+              value={newTime}
+              onChange={e => setNewTime(e.target.value)}
+              className="flex-1 h-11 bg-slate-50 border border-slate-200 rounded-xl px-4 text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition-all"
+            />
             <button
               onClick={handleAddSlot}
-              className="flex items-center gap-2 h-[52px] px-6 bg-[#5B4DF6] text-white rounded-full text-[15px] font-medium hover:bg-indigo-700 shadow-sm transition-colors shrink-0"
+              className="px-5 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all shrink-0"
             >
-              <Plus size={18} />
               Ajouter
             </button>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="px-6 pb-6 pt-2 border-t border-slate-100 flex flex-col items-center gap-5 shrink-0 bg-white">
+        {/* Footer - Compacted */}
+        <div className="px-6 py-4 border-t border-slate-100 flex flex-col gap-3 shrink-0 bg-white">
           <button
             onClick={handleCopyToWeek}
-            className="text-[15px] font-medium text-slate-500 hover:text-indigo-600 transition-colors mt-2"
+            className="text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition-colors mx-auto"
           >
-            Appliquer à toute la semaine
+            Copier ce jour sur toute la semaine
           </button>
           <button
             onClick={() => onSave(slots)}
-            className="w-full h-[52px] bg-[#0F172A] hover:bg-slate-800 text-white rounded-full text-[16px] font-medium shadow-md transition-colors"
+            className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-xl transition-all active:scale-[0.98]"
           >
-            Enregistrer
+            Sauvegarder les horaires
           </button>
         </div>
       </div>
