@@ -73,22 +73,22 @@ export default function HomePage({
   const progress = Math.min(100, (paidThisMonth / monthlyGoal) * 100);
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
+    <div className="flex-1 flex flex-col overflow-hidden bg-bg-soft">
       {/* Page header */}
-      <header className="h-14 border-b border-slate-200 bg-white px-6 sm:px-10 flex items-center justify-between shrink-0">
-        <h1 className="text-sm font-semibold text-slate-900">Tableau de bord</h1>
-        <div className="flex items-center gap-3">
+      <header className="h-xl border-b border-border bg-white px-m sm:px-xl flex items-center justify-between shrink-0">
+        <h1 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Tableau de bord</h1>
+        <div className="flex items-center gap-xs">
           <button
             onClick={() => onNavigate('scheduler')}
-            className="flex items-center gap-1.5 h-8 px-3 text-xs font-medium text-slate-900 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
+            className="flex items-center gap-xs h-l px-m font-heading text-[10px] font-black uppercase tracking-widest text-azraq bg-bg-soft rounded-md hover:bg-border transition-all"
           >
             <Calendar size={13} />
-            {todayAppts.length} séances aujourd'hui
+            {todayAppts.length} séances
           </button>
           {latePayments.length > 0 && (
             <button
               onClick={() => onNavigate('accounting')}
-              className="flex items-center gap-1.5 h-8 px-3 text-xs font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors border border-slate-200"
+              className="flex items-center gap-xs h-l px-m font-heading text-[10px] font-black uppercase tracking-widest text-white bg-tomato rounded-md hover:bg-tomato/90 transition-all shadow-lg shadow-tomato/10"
             >
               <AlertCircle size={13} />
               {latePayments.length} impayé{latePayments.length > 1 ? 's' : ''}
@@ -99,22 +99,24 @@ export default function HomePage({
 
       {/* Content */}
       <main className="flex-1 overflow-auto">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 py-6 sm:py-8">
+        <div className="max-w-[1400px] mx-auto px-m sm:px-xl py-xl">
           {/* Stats row */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-s mb-xl">
             <StatCard
               label="Séances aujourd'hui"
               value={String(todayAppts.length)}
               sub={`${todayRevenue} CHF prévus`}
-              accent="indigo"
+              icon={<Calendar size={13} />}
+              accent="aurora"
             />
             <StatCard
               label="Encaissé (Mois)"
               value={`${(realPaid / 1000).toFixed(1)}K`}
               sub={`Objectif : ${(monthlyGoal / 1000).toFixed(0)}K CHF`}
-              accent="slate"
+              icon={<Target size={13} />}
+              accent="azraq"
               action={
-                <button onClick={onEditGoal} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <button onClick={onEditGoal} className="text-samaritan hover:text-azraq transition-all">
                   <Edit3 size={13} />
                 </button>
               }
@@ -122,147 +124,143 @@ export default function HomePage({
             <StatCard
               label="Projection fin de mois"
               value={`${(projectedRevenue / 1000).toFixed(1)}K`}
-              sub={projectedRevenue >= monthlyGoal ? "Objectif en vue ! 🚀" : "Besoin de boost 📈"}
-              accent="indigo"
+              sub={projectedRevenue >= monthlyGoal ? "Objectif en vue ! 🌿" : "Besoin de boost 📈"}
+              icon={<TrendingUp size={13} />}
+              accent="azraq"
               isProjected
-            />
-            <StatCard
-              label="Soin n°1"
-              value={topService.split(' ')[0]}
-              sub="Soin le plus demandé"
-              accent="indigo"
             />
             <div onClick={() => onFilterCompta('unpaid')} className="cursor-pointer group">
               <StatCard
                 label="À encaisser"
                 value={`${unpaidCount}`}
-                sub={`${unpaidTotal} CHF en attente`}
-                accent="slate"
-                action={<ChevronRight size={14} className="text-slate-400 group-hover:translate-x-1 transition-transform" />}
+                sub={`${unpaidTotal} CHF`}
+                icon={<AlertCircle size={13} />}
+                accent="carrot"
+                action={<ChevronRight size={14} className="text-samaritan group-hover:translate-x-xxs transition-all" />}
               />
             </div>
           </div>
 
           {/* Progress bar */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 mb-8">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Target size={15} className="text-indigo-600" />
-                <span className="text-xs font-medium text-slate-700">Progression mensuelle</span>
+          <div className="bg-white border border-border rounded-xl p-m mb-xl shadow-sm shadow-azraq/5">
+            <div className="flex items-center justify-between mb-s">
+              <div className="flex items-center gap-xs">
+                <Target size={15} className="text-azraq" />
+                <span className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Progression mensuelle</span>
               </div>
-              <span className="text-xs font-medium text-slate-500">{progress.toFixed(0)}%</span>
+              <span className="font-heading text-small font-black text-samaritan">{progress.toFixed(0)}%</span>
             </div>
-            <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-2 bg-bg-soft rounded-full overflow-hidden">
               <div
-                className="h-full bg-slate-900 rounded-full transition-all duration-700"
+                className="h-full bg-carrot rounded-full transition-all duration-700 shadow-lg shadow-carrot/20"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
 
           {/* Two-column layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-xl">
             {/* Timeline */}
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-slate-900">
+              <div className="flex items-center justify-between mb-m">
+                <h2 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">
                   Séances du jour
                 </h2>
                 <button
                   onClick={() => onNavigate('scheduler')}
-                  className="text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                  className="font-heading text-[10px] font-black text-azraq/40 hover:text-azraq uppercase tracking-widest transition-all"
                 >
                   Voir l'agenda →
                 </button>
               </div>
 
               {todayAppts.length > 0 ? (
-                <div className="space-y-2">
+                <div className="space-y-xs">
                   {todayAppts.map(appt => (
                     <div
                       key={appt.id}
                       onClick={() => onSelectAppt(appt)}
-                      className="group bg-white border border-slate-200 rounded-xl px-5 py-4 flex items-center justify-between hover:border-slate-300 hover:shadow-sm cursor-pointer transition-all duration-150"
+                      className="group bg-white border border-border rounded-xl px-m py-s flex items-center justify-between hover:bg-bg-soft hover:shadow-sm shadow-azraq/5 cursor-pointer transition-all duration-150"
                     >
-                      <div className="flex items-center gap-4 min-w-0">
-                        <div className="w-16 h-10 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center text-xs font-semibold text-slate-700">
+                      <div className="flex items-center gap-m min-w-0">
+                        <div className="w-xl h-l bg-azraq rounded-md flex items-center justify-center font-heading text-[10px] font-black text-white tracking-widest">
                           {appt.time}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-slate-900 truncate">
+                          <p className="font-heading text-small font-black text-sapphire uppercase tracking-widest truncate">
                             {appt.clientNameSnapshot || appt.title}
                           </p>
-                          <p className="text-xs text-slate-500 truncate">
+                          <p className="font-heading text-[10px] font-bold text-samaritan uppercase tracking-widest truncate">
                             {simplifyServiceName(appt.serviceName || '')}
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3 shrink-0">
-                        <span className={`px-2.5 py-1 rounded-md text-[10px] font-medium ${appt.paid
-                          ? 'bg-slate-900 text-white'
-                          : 'bg-slate-100 text-slate-600 border border-slate-200'
+                      <div className="flex items-center gap-m shrink-0">
+                        <span className={`px-m py-xxs rounded-md font-heading text-[9px] font-black uppercase tracking-widest ${appt.paid
+                          ? 'bg-aurora text-white font-black shadow-sm'
+                          : 'bg-bg-soft text-samaritan'
                         }`}>
                           {appt.paid ? 'Payé' : 'À régler'}
                         </span>
-                        <ChevronRight size={15} className="text-slate-300 group-hover:text-slate-500 transition-colors" />
+                        <ChevronRight size={15} className="text-border group-hover:text-azraq transition-all" />
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="bg-white border border-slate-200 rounded-xl py-16 text-center">
-                  <Clock size={28} className="text-slate-300 mx-auto mb-3" strokeWidth={1.5} />
-                  <p className="text-sm text-slate-500">Aucune séance programmée aujourd'hui</p>
+                <div className="bg-white border border-border rounded-xl py-16 text-center">
+                  <Clock size={28} className="text-samaritan/20 mx-auto mb-3" strokeWidth={1.5} />
+                  <p className="font-heading text-small font-black text-samaritan uppercase tracking-widest">Aucune séance aujourd'hui</p>
                 </div>
               )}
             </div>
 
             {/* Urgent payments */}
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-slate-900">
+              <div className="flex items-center justify-between mb-m">
+                <h2 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">
                   Paiements en retard
                 </h2>
                 <button
                   onClick={() => onFilterCompta('late')}
-                  className="text-xs font-medium text-rose-600 hover:text-rose-700 transition-colors"
+                  className="font-heading text-[10px] font-black text-tomato/60 hover:text-tomato uppercase tracking-widest transition-all"
                 >
                   Gérer →
                 </button>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-xl divide-y divide-slate-100">
+              <div className="bg-white border border-border rounded-xl divide-y divide-border shadow-sm shadow-azraq/5 overflow-hidden">
                 {latePayments.length > 0 ? (
                   <>
                     {latePayments.slice(0, 5).map(a => (
                       <div
                         key={a.id}
                         onClick={() => onSelectAppt(a)}
-                        className="px-5 py-3.5 flex items-center justify-between hover:bg-slate-50 cursor-pointer transition-colors"
+                        className="px-m py-s flex items-center justify-between hover:bg-bg-soft cursor-pointer transition-all"
                       >
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-slate-900 truncate">
+                          <p className="font-heading text-small font-black text-sapphire uppercase tracking-widest truncate">
                             {a.clientNameSnapshot || a.title}
                           </p>
-                          <p className="text-xs text-slate-500">{a.date}</p>
+                          <p className="font-heading text-[10px] font-bold text-samaritan uppercase tracking-widest">{a.date}</p>
                         </div>
-                        <span className="text-sm font-semibold text-rose-600 shrink-0">
+                        <span className="font-heading text-small font-black text-tomato shrink-0">
                           {a.price || 150} CHF
                         </span>
                       </div>
                     ))}
                     {latePayments.length > 5 && (
-                      <div className="px-5 py-3 text-center">
-                        <span className="text-xs text-slate-400">
+                      <div className="px-m py-xs text-center bg-bg-soft/30">
+                        <span className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">
                           + {latePayments.length - 5} autres
                         </span>
                       </div>
                     )}
                   </>
                 ) : (
-                  <div className="py-10 text-center">
-                    <TrendingUp size={24} className="text-slate-200 mx-auto mb-2" />
-                    <p className="text-sm text-slate-500">Tout est en ordre</p>
+                  <div className="py-xl text-center">
+                    <TrendingUp size={24} className="text-samaritan/10 mx-auto mb-xs" />
+                    <p className="font-heading text-small font-bold text-samaritan uppercase tracking-widest">Tout est en ordre</p>
                   </div>
                 )}
               </div>
@@ -276,35 +274,38 @@ export default function HomePage({
 
 /* ── STAT CARD ── */
 function StatCard({
-  label, value, sub, accent, action, isProjected
+  label, value, sub, action, icon, accent, isProjected
 }: {
   label: string;
   value: string;
   sub: string;
-  accent: 'indigo' | 'emerald' | 'rose' | 'slate';
+  accent: 'azraq' | 'aurora' | 'carrot' | 'forest';
+  icon?: React.ReactNode;
   action?: React.ReactNode;
   isProjected?: boolean;
 }) {
-  const colors = {
-    slate: 'bg-slate-50 text-slate-900',
-    indigo: 'bg-slate-50 text-slate-900',
-    emerald: 'bg-slate-50 text-slate-900',
-    rose: 'bg-slate-50 text-slate-900',
+  const getAccentClass = () => {
+    switch (accent) {
+      case 'aurora': return 'bg-aurora text-white';
+      case 'carrot': return 'bg-carrot text-white';
+      case 'forest': return 'bg-forest text-white';
+      default: return 'bg-bg-soft text-azraq';
+    }
   };
 
   return (
-    <div className={`bg-white border border-slate-200 rounded-xl p-5 ${isProjected ? 'bg-gradient-to-br from-white to-indigo-50/30' : ''}`}>
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-medium text-slate-500 flex items-center gap-1.5">
-          {label}
-          {isProjected && <TrendingUp size={12} className="text-indigo-500 animate-pulse" />}
-        </span>
-        {action}
+    <div className={`bg-white border border-border rounded-xl p-m shadow-sm shadow-azraq/5 transition-all hover:shadow-md h-full flex flex-col justify-between ${isProjected ? 'bg-gradient-to-br from-white to-bg-soft/30' : ''}`}>
+      <div>
+        <div className="flex items-center justify-between mb-m">
+           <div className={`w-l h-l rounded-full flex items-center justify-center shadow-sm ${getAccentClass()}`}>
+              {icon}
+           </div>
+           {action}
+        </div>
+        <p className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest mb-xxs">{label}</p>
+        <span className={`font-heading text-h2 font-black text-sapphire tracking-heading`}>{value}</span>
       </div>
-      <div className="flex items-baseline gap-2">
-        <span className={`text-2xl font-semibold ${colors[accent].split(' ')[1]}`}>{value}</span>
-      </div>
-      <p className="text-[10px] font-medium text-slate-400 mt-1 uppercase tracking-tight">{sub}</p>
+      <p className="font-heading text-[10px] font-bold text-samaritan mt-m uppercase tracking-tight">{sub}</p>
     </div>
   );
 }

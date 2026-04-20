@@ -119,27 +119,26 @@ export default function ClientsPage({
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* ── PAGE HEADER ── */}
-      <header className="h-14 border-b border-slate-200 bg-white px-6 sm:px-10 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-4 sm:gap-6 min-w-0 flex-1">
-          <h1 className="text-sm font-semibold text-slate-900 shrink-0">Clients</h1>
+      <header className="h-xl border-b border-border bg-white px-m sm:px-xl flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-s sm:gap-m min-w-0 flex-1">
+          <h1 className="font-heading text-small font-black text-sapphire shrink-0 uppercase tracking-widest">Clients</h1>
           <div className="relative flex-1 max-w-sm min-w-0">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            <Search size={14} className="absolute left-s top-1/2 -translate-y-1/2 text-samaritan pointer-events-none" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Rechercher…"
-              className="w-full h-8 bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-300 focus:bg-white transition-all duration-150"
+              className="w-full h-l bg-bg-soft/50 border border-transparent rounded-md pl-xl pr-m font-heading text-small font-black uppercase tracking-widest text-sapphire placeholder:text-samaritan/30 focus:outline-none focus:ring-2 focus:ring-azraq/10 focus:bg-white transition-all duration-150"
             />
           </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          {/* Column picker */}
           <div className="relative">
             <button
               onClick={() => setShowColPicker(!showColPicker)}
-              className="hidden sm:flex w-8 h-8 items-center justify-center rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-slate-600 hover:border-slate-300 transition-colors duration-150"
+              className="hidden sm:flex w-xl h-xl items-center justify-center rounded-md bg-white border border-border text-samaritan hover:text-sapphire hover:border-azraq transition-all duration-150"
               title="Colonnes"
             >
               <Settings2 size={14} />
@@ -147,18 +146,18 @@ export default function ClientsPage({
             {showColPicker && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setShowColPicker(false)} />
-                <div className="absolute right-0 top-10 w-52 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-50">
-                  <p className="px-3 py-1.5 text-[10px] font-medium text-slate-400 uppercase tracking-wider">Colonnes</p>
+                <div className="absolute right-0 top-xl mt-xxs w-52 bg-white rounded-md shadow-2xl border border-border py-xs z-50">
+                  <p className="px-m py-xxs font-heading text-[9px] font-black text-samaritan uppercase tracking-widest">Affichage</p>
                   {ALL_COLUMNS.map(col => (
                     <button
                       key={col.id}
                       onClick={() => setVisibleColumns(prev =>
                         prev.includes(col.id) ? prev.filter(id => id !== col.id) : [...prev, col.id]
                       )}
-                      className="w-full h-8 flex items-center justify-between text-sm px-3 hover:bg-slate-50 text-slate-600 transition-colors"
+                      className="w-full h-l flex items-center justify-between font-heading text-[10px] font-black uppercase tracking-widest px-m hover:bg-bg-soft text-samaritan hover:text-azraq transition-all"
                     >
                       {col.label}
-                      {visibleColumns.includes(col.id) && <CheckCircle2 size={13} className="text-emerald-500" />}
+                      {visibleColumns.includes(col.id) && <CheckCircle2 size={12} className="text-aurora" />}
                     </button>
                   ))}
                 </div>
@@ -170,7 +169,7 @@ export default function ClientsPage({
           {selectedClients.size > 1 && (
             <button
               onClick={handleMerge}
-              className="flex items-center gap-1.5 h-8 px-3 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg text-xs font-medium hover:bg-emerald-100 transition-colors duration-150"
+              className="flex items-center gap-xs h-l px-m bg-aurora/10 text-aurora border border-aurora/10 rounded-md font-heading text-[10px] font-black uppercase tracking-widest hover:bg-aurora/20 transition-colors duration-150"
             >
               <GitPullRequest size={13} />
               Fusionner ({selectedClients.size})
@@ -180,7 +179,7 @@ export default function ClientsPage({
           {/* New client */}
           <button
             onClick={() => onNewClient()}
-            className="flex items-center gap-1.5 h-8 px-3 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors duration-150"
+            className="flex items-center gap-xs h-l px-m bg-azraq text-white rounded-md font-heading text-[10px] font-black uppercase tracking-widest hover:bg-azraq/90 transition-colors duration-150 shadow-lg shadow-azraq/10"
           >
             <Plus size={14} />
             <span className="hidden sm:inline">Nouveau client</span>
@@ -190,13 +189,13 @@ export default function ClientsPage({
 
       {/* ── SELECTION BAR ── */}
       {selectedClients.size > 0 && (
-        <div className="h-10 bg-emerald-50 border-b border-emerald-100 px-6 sm:px-10 flex items-center justify-between shrink-0">
-          <span className="text-xs font-medium text-emerald-700">
+        <div className="h-m bg-aurora/10 border-b border-aurora/10 px-m sm:px-xl flex items-center justify-between shrink-0">
+          <span className="font-heading text-[10px] font-black uppercase tracking-widest text-aurora">
             {selectedClients.size} sélectionné{selectedClients.size > 1 ? 's' : ''}
           </span>
           <button
             onClick={() => setSelectedClients(new Set())}
-            className="text-xs font-medium text-emerald-500 hover:text-emerald-700 flex items-center gap-1 transition-colors"
+            className="font-heading text-[10px] font-black uppercase tracking-widest text-aurora/50 hover:text-aurora flex items-center gap-xxs transition-colors"
           >
             <X size={12} /> Désélectionner
           </button>
@@ -208,10 +207,10 @@ export default function ClientsPage({
         <div className="max-w-[1400px] mx-auto px-6 sm:px-10 py-5 h-full flex flex-col">
 
           {/* Desktop table */}
-          <div className="hidden md:flex flex-col flex-1 min-h-0 bg-white border border-slate-200 rounded-xl overflow-hidden">
+          <div className="hidden md:flex flex-col flex-1 min-h-0 bg-white border border-border rounded-lg overflow-hidden shadow-sm shadow-azraq/5">
             {/* Header */}
             <div
-              className="grid px-4 h-10 items-center border-b border-slate-200 bg-slate-50 shrink-0"
+              className="grid px-m h-l items-center border-b border-border bg-bg-soft shrink-0"
               style={{ gridTemplateColumns: gridTemplate }}
             >
               <div className="flex justify-center">
@@ -229,17 +228,17 @@ export default function ClientsPage({
                   <div
                     key={colId}
                     onClick={() => toggleSort(colId)}
-                    className={`py-2 px-2 text-[11px] font-medium text-slate-500 cursor-pointer hover:text-slate-700 transition-colors flex items-center gap-1 ${col?.align === 'center' ? 'justify-center' : 'justify-start'}`}
+                    className={`py-xxs px-xxs font-heading text-[9px] font-black text-samaritan uppercase tracking-widest cursor-pointer hover:text-azraq transition-all flex items-center gap-xxs ${col?.align === 'center' ? 'justify-center' : 'justify-start'}`}
                   >
                     {col?.label}
-                    {sortField === colId && <ArrowUpDown size={11} className="text-emerald-500" />}
+                    {sortField === colId && <ArrowUpDown size={11} className="text-azraq" />}
                   </div>
                 );
               })}
             </div>
 
             {/* Rows */}
-            <div className="flex-1 overflow-y-auto divide-y divide-slate-100">
+            <div className="flex-1 overflow-y-auto divide-y divide-border">
               {filtered.map(p => (
                 <ClientRow
                   key={p.id}
@@ -284,7 +283,7 @@ function Checkbox({ checked, onChange }: { checked: boolean; onChange: () => voi
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`w-4 h-4 rounded border-[1.5px] cursor-pointer transition-colors duration-150 flex items-center justify-center ${checked ? 'bg-emerald-600 border-emerald-600' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+      className={`w-4 h-4 rounded border-[1.5px] cursor-pointer transition-colors duration-150 flex items-center justify-center ${checked ? 'bg-azraq border-azraq' : 'border-border bg-white hover:border-azraq'}`}
     >
       {checked && <span className="text-white text-[8px] leading-none">✓</span>}
     </div>
@@ -306,7 +305,7 @@ function ClientRow({ client: p, sessionsCount, isSelected, visibleColumns, gridT
   return (
     <div
       onClick={() => onSelect(p)}
-      className={`grid px-4 h-12 items-center cursor-pointer transition-colors duration-150 group hover:bg-slate-50 ${isSelected ? 'bg-emerald-50/50' : ''}`}
+      className={`grid px-m h-xl items-center cursor-pointer transition-all duration-150 group hover:bg-bg-soft ${isSelected ? 'bg-aurora/10' : ''}`}
       style={{ gridTemplateColumns: gridTemplate }}
     >
       <div className="flex justify-center items-center h-full">
@@ -322,27 +321,27 @@ function ClientRow({ client: p, sessionsCount, isSelected, visibleColumns, gridT
 
       {visibleColumns.map(colId => {
         if (colId === 'lastName') return (
-          <span key={colId} className="text-sm font-medium text-slate-900 truncate group-hover:text-emerald-700 transition-colors">
+          <span key={colId} className="font-heading text-small font-black text-sapphire uppercase tracking-widest truncate group-hover:text-azraq transition-all">
             {p.lastName}
           </span>
         );
         if (colId === 'firstName') return (
-          <span key={colId} className="text-sm text-slate-500 truncate">{p.firstName}</span>
+          <span key={colId} className="font-heading text-small font-bold text-samaritan uppercase tracking-widest truncate">{p.firstName}</span>
         );
         if (colId === 'email') return (
-          <span key={colId} className="text-sm text-slate-500 truncate pr-2">{p.email || '—'}</span>
+          <span key={colId} className="font-heading text-[10px] text-samaritan font-medium truncate pr-xxs lowercase">{p.email || '—'}</span>
         );
         if (colId === 'phone') return (
-          <span key={colId} className="text-sm text-slate-500 truncate">{p.phone || '—'}</span>
+          <span key={colId} className="font-heading text-small text-samaritan font-bold tracking-widest truncate">{p.phone || '—'}</span>
         );
         if (colId === 'city') return (
-          <span key={colId} className="text-sm text-slate-500 truncate">{p.city || '—'}</span>
+          <span key={colId} className="font-heading text-small text-samaritan font-bold truncate">{p.city || '—'}</span>
         );
         if (colId === 'canton') return (
-          <span key={colId} className="text-sm font-medium text-slate-700 text-center">{p.canton || '—'}</span>
+          <span key={colId} className="font-heading text-small font-black text-azraq text-center uppercase">{p.canton || '—'}</span>
         );
         if (colId === 'insurance') return (
-          <span key={colId} className="text-sm text-slate-500 truncate">{p.insurance || '—'}</span>
+          <span key={colId} className="font-heading text-small text-samaritan font-bold truncate pr-xxs uppercase tracking-widest ">{p.insurance || '—'}</span>
         );
         if (colId === 'sessions') return (
           <div key={colId} className="flex justify-center">
@@ -368,7 +367,7 @@ function ClientCard({
   return (
     <div
       onClick={() => onSelect(p)}
-      className={`bg-white border border-slate-200 rounded-xl p-4 transition-colors duration-150 cursor-pointer ${isSelected ? 'ring-1 ring-emerald-300 bg-emerald-50/30' : ''}`}
+      className={`bg-white border border-border rounded-xl p-4 transition-colors duration-150 cursor-pointer ${isSelected ? 'ring-1 ring-aurora/30 bg-aurora/5' : ''}`}
     >
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-3 min-w-0">
@@ -376,16 +375,16 @@ function ClientCard({
             <Checkbox checked={isSelected} onChange={() => {}} />
           </div>
           <div className="min-w-0">
-            <span className="font-medium text-slate-900 text-sm">{p.lastName}</span>{' '}
-            <span className="text-slate-500 text-sm">{p.firstName}</span>
+            <span className="font-medium text-sapphire text-sm">{p.lastName}</span>{' '}
+            <span className="text-samaritan text-sm">{p.firstName}</span>
           </div>
         </div>
         <SessionBadge count={sessionsCount} />
       </div>
       {p.email && (
-        <p className="text-xs text-slate-500 truncate mt-2 pl-7">{p.email}</p>
+        <p className="text-[10px] font-heading font-black text-samaritan truncate mt-2 pl-7 lowercase tracking-widest">{p.email}</p>
       )}
-      <div className="text-xs text-slate-400 mt-1 pl-7 flex gap-3">
+      <div className="text-[10px] font-heading font-black text-samaritan/50 mt-1 pl-7 flex gap-3 uppercase tracking-widest">
         {p.city && <span className="flex items-center gap-1"><MapPin size={10} />{p.city}</span>}
         {p.phone && <span className="flex items-center gap-1"><Phone size={10} />{p.phone}</span>}
       </div>
@@ -396,13 +395,13 @@ function ClientCard({
 /* ── SESSION BADGE ── */
 function SessionBadge({ count }: { count: number }) {
   const style = count === 0
-    ? 'bg-slate-100 text-slate-500'
+    ? 'bg-bg-soft text-samaritan/50 border border-border'
     : count < 5
-      ? 'bg-blue-50 text-blue-700'
-      : 'bg-emerald-100 text-emerald-700';
+      ? 'bg-azraq/5 text-azraq border border-azraq/10'
+      : 'bg-aurora/10 text-aurora border border-aurora/10 shadow-sm';
 
   return (
-    <span className={`inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium ${style}`}>
+    <span className={`inline-flex items-center justify-center px-s py-xxs rounded-md font-heading text-[10px] font-black uppercase tracking-widest ${style}`}>
       {count}
     </span>
   );
@@ -411,19 +410,19 @@ function SessionBadge({ count }: { count: number }) {
 /* ── EMPTY STATE ── */
 function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?: string) => void }) {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center py-16 text-center gap-4">
-      <div className="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center">
-        <Users size={24} className="text-slate-400" />
+    <div className="flex-1 flex flex-col items-center justify-center py-xxxl text-center gap-m">
+      <div className="w-xxl h-xxl bg-bg-soft rounded-md flex items-center justify-center border border-border">
+        <Users size={24} className="text-samaritan/30" />
       </div>
-      <div>
-        <p className="text-sm font-medium text-slate-700 mb-1">Aucun client trouvé</p>
-        {search && <p className="text-sm text-slate-400">pour «&#8239;{search}&#8239;»</p>}
+      <div className="space-y-xxs">
+        <p className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Aucun client trouvé</p>
+        {search && <p className="font-heading text-[10px] font-bold text-samaritan uppercase tracking-widest">pour «&#8239;{search}&#8239;»</p>}
       </div>
       <button
         onClick={() => onNewClient(search)}
-        className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors duration-150"
+        className="flex items-center gap-xs h-l px-xl bg-azraq text-white rounded-md font-heading text-[10px] font-black uppercase tracking-widest hover:bg-azraq/90 transition-all shadow-lg shadow-azraq/10"
       >
-        <Plus size={15} />
+        <Plus size={14} />
         Créer ce client
       </button>
     </div>

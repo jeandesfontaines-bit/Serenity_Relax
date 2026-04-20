@@ -322,7 +322,11 @@ export default function TherapistDashboard() {
   };
 
   return (
-    <AppLayout activePage={tab} onNavigate={setTab}>
+    <AppLayout activePage={tab} onNavigate={(page) => {
+      setTab(page);
+      setSelectedClient(null);
+      setSelectedAppt(null);
+    }}>
       {renderContent()}
       {selectedAppt && (
         <AppointmentDetail 

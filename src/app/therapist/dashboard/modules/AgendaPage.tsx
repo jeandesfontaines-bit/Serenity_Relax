@@ -45,12 +45,12 @@ function parseDuration(d?: string | number): number {
 function getServiceColor(serviceName?: string) {
   // Mineral categories
   const colors: Record<string, { bg: string; border: string; text: string; muted: string }> = {
-    'Relaxation': { bg: 'bg-slate-50 hover:bg-slate-100', border: 'border-slate-200', text: 'text-slate-900', muted: 'text-slate-600' },
-    'Storm': { bg: 'bg-slate-900/5 hover:bg-slate-900/10', border: 'border-slate-900/10', text: 'text-slate-900', muted: 'text-slate-700' },
-    'Sand': { bg: 'bg-[#D7C9B5]/10 hover:bg-[#D7C9B5]/20', border: 'border-[#D7C9B5]/30', text: 'text-[#3C4247]', muted: 'text-[#576574]' },
+    'Relaxation': { bg: 'bg-bg-soft hover:bg-bg-soft/80', border: 'border-border', text: 'text-sapphire', muted: 'text-samaritan' },
+    'Storm': { bg: 'bg-azraq/5 hover:bg-azraq/10', border: 'border-azraq/10', text: 'text-azraq', muted: 'text-azraq/70' },
+    'Sand': { bg: 'bg-carrot/10 hover:bg-carrot/20', border: 'border-carrot/30', text: 'text-carrot', muted: 'text-carrot/70' },
   };
-  // Default to a professional Slate
-  return { bg: 'bg-slate-50 hover:bg-slate-100', border: 'border-slate-200', text: 'text-slate-900', muted: 'text-slate-600' };
+  // Default to a professional Sapphire
+  return { bg: 'bg-white hover:bg-bg-soft', border: 'border-border', text: 'text-sapphire', muted: 'text-samaritan' };
 }
 
 /* ── PROPS ── */
@@ -120,33 +120,33 @@ export default function AgendaPage({
   }, [view, cur]);
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-white">
-      {/* ── HEADER (Google Style) ── */}
-      <header className="h-16 border-b border-slate-200 bg-white px-4 sm:px-8 flex items-center justify-between shrink-0 shadow-sm z-10">
-        <div className="flex items-center gap-6">
+    <div className="flex-1 flex flex-col overflow-hidden bg-bg-soft text-forest">
+      {/* ── HEADER (Premium Style) ── */}
+      <header className="h-xl border-b border-border bg-white px-m sm:px-xl flex items-center justify-between shrink-0 z-10">
+        <div className="flex items-center gap-m">
           <button
             onClick={onToday}
-            className="h-9 px-4 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95"
+            className="h-l px-m border border-border rounded-md font-heading text-[10px] font-black uppercase tracking-widest text-azraq hover:bg-bg-soft transition-all active:scale-95"
           >
             Aujourd'hui
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-xs">
             <div className="flex items-center">
-              <button onClick={() => onPeriod(-1)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 transition-all"><ChevronLeft size={20} /></button>
-              <button onClick={() => onPeriod(1)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 transition-all"><ChevronRight size={20} /></button>
+              <button onClick={() => onPeriod(-1)} className="w-l h-l flex items-center justify-center rounded-md hover:bg-bg-soft text-azraq transition-all"><ChevronLeft size={20} /></button>
+              <button onClick={() => onPeriod(1)} className="w-l h-l flex items-center justify-center rounded-md hover:bg-bg-soft text-azraq transition-all"><ChevronRight size={20} /></button>
             </div>
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight ml-2 first-letter:uppercase">{titleLabel}</h2>
+            <h2 className="font-heading text-h4 font-black text-sapphire tracking-heading ml-s uppercase">{titleLabel}</h2>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="hidden sm:flex bg-slate-100 p-1 rounded-xl">
+        <div className="flex items-center gap-m">
+          <div className="hidden sm:flex bg-bg-soft p-xxs rounded-md">
             {(['week', 'month'] as const).map(v => (
               <button
                 key={v}
                 onClick={() => onToggleView(v)}
-                className={`h-8 px-4 flex items-center rounded-lg text-xs font-bold transition-all ${view === v ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`h-l px-m flex items-center rounded-md font-heading text-[10px] font-black uppercase tracking-widest transition-all ${view === v ? 'bg-white text-azraq shadow-sm' : 'text-samaritan hover:text-azraq'}`}
               >
                 {v === 'week' ? 'Semaine' : 'Mois'}
               </button>
@@ -155,13 +155,13 @@ export default function AgendaPage({
           
           <button
             onClick={absenceMode ? handleSaveAbsences : () => { setAbsenceMode(true); setBlockMode(false); }}
-            className={`h-9 px-4 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-widest border transition-all ${absenceMode ? 'bg-[#3C4247] border-[#3C4247] text-white shadow-lg' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+            className={`h-l px-m rounded-md flex items-center gap-xs font-heading text-[10px] font-black uppercase tracking-widest border transition-all ${absenceMode ? 'bg-azraq border-azraq text-white shadow-lg shadow-azraq/10' : 'bg-white border-border text-azraq hover:bg-bg-soft'}`}
           >
             {absenceMode ? <CheckCircle2 size={14} /> : <Ban size={14} />}
             <span className="hidden sm:inline">{absenceMode ? `Valider (${pendingDates.size})` : 'Absences'}</span>
           </button>
 
-          <button onClick={onOpenWeeklySettings} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition-all"><Settings size={18} /></button>
+          <button onClick={onOpenWeeklySettings} className="w-l h-l flex items-center justify-center rounded-md hover:bg-bg-soft text-azraq transition-all"><Settings size={18} /></button>
         </div>
       </header>
 
@@ -218,45 +218,45 @@ function AgendaSidebar({ cur, appointments, view, onToggleView, onSelectAppt }: 
   );
 
   return (
-    <aside className="hidden lg:flex flex-col w-60 bg-slate-50 border-r border-slate-200 shrink-0">
-      <div className="p-6 border-b border-slate-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Aujourd'hui</h3>
-        <p className="text-3xl font-black text-slate-900 leading-tight">{todayAppts.length}</p>
-        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">sessions prévues</p>
+    <aside className="hidden lg:flex flex-col w-60 bg-white border-r border-border shrink-0">
+      <div className="p-xl border-b border-border bg-bg-soft">
+        <h3 className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest mb-xxs">Aujourd'hui</h3>
+        <p className="font-heading text-h1 font-black text-sapphire leading-none uppercase tracking-heading">{todayAppts.length}</p>
+        <p className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest mt-xxs">sessions prévues</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-m space-y-m">
         <div>
-          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 px-2">À venir</h3>
+          <h3 className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest mb-m px-xxs">À venir</h3>
           {todayAppts.length > 0 ? (
-            <div className="space-y-1">
+            <div className="space-y-xxs">
               {todayAppts.slice(0, 10).map((a: any) => (
                 <button
                   key={a.id}
                   onClick={() => onSelectAppt(a)}
-                  className="w-full flex items-start gap-3 p-2 rounded-xl text-left transition-all hover:bg-white hover:shadow-sm hover:border-slate-200 border border-transparent group active:scale-[0.98]"
+                  className="w-full flex items-start gap-xs p-xs rounded-md text-left transition-all hover:bg-bg-soft hover:shadow-sm border border-transparent group active:scale-[0.98]"
                 >
-                  <div className="text-[10px] font-black text-slate-900 bg-slate-100 px-1.5 py-1 rounded-lg w-10 shrink-0 text-center group-hover:bg-slate-900 group-hover:text-white transition-colors">{a.time}</div>
+                  <div className="font-heading text-[10px] font-black text-azraq bg-white px-xs py-[3px] rounded-md border border-border w-10 shrink-0 text-center group-hover:bg-azraq group-hover:text-white group-hover:border-azraq transition-all">{a.time}</div>
                   <div className="min-w-0">
-                    <p className="text-[11px] font-bold text-slate-800 truncate leading-tight group-hover:text-slate-900">{a.clientNameSnapshot || a.title}</p>
-                    <p className="text-[9px] font-bold text-slate-400 truncate uppercase mt-0.5 tracking-tight">{a.serviceName || 'Session'}</p>
+                    <p className="font-heading text-small font-black text-sapphire truncate leading-tight uppercase tracking-widest">{a.clientNameSnapshot || a.title}</p>
+                    <p className="font-heading text-[9px] font-black text-samaritan truncate uppercase mt-xxs tracking-widest">{a.serviceName || 'Session'}</p>
                   </div>
                 </button>
               ))}
             </div>
           ) : (
-            <div className="py-12 text-center rounded-2xl border-2 border-dashed border-slate-200">
-              <p className="text-[10px] text-slate-400 font-black uppercase">Libre</p>
+            <div className="py-xl text-center rounded-md border-2 border-dashed border-border">
+              <p className="font-heading text-[9px] text-samaritan font-black uppercase tracking-widest">Agenda Libre</p>
             </div>
           )}
         </div>
       </div>
 
-      <div className="p-5 border-t border-slate-200 bg-white">
-        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total prévu</h3>
-        <p className="text-xl font-black text-slate-900 flex items-baseline gap-1">
+      <div className="p-xl border-t border-border bg-white">
+        <h3 className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest mb-xxs">Total prévu</h3>
+        <p className="font-heading text-h3 font-black text-sapphire flex items-baseline gap-xxs uppercase tracking-heading">
           {todayAppts.reduce((s: number, a: any) => s + (a.price || 150), 0)}
-          <span className="text-[10px] text-slate-400">CHF</span>
+          <span className="text-small text-samaritan opacity-40 uppercase">CHF</span>
         </p>
       </div>
     </aside>
@@ -267,7 +267,7 @@ function AgendaSidebar({ cur, appointments, view, onToggleView, onSelectAppt }: 
 function WeekTimeGrid({
   cur, appointments, configSlots, isDayOpen, isSlotBlocked,
   toggleSlot, onSelectAppt, onOpenSlot, absenceMode, blockMode,
-  pendingDates, togglePending, onMoveAppt, onToggleDay,
+  pendingDates, togglePending, onMoveAppt,
 }: any) {
   const days = useMemo(() => {
     const s = wkStart(new Date(cur));
@@ -283,15 +283,17 @@ function WeekTimeGrid({
     setActiveId(null);
     const { active, over } = event;
     if (over && active.id && onMoveAppt) {
-      const [newDate, newTime] = String(over.id).split('|');
-      onMoveAppt(String(active.id), newDate, newTime);
+      const parts = String(over.id).split('|');
+      if (parts.length === 2) {
+        onMoveAppt(String(active.id), parts[0], parts[1]);
+      }
     }
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-white">
-      <div className="flex border-b border-slate-200">
-        <div className="w-14 border-r border-slate-200" />
+    <div className="flex-1 flex flex-col overflow-hidden bg-bg-soft">
+      <div className="flex border-b border-border bg-white">
+        <div className="w-14 border-r border-border" />
         {days.map(d => {
           const dStr = fmt(d);
           const isToday = dStr === fmt(new Date());
@@ -301,17 +303,17 @@ function WeekTimeGrid({
           const occupancy = slotsCount > 0 ? Math.round((dayAppts.length / slotsCount) * 100) : 0;
 
           return (
-            <div key={dStr} className="flex-1 min-w-0 border-r border-slate-100 last:border-r-0 py-3 relative">
-              <div className={`mx-auto w-10 h-10 rounded-full flex flex-col items-center justify-center transition-all ${isToday ? 'bg-slate-900 text-white shadow-md' : 'text-slate-900'}`}>
-                <span className="text-[10px] font-bold uppercase tracking-tight opacity-70">{DAYS_LABELS[isoDay(d)]}</span>
-                <span className="text-[15px] font-bold leading-none">{format(d, 'd')}</span>
+            <div key={dStr} className="flex-1 min-w-0 border-r border-border last:border-r-0 py-m relative">
+              <div className={`mx-auto w-xl h-xl rounded-md flex flex-col items-center justify-center transition-all ${isToday ? 'bg-azraq text-white shadow-lg shadow-azraq/10' : 'text-sapphire'}`}>
+                <span className="font-heading text-[8px] font-black uppercase tracking-widest opacity-40">{DAYS_LABELS[isoDay(d)]}</span>
+                <span className="font-heading text-small font-black leading-none uppercase tracking-widest">{format(d, 'd')}</span>
               </div>
               {open && slotsCount > 0 && (
-                <div className="mt-2 px-4">
-                  <div className="h-1 bg-slate-100 rounded-full overflow-hidden">
+                <div className="mt-s px-m">
+                  <div className="h-xxs bg-bg-soft rounded-full overflow-hidden">
                     <div 
-                      className={`h-full transition-all duration-500 rounded-full ${occupancy > 80 ? 'bg-slate-900' : occupancy > 40 ? 'bg-slate-500' : 'bg-slate-300'}`} 
-                      style={{ width: `${occupancy}%` }} 
+                       className={`h-full transition-all duration-500 rounded-full ${occupancy > 80 ? 'bg-azraq' : occupancy > 40 ? 'bg-samaritan' : 'bg-border'}`} 
+                       style={{ width: `${occupancy}%` }} 
                     />
                   </div>
                 </div>
@@ -324,9 +326,9 @@ function WeekTimeGrid({
       <div className="flex-1 overflow-auto no-scrollbar">
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
           <div className="grid relative" style={{ gridTemplateColumns: '56px repeat(7, 1fr)', height: gridHeight }}>
-            <div className="border-r border-slate-100 relative">
+            <div className="border-r border-border relative bg-white">
               {HOURS.map(h => (
-                <div key={h} className="absolute right-0 pr-2 text-[10px] font-medium text-slate-400 -translate-y-1/2" style={{ top: (h - START_HOUR) * HOUR_H }}>
+                <div key={h} className="absolute right-0 pr-xxs font-heading text-[9px] font-black text-samaritan/30 uppercase tracking-widest -translate-y-1/2" style={{ top: (h - START_HOUR) * HOUR_H }}>
                   {String(h).padStart(2, '0')}:00
                 </div>
               ))}
@@ -335,15 +337,24 @@ function WeekTimeGrid({
             {days.map((d, dayIdx) => {
               const dStr = fmt(d);
               const isOpen = isDayOpen(dStr);
-              const daySlots = [...(configSlots[isoDay(d)] || [])].sort();
               const dayAppts = appointments.filter((a: any) => a.date === dStr);
 
               return (
-                <div key={dayIdx} className="border-r border-slate-100 relative">
-                  {HOURS.map(h => <div key={h} className="absolute left-0 right-0 border-t border-slate-100" style={{ top: (h - START_HOUR) * HOUR_H }} />)}
-                  {!isOpen && <div className="absolute inset-0 bg-slate-50/80 z-[1] flex items-center justify-center"><Lock size={20} className="text-slate-300" /></div>}
+                <div key={dayIdx} className="border-r border-border relative">
+                  {HOURS.map(h => (
+                     <React.Fragment key={h}>
+                        <div className="absolute left-0 right-0 border-t border-border/50" style={{ top: (h - START_HOUR) * HOUR_H }} />
+                        {/* 30min slots for dropping */}
+                        <div className="absolute left-0 right-0" style={{ top: (h - START_HOUR) * HOUR_H, height: HOUR_H }}>
+                           <DroppableSlot id={`${dStr}|${String(h).padStart(2, '0')}:00`} top={0} />
+                           <DroppableSlot id={`${dStr}|${String(h).padStart(2, '0')}:30`} top={HOUR_H/2} />
+                        </div>
+                     </React.Fragment>
+                  ))}
                   
-                  {isOpen && daySlots.map(t => {
+                  {!isOpen && <div className="absolute inset-0 bg-bg-soft/80 z-[1] flex items-center justify-center backdrop-blur-[2px]"><Lock size={20} className="text-samaritan/20" /></div>}
+                  
+                  {isOpen && (configSlots[isoDay(d)] || []).map((t: string) => {
                     const isBlocked = isSlotBlocked(dStr, t);
                     const isPending = pendingDates.has(dStr);
                     const isBusy = dayAppts.some((a: any) => a.time === t && a.status !== 'cancelled');
@@ -353,11 +364,11 @@ function WeekTimeGrid({
                       <div
                         key={t}
                         onClick={() => absenceMode ? togglePending(dStr) : (blockMode ? toggleSlot(dStr, t) : onOpenSlot(dStr, t))}
-                        className={`absolute left-0 right-0 z-[2] cursor-pointer transition-all border-l-2 ${isBlocked ? 'bg-slate-100/50 border-slate-300' : (isPending ? 'bg-slate-900/10 border-slate-900 animate-pulse' : 'hover:bg-slate-50/50 border-transparent hover:border-slate-200')}`}
+                        className={`absolute left-0 right-0 z-[2] cursor-pointer transition-all border-l-2 ${isBlocked ? 'bg-tomato/5 border-tomato' : (isPending ? 'bg-azraq/5 border-azraq animate-pulse' : 'hover:bg-bg-soft border-transparent hover:border-border')}`}
                         style={{ top: getTop(t), height: HOUR_H }}
                       >
-                        <div className="p-1">
-                           <div className={`w-1.5 h-1.5 rounded-full ${isBlocked ? 'bg-slate-400' : (isPending ? 'bg-slate-900' : 'bg-slate-200 opacity-0 group-hover:opacity-100')}`} />
+                        <div className="p-xxs">
+                           <div className={`w-1 h-1 rounded-full ${isBlocked ? 'bg-tomato' : (isPending ? 'bg-azraq' : 'bg-border')}`} />
                         </div>
                       </div>
                     );
@@ -375,17 +386,21 @@ function WeekTimeGrid({
                         height={height}
                         onSelect={onSelectAppt}
                         isDragging={activeId === appt.id}
-                        disabled={absenceMode || blockMode}
+                        disabled={absenceMode}
                       />
                     );
                   })}
-                  <DroppableColumn id={dStr} />
                 </div>
               );
             })}
             
             <DragOverlay zIndex={100} dropAnimation={null}>
-              {activeAppt ? <div className="p-3 bg-white border-2 border-indigo-500 rounded-xl shadow-2xl scale-[1.02] opacity-90 font-bold text-xs pointer-events-none">{activeAppt.clientNameSnapshot}</div> : null}
+              {activeAppt ? (
+                <div className="w-full max-w-[180px] p-s bg-white border border-azraq rounded-md shadow-2xl flex flex-col font-heading animate-in fade-in zoom-in-95 duration-200">
+                   <p className="text-[10px] font-black text-azraq uppercase tracking-widest truncate">{activeAppt.clientNameSnapshot}</p>
+                   <p className="text-[8px] font-black text-samaritan uppercase tracking-widest mt-xxs">{activeAppt.serviceName}</p>
+                </div>
+              ) : null}
             </DragOverlay>
           </div>
         </DndContext>
@@ -394,9 +409,15 @@ function WeekTimeGrid({
   );
 }
 
-function DroppableColumn({ id }: any) {
-  const { setNodeRef } = useDroppable({ id });
-  return <div ref={setNodeRef} className="absolute inset-0" />;
+function DroppableSlot({ id, top }: { id: string; top: number }) {
+  const { setNodeRef, isOver } = useDroppable({ id });
+  return (
+    <div 
+      ref={setNodeRef} 
+      className={`absolute left-0 right-0 z-[1] transition-colors ${isOver ? 'bg-azraq/5 ring-1 ring-inset ring-azraq/10' : ''}`} 
+      style={{ top, height: HOUR_H/2 }} 
+    />
+  );
 }
 
 function DraggableAppointmentBlock({ appt, top, height, onSelect, isDragging, disabled }: any) {
@@ -407,7 +428,7 @@ function DraggableAppointmentBlock({ appt, top, height, onSelect, isDragging, di
   const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : undefined;
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={isDragging ? 'opacity-0' : ''}>
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={`z-[10] relative ${isDragging ? 'opacity-0' : ''}`}>
       <AppointmentBlock appt={appt} top={top} height={height} onSelect={onSelect} />
     </div>
   );
@@ -415,19 +436,18 @@ function DraggableAppointmentBlock({ appt, top, height, onSelect, isDragging, di
 
 function AppointmentBlock({ appt, top, height, onSelect }: any) {
   const isCancelled = appt.status === 'cancelled';
-  const c = getServiceColor(appt.serviceName);
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onSelect(appt); }}
       onPointerDown={(e) => e.stopPropagation()}
-      className={`absolute left-1 right-1 z-[3] rounded-md px-2.5 py-1.5 cursor-pointer border transition-all hover:shadow-md overflow-hidden ${isCancelled ? 'bg-slate-100 border-slate-200 grayscale opacity-80' : `${c.bg} ${c.border}`}`}
+      className={`absolute left-xxs right-xxs z-[3] rounded-md px-s py-xs cursor-pointer border shadow-sm transition-all hover:shadow-md overflow-hidden ${isCancelled ? 'bg-bg-soft border-border grayscale opacity-50' : `bg-white border-border hover:border-azraq`}`}
       style={{ top, height: Math.max(height, 28) }}
     >
-      <div className="flex items-start justify-between">
-        <p className={`text-xs font-bold leading-tight truncate ${isCancelled ? 'text-slate-400' : c.text}`}>{appt.clientNameSnapshot || appt.title}</p>
-        {!appt.paid && !isCancelled && <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${c.muted} bg-current opacity-70`} />}
+      <div className="flex items-start justify-between gap-xxs">
+        <p className={`font-heading text-[10px] font-black leading-tight truncate uppercase tracking-widest ${isCancelled ? 'text-samaritan' : 'text-sapphire'}`}>{appt.clientNameSnapshot || appt.title}</p>
+        {!appt.paid && !isCancelled && <div className={`w-1.5 h-1.5 rounded-full mt-px shrink-0 bg-tomato shadow-sm shadow-tomato/20`} />}
       </div>
-      {height >= 48 && <p className={`text-[10px] mt-0.5 truncate font-medium ${isCancelled ? 'text-slate-400' : c.muted}`}>{appt.serviceName || 'Session'}{isCancelled && ' (ANNULÉE)'}</p>}
+      {height >= 48 && <p className={`font-heading text-[9px] font-bold mt-xxs truncate uppercase tracking-widest ${isCancelled ? 'text-samaritan/50' : 'text-samaritan'}`}>{appt.serviceName || 'Session'}</p>}
     </div>
   );
 }
@@ -441,13 +461,13 @@ function MonthView({ cur, appointments, isDayOpen, absenceMode, pendingDates, to
   }, [cur]);
 
   return (
-    <div className="flex-1 flex flex-col bg-white">
-      <div className="grid grid-cols-7 border-b border-slate-200">
+    <div className="flex-1 flex flex-col bg-bg-soft">
+      <div className="grid grid-cols-7 border-b border-border bg-white">
         {DAYS_LABELS.map(d => (
-          <div key={d} className="py-2 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">{d}</div>
+          <div key={d} className="py-m text-center font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">{d}</div>
         ))}
       </div>
-      <div className="grid grid-cols-7 flex-1 overflow-auto no-scrollbar">
+      <div className="calendar-grid flex-1">
         {days.map((d, i) => {
           const dStr = fmt(d);
           const sameMonth = isSameMonth(d, cur);
@@ -460,17 +480,17 @@ function MonthView({ cur, appointments, isDayOpen, absenceMode, pendingDates, to
             <div
               key={i}
               onClick={() => absenceMode ? togglePending(dStr) : (onToggleView('week'))}
-              className={`min-h-[120px] p-2 border-r border-b border-slate-100 relative transition-all ${!sameMonth ? 'bg-slate-50/30' : 'bg-white'} ${!open ? 'bg-rose-50/10' : ''} ${pending ? 'bg-indigo-50/50' : 'hover:bg-slate-50'}`}
+              className={`day-cell ${!sameMonth ? 'bg-bg-soft/50' : ''} ${!open ? 'blocked-date' : ''} ${pending ? 'bg-azraq/10' : ''}`}
             >
-              <div className="flex justify-between items-start mb-1">
-                <span className={`text-[13px] font-black w-7 h-7 flex items-center justify-center rounded-full ${isToday ? 'bg-slate-900 text-white shadow-md' : (sameMonth ? 'text-slate-900' : 'text-slate-300')}`}>{format(d, 'd')}</span>
-                {!open && sameMonth && <div className="text-[9px] font-black text-rose-500 uppercase">OFF</div>}
+              <div className="flex justify-between items-start mb-s">
+                <span className={`font-heading text-small font-black w-xl h-xl flex items-center justify-center rounded-md uppercase tracking-widest ${isToday ? 'bg-azraq text-white shadow-lg shadow-azraq/10' : (sameMonth ? 'text-sapphire' : 'text-samaritan/30')}`}>{format(d, 'd')}</span>
+                {!open && sameMonth && <div className="font-heading text-[9px] font-black text-tomato uppercase tracking-widest">OFF</div>}
               </div>
-              <div className="space-y-1 overflow-hidden">
+              <div className="space-y-xxs overflow-hidden">
                 {dayAppts.slice(0, 4).map((a: any) => (
-                  <div key={a.id} className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-slate-900 text-white truncate shadow-sm">{a.time} {a.clientNameSnapshot}</div>
+                  <div key={a.id} className="font-heading text-[8px] font-black px-xs py-xxs rounded bg-azraq text-white truncate shadow-sm uppercase tracking-widest">{a.time} {a.clientNameSnapshot}</div>
                 ))}
-                {dayAppts.length > 4 && <div className="text-[9px] font-black text-slate-400 pl-1">+{dayAppts.length - 4} plus</div>}
+                {dayAppts.length > 4 && <div className="font-heading text-[8px] font-black text-samaritan px-xs uppercase tracking-widest">+{dayAppts.length - 4} plus</div>}
               </div>
             </div>
           );

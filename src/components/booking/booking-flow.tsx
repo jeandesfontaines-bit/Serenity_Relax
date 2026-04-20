@@ -264,25 +264,25 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
     const waUrl = `https://wa.me/41783336823?text=${encodeURIComponent(waMsg)}`;
 
     return (
-      <div className="px-8 text-center h-screen flex flex-col justify-center bg-white">
-        <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8 animate-in zoom-in-50 duration-500">
+      <div className="px-m text-center h-[80vh] flex flex-col justify-center bg-white">
+        <div className="w-xxl h-xxl bg-success-background text-success rounded-md flex items-center justify-center mx-auto mb-l animate-in zoom-in-50 duration-500">
           <CheckCircle2 size={48} strokeWidth={1.5} />
         </div>
-        <h2 className="text-[2.4rem] font-serif font-bold text-neutral-900 mb-4 tracking-tighter">Rituel réservé.</h2>
-        <p className="text-[1rem] leading-relaxed font-sans italic text-neutral-500 mb-10 max-w-sm mx-auto">
-          Votre réservation est enregistrée ! Un email de confirmation vient de vous être envoyé avec votre <b>Lien Magique</b> pour accéder à votre espace.
+        <h2 className="font-heading text-display font-medium text-onyx mb-m tracking-heading leading-heading">Rituel réservé.</h2>
+        <p className="font-heading text-small italic text-muted-foreground mb-xl max-w-sm mx-auto uppercase tracking-widest leading-loose">
+          Votre réservation est enregistrée ! Un email de confirmation vient de vous être envoyé.
         </p>
         
-        <div className="space-y-4 max-w-sm mx-auto w-full">
+        <div className="space-y-m max-w-sm mx-auto w-full px-m">
           <a 
             href={waUrl} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="w-full inline-flex items-center justify-center px-6 py-4 bg-[#25D366] text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.18em] transition-all duration-500 hover:scale-105 shadow-xl shadow-emerald-100 gap-3"
+            className="w-full inline-flex items-center justify-center h-xl bg-success text-white rounded-md font-heading text-small font-black uppercase tracking-widest transition-all duration-500 hover:scale-[1.02] shadow-xl shadow-success/10 gap-xs"
           >
             <MessageCircle size={18} /> CONFIRMER SUR WHATSAPP
           </a>
-          <button onClick={() => window.location.reload()} className="w-full inline-flex items-center justify-center px-6 py-2.5 text-neutral-300 hover:text-neutral-900 text-[0.65rem] font-black uppercase tracking-[0.18em] transition-all">
+          <button onClick={() => window.location.reload()} className="w-full h-l inline-flex items-center justify-center font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-onyx transition-all">
             RETOUR AU SITE
           </button>
         </div>
@@ -297,29 +297,29 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
         .font-sans { font-family: 'Plus Jakarta Sans', sans-serif !important; }
       `}</style>
       {/* LEFT SIDE: Header & Summary */}
-      <div className="w-full lg:w-[35%] lg:sticky lg:top-0 h-fit lg:min-h-[80vh] bg-[#FAF9F6] p-8 md:p-12 lg:p-16 flex flex-col border-b lg:border-b-0 lg:border-r border-neutral-100/60 z-10">
-        <h1 className="text-[2.4rem] md:text-[3rem] font-serif font-medium text-neutral-900 tracking-tighter leading-none mb-4">
-          Réserver<br/><span className="text-neutral-500 italic font-light">un rituel.</span>
+      <div className="w-full lg:w-[35%] lg:sticky lg:top-0 h-fit lg:min-h-full bg-secondary p-m md:p-xl lg:p-xxxl flex flex-col border-b lg:border-b-0 lg:border-r border-border z-10">
+        <h1 className="font-heading text-display font-medium text-onyx tracking-heading leading-heading mb-m">
+          Réserver<br/><span className="text-muted-foreground italic font-light">un rituel.</span>
         </h1>
-        <p className="text-[0.65rem] font-black uppercase tracking-[0.28em] text-neutral-400 mb-8">
+        <p className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-xl">
           GENÈVE STUDIO — ÉTAPE {step}/4
         </p>
 
         {/* Dynamic Summary based on selection */}
-        <div className="space-y-4 mt-2 lg:mt-6 flex-1">
+        <div className="space-y-m mt-m lg:mt-xl flex-1">
           <AnimatePresence>
             {selectedService && step > 1 && (
-                <motion.div key="summary-service" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                  <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">RITUEL SÉLECTIONNÉ</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900">{simplifyServiceName(selectedService.name)}</p>
-                  <p className="text-[0.8rem] font-sans text-neutral-500 mt-1">{selectedService.duration} • CHF {selectedService.price}</p>
+                <motion.div key="summary-service" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="p-m bg-white border border-border rounded-md shadow-sm">
+                  <p className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-xxs">RITUEL SÉLECTIONNÉ</p>
+                  <p className="font-heading text-small font-black text-onyx uppercase tracking-widest leading-snug">{simplifyServiceName(selectedService.name)}</p>
+                  <p className="font-heading text-[10px] font-bold text-muted-foreground mt-xxs uppercase tracking-widest">{selectedService.duration} • CHF {selectedService.price}</p>
                 </motion.div>
             )}
             {selectedDate && selectedTime && step > 2 && (
-                <motion.div key="summary-datetime" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="pt-6 border-t border-neutral-200/60 mt-6">
-                  <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">DATE & HEURE</p>
-                  <p className="text-[1.1rem] leading-snug font-serif font-bold text-neutral-900 capitalize">{format(selectedDate, 'EEEE d MMMM', { locale: fr })}</p>
-                  <p className="text-[0.8rem] font-sans text-neutral-500 mt-1">à {selectedTime}</p>
+                <motion.div key="summary-datetime" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="p-m bg-white border border-border rounded-md shadow-sm mt-m">
+                  <p className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-xxs">DATE & HEURE</p>
+                  <p className="font-heading text-small font-black text-onyx uppercase tracking-widest leading-snug capitalize">{format(selectedDate, 'EEEE d MMMM', { locale: fr })}</p>
+                  <p className="font-heading text-[10px] font-bold text-muted-foreground mt-xxs uppercase tracking-widest">à {selectedTime}</p>
                 </motion.div>
             )}
           </AnimatePresence>
@@ -327,43 +327,43 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
       </div>
 
       {/* RIGHT SIDE: Content */}
-      <div className="w-full lg:w-[65%] p-6 md:p-8 lg:p-10 pb-12">
+      <div className="w-full lg:w-[65%] p-m md:p-xl lg:p-xxxl pb-xl">
         <div className="max-w-3xl mx-auto">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div 
                 key="step1" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-8"
+                className="space-y-xl"
               >
-                <div className="space-y-2 mb-6 text-center lg:text-left">
-                  <h3 className="text-[1.3rem] md:text-[1.5rem] font-serif font-medium text-neutral-900 tracking-tight">Le Menu Signature</h3>
-                  <p className="text-[0.85rem] font-sans text-neutral-500">Sélectionnez le rituel qui correspond à vos besoins d'aujourd'hui.</p>
+                <div className="space-y-xxs mb-l text-center lg:text-left">
+                  <h3 className="font-heading text-small font-black text-onyx uppercase tracking-widest">Le Menu Signature</h3>
+                  <p className="font-heading text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Sélectionnez le rituel qui correspond à vos besoins d'aujourd'hui.</p>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-xs sm:gap-s">
                   {services.map((s) => (
                     <button
                       key={s.id}
                       onClick={() => handleServiceSelect(s)}
-                      className={`group w-full flex flex-col p-1.5 rounded-2xl transition-all duration-500 text-center border
-                        ${selectedService?.id === s.id ? 'bg-neutral-50 border-neutral-900 shadow-sm ring-1 ring-neutral-900' : 'bg-white border-neutral-100 hover:border-neutral-300 hover:shadow-sm'}
+                      className={`group w-full flex flex-col p-xxs rounded-md transition-all duration-500 text-center border
+                        ${selectedService?.id === s.id ? 'bg-secondary border-onyx shadow-sm' : 'bg-white border-border hover:border-muted-foreground/30 hover:shadow-sm'}
                       `}
                     >
-                      <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-1.5 shrink-0 shadow-sm border border-neutral-50/50">
+                      <div className="relative w-full aspect-square rounded-md overflow-hidden mb-xs shrink-0 shadow-sm border border-border/50">
                         <Image 
                           src={s.image || ''} 
                           fill 
                           unoptimized 
                           alt={s.name} 
-                          className="object-cover transition-transform duration-700"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                       </div>
-                      <div className="px-0.5 space-y-0.5">
-                        <h4 className="text-[0.75rem] leading-tight font-serif font-bold text-neutral-900 line-clamp-1">{simplifyServiceName(s.name)}</h4>
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="text-[0.5rem] font-black uppercase tracking-wider text-neutral-300">{s.duration}</span>
-                          <span className="text-[0.8rem] font-serif font-bold text-neutral-900">{s.price} CHF</span>
+                      <div className="px-xxs pb-xs space-y-px">
+                        <h4 className="font-heading text-[10px] leading-tight font-black text-onyx uppercase tracking-widest line-clamp-1">{simplifyServiceName(s.name)}</h4>
+                        <div className="flex items-center justify-center gap-xs">
+                          <span className="font-heading text-[8px] font-black uppercase tracking-wider text-muted-foreground/40">{s.duration}</span>
+                          <span className="font-heading text-[10px] font-black text-onyx uppercase tracking-widest">{s.price} CHF</span>
                         </div>
                       </div>
                     </button>
@@ -376,36 +376,36 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               <motion.div 
                 key="step2" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-12"
+                className="space-y-xl"
               >
-                <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-                  <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300">DISPONIBILITÉS</span>
+                <div className="flex items-center justify-between border-b border-border pb-m">
+                  <span className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">DISPONIBILITÉS</span>
                   <button 
                     onClick={() => setStep(1)} 
-                    className="text-[0.65rem] font-black uppercase tracking-[0.18em] text-neutral-400 hover:text-neutral-900 flex items-center gap-2 transition-colors"
+                    className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-onyx flex items-center gap-xs transition-all"
                   >
                     <ChevronLeft size={14} /> CHANGER LE SOIN
                   </button>
                 </div>
 
-                <div className="space-y-12">
+                <div className="space-y-xl">
                   {/* CALENDRIER */}
-                  <div className="space-y-6">
+                  <div className="space-y-m">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-[1.2rem] font-serif font-bold text-neutral-900 capitalize">
+                      <h3 className="font-heading text-small font-black text-onyx uppercase tracking-widest">
                         {currentMonth.toLocaleString('fr-FR', { month: 'long', year: 'numeric' })}
                       </h3>
-                      <div className="flex gap-2">
-                        <button onClick={handlePrevMonth} className="p-2 bg-neutral-50 hover:bg-neutral-100 rounded-full transition-all text-neutral-900"><ChevronLeft size={16} /></button>
-                        <button onClick={handleNextMonth} className="p-2 bg-neutral-50 hover:bg-neutral-100 rounded-full transition-all text-neutral-900"><ChevronRight size={16} /></button>
+                      <div className="flex gap-xs">
+                        <button onClick={handlePrevMonth} className="w-l h-l flex items-center justify-center bg-secondary hover:bg-muted-foreground/10 rounded-md transition-all text-onyx"><ChevronLeft size={16} /></button>
+                        <button onClick={handleNextMonth} className="w-l h-l flex items-center justify-center bg-secondary hover:bg-muted-foreground/10 rounded-md transition-all text-onyx"><ChevronRight size={16} /></button>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-7 text-center text-[0.65rem] font-black text-neutral-300 uppercase tracking-[0.2em] mb-4">
+                    <div className="grid grid-cols-7 text-center font-heading text-[10px] font-black text-muted-foreground/30 uppercase tracking-widest mb-xs">
                       {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => <div key={`${d}-${i}`}>{d}</div>)}
                     </div>
 
-                    <div className="grid grid-cols-7 gap-y-3">
+                    <div className="grid grid-cols-7 gap-y-xs">
                       {days.map((day, i) => {
                         const isSelected = selectedDate && isSameDay(day, selectedDate);
                         const isPast = isBefore(day, startOfDay(new Date()));
@@ -417,7 +417,6 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         
                         const isOpened = availableSlots.some(s => s.date === dateStr && s.type === 'day_opened');
                         
-                        // Calculated slots count: base defined in config - (blocked + already booked)
                         const slotsForDay = !isOpened ? [] : baseConfigSlots.filter(t => {
                           const isBlocked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'blocked');
                           const isBooked = availableSlots.some(s => s.date === dateStr && s.time === t && s.type === 'booked');
@@ -434,20 +433,20 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         }
 
                         return (
-                          <div key={i} className="flex flex-col items-center gap-1.5">
+                          <div key={i} className="flex flex-col items-center gap-xxs">
                             <button
                               disabled={isPast || !currentMonthOnly || slotsCount === 0}
                               onClick={() => { setSelectedDate(day); setSelectedTime(null); }}
-                              className={`w-10 h-10 flex items-center justify-center rounded-full text-[0.95rem] font-sans font-medium transition-all relative
+                              className={`w-l h-l flex items-center justify-center rounded-md font-heading text-small font-black transition-all relative
                                 ${!currentMonthOnly ? 'opacity-0 pointer-events-none' : ''}
-                                ${isPast || slotsCount === 0 ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-900 bg-neutral-50 hover:bg-neutral-100'}
-                                ${isSelected ? 'bg-neutral-900 text-white shadow-lg hover:bg-neutral-800' : ''}
+                                ${isPast || slotsCount === 0 ? 'text-muted-foreground/10 cursor-not-allowed' : 'text-onyx bg-secondary/50 hover:bg-secondary'}
+                                ${isSelected ? 'bg-onyx text-white shadow-lg hover:bg-onyx/90' : ''}
                               `}
                             >
                               {format(day, 'd')}
                             </button>
                             {currentMonthOnly && !isPast && (
-                              <div className={`w-1.5 h-1.5 rounded-full ${availability === 'low' ? 'bg-[#5B6B78]' : availability === 'medium' ? 'bg-[#3C4247]' : 'bg-neutral-200'}`} />
+                              <div className={`w-xxs h-xxs rounded-full ${availability === 'low' ? 'bg-success' : availability === 'medium' ? 'bg-warning' : 'bg-muted-foreground/10'}`} />
                             )}
                           </div>
                         );
@@ -458,10 +457,10 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                   {/* COLONNE HEURES */}
                   <AnimatePresence>
                     {selectedDate && (
-                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="space-y-6 pt-6 border-t border-neutral-100">
-                        <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300 block">HEURES DISPONIBLES</span>
+                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="space-y-m pt-m border-t border-border">
+                        <span className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 block">HEURES DISPONIBLES</span>
                         
-                        {selectedDate && (() => {
+                        {(() => {
                           const dateStr = format(selectedDate, 'yyyy-MM-dd');
                           const dayOfWeek = getAdjDay(selectedDate);
                           const baseConfigSlots = configSlots[dayOfWeek] || [];
@@ -474,13 +473,13 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
 
                           if (freeSlots.length > 0) {
                             return (
-                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-xs">
                                 {freeSlots.map((t) => (
                                   <button
                                     key={t}
                                     onClick={() => handleTimeSelect(t)}
-                                    className={`py-4 px-4 rounded-2xl transition-all duration-300 font-sans tracking-tight text-center
-                                      ${selectedTime === t ? 'bg-neutral-900 text-white shadow-lg font-bold text-[1.05rem]' : 'bg-neutral-50 text-neutral-900 hover:bg-neutral-100 font-medium text-[1.05rem]'}
+                                    className={`h-xl px-m rounded-md transition-all duration-300 font-heading uppercase tracking-widest text-center
+                                      ${selectedTime === t ? 'bg-onyx text-white shadow-lg font-black text-small' : 'bg-secondary/50 text-onyx hover:bg-secondary font-black text-small'}
                                     `}
                                   >
                                     {t}
@@ -490,8 +489,8 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                             );
                           }
                           return (
-                            <div className="py-8 text-center bg-neutral-50 rounded-2xl">
-                              <p className="text-[0.8rem] font-serif italic text-neutral-400">Aucun créneau disponible pour cette journée.</p>
+                            <div className="py-xl text-center bg-secondary/50 rounded-md">
+                              <p className="font-heading text-[10px] font-bold italic text-muted-foreground uppercase tracking-widest">Aucun créneau disponible.</p>
                             </div>
                           );
                         })()}
@@ -506,77 +505,67 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               <motion.div 
                 key="step3" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-10"
+                className="space-y-xl"
               >
-                <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-                  <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-300">VOS COORDONNÉES</span>
+                <div className="flex items-center justify-between border-b border-border pb-m">
+                  <span className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">VOS COORDONNÉES</span>
                   <button 
                     onClick={() => setStep(2)} 
-                    className="text-[0.65rem] font-black uppercase tracking-[0.18em] text-neutral-400 hover:text-neutral-900 flex items-center gap-2 transition-colors"
+                    className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-onyx flex items-center gap-xs transition-all"
                   >
                     <ChevronLeft size={14} /> CHANGER LA DATE
                   </button>
                 </div>
 
-                <div className="space-y-10">
-                  <form onSubmit={(e) => e.preventDefault()} autoComplete="off" data-lpignore="true" data-1p-ignore="true" className="grid grid-cols-1 gap-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                        <Label htmlFor="booking-fname" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">PRÉNOM *</Label>
+                <div className="space-y-xl">
+                  <form onSubmit={(e) => e.preventDefault()} autoComplete="off" className="grid grid-cols-1 gap-m">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-m">
+                      <div className="space-y-xxs border-b border-border focus-within:border-onyx transition-colors pb-xs">
+                        <Label htmlFor="booking-fname" className="font-heading text-[9px] font-black uppercase tracking-widest text-muted-foreground/40">PRÉNOM *</Label>
                         <Input 
                           id="booking-fname"
                           name="booking_fname"
                           autoComplete="off"
-                          spellCheck="false"
-                          data-1p-ignore="true"
                           value={formData.firstName} 
                           onChange={(e: any) => setFormData({...formData, firstName: e.target.value})} 
-                          className="h-10 rounded-none bg-transparent border-none px-0 font-serif text-[1.2rem] italic shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
+                          className="h-l rounded-none bg-transparent border-none px-0 font-heading text-small font-black text-onyx shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/20 uppercase tracking-widest" 
                           placeholder="Ex: Marie" 
                         />
                       </div>
-                      <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                        <Label htmlFor="booking-lname" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">NOM *</Label>
+                      <div className="space-y-xxs border-b border-border focus-within:border-onyx transition-colors pb-xs">
+                        <Label htmlFor="booking-lname" className="font-heading text-[9px] font-black uppercase tracking-widest text-muted-foreground/40">NOM *</Label>
                         <Input 
                           id="booking-lname"
                           name="booking_lname"
                           autoComplete="off"
-                          spellCheck="false"
-                          data-1p-ignore="true"
                           value={formData.lastName} 
                           onChange={(e: any) => setFormData({...formData, lastName: e.target.value})} 
-                          className="h-10 rounded-none bg-transparent border-none px-0 font-serif text-[1.2rem] italic shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
+                          className="h-l rounded-none bg-transparent border-none px-0 font-heading text-small font-black text-onyx shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/20 uppercase tracking-widest" 
                           placeholder="Ex: Dupont" 
                         />
                       </div>
                     </div>
-                    <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                      <Label htmlFor="booking-mail" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">EMAIL *</Label>
+                    <div className="space-y-xxs border-b border-border focus-within:border-onyx transition-colors pb-xs">
+                      <Label htmlFor="booking-mail" className="font-heading text-[9px] font-black uppercase tracking-widest text-muted-foreground/40">EMAIL *</Label>
                       <Input 
                         id="booking-mail"
-                        type="text" 
                         name="booking_mail"
                         autoComplete="off"
-                        spellCheck="false"
-                        data-1p-ignore="true"
                         value={formData.email} 
                         onChange={(e: any) => setFormData({...formData, email: e.target.value})} 
-                        className="h-10 rounded-none bg-transparent border-none px-0 font-sans font-medium text-[1.05rem] shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
+                        className="h-l rounded-none bg-transparent border-none px-0 font-heading text-small font-black text-onyx shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/20 uppercase tracking-widest" 
                         placeholder="marie.dupont@email.com" 
                       />
                     </div>
-                    <div className="space-y-1.5 border-b border-neutral-200 focus-within:border-neutral-900 transition-colors pb-2">
-                      <Label htmlFor="booking-tel" className="text-[0.6rem] font-black uppercase tracking-widest text-neutral-400">MOBILE *</Label>
+                    <div className="space-y-xxs border-b border-border focus-within:border-onyx transition-colors pb-xs">
+                      <Label htmlFor="booking-tel" className="font-heading text-[9px] font-black uppercase tracking-widest text-muted-foreground/40">MOBILE *</Label>
                       <Input 
                         id="booking-tel"
-                        type="text" 
                         name="booking_tel"
                         autoComplete="off"
-                        spellCheck="false"
-                        data-1p-ignore="true"
                         value={formData.phone} 
                         onChange={(e: any) => setFormData({...formData, phone: e.target.value})} 
-                        className="h-10 rounded-none bg-transparent border-none px-0 font-sans font-medium text-[1.05rem] shadow-none focus-visible:ring-0 placeholder:text-neutral-200" 
+                        className="h-l rounded-none bg-transparent border-none px-0 font-heading text-small font-black text-onyx shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/20 uppercase tracking-widest" 
                         placeholder="+41 78 000 00 00" 
                       />
                     </div>
@@ -590,9 +579,9 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
                         }
                         setTimeout(() => setStep(4), 100);
                     }} 
-                    className="w-full inline-flex items-center justify-center px-6 py-4 bg-neutral-900 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_10px_30px_rgba(0,0,0,0.1)] gap-3"
+                    className="w-full h-xl inline-flex items-center justify-center bg-onyx text-white rounded-md font-heading text-small font-black uppercase tracking-widest transition-all hover:bg-onyx/90 disabled:opacity-30 disabled:cursor-not-allowed shadow-xl shadow-onyx/10 gap-xs"
                   >
-                    VÉRIFIER LE RÉCAPITULATIF <ChevronRight size={16} />
+                    CONTINUER <ChevronRight size={16} />
                   </button>
                 </div>
               </motion.div>
@@ -602,54 +591,54 @@ export function BookingFlow({ services, initialServiceId }: BookingFlowProps) {
               <motion.div 
                 key="step4" 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="space-y-12 text-center"
+                className="space-y-xl text-center"
               >
-                <div className="inline-flex w-16 h-16 bg-[#FAF9F6] rounded-full items-center justify-center text-neutral-900 mb-2">
+                <div className="inline-flex w-xxl h-xxl bg-secondary rounded-md items-center justify-center text-onyx mb-xxs">
                   <CheckCircle2 size={24} />
                 </div>
-                <h2 className="text-[2rem] sm:text-[2.4rem] font-serif font-bold text-neutral-900 tracking-tighter leading-none">C'est presque prêt.</h2>
+                <h2 className="font-heading text-display font-medium text-onyx tracking-heading leading-heading">C'est presque prêt.</h2>
                 
-                <div className="text-left bg-[#FAF9F6] p-6 lg:p-8 rounded-3xl space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:justify-between gap-6">
-                    <div className="space-y-2 flex-1">
-                      <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RITUEL CONFIRMÉ</p>
-                      <p className="text-[1.1rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{simplifyServiceName(selectedService?.name || '')}</p>
-                      <p className="text-[0.9rem] font-sans font-medium text-neutral-600">
+                <div className="text-left bg-secondary p-m lg:p-xl rounded-md space-y-m">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-m">
+                    <div className="space-y-xxs">
+                      <p className="font-heading text-[9px] font-black text-muted-foreground/40 uppercase tracking-widest">RITUEL CONFIRMÉ</p>
+                      <p className="font-heading text-small font-black text-onyx uppercase tracking-widest leading-tight">{simplifyServiceName(selectedService?.name || '')}</p>
+                      <p className="font-heading text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-xxs">
                         {selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : ''} à {selectedTime}
                       </p>
                     </div>
-                    <div className="space-y-2 flex-1 sm:border-l sm:border-neutral-200/60 sm:pl-6">
-                      <p className="text-[0.65rem] font-black text-neutral-400 uppercase tracking-[0.2em]">RÉSERVÉ POUR</p>
-                      <p className="text-[1.1rem] leading-snug font-serif font-bold tracking-tight text-neutral-900">{formData.firstName} {formData.lastName}</p>
-                      <p className="text-[0.9rem] font-sans text-neutral-500">{formData.phone}</p>
+                    <div className="space-y-xxs sm:border-l sm:border-border sm:pl-m">
+                      <p className="font-heading text-[9px] font-black text-muted-foreground/40 uppercase tracking-widest">RÉSERVÉ POUR</p>
+                      <p className="font-heading text-small font-black text-onyx uppercase tracking-widest leading-tight">{formData.firstName} {formData.lastName}</p>
+                      <p className="font-heading text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-xxs">{formData.phone}</p>
                     </div>
                   </div>
 
-                  <div className="border-t border-neutral-200/60 pt-5 mt-5">
-                     <p className="text-[0.75rem] font-bold text-neutral-900 mb-2">Conditions de la séance</p>
-                     <ul className="list-disc pl-4 space-y-1 text-[0.7rem] leading-relaxed text-neutral-500 font-sans mb-4">
-                        <li>Prestations dédiées au bien-être, non thérapeutiques ou médicales.</li>
-                        <li>Aucune contre-indication au massage (en cas de doute, avis médical requis).</li>
+                  <div className="border-t border-border pt-m mt-m">
+                     <p className="font-heading text-[10px] font-black text-onyx uppercase tracking-widest mb-xs">Conditions</p>
+                     <ul className="list-disc pl-m space-y-xxs font-heading text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-m">
+                        <li>Bien-être, non thérapeutique.</li>
+                        <li>Aucune contre-indication.</li>
                         <li>Annulation minimum 24h à l'avance.</li>
                      </ul>
-                     <div className="flex items-start space-x-3 bg-white p-3 sm:p-4 rounded-xl border border-neutral-100">
+                     <div className="flex items-start space-x-m bg-white p-m rounded-md border border-border/50">
                       <Checkbox id="terms" checked={acceptedConditions} onCheckedChange={(checked: any) => setAcceptedConditions(checked === true)} className="mt-0.5" />
-                      <Label htmlFor="terms" className="text-[0.7rem] sm:text-[0.75rem] font-sans font-medium text-neutral-900 cursor-pointer leading-snug">
-                        J'accepte les conditions et je confirme ne pas avoir de problème de santé contre-indiquant cette séance.
+                      <Label htmlFor="terms" className="font-heading text-[10px] font-bold text-onyx uppercase tracking-widest cursor-pointer leading-relaxed">
+                        J'accepte les conditions et je confirme ne pas avoir de contre-indication.
                       </Label>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-m">
                   <button 
                     onClick={completeBooking} 
                     disabled={isSubmitting || !acceptedConditions} 
-                    className="w-full inline-flex items-center justify-center px-6 py-4 bg-emerald-600 text-white rounded-full text-[0.75rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-emerald-700 shadow-[0_10px_30px_rgba(5,150,105,0.2)] gap-3"
+                    className="w-full h-xl inline-flex items-center justify-center bg-success text-white rounded-md font-heading text-small font-black uppercase tracking-widest transition-all hover:bg-success/90 shadow-xl shadow-success/10 gap-xs"
                   >
-                    {isSubmitting ? <Loader2 className="animate-spin" /> : <>VALIDER DÉFINITIVEMENT <CheckCircle2 size={18} /></>}
+                    {isSubmitting ? <Loader2 className="animate-spin" /> : <>CONFIRMER LE RITUEL <CheckCircle2 size={18} /></>}
                   </button>
-                  <button onClick={() => setStep(3)} className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-neutral-400 hover:text-neutral-900 transition-colors pt-2 block w-full">RETOUR</button>
+                  <button onClick={() => setStep(3)} className="font-heading text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-onyx transition-all pt-xs block w-full">RETOUR</button>
                 </div>
               </motion.div>
             )}

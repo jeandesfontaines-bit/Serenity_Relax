@@ -31,19 +31,18 @@ const BIOLOGICAL_IMPACTS = [
 ];
 
 const SERVICE_COLORS = [
-  { accent: "#3C4247", light: "rgba(60,66,71,0.06)" }, // Slate
-  { accent: "#5B6B78", light: "rgba(91,107,120,0.06)" }, // Storm
+  { accent: "#3772ff", light: "rgba(60,66,71,0.06)" }, // Slate
+  { accent: "#7fb069", light: "rgba(91,107,120,0.06)" }, // Storm
   { accent: "#4A5568", light: "rgba(74,85,104,0.06)" }, // Deep Grey
   { accent: "#718096", light: "rgba(113,128,150,0.06)" }, // Muted Blue
-  { accent: "#3C4247", light: "rgba(60,66,71,0.06)" }, // Slate (repeat for unity)
-  { accent: "#5B6B78", light: "rgba(91,107,120,0.06)" }, // Storm
+  { accent: "#3772ff", light: "rgba(60,66,71,0.06)" }, // Slate (repeat for unity)
+  { accent: "#7fb069", light: "rgba(91,107,120,0.06)" }, // Storm
   { accent: "#4A5568", light: "rgba(74,85,104,0.06)" }, // Deep Grey
   { accent: "#718096", light: "rgba(113,128,150,0.06)" }, // Muted Blue
 ];
 
 export default function HomePage() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const [isMounted, setIsMounted] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
@@ -60,96 +59,74 @@ export default function HomePage() {
   if (!isMounted) return null;
 
   return (
-    <div className="bg-white text-[#222F3E] selection:bg-[#54A0FF]/20 selection:text-[#222F3E] antialiased relative">
+    <div className="bg-sandstone text-onyx selection:bg-onyx/5 antialiased relative">
       <Navbar onBookingClick={() => openBooking()} />
 
-      {/* ═══════════════════ HERO ═══════════════════ */}
-      <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 pt-32 pb-24 relative overflow-hidden">
-        {/* Animated background blobs */}
-        <div className="absolute top-[-20%] right-[-10%] w-[45%] aspect-square rounded-full blur-[120px] opacity-[0.05]" style={{ background: 'linear-gradient(135deg, #3C4247, #5B6B78)' }} />
-        <div className="absolute bottom-[-20%] left-[-10%] w-[40%] aspect-square rounded-full blur-[120px] opacity-[0.03]" style={{ background: 'linear-gradient(135deg, #D7C9B5, #3C4247)' }} />
-        <div className="absolute top-[20%] left-[40%] w-[20%] aspect-square rounded-full blur-[100px] opacity-[0.02]" style={{ background: 'linear-gradient(135deg, #5B6B78, #D7C9B5)' }} />
-
-        <div className="max-w-5xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-16 relative z-10">
+      {/* ── HERO ── */}
+      <section className="min-h-[85vh] flex flex-col justify-center px-6 md:px-12 pt-40 pb-24 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 relative z-10">
           
-          {/* TEXT LEFT */}
-          <div className="w-full lg:w-1/2 space-y-12 text-center lg:text-left order-2 lg:order-1">
-            <div className="flex flex-col items-center lg:items-start">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#5B6B78] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">L'Engagement João.</span>
-              <h1 className="text-[2.4rem] leading-[0.95] md:text-[3.3rem] lg:text-[4.2rem] font-serif font-medium text-[#222F3E] tracking-tighter">
+          <div className="w-full lg:w-1/2 space-y-xl text-center lg:text-left order-2 lg:order-1">
+            <div className="space-y-m">
+              <span className="font-heading text-[10px] font-black uppercase tracking-[0.3em] text-onyx/40 block">Praticien Agrée</span>
+              <h1 className="font-serif text-display font-normal text-onyx leading-[0.95] mb-l">
                 L'Art du<br />
-                <span className="italic font-light" style={{ background: 'linear-gradient(135deg, #3C4247, #5B6B78)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Lâcher-Prise.</span>
+                <span className="text-fresh-green">Lâcher-Prise.</span>
               </h1>
+              <p className="font-heading text-body font-medium leading-relaxed text-onyx/70 max-w-lg mx-auto lg:mx-0">
+                Un sanctuaire confidentiel à Genève Cointrin pour restaurer votre vitalité physique et mentale par l'excellence du toucher.
+              </p>
             </div>
             
-            <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
-              <div className="pl-8 border-l-2 border-[#3C4247]/20 py-2">
-                 <p className="text-[1rem] font-sans font-light leading-relaxed text-[#3C4247] md:text-[1.08rem] lg:text-[1.15rem] mb-4">
-                   « Je ne pratique pas seulement le massage ; je sculpte un espace de décompression. Mon approche fusionne la rigueur anatomique et l'intuition sensorielle pour répondre aux maux de la vie moderne. Le luxe ultime réside dans la reconnexion à soi, loin du tumulte urbain. »
-                 </p>
-                 <span className="font-cursive text-[1.5rem] text-[#5B6B78] block mt-4 md:text-[1.75rem] lg:text-[2rem]">— João P.</span>
-              </div>
-              <div className="flex justify-center lg:justify-start pt-4">
-                <button onClick={() => openBooking()} className="high-end-button">
-                  Réserver un soin
-                </button>
-              </div>
+            <div className="flex justify-center lg:justify-start pt-l">
+              <button 
+                onClick={() => openBooking()} 
+                className="h-14 px-10 bg-onyx text-white rounded-full font-heading text-[11px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-onyx/20 hover:scale-[1.02] transition-all"
+              >
+                Réserver un soin
+              </button>
             </div>
           </div>
 
-          {/* IMAGE RIGHT */}
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-center order-1 lg:order-2">
+          <div className="w-full lg:w-1/2 flex justify-center order-1 lg:order-2">
             <div 
-              className="relative aspect-[4/5] overflow-hidden w-full max-w-[320px] md:max-w-[380px] lg:max-w-[420px]"
-              style={{ 
-                borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%',
-                boxShadow: '0 20px 60px rgba(60, 66, 71, 0.12)'
-              }}
+              className="relative aspect-[4/5] overflow-hidden w-full max-w-[420px] blob-shape shadow-2xl"
+              style={{ borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%' }}
             >
               <Image 
-                src={MY_PHOTO} 
+                src="https://images.unsplash.com/photo-1544161515-4af6b1d462c2?q=80&w=2070&auto=format&fit=crop"
                 fill
                 unoptimized
-                className="object-cover transition-all duration-1000"
-                alt="Portrait de João P."
-                priority
+                className="object-cover"
+                alt="Soin Serenity Relax Therapy"
               />
-              {/* Color overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#3C4247]/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-700" />
             </div>
           </div>
-
         </div>
       </section>
 
-      {/* ═══════════════════ BIOLOGICAL IMPACT ═══════════════════ */}
-      <section className="py-32 px-6 md:px-12 lg:px-8 bg-white relative">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
-            <header className="w-full lg:w-[40%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#5B6B78] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">Impact Biologique</span>
-              <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-[#222F3E] tracking-tighter mb-8">
-                L'Écho <span className="italic font-light text-[#3C4247]">du Corps.</span>
+      {/* ── IMPACT ── */}
+      <section className="py-xxxl px-6 md:px-12 bg-white rounded-[4rem] mx-m">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-24 items-start">
+            <header className="w-full lg:w-1/3">
+              <span className="font-heading text-[10px] font-black uppercase tracking-[0.3em] text-onyx/40 block mb-m">Impact Biologique</span>
+              <h2 className="font-serif text-h1 font-normal text-onyx leading-tight mb-m">
+                L'Écho <br /> <span className="text-fresh-green">du Corps.</span>
               </h2>
-              <p className="text-[1rem] font-sans font-light leading-relaxed text-[#3C4247] md:text-[1.08rem] lg:text-[1.15rem]">
-                Au-delà de la détente, une influence mesurable sur votre santé globale et votre vitalité. Chaque séance est un protocole unique, adapté à votre physiologie et à votre état émotionnel du moment.
+              <p className="font-heading text-small font-medium leading-relaxed text-onyx/60">
+                Chaque rituel est conçu comme un protocole unique, fusionnant rigueur anatomique et intuition pour répondre aux maux modernes.
               </p>
             </header>
 
-            <div className="w-full lg:w-[60%] grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+            <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-16">
               {BIOLOGICAL_IMPACTS.map((impact) => (
-                <div 
-                  key={impact.id} 
-                  className="space-y-6 group"
-                >
-                  <div 
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg"
-                    style={{ background: '#F7F1E3', color: '#3C4247' }}
-                  >
-                    <impact.icon size={24} strokeWidth={1.5} />
+                <div key={impact.id} className="space-y-m">
+                  <div className="w-xl h-xl rounded-full bg-sandstone flex items-center justify-center text-onyx">
+                    <impact.icon size={20} strokeWidth={1.5} />
                   </div>
-                  <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium text-[#222F3E] tracking-tight">{impact.title}</h4>
-                  <p className="text-[0.8125rem] leading-relaxed md:text-[0.875rem] lg:text-[0.9375rem] text-[#3C4247] font-sans font-medium">
+                  <h4 className="font-heading text-small font-black uppercase tracking-widest text-onyx">{impact.title}</h4>
+                  <p className="font-heading text-small font-medium leading-relaxed text-onyx/50">
                     {impact.desc}
                   </p>
                 </div>
@@ -159,115 +136,104 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════════════ SERVICES ═══════════════════ */}
-      <section id="services" className="py-32 px-6 md:px-12 lg:px-8 relative" style={{ background: '#F5F4F2' }}>
-        {/* Subtle background gradient — overflow-hidden isolated so sticky works */}
-        {/* Synchronized background from Hero */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] w-[45%] aspect-square rounded-full blur-[120px] opacity-[0.05]" style={{ background: 'linear-gradient(135deg, #5B6B78, #3C4247)' }} />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] aspect-square rounded-full blur-[120px] opacity-[0.03]" style={{ background: 'linear-gradient(135deg, #D7C9B5, #3C4247)' }} />
-        </div>
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col lg:flex-row gap-20 items-start">
-            <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-start text-center lg:text-left">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#3C4247] block mb-6 md:text-[0.75rem] lg:text-[0.8rem]">Menu Signature</span>
-              <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-[#222F3E] tracking-tighter mb-8">
-                Soins <br className="hidden lg:block"/> <span className="italic font-light text-[#3C4247]">exclusifs.</span>
+      {/* ── SERVICES ── */}
+      <section id="services" className="py-xxxl px-6 md:px-12">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-24 items-start mb-xxxl">
+            <header className="w-full lg:w-1/3">
+              <span className="font-heading text-[10px] font-black uppercase tracking-[0.3em] text-onyx/40 block mb-m">Savoir-Faire</span>
+              <h2 className="font-serif text-h1 font-normal text-onyx leading-tight mb-m">
+                Soins <br /> <span className="text-fresh-green">exclusifs.</span>
               </h2>
-              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-[#3C4247] md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-sm">
-                Une sélection exclusive de 8 rituels conçue pour votre équilibre interne et votre récupération physique.
+              <p className="font-heading text-small font-medium leading-relaxed text-onyx/60">
+                Une sélection de 8 rituels signatures pour votre équilibre interne et votre récupération.
               </p>
-              <button onClick={() => openBooking()} className="high-end-button">
-                Réserver un soin
+              <button 
+                onClick={() => openBooking()} 
+                className="mt-xl h-12 px-8 bg-white border border-border text-onyx rounded-full font-heading text-[10px] font-black uppercase tracking-widest hover:bg-secondary transition-all"
+              >
+                Tous les rituels
               </button>
-            </div>
+            </header>
 
-            <div className="w-full lg:w-[68%] grid grid-cols-1 md:grid-cols-2 gap-x-12">
-               <div className="flex flex-col gap-12 items-center md:items-end">
-                  {SERVICES.slice(0, 4).map((s, i) => (
-                    <ServiceCard key={s.id} s={s} colorIdx={i} onClick={() => openBooking(s.id)} />
-                  ))}
-               </div>
-               <div className="flex flex-col gap-12 md:pt-32 items-center md:items-start">
-                  {SERVICES.slice(4, 8).map((s, i) => (
-                    <ServiceCard key={s.id} s={s} colorIdx={i + 4} onClick={() => openBooking(s.id)} />
-                  ))}
-               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════ FAQ ═══════════════════ */}
-      <section className="py-48 px-6 md:px-12 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row-reverse gap-24 items-start">
-            <div className="w-full lg:w-[32%] lg:sticky lg:top-32 h-fit flex flex-col items-center lg:items-end text-center lg:text-right">
-              <span className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-[#5B6B78] block mb-8 md:text-[0.75rem] lg:text-[0.8rem]">Assistance</span>
-              <h2 className="text-[1.9rem] leading-tight md:text-[2.3rem] lg:text-[2.8rem] font-serif font-medium text-[#222F3E] tracking-tighter mb-8">
-                Questions <br /> <span className="italic font-light text-[#3C4247]">fréquentes.</span>
-              </h2>
-              <p className="text-[1rem] font-sans font-light leading-relaxed italic text-[#3C4247] md:text-[1.08rem] lg:text-[1.15rem] mb-12 max-w-xs">
-                Tout ce qu'il faut savoir pour préparer votre visite dans notre sanctuaire de Cointrin.
-              </p>
-            </div>
-
-            <div className="w-full lg:w-[68%] space-y-20">
-              {FAQS.map((f, i) => {
-                const faqColor = "#5B6B78"; // Storm
-                return (
-                  <div key={i} className="group transition-all duration-500 border-b border-neutral-100 pb-16 last:border-0">
-                    <div className="flex gap-12 items-start">
-                      <span className="text-[0.7rem] font-sans font-black uppercase tracking-widest mt-2" style={{ color: faqColor }}>0{i+1}</span>
-                      <div className="space-y-6">
-                        <h4 className="text-[1.1rem] leading-snug md:text-[1.2rem] lg:text-[1.25rem] font-serif font-medium text-[#222F3E] tracking-tight">{f.q}</h4>
-                        <p className="text-[0.8125rem] leading-relaxed text-[#3C4247] font-sans font-medium border-l-2 pl-8 max-w-xl md:text-[0.875rem] lg:text-[0.9375rem]" style={{ borderColor: faqColor + '30' }}>
-                          {f.a}
-                        </p>
-                      </div>
-                    </div>
+            <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-12">
+              {SERVICES.map((s, i) => (
+                <div 
+                  key={s.id} 
+                  onClick={() => openBooking(s.id)}
+                  className="group cursor-pointer space-y-m"
+                >
+                  <div className="relative aspect-[4/5] bg-secondary rounded-[2rem] overflow-hidden">
+                    <Image src={s.image || ''} fill unoptimized className="object-cover transition-transform duration-700 group-hover:scale-105" alt={s.name} />
                   </div>
-                );
-              })}
+                  <div className="space-y-xs px-xs">
+                    <span className="font-heading text-[9px] font-black uppercase tracking-[0.2em] text-onyx/40 block">
+                      {i % 2 === 0 ? 'SIGNATURE' : 'PERFORMANCE'}
+                    </span>
+                    <h3 className="font-serif text-h4 text-onyx">{simplifyServiceName(s.name)}</h3>
+                    <p className="font-heading text-[11px] font-medium leading-relaxed text-onyx/50 line-clamp-2">
+                       {s.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══════════════════ FOOTER ═══════════════════ */}
-      <footer className="text-white py-8 px-6 md:px-12" style={{ background: '#0F1114' }}>
-        <div className="max-w-7xl mx-auto">
-          {/* Brand */}
-          <p className="text-[1rem] font-sans font-black uppercase tracking-[0.2em] text-white text-center mb-6">Serenity Relax Therapy</p>
-          {/* 3 cols */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center border-t border-white/5 pt-6">
-            <div>
-              <p className="text-[0.9rem] font-sans font-black uppercase tracking-[0.28em] text-white/90 mb-3">Localisation</p>
-              <p className="text-[0.8rem] font-sans font-medium leading-relaxed text-white/70">Alfa Business Center<br/>Chemin de Joinville 26, 4ème étage<br/>1216 Cointrin — Genève</p>
-            </div>
-            <div>
-              <p className="text-[0.9rem] font-sans font-black uppercase tracking-[0.28em] text-white/90 mb-3">Contact</p>
-              <p className="text-[0.8rem] font-sans font-medium leading-relaxed text-white/70">+41 78 333 68 23<br/>serenityrelaxtherapy@gmail.com</p>
-            </div>
-            <div>
-              <p className="text-[0.9rem] font-sans font-black uppercase tracking-[0.28em] text-white/90 mb-3">Social</p>
-              <div className="flex items-center justify-center gap-6">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-white/60 hover:text-[#D7C9B5] transition-colors">Instagram</a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] text-white/60 hover:text-[#D7C9B5] transition-colors">Linkedin</a>
+      {/* ── FAQ ── */}
+      <section className="py-xxxl bg-white rounded-[4rem] mx-m mb-xxxl">
+        <div className="max-w-4xl mx-auto px-6">
+          <header className="text-center mb-xxxl">
+             <span className="font-heading text-[10px] font-black uppercase tracking-[0.3em] text-onyx/40 block mb-m">Informations</span>
+             <h2 className="font-serif text-h1 text-onyx mb-m">Questions fréquentes.</h2>
+          </header>
+          <div className="space-y-12">
+            {FAQS.map((f, i) => (
+              <div key={i} className="flex gap-10 items-start border-b border-border pb-12 last:border-0">
+                <span className="font-serif text-h4 text-fresh-green/40">0{i+1}</span>
+                <div className="space-y-xs">
+                  <h4 className="font-heading text-small font-black uppercase tracking-widest text-onyx">{f.q}</h4>
+                  <p className="font-heading text-small font-medium leading-relaxed text-onyx/60 border-l-2 border-fresh-green/10 pl-6">
+                    {f.a}
+                  </p>
+                </div>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-onyx text-sandstone pt-xxxl pb-xl px-12 text-center overflow-hidden relative">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <p className="font-serif text-h1 mb-m opacity-20">Serenity Relax Therapy</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 pt-xl border-t border-white/5 opacity-60">
+             <div className="space-y-xs">
+               <p className="font-heading text-[10px] font-black uppercase tracking-widest">Localisation</p>
+               <p className="font-heading text-small opacity-80 leading-relaxed">Alfa Business Center, Cointrin<br/>Genève, Suisse</p>
+             </div>
+             <div className="space-y-xs">
+               <p className="font-heading text-[10px] font-black uppercase tracking-widest">Contact</p>
+               <p className="font-heading text-small opacity-80">+41 78 333 68 23<br/>serenityrelaxtherapy@gmail.com</p>
+             </div>
+             <div className="space-y-xs">
+               <p className="font-heading text-[10px] font-black uppercase tracking-widest">Suivez-nous</p>
+               <div className="flex justify-center gap-6">
+                 <a href="#" className="font-heading text-small hover:text-fresh-green transition-all">Instagram</a>
+                 <a href="#" className="font-heading text-small hover:text-fresh-green transition-all">Linkedin</a>
+               </div>
+             </div>
           </div>
         </div>
       </footer>
 
-      {/* BOOKING DRAWER */}
       <Sheet open={bookingOpen} onOpenChange={setBookingOpen}>
-        <SheetContent side="bottom" className="h-[80vh] w-[90%] max-w-[1500px] mx-auto rounded-t-[2.5rem] p-0 border-none bg-white overflow-y-auto scrollbar-hide shadow-[0_-10px_40px_rgba(0,0,0,0.15)]">
-          <VisuallyHidden.Root>
-            <SheetTitle>Réserver votre rituel Serenity Relax</SheetTitle>
-          </VisuallyHidden.Root>
-          <BookingFlow services={SERVICES} initialServiceId={selectedServiceId} />
+        <SheetContent side="bottom" className="h-[85vh] w-[95%] max-w-[1500px] mx-auto rounded-t-[3rem] p-0 border-none bg-white overflow-hidden shadow-2xl shadow-black/40">
+           <VisuallyHidden.Root><SheetTitle>Réserver</SheetTitle></VisuallyHidden.Root>
+           <div className="h-full overflow-y-auto scrollbar-hide">
+              <BookingFlow services={SERVICES} initialServiceId={selectedServiceId} />
+           </div>
         </SheetContent>
       </Sheet>
     </div>
@@ -279,46 +245,39 @@ const ServiceCard = ({ s, colorIdx, onClick }: { s: any, colorIdx: number, onCli
   return (
     <div 
       onClick={onClick}
-      className="relative w-full max-w-[320px] bg-white rounded-[3rem] p-4 group cursor-pointer transition-all duration-500"
-      style={{ 
-        boxShadow: `0 10px 40px rgba(0,0,0,0.04)`,
-        border: `1px solid rgba(0,0,0,0.04)`
-      }}
+      className="relative w-full max-w-[320px] bg-secondary/10 rounded-card p-m group cursor-pointer transition-all duration-500 border border-transparent hover:border-border hover:bg-white"
     >
-      <div className="relative aspect-square overflow-hidden mb-6 rounded-[2rem]">
+      <div className="relative aspect-square overflow-hidden mb-m rounded-card-inner">
         <Image 
-          src={s.image} 
+          src={s.image || ''} 
           fill
           unoptimized
-          className="object-cover transition-transform duration-1000" 
+          className="object-cover transition-transform duration-1000 group-hover:scale-110" 
           alt={s.name}
         />
-        {/* Colored overlay on hover */}
         <div 
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-          style={{ background: `linear-gradient(to top, ${colors.accent}20, transparent)` }}
+          style={{ background: `linear-gradient(to top, #0a0b0920, transparent)` }}
         />
       </div>
 
-      <div className="px-2 pb-20 space-y-3">
+      <div className="px-xxs pb-xl space-y-xs">
         <span 
-          className="text-[0.7rem] font-sans font-black uppercase tracking-[0.28em] block mb-1 md:text-[0.75rem] lg:text-[0.8rem]"
-          style={{ color: colors.accent }}
+          className="font-heading text-small font-black uppercase tracking-widest block mb-xxs"
+          style={{ color: '#0a0b09' }}
         >
           {s.name.includes('Bambous') ? 'Profond' : s.name.includes('Draineur') ? 'Vitalité' : s.name.includes('Aroma') ? 'Sensoriel' : s.name.includes('Réflexologie') ? 'Ciblé' : s.name.includes('Sportif') ? 'Performance' : s.name.includes('Thérapeutique') ? 'Signature' : s.name.includes('Deep Relax') ? 'Détente' : 'Dynamique'}
         </span>
-        <h3 className="text-[1.1rem] leading-snug font-serif font-medium text-[#222F3E] tracking-tight md:text-[1.2rem] lg:text-[1.25rem]">
+        <h3 className="font-heading text-h3 font-medium text-onyx tracking-heading leading-heading">
           {simplifyServiceName(s.name)}
         </h3>
-        <p className="text-[0.8125rem] leading-relaxed text-[#3C4247] font-sans font-medium md:text-[0.875rem] lg:text-[0.9375rem]">
+        <p className="font-body text-small leading-body text-onyx/60">
           {s.description}
         </p>
       </div>
 
-      {/* Bottom accent bar */}
       <div 
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500"
-        style={{ background: `linear-gradient(90deg, ${colors.accent}, ${colors.accent}80)` }}
+        className="absolute bottom-m left-1/2 -translate-x-1/2 w-m h-xxs rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 bg-onyx"
       />
     </div>
   );

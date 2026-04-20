@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import {
-  X, Clock, Smartphone, CreditCard, Banknote, Calendar, ChevronRight, Edit3, Save, Trash2
+  X, Clock, Smartphone, CreditCard, Banknote, Calendar, ChevronRight, Edit3, Save, Trash2, Users
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -71,71 +71,71 @@ export default function AppointmentDetail({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-md" onClick={onClose} />
+      <div className="absolute inset-0 bg-sapphire/30 backdrop-blur-md" onClick={onClose} />
 
-      <div className="relative w-full sm:max-w-[400px] bg-white rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300">
+      <div className="relative w-full sm:max-w-[400px] bg-white rounded-t-lg sm:rounded-lg shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300">
         
         {/* Header - Clinical & Sharp */}
-        <div className="px-6 pt-8 pb-5 flex items-start justify-between">
+        <div className="px-m pt-xl pb-m flex items-start justify-between">
           <div className="min-w-0">
-            <div className="flex items-center gap-2 group">
-              <h2 className="text-xl font-black text-slate-900 tracking-tight truncate uppercase">
+            <div className="flex items-center gap-xs group">
+              <h2 className="font-heading text-h4 font-black text-sapphire tracking-heading leading-heading truncate uppercase">
                 {current.clientNameSnapshot?.split(' ')[1]} {current.clientNameSnapshot?.split(' ')[0]}
               </h2>
               <button 
                 onClick={() => setIsEditing(!isEditing)}
-                className="p-1.5 text-slate-300 hover:text-indigo-600 transition-colors"
+                className="p-xs text-samaritan hover:text-azraq transition-colors"
               >
                 <Edit3 size={16} />
               </button>
             </div>
-            <div className="flex items-center gap-2 mt-1.5 text-slate-400 font-bold text-[11px] uppercase tracking-wider">
+            <div className="flex items-center gap-xs mt-xs text-samaritan font-bold text-small uppercase tracking-widest">
               <Calendar size={12} className="shrink-0" />
               <span>{dateLabel}</span>
               <span>•</span>
               <Clock size={12} className="shrink-0" />
-              <span className="text-slate-900">{current.time}</span>
+              <span className="text-azraq">{current.time}</span>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:bg-slate-200 transition-colors"
+            className="w-xl h-xl flex items-center justify-center rounded-full bg-bg-soft text-samaritan hover:bg-border transition-colors"
           >
             <X size={18} />
           </button>
         </div>
 
-        <div className="px-6 pb-8 space-y-4">
+        <div className="px-m pb-xl space-y-m">
           
           {/* Main Info Blocks */}
-          <div className="grid grid-cols-2 gap-3">
-             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 transition-all">
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Soin</span>
+          <div className="grid grid-cols-2 gap-s">
+             <div className="bg-bg-soft/50 border border-border rounded-card-inner p-m transition-all">
+                <span className="font-heading text-[9px] font-black text-samaritan uppercase tracking-widest block mb-xs">Soin</span>
                 {isEditing ? (
                   <input 
                     autoFocus
                     value={editData.serviceName} 
                     onChange={e => setEditData({...editData, serviceName: e.target.value})}
-                    className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                    className="w-full bg-white border border-border rounded-md px-xxs py-xxs font-heading text-small font-bold text-sapphire focus:outline-none focus:ring-2 focus:ring-azraq/10"
                   />
                 ) : (
-                  <p className="text-xs font-bold text-slate-700 leading-tight">{simplifyServiceName(current.serviceName || '')}</p>
+                  <p className="font-body text-small font-bold text-sapphire leading-body">{simplifyServiceName(current.serviceName || '')}</p>
                 )}
              </div>
-             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 transition-all">
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Tarif</span>
+             <div className="bg-bg-soft/50 border border-border rounded-card-inner p-m transition-all">
+                <span className="font-heading text-[9px] font-black text-samaritan uppercase tracking-widest block mb-xs">Tarif</span>
                 {isEditing ? (
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-xxs">
                     <input 
                       type="number"
                       value={editData.price} 
                       onChange={e => setEditData({...editData, price: Number(e.target.value)})}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                      className="w-full bg-white border border-border rounded-md px-xxs py-xxs font-heading text-small font-bold text-sapphire focus:outline-none focus:ring-2 focus:ring-azraq/10"
                     />
-                    <span className="text-[10px] font-bold text-slate-400">CHF</span>
+                    <span className="font-heading text-[10px] font-bold text-samaritan">CHF</span>
                   </div>
                 ) : (
-                  <p className="text-sm font-black text-slate-900">{current.price || 150} <span className="text-[10px] text-slate-400">CHF</span></p>
+                  <p className="font-heading text-small font-black text-sapphire">{current.price || 150} <span className="text-[10px] text-samaritan">CHF</span></p>
                 )}
              </div>
           </div>
@@ -143,7 +143,7 @@ export default function AppointmentDetail({
           {isEditing && (
             <button 
               onClick={handleSaveEdit}
-              className="w-full h-11 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-indigo-100 animate-in zoom-in-95"
+              className="w-full h-11 bg-azraq text-white rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl shadow-azraq/10 animate-in zoom-in-95"
             >
               <Save size={14} /> Enregistrer
             </button>
@@ -151,10 +151,10 @@ export default function AppointmentDetail({
 
           {/* Payment Section - Ultra Compact */}
           {!isEditing && (
-            <div className={`rounded-2xl border transition-all px-5 py-3 flex items-center justify-between ${current.paid ? 'bg-emerald-50 border-emerald-100' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <div className={`rounded-xl border transition-all px-m py-s flex items-center justify-between ${current.paid ? 'bg-aurora border-aurora' : 'bg-carrot/10 border-carrot/20'}`}>
               <div>
-                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block leading-none mb-1">Règlement</span>
-                <p className={`text-[11px] font-black uppercase tracking-tight ${current.paid ? 'text-emerald-600' : 'text-amber-500'}`}>
+                <span className="font-heading text-[8px] font-black text-samaritan uppercase tracking-widest block leading-none mb-xxs">Règlement</span>
+                <p className={`font-heading text-small font-black uppercase tracking-widest ${current.paid ? 'text-white' : 'text-carrot'}`}>
                   {current.paid ? `PAYÉ ${current.paymentMethod ? `(${current.paymentMethod})` : ''}` : 'À ENCAISSER'}
                 </p>
               </div>
@@ -163,64 +163,64 @@ export default function AppointmentDetail({
                 !showPaymentSelector ? (
                   <button 
                     onClick={() => setShowPaymentSelector(true)}
-                    className="h-9 px-5 bg-[#059669] hover:bg-[#047857] text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md transition-all active:scale-95"
+                    className="h-9 px-5 bg-azraq hover:bg-azraq/90 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md transition-all active:scale-95"
                   >
                     Encaisser
                   </button>
                 ) : (
-                  <div className="flex items-center gap-1.5 animate-in slide-in-from-right-4">
+                  <div className="flex items-center gap-xxs animate-in slide-in-from-right-4">
                     {(['Twint', 'Cash', 'Card'] as const).map(m => (
                       <button
                         key={m}
                         onClick={() => handleUpdatePayment(m)}
-                        className="w-10 h-10 flex flex-col items-center justify-center bg-white border border-slate-200 rounded-lg hover:border-emerald-600 hover:text-emerald-600 transition-all group"
+                        className="w-xl h-xl flex flex-col items-center justify-center bg-white border border-border rounded-md hover:border-azraq transition-all group"
                       >
-                        {m === 'Twint' ? <Smartphone size={12} /> : m === 'Cash' ? <Banknote size={12} /> : <CreditCard size={12} />}
-                        <span className="text-[7px] font-black uppercase mt-0.5">{m}</span>
+                        {m === 'Twint' ? <Smartphone size={12} className="text-azraq" /> : m === 'Cash' ? <Banknote size={12} className="text-azraq" /> : <CreditCard size={12} className="text-azraq" />}
+                        <span className="font-heading text-[7px] font-black uppercase mt-xxs text-azraq">{m}</span>
                       </button>
                     ))}
-                    <button onClick={() => setShowPaymentSelector(false)} className="ml-1 text-slate-300 hover:text-rose-500"><X size={14} /></button>
+                    <button onClick={() => setShowPaymentSelector(false)} className="ml-1 text-samaritan/30 hover:text-tomato"><X size={14} /></button>
                   </div>
                 )
               ) : (
-                <button onClick={handleTogglePaid} className="text-[9px] font-black text-rose-500 uppercase hover:underline opacity-50 hover:opacity-100">Annuler</button>
+                <button onClick={handleTogglePaid} className="text-[9px] font-black text-white/60 uppercase hover:underline">Annuler</button>
               )}
             </div>
           )}
 
           {/* Patient Shortcuts */}
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-xs">
             <button 
               onClick={() => onGoToClient?.(current.clientId!)}
-              className="w-full flex items-center justify-between h-12 px-5 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all group"
+              className="w-full flex items-center justify-between h-xl px-m bg-white border border-border rounded-card-inner hover:bg-bg-soft transition-all group"
             >
-              <div className="flex items-center gap-3">
-                <Users size={15} className="text-slate-300 group-hover:text-indigo-600 transition-colors" />
-                <span className="text-[11px] font-black uppercase text-slate-600 tracking-wider">Accès dossier complet</span>
+              <div className="flex items-center gap-s">
+                <Users size={15} className="text-samaritan group-hover:text-azraq transition-colors" />
+                <span className="font-heading text-small font-black uppercase text-sapphire tracking-widest">Accès dossier complet</span>
               </div>
-              <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={14} className="text-samaritan group-hover:translate-x-xxs transition-all" />
             </button>
             <button 
               onClick={() => onSendWhatsApp?.(current, 'followup')}
-              className="w-full flex items-center justify-between h-12 px-5 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all group"
+              className="w-full flex items-center justify-between h-xl px-m bg-white border border-border rounded-card-inner hover:bg-bg-soft transition-all group"
             >
-              <div className="flex items-center gap-3">
-                <Smartphone size={15} className="text-slate-300 group-hover:text-emerald-600 transition-colors" />
-                <span className="text-[11px] font-black uppercase text-slate-600 tracking-wider">Suivi / Rappel</span>
+              <div className="flex items-center gap-s">
+                <Smartphone size={15} className="text-samaritan group-hover:text-aurora transition-colors" />
+                <span className="font-heading text-small font-black uppercase text-sapphire tracking-widest">Suivi / Rappel</span>
               </div>
-              <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={14} className="text-samaritan group-hover:translate-x-xxs transition-all" />
             </button>
           </div>
 
           {/* Quick Stats - Compacted */}
-          <div className="flex gap-2 pt-2">
-            <div className="flex-1 bg-slate-50 border border-slate-100 rounded-2xl p-3 text-center">
-               <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Visites</span>
-               <span className="text-sm font-black text-slate-700">{sessionCount}</span>
+          <div className="flex gap-xs pt-xs">
+            <div className="flex-1 bg-bg-soft/50 border border-border rounded-card-inner p-s text-center">
+               <span className="font-heading text-[8px] font-black text-samaritan uppercase tracking-widest block mb-xxs">Visites</span>
+               <span className="font-heading text-small font-black text-sapphire">{sessionCount}</span>
             </div>
-            <div className="flex-1 bg-slate-50 border border-slate-100 rounded-2xl p-3 text-center">
-               <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Balance</span>
-               <span className={`text-sm font-black ${totalDue > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
+            <div className="flex-1 bg-bg-soft/50 border border-border rounded-card-inner p-s text-center">
+               <span className="font-heading text-[8px] font-black text-samaritan uppercase tracking-widest block mb-xxs">Balance</span>
+               <span className={`font-heading text-small font-black ${totalDue > 0 ? 'text-tomato' : 'text-aurora'}`}>
                  {totalDue} <span className="text-[9px]">CHF</span>
                </span>
             </div>
@@ -231,13 +231,4 @@ export default function AppointmentDetail({
   );
 }
 
-// Support Icons Missing in Local Import
-function Users({ size, className }: { size: number; className?: string }) {
-  return (
-    <svg 
-      width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}
-    >
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-}
+
