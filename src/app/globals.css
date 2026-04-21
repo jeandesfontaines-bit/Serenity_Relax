@@ -5,74 +5,79 @@
 
 @layer base {
   :root {
-    /* --- LIGNE 1 : ÉLÉMENTS D'ACCENT ET INTERACTION --- */
-    --c-squash: #E9B44C;
-    --c-mandarin: #D65F42;
-    --c-azraq: #5066B3;
-    --c-dupain: #77A6B6;
-    --c-aurora: #90E09F;
+    /* --- DIGITAL VIBRANT PALETTE --- */
+    --c-onyx: #152023;       /* Off Black */
+    --c-sandstone: #F6F2EA;  /* Off White */
+    --c-cream: #ffffff;      /* Pure White */
+    --c-forest: #153839;     /* Deep Teal */
+    --c-ochre: #F1664D;      /* Blood Orange */
+    --c-earth: #275E6A;      /* Dark Teal Accent */
+    --c-clay: #d9cdc0;       /* Neutral (kept for borders) */
+    --c-neon: #E5FD98;       /* High-energy Neon */
+    --c-periwinkle: #BCACFB; /* Soft Accent */
+    --c-success: #29CA72;    /* Vibrant Green */
     
-    /* --- LIGNE 2 : ÉTATS DE COMPOSANTS --- */
-    --c-iceland: #E89E4B;
-    --c-tomato: #D13F21;
-    --c-yueguang: #1E3A96;
-    --c-samaritan: #4D6A87;
-    --c-water: #5EB1A7;
-
-    /* --- LIGNE 3 : STRUCTURE ET PROFONDEUR --- */
-    --c-carrot: #E1943A;
-    --c-jalapeno: #AC2C41;
-    --c-sapphire: #0E1C4E;
-    --c-forest: #1F3F5F;
-    --c-reef: #4A9A90;
-
     /* UTILITAIRES DE SURFACE */
-    --bg-soft: #F8FAFC;
-    --border-light: #E2E8F0;
+    --bg-soft: #fbf7f2;
+    --border-light: #ece2d8;
+
+    /* INTERVALLES DE SPACING (Compacted) */
+    --space-xxs: 3px;
+    --space-xs: 6px;
+    --space-s: 12px;
+    --space-m: 20px;
+    --space-l: 28px;
+    --space-xl: 40px;
+    --space-xxl: 56px;
+    --space-xxxl: 80px;
+
+    /* RADIUS SCALE (Compacted) */
+    --radius-s: 6px;
+    --radius-m: 10px;
+    --radius-l: 14px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
 
     /* SHADCN COMPATIBILITY (HSL) */
-    --background: 210 40% 98%;
-    --foreground: 222.2 47.4% 11.2%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --background: 34 32% 94%; /* Off White base */
+    --foreground: 191 22% 11%;/* Off Black base */
+    --card: 0 0% 100%;        /* Pure White base */
+    --card-foreground: 191 22% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-    --primary: 226 38% 51%; /* Based on Azraq */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
+    --popover-foreground: 191 22% 11%;
+    --primary: 181 46% 15%;   /* Deep Teal */
+    --primary-foreground: 73 95% 80%; /* Neon contrast */
+    --secondary: 181 37% 29%; /* Teal Accent */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 191 10% 40%;
+    --muted-foreground: 191 10% 40%;
+    --accent: 10 86% 62%;     /* Blood Orange */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 8 72% 48%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --border: 30 20% 84%;
+    --input: 30 20% 84%;
+    --ring: 181 46% 15%;
+    --radius: 0.6rem;
   }
 }
 
 @layer base {
+  html {
+    font-size: 90%; /* Global proportional scale down */
+  }
   * {
     border-color: hsl(var(--border));
   }
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-family: inherit;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(160deg, #ffffff 0%, #fafafa 40%, #ffffff 100%);
-  }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.02em;
   }
   p, span, div, li, input, textarea, button {
-    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-family: inherit;
   }
   .font-cursive {
     font-family: 'Meow Script', cursive;
@@ -135,28 +140,28 @@
 
   /* SIDEBAR & UI */
   .sidebar-bg { 
-      background-color: var(--c-sapphire);
-      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
+      background-color: var(--c-onyx);
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
   }
 
   .search-input:focus {
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(80, 102, 179, 0.15);
-      border-color: var(--c-azraq);
-      background-color: white;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(25, 104, 74, 0.1);
+    border-color: var(--c-forest);
+    background-color: white;
   }
 
   .mobile-drawer {
-      position: fixed;
-      top: 0;
-      right: 0;
-      height: 100%;
-      width: 85%;
-      max-width: 400px;
-      background: var(--c-sapphire);
-      z-index: 100;
-      transform: translateX(100%);
-      transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 85%;
+    max-width: 400px;
+    background: var(--c-onyx);
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
   }
 
   .mobile-drawer.open { 

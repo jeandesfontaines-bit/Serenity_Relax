@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Search, UserPlus, CheckCircle2, ChevronRight } from 'lucide-react';
+import { X, Search, UserPlus, CheckCircle2, ChevronRight, Users, Sparkles } from 'lucide-react';
 import { Client } from '../types';
 import { SERVICES } from '@/lib/types';
 
@@ -43,187 +43,144 @@ export default function BookingModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-m">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-sapphire/30 backdrop-blur-md" onClick={onClose} />
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 animate-in fade-in duration-300">
+      <div className="absolute inset-0 bg-onyx/40 backdrop-blur-2xl" onClick={onClose} />
 
-      {/* Modal */}
-      <div className="relative w-full sm:max-w-m bg-white rounded-t-card sm:rounded-card shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
-        {/* Mobile handle */}
-        <div className="sm:hidden flex justify-center pt-s pb-xs shrink-0">
-          <div className="w-l h-xxs bg-border rounded-full" />
-        </div>
-
-        {/* Header */}
-        <div className="flex items-center justify-between px-m sm:px-xl py-m border-b border-border shrink-0">
+      <div className="relative w-full max-w-[480px] bg-[#F4F2EE] rounded-[40px] shadow-2xl flex flex-col overflow-hidden border border-white/20 animate-in zoom-in-95 duration-500">
+        
+        {/* HEADER */}
+        <div className="p-8 pb-4 flex items-center justify-between">
           <div>
-            <h2 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Nouvelle réservation</h2>
-            {(date || time) && (
-              <p className="font-heading text-[10px] font-bold text-samaritan mt-xxs uppercase tracking-widest">
-                {date && date} {time && `· ${time}`}
-              </p>
-            )}
+            <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em] block mb-1">Réservation</span>
+            <h2 className="text-[28px] font-black text-onyx tracking-tighter uppercase leading-none">Perspective</h2>
           </div>
           <button
             onClick={onClose}
-            className="w-l h-l flex items-center justify-center rounded-md hover:bg-bg-soft text-samaritan hover:text-sapphire transition-all"
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-white border border-border/10 text-earth hover:text-onyx transition-all shadow-sm"
           >
-            <X size={16} />
+            <X size={20} />
           </button>
         </div>
 
-        {/* Steps indicator */}
-        <div className="flex shrink-0 px-m sm:px-xl py-m gap-xs">
-          {['Client', 'Prestation'].map((label, i) => {
-            const stepId = i === 0 ? 'client' : 'service';
-            const isActive = step === stepId;
-            const isDone = (i === 0 && step === 'service');
-            return (
-              <div key={label} className="flex items-center gap-xs">
-                <div className={`flex items-center gap-xs font-heading text-[10px] font-black uppercase tracking-widest ${isActive ? 'text-azraq' : isDone ? 'text-aurora' : 'text-samaritan/30'}`}>
-                  <div className={`w-m h-m rounded-md flex items-center justify-center text-[10px] font-black ${isActive ? 'bg-azraq text-white' : isDone ? 'bg-aurora/10 text-aurora' : 'bg-bg-soft'}`}>
-                    {isDone ? '✓' : i + 1}
-                  </div>
-                  {label}
-                </div>
-                {i === 0 && <ChevronRight size={13} className="text-border mx-xxs" />}
-              </div>
-            );
-          })}
+        {/* RECAP BAR */}
+        <div className="px-8 pb-8 flex items-center gap-4 text-earth/40 font-bold text-[13px] uppercase tracking-widest">
+           <span className="flex items-center gap-1"><Sparkles size={14} className="text-neon" /> {date || '—'}</span>
+           <span className="w-1 h-1 rounded-full bg-border" />
+           <span className="text-onyx">{time || '—'}</span>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto">
-          {/* ── STEP 1: Client selection ── */}
+        {/* PROGRESS PILLS */}
+        <div className="px-8 flex gap-2 mb-8">
+           {['Client', 'Prestation'].map((label, i) => {
+             const stepId = i === 0 ? 'client' : 'service';
+             const cur = step === stepId;
+             const done = (i === 0 && step === 'service');
+             return (
+               <div key={label} className={`flex-1 h-1 rounded-full transition-all duration-700 ${cur || done ? 'bg-onyx' : 'bg-black/5'}`} />
+             );
+           })}
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-8 pb-10 custom-scrollbar">
+          {/* STEP 1 */}
           {step === 'client' && (
-            <div className="px-m sm:px-xl pb-xl space-y-m">
-              {/* Search */}
+            <div className="space-y-8 animate-in slide-in-from-right-4 duration-500">
               <div className="relative">
-                <Search size={14} className="absolute left-m top-1/2 -translate-y-1/2 text-samaritan/30 pointer-events-none" />
+                <Search size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-earth/30 pointer-events-none" />
                 <input
                   type="text"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   autoFocus
-                  placeholder="Rechercher un client…"
-                  className="w-full h-l bg-bg-soft/50 border border-border rounded-md pl-xl pr-m font-heading text-small text-sapphire placeholder:text-samaritan/30 focus:outline-none focus:ring-2 focus:ring-azraq/10 focus:border-border focus:bg-white transition-all uppercase tracking-widest"
+                  placeholder="Chercher un dossier…"
+                  className="w-full h-16 bg-white border border-border/10 rounded-[20px] pl-16 pr-6 text-[15px] font-bold text-onyx shadow-sm focus:ring-1 focus:ring-onyx transition-all uppercase tracking-tight"
                 />
               </div>
 
-              {/* Results */}
-              <div className="space-y-xxs max-h-56 overflow-y-auto">
-                {filtered.map(c => (
+              <div className="space-y-2">
+                <p className="text-[10px] font-black text-earth/40 uppercase tracking-[0.2em] mb-4">Correspondances</p>
+                {filtered.slice(0, 5).map(c => (
                   <button
                     key={c.id}
                     onClick={() => handleSelectClient(c)}
-                    className="w-full flex items-center justify-between px-m py-s rounded-md hover:bg-bg-soft hover:text-azraq text-left transition-all group border border-transparent hover:border-border"
+                    className="w-full flex items-center justify-between p-5 rounded-[24px] bg-white border border-transparent hover:border-border/10 hover:shadow-xl transition-all group"
                   >
-                    <div>
-                      <p className="font-heading text-small font-black text-sapphire uppercase tracking-widest">
-                        {c.firstName} {c.lastName}
-                      </p>
-                      {(c.email || c.phone) && (
-                        <p className="font-heading text-[10px] font-bold text-samaritan uppercase tracking-widest mt-xxs">{c.email || c.phone}</p>
-                      )}
+                    <div className="flex items-center gap-4 min-w-0">
+                       <div className="w-10 h-10 rounded-full bg-bg-soft flex items-center justify-center font-black text-[12px] text-onyx">
+                          {c.lastName?.[0]}
+                       </div>
+                       <div className="text-left">
+                          <p className="text-[14px] font-black text-onyx uppercase tracking-tighter">
+                            {c.lastName} {c.firstName}
+                          </p>
+                          <p className="text-[11px] font-bold text-earth/30 uppercase tracking-widest mt-1">{c.city || 'Suisse'}</p>
+                       </div>
                     </div>
-                    <ChevronRight size={14} className="text-border group-hover:text-azraq shrink-0" />
+                    <ChevronRight size={18} className="text-earth/20 group-hover:text-onyx group-hover:translate-x-1 transition-all" />
                   </button>
                 ))}
 
-                {/* No results → create new */}
-                {filtered.length === 0 && search.trim() && (
-                  <button
-                    onClick={handleSelectNew}
-                    className="w-full flex items-center gap-m p-m rounded-md border border-dashed border-azraq/20 bg-bg-soft/50 hover:bg-bg-soft transition-all"
-                  >
-                    <div className="w-xl h-xl bg-white rounded-md flex items-center justify-center border border-border shrink-0">
-                      <UserPlus size={14} className="text-azraq" />
-                    </div>
-                    <div className="text-left min-w-0">
-                      <p className="font-heading text-[10px] font-black text-sapphire uppercase tracking-widest">Créer et réserver</p>
-                      <p className="font-heading text-small font-black text-sapphire truncate uppercase tracking-widest">{search}</p>
-                    </div>
-                  </button>
-                )}
-              </div>
-
-              {/* New client shortcut (when results exist) */}
-              {filtered.length > 0 && (
                 <button
                   onClick={handleSelectNew}
-                  className="w-full flex items-center justify-center gap-xs p-m rounded-md border border-dashed border-border text-samaritan hover:bg-bg-soft hover:text-azraq transition-all font-heading text-[10px] font-black uppercase tracking-widest"
+                  className="w-full flex items-center gap-4 p-5 rounded-[24px] border border-dashed border-border/40 bg-white/40 hover:bg-white hover:border-onyx transition-all group text-left"
                 >
-                  <UserPlus size={14} />
-                  Nouvelle fiche client
+                  <div className="w-10 h-10 bg-onyx text-neon rounded-full flex items-center justify-center border border-border shrink-0">
+                    <UserPlus size={16} />
+                  </div>
+                  <div>
+                    <p className="text-[13px] font-black text-onyx uppercase">CRÉER : {search || 'NOUVEAU CLIENT'}</p>
+                    <p className="text-[9px] font-bold text-earth/40 uppercase tracking-widest">Nouveau dossier automatique</p>
+                  </div>
                 </button>
-              )}
+              </div>
             </div>
           )}
 
-          {/* ── STEP 2: Service selection ── */}
           {step === 'service' && (
-            <div className="px-m sm:px-xl pb-xl space-y-xl">
-              {/* Selected client recap */}
-              <div className="flex items-center justify-between p-m bg-bg-soft border border-border rounded-md">
-                <div className="flex items-center gap-m min-w-0">
-                  <div className="w-xl h-xl bg-white border border-border text-azraq rounded-md flex items-center justify-center font-heading text-small font-black shrink-0 uppercase tracking-widest">
-                    {isCreatingNew
-                      ? search[0]?.toUpperCase()
-                      : `${selectedClient?.firstName?.[0]}${selectedClient?.lastName?.[0]}`}
+            <div className="space-y-8 animate-in slide-in-from-right-4 duration-500">
+              <div className="flex items-center justify-between p-6 bg-white rounded-[24px] border border-border/10 shadow-sm">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-10 h-10 bg-onyx text-white rounded-full flex items-center justify-center font-black text-[14px] shrink-0">
+                    <Users size={18}/>
                   </div>
                   <div className="min-w-0">
-                    <p className="font-heading text-small font-black text-sapphire truncate uppercase tracking-widest">
-                      {isCreatingNew ? search : `${selectedClient?.firstName} ${selectedClient?.lastName}`}
+                    <p className="text-[15px] font-black text-onyx uppercase truncate">
+                      {isCreatingNew ? search : `${selectedClient?.lastName} ${selectedClient?.firstName}`}
                     </p>
-                    {isCreatingNew && <p className="font-heading text-[9px] font-black text-aurora uppercase tracking-widest">Nouveau client</p>}
+                    <p className="text-[10px] font-black text-forest uppercase tracking-widest mt-1">Étape Finale</p>
                   </div>
                 </div>
-                <button
-                  onClick={() => setStep('client')}
-                  className="font-heading text-[10px] font-black text-samaritan hover:text-azraq transition-all uppercase tracking-widest shrink-0"
-                >
-                  Changer
-                </button>
+                <button onClick={() => setStep('client')} className="text-[10px] font-black text-earth hover:text-onyx transition-all uppercase underline tracking-widest">Modifier</button>
               </div>
 
-              {/* Service grid */}
-              <div className="space-y-m">
-                <p className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">Prestation</p>
-                <div className="grid grid-cols-2 gap-xs">
+              <div className="space-y-4">
+                <p className="text-[10px] font-black text-earth/40 uppercase tracking-[0.2em]">Choisir la prestation</p>
+                <div className="grid grid-cols-2 gap-3">
                   {SERVICES.map(s => {
-                    const displayName = s.name.split(' -')[0];
-                    const isSelected = selectedService === s.name;
+                    const disp = s.name.split(' -')[0];
+                    const sel = selectedService === s.name;
                     return (
                       <button
                         key={s.id}
                         onClick={() => setSelectedService(s.name)}
-                        className={`px-m py-m rounded-md border text-left transition-all ${
-                          isSelected
-                            ? 'border-azraq bg-azraq text-white shadow-lg shadow-azraq/10'
-                            : 'border-border bg-white text-sapphire hover:bg-bg-soft'
+                        className={`p-5 rounded-[24px] border border-transparent text-left transition-all flex flex-col justify-between min-h-[100px] shadow-sm ${
+                          sel ? 'bg-onyx text-neon ring-2 ring-neon/40' : 'bg-white text-onyx hover:border-border/20 shadow-none'
                         }`}
                       >
-                        <p className={`font-heading text-small font-black truncate leading-tight uppercase tracking-widest ${isSelected ? 'text-white' : 'text-sapphire'}`}>
-                          {displayName}
-                        </p>
-                        {s.duration && (
-                          <p className={`font-heading text-[9px] font-black mt-xxs uppercase tracking-widest ${isSelected ? 'text-white/60' : 'text-samaritan'}`}>
-                            {s.duration}
-                          </p>
-                        )}
+                        <p className="text-[13px] font-black uppercase tracking-tight leading-tight">{disp}</p>
+                        {s.duration && <span className={`text-[10px] font-black uppercase tracking-widest ${sel ? 'text-neon/60' : 'text-earth/40'}`}>{s.duration}</span>}
                       </button>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Confirm */}
               <button
                 onClick={handleConfirm}
-                className="w-full h-l bg-azraq hover:bg-azraq/90 text-white rounded-md font-heading text-small font-black uppercase tracking-widest flex items-center justify-center gap-xs shadow-lg shadow-azraq/10 transition-all"
+                className="w-full h-16 bg-onyx hover:bg-forest text-white rounded-full font-black uppercase tracking-[0.2em] text-[13px] flex items-center justify-center gap-3 transition-all shadow-xl shadow-onyx/20"
               >
-                <CheckCircle2 size={15} />
-                {isCreatingNew ? 'Créer et confirmer' : 'Confirmer le RDV'}
+                <CheckCircle2 size={20} />
+                Confirmer l'engagement
               </button>
             </div>
           )}

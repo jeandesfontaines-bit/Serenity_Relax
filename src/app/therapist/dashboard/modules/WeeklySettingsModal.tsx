@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Plus, Clock } from 'lucide-react';
+import { X, Plus, Clock, Copy, CheckCircle2 } from 'lucide-react';
 
 interface WeeklySettingsModalProps {
   initialSlots: Record<number, string[]>;
@@ -8,18 +8,18 @@ interface WeeklySettingsModalProps {
 }
 
 const DAYS = [
-  { id: 0, label: 'Lun' },
-  { id: 1, label: 'Mar' },
-  { id: 2, label: 'Mer' },
-  { id: 3, label: 'Jeu' },
-  { id: 4, label: 'Ven' },
-  { id: 5, label: 'Sam' },
-  { id: 6, label: 'Dim' },
+  { id: 1, label: 'LUN' },
+  { id: 2, label: 'MAR' },
+  { id: 3, label: 'MER' },
+  { id: 4, label: 'JEU' },
+  { id: 5, label: 'VEN' },
+  { id: 6, label: 'SAM' },
+  { id: 0, label: 'DIM' },
 ];
 
 export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: WeeklySettingsModalProps) {
   const [slots, setSlots] = useState<Record<number, string[]>>({ ...initialSlots });
-  const [activeDay, setActiveDay] = useState<number>(0);
+  const [activeDay, setActiveDay] = useState<number>(1);
   const [newTime, setNewTime] = useState('09:00');
 
   const handleAddSlot = () => {
@@ -44,110 +44,104 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-m">
-      <div className="absolute inset-0 bg-sapphire/30 backdrop-blur-md" onClick={onClose} />
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 animate-in fade-in duration-300">
+      <div className="absolute inset-0 bg-onyx/40 backdrop-blur-2xl" onClick={onClose} />
 
-      <div className="relative w-full sm:max-w-m bg-white rounded-t-card sm:rounded-card shadow-2xl flex flex-col min-h-[500px] max-h-[90vh] overflow-hidden">
-        {/* Mobile handle */}
-        <div className="sm:hidden flex justify-center pt-s pb-xs shrink-0">
-          <div className="w-l h-xxs bg-border rounded-full" />
-        </div>
-
-        {/* Header */}
-        <div className="flex items-center justify-between px-xl py-m border-b border-border shrink-0">
+      <div className="relative w-full max-w-[480px] bg-[#F4F2EE] rounded-[40px] shadow-2xl flex flex-col max-h-[85vh] overflow-hidden border border-white/20 animate-in zoom-in-95 duration-500">
+        
+        {/* HEADER */}
+        <div className="p-8 pb-4 flex items-center justify-between">
           <div>
-            <h2 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Horaires types</h2>
-            <p className="font-heading text-[10px] font-bold text-samaritan mt-xxs uppercase tracking-widest">Créneaux disponibles par défaut</p>
+            <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em] block mb-1">Configuration</span>
+            <h2 className="text-[28px] font-black text-onyx tracking-tighter uppercase leading-none">Horaires Types</h2>
           </div>
           <button
             onClick={onClose}
-            className="w-l h-l flex items-center justify-center rounded-md hover:bg-bg-soft text-samaritan hover:text-sapphire transition-all"
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-white border border-border/10 text-earth hover:text-onyx transition-all shadow-sm"
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
-        {/* Day tabs */}
-        <div className="flex border-b border-border px-xxs shrink-0 overflow-x-auto no-scrollbar bg-secondary/30">
+        {/* DAY SELECTOR (PILL TABS) */}
+        <div className="px-8 pb-6 flex gap-2 overflow-x-auto no-scrollbar">
           {DAYS.map(day => {
             const count = (slots[day.id] || []).length;
+            const active = activeDay === day.id;
             return (
               <button
                 key={day.id}
                 onClick={() => setActiveDay(day.id)}
-                className={`relative py-m px-s text-[11px] whitespace-nowrap transition-all flex flex-col items-center gap-xxs flex-1 min-w-[60px] font-heading font-black uppercase tracking-widest ${
-                  activeDay === day.id ? 'text-azraq' : 'text-samaritan/40 hover:text-azraq'
+                className={`flex-1 min-w-[55px] h-12 rounded-full flex flex-col items-center justify-center transition-all ${
+                  active ? 'bg-onyx text-neon ring-1 ring-onyx shadow-lg' : 'bg-white text-earth/50 hover:bg-bg-soft'
                 }`}
               >
-                <span>{day.label}</span>
-                <span className={`text-[8px] font-black px-xs py-px rounded-md border ${
-                  activeDay === day.id ? 'bg-aurora text-white border-aurora' : 'bg-white text-samaritan border-border'
-                }`}>
-                  {count}
-                </span>
-                {activeDay === day.id && <div className="absolute bottom-0 left-0 right-0 h-xxs bg-aurora rounded-t-full" />}
+                <span className="text-[10px] font-black mb-0.5">{day.label}</span>
+                <span className={`text-[8px] font-black opacity-40`}>{count}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Slots list */}
-        <div className="flex-1 overflow-y-auto px-xl py-xl min-h-[300px] bg-white">
-          {(slots[activeDay] || []).length > 0 ? (
-            <div className="grid grid-cols-2 gap-xs mb-xl">
-              {slots[activeDay].map(time => (
-                <div
-                  key={time}
-                  className="flex items-center justify-between pl-m pr-xxs py-xxs bg-bg-soft/50 border border-border rounded-md group hover:border-azraq transition-all"
-                >
-                  <span className="font-heading text-small font-black text-sapphire uppercase tracking-widest">{time}</span>
-                  <button
-                    onClick={() => handleRemoveSlot(time)}
-                    className="w-l h-l rounded-md flex items-center justify-center text-samaritan/30 hover:text-tomato hover:bg-tomato/10 transition-all"
-                  >
-                    <X size={14} />
-                  </button>
+        {/* SLOTS LIST */}
+        <div className="flex-1 overflow-y-auto px-8 py-4 space-y-6 custom-scrollbar">
+           <div className="flex items-center justify-between">
+              <p className="text-[10px] font-black text-earth/40 uppercase tracking-[0.2em]">Créneaux du jour</p>
+              <button 
+                onClick={handleCopyToWeek}
+                className="flex items-center gap-1.5 text-[10px] font-black text-forest hover:underline uppercase tracking-widest"
+              >
+                 <Copy size={12}/> Appliquer à tous
+              </button>
+           </div>
+           
+           <div className="grid grid-cols-3 gap-2">
+              {(slots[activeDay] || []).map(time => (
+                <div key={time} className="h-12 bg-white rounded-2xl flex items-center justify-between pl-4 pr-1 border border-border/5 shadow-sm group">
+                   <span className="text-[13px] font-black text-onyx tabular-nums">{time}</span>
+                   <button 
+                     onClick={() => handleRemoveSlot(time)}
+                     className="w-8 h-8 rounded-full flex items-center justify-center text-earth/20 hover:text-[#F1664D] hover:bg-[#F1664D]/5 transition-all"
+                   >
+                      <X size={14} />
+                   </button>
                 </div>
               ))}
-            </div>
-          ) : (
-            <div className="py-12 text-center">
-              <Clock size={24} className="text-bg-soft mx-auto mb-2" />
-              <p className="text-[13px] text-samaritan font-medium">Aucun créneau ce jour</p>
-            </div>
-          )}
+              <div className="h-12 border border-dashed border-border/40 rounded-2xl flex items-center justify-center text-earth/20 italic text-[12px] font-bold">
+                 ...
+              </div>
+           </div>
 
-          {/* Add slot */}
-          <div className="flex gap-xs sticky bottom-0 bg-white pt-m">
-            <input
-              type="time"
-              value={newTime}
-              onChange={e => setNewTime(e.target.value)}
-              className="flex-1 h-l bg-bg-soft/50 border border-border rounded-md px-m font-heading text-small font-black text-sapphire focus:outline-none focus:ring-2 focus:ring-azraq/10 focus:bg-white focus:border-border transition-all uppercase tracking-widest"
-            />
-            <button
-              onClick={handleAddSlot}
-              className="h-l px-xl bg-azraq text-white rounded-md font-heading text-[10px] font-black uppercase tracking-widest hover:bg-azraq/90 shadow-lg shadow-azraq/10 transition-all shrink-0"
-            >
-              Ajouter
-            </button>
-          </div>
+           {(slots[activeDay] || []).length === 0 && (
+              <div className="py-12 bg-white/40 border border-dashed border-border rounded-[32px] text-center">
+                 <Clock size={24} className="mx-auto text-earth/20 mb-2 opacity-40" />
+                 <p className="text-[11px] font-black text-earth/40 uppercase tracking-widest">Jour de fermeture</p>
+              </div>
+           )}
         </div>
 
-        {/* Footer */}
-        <div className="px-xl py-xl border-t border-border flex flex-col gap-m shrink-0 bg-bg-soft/30">
-          <button
-            onClick={handleCopyToWeek}
-            className="font-heading text-[10px] font-black uppercase tracking-widest text-samaritan/60 hover:text-azraq transition-all mx-auto"
-          >
-            Appliquer à toute la semaine
-          </button>
-          <button
-            onClick={() => onSave(slots)}
-            className="w-full h-xl bg-azraq hover:bg-azraq/90 text-white rounded-md font-heading text-small font-black uppercase tracking-widest shadow-xl shadow-azraq/10 transition-all active:scale-[0.98]"
-          >
-            Enregistrer les horaires
-          </button>
+        {/* FOOTER ACTIONS */}
+        <div className="p-8 pt-4 space-y-4 bg-white/20 border-t border-border/10">
+           <div className="flex gap-2">
+              <input 
+                type="time"
+                value={newTime}
+                onChange={e => setNewTime(e.target.value)}
+                className="flex-1 h-14 bg-white border border-border/20 rounded-2xl px-6 font-black text-onyx text-[15px] outline-none focus:ring-1 focus:ring-onyx transition-all"
+              />
+              <button 
+                onClick={handleAddSlot}
+                className="w-14 h-14 bg-white border border-border/20 text-onyx rounded-2xl flex items-center justify-center hover:bg-bg-soft transition-all shadow-sm"
+              >
+                 <Plus size={24}/>
+              </button>
+           </div>
+           <button 
+             onClick={() => onSave(slots)}
+             className="w-full h-16 bg-onyx hover:bg-forest text-white rounded-full font-black uppercase tracking-[0.2em] text-[13px] flex items-center justify-center gap-3 transition-all shadow-xl shadow-onyx/20"
+           >
+              <CheckCircle2 size={18}/> Enregistrer la structure
+           </button>
         </div>
       </div>
     </div>

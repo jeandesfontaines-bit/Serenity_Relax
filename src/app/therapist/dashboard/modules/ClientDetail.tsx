@@ -1,14 +1,12 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
-  ChevronLeft, ChevronRight, Calendar, Plus,
-  Mail, Phone, MapPin, ShieldCheck, FileText, Clock,
-  MoreHorizontal, Trash2, Send, Edit2, AlertCircle
+  ChevronLeft, Calendar, Mail, Phone, MapPin, ShieldCheck, FileText, Clock,
+  MoreHorizontal, Trash2, Send, Edit2, AlertCircle, Sparkles, CheckCircle2
 } from 'lucide-react';
 import { Client, Appointment } from '../types';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-/* ── PROPS ── */
 interface ClientDetailProps {
   client: Client;
   onClose: () => void;
@@ -37,290 +35,216 @@ export default function ClientDetail({
     setTimeout(() => setSaveStatus('idle'), 3000);
   }, [client.id, editData, onUpdateClient]);
 
-  const toggleTag = (tag: string) => {
-    const currentTags = (editData.tags || []) as string[];
-    const nextTags = currentTags.includes(tag) 
-      ? currentTags.filter(t => t !== tag)
-      : [...currentTags, tag];
-    updateField('tags', nextTags);
-  };
-
   const clientAppts = useMemo(() =>
     [...appointments]
       .filter(a => a.clientId === client.id || a.clientNameSnapshot === `${client.firstName} ${client.lastName}`)
-      .sort((a, b) => {
-        if (!a.date && !b.date) return 0;
-        if (!a.date) return 1;
-        if (!b.date) return -1;
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      }),
+      .sort((a, b) => (b.date || '').localeCompare(a.date || '')),
     [appointments, client],
   );
 
-  const totalDue = clientAppts.filter(a => !a.paid && a.price).reduce((s, a) => s + (a.price || 0), 0);
+  const totalDue = clientAppts.filter(a => !a.paid && a.price && a.status !== 'cancelled').reduce((s, a) => s + (a.price || 0), 0);
   const totalPaid = clientAppts.filter(a => a.paid && a.price).reduce((s, a) => s + (a.price || 0), 0);
-  const lastAppt = clientAppts.find(a => a.date && a.time);
 
   const TABS = [
-    { id: 'overview' as const, label: 'Aperçu' },
-    { id: 'sessions' as const, label: 'Séances', count: clientAppts.length },
-    { id: 'notes' as const, label: 'Dossier' },
+    { id: 'overview' as const, label: 'Identité' },
+    { id: 'notes' as const, label: 'Dossier Clinique' },
+    { id: 'sessions' as const, label: 'Sessions', count: clientAppts.length },
     { id: 'billing' as const, label: 'Finance' },
   ];
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-bg-soft">
-      <header className="h-xl border-b border-border bg-white px-m sm:px-xl flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-s">
-          <button onClick={onClose} className="p-xs hover:bg-bg-soft rounded-md text-samaritan transition-all">
-            <ChevronLeft size={20} />
+    <div className="flex-1 flex flex-col bg-[#F4F2EE] animate-in fade-in duration-500 overflow-hidden">
+      
+      {/* ── HEADER MAG STYLE ── */}
+      <header className="h-24 bg-white border-b border-border/10 flex items-center justify-between px-10 shrink-0">
+        <div className="flex items-center gap-6">
+          <button onClick={onClose} className="w-12 h-12 bg-bg-soft rounded-full flex items-center justify-center text-onyx hover:bg-white border border-transparent hover:border-border transition-all">
+            <ChevronLeft size={24} />
           </button>
-          <div className="h-m w-px bg-border" />
-          <h2 className="font-heading text-small font-black text-sapphire leading-none uppercase tracking-widest">
-            {client.firstName} {client.lastName}
-          </h2>
-          {saveStatus !== 'idle' && (
-             <span className={`font-heading text-[10px] font-black px-s py-[1px] rounded uppercase tracking-widest animate-pulse transition-all ${saveStatus === 'saving' ? 'bg-azraq/10 text-azraq border border-azraq/10' : 'bg-aurora/10 text-aurora border border-aurora/10'}`}>
-                {saveStatus === 'saving' ? 'Synchro...' : 'Enregistré'}
-             </span>
-          )}
+          <div>
+            <div className="flex items-center gap-3">
+              <h2 className="text-[28px] font-black text-onyx tracking-tighter uppercase leading-none">
+                {client.lastName} {client.firstName}
+              </h2>
+              {saveStatus !== 'idle' && (
+                <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest animate-in fade-in slide-in-from-left-2 ${saveStatus === 'saving' ? 'bg-ochre/10 text-ochre' : 'bg-forest/10 text-forest'}`}>
+                  {saveStatus === 'saving' ? 'Sync...' : 'Sauvegardé'}
+                </span>
+              )}
+            </div>
+            <p className="text-[11px] font-bold text-earth/40 uppercase tracking-[0.2em] mt-1">Dossier N° {client.id.slice(-6).toUpperCase()}</p>
+          </div>
         </div>
-        <div className="flex items-center gap-xs">
-           <a href={`tel:${editData.phone}`} className="p-xs bg-bg-soft text-azraq rounded-md hover:bg-border transition-all border border-border"><Phone size={16}/></a>
-           <a href={`mailto:${editData.email}`} className="p-xs bg-bg-soft text-azraq rounded-md hover:bg-border transition-all border border-border"><Mail size={16}/></a>
-           <button className="h-l px-m bg-azraq text-white rounded-md font-heading text-[10px] font-black uppercase tracking-widest hover:bg-azraq/90 shadow-lg shadow-azraq/10 transition-all flex items-center gap-xxs ml-s">
-             <Calendar size={14}/> Nouveau RDV
+
+        <div className="flex items-center gap-3">
+           <a href={`tel:${editData.phone}`} className="w-12 h-12 bg-white border border-border/30 rounded-full flex items-center justify-center text-earth/60 hover:text-onyx transition-all"><Phone size={20}/></a>
+           <a href={`mailto:${editData.email}`} className="w-12 h-12 bg-white border border-border/30 rounded-full flex items-center justify-center text-earth/60 hover:text-onyx transition-all"><Mail size={20}/></a>
+           <button className="h-12 px-8 bg-onyx text-white rounded-full font-black text-[13px] uppercase tracking-widest hover:opacity-90 shadow-lg shadow-onyx/20 transition-all flex items-center gap-2 ml-4">
+             <Calendar size={16}/> Séance
            </button>
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto font-heading">
-        <div className="max-w-6xl mx-auto px-m py-xl space-y-xl">
+      {/* ── MAIN CONTENT AREA ── */}
+      <main className="flex-1 overflow-y-auto p-10 custom-scrollbar">
+        <div className="max-w-[1200px] mx-auto space-y-10">
           
-          <div className="bg-white border border-border rounded-card p-xl flex flex-col md:flex-row gap-xl shadow-sm shadow-azraq/5">
-            <div className={`w-28 h-28 rounded-xl ${client.color || 'bg-bg-soft'} flex items-center justify-center text-5xl font-black text-azraq shadow-inner shrink-0 uppercase tracking-widest`}>
-              {client.firstName[0]}{client.lastName[0]}
-            </div>
-            <div className="flex-1 space-y-m">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-m">
-                <div className="space-y-xxs">
-                  <h1 className="text-h1 font-black text-sapphire tracking-heading leading-heading uppercase">{client.firstName} {client.lastName}</h1>
-                  <div className="flex items-center gap-m font-heading text-small font-bold text-samaritan uppercase tracking-widest">
-                    <span className="flex items-center gap-xs"><Calendar size={13} /> Patient depuis {format(new Date(), 'yyyy')}</span>
-                    <span className="flex items-center gap-xs"><Clock size={13} /> {clientAppts.length} sessions</span>
-                  </div>
+          {/* Identity Hero Section */}
+          <section className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
+             <div className="bg-white rounded-[32px] p-10 shadow-sm flex flex-col items-center text-center">
+                <div className={`w-32 h-32 rounded-[28px] ${client.color || 'bg-bg-soft'} flex items-center justify-center text-[48px] font-black text-onyx shadow-inner shrink-0 uppercase mb-6`}>
+                  {client.lastName?.[0]}{client.firstName?.[0]}
                 </div>
-              </div>
-              
-              <div className="flex flex-wrap gap-xs">
-                {(editData.tags || []).map((t: string) => (
-                  <span key={t} className="px-s py-xxs bg-white border border-border text-samaritan rounded-md font-heading text-[10px] font-black uppercase tracking-widest flex items-center gap-xxs shadow-sm">
-                    {t}
-                    <button onClick={() => toggleTag(t)} className="ml-xxs hover:text-tomato opacity-50 hover:opacity-100 transition-all">×</button>
-                  </span>
-                ))}
-                <button className="px-s py-xxs bg-bg-soft text-azraq rounded-md font-heading text-[10px] font-black uppercase tracking-widest border border-border hover:bg-border transition-all">
-                  + AJOUTER TAG
-                </button>
-              </div>
-            </div>
-          </div>
+                <h1 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-tight mb-2">{client.lastName} {client.firstName}</h1>
+                <div className="flex flex-col gap-1 items-center mb-6">
+                   <span className="text-[12px] font-bold text-earth/40 uppercase tracking-widest flex items-center gap-2">
+                     <Clock size={12}/> {clientAppts.length} Séances total
+                   </span>
+                   <span className="text-[12px] font-bold text-earth/40 uppercase tracking-widest flex items-center gap-2">
+                     <Sparkles size={12}/> Actif depuis {format(new Date(), 'yyyy')}
+                   </span>
+                </div>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {(editData.tags || []).map((t: string) => (
+                    <span key={t} className="px-4 py-1.5 bg-bg-soft border border-border/50 text-onyx rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+                      {t}
+                      <button onClick={(e) => { e.stopPropagation(); const next = editData.tags.filter((tag:any) => tag !== t); updateField('tags', next); }} className="hover:text-[#F1664D]">×</button>
+                    </span>
+                  ))}
+                  <button className="px-4 py-1.5 bg-white border border-dashed border-border text-earth/40 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-onyx hover:text-onyx transition-all">
+                    + Tag
+                  </button>
+                </div>
+             </div>
 
-          <div className="flex items-center gap-xl border-b border-border">
-            {TABS.map(t => (
-              <button
-                key={t.id}
-                onClick={() => setActiveTab(t.id)}
-                className={`pb-m font-heading text-small font-black uppercase tracking-widest transition-all relative border-b-2 ${
-                  activeTab === t.id ? 'border-azraq text-azraq' : 'border-transparent text-samaritan hover:text-azraq'
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+             <div className="flex flex-col gap-6">
+                {/* Tabs Navigation */}
+                <div className="bg-white rounded-full p-2 border border-border/10 flex items-center gap-2 shadow-xs self-start">
+                   {TABS.map(t => (
+                     <button
+                       key={t.id}
+                       onClick={() => setActiveTab(t.id)}
+                       className={`px-8 py-3 rounded-full text-[13px] font-black uppercase tracking-widest transition-all ${
+                         activeTab === t.id ? 'bg-onyx text-neon shadow-lg ring-1 ring-onyx' : 'text-earth/50 hover:text-onyx'
+                       }`}
+                     >
+                        {t.label} {t.count !== undefined && <span className="ml-2 opacity-40">{t.count}</span>}
+                     </button>
+                   ))}
+                </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
-            <div className="lg:col-span-2 space-y-6">
-              {activeTab === 'overview' && (
-                <div className="grid grid-cols-1 gap-m">
-                  {/* Adresse Card */}
-                  <div className="bg-white border border-border rounded-card p-xl space-y-xl">
-                     <h3 className="font-heading text-[10px] font-black uppercase text-samaritan tracking-widest flex items-center gap-xs"><MapPin size={14}/> Coordonnées & Adresse</h3>
-                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-xl gap-y-xxs">
-                        <EditableField label="Email" value={editData.email || ''} onChange={(v:any) => updateField('email', v)} type="email" icon={<Mail size={14}/>} />
-                        <EditableField label="Téléphone" value={editData.phone || ''} onChange={(v:any) => updateField('phone', v)} type="tel" icon={<Phone size={14}/>} />
-                        <EditableField label="Rue" value={editData.street || ''} onChange={(v:any) => updateField('street', v)} icon={<MapPin size={14}/>} />
-                        <EditableField label="N°" value={editData.streetNumber || ''} onChange={(v:any) => updateField('streetNumber', v)} />
-                        <EditableField label="NPA" value={editData.zip || ''} onChange={(v:any) => updateField('zip', v)} />
-                        <EditableField label="Ville" value={editData.city || ''} onChange={(v:any) => updateField('city', v)} />
-                        <EditableField label="Canton" value={editData.canton || ''} onChange={(v:any) => updateField('canton', v)} />
-                        <EditableField label="Assurance" value={editData.insurance || ''} onChange={(v:any) => updateField('insurance', v)} icon={<ShieldCheck size={14}/>} />
+                <div className="flex-1">
+                   {activeTab === 'overview' && (
+                     <div className="bg-white rounded-[32px] p-10 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="flex items-center gap-4 mb-10 pb-6 border-b border-border/10">
+                           <MapPin size={24} className="text-earth/40" />
+                           <h3 className="text-[20px] font-black text-onyx uppercase tracking-tighter">Coordonnées & Résidence</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                           <EditableRow label="Email" value={editData.email || ''} onChange={(v:any) => updateField('email', v)} icon={<Mail size={16}/>} />
+                           <EditableRow label="Téléphone" value={editData.phone || ''} onChange={(v:any) => updateField('phone', v)} icon={<Phone size={16}/>} />
+                           <EditableRow label="Adresse" value={editData.street || ''} onChange={(v:any) => updateField('street', v)} />
+                           <EditableRow label="NPA / Ville" value={`${editData.zip || ''} ${editData.city || ''}`} onChange={(v:any) => {
+                              const [zip, ...city] = v.split(' ');
+                              updateField('zip', zip);
+                              updateField('city', city.join(' '));
+                           }} />
+                           <EditableRow label="Assurance" value={editData.insurance || ''} onChange={(v:any) => updateField('insurance', v)} icon={<ShieldCheck size={16}/>} />
+                           <EditableRow label="Canton" value={editData.canton || ''} onChange={(v:any) => updateField('canton', v)} />
+                        </div>
                      </div>
-                  </div>
-                </div>
-              )}
-              {activeTab === 'sessions' && (
-                <SessionsTab 
-                  clientAppts={clientAppts} 
-                  onSelectAppt={onSelectAppt} 
-                  onCancelAppt={onCancelAppt}
-                  onResendConfirmation={onResendConfirmation}
-                />
-              )}
-              {activeTab === 'notes' && (
-                <NotesTab client={client} onUpdateClient={onUpdateClient} />
-              )}
-              {activeTab === 'billing' && (
-                <BillingTab clientAppts={clientAppts} totalPaid={totalPaid} totalDue={totalDue} />
-              )}
-            </div>
+                   )}
+                   
+                   {activeTab === 'notes' && (
+                     <div className="bg-white rounded-[32px] p-10 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="flex items-center justify-between mb-10 pb-6 border-b border-border/10">
+                           <div className="flex items-center gap-4">
+                              <FileText size={24} className="text-earth/40" />
+                              <h3 className="text-[20px] font-black text-onyx uppercase tracking-tighter">Dossier Thérapeutique</h3>
+                           </div>
+                           <span className="px-4 py-1.5 bg-forest/10 text-forest rounded-full text-[11px] font-black uppercase flex items-center gap-2">
+                             <ShieldCheck size={14}/> Sécurisé
+                           </span>
+                        </div>
+                        <textarea 
+                           value={editData.notes || ''}
+                           onChange={e => setEditData({ ...editData, notes: e.target.value })}
+                           onBlur={() => updateField('notes', editData.notes)}
+                           className="w-full h-[400px] bg-bg-soft/50 rounded-[24px] p-8 text-[16px] font-medium leading-relaxed text-onyx outline-none focus:ring-1 focus:ring-neon/50 focus:bg-white transition-all shadow-inner resize-none"
+                           placeholder="Commencez à rédiger vos observations cliniques ici..."
+                        />
+                     </div>
+                   )}
 
-            <div className="space-y-xl">
-                <div className="bg-white border border-border rounded-card shadow-sm shadow-azraq/5 overflow-hidden">
-                  <div className="px-xl py-m bg-bg-soft/50 border-b border-border flex items-center justify-between">
-                    <h3 className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">Activité Clinic</h3>
-                  </div>
-                  <div className="p-xl space-y-xl">
-                    <div className="grid grid-cols-2 gap-s">
-                      <div className="bg-bg-soft p-m rounded-card-inner border border-border text-center">
-                        <p className="font-heading text-[10px] font-black text-samaritan uppercase mb-xxs tracking-widest">Fréquence</p>
-                        <p className="font-heading text-h3 font-black text-sapphire">1.2 <span className="text-[10px] font-bold text-samaritan lowercase">/ mois</span></p>
-                      </div>
-                      <div className="bg-bg-soft p-m rounded-card-inner border border-border text-center">
-                        <p className="font-heading text-[10px] font-black text-samaritan uppercase mb-xxs tracking-widest">Moyen</p>
-                        <p className="font-heading text-h3 font-black text-sapphire">{totalPaid > 0 ? Math.round(totalPaid / clientAppts.length) : 150} <span className="text-[10px] font-bold text-samaritan lowercase">CHF</span></p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                   {activeTab === 'sessions' && (
+                     <div className="bg-white rounded-[32px] overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="p-8 border-b border-border/10 bg-bg-soft/30 flex items-center justify-between">
+                           <h3 className="text-[18px] font-black text-onyx uppercase tracking-tighter">Historique des séances</h3>
+                        </div>
+                        <div className="divide-y divide-border/5">
+                           {clientAppts.map(appt => (
+                             <div key={appt.id} onClick={() => onSelectAppt(appt)} className="px-10 h-20 grid grid-cols-[1.5fr_1fr_100px_100px] items-center hover:bg-bg-soft/50 cursor-pointer transition-all">
+                                <div className="flex flex-col">
+                                   <span className="text-[15px] font-black text-onyx uppercase tracking-tight">{appt.serviceName || 'Séance'}</span>
+                                   <span className="text-[11px] font-bold text-earth/40 uppercase tracking-widest">{appt.time}</span>
+                                </div>
+                                <span className="text-[14px] font-bold text-earth">{appt.date}</span>
+                                <span className="text-[14px] font-black text-onyx tabular-nums">{appt.price || 150} CHF</span>
+                                <div className="flex justify-end gap-2">
+                                   <button onClick={(e) => { e.stopPropagation(); onSelectAppt(appt); }} className="w-8 h-8 rounded-full border border-border/50 flex items-center justify-center text-earth/30 hover:text-onyx transition-all"><Edit2 size={16}/></button>
+                                </div>
+                             </div>
+                           ))}
+                           {clientAppts.length === 0 && (
+                             <div className="py-20 text-center text-earth/20 font-black uppercase tracking-widest">Aucune séance</div>
+                           )}
+                        </div>
+                     </div>
+                   )}
 
-                <div className="bg-sapphire rounded-card p-xl text-white shadow-xl shadow-sapphire/10">
-                    <h4 className="font-heading text-[10px] font-black uppercase tracking-widest opacity-40 mb-xs">Profil Rapide</h4>
-                    <p className="font-body text-body font-normal leading-body italic text-white/80">
-                       "{client.notes?.substring(0, 120) || 'Aucune note spécifique rédigée...'}{client.notes && client.notes.length > 120 ? '...' : ''}"
-                    </p>
+                   {activeTab === 'billing' && (
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="bg-[#E1FBB8] rounded-[32px] p-10 flex flex-col justify-between min-h-[220px]">
+                           <span className="text-[11px] font-black text-forest uppercase tracking-[0.2em] block mb-4">Total encaissé</span>
+                           <div className="flex items-end gap-2 text-onyx">
+                              <span className="text-[48px] font-black leading-none tracking-tighter">{totalPaid}</span>
+                              <span className="text-[16px] font-bold mb-2">CHF</span>
+                           </div>
+                           <div className="mt-6 flex items-center gap-2 text-forest/70 font-bold text-[13px]">
+                              <CheckCircle2 size={16}/> En règle
+                           </div>
+                        </div>
+                        <div className={`${totalDue > 0 ? 'bg-[#FF6B61] text-white' : 'bg-bg-soft text-earth/30'} rounded-[32px] p-10 flex flex-col justify-between min-h-[220px] transition-all`}>
+                           <span className="text-[11px] font-black uppercase tracking-[0.2em] block mb-4 opacity-70 text-inherit">Solde à percevoir</span>
+                           <div className="flex items-end gap-2 text-inherit">
+                              <span className="text-[48px] font-black leading-none tracking-tighter">{totalDue}</span>
+                              <span className="text-[16px] font-bold mb-2">CHF</span>
+                           </div>
+                           {totalDue > 0 && <button className="mt-4 py-2 px-6 bg-white/20 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-white/30 truncate">Relancer maintenant</button>}
+                        </div>
+                     </div>
+                   )}
                 </div>
-            </div>
-          </div>
+             </div>
+          </section>
         </div>
       </main>
     </div>
   );
 }
 
-function EditableField({ label, value, onChange, type = 'text', icon }: any) {
+function EditableRow({ label, value, onChange, icon }: any) {
   return (
-    <div className="flex items-center justify-between py-xs gap-m border-b border-border last:border-0 focus-within:bg-bg-soft transition-all rounded-md px-xxs">
-      <div className="flex items-center gap-xs font-heading text-[10px] font-black text-samaritan uppercase tracking-widest shrink-0">
-        {icon} {label}
-      </div>
-      <input
-        type={type}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        className="font-heading text-small text-sapphire font-black text-right bg-transparent border-none outline-none focus:ring-0 placeholder:text-samaritan/20 min-w-0 flex-1 uppercase tracking-widest"
-        placeholder="—"
-      />
-    </div>
-  );
-}
-
-function SessionsTab({ clientAppts, onSelectAppt, onCancelAppt, onResendConfirmation }: any) {
-  if (clientAppts.length === 0) return <div className="p-xxxl text-center text-muted-foreground/40 font-heading text-small font-bold uppercase tracking-widest">Aucune session enregistrée</div>;
-  return (
-    <div className="bg-white border border-border rounded-card overflow-hidden shadow-sm shadow-azraq/5">
-       <div className="grid grid-cols-[100px_1fr_80px_120px] gap-m px-xl h-l items-center bg-bg-soft/50 border-b border-border">
-          {['Date', 'Prestation', 'Montant', ''].map(h => <span key={h} className="font-heading text-[9px] font-black text-samaritan uppercase tracking-widest">{h}</span>)}
+    <div className="flex flex-col gap-2 p-4 bg-bg-soft/30 rounded-2xl border border-border/5 border-transparent hover:border-border/10 focus-within:bg-white focus-within:shadow-sm transition-all group">
+       <div className="flex items-center gap-2 text-[10px] font-black text-earth/30 uppercase tracking-widest group-focus-within:text-forest transition-all">
+         {icon} {label}
        </div>
-       <div className="divide-y divide-border">
-          {clientAppts.map((appt:any) => (
-            <div key={appt.id} className={`grid grid-cols-[100px_1fr_80px_120px] gap-m px-xl h-xl items-center hover:bg-bg-soft transition-all group ${appt.status === 'cancelled' ? 'opacity-40 grayscale' : ''}`}>
-               <div className="flex flex-col">
-                  <span className="font-heading text-small font-black text-azraq uppercase tracking-widest">{appt.date}</span>
-                  <span className="font-heading text-[9px] font-black text-samaritan uppercase tracking-widest">{appt.time}</span>
-               </div>
-               <div className="flex flex-col">
-                  <span className="font-heading text-small font-black text-azraq uppercase tracking-widest truncate">{appt.serviceName}</span>
-                  {appt.status === 'cancelled' && <span className="font-heading text-[9px] font-black text-tomato uppercase tracking-widest">Annulée</span>}
-               </div>
-               <span className="font-heading text-small font-black text-azraq uppercase tracking-widest">{appt.price} <span className="text-[10px] opacity-40">CHF</span></span>
-               <div className="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-all">
-                  {appt.status !== 'cancelled' ? (
-                    <>
-                      <button onClick={() => onSelectAppt(appt)} className="w-l h-l flex items-center justify-center text-samaritan hover:text-azraq hover:bg-white rounded-md border border-transparent hover:border-border transition-all" title="Modifier"><Edit2 size={14}/></button>
-                      <button onClick={() => onResendConfirmation(appt)} className="w-l h-l flex items-center justify-center text-samaritan hover:text-aurora hover:bg-white rounded-md border border-transparent hover:border-border transition-all" title="Relancer"><Send size={14}/></button>
-                      <button onClick={() => onCancelAppt(appt.id)} className="w-l h-l flex items-center justify-center text-samaritan hover:text-tomato hover:bg-white rounded-md border border-transparent hover:border-border transition-all" title="Annuler"><Trash2 size={14}/></button>
-                    </>
-                  ) : (
-                    <span className="font-heading text-[8px] font-black text-samaritan/30 uppercase tracking-widest">Archivé</span>
-                  )}
-               </div>
-            </div>
-          ))}
-       </div>
-    </div>
-  );
-}
-
-function NotesTab({ client, onUpdateClient }: any) {
-  const [notes, setNotes] = useState(client.notes || '');
-  const handleBlur = () => onUpdateClient(client.id, { notes });
-  return (
-    <div className="bg-white border border-border rounded-card p-xl shadow-sm shadow-azraq/5">
-      <div className="flex items-center justify-between mb-xl">
-        <h3 className="font-heading text-[10px] font-black uppercase text-azraq tracking-widest flex items-center gap-xs"><FileText size={16}/> Dossier Clinique Confidentiel</h3>
-        <span className="px-m py-xxs bg-aurora/10 text-aurora border border-aurora/10 rounded-md font-heading text-[10px] font-black uppercase flex items-center gap-xxs tracking-widest"><ShieldCheck size={12}/> Sécurisé</span>
-      </div>
-      <textarea 
-        value={notes}
-        onChange={e => setNotes(e.target.value)}
-        onBlur={handleBlur}
-        className="w-full h-[450px] p-xl bg-bg-soft/50 rounded-card-inner border-none font-body text-body leading-body text-sapphire focus:bg-white focus:ring-2 focus:ring-azraq/10 outline-none transition-all resize-none shadow-inner"
-        placeholder="Rédigez ici le suivi thérapeutique, antécédents, observations..."
-      />
-    </div>
-  );
-}
-
-function BillingTab({ clientAppts, totalPaid, totalDue }: any) {
-  const unpaid = clientAppts.filter((a:any) => !a.paid && a.price > 0);
-  return (
-    <div className="space-y-xl">
-       <div className="grid grid-cols-2 gap-s">
-          <div className="bg-aurora/10 border border-aurora/10 rounded-card p-xl text-aurora shadow-sm">
-             <p className="font-heading text-[10px] font-black uppercase opacity-60 mb-xxs tracking-widest">Encaissé</p>
-             <p className="font-heading text-h2 font-black tracking-heading">{totalPaid} <span className="text-small opacity-40 uppercase">CHF</span></p>
-          </div>
-          <div className="bg-tomato/10 border border-tomato/10 rounded-card p-xl text-tomato shadow-sm">
-             <p className="font-heading text-[10px] font-black uppercase opacity-60 mb-xxs tracking-widest">À encaisser</p>
-             <p className="font-heading text-h2 font-black tracking-heading">{totalDue} <span className="text-small opacity-40 uppercase">CHF</span></p>
-          </div>
-       </div>
-
-       <div className="bg-white border border-border rounded-card overflow-hidden shadow-sm shadow-azraq/5">
-          <div className="px-xl py-m bg-bg-soft/50 border-b border-border flex items-center gap-xs">
-             <AlertCircle size={16} className="text-tomato" />
-             <h3 className="font-heading text-[10px] font-black uppercase text-azraq tracking-widest">Détail des prestations à encaisser</h3>
-          </div>
-          <div className="divide-y divide-border">
-             {unpaid.map((a:any) => (
-                <div key={a.id} className="px-xl py-m flex items-center justify-between hover:bg-bg-soft transition-all">
-                   <div className="space-y-xxs">
-                      <p className="font-heading text-small font-black text-sapphire uppercase tracking-widest">{a.serviceName}</p>
-                      <p className="font-heading text-[10px] font-bold text-samaritan uppercase tracking-widest">{a.date} · {a.time}</p>
-                   </div>
-                   <div className="text-right">
-                      <p className="font-heading text-small font-black text-tomato">{a.price} CHF</p>
-                      <button className="font-heading text-[9px] font-black text-azraq uppercase tracking-widest hover:underline mt-xxs block ml-auto">Marquer réglé</button>
-                   </div>
-                </div>
-             ))}
-             {unpaid.length === 0 && (
-                <div className="p-xl text-center text-samaritan/50 italic font-heading text-small font-bold uppercase tracking-widest">Tout est réglé ! ✅</div>
-             )}
-          </div>
-       </div>
+       <input 
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          className="bg-transparent border-none outline-none font-black text-onyx text-[15px] placeholder:text-earth/10 uppercase tracking-tight"
+          placeholder="Non renseigné"
+       />
     </div>
   );
 }

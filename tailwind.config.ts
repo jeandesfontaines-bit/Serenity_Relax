@@ -8,6 +8,13 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+      screens: {
+        '2xl': '1200px',
+      },
+    },
     extend: {
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
@@ -91,22 +98,15 @@ export default {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        // --- EARTH PALETTE ---
-        squash: 'var(--c-squash)',
-        mandarin: 'var(--c-mandarin)',
-        azraq: 'var(--c-azraq)',
-        dupain: 'var(--c-dupain)',
-        aurora: 'var(--c-aurora)',
-        iceland: 'var(--c-iceland)',
-        tomato: 'var(--c-tomato)',
-        yueguang: 'var(--c-yueguang)',
-        samaritan: 'var(--c-samaritan)',
-        water: 'var(--c-water)',
-        carrot: 'var(--c-carrot)',
-        jalapeno: 'var(--c-jalapeno)',
-        sapphire: 'var(--c-sapphire)',
+        // --- HARMONIE PALETTE ---
+        onyx: 'var(--c-onyx)',
         forest: 'var(--c-forest)',
-        reef: 'var(--c-reef)',
+        ochre: 'var(--c-ochre)',
+        earth: 'var(--c-earth)',
+        clay: 'var(--c-clay)',
+        sandstone: 'var(--c-sandstone)',
+        neon: 'var(--c-neon)',
+        periwinkle: 'var(--c-periwinkle)',
         'bg-soft': 'var(--bg-soft)',
         'border-light': 'var(--border-light)',
       },

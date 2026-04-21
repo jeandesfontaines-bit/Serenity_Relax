@@ -86,7 +86,7 @@ export function Navbar({ onBookingClick }: NavbarProps) {
                 
                 <button 
                   onClick={onBookingClick}
-                  className="h-10 px-8 bg-onyx text-sandstone font-heading text-[10px] font-black uppercase tracking-widest rounded-full transition-all hover:shadow-xl hover:shadow-onyx/20"
+                  className="h-10 px-8 bg-ochre text-white font-heading text-[10px] font-black uppercase tracking-widest rounded-full transition-all hover:shadow-xl hover:shadow-ochre/20"
                 >
                   Réserver
                 </button>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { 
   Smartphone, Bell, Target, Clock, Save, 
-  MessageSquare, UserCircle, Briefcase, ChevronRight,
-  Info, CheckCircle2
+  MessageSquare, Briefcase, ChevronRight,
+  Info, CheckCircle2, Sparkles
 } from 'lucide-react';
 
 interface SettingsPageProps {
@@ -19,26 +19,19 @@ interface SettingsPageProps {
 }
 
 export default function SettingsPage({ 
-  monthlyGoal, 
-  reminderTemplate, 
-  confirmationTemplate,
-  followupTemplate,
-  emailTemplate,
-  emailEnabled,
-  cabinetName,
-  cabinetAddress,
-  cabinetEmail,
+  monthlyGoal, reminderTemplate, confirmationTemplate, followupTemplate,
+  emailTemplate, emailEnabled, cabinetName, cabinetAddress, cabinetEmail,
   onUpdateMetadata 
 }: SettingsPageProps) {
   const [localGoal, setLocalGoal] = useState(monthlyGoal.toString());
   const [localTemplate, setLocalTemplate] = useState(reminderTemplate);
   const [localConfirmation, setLocalConfirmation] = useState(confirmationTemplate);
   const [localFollowup, setLocalFollowup] = useState(followupTemplate);
-  const [localEmail, setLocalEmail] = useState(emailTemplate || "Bonjour {firstName}, votre rendez-vous est confirmé pour le {date} à {time}. Bien à vous.");
-  const [localEmailEnabled, setLocalEmailEnabled] = useState(emailEnabled || false);
-  const [localCabinetName, setLocalCabinetName] = useState(cabinetName || "Mon Cabinet");
-  const [localCabinetEmail, setLocalCabinetEmail] = useState(cabinetEmail || "");
-  const [localCabinetAddress, setLocalCabinetAddress] = useState(cabinetAddress || "");
+  const [localEmail, setLocalEmail] = useState(emailTemplate || "Bonjour {firstName}, votre rendez-vous est confirmé pour le {date} à {time}.");
+  const [localEmailEnabled, setLocalEmailEnabled] = useState(emailEnabled);
+  const [localCabinetName, setLocalCabinetName] = useState(cabinetName);
+  const [localCabinetEmail, setLocalCabinetEmail] = useState(cabinetEmail);
+  const [localCabinetAddress, setLocalCabinetAddress] = useState(cabinetAddress);
   const [activeTab, setActiveTab] = useState('whatsapp');
   const [saved, setSaved] = useState(false);
 
@@ -62,269 +55,186 @@ export default function SettingsPage({
     { id: 'whatsapp', label: 'WhatsApp', icon: MessageSquare },
     { id: 'email', label: 'Emails', icon: Bell },
     { id: 'cabinet', label: 'Cabinet', icon: Briefcase },
-    { id: 'objectives', label: 'Objectifs', icon: Target },
+    { id: 'objectives', label: 'Business', icon: Target },
   ];
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-bg-soft">
-      <header className="h-xl border-b border-border bg-white px-m sm:px-xl flex items-center justify-between shrink-0">
-        <h1 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Réglages du Cabinet</h1>
+    <div className="flex-1 flex flex-col bg-[#F4F2EE] animate-in fade-in duration-700 h-full overflow-hidden">
+      
+      {/* ── STICKY HEADER ── */}
+      <header className="h-24 bg-white border-b border-border/10 flex items-center justify-between px-10 shrink-0 z-10 shadow-sm">
+        <div className="flex items-center gap-4">
+           <div className="w-10 h-10 bg-onyx text-neon rounded-xl flex items-center justify-center">
+              <Sparkles size={20} />
+           </div>
+           <div>
+              <h1 className="text-[24px] font-black text-onyx tracking-tighter uppercase leading-none">Réglages</h1>
+              <p className="text-[10px] font-bold text-earth/30 uppercase tracking-[0.2em] mt-1.5 font-black">Studio Infrastructure</p>
+           </div>
+        </div>
+        
         <button
           onClick={handleSave}
-          className={`flex items-center gap-xs h-l px-m rounded-md font-heading text-[10px] font-black uppercase tracking-widest transition-all ${
-            saved ? 'bg-aurora text-white shadow-lg shadow-aurora/10' : 'bg-azraq text-white hover:bg-azraq/90 shadow-lg shadow-azraq/10'
-          }`}
+          className={`flex items-center gap-3 h-12 px-8 rounded-full text-[13px] font-black uppercase tracking-widest transition-all shadow-lg
+            ${saved ? 'bg-forest text-white' : 'bg-onyx text-white hover:bg-forest'}`}
         >
-          {saved ? <CheckCircle2 size={14} /> : <Save size={14} />}
-          {saved ? 'Enregistré' : 'Enregistrer'}
+          {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
+          {saved ? 'Enregistré' : 'Sauvegarder'}
         </button>
       </header>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full max-w-[1400px] mx-auto flex gap-10 p-10">
           
-          <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-10">
-            
-            {/* Nav Gauche */}
-            <aside className="space-y-xxs">
-              {TABS.map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setActiveTab(t.id)}
-                  className={`w-full flex items-center gap-xs px-m py-xs rounded-md font-heading text-small font-black uppercase tracking-widest transition-all ${
-                    activeTab === t.id ? 'bg-white text-azraq shadow-sm border border-border' : 'text-samaritan hover:bg-bg-soft'
-                  }`}
-                >
-                  <t.icon size={16} />
+          {/* SIDEBAR NAVIGATION */}
+          <aside className="w-[240px] flex flex-col gap-2 shrink-0">
+            {TABS.map(t => (
+              <button
+                key={t.id}
+                onClick={() => setActiveTab(t.id)}
+                className={`w-full flex items-center justify-between px-6 py-4 rounded-full text-[13px] font-black uppercase tracking-widest transition-all
+                  ${activeTab === t.id ? 'bg-onyx text-white shadow-xl' : 'text-earth/40 hover:text-onyx hover:bg-white'}`}
+              >
+                <div className="flex items-center gap-3">
+                  <t.icon size={18} />
                   {t.label}
-                </button>
-              ))}
-            </aside>
+                </div>
+                {activeTab === t.id && <ChevronRight size={14} className="text-neon" />}
+              </button>
+            ))}
+          </aside>
 
-            {/* Contenu Droite */}
-            <main className="space-y-8">
-              
+          {/* MAIN CONTENT AREA */}
+          <main className="flex-1 bg-white rounded-[40px] shadow-sm border border-border/10 overflow-y-auto custom-scrollbar p-12">
+            
+            <div className="max-w-[800px] mx-auto">
               {activeTab === 'whatsapp' && (
-                <div className="space-y-xl">
-                  <div className="bg-white border border-border rounded-card overflow-hidden shadow-sm shadow-azraq/5">
-                    <div className="bg-bg-soft/50 border-b border-border px-xl py-m">
-                       <h2 className="font-heading text-small font-black text-sapphire flex items-center gap-xs uppercase tracking-widest">
-                          <MessageSquare size={18} className="text-azraq" /> WhatsApp Studio
-                       </h2>
-                       <p className="font-heading text-[9px] text-samaritan font-black uppercase tracking-widest mt-xxs">Personnalisez vos automations mobiles</p>
-                    </div>
-                    
-                    <div className="p-xl space-y-xl">
-                      {[
-                        { id: 'remind', label: 'Relance de Paiement', val: localTemplate, set: setLocalTemplate, icon: Bell, color: 'text-tomato', sample: 'Soin du 12/04' },
-                        { id: 'confirm', label: 'Confirmation de RDV', val: localConfirmation, set: setLocalConfirmation, icon: CheckCircle2, color: 'text-aurora', sample: 'Confirmé !' },
-                        { id: 'follow', label: 'Suivi après Séance', val: localFollowup, set: setLocalFollowup, icon: Smartphone, color: 'text-azraq', sample: 'Comment allez-vous ?' }
-                      ].map(item => (
-                        <div key={item.id} className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-xl items-start">
-                          <div className="space-y-m">
-                            <div className="flex items-center gap-xs">
-                               <item.icon size={16} className={item.color} />
-                               <h3 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">{item.label}</h3>
-                            </div>
-                            <textarea
-                              value={item.val}
-                              onChange={(e) => item.set(e.target.value)}
-                              rows={3}
-                              className="w-full font-heading text-small p-m rounded-card-inner border border-border bg-bg-soft/30 focus:ring-2 focus:ring-azraq/10 focus:bg-white focus:outline-none transition-all leading-body resize-none"
-                            />
+                <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
+                  <header className="space-y-2">
+                     <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em]">Automations</span>
+                     <h2 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-none">WhatsApp Connect</h2>
+                  </header>
+
+                  <div className="space-y-12">
+                     {[
+                       { label: 'Relance Impayé', val: localTemplate, set: setLocalTemplate },
+                       { label: 'Confirmation RDV', val: localConfirmation, set: setLocalConfirmation },
+                       { label: 'Suivi Séance', val: localFollowup, set: setLocalFollowup }
+                     ].map((item, i) => (
+                       <div key={i} className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 items-start border-t border-border/5 pt-10">
+                          <div className="space-y-4">
+                             <label className="text-[11px] font-black text-onyx uppercase tracking-widest">{item.label}</label>
+                             <textarea
+                               value={item.val}
+                               onChange={(e) => item.set(e.target.value)}
+                               rows={4}
+                               className="w-full bg-bg-soft/70 border border-border/10 rounded-[24px] p-6 text-[15px] font-medium text-onyx focus:bg-white focus:ring-1 focus:ring-onyx outline-none transition-all resize-none shadow-inner"
+                             />
                           </div>
                           
-                          {/* Chat Preview */}
-                          <div className="relative">
-                             <div className="bg-bg-soft/50 rounded-card-inner overflow-hidden border border-border shadow-2xl max-w-[280px] mx-auto">
-                                <div className="bg-azraq px-m py-s flex items-center gap-m">
-                                   <div className="w-l h-l rounded-md bg-white/10 flex items-center justify-center text-[10px] font-black text-white uppercase tracking-widest">SR</div>
-                                   <div className="flex-1">
-                                      <p className="font-heading text-[10px] font-black text-white leading-none uppercase tracking-widest">Serenity Relax</p>
-                                      <p className="font-heading text-[8px] text-white/50 uppercase tracking-widest mt-xxs">En ligne</p>
-                                   </div>
-                                </div>
-                                <div className="p-m pt-l space-y-m min-h-[120px] bg-bg-soft/50">
-                                   <div className="bg-white rounded-md p-m shadow-sm relative border border-border animate-in fade-in slide-in-from-bottom-2 duration-500">
-                                      <p className="font-heading text-small text-sapphire leading-relaxed pr-m">
-                                         {item.val.replace(/{firstName}/g, 'Jean').replace(/{service}/g, 'Massage').replace(/{date}/g, '19/04').replace(/{price}/g, '150').replace(/{time}/g, '14:30')}
-                                      </p>
-                                      <span className="absolute bottom-xxs right-xs text-[8px] font-black text-samaritan/30 uppercase tracking-widest">12:45 ✓✓</span>
-                                   </div>
-                                </div>
+                          {/* Chat Bubble Preview */}
+                          <div className="bg-[#E7E9EC] rounded-[32px] p-4 pt-10 shadow-lg relative border border-white">
+                             <div className="bg-white rounded-2xl rounded-tl-none p-4 shadow-sm relative">
+                                <p className="text-[13px] font-medium text-onyx leading-snug">
+                                   {item.val.replace(/{firstName}/g, 'Jean').replace(/{service}/g, 'Massage').replace(/{date}/g, '21/04').replace(/{price}/g, '150').replace(/{time}/g, '14:30')}
+                                </p>
+                                <span className="text-[9px] text-earth/20 font-black absolute bottom-1 right-2 uppercase tracking-tighter">14:20 ✓✓</span>
                              </div>
+                             <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-black/10 rounded-full" />
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="p-m bg-azraq/5 border border-azraq/10 rounded-lg flex items-center gap-xs">
-                    <Info size={16} className="text-azraq shrink-0" />
-                    <p className="font-heading text-[11px] text-azraq font-black uppercase tracking-widest leading-relaxed">
-                       Ces messages seront générés automatiquement. Vous pourrez les relire et les modifier avant chaque envoi WhatsApp définitif.
-                    </p>
+                       </div>
+                     ))}
                   </div>
                 </div>
               )}
 
               {activeTab === 'email' && (
-                <div className="space-y-xl">
-                  <div className="bg-white border border-border rounded-card overflow-hidden shadow-sm shadow-azraq/5">
-                    {/* Toolbar */}
-                    <div className="bg-bg-soft/50 border-b border-border px-xl py-m flex items-center justify-between">
-                      <div className="flex items-center gap-m">
-                        <div className="w-xl h-xl bg-azraq rounded-md flex items-center justify-center text-white">
-                          <Bell size={18} />
-                        </div>
-                        <div>
-                          <h2 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Email Visual Composer</h2>
-                          <p className="font-heading text-[9px] text-samaritan font-black uppercase tracking-widest mt-xxs">Configuration de la confirmation automatique</p>
-                        </div>
-                      </div>
-                      <button 
+                <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
+                  <div className="flex items-center justify-between">
+                     <header className="space-y-2">
+                        <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em]">Communication</span>
+                        <h2 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-none">Email Butler</h2>
+                     </header>
+                     <button 
                         onClick={() => setLocalEmailEnabled(!localEmailEnabled)}
-                        className={`w-14 h-l rounded-full p-xxs transition-all duration-300 ${localEmailEnabled ? 'bg-aurora' : 'bg-border'}`}
-                      >
-                        <div className={`w-m h-m bg-white rounded-full shadow-md transition-transform duration-300 ${localEmailEnabled ? 'translate-x-[24px]' : 'translate-x-0'}`} />
-                      </button>
-                    </div>
+                        className={`w-16 h-8 rounded-full p-1 transition-all ${localEmailEnabled ? 'bg-forest' : 'bg-earth/20'}`}
+                     >
+                        <div className={`w-6 h-6 bg-white rounded-full shadow-lg transition-transform ${localEmailEnabled ? 'translate-x-[32px]' : 'translate-x-0'}`} />
+                     </button>
+                  </div>
 
-                    <div className="p-xl">
-                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl">
-                          {/* Editeur */}
-                          <div className={localEmailEnabled ? 'opacity-100 space-y-m' : 'opacity-30 pointer-events-none space-y-m'}>
-                             <label className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">Contenu personnalisé</label>
-                             <textarea
-                                value={localEmail}
-                                onChange={(e) => setLocalEmail(e.target.value)}
-                                rows={10}
-                                className="w-full font-heading text-small p-m rounded-card-inner border border-border bg-bg-soft/30 focus:ring-2 focus:ring-azraq/10 focus:bg-white focus:outline-none transition-all leading-body resize-none"
-                                placeholder="Rédigez votre email de bienvenue..."
-                             />
-                             <div className="p-m bg-bg-soft border border-border rounded-md">
-                                <p className="font-heading text-[9px] text-samaritan font-black uppercase tracking-widest">✨ Astuce : Utilisez <span className="bg-white px-xxs py-px rounded border border-border text-azraq font-black">&#123;firstName&#125;</span> pour personnaliser.</p>
-                             </div>
-                          </div>
-
-                          {/* Visual Preview */}
-                          <div className="space-y-m">
-                             <label className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">Aperçu Réel (Client)</label>
-                             <div className="border border-border rounded-card overflow-hidden shadow-xl shadow-azraq/5 bg-white">
-                                <div className="bg-azraq px-xl py-xl text-center">
-                                   <div className="w-xl h-xl bg-white/10 rounded-md mx-auto mb-m flex items-center justify-center backdrop-blur-md">
-                                      <Briefcase className="text-white" size={24} />
-                                   </div>
-                                   <h3 className="text-white font-heading text-small font-black uppercase tracking-widest">VOTRE CABINET</h3>
-                                </div>
-                                <div className="p-xl space-y-xl">
-                                   <div className="space-y-xs text-center">
-                                      <h4 className="font-heading text-h4 font-black text-sapphire uppercase tracking-widest">Confirmation</h4>
-                                      <p className="font-body text-body font-normal text-samaritan leading-body">
-                                         {localEmail.replace(/{firstName}/g, 'Jean').replace(/{service}/g, 'Massage').replace(/{date}/g, '19/04').replace(/{time}/g, '14:30')}
-                                      </p>
-                                   </div>
-                                   
-                                   <div className="bg-bg-soft rounded-card-inner p-m border border-border space-y-xxs">
-                                      <div className="flex items-center justify-between border-b border-border/50 pb-xxs">
-                                         <span className="font-heading text-[9px] font-black text-samaritan uppercase tracking-widest">Soin</span>
-                                         <span className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Massage Relaxant</span>
-                                      </div>
-                                      <div className="flex items-center justify-between border-b border-border/50 pb-xxs">
-                                         <span className="font-heading text-[9px] font-black text-samaritan uppercase tracking-widest">Temps</span>
-                                         <span className="font-heading text-small font-black text-sapphire uppercase tracking-widest">19 Avril @ 14:30</span>
-                                      </div>
-                                   </div>
-
-                                   <button className="w-full py-m bg-azraq rounded-md text-white font-heading text-small font-black uppercase tracking-widest shadow-lg shadow-azraq/10 flex items-center justify-center gap-xs hover:bg-azraq/90 transition-all">
-                                      <Clock size={16} /> Ajouter au calendrier
-                                   </button>
-                                   
-                                   <p className="font-heading text-[8px] text-center text-samaritan font-black uppercase tracking-widest">Cabinet Thérapeutique · Avenue de la Gare 12, Genève</p>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
+                  <div className={`space-y-8 transition-all ${localEmailEnabled ? 'opacity-100' : 'opacity-30 grayscale'}`}>
+                     <div className="space-y-4">
+                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Modèle de corps d'email</label>
+                        <textarea
+                           value={localEmail}
+                           onChange={(e) => setLocalEmail(e.target.value)}
+                           rows={8}
+                           className="w-full bg-bg-soft/70 border border-border/10 rounded-[32px] p-8 text-[16px] font-medium text-onyx focus:bg-white outline-none focus:ring-1 focus:ring-onyx transition-all resize-none shadow-inner"
+                        />
+                     </div>
+                     <div className="p-6 bg-forest/5 rounded-2xl flex items-center gap-4 text-forest">
+                        <Info size={20} />
+                        <p className="text-[13px] font-bold">L'email inclura automatiquement votre logo et les détails du cabinet configurés.</p>
+                     </div>
                   </div>
                 </div>
               )}
 
               {activeTab === 'objectives' && (
-                <div className="bg-white border border-border rounded-card p-xl shadow-sm shadow-azraq/5 space-y-xl">
-                   <div>
-                    <h2 className="font-heading text-small font-black text-sapphire mb-xxs flex items-center gap-xs uppercase tracking-widest">
-                       <Target size={18} className="text-azraq" /> Objectif Financier
-                    </h2>
-                    <p className="font-heading text-[10px] font-bold text-samaritan uppercase tracking-widest">Définissez votre objectif de chiffre d'affaires mensuel.</p>
-                  </div>
+                <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
+                  <header className="space-y-2">
+                     <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em]">Business Strategy</span>
+                     <h2 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-none">Performance Cible</h2>
+                  </header>
 
-                  <div className="space-y-m max-w-xs">
-                     <label className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">Montant cible (CHF)</label>
-                     <div className="relative">
-                        <input 
-                          type="number"
-                          value={localGoal}
-                          onChange={(e) => setLocalGoal(e.target.value)}
-                          className="w-full h-l pl-m pr-l rounded-md border border-border bg-bg-soft/50 font-heading text-h3 font-black text-sapphire focus:ring-2 focus:ring-azraq/10 focus:border-border focus:bg-white focus:outline-none transition-all uppercase tracking-widest"
-                        />
-                        <span className="absolute right-m top-1/2 -translate-y-1/2 font-heading text-small font-black text-samaritan/30 uppercase tracking-widest">CHF</span>
+                  <div className="max-w-md space-y-8">
+                     <div className="bg-bg-soft/40 p-10 rounded-[32px] border border-border/5 space-y-4">
+                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Objectif CA Mensuel</label>
+                        <div className="relative">
+                           <input 
+                              type="number"
+                              value={localGoal}
+                              onChange={(e) => setLocalGoal(e.target.value)}
+                              className="w-full bg-white border border-border/10 rounded-2xl h-20 px-8 text-[42px] font-black text-onyx outline-none focus:ring-1 focus:ring-onyx transition-all tabular-nums tracking-tighter"
+                           />
+                           <span className="absolute right-8 top-1/2 -translate-y-1/2 text-[14px] font-black text-earth/20 uppercase tracking-widest">CHF</span>
+                        </div>
+                        <p className="text-[12px] font-bold text-earth/40 leading-relaxed">Cet objectif est utilisé pour calculer votre barre de progression sur le tableau de bord principal.</p>
                      </div>
                   </div>
                 </div>
               )}
 
               {activeTab === 'cabinet' && (
-                <div className="bg-white border border-border rounded-card p-xl shadow-sm shadow-azraq/5 space-y-xl">
-                   <div>
-                    <h2 className="font-heading text-small font-black text-sapphire mb-xxs flex items-center gap-xs uppercase tracking-widest">
-                       <Briefcase size={18} className="text-azraq" /> Informations Professionnelles
-                    </h2>
-                    <p className="font-heading text-[10px] font-bold text-samaritan uppercase tracking-widest">Ces informations apparaîtront sur vos factures PDF.</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-m">
-                     <div className="space-y-xs">
-                        <label className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">Nom du Cabinet</label>
-                        <input 
-                          value={localCabinetName} 
-                          onChange={(e) => setLocalCabinetName(e.target.value)}
-                          placeholder="Ex: Cabinet Zen"
-                          className="w-full h-l px-m rounded-md bg-bg-soft/50 border border-border font-heading text-small font-black text-sapphire focus:ring-2 focus:ring-azraq/10 focus:border-border focus:outline-none focus:bg-white transition-all uppercase tracking-widest placeholder:text-samaritan/30" 
-                        />
+                <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
+                  <header className="space-y-2">
+                     <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em]">Legal Identity</span>
+                     <h2 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-none">Entité Cabinet</h2>
+                  </header>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <div className="space-y-4">
+                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Nom Public</label>
+                        <input value={localCabinetName} onChange={(e) => setLocalCabinetName(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-black text-onyx outline-none focus:bg-white transition-all uppercase tracking-tight" />
                      </div>
-                     <div className="space-y-xs">
-                        <label className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">Email Professionnel</label>
-                        <input 
-                          value={localCabinetEmail} 
-                          onChange={(localE) => setLocalCabinetEmail(localE.target.value)}
-                          placeholder="votre@email.com"
-                          className="w-full h-l px-m rounded-md bg-bg-soft/50 border border-border font-heading text-small font-black text-sapphire focus:ring-2 focus:ring-azraq/10 focus:border-border focus:outline-none focus:bg-white transition-all lowercase tracking-widest placeholder:text-samaritan/30" 
-                        />
+                     <div className="space-y-4">
+                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Email Contact</label>
+                        <input value={localCabinetEmail} onChange={(e) => setLocalCabinetEmail(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-black text-onyx outline-none focus:bg-white transition-all lowercase" />
                      </div>
-                  </div>
-                  <div className="space-y-xs">
-                      <label className="font-heading text-[10px] font-black text-samaritan uppercase tracking-widest">Adresse Complète</label>
-                      <input 
-                        value={localCabinetAddress} 
-                        onChange={(e) => setLocalCabinetAddress(e.target.value)}
-                        placeholder="Rue du Lac 12, 1200 Genève"
-                        className="w-full h-l px-m rounded-md bg-bg-soft/50 border border-border font-heading text-small font-black text-sapphire focus:ring-2 focus:ring-azraq/10 focus:border-border focus:outline-none focus:bg-white transition-all uppercase tracking-widest placeholder:text-samaritan/30" 
-                      />
-                  </div>
-                  <div className="p-m bg-aurora/10 border border-aurora/10 rounded-lg flex items-center gap-xs">
-                    <CheckCircle2 size={16} className="text-aurora" />
-                    <p className="font-heading text-[10px] font-black text-aurora uppercase tracking-widest leading-relaxed">Ces informations seront utilisées pour générer automatiquement vos factures PDF.</p>
+                     <div className="space-y-4 md:col-span-2">
+                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Coordonnées Facturation</label>
+                        <input value={localCabinetAddress} onChange={(e) => setLocalCabinetAddress(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-black text-onyx outline-none focus:bg-white transition-all uppercase tracking-tight" />
+                     </div>
                   </div>
                 </div>
               )}
+            </div>
 
-            </main>
-
-          </div>
-
+          </main>
         </div>
       </div>
+
     </div>
   );
 }

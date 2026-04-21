@@ -1,31 +1,29 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import {
-  Search, Plus, ArrowUpDown, Users,
-  Settings2, GitPullRequest, CheckCircle2, Phone, MapPin, X,
+import React, { useState, useMemo, useCallback } from 'react';
+import { 
+  Search, Plus, MoreHorizontal, ChevronLeft, ChevronRight, Settings2, 
+  GitPullRequest, X, Mail, Phone, MapPin, ShieldCheck, Map 
 } from 'lucide-react';
 import { Client, Appointment } from '../types';
 
-/* ── COLUMN DEFINITIONS ── */
 interface ColDef {
   id: string;
   label: string;
-  minWidth: string;
   flex: string;
-  align?: 'center' | 'start';
 }
 
 const ALL_COLUMNS: ColDef[] = [
-  { id: 'lastName',  label: 'Nom',        minWidth: '160px', flex: '1.5fr' },
-  { id: 'firstName', label: 'Prénom',     minWidth: '140px', flex: '1fr' },
-  { id: 'email',     label: 'Email',      minWidth: '220px', flex: '2fr' },
-  { id: 'phone',     label: 'Téléphone',  minWidth: '140px', flex: '1fr' },
-  { id: 'city',      label: 'Ville',      minWidth: '120px', flex: '1fr' },
-  { id: 'canton',    label: 'Canton',     minWidth: '80px',  flex: '0.6fr', align: 'center' },
-  { id: 'sessions',  label: 'Sessions',    minWidth: '80px',  flex: '0.6fr', align: 'center' },
-  { id: 'insurance', label: 'Assurance',  minWidth: '140px', flex: '1fr' },
+  { id: 'lastName',  label: 'Client',       flex: '1.5fr' },
+  { id: 'phone',     label: 'Téléphone',   flex: '1fr' },
+  { id: 'status',    label: 'Statut',      flex: '0.8fr' },
+  { id: 'sessions',  label: 'Sessions',    flex: '0.6fr' },
+  { id: 'lastSession', label: 'Dernière',    flex: '1fr' },
+  { id: 'balance',   label: 'Solde',       flex: '0.8fr' },
+  { id: 'email',     label: 'Email',       flex: '1.2fr' },
+  { id: 'city',      label: 'Ville',       flex: '1fr' },
+  { id: 'canton',    label: 'Canton',      flex: '0.6fr' },
+  { id: 'insurance', label: 'Assurance',   flex: '1fr' },
 ];
 
-/* ── PROPS ── */
 interface ClientsPageProps {
   clients: Client[];
   appointments: Appointment[];
@@ -34,66 +32,53 @@ interface ClientsPageProps {
   onMergeClients?: (primaryId: string, secondaryIds: string[]) => void;
 }
 
-/* ──────────────────────────────────────────────
-   MAIN COMPONENT
-   ────────────────────────────────────────────── */
 export default function ClientsPage({
   clients, appointments, onSelectClient, onNewClient, onMergeClients,
 }: ClientsPageProps) {
   const [search, setSearch] = useState('');
-  const [visibleColumns, setVisibleColumns] = useState<string[]>(
-    ['lastName', 'firstName', 'email', 'phone', 'city', 'sessions'],
-  );
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(['lastName', 'phone', 'status', 'sessions', 'lastSession', 'balance']);
   const [selectedClients, setSelectedClients] = useState<Set<string>>(new Set());
   const [showColPicker, setShowColPicker] = useState(false);
   const [sortField, setSortField] = useState<string>('lastName');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
 
-  // Close column picker on Escape
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setShowColPicker(false);
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, []);
-
-  // Sessions map
-  const sessionsByClient = useMemo(() => {
-    const map = new Map<string, number>();
+  // Stats calculation
+  const statsMap = useMemo(() => {
+    const map = new Map<string, { count: number, last: string }>();
     appointments.forEach(apt => {
-      if (apt.clientId) map.set(apt.clientId, (map.get(apt.clientId) || 0) + 1);
+      if (apt.clientId) {
+        const current = map.get(apt.clientId) || { count: 0, last: '' };
+        map.set(apt.clientId, {
+          count: current.count + 1,
+          last: (apt.date && apt.date > current.last) ? apt.date : current.last
+        });
+      }
     });
     return map;
   }, [appointments]);
 
-  // Filtered + sorted
   const filtered = useMemo(() =>
     clients
       .filter(p => {
-        const s = `${p.firstName} ${p.lastName} ${p.email || ''} ${p.phone || ''} ${p.city || ''} ${p.canton || ''} ${p.insurance || ''}`.toLowerCase();
+        const s = `${p.firstName} ${p.lastName} ${p.email || ''} ${p.phone || ''} ${p.city || ''} ${p.insurance || ''}`.toLowerCase();
         return s.includes(search.toLowerCase());
       })
       .sort((a, b) => {
-        let valA: any = a[sortField as keyof Client] || '';
-        let valB: any = b[sortField as keyof Client] || '';
+        let valA: any = (a[sortField as keyof Client] || '').toString();
+        let valB: any = (b[sortField as keyof Client] || '').toString();
+        
         if (sortField === 'sessions') {
-          valA = sessionsByClient.get(a.id) || 0;
-          valB = sessionsByClient.get(b.id) || 0;
+           valA = statsMap.get(a.id)?.count || 0;
+           valB = statsMap.get(b.id)?.count || 0;
         }
+
         const res = typeof valA === 'string' ? valA.localeCompare(valB) : valA - valB;
         return sortDir === 'asc' ? res : -res;
       }),
-    [clients, search, sortField, sortDir, sessionsByClient],
+    [clients, search, sortField, sortDir, statsMap]
   );
 
-  const toggleSort = useCallback((id: string) => {
-    if (sortField === id) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
-    else { setSortField(id); setSortDir('asc'); }
-  }, [sortField]);
-
-  const toggleClient = useCallback((e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
+  const toggleClient = useCallback((id: string) => {
     setSelectedClients(prev => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
@@ -101,330 +86,136 @@ export default function ClientsPage({
     });
   }, []);
 
-  // Grid template with minmax
-  const gridTemplate = useMemo(() => {
-    const cols = visibleColumns.map(colId => {
-      const col = ALL_COLUMNS.find(c => c.id === colId);
-      return col ? `minmax(${col.minWidth}, ${col.flex})` : 'minmax(100px, 1fr)';
-    });
-    return `40px ${cols.join(' ')}`;
-  }, [visibleColumns]);
-
-  const handleMerge = useCallback(() => {
-    const [primary, ...others] = Array.from(selectedClients);
-    onMergeClients?.(primary, others);
-    setSelectedClients(new Set());
-  }, [selectedClients, onMergeClients]);
-
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      {/* ── PAGE HEADER ── */}
-      <header className="h-xl border-b border-border bg-white px-m sm:px-xl flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-s sm:gap-m min-w-0 flex-1">
-          <h1 className="font-heading text-small font-black text-sapphire shrink-0 uppercase tracking-widest">Clients</h1>
-          <div className="relative flex-1 max-w-sm min-w-0">
-            <Search size={14} className="absolute left-s top-1/2 -translate-y-1/2 text-samaritan pointer-events-none" />
+    <div className="flex-1 flex flex-col gap-8">
+      
+      {/* ── HEADER ── */}
+      <div className="flex flex-wrap items-center justify-between gap-6">
+        <div className="flex items-center gap-4">
+          <h1 className="text-[42px] font-black tracking-tight text-onyx leading-none">Clients</h1>
+          <span className="px-4 py-1.5 bg-border/40 text-earth/60 rounded-full text-[13px] font-bold mt-2">
+            {filtered.length} total
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3 relative">
+          <div className="relative w-full md:w-80">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-earth/40" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Rechercher…"
-              className="w-full h-l bg-bg-soft/50 border border-transparent rounded-md pl-xl pr-m font-heading text-small font-black uppercase tracking-widest text-sapphire placeholder:text-samaritan/30 focus:outline-none focus:ring-2 focus:ring-azraq/10 focus:bg-white transition-all duration-150"
+              placeholder="Rechercher..."
+              className="w-full h-12 bg-white border border-transparent rounded-full pl-12 pr-5 text-[14px] font-medium text-onyx shadow-sm focus:outline-none transition-all"
             />
           </div>
-        </div>
+          
+          <button onClick={() => setShowColPicker(!showColPicker)} className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-onyx shadow-sm hover:bg-bg-soft transition-all">
+            <Settings2 size={20} />
+          </button>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="relative">
-            <button
-              onClick={() => setShowColPicker(!showColPicker)}
-              className="hidden sm:flex w-xl h-xl items-center justify-center rounded-md bg-white border border-border text-samaritan hover:text-sapphire hover:border-azraq transition-all duration-150"
-              title="Colonnes"
-            >
-              <Settings2 size={14} />
-            </button>
-            {showColPicker && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setShowColPicker(false)} />
-                <div className="absolute right-0 top-xl mt-xxs w-52 bg-white rounded-md shadow-2xl border border-border py-xs z-50">
-                  <p className="px-m py-xxs font-heading text-[9px] font-black text-samaritan uppercase tracking-widest">Affichage</p>
+          {showColPicker && (
+            <div className="absolute right-0 top-14 w-60 bg-white rounded-2xl shadow-2xl border p-4 z-50">
+               <p className="text-[10px] font-black text-earth/40 uppercase tracking-widest mb-4 px-2">Configuration</p>
+               <div className="space-y-1 overflow-y-auto max-h-[400px]">
                   {ALL_COLUMNS.map(col => (
-                    <button
-                      key={col.id}
-                      onClick={() => setVisibleColumns(prev =>
-                        prev.includes(col.id) ? prev.filter(id => id !== col.id) : [...prev, col.id]
-                      )}
-                      className="w-full h-l flex items-center justify-between font-heading text-[10px] font-black uppercase tracking-widest px-m hover:bg-bg-soft text-samaritan hover:text-azraq transition-all"
-                    >
-                      {col.label}
-                      {visibleColumns.includes(col.id) && <CheckCircle2 size={12} className="text-aurora" />}
+                    <button key={col.id} onClick={() => setVisibleColumns(prev => prev.includes(col.id) ? prev.filter(i => i !== col.id) : [...prev, col.id])} className="w-full flex justify-between p-2.5 hover:bg-bg-soft rounded-xl text-left transition-all">
+                       <span className="text-[13px] font-bold text-onyx">{col.label}</span>
+                       <input type="checkbox" checked={visibleColumns.includes(col.id)} readOnly className="accent-forest" />
                     </button>
                   ))}
-                </div>
-              </>
-            )}
-          </div>
+               </div>
+            </div>
+          )}
 
-          {/* Merge */}
           {selectedClients.size > 1 && (
-            <button
-              onClick={handleMerge}
-              className="flex items-center gap-xs h-l px-m bg-aurora/10 text-aurora border border-aurora/10 rounded-md font-heading text-[10px] font-black uppercase tracking-widest hover:bg-aurora/20 transition-colors duration-150"
-            >
-              <GitPullRequest size={13} />
-              Fusionner ({selectedClients.size})
+            <button onClick={() => onMergeClients?.(Array.from(selectedClients)[0], Array.from(selectedClients).slice(1))} className="h-12 px-6 bg-ochre/10 text-ochre rounded-full flex items-center gap-2 text-[14px] font-black uppercase tracking-widest hover:bg-ochre/20 transition-all">
+              <GitPullRequest size={16} /> Fusionner
             </button>
           )}
 
-          {/* New client */}
-          <button
-            onClick={() => onNewClient()}
-            className="flex items-center gap-xs h-l px-m bg-azraq text-white rounded-md font-heading text-[10px] font-black uppercase tracking-widest hover:bg-azraq/90 transition-colors duration-150 shadow-lg shadow-azraq/10"
-          >
-            <Plus size={14} />
-            <span className="hidden sm:inline">Nouveau client</span>
+          <button onClick={() => onNewClient()} className="h-12 px-6 bg-onyx text-white rounded-full flex items-center gap-2 text-[14px] font-bold shadow-lg shadow-onyx/20 hover:opacity-90 transition-all">
+            <Plus size={18} /> <span className="hidden sm:inline">Nouveau client</span>
           </button>
         </div>
-      </header>
+      </div>
 
-      {/* ── SELECTION BAR ── */}
+      {/* ── SELECTION ── */}
       {selectedClients.size > 0 && (
-        <div className="h-m bg-aurora/10 border-b border-aurora/10 px-m sm:px-xl flex items-center justify-between shrink-0">
-          <span className="font-heading text-[10px] font-black uppercase tracking-widest text-aurora">
-            {selectedClients.size} sélectionné{selectedClients.size > 1 ? 's' : ''}
-          </span>
-          <button
-            onClick={() => setSelectedClients(new Set())}
-            className="font-heading text-[10px] font-black uppercase tracking-widest text-aurora/50 hover:text-aurora flex items-center gap-xxs transition-colors"
-          >
-            <X size={12} /> Désélectionner
-          </button>
+        <div className="bg-onyx text-white rounded-2xl px-6 py-3 flex items-center justify-between animate-in slide-in-from-top-4">
+           <span className="text-[13px] font-bold uppercase tracking-widest">{selectedClients.size} client(s) sélectionné(s)</span>
+           <button onClick={() => setSelectedClients(new Set())} className="text-white/40 hover:text-white transition-all"><X size={18} /></button>
         </div>
       )}
 
-      {/* ── CONTENT ── */}
-      <main className="flex-1 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 py-5 h-full flex flex-col">
-
-          {/* Desktop table */}
-          <div className="hidden md:flex flex-col flex-1 min-h-0 bg-white border border-border rounded-lg overflow-hidden shadow-sm shadow-azraq/5">
-            {/* Header */}
-            <div
-              className="grid px-m h-l items-center border-b border-border bg-bg-soft shrink-0"
-              style={{ gridTemplateColumns: gridTemplate }}
-            >
-              <div className="flex justify-center">
-                <Checkbox
-                  checked={selectedClients.size === filtered.length && filtered.length > 0}
-                  onChange={() => {
-                    if (selectedClients.size === filtered.length && filtered.length > 0) setSelectedClients(new Set());
-                    else setSelectedClients(new Set(filtered.map(a => a.id)));
-                  }}
-                />
+      {/* ── DESKTOP VIEW ── */}
+      <div className="hidden md:block bg-white border border-border/10 rounded-[32px] overflow-hidden shadow-sm">
+        <div className="grid px-10 h-16 items-center border-b border-border/10 bg-white/50" style={{ gridTemplateColumns: `40px ${visibleColumns.map(id => ALL_COLUMNS.find(c => c.id === id)?.flex).join(' ')} 40px` }}>
+          <input type="checkbox" className="w-4 h-4 accent-forest" checked={selectedClients.size === filtered.length && filtered.length > 0} onChange={() => setSelectedClients(selectedClients.size === filtered.length ? new Set() : new Set(filtered.map(c => c.id)))} />
+          {visibleColumns.map(id => (
+            <div key={id} onClick={() => { setSortField(id); setSortDir(sortDir === 'asc' ? 'desc' : 'asc'); }} className="text-[11px] font-black text-earth/40 uppercase tracking-[0.2em] cursor-pointer hover:text-onyx flex items-center gap-2">
+              {ALL_COLUMNS.find(c => c.id === id)?.label}
+              {sortField === id && <span className="opacity-40">{sortDir === 'asc' ? '▲' : '▼'}</span>}
+            </div>
+          ))}
+          <span />
+        </div>
+        <div className="divide-y divide-border/5">
+          {filtered.map(p => {
+            const stats = statsMap.get(p.id) || { count: 0, last: '—' };
+            return (
+              <div key={p.id} onClick={() => onSelectClient(p)} className={`grid px-10 h-20 items-center hover:bg-bg-soft/50 cursor-pointer transition-all group ${selectedClients.has(p.id) ? 'bg-forest/5' : ''}`} style={{ gridTemplateColumns: `40px ${visibleColumns.map(id => ALL_COLUMNS.find(c => c.id === id)?.flex).join(' ')} 40px` }}>
+                <div onClick={(e) => { e.stopPropagation(); toggleClient(p.id); }}>
+                  <input type="checkbox" checked={selectedClients.has(p.id)} readOnly className="w-4 h-4 accent-forest cursor-pointer" />
+                </div>
+                {visibleColumns.map(colId => {
+                  if (colId === 'lastName') return <div key={colId} className="flex items-center gap-4 min-w-0"><div className="w-9 h-9 rounded-full bg-border/20 flex items-center justify-center font-black text-[12px]">{p.lastName.charAt(0)}</div><div className="truncate pr-4"><p className="text-[14px] font-black text-onyx leading-tight uppercase truncate group-hover:text-forest transition-all">{p.lastName} {p.firstName}</p><p className="text-[11px] font-medium text-earth/50 leading-tight truncate lowercase">{p.insurance || 'Sans assurance'}</p></div></div>;
+                  if (colId === 'phone') return <span key={colId} className="text-[14px] font-bold text-onyx tabular-nums">{p.phone || '—'}</span>;
+                  if (colId === 'status') return <div key={colId}><span className="px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-[#E1FBB8] text-forest/70">Actif</span></div>;
+                  if (colId === 'sessions') return <div key={colId} className="w-8 h-8 rounded-lg bg-bg-soft flex items-center justify-center text-[13px] font-black text-onyx">{stats.count}</div>;
+                  if (colId === 'lastSession') return <span key={colId} className="text-[13px] font-bold text-earth">{stats.last || '—'}</span>;
+                  if (colId === 'balance') return <span key={colId} className="text-[14px] font-black text-earth/40">0 CHF</span>;
+                  if (colId === 'email') return <span key={colId} className="text-[13px] font-medium text-earth/60 lowercase truncate pr-4">{p.email || '—'}</span>;
+                  if (colId === 'city') return <span key={colId} className="text-[13px] font-bold text-earth truncate pr-4">{p.city || '—'}</span>;
+                  if (colId === 'canton') return <span key={colId} className="text-[13px] font-black text-forest uppercase">{p.canton || '—'}</span>;
+                  if (colId === 'insurance') return <span key={colId} className="text-[13px] font-bold text-earth/60 uppercase truncate pr-4">{p.insurance || '—'}</span>;
+                  return null;
+                })}
+                <button className="text-earth/40 hover:text-onyx transition-all"><MoreHorizontal size={18} /></button>
               </div>
-              {visibleColumns.map(colId => {
-                const col = ALL_COLUMNS.find(c => c.id === colId);
-                return (
-                  <div
-                    key={colId}
-                    onClick={() => toggleSort(colId)}
-                    className={`py-xxs px-xxs font-heading text-[9px] font-black text-samaritan uppercase tracking-widest cursor-pointer hover:text-azraq transition-all flex items-center gap-xxs ${col?.align === 'center' ? 'justify-center' : 'justify-start'}`}
-                  >
-                    {col?.label}
-                    {sortField === colId && <ArrowUpDown size={11} className="text-azraq" />}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Rows */}
-            <div className="flex-1 overflow-y-auto divide-y divide-border">
-              {filtered.map(p => (
-                <ClientRow
-                  key={p.id}
-                  client={p}
-                  sessionsCount={sessionsByClient.get(p.id) || 0}
-                  isSelected={selectedClients.has(p.id)}
-                  visibleColumns={visibleColumns}
-                  gridTemplate={gridTemplate}
-                  onSelect={onSelectClient}
-                  onToggle={toggleClient}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile cards */}
-          <div className="md:hidden flex-1 overflow-y-auto space-y-2 pb-4">
-            {filtered.map(p => (
-              <ClientCard
-                key={p.id}
-                client={p}
-                sessionsCount={sessionsByClient.get(p.id) || 0}
-                isSelected={selectedClients.has(p.id)}
-                onSelect={onSelectClient}
-                onToggle={toggleClient}
-              />
-            ))}
-          </div>
-
-          {/* Empty state */}
-          {filtered.length === 0 && (
-            <EmptyState search={search} onNewClient={onNewClient} />
-          )}
+            );
+          })}
         </div>
-      </main>
-    </div>
-  );
-}
-
-/* ── CHECKBOX ── */
-function Checkbox({ checked, onChange }: { checked: boolean; onChange: () => void }) {
-  return (
-    <div
-      onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`w-4 h-4 rounded border-[1.5px] cursor-pointer transition-colors duration-150 flex items-center justify-center ${checked ? 'bg-azraq border-azraq' : 'border-border bg-white hover:border-azraq'}`}
-    >
-      {checked && <span className="text-white text-[8px] leading-none">✓</span>}
-    </div>
-  );
-}
-
-/* ── CLIENT ROW (desktop) ── */
-interface ClientRowProps {
-  client: Client;
-  sessionsCount: number;
-  isSelected: boolean;
-  visibleColumns: string[];
-  gridTemplate: string;
-  onSelect: (c: Client) => void;
-  onToggle: (e: React.MouseEvent, id: string) => void;
-}
-
-function ClientRow({ client: p, sessionsCount, isSelected, visibleColumns, gridTemplate, onSelect, onToggle }: ClientRowProps) {
-  return (
-    <div
-      onClick={() => onSelect(p)}
-      className={`grid px-m h-xl items-center cursor-pointer transition-all duration-150 group hover:bg-bg-soft ${isSelected ? 'bg-aurora/10' : ''}`}
-      style={{ gridTemplateColumns: gridTemplate }}
-    >
-      <div className="flex justify-center items-center h-full">
-        <Checkbox 
-          checked={isSelected} 
-          onChange={() => {}} 
-        />
-        <div 
-          className="absolute w-8 h-8 cursor-pointer z-[10]" 
-          onClick={(e) => { e.stopPropagation(); onToggle(e, p.id); }} 
-        />
       </div>
 
-      {visibleColumns.map(colId => {
-        if (colId === 'lastName') return (
-          <span key={colId} className="font-heading text-small font-black text-sapphire uppercase tracking-widest truncate group-hover:text-azraq transition-all">
-            {p.lastName}
-          </span>
-        );
-        if (colId === 'firstName') return (
-          <span key={colId} className="font-heading text-small font-bold text-samaritan uppercase tracking-widest truncate">{p.firstName}</span>
-        );
-        if (colId === 'email') return (
-          <span key={colId} className="font-heading text-[10px] text-samaritan font-medium truncate pr-xxs lowercase">{p.email || '—'}</span>
-        );
-        if (colId === 'phone') return (
-          <span key={colId} className="font-heading text-small text-samaritan font-bold tracking-widest truncate">{p.phone || '—'}</span>
-        );
-        if (colId === 'city') return (
-          <span key={colId} className="font-heading text-small text-samaritan font-bold truncate">{p.city || '—'}</span>
-        );
-        if (colId === 'canton') return (
-          <span key={colId} className="font-heading text-small font-black text-azraq text-center uppercase">{p.canton || '—'}</span>
-        );
-        if (colId === 'insurance') return (
-          <span key={colId} className="font-heading text-small text-samaritan font-bold truncate pr-xxs uppercase tracking-widest ">{p.insurance || '—'}</span>
-        );
-        if (colId === 'sessions') return (
-          <div key={colId} className="flex justify-center">
-            <SessionBadge count={sessionsCount} />
-          </div>
-        );
-        return null;
-      })}
-    </div>
-  );
-}
-
-/* ── CLIENT CARD (mobile) ── */
-function ClientCard({
-  client: p, sessionsCount, isSelected, onSelect, onToggle,
-}: {
-  client: Client;
-  sessionsCount: number;
-  isSelected: boolean;
-  onSelect: (c: Client) => void;
-  onToggle: (e: React.MouseEvent, id: string) => void;
-}) {
-  return (
-    <div
-      onClick={() => onSelect(p)}
-      className={`bg-white border border-border rounded-xl p-4 transition-colors duration-150 cursor-pointer ${isSelected ? 'ring-1 ring-aurora/30 bg-aurora/5' : ''}`}
-    >
-      <div className="flex justify-between items-start">
-        <div className="flex items-center gap-3 min-w-0">
-          <div onClick={(e) => onToggle(e, p.id)}>
-            <Checkbox checked={isSelected} onChange={() => {}} />
-          </div>
-          <div className="min-w-0">
-            <span className="font-medium text-sapphire text-sm">{p.lastName}</span>{' '}
-            <span className="text-samaritan text-sm">{p.firstName}</span>
-          </div>
-        </div>
-        <SessionBadge count={sessionsCount} />
+      {/* ── MOBILE VIEW ── */}
+      <div className="md:hidden flex flex-col gap-4 px-1">
+         {filtered.map(p => (
+           <div key={p.id} onClick={() => onSelectClient(p)} className="bg-white border border-border/10 p-6 rounded-3xl shadow-sm flex flex-col gap-5">
+              <div className="flex justify-between items-start">
+                 <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-2xl bg-bg-soft flex items-center justify-center font-black text-[15px] uppercase text-onyx border border-border/10">{p.lastName.charAt(0)}</div>
+                    <div><p className="font-black text-onyx uppercase leading-tight text-[15px]">{p.lastName} {p.firstName}</p><p className="text-[11px] font-bold text-forest uppercase tracking-widest mt-1">Patient Actif</p></div>
+                 </div>
+                 <div onClick={(e) => { e.stopPropagation(); toggleClient(p.id); }} className="p-2"><input type="checkbox" checked={selectedClients.has(p.id)} readOnly className="w-5 h-5 accent-forest" /></div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/5">
+                 <div className="flex flex-col gap-1">
+                    <span className="text-[9px] font-black text-earth/40 uppercase tracking-widest">Téléphone</span>
+                    <span className="text-[13px] font-bold text-onyx">{p.phone || '—'}</span>
+                 </div>
+                 <div className="flex flex-col gap-1">
+                    <span className="text-[9px] font-black text-earth/40 uppercase tracking-widest">Sessions</span>
+                    <span className="text-[13px] font-black text-forest">{statsMap.get(p.id)?.count || 0}</span>
+                 </div>
+              </div>
+              <div className="space-y-3 pt-4 border-t border-border/5">
+                 {p.email && <div className="flex items-center gap-3 text-[12px] font-medium text-earth/60 lowercase"><Mail size={14} className="opacity-40"/> {p.email}</div>}
+                 <div className="flex items-center gap-3 text-[12px] font-medium text-earth/60 uppercase"><ShieldCheck size={14} className="opacity-40"/> {p.insurance || 'Sans assurance'}</div>
+              </div>
+           </div>
+         ))}
       </div>
-      {p.email && (
-        <p className="text-[10px] font-heading font-black text-samaritan truncate mt-2 pl-7 lowercase tracking-widest">{p.email}</p>
-      )}
-      <div className="text-[10px] font-heading font-black text-samaritan/50 mt-1 pl-7 flex gap-3 uppercase tracking-widest">
-        {p.city && <span className="flex items-center gap-1"><MapPin size={10} />{p.city}</span>}
-        {p.phone && <span className="flex items-center gap-1"><Phone size={10} />{p.phone}</span>}
-      </div>
-    </div>
-  );
-}
-
-/* ── SESSION BADGE ── */
-function SessionBadge({ count }: { count: number }) {
-  const style = count === 0
-    ? 'bg-bg-soft text-samaritan/50 border border-border'
-    : count < 5
-      ? 'bg-azraq/5 text-azraq border border-azraq/10'
-      : 'bg-aurora/10 text-aurora border border-aurora/10 shadow-sm';
-
-  return (
-    <span className={`inline-flex items-center justify-center px-s py-xxs rounded-md font-heading text-[10px] font-black uppercase tracking-widest ${style}`}>
-      {count}
-    </span>
-  );
-}
-
-/* ── EMPTY STATE ── */
-function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?: string) => void }) {
-  return (
-    <div className="flex-1 flex flex-col items-center justify-center py-xxxl text-center gap-m">
-      <div className="w-xxl h-xxl bg-bg-soft rounded-md flex items-center justify-center border border-border">
-        <Users size={24} className="text-samaritan/30" />
-      </div>
-      <div className="space-y-xxs">
-        <p className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Aucun client trouvé</p>
-        {search && <p className="font-heading text-[10px] font-bold text-samaritan uppercase tracking-widest">pour «&#8239;{search}&#8239;»</p>}
-      </div>
-      <button
-        onClick={() => onNewClient(search)}
-        className="flex items-center gap-xs h-l px-xl bg-azraq text-white rounded-md font-heading text-[10px] font-black uppercase tracking-widest hover:bg-azraq/90 transition-all shadow-lg shadow-azraq/10"
-      >
-        <Plus size={14} />
-        Créer ce client
-      </button>
     </div>
   );
 }
