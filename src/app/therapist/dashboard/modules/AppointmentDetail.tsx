@@ -81,11 +81,11 @@ export default function AppointmentDetail({
            <div className="flex items-start justify-between">
               <div className="flex-1 min-w-0">
                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-3 py-1 bg-forest/10 text-forest rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
+                    <span className="px-3 py-1 bg-forest/10 text-forest rounded-full text-[10px] font-semibold uppercase tracking-widest flex items-center gap-1">
                        <Sparkles size={10} /> Séance Confirmée
                     </span>
                  </div>
-                 <h2 className="text-[36px] font-black text-onyx tracking-tighter leading-none uppercase truncate">
+                 <h2 className="text-[36px] font-semibold text-onyx tracking-tighter leading-none uppercase truncate">
                     {current.clientNameSnapshot}
                  </h2>
                  <div className="flex items-center gap-3 mt-4 text-earth/50 font-bold text-[13px] uppercase tracking-widest">
@@ -106,15 +106,15 @@ export default function AppointmentDetail({
            <div className="bg-white rounded-[32px] p-8 border border-border/10 shadow-sm space-y-6">
               <div className="flex justify-between items-start">
                  <div className="space-y-1">
-                    <span className="text-[10px] font-black text-earth/30 uppercase tracking-[0.2em]">Prestation</span>
+                    <span className="text-[10px] font-semibold text-earth/30 uppercase tracking-[0.2em]">Prestation</span>
                     {isEditing ? (
                        <input 
                          value={editData.serviceName}
                          onChange={e => setEditData({...editData, serviceName: e.target.value})}
-                         className="text-[18px] font-black text-onyx outline-none border-b border-neon w-full"
+                         className="text-[18px] font-semibold text-onyx outline-none border-b border-neon w-full"
                        />
                     ) : (
-                       <p className="text-[18px] font-black text-onyx uppercase tracking-tighter">{simplifyServiceName(current.serviceName || '')}</p>
+                       <p className="text-[18px] font-semibold text-onyx uppercase tracking-tighter">{simplifyServiceName(current.serviceName || '')}</p>
                     )}
                  </div>
                  <button onClick={() => setIsEditing(!isEditing)} className="text-earth/30 hover:text-onyx transition-all">
@@ -124,15 +124,15 @@ export default function AppointmentDetail({
 
               <div className="pt-6 border-t border-border/5 flex justify-between items-end">
                  <div className="space-y-1">
-                    <span className="text-[10px] font-black text-earth/30 uppercase tracking-[0.2em]">Montant</span>
+                    <span className="text-[10px] font-semibold text-earth/30 uppercase tracking-[0.2em]">Montant</span>
                     <div className="flex items-baseline gap-2">
-                       <span className="text-[32px] font-black text-onyx tracking-tighter leading-none">{current.price || 150}</span>
+                       <span className="text-[32px] font-semibold text-onyx tracking-tighter leading-none">{current.price || 150}</span>
                        <span className="text-[12px] font-bold text-earth/40 uppercase">CHF</span>
                     </div>
                  </div>
                  <div className="flex flex-col items-end gap-1">
-                    <span className="text-[10px] font-black text-earth/30 uppercase tracking-[0.2em]">Sessions</span>
-                    <span className="text-[14px] font-black text-forest">#{sessionCount}</span>
+                    <span className="text-[10px] font-semibold text-earth/30 uppercase tracking-[0.2em]">Sessions</span>
+                    <span className="text-[14px] font-semibold text-forest">#{sessionCount}</span>
                  </div>
               </div>
            </div>
@@ -140,7 +140,7 @@ export default function AppointmentDetail({
            {/* PAYMENT PILL */}
            <div className={`p-1.5 rounded-full border transition-all flex items-center justify-between ${current.paid ? 'bg-[#E1FBB8] border-[#E1FBB8]' : 'bg-[#FF6B61]/10 border-[#FF6B61]/20'}`}>
               <div className="px-6 py-2">
-                 <span className={`text-[12px] font-black uppercase tracking-widest ${current.paid ? 'text-forest' : 'text-[#FF6B61]'}`}>
+                 <span className={`text-[12px] font-semibold uppercase tracking-widest ${current.paid ? 'text-forest' : 'text-[#FF6B61]'}`}>
                     {current.paid ? `RÉGLÉ - ${current.paymentMethod}` : 'PAIEMENT DÛ'}
                  </span>
               </div>
@@ -150,20 +150,20 @@ export default function AppointmentDetail({
                     {showPaymentSelector ? (
                        <div className="flex items-center gap-1 animate-in slide-in-from-right-4">
                           {['Twint', 'Cash', 'Card'].map(m => (
-                             <button key={m} onClick={() => handleUpdatePayment(m)} className="h-10 px-4 bg-white rounded-full text-[10px] font-black uppercase hover:bg-onyx hover:text-white transition-all shadow-sm">
+                             <button key={m} onClick={() => handleUpdatePayment(m)} className="h-10 px-4 bg-white rounded-full text-[10px] font-semibold uppercase hover:bg-onyx hover:text-white transition-all shadow-sm">
                                 {m}
                              </button>
                           ))}
                           <button onClick={() => setShowPaymentSelector(false)} className="px-2 text-earth/40 hover:text-onyx transition-all"><X size={16}/></button>
                        </div>
                     ) : (
-                       <button onClick={() => setShowPaymentSelector(true)} className="h-10 px-6 bg-onyx text-white rounded-full text-[11px] font-black uppercase tracking-widest shadow-lg">
+                       <button onClick={() => setShowPaymentSelector(true)} className="h-10 px-6 bg-onyx text-white rounded-full text-[11px] font-semibold uppercase tracking-widest shadow-lg">
                           Encaisser
                        </button>
                     )}
                  </div>
               ) : (
-                 <button onClick={handleTogglePaid} className="px-6 py-2 text-[10px] font-black text-forest hover:underline uppercase">Annuler</button>
+                 <button onClick={handleTogglePaid} className="px-6 py-2 text-[10px] font-semibold text-forest hover:underline uppercase">Annuler</button>
               )}
            </div>
 
@@ -175,7 +175,7 @@ export default function AppointmentDetail({
               >
                  <div className="flex items-center gap-4">
                     <div className="w-8 h-8 rounded-lg bg-bg-soft flex items-center justify-center text-onyx"><Users size={16}/></div>
-                    <span className="text-[13px] font-black uppercase text-onyx tracking-widest">Dossier Patient</span>
+                    <span className="text-[13px] font-semibold uppercase text-onyx tracking-widest">Dossier Patient</span>
                  </div>
                  <ChevronRight size={18} className="text-earth/30 group-hover:translate-x-1 transition-all" />
               </button>
@@ -186,7 +186,7 @@ export default function AppointmentDetail({
               >
                  <div className="flex items-center gap-4">
                     <div className="w-8 h-8 rounded-lg bg-bg-soft flex items-center justify-center text-onyx"><Smartphone size={16}/></div>
-                    <span className="text-[13px] font-black uppercase text-onyx tracking-widest">Relancer WhatsApp</span>
+                    <span className="text-[13px] font-semibold uppercase text-onyx tracking-widest">Relancer WhatsApp</span>
                  </div>
                  <ChevronRight size={18} className="text-earth/30 group-hover:translate-x-1 transition-all" />
               </button>

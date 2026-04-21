@@ -17,7 +17,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        sans: ['Geist', 'sans-serif'],
         serif: ['"DM Serif Display"', 'serif'],
         cursive: ['"Meow Script"', 'cursive'],
         code: ['monospace'],

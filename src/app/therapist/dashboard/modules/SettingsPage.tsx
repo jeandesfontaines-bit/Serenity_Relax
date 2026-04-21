@@ -68,14 +68,14 @@ export default function SettingsPage({
               <Sparkles size={20} />
            </div>
            <div>
-              <h1 className="text-[24px] font-black text-onyx tracking-tighter uppercase leading-none">Réglages</h1>
-              <p className="text-[10px] font-bold text-earth/30 uppercase tracking-[0.2em] mt-1.5 font-black">Studio Infrastructure</p>
+              <h1 className="text-[24px] font-semibold text-onyx tracking-tighter uppercase leading-none">Réglages</h1>
+              <p className="text-[10px] font-bold text-earth/30 uppercase tracking-[0.2em] mt-1.5 font-semibold">Studio Infrastructure</p>
            </div>
         </div>
         
         <button
           onClick={handleSave}
-          className={`flex items-center gap-3 h-12 px-8 rounded-full text-[13px] font-black uppercase tracking-widest transition-all shadow-lg
+          className={`flex items-center gap-3 h-12 px-8 rounded-full text-[13px] font-semibold uppercase tracking-widest transition-all shadow-lg
             ${saved ? 'bg-forest text-white' : 'bg-onyx text-white hover:bg-forest'}`}
         >
           {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
@@ -92,7 +92,7 @@ export default function SettingsPage({
               <button
                 key={t.id}
                 onClick={() => setActiveTab(t.id)}
-                className={`w-full flex items-center justify-between px-6 py-4 rounded-full text-[13px] font-black uppercase tracking-widest transition-all
+                className={`w-full flex items-center justify-between px-6 py-4 rounded-full text-[13px] font-semibold uppercase tracking-widest transition-all
                   ${activeTab === t.id ? 'bg-onyx text-white shadow-xl' : 'text-earth/40 hover:text-onyx hover:bg-white'}`}
               >
                 <div className="flex items-center gap-3">
@@ -111,8 +111,8 @@ export default function SettingsPage({
               {activeTab === 'whatsapp' && (
                 <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
                   <header className="space-y-2">
-                     <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em]">Automations</span>
-                     <h2 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-none">WhatsApp Connect</h2>
+                     <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Automations</span>
+                     <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">WhatsApp Connect</h2>
                   </header>
 
                   <div className="space-y-12">
@@ -123,7 +123,7 @@ export default function SettingsPage({
                      ].map((item, i) => (
                        <div key={i} className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 items-start border-t border-border/5 pt-10">
                           <div className="space-y-4">
-                             <label className="text-[11px] font-black text-onyx uppercase tracking-widest">{item.label}</label>
+                             <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">{item.label}</label>
                              <textarea
                                value={item.val}
                                onChange={(e) => item.set(e.target.value)}
@@ -138,7 +138,7 @@ export default function SettingsPage({
                                 <p className="text-[13px] font-medium text-onyx leading-snug">
                                    {item.val.replace(/{firstName}/g, 'Jean').replace(/{service}/g, 'Massage').replace(/{date}/g, '21/04').replace(/{price}/g, '150').replace(/{time}/g, '14:30')}
                                 </p>
-                                <span className="text-[9px] text-earth/20 font-black absolute bottom-1 right-2 uppercase tracking-tighter">14:20 ✓✓</span>
+                                <span className="text-[9px] text-earth/20 font-semibold absolute bottom-1 right-2 uppercase tracking-tighter">14:20 ✓✓</span>
                              </div>
                              <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-black/10 rounded-full" />
                           </div>
@@ -152,8 +152,8 @@ export default function SettingsPage({
                 <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
                   <div className="flex items-center justify-between">
                      <header className="space-y-2">
-                        <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em]">Communication</span>
-                        <h2 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-none">Email Butler</h2>
+                        <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Communication</span>
+                        <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">Email Butler</h2>
                      </header>
                      <button 
                         onClick={() => setLocalEmailEnabled(!localEmailEnabled)}
@@ -165,7 +165,7 @@ export default function SettingsPage({
 
                   <div className={`space-y-8 transition-all ${localEmailEnabled ? 'opacity-100' : 'opacity-30 grayscale'}`}>
                      <div className="space-y-4">
-                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Modèle de corps d'email</label>
+                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Modèle de corps d'email</label>
                         <textarea
                            value={localEmail}
                            onChange={(e) => setLocalEmail(e.target.value)}
@@ -184,21 +184,21 @@ export default function SettingsPage({
               {activeTab === 'objectives' && (
                 <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
                   <header className="space-y-2">
-                     <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em]">Business Strategy</span>
-                     <h2 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-none">Performance Cible</h2>
+                     <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Business Strategy</span>
+                     <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">Performance Cible</h2>
                   </header>
 
                   <div className="max-w-md space-y-8">
                      <div className="bg-bg-soft/40 p-10 rounded-[32px] border border-border/5 space-y-4">
-                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Objectif CA Mensuel</label>
+                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Objectif CA Mensuel</label>
                         <div className="relative">
                            <input 
                               type="number"
                               value={localGoal}
                               onChange={(e) => setLocalGoal(e.target.value)}
-                              className="w-full bg-white border border-border/10 rounded-2xl h-20 px-8 text-[42px] font-black text-onyx outline-none focus:ring-1 focus:ring-onyx transition-all tabular-nums tracking-tighter"
+                              className="w-full bg-white border border-border/10 rounded-2xl h-20 px-8 text-[42px] font-semibold text-onyx outline-none focus:ring-1 focus:ring-onyx transition-all tabular-nums tracking-tighter"
                            />
-                           <span className="absolute right-8 top-1/2 -translate-y-1/2 text-[14px] font-black text-earth/20 uppercase tracking-widest">CHF</span>
+                           <span className="absolute right-8 top-1/2 -translate-y-1/2 text-[14px] font-semibold text-earth/20 uppercase tracking-widest">CHF</span>
                         </div>
                         <p className="text-[12px] font-bold text-earth/40 leading-relaxed">Cet objectif est utilisé pour calculer votre barre de progression sur le tableau de bord principal.</p>
                      </div>
@@ -209,22 +209,22 @@ export default function SettingsPage({
               {activeTab === 'cabinet' && (
                 <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
                   <header className="space-y-2">
-                     <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em]">Legal Identity</span>
-                     <h2 className="text-[32px] font-black text-onyx tracking-tighter uppercase leading-none">Entité Cabinet</h2>
+                     <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Legal Identity</span>
+                     <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">Entité Cabinet</h2>
                   </header>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                      <div className="space-y-4">
-                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Nom Public</label>
-                        <input value={localCabinetName} onChange={(e) => setLocalCabinetName(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-black text-onyx outline-none focus:bg-white transition-all uppercase tracking-tight" />
+                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Nom Public</label>
+                        <input value={localCabinetName} onChange={(e) => setLocalCabinetName(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-semibold text-onyx outline-none focus:bg-white transition-all uppercase tracking-tight" />
                      </div>
                      <div className="space-y-4">
-                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Email Contact</label>
-                        <input value={localCabinetEmail} onChange={(e) => setLocalCabinetEmail(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-black text-onyx outline-none focus:bg-white transition-all lowercase" />
+                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Email Contact</label>
+                        <input value={localCabinetEmail} onChange={(e) => setLocalCabinetEmail(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-semibold text-onyx outline-none focus:bg-white transition-all lowercase" />
                      </div>
                      <div className="space-y-4 md:col-span-2">
-                        <label className="text-[11px] font-black text-onyx uppercase tracking-widest">Coordonnées Facturation</label>
-                        <input value={localCabinetAddress} onChange={(e) => setLocalCabinetAddress(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-black text-onyx outline-none focus:bg-white transition-all uppercase tracking-tight" />
+                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Coordonnées Facturation</label>
+                        <input value={localCabinetAddress} onChange={(e) => setLocalCabinetAddress(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-semibold text-onyx outline-none focus:bg-white transition-all uppercase tracking-tight" />
                      </div>
                   </div>
                 </div>

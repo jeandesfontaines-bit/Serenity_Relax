@@ -28,7 +28,7 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
            <div className="w-8 h-8 rounded-lg bg-forest text-neon flex items-center justify-center">
               <Sparkles size={16} />
            </div>
-           <span className="text-[17px] font-black tracking-tight text-onyx">Studio Board</span>
+           <span className="text-[17px] font-semibold tracking-tight text-onyx">Studio Board</span>
         </div>
 
         {/* Navigation (Center Pill) */}
@@ -58,10 +58,10 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
               <Bell size={20} />
            </div>
            <div className="flex items-center gap-3 border-l border-border/20 pl-6 cursor-pointer hover:opacity-80">
-              <div className="w-9 h-9 rounded-full bg-success text-onyx flex items-center justify-center font-black text-[12px] shadow-sm">
+              <div className="w-9 h-9 rounded-full bg-success text-onyx flex items-center justify-center font-semibold text-[12px] shadow-sm">
                  N
               </div>
-              <span className="text-[14px] font-black text-onyx">Nadia</span>
+              <span className="text-[14px] font-semibold text-onyx">Nadia</span>
            </div>
         </div>
       </header>

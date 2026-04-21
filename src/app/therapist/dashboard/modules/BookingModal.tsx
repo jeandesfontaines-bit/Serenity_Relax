@@ -51,8 +51,8 @@ export default function BookingModal({
         {/* HEADER */}
         <div className="p-8 pb-4 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em] block mb-1">Réservation</span>
-            <h2 className="text-[28px] font-black text-onyx tracking-tighter uppercase leading-none">Perspective</h2>
+            <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em] block mb-1">Réservation</span>
+            <h2 className="text-[28px] font-semibold text-onyx tracking-tighter uppercase leading-none">Perspective</h2>
           </div>
           <button
             onClick={onClose}
@@ -98,7 +98,7 @@ export default function BookingModal({
               </div>
 
               <div className="space-y-2">
-                <p className="text-[10px] font-black text-earth/40 uppercase tracking-[0.2em] mb-4">Correspondances</p>
+                <p className="text-[10px] font-semibold text-earth/40 uppercase tracking-[0.2em] mb-4">Correspondances</p>
                 {filtered.slice(0, 5).map(c => (
                   <button
                     key={c.id}
@@ -106,11 +106,11 @@ export default function BookingModal({
                     className="w-full flex items-center justify-between p-5 rounded-[24px] bg-white border border-transparent hover:border-border/10 hover:shadow-xl transition-all group"
                   >
                     <div className="flex items-center gap-4 min-w-0">
-                       <div className="w-10 h-10 rounded-full bg-bg-soft flex items-center justify-center font-black text-[12px] text-onyx">
+                       <div className="w-10 h-10 rounded-full bg-bg-soft flex items-center justify-center font-semibold text-[12px] text-onyx">
                           {c.lastName?.[0]}
                        </div>
                        <div className="text-left">
-                          <p className="text-[14px] font-black text-onyx uppercase tracking-tighter">
+                          <p className="text-[14px] font-semibold text-onyx uppercase tracking-tighter">
                             {c.lastName} {c.firstName}
                           </p>
                           <p className="text-[11px] font-bold text-earth/30 uppercase tracking-widest mt-1">{c.city || 'Suisse'}</p>
@@ -128,7 +128,7 @@ export default function BookingModal({
                     <UserPlus size={16} />
                   </div>
                   <div>
-                    <p className="text-[13px] font-black text-onyx uppercase">CRÉER : {search || 'NOUVEAU CLIENT'}</p>
+                    <p className="text-[13px] font-semibold text-onyx uppercase">CRÉER : {search || 'NOUVEAU CLIENT'}</p>
                     <p className="text-[9px] font-bold text-earth/40 uppercase tracking-widest">Nouveau dossier automatique</p>
                   </div>
                 </button>
@@ -140,21 +140,21 @@ export default function BookingModal({
             <div className="space-y-8 animate-in slide-in-from-right-4 duration-500">
               <div className="flex items-center justify-between p-6 bg-white rounded-[24px] border border-border/10 shadow-sm">
                 <div className="flex items-center gap-4 min-w-0">
-                  <div className="w-10 h-10 bg-onyx text-white rounded-full flex items-center justify-center font-black text-[14px] shrink-0">
+                  <div className="w-10 h-10 bg-onyx text-white rounded-full flex items-center justify-center font-semibold text-[14px] shrink-0">
                     <Users size={18}/>
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[15px] font-black text-onyx uppercase truncate">
+                    <p className="text-[15px] font-semibold text-onyx uppercase truncate">
                       {isCreatingNew ? search : `${selectedClient?.lastName} ${selectedClient?.firstName}`}
                     </p>
-                    <p className="text-[10px] font-black text-forest uppercase tracking-widest mt-1">Étape Finale</p>
+                    <p className="text-[10px] font-semibold text-forest uppercase tracking-widest mt-1">Étape Finale</p>
                   </div>
                 </div>
-                <button onClick={() => setStep('client')} className="text-[10px] font-black text-earth hover:text-onyx transition-all uppercase underline tracking-widest">Modifier</button>
+                <button onClick={() => setStep('client')} className="text-[10px] font-semibold text-earth hover:text-onyx transition-all uppercase underline tracking-widest">Modifier</button>
               </div>
 
               <div className="space-y-4">
-                <p className="text-[10px] font-black text-earth/40 uppercase tracking-[0.2em]">Choisir la prestation</p>
+                <p className="text-[10px] font-semibold text-earth/40 uppercase tracking-[0.2em]">Choisir la prestation</p>
                 <div className="grid grid-cols-2 gap-3">
                   {SERVICES.map(s => {
                     const disp = s.name.split(' -')[0];
@@ -167,8 +167,8 @@ export default function BookingModal({
                           sel ? 'bg-onyx text-neon ring-2 ring-neon/40' : 'bg-white text-onyx hover:border-border/20 shadow-none'
                         }`}
                       >
-                        <p className="text-[13px] font-black uppercase tracking-tight leading-tight">{disp}</p>
-                        {s.duration && <span className={`text-[10px] font-black uppercase tracking-widest ${sel ? 'text-neon/60' : 'text-earth/40'}`}>{s.duration}</span>}
+                        <p className="text-[13px] font-semibold uppercase tracking-tight leading-tight">{disp}</p>
+                        {s.duration && <span className={`text-[10px] font-semibold uppercase tracking-widest ${sel ? 'text-neon/60' : 'text-earth/40'}`}>{s.duration}</span>}
                       </button>
                     );
                   })}
@@ -177,7 +177,7 @@ export default function BookingModal({
 
               <button
                 onClick={handleConfirm}
-                className="w-full h-16 bg-onyx hover:bg-forest text-white rounded-full font-black uppercase tracking-[0.2em] text-[13px] flex items-center justify-center gap-3 transition-all shadow-xl shadow-onyx/20"
+                className="w-full h-16 bg-onyx hover:bg-forest text-white rounded-full font-semibold uppercase tracking-[0.2em] text-[13px] flex items-center justify-center gap-3 transition-all shadow-xl shadow-onyx/20"
               >
                 <CheckCircle2 size={20} />
                 Confirmer l'engagement

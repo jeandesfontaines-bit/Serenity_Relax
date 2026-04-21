@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { 
   Search, Plus, MoreHorizontal, ChevronLeft, ChevronRight, Settings2, 
-  GitPullRequest, X, Mail, Phone, MapPin, ShieldCheck, Map 
+  GitPullRequest, X, Mail, Phone, MapPin, ShieldCheck 
 } from 'lucide-react';
 import { Client, Appointment } from '../types';
 
@@ -92,7 +92,7 @@ export default function ClientsPage({
       {/* ── HEADER ── */}
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <h1 className="text-[42px] font-black tracking-tight text-onyx leading-none">Clients</h1>
+          <h1 className="text-[42px] font-semibold tracking-tight text-onyx leading-none">Clients</h1>
           <span className="px-4 py-1.5 bg-border/40 text-earth/60 rounded-full text-[13px] font-bold mt-2">
             {filtered.length} total
           </span>
@@ -116,7 +116,7 @@ export default function ClientsPage({
 
           {showColPicker && (
             <div className="absolute right-0 top-14 w-60 bg-white rounded-2xl shadow-2xl border p-4 z-50">
-               <p className="text-[10px] font-black text-earth/40 uppercase tracking-widest mb-4 px-2">Configuration</p>
+               <p className="text-[10px] font-semibold text-earth/40 uppercase tracking-widest mb-4 px-2">Configuration</p>
                <div className="space-y-1 overflow-y-auto max-h-[400px]">
                   {ALL_COLUMNS.map(col => (
                     <button key={col.id} onClick={() => setVisibleColumns(prev => prev.includes(col.id) ? prev.filter(i => i !== col.id) : [...prev, col.id])} className="w-full flex justify-between p-2.5 hover:bg-bg-soft rounded-xl text-left transition-all">
@@ -129,7 +129,7 @@ export default function ClientsPage({
           )}
 
           {selectedClients.size > 1 && (
-            <button onClick={() => onMergeClients?.(Array.from(selectedClients)[0], Array.from(selectedClients).slice(1))} className="h-12 px-6 bg-ochre/10 text-ochre rounded-full flex items-center gap-2 text-[14px] font-black uppercase tracking-widest hover:bg-ochre/20 transition-all">
+            <button onClick={() => onMergeClients?.(Array.from(selectedClients)[0], Array.from(selectedClients).slice(1))} className="h-12 px-6 bg-ochre/10 text-ochre rounded-full flex items-center gap-2 text-[14px] font-semibold uppercase tracking-widest hover:bg-ochre/20 transition-all">
               <GitPullRequest size={16} /> Fusionner
             </button>
           )}
@@ -153,7 +153,7 @@ export default function ClientsPage({
         <div className="grid px-10 h-16 items-center border-b border-border/10 bg-white/50" style={{ gridTemplateColumns: `40px ${visibleColumns.map(id => ALL_COLUMNS.find(c => c.id === id)?.flex).join(' ')} 40px` }}>
           <input type="checkbox" className="w-4 h-4 accent-forest" checked={selectedClients.size === filtered.length && filtered.length > 0} onChange={() => setSelectedClients(selectedClients.size === filtered.length ? new Set() : new Set(filtered.map(c => c.id)))} />
           {visibleColumns.map(id => (
-            <div key={id} onClick={() => { setSortField(id); setSortDir(sortDir === 'asc' ? 'desc' : 'asc'); }} className="text-[11px] font-black text-earth/40 uppercase tracking-[0.2em] cursor-pointer hover:text-onyx flex items-center gap-2">
+            <div key={id} onClick={() => { setSortField(id); setSortDir(sortDir === 'asc' ? 'desc' : 'asc'); }} className="text-[11px] font-semibold text-earth/40 uppercase tracking-[0.2em] cursor-pointer hover:text-onyx flex items-center gap-2">
               {ALL_COLUMNS.find(c => c.id === id)?.label}
               {sortField === id && <span className="opacity-40">{sortDir === 'asc' ? '▲' : '▼'}</span>}
             </div>
@@ -169,15 +169,15 @@ export default function ClientsPage({
                   <input type="checkbox" checked={selectedClients.has(p.id)} readOnly className="w-4 h-4 accent-forest cursor-pointer" />
                 </div>
                 {visibleColumns.map(colId => {
-                  if (colId === 'lastName') return <div key={colId} className="flex items-center gap-4 min-w-0"><div className="w-9 h-9 rounded-full bg-border/20 flex items-center justify-center font-black text-[12px]">{p.lastName.charAt(0)}</div><div className="truncate pr-4"><p className="text-[14px] font-black text-onyx leading-tight uppercase truncate group-hover:text-forest transition-all">{p.lastName} {p.firstName}</p><p className="text-[11px] font-medium text-earth/50 leading-tight truncate lowercase">{p.insurance || 'Sans assurance'}</p></div></div>;
+                  if (colId === 'lastName') return <div key={colId} className="flex items-center gap-4 min-w-0"><div className="w-9 h-9 rounded-full bg-border/20 flex items-center justify-center font-semibold text-[12px]">{p.lastName.charAt(0)}</div><div className="truncate pr-4"><p className="text-[14px] font-semibold text-onyx leading-tight uppercase truncate group-hover:text-forest transition-all">{p.lastName} {p.firstName}</p><p className="text-[11px] font-medium text-earth/50 leading-tight truncate lowercase">{p.insurance || 'Sans assurance'}</p></div></div>;
                   if (colId === 'phone') return <span key={colId} className="text-[14px] font-bold text-onyx tabular-nums">{p.phone || '—'}</span>;
-                  if (colId === 'status') return <div key={colId}><span className="px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-[#E1FBB8] text-forest/70">Actif</span></div>;
-                  if (colId === 'sessions') return <div key={colId} className="w-8 h-8 rounded-lg bg-bg-soft flex items-center justify-center text-[13px] font-black text-onyx">{stats.count}</div>;
+                  if (colId === 'status') return <div key={colId}><span className="px-4 py-1 rounded-full text-[10px] font-semibold uppercase tracking-widest bg-[#E1FBB8] text-forest/70">Actif</span></div>;
+                  if (colId === 'sessions') return <div key={colId} className="w-8 h-8 rounded-lg bg-bg-soft flex items-center justify-center text-[13px] font-semibold text-onyx">{stats.count}</div>;
                   if (colId === 'lastSession') return <span key={colId} className="text-[13px] font-bold text-earth">{stats.last || '—'}</span>;
-                  if (colId === 'balance') return <span key={colId} className="text-[14px] font-black text-earth/40">0 CHF</span>;
+                  if (colId === 'balance') return <span key={colId} className="text-[14px] font-semibold text-earth/40">0 CHF</span>;
                   if (colId === 'email') return <span key={colId} className="text-[13px] font-medium text-earth/60 lowercase truncate pr-4">{p.email || '—'}</span>;
                   if (colId === 'city') return <span key={colId} className="text-[13px] font-bold text-earth truncate pr-4">{p.city || '—'}</span>;
-                  if (colId === 'canton') return <span key={colId} className="text-[13px] font-black text-forest uppercase">{p.canton || '—'}</span>;
+                  if (colId === 'canton') return <span key={colId} className="text-[13px] font-semibold text-forest uppercase">{p.canton || '—'}</span>;
                   if (colId === 'insurance') return <span key={colId} className="text-[13px] font-bold text-earth/60 uppercase truncate pr-4">{p.insurance || '—'}</span>;
                   return null;
                 })}
@@ -194,19 +194,19 @@ export default function ClientsPage({
            <div key={p.id} onClick={() => onSelectClient(p)} className="bg-white border border-border/10 p-6 rounded-3xl shadow-sm flex flex-col gap-5">
               <div className="flex justify-between items-start">
                  <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-2xl bg-bg-soft flex items-center justify-center font-black text-[15px] uppercase text-onyx border border-border/10">{p.lastName.charAt(0)}</div>
-                    <div><p className="font-black text-onyx uppercase leading-tight text-[15px]">{p.lastName} {p.firstName}</p><p className="text-[11px] font-bold text-forest uppercase tracking-widest mt-1">Patient Actif</p></div>
+                    <div className="w-11 h-11 rounded-2xl bg-bg-soft flex items-center justify-center font-semibold text-[15px] uppercase text-onyx border border-border/10">{p.lastName.charAt(0)}</div>
+                    <div><p className="font-semibold text-onyx uppercase leading-tight text-[15px]">{p.lastName} {p.firstName}</p><p className="text-[11px] font-bold text-forest uppercase tracking-widest mt-1">Patient Actif</p></div>
                  </div>
                  <div onClick={(e) => { e.stopPropagation(); toggleClient(p.id); }} className="p-2"><input type="checkbox" checked={selectedClients.has(p.id)} readOnly className="w-5 h-5 accent-forest" /></div>
               </div>
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/5">
                  <div className="flex flex-col gap-1">
-                    <span className="text-[9px] font-black text-earth/40 uppercase tracking-widest">Téléphone</span>
+                    <span className="text-[9px] font-semibold text-earth/40 uppercase tracking-widest">Téléphone</span>
                     <span className="text-[13px] font-bold text-onyx">{p.phone || '—'}</span>
                  </div>
                  <div className="flex flex-col gap-1">
-                    <span className="text-[9px] font-black text-earth/40 uppercase tracking-widest">Sessions</span>
-                    <span className="text-[13px] font-black text-forest">{statsMap.get(p.id)?.count || 0}</span>
+                    <span className="text-[9px] font-semibold text-earth/40 uppercase tracking-widest">Sessions</span>
+                    <span className="text-[13px] font-semibold text-forest">{statsMap.get(p.id)?.count || 0}</span>
                  </div>
               </div>
               <div className="space-y-3 pt-4 border-t border-border/5">

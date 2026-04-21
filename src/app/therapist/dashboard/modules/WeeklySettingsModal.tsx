@@ -52,8 +52,8 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         {/* HEADER */}
         <div className="p-8 pb-4 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-black text-forest uppercase tracking-[0.2em] block mb-1">Configuration</span>
-            <h2 className="text-[28px] font-black text-onyx tracking-tighter uppercase leading-none">Horaires Types</h2>
+            <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em] block mb-1">Configuration</span>
+            <h2 className="text-[28px] font-semibold text-onyx tracking-tighter uppercase leading-none">Horaires Types</h2>
           </div>
           <button
             onClick={onClose}
@@ -76,8 +76,8 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                   active ? 'bg-onyx text-neon ring-1 ring-onyx shadow-lg' : 'bg-white text-earth/50 hover:bg-bg-soft'
                 }`}
               >
-                <span className="text-[10px] font-black mb-0.5">{day.label}</span>
-                <span className={`text-[8px] font-black opacity-40`}>{count}</span>
+                <span className="text-[10px] font-semibold mb-0.5">{day.label}</span>
+                <span className={`text-[8px] font-semibold opacity-40`}>{count}</span>
               </button>
             );
           })}
@@ -86,10 +86,10 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         {/* SLOTS LIST */}
         <div className="flex-1 overflow-y-auto px-8 py-4 space-y-6 custom-scrollbar">
            <div className="flex items-center justify-between">
-              <p className="text-[10px] font-black text-earth/40 uppercase tracking-[0.2em]">Créneaux du jour</p>
+              <p className="text-[10px] font-semibold text-earth/40 uppercase tracking-[0.2em]">Créneaux du jour</p>
               <button 
                 onClick={handleCopyToWeek}
-                className="flex items-center gap-1.5 text-[10px] font-black text-forest hover:underline uppercase tracking-widest"
+                className="flex items-center gap-1.5 text-[10px] font-semibold text-forest hover:underline uppercase tracking-widest"
               >
                  <Copy size={12}/> Appliquer à tous
               </button>
@@ -98,7 +98,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
            <div className="grid grid-cols-3 gap-2">
               {(slots[activeDay] || []).map(time => (
                 <div key={time} className="h-12 bg-white rounded-2xl flex items-center justify-between pl-4 pr-1 border border-border/5 shadow-sm group">
-                   <span className="text-[13px] font-black text-onyx tabular-nums">{time}</span>
+                   <span className="text-[13px] font-semibold text-onyx tabular-nums">{time}</span>
                    <button 
                      onClick={() => handleRemoveSlot(time)}
                      className="w-8 h-8 rounded-full flex items-center justify-center text-earth/20 hover:text-[#F1664D] hover:bg-[#F1664D]/5 transition-all"
@@ -115,7 +115,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
            {(slots[activeDay] || []).length === 0 && (
               <div className="py-12 bg-white/40 border border-dashed border-border rounded-[32px] text-center">
                  <Clock size={24} className="mx-auto text-earth/20 mb-2 opacity-40" />
-                 <p className="text-[11px] font-black text-earth/40 uppercase tracking-widest">Jour de fermeture</p>
+                 <p className="text-[11px] font-semibold text-earth/40 uppercase tracking-widest">Jour de fermeture</p>
               </div>
            )}
         </div>
@@ -127,7 +127,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 type="time"
                 value={newTime}
                 onChange={e => setNewTime(e.target.value)}
-                className="flex-1 h-14 bg-white border border-border/20 rounded-2xl px-6 font-black text-onyx text-[15px] outline-none focus:ring-1 focus:ring-onyx transition-all"
+                className="flex-1 h-14 bg-white border border-border/20 rounded-2xl px-6 font-semibold text-onyx text-[15px] outline-none focus:ring-1 focus:ring-onyx transition-all"
               />
               <button 
                 onClick={handleAddSlot}
@@ -138,7 +138,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
            </div>
            <button 
              onClick={() => onSave(slots)}
-             className="w-full h-16 bg-onyx hover:bg-forest text-white rounded-full font-black uppercase tracking-[0.2em] text-[13px] flex items-center justify-center gap-3 transition-all shadow-xl shadow-onyx/20"
+             className="w-full h-16 bg-onyx hover:bg-forest text-white rounded-full font-semibold uppercase tracking-[0.2em] text-[13px] flex items-center justify-center gap-3 transition-all shadow-xl shadow-onyx/20"
            >
               <CheckCircle2 size={18}/> Enregistrer la structure
            </button>

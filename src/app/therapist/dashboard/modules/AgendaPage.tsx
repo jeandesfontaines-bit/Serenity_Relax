@@ -84,14 +84,14 @@ export default function AgendaPage({
         
         <div className="flex items-center justify-between">
            <div className="flex items-center gap-6">
-              <h1 className="text-[42px] font-black tracking-tight text-onyx leading-none capitalize">
+              <h1 className="text-[42px] font-semibold tracking-tight text-onyx leading-none capitalize">
                 {format(cur, 'MMMM yyyy', { locale: fr })}
               </h1>
               <div className="flex items-center gap-2 mt-2">
-                 <span onClick={onToday} className="px-4 py-1.5 bg-[#E1FBB8] text-forest rounded-full text-[13px] font-black cursor-pointer hover:opacity-80">
+                 <span onClick={onToday} className="px-4 py-1.5 bg-[#E1FBB8] text-forest rounded-full text-[13px] font-semibold cursor-pointer hover:opacity-80">
                    AUJOURD'HUI
                  </span>
-                 {absenceMode && <span className="px-4 py-1.5 bg-ochre text-white rounded-full text-[11px] font-black uppercase">Mode Absence</span>}
+                 {absenceMode && <span className="px-4 py-1.5 bg-ochre text-white rounded-full text-[11px] font-semibold uppercase">Mode Absence</span>}
               </div>
            </div>
 
@@ -120,7 +120,7 @@ export default function AgendaPage({
           <div className="bg-white border border-border/10 rounded-[32px] overflow-hidden shadow-sm flex flex-col h-full">
              <div className="grid grid-cols-7 border-b border-border/10 bg-bg-soft/30 h-12">
                 {['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'].map(d => (
-                  <div key={d} className="flex items-center justify-center text-[11px] font-black text-earth/40 tracking-[0.2em]">{d}</div>
+                  <div key={d} className="flex items-center justify-center text-[11px] font-semibold text-earth/40 tracking-[0.2em]">{d}</div>
                 ))}
              </div>
              
@@ -148,7 +148,7 @@ export default function AgendaPage({
                       >
                          <div className="flex justify-between items-center mb-1">
                             {isToday && <div className="w-1.5 h-1.5 rounded-full bg-forest" />}
-                            <span className={`text-[13px] font-black ml-auto ${isSel ? 'text-forest' : 'text-onyx'}`}>
+                            <span className={`text-[13px] font-semibold ml-auto ${isSel ? 'text-forest' : 'text-onyx'}`}>
                               {format(day, 'd')}
                             </span>
                          </div>
@@ -158,13 +158,13 @@ export default function AgendaPage({
                                return (
                                   <div key={idx} className={`h-5 border ${style.border} ${style.bg} rounded-md px-2 flex items-center gap-1.5 overflow-hidden`}>
                                      <div className={`w-1 h-1 rounded-full ${style.dot}`} />
-                                     <span className={`text-[9px] font-black ${style.text} truncate uppercase tracking-tighter`}>
+                                     <span className={`text-[9px] font-semibold ${style.text} truncate uppercase tracking-tighter`}>
                                        {a.clientNameSnapshot?.split(' ')[0]}
                                      </span>
                                   </div>
                                );
                             })}
-                            {!isOpen && <span className="text-[9px] font-black text-earth/20 uppercase text-center mt-2">Fermé</span>}
+                            {!isOpen && <span className="text-[9px] font-semibold text-earth/20 uppercase text-center mt-2">Fermé</span>}
                          </div>
                       </div>
                    );
@@ -175,8 +175,8 @@ export default function AgendaPage({
           <div className="bg-white border border-border/10 rounded-[32px] p-8 flex flex-col shadow-sm">
              <div className="mb-6 flex justify-between items-start">
                 <div>
-                  <span className="text-[11px] font-black text-forest uppercase tracking-[0.2em] block mb-2 px-1">Engagement</span>
-                  <h2 className="text-[32px] font-black text-onyx tracking-tighter capitalize leading-none">
+                  <span className="text-[11px] font-semibold text-forest uppercase tracking-[0.2em] block mb-2 px-1">Engagement</span>
+                  <h2 className="text-[32px] font-semibold text-onyx tracking-tighter capitalize leading-none">
                      {format(selectedDate, 'EEEE d MMMM', { locale: fr })}
                   </h2>
                 </div>
@@ -185,16 +185,17 @@ export default function AgendaPage({
              <div className="flex gap-3 mb-8">
                 <button 
                   onClick={() => setAbsenceMode(!absenceMode)}
-                  className={`flex-1 h-12 rounded-2xl border flex items-center justify-center gap-2 text-[13px] font-black uppercase tracking-widest transition-all
+                  className={`flex-1 h-12 rounded-2xl border flex items-center justify-center gap-2 text-[13px] font-semibold uppercase tracking-widest transition-all
                     ${absenceMode ? 'bg-[#F1664D] text-white border-[#F1664D]' : 'border-[#F1664D] text-[#F1664D] hover:bg-[#F1664D]/5'}`}
                 >
                    <Ban size={16} /> Mode Absence
                 </button>
                 <button 
                   onClick={() => onOpenSlot(format(selectedDate, 'yyyy-MM-dd'), format(new Date(), 'HH:00'))}
-                  className="flex-1 h-12 bg-onyx text-white rounded-2xl flex items-center justify-center gap-2 text-[13px] font-black uppercase tracking-widest hover:bg-forest transition-all"
+                  className="flex-1 h-12 bg-onyx text-white rounded-2xl flex items-center justify-center gap-2 text-[13px] font-semibold uppercase tracking-widest hover:bg-forest transition-all"
+                  title="Nouveau RDV"
                 >
-                   <Plus size={16} title="Nouveau RDV" /> Séance
+                   <Plus size={16} /> Séance
                 </button>
              </div>
 
@@ -232,7 +233,7 @@ function TimelineSlot({ time, appt, isBlocked, onSelect, onNew, onToggleBlock, a
   
   return (
     <div ref={setNodeRef} className="flex gap-4 min-h-[75px]">
-       <span className="text-[12px] font-black text-earth/30 tabular-nums w-10 pt-4">{time}</span>
+       <span className="text-[12px] font-semibold text-earth/30 tabular-nums w-10 pt-4">{time}</span>
        
        {appt ? (
          <DraggableAppt appt={appt} onSelect={onSelect} />
@@ -244,7 +245,7 @@ function TimelineSlot({ time, appt, isBlocked, onSelect, onNew, onToggleBlock, a
              ${isOver ? 'bg-forest/10 border-forest' : ''}`}
          >
             {isBlocked ? (
-               <span className="text-[10px] font-black text-[#FF6B61] uppercase tracking-widest">Indisponible</span>
+               <span className="text-[10px] font-semibold text-[#FF6B61] uppercase tracking-widest">Indisponible</span>
             ) : (
                <Plus size={14} className={`opacity-10 ${isOver ? 'text-forest opacity-100 scale-150' : ''}`} />
             )}
@@ -272,7 +273,7 @@ function DraggableAppt({ appt, onSelect }: any) {
       `}
     >
        <div className="flex justify-between items-start">
-          <p className={`text-[14px] font-black uppercase tracking-tighter truncate ${appt.paid ? col.text : 'text-white'}`}>
+          <p className={`text-[14px] font-semibold uppercase tracking-tighter truncate ${appt.paid ? col.text : 'text-white'}`}>
              {appt.clientNameSnapshot}
           </p>
           {!appt.paid && <div className="w-1.5 h-1.5 rounded-full bg-ochre" />}

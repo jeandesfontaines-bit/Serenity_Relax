@@ -30,7 +30,7 @@ export default function SlotManagement({
         {/* Header */}
         <div className="flex items-center justify-between px-m py-m border-b border-border">
           <div>
-            <h2 className="font-heading text-small font-black text-sapphire uppercase tracking-widest">Gestion du créneau</h2>
+            <h2 className="font-heading text-small font-semibold text-sapphire uppercase tracking-widest">Gestion du créneau</h2>
             <p className="font-heading text-[10px] font-bold text-samaritan mt-xxs uppercase tracking-widest">
               {format(d, 'EEEE d MMMM', { locale: fr })} · {time}
             </p>
@@ -55,7 +55,7 @@ export default function SlotManagement({
                 <UserPlus size={17} className="text-white" />
               </div>
               <div>
-                <p className="font-heading text-small font-black text-white uppercase tracking-widest leading-tight">Réserver</p>
+                <p className="font-heading text-small font-semibold text-white uppercase tracking-widest leading-tight">Réserver</p>
                 <p className="font-heading text-[9px] font-bold text-white/50 uppercase tracking-widest mt-xxs">Nouveau ou existant</p>
               </div>
             </button>
@@ -65,7 +65,7 @@ export default function SlotManagement({
                 <Lock size={16} className="text-samaritan/30" />
               </div>
               <div>
-                <p className="font-heading text-small font-black text-samaritan/50 uppercase tracking-widest leading-tight">Créneau bloqué</p>
+                <p className="font-heading text-small font-semibold text-samaritan/50 uppercase tracking-widest leading-tight">Créneau bloqué</p>
                 <p className="font-heading text-[9px] font-bold text-samaritan/30 uppercase tracking-widest mt-xxs">Indisponible</p>
               </div>
             </div>
@@ -88,7 +88,7 @@ export default function SlotManagement({
                 : <Lock size={16} className="text-samaritan" />}
             </div>
             <div>
-              <p className="font-heading text-small font-black uppercase tracking-widest leading-tight">
+              <p className="font-heading text-small font-semibold uppercase tracking-widest leading-tight">
                 {isBlocked ? 'Libérer' : 'Indisponible'}
               </p>
               <p className={`font-heading text-[9px] font-bold uppercase tracking-widest mt-xxs ${isBlocked ? 'text-aurora/60' : 'text-samaritan'}`}>
@@ -100,7 +100,7 @@ export default function SlotManagement({
 
         {/* Footer */}
         <div className="px-m pb-m">
-          <div className="flex items-center gap-xs font-heading text-[9px] font-black text-samaritan uppercase tracking-widest bg-bg-soft border border-border rounded-md px-m py-xs">
+          <div className="flex items-center gap-xs font-heading text-[9px] font-semibold text-samaritan uppercase tracking-widest bg-bg-soft border border-border rounded-md px-m py-xs">
             <Clock size={12} />
             Durée : 60 min
           </div>
