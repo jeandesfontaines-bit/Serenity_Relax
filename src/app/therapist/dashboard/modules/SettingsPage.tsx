@@ -1,9 +1,6 @@
+'use client';
 import React, { useState } from 'react';
-import { 
-  Bell, Target, Save, 
-  MessageSquare, Briefcase, ChevronRight,
-  Info, CheckCircle2, Sparkles
-} from 'lucide-react';
+import { Bell, Target, Save, MessageSquare, Briefcase, ChevronRight, Info, CheckCircle2 } from 'lucide-react';
 
 interface SettingsPageProps {
   monthlyGoal: number;
@@ -18,27 +15,27 @@ interface SettingsPageProps {
   onUpdateMetadata: (data: any) => void;
 }
 
-const DEFAULT_REMINDER = "Bonjour {firstName}, petit rappel concernant le paiement de votre séance {service} du {date}. Montant restant: {price} CHF. Merci beaucoup.";
-const DEFAULT_CONFIRMATION = "Bonjour {firstName}, votre rendez-vous pour {service} est confirmé le {date} à {time}. Au plaisir de vous accueillir.";
-const DEFAULT_FOLLOWUP = "Bonjour {firstName}, j'espère que vous vous sentez bien après votre séance. Pensez à bien vous hydrater aujourd'hui.";
-const DEFAULT_EMAIL = "Bonjour {firstName}, votre rendez-vous est confirmé pour le {date} à {time}. Bien à vous.";
+const DEFAULT_REMINDER      = "Bonjour {firstName}, petit rappel concernant le paiement de votre séance {service} du {date}. Montant restant: {price} CHF. Merci beaucoup.";
+const DEFAULT_CONFIRMATION  = "Bonjour {firstName}, votre rendez-vous pour {service} est confirmé le {date} à {time}. Au plaisir de vous accueillir.";
+const DEFAULT_FOLLOWUP      = "Bonjour {firstName}, j'espère que vous vous sentez bien après votre séance. Pensez à bien vous hydrater aujourd'hui.";
+const DEFAULT_EMAIL         = "Bonjour {firstName}, votre rendez-vous est confirmé pour le {date} à {time}. Bien à vous.";
 
-export default function SettingsPage({ 
+export default function SettingsPage({
   monthlyGoal, reminderTemplate, confirmationTemplate, followupTemplate,
   emailTemplate, emailEnabled, cabinetName, cabinetAddress, cabinetEmail,
-  onUpdateMetadata 
+  onUpdateMetadata,
 }: SettingsPageProps) {
-  const [localGoal, setLocalGoal] = useState(monthlyGoal.toString());
-  const [localTemplate, setLocalTemplate] = useState(reminderTemplate || DEFAULT_REMINDER);
-  const [localConfirmation, setLocalConfirmation] = useState(confirmationTemplate || DEFAULT_CONFIRMATION);
-  const [localFollowup, setLocalFollowup] = useState(followupTemplate || DEFAULT_FOLLOWUP);
-  const [localEmail, setLocalEmail] = useState(emailTemplate || DEFAULT_EMAIL);
-  const [localEmailEnabled, setLocalEmailEnabled] = useState(emailEnabled);
-  const [localCabinetName, setLocalCabinetName] = useState(cabinetName);
-  const [localCabinetEmail, setLocalCabinetEmail] = useState(cabinetEmail);
-  const [localCabinetAddress, setLocalCabinetAddress] = useState(cabinetAddress);
-  const [activeTab, setActiveTab] = useState('whatsapp');
-  const [saved, setSaved] = useState(false);
+  const [localGoal,          setLocalGoal]          = useState(monthlyGoal.toString());
+  const [localTemplate,      setLocalTemplate]      = useState(reminderTemplate     || DEFAULT_REMINDER);
+  const [localConfirmation,  setLocalConfirmation]  = useState(confirmationTemplate || DEFAULT_CONFIRMATION);
+  const [localFollowup,      setLocalFollowup]      = useState(followupTemplate     || DEFAULT_FOLLOWUP);
+  const [localEmail,         setLocalEmail]         = useState(emailTemplate        || DEFAULT_EMAIL);
+  const [localEmailEnabled,  setLocalEmailEnabled]  = useState(emailEnabled);
+  const [localCabinetName,   setLocalCabinetName]   = useState(cabinetName);
+  const [localCabinetEmail,  setLocalCabinetEmail]  = useState(cabinetEmail);
+  const [localCabinetAddress,setLocalCabinetAddress]= useState(cabinetAddress);
+  const [activeTab,          setActiveTab]          = useState('whatsapp');
+  const [saved,              setSaved]              = useState(false);
 
   const handleSave = () => {
     onUpdateMetadata({
@@ -50,211 +47,197 @@ export default function SettingsPage({
       emailEnabled: localEmailEnabled,
       cabinetName: localCabinetName,
       cabinetEmail: localCabinetEmail,
-      cabinetAddress: localCabinetAddress
+      cabinetAddress: localCabinetAddress,
     });
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
 
   const TABS = [
-    { id: 'whatsapp', label: 'WhatsApp', icon: MessageSquare },
-    { id: 'email', label: 'Emails', icon: Bell },
-    { id: 'cabinet', label: 'Cabinet', icon: Briefcase },
-    { id: 'objectives', label: 'Objectifs', icon: Target },
+    { id: 'whatsapp',    label: 'WhatsApp',   icon: MessageSquare },
+    { id: 'email',       label: 'Emails',     icon: Bell },
+    { id: 'cabinet',     label: 'Cabinet',    icon: Briefcase },
+    { id: 'objectives',  label: 'Objectifs',  icon: Target },
   ];
 
   return (
-    <div className="flex-1 flex flex-col bg-[#F4F2EE] animate-in fade-in duration-700 h-full overflow-hidden">
-      
-      {/* ── STICKY HEADER ── */}
-      <header className="h-24 bg-white border-b border-border/10 flex items-center justify-between px-10 shrink-0 z-10 shadow-sm">
-        <div className="flex items-center gap-4">
-           <div className="w-10 h-10 bg-onyx text-neon rounded-xl flex items-center justify-center">
-              <Sparkles size={20} />
-           </div>
-           <div>
-              <h1 className="text-[24px] font-semibold text-onyx tracking-tighter uppercase leading-none">Réglages</h1>
-              <p className="text-[10px] font-bold text-earth/30 uppercase tracking-[0.2em] mt-1.5">Messages, cabinet et objectifs</p>
-           </div>
+    <div className="flex-1 flex flex-col bg-[#faf9f7] h-full overflow-hidden">
+
+      {/* HEADER */}
+      <header className="h-16 border-b border-zinc-100 bg-[#faf9f7] px-8 sm:px-12 flex items-center justify-between shrink-0">
+        <div>
+          <p className="font-serif text-[8px] tracking-[0.5em] text-zinc-400 uppercase mb-0.5">Module</p>
+          <h1 className="font-serif text-base tracking-tighter text-zinc-900 uppercase">Réglages</h1>
         </div>
-        
         <button
           onClick={handleSave}
-          className={`flex items-center gap-3 h-12 px-8 rounded-full text-[13px] font-semibold uppercase tracking-widest transition-all shadow-lg
-            ${saved ? 'bg-forest text-white' : 'bg-onyx text-white hover:bg-forest'}`}
+          className={`flex items-center gap-2.5 h-10 px-6 font-serif text-[10px] tracking-[0.4em] uppercase transition-all duration-500 ${
+            saved ? 'bg-zinc-500 text-white' : 'bg-zinc-900 text-white hover:bg-zinc-700'
+          }`}
         >
-          {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
-          {saved ? 'Enregistré' : 'Enregistrer les modifications'}
+          {saved ? <CheckCircle2 size={14} strokeWidth={1.5} /> : <Save size={14} strokeWidth={1.5} />}
+          {saved ? 'Enregistré' : 'Enregistrer'}
         </button>
       </header>
 
-      <div className="flex-1 overflow-hidden">
-        <div className="h-full max-w-[1400px] mx-auto flex gap-10 p-10">
-          
-          {/* SIDEBAR NAVIGATION */}
-          <aside className="w-[240px] flex flex-col gap-2 shrink-0">
+      <div className="flex-1 overflow-hidden flex">
+        {/* SIDEBAR */}
+        <aside className="w-[220px] border-r border-zinc-100 flex flex-col pt-6 shrink-0 hidden lg:flex">
+          {TABS.map(t => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(t.id)}
+              className={`w-full flex items-center justify-between px-7 py-4 font-serif text-[9px] tracking-[0.35em] uppercase transition-all duration-300 ${
+                activeTab === t.id ? 'bg-zinc-900 text-white' : 'text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <t.icon size={14} strokeWidth={1.5} />
+                {t.label}
+              </div>
+              {activeTab === t.id && <ChevronRight size={12} strokeWidth={1.5} />}
+            </button>
+          ))}
+        </aside>
+
+        {/* MAIN PANEL */}
+        <main className="flex-1 overflow-y-auto">
+          {/* Mobile tab bar */}
+          <div className="lg:hidden flex border-b border-zinc-100 overflow-x-auto">
             {TABS.map(t => (
-              <button
-                key={t.id}
-                onClick={() => setActiveTab(t.id)}
-                className={`w-full flex items-center justify-between px-6 py-4 rounded-full text-[13px] font-semibold uppercase tracking-widest transition-all
-                  ${activeTab === t.id ? 'bg-onyx text-white shadow-xl' : 'text-earth/40 hover:text-onyx hover:bg-white'}`}
-              >
-                <div className="flex items-center gap-3">
-                  <t.icon size={18} />
-                  {t.label}
-                </div>
-                {activeTab === t.id && <ChevronRight size={14} className="text-neon" />}
+              <button key={t.id} onClick={() => setActiveTab(t.id)}
+                className={`px-5 py-3 font-serif text-[9px] tracking-[0.3em] uppercase whitespace-nowrap border-b-2 transition-colors ${activeTab === t.id ? 'border-zinc-900 text-zinc-900' : 'border-transparent text-zinc-400'}`}>
+                {t.label}
               </button>
             ))}
-          </aside>
+          </div>
 
-          {/* MAIN CONTENT AREA */}
-          <main className="flex-1 bg-white rounded-[40px] shadow-sm border border-border/10 overflow-y-auto custom-scrollbar p-12">
-            
-            <div className="max-w-[800px] mx-auto">
-              {activeTab === 'whatsapp' && (
-                <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
-                  <header className="space-y-2">
-                     <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Messages rapides</span>
-                     <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">WhatsApp Studio</h2>
-                     <p className="text-[14px] font-medium text-earth/50 max-w-xl leading-relaxed">
-                       Configurez les textes utilisés par les boutons WhatsApp du dashboard. Les variables sont remplacées automatiquement.
-                     </p>
-                  </header>
+          <div className="max-w-[820px] mx-auto p-8 sm:p-12">
 
-                  <div className="space-y-12">
-                     {[
-                       { label: 'Relance paiement', val: localTemplate, set: setLocalTemplate, preset: DEFAULT_REMINDER },
-                       { label: 'Confirmation RDV', val: localConfirmation, set: setLocalConfirmation, preset: DEFAULT_CONFIRMATION },
-                       { label: 'Suivi après séance', val: localFollowup, set: setLocalFollowup, preset: DEFAULT_FOLLOWUP }
-                     ].map((item, i) => (
-                       <div key={i} className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 items-start border-t border-border/5 pt-10">
-                          <div className="space-y-4">
-                             <div className="flex items-center justify-between gap-4">
-                               <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">{item.label}</label>
-                               <button
-                                 type="button"
-                                 onClick={() => item.set(item.preset)}
-                                 className="text-[10px] font-semibold uppercase tracking-widest text-earth/40 hover:text-forest transition-all"
-                               >
-                                 Modèle par défaut
-                               </button>
-                             </div>
-                             <textarea
-                               value={item.val}
-                               onChange={(e) => item.set(e.target.value)}
-                               rows={4}
-                               className="w-full bg-bg-soft/70 border border-border/10 rounded-[24px] p-6 text-[15px] font-medium text-onyx focus:bg-white focus:ring-1 focus:ring-onyx outline-none transition-all resize-none shadow-inner"
-                             />
-                             <p className="text-[12px] font-medium text-earth/40 leading-relaxed">
-                               Variables: {'{firstName}'}, {'{date}'}, {'{time}'}, {'{service}'}, {'{price}'}.
-                             </p>
-                          </div>
-                          
-                          {/* Chat Bubble Preview */}
-                          <div className="bg-[#E7E9EC] rounded-[32px] p-4 pt-10 shadow-lg relative border border-white">
-                             <div className="bg-white rounded-2xl rounded-tl-none p-4 shadow-sm relative">
-                                <p className="text-[13px] font-medium text-onyx leading-snug">
-                                   {item.val.replace(/{firstName}/g, 'Jean').replace(/{service}/g, 'Massage').replace(/{date}/g, '21/04').replace(/{price}/g, '150').replace(/{time}/g, '14:30')}
-                                </p>
-                                <span className="text-[9px] text-earth/20 font-semibold absolute bottom-1 right-2 uppercase tracking-tighter">14:20 ✓✓</span>
-                             </div>
-                             <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-black/10 rounded-full" />
-                          </div>
-                       </div>
-                     ))}
-                  </div>
+            {/* ── WHATSAPP ── */}
+            {activeTab === 'whatsapp' && (
+              <div className="space-y-12">
+                <div>
+                  <p className="font-serif text-[9px] tracking-[0.5em] text-zinc-400 uppercase mb-2">Messages rapides</p>
+                  <h2 className="font-serif text-3xl tracking-tighter text-zinc-900 uppercase">WhatsApp Studio</h2>
+                  <p className="font-serif text-sm text-zinc-400 mt-3 leading-relaxed max-w-lg">
+                    Configurez les textes utilisés par les boutons WhatsApp. Les variables sont remplacées automatiquement.
+                  </p>
                 </div>
-              )}
 
-              {activeTab === 'email' && (
-                <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
-                  <div className="flex items-center justify-between">
-                     <header className="space-y-2">
-                        <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Communication</span>
-                        <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">Email Butler</h2>
-                     </header>
-                     <button 
-                        onClick={() => setLocalEmailEnabled(!localEmailEnabled)}
-                        className={`w-16 h-8 rounded-full p-1 transition-all ${localEmailEnabled ? 'bg-forest' : 'bg-earth/20'}`}
-                     >
-                        <div className={`w-6 h-6 bg-white rounded-full shadow-lg transition-transform ${localEmailEnabled ? 'translate-x-[32px]' : 'translate-x-0'}`} />
-                     </button>
-                  </div>
-
-                  <div className={`space-y-8 transition-all ${localEmailEnabled ? 'opacity-100' : 'opacity-30 grayscale'}`}>
-                     <div className="space-y-4">
-                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Modèle de corps d'email</label>
-                        <textarea
-                           value={localEmail}
-                           onChange={(e) => setLocalEmail(e.target.value)}
-                           rows={8}
-                           className="w-full bg-bg-soft/70 border border-border/10 rounded-[32px] p-8 text-[16px] font-medium text-onyx focus:bg-white outline-none focus:ring-1 focus:ring-onyx transition-all resize-none shadow-inner"
-                        />
-                     </div>
-                     <div className="p-6 bg-forest/5 rounded-2xl flex items-center gap-4 text-forest">
-                        <Info size={20} />
-                        <p className="text-[13px] font-bold">L'email inclura automatiquement votre logo et les détails du cabinet configurés.</p>
-                     </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'objectives' && (
-                <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
-                  <header className="space-y-2">
-                     <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Business Strategy</span>
-                     <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">Performance Cible</h2>
-                  </header>
-
-                  <div className="max-w-md space-y-8">
-                     <div className="bg-bg-soft/40 p-10 rounded-[32px] border border-border/5 space-y-4">
-                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Objectif CA Mensuel</label>
-                        <div className="relative">
-                           <input 
-                              type="number"
-                              value={localGoal}
-                              onChange={(e) => setLocalGoal(e.target.value)}
-                              className="w-full bg-white border border-border/10 rounded-2xl h-20 px-8 text-[42px] font-semibold text-onyx outline-none focus:ring-1 focus:ring-onyx transition-all tabular-nums tracking-tighter"
-                           />
-                           <span className="absolute right-8 top-1/2 -translate-y-1/2 text-[14px] font-semibold text-earth/20 uppercase tracking-widest">CHF</span>
+                <div className="space-y-10">
+                  {[
+                    { label: 'Relance paiement',  val: localTemplate,     set: setLocalTemplate,     preset: DEFAULT_REMINDER },
+                    { label: 'Confirmation RDV',  val: localConfirmation, set: setLocalConfirmation, preset: DEFAULT_CONFIRMATION },
+                    { label: 'Suivi après séance', val: localFollowup,    set: setLocalFollowup,     preset: DEFAULT_FOLLOWUP },
+                  ].map((item, i) => (
+                    <div key={i} className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-8 items-start border-t border-zinc-50 pt-10">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <label className="font-serif text-[10px] tracking-[0.4em] uppercase text-zinc-900">{item.label}</label>
+                          <button type="button" onClick={() => item.set(item.preset)}
+                            className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400 hover:text-zinc-900 transition-colors">
+                            Défaut
+                          </button>
                         </div>
-                        <p className="text-[12px] font-bold text-earth/40 leading-relaxed">Cet objectif est utilisé pour calculer votre barre de progression sur le tableau de bord principal.</p>
-                     </div>
+                        <textarea value={item.val} onChange={e => item.set(e.target.value)} rows={4}
+                          className="w-full bg-white border border-zinc-200 p-5 font-serif text-sm text-zinc-900 focus:border-zinc-900 outline-none transition-all resize-none" />
+                        <p className="font-serif text-[10px] text-zinc-400 leading-relaxed">
+                          Variables : {'{firstName}'}, {'{date}'}, {'{time}'}, {'{service}'}, {'{price}'}
+                        </p>
+                      </div>
+
+                      {/* Chat bubble preview */}
+                      <div className="bg-zinc-100 border border-zinc-200 p-4 pt-8 relative">
+                        <div className="bg-white border border-zinc-100 p-4 shadow-sm relative">
+                          <p className="font-serif text-sm text-zinc-900 leading-snug">
+                            {item.val.replace(/{firstName}/g,'Jean').replace(/{service}/g,'Massage').replace(/{date}/g,'21/04').replace(/{price}/g,'150').replace(/{time}/g,'14:30')}
+                          </p>
+                          <span className="font-serif text-[9px] text-zinc-300 absolute bottom-1.5 right-2.5 uppercase tracking-wider">14:20 ✓✓</span>
+                        </div>
+                        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-zinc-300" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── EMAIL ── */}
+            {activeTab === 'email' && (
+              <div className="space-y-10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-serif text-[9px] tracking-[0.5em] text-zinc-400 uppercase mb-2">Communication</p>
+                    <h2 className="font-serif text-3xl tracking-tighter text-zinc-900 uppercase">Email Butler</h2>
+                  </div>
+                  <button onClick={() => setLocalEmailEnabled(!localEmailEnabled)}
+                    className={`w-14 h-7 p-1 transition-all duration-500 ${localEmailEnabled ? 'bg-zinc-900' : 'bg-zinc-200'}`}>
+                    <div className={`w-5 h-5 bg-white transition-transform duration-300 ${localEmailEnabled ? 'translate-x-7' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+
+                <div className={`space-y-6 transition-all ${localEmailEnabled ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+                  <div className="space-y-3">
+                    <label className="font-serif text-[10px] tracking-[0.4em] uppercase text-zinc-900">Modèle de corps d'email</label>
+                    <textarea value={localEmail} onChange={e => setLocalEmail(e.target.value)} rows={8}
+                      className="w-full bg-white border border-zinc-200 p-6 font-serif text-sm text-zinc-900 focus:border-zinc-900 outline-none transition-all resize-none" />
+                  </div>
+                  <div className="p-5 bg-zinc-50 border border-zinc-100 flex items-center gap-4 text-zinc-600">
+                    <Info size={16} strokeWidth={1.5} />
+                    <p className="font-serif text-[11px] tracking-[0.1em]">L'email inclura automatiquement votre logo et les détails du cabinet configurés.</p>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
 
-              {activeTab === 'cabinet' && (
-                <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
-                  <header className="space-y-2">
-                     <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Legal Identity</span>
-                     <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">Entité Cabinet</h2>
-                  </header>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                     <div className="space-y-4">
-                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Nom Public</label>
-                        <input value={localCabinetName} onChange={(e) => setLocalCabinetName(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-semibold text-onyx outline-none focus:bg-white transition-all uppercase tracking-tight" />
-                     </div>
-                     <div className="space-y-4">
-                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Email Contact</label>
-                        <input value={localCabinetEmail} onChange={(e) => setLocalCabinetEmail(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-semibold text-onyx outline-none focus:bg-white transition-all lowercase" />
-                     </div>
-                     <div className="space-y-4 md:col-span-2">
-                        <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">Coordonnées Facturation</label>
-                        <input value={localCabinetAddress} onChange={(e) => setLocalCabinetAddress(e.target.value)} className="w-full h-14 bg-bg-soft/70 border border-border/10 rounded-2xl px-6 font-semibold text-onyx outline-none focus:bg-white transition-all uppercase tracking-tight" />
-                     </div>
-                  </div>
+            {/* ── OBJECTIVES ── */}
+            {activeTab === 'objectives' && (
+              <div className="space-y-10">
+                <div>
+                  <p className="font-serif text-[9px] tracking-[0.5em] text-zinc-400 uppercase mb-2">Business Strategy</p>
+                  <h2 className="font-serif text-3xl tracking-tighter text-zinc-900 uppercase">Performance Cible</h2>
                 </div>
-              )}
-            </div>
+                <div className="bg-white border border-zinc-100 p-10 space-y-5 max-w-md">
+                  <label className="font-serif text-[10px] tracking-[0.4em] uppercase text-zinc-900">Objectif CA Mensuel</label>
+                  <div className="relative">
+                    <input type="number" value={localGoal} onChange={e => setLocalGoal(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 h-20 px-7 font-serif text-[42px] tracking-tighter text-zinc-900 outline-none focus:border-zinc-900 transition-all tabular-nums" />
+                    <span className="absolute right-7 top-1/2 -translate-y-1/2 font-serif text-sm text-zinc-400 uppercase tracking-widest">CHF</span>
+                  </div>
+                  <p className="font-serif text-[11px] text-zinc-400 leading-relaxed">
+                    Cet objectif alimente la barre de progression sur le tableau de bord principal.
+                  </p>
+                </div>
+              </div>
+            )}
 
-          </main>
-        </div>
+            {/* ── CABINET ── */}
+            {activeTab === 'cabinet' && (
+              <div className="space-y-10">
+                <div>
+                  <p className="font-serif text-[9px] tracking-[0.5em] text-zinc-400 uppercase mb-2">Legal Identity</p>
+                  <h2 className="font-serif text-3xl tracking-tighter text-zinc-900 uppercase">Entité Cabinet</h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[
+                    { label: 'Nom Public',               value: localCabinetName,    set: setLocalCabinetName,    full: false },
+                    { label: 'Email Contact',            value: localCabinetEmail,   set: setLocalCabinetEmail,   full: false },
+                    { label: 'Coordonnées Facturation',  value: localCabinetAddress, set: setLocalCabinetAddress, full: true  },
+                  ].map(f => (
+                    <div key={f.label} className={`space-y-3 ${f.full ? 'md:col-span-2' : ''}`}>
+                      <label className="font-serif text-[10px] tracking-[0.4em] uppercase text-zinc-900">{f.label}</label>
+                      <input value={f.value} onChange={e => f.set(e.target.value)}
+                        className="w-full h-12 bg-white border border-zinc-200 px-5 font-serif text-sm text-zinc-900 outline-none focus:border-zinc-900 transition-all tracking-tight" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+          </div>
+        </main>
       </div>
-
     </div>
   );
 }

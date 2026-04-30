@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import {
   Search, Download, FileText, Smartphone,
   CreditCard, Banknote, X, ArrowUpDown, Printer, Calendar,
-  ChevronRight, Trash2,
+  ChevronRight, Trash2, Check,
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 import { Appointment, Invoice } from '../types';
@@ -18,9 +18,9 @@ interface ComptaPageProps {
 type SortField = 'date' | 'time' | 'lastName' | 'firstName' | 'price' | 'serviceName' | 'status';
 
 const STATUS_CONFIG = {
-  wait: { label: 'En attente', cls: 'bg-amber-50 text-amber-700' },
-  late: { label: 'En retard',  cls: 'bg-rose-50 text-rose-600' },
-  paid: { label: 'Réglé',      cls: 'bg-emerald-50 text-emerald-700' },
+  wait: { label: 'En attente', cls: 'bg-amber-50 text-amber-700 border border-amber-100' },
+  late: { label: 'En retard',  cls: 'bg-rose-50 text-rose-600 border border-rose-100' },
+  paid: { label: 'Réglé',      cls: 'bg-zinc-900 text-white border border-zinc-900' },
 };
 
 export default function ComptaPage({
@@ -39,7 +39,6 @@ export default function ComptaPage({
 
   const todayStr = format(new Date(), 'yyyy-MM-dd');
 
-  // Filtered + sorted
   const filtered = useMemo(() =>
     appointments
       .filter(a => {
@@ -89,35 +88,16 @@ export default function ComptaPage({
     else { setSortField(field); setSortDir('desc'); }
   }, [sortField]);
 
-  const toggleSelect = useCallback((e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    setSelectedIds(prev => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  }, []);
-
-  const handlePrint = (id: string) => {
-    window.open(`/therapist/invoice/${id}`, '_blank');
-  };
+  const handlePrint = (id: string) => window.open(`/therapist/invoice/${id}`, '_blank');
 
   const handleExport = () => {
     const toExport = selectedIds.size > 0
       ? filtered.filter(a => selectedIds.has(a.id))
       : filtered;
-
     const csv = [
       ['Date', 'Client', 'Service', 'Montant', 'Statut'].join(','),
-      ...toExport.map(a => [
-        a.date,
-        a.clientNameSnapshot,
-        a.serviceName || 'Soin',
-        a.price,
-        a.paid ? 'RÉGLÉ' : 'EN ATTENTE',
-      ].join(','))
+      ...toExport.map(a => [a.date, a.clientNameSnapshot, a.serviceName || 'Soin', a.price, a.paid ? 'RÉGLÉ' : 'EN ATTENTE'].join(','))
     ].join('\n');
-
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -130,50 +110,53 @@ export default function ComptaPage({
 
   const handleDelete = useCallback(() => {
     const ids = Array.from(selectedIds);
-    if (confirm(`Êtes-vous sûr de vouloir supprimer ces ${ids.length} mouvement(s) ? Cela supprimera également les factures et rendez-vous associés.`)) {
+    if (confirm(`Supprimer ces ${ids.length} mouvement(s) ? Les factures et rendez-vous associés seront également supprimés.`)) {
       onDeleteInvoices?.(ids);
       setSelectedIds(new Set());
     }
   }, [selectedIds, onDeleteInvoices]);
 
-  const GRID = 'grid-cols-[40px_100px_60px_1.5fr_1fr_1fr_90px_130px_90px]';
+  const GRID = 'grid-cols-[36px_90px_56px_1.5fr_1fr_1fr_100px_120px_80px]';
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      {/* ── PAGE HEADER ── */}
-      <header className="h-14 border-b border-slate-200 bg-white px-6 sm:px-10 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-4 sm:gap-6 min-w-0 flex-1">
-          <h1 className="text-sm font-semibold text-slate-900 shrink-0">Facturation</h1>
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#faf9f7]">
 
-          <div className="relative flex-1 max-w-sm min-w-0">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+      {/* ── PAGE HEADER ── */}
+      <header className="h-16 border-b border-zinc-100 bg-[#faf9f7] px-8 sm:px-12 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-6 min-w-0 flex-1">
+          <div>
+            <p className="font-serif text-[8px] tracking-[0.5em] text-zinc-400 uppercase mb-0.5">MODULE</p>
+            <h1 className="font-serif text-base tracking-tighter text-zinc-900 uppercase">Facturation</h1>
+          </div>
+
+          <div className="relative flex-1 max-w-xs min-w-0">
+            <Search size={13} strokeWidth={1.5} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Rechercher…"
-              className="w-full h-8 bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300 focus:bg-white transition-all duration-150"
+              className="w-full h-9 bg-white border border-zinc-200 pl-10 pr-4 font-serif text-sm text-zinc-900 placeholder:text-zinc-300 focus:outline-none focus:border-zinc-900 transition-all"
             />
           </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          {/* Date range toggle */}
           {showDateRange && (
-            <div className="hidden sm:flex items-center gap-2 h-8 bg-slate-50 border border-slate-200 rounded-lg px-2">
-              <Calendar size={12} className="text-slate-400" />
+            <div className="hidden sm:flex items-center gap-2 h-9 bg-white border border-zinc-200 px-3">
+              <Calendar size={12} strokeWidth={1.5} className="text-zinc-400" />
               <input
                 type="date"
                 value={dateRange.start}
                 onChange={e => setDateRange({ ...dateRange, start: e.target.value })}
-                className="bg-transparent text-xs font-medium text-slate-600 focus:outline-none"
+                className="bg-transparent font-serif text-xs text-zinc-700 focus:outline-none"
               />
-              <span className="text-xs text-slate-300">→</span>
+              <span className="font-serif text-xs text-zinc-200">→</span>
               <input
                 type="date"
                 value={dateRange.end}
                 onChange={e => setDateRange({ ...dateRange, end: e.target.value })}
-                className="bg-transparent text-xs font-medium text-slate-600 focus:outline-none"
+                className="bg-transparent font-serif text-xs text-zinc-700 focus:outline-none"
               />
             </div>
           )}
@@ -187,9 +170,9 @@ export default function ComptaPage({
                 setShowDateRange(true);
               }
             }}
-            className="flex items-center gap-1.5 h-8 px-3 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-colors duration-150"
+            className="flex items-center gap-2 h-9 px-4 bg-white border border-zinc-200 font-serif text-[10px] tracking-[0.3em] uppercase text-zinc-700 hover:border-zinc-900 hover:text-zinc-900 transition-all duration-300"
           >
-            <Download size={13} />
+            <Download size={13} strokeWidth={1.5} />
             {selectedIds.size > 0 ? `Exporter (${selectedIds.size})` : 'Exporter'}
           </button>
         </div>
@@ -197,49 +180,50 @@ export default function ComptaPage({
 
       {/* ── SELECTION BAR ── */}
       {selectedIds.size > 0 && (
-        <div className="h-10 bg-indigo-50 border-b border-indigo-100 px-6 sm:px-10 flex items-center justify-between shrink-0">
-          <span className="text-xs font-medium text-indigo-700">
+        <div className="h-10 bg-zinc-900 px-8 sm:px-12 flex items-center justify-between shrink-0">
+          <span className="font-serif text-[10px] tracking-[0.3em] uppercase text-zinc-300">
             {selectedIds.size} sélectionné{selectedIds.size > 1 ? 's' : ''}
           </span>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             <button
               onClick={handleDelete}
-              className="text-xs font-medium text-red-500 hover:text-red-700 flex items-center gap-1.5 transition-colors"
+              className="font-serif text-[10px] tracking-[0.3em] uppercase text-rose-400 hover:text-rose-300 flex items-center gap-2 transition-colors"
             >
-              <Trash2 size={13} /> Supprimer
+              <Trash2 size={12} strokeWidth={1.5} /> Supprimer
             </button>
             <button
               onClick={() => setSelectedIds(new Set())}
-              className="text-xs font-medium text-indigo-500 hover:text-indigo-700 flex items-center gap-1 transition-colors"
+              className="font-serif text-[10px] tracking-[0.3em] uppercase text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors"
             >
-              <X size={12} /> Désélectionner
+              <X size={12} strokeWidth={1.5} /> Désélectionner
             </button>
           </div>
         </div>
       )}
 
       {/* ── SUMMARY BAR ── */}
-      <div className="h-10 bg-white border-b border-slate-200 px-6 sm:px-10 flex items-center gap-6 shrink-0">
-        <span className="text-xs text-slate-500">
-          <span className="font-medium text-emerald-600">{totalPaid} CHF</span> encaissés
+      <div className="h-10 bg-white border-b border-zinc-100 px-8 sm:px-12 flex items-center gap-8 shrink-0">
+        <span className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500">
+          <span className="text-zinc-900">{totalPaid} CHF</span> encaissés
         </span>
-        <span className="text-xs text-slate-500">
-          <span className="font-medium text-amber-600">{totalUnpaid} CHF</span> en attente
+        <span className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500">
+          <span className="text-amber-600">{totalUnpaid} CHF</span> en attente
         </span>
         {lateCount > 0 && (
-          <span className="text-xs text-slate-500">
-            <span className="font-medium text-rose-600">{lateCount}</span> en retard
+          <span className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500">
+            <span className="text-rose-600">{lateCount}</span> en retard
           </span>
         )}
-        <span className="text-xs text-slate-400 ml-auto">{filtered.length} mouvements</span>
+        <span className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-300 ml-auto">{filtered.length} mouvements</span>
       </div>
 
       {/* ── TABLE ── */}
       <main className="flex-1 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 py-5 h-full flex flex-col">
-          <div className="bg-white border border-slate-200 rounded-xl flex-1 flex flex-col overflow-hidden">
-            {/* Header */}
-            <div className={`grid ${GRID} px-4 h-10 items-center border-b border-slate-200 bg-slate-50 shrink-0`}>
+        <div className="max-w-[1500px] mx-auto px-6 sm:px-10 py-6 h-full flex flex-col">
+          <div className="bg-white border border-zinc-100 flex-1 flex flex-col overflow-hidden">
+
+            {/* Table header */}
+            <div className={`grid ${GRID} px-5 h-10 items-center border-b border-zinc-100 bg-zinc-50 shrink-0`}>
               <div className="flex justify-center">
                 <TableCheckbox
                   checked={selectedIds.size === filtered.length && filtered.length > 0}
@@ -249,18 +233,18 @@ export default function ComptaPage({
                   }}
                 />
               </div>
-              <SortHeader label="Date" field="date" current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Heure" field="time" current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Nom" field="lastName" current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Prénom" field="firstName" current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Soin" field="serviceName" current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Montant" field="price" current={sortField} dir={sortDir} onSort={toggleSort} />
-              <div className="text-[11px] font-medium text-slate-500">Statut</div>
-              <div className="text-[11px] font-medium text-slate-500">Actions</div>
+              <SortHeader label="Date"    field="date"        current={sortField} dir={sortDir} onSort={toggleSort} />
+              <SortHeader label="Heure"   field="time"        current={sortField} dir={sortDir} onSort={toggleSort} />
+              <SortHeader label="Nom"     field="lastName"    current={sortField} dir={sortDir} onSort={toggleSort} />
+              <SortHeader label="Prénom"  field="firstName"   current={sortField} dir={sortDir} onSort={toggleSort} />
+              <SortHeader label="Soin"    field="serviceName" current={sortField} dir={sortDir} onSort={toggleSort} />
+              <SortHeader label="Montant" field="price"       current={sortField} dir={sortDir} onSort={toggleSort} />
+              <div className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400">Statut</div>
+              <div className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400">Actions</div>
             </div>
 
             {/* Rows */}
-            <div className="flex-1 overflow-y-auto divide-y divide-slate-100">
+            <div className="flex-1 overflow-y-auto divide-y divide-zinc-50">
               {filtered.map(a => {
                 const status = a.paid ? 'paid' : (a.date && a.date < todayStr ? 'late' : 'wait');
                 const cfg = STATUS_CONFIG[status];
@@ -272,7 +256,7 @@ export default function ComptaPage({
                 return (
                   <div
                     key={a.id}
-                    className={`grid ${GRID} px-4 h-12 items-center cursor-pointer transition-colors duration-150 group hover:bg-slate-50 ${isSelected ? 'bg-indigo-50/40' : ''}`}
+                    className={`grid ${GRID} px-5 h-12 items-center transition-colors duration-150 group ${isSelected ? 'bg-zinc-50' : 'hover:bg-zinc-50/60'}`}
                   >
                     <div className="flex justify-center">
                       <TableCheckbox
@@ -287,16 +271,16 @@ export default function ComptaPage({
                       />
                     </div>
 
-                    <span className="text-sm text-slate-500" onClick={() => onSelectAppt(a)}>
+                    <span className="font-serif text-sm text-zinc-500 cursor-pointer" onClick={() => onSelectAppt(a)}>
                       {a.date ? format(new Date(a.date), 'dd/MM/yy') : '—'}
                     </span>
-                    <span className="text-sm text-slate-500" onClick={() => onSelectAppt(a)}>{a.time}</span>
-                    <span className="text-sm font-medium text-slate-900 truncate" onClick={() => onSelectAppt(a)}>{lastName}</span>
-                    <span className="text-sm text-slate-500 truncate" onClick={() => onSelectAppt(a)}>{firstName}</span>
-                    <span className="text-sm text-slate-500 truncate" onClick={() => onSelectAppt(a)}>{a.serviceName || 'Séance'}</span>
-                    <span className="text-sm font-medium text-slate-900" onClick={() => onSelectAppt(a)}>{a.price || 0} CHF</span>
+                    <span className="font-serif text-sm text-zinc-500 cursor-pointer" onClick={() => onSelectAppt(a)}>{a.time}</span>
+                    <span className="font-serif text-sm text-zinc-900 truncate tracking-tight cursor-pointer group-hover:italic transition-all" onClick={() => onSelectAppt(a)}>{lastName}</span>
+                    <span className="font-serif text-sm text-zinc-500 truncate cursor-pointer" onClick={() => onSelectAppt(a)}>{firstName}</span>
+                    <span className="font-serif text-sm text-zinc-500 truncate cursor-pointer" onClick={() => onSelectAppt(a)}>{a.serviceName || 'Séance'}</span>
+                    <span className="font-serif text-sm text-zinc-900 tracking-tight cursor-pointer" onClick={() => onSelectAppt(a)}>{a.price || 0} CHF</span>
 
-                    {/* Status button */}
+                    {/* Status / pay button */}
                     <div onClick={e => e.stopPropagation()}>
                       {payingId === a.id ? (
                         <div className="flex items-center gap-1">
@@ -304,23 +288,23 @@ export default function ComptaPage({
                             <button
                               key={m}
                               onClick={() => { onTogglePayment(a.id, false, m); setPayingId(null); }}
-                              className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors duration-150"
+                              className="w-7 h-7 bg-white border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-300"
                               title={m}
                             >
-                              {m === 'Twint' ? <Smartphone size={12} /> : m === 'Card' ? <CreditCard size={12} /> : <Banknote size={12} />}
+                              {m === 'Twint' ? <Smartphone size={11} strokeWidth={1.5} /> : m === 'Card' ? <CreditCard size={11} strokeWidth={1.5} /> : <Banknote size={11} strokeWidth={1.5} />}
                             </button>
                           ))}
                           <button
                             onClick={() => setPayingId(null)}
-                            className="w-7 h-7 rounded-lg bg-slate-100 text-slate-400 flex items-center justify-center hover:bg-rose-100 hover:text-rose-600 transition-colors"
+                            className="w-7 h-7 bg-white border border-zinc-200 text-zinc-400 flex items-center justify-center hover:border-rose-400 hover:text-rose-500 transition-all"
                           >
-                            <X size={12} />
+                            <X size={11} strokeWidth={1.5} />
                           </button>
                         </div>
                       ) : (
                         <button
                           onClick={() => a.paid ? onTogglePayment(a.id, true) : setPayingId(a.id)}
-                          className={`px-2.5 py-1 rounded-md text-[10px] font-medium transition-colors ${cfg.cls}`}
+                          className={`px-2.5 py-1 font-serif text-[9px] tracking-[0.2em] uppercase transition-all ${cfg.cls}`}
                         >
                           {cfg.label}
                         </button>
@@ -331,17 +315,17 @@ export default function ComptaPage({
                     <div className="flex gap-1">
                       <button
                         onClick={() => handlePrint(a.id)}
-                        className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:border-slate-300 transition-colors duration-150"
+                        className="w-7 h-7 bg-white border border-zinc-100 flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:border-zinc-900 transition-all duration-300"
                         title="Imprimer"
                       >
-                        <Printer size={13} />
+                        <Printer size={12} strokeWidth={1.5} />
                       </button>
                       <button
                         onClick={() => onSelectAppt(a)}
-                        className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-colors duration-150"
+                        className="w-7 h-7 bg-white border border-zinc-100 flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:border-zinc-900 transition-all duration-300"
                         title="Détail"
                       >
-                        <ChevronRight size={13} />
+                        <ChevronRight size={12} strokeWidth={1.5} />
                       </button>
                     </div>
                   </div>
@@ -351,9 +335,9 @@ export default function ComptaPage({
 
             {/* Empty state */}
             {filtered.length === 0 && (
-              <div className="flex-1 flex flex-col items-center justify-center py-16 text-center">
-                <FileText size={28} className="text-slate-300 mb-3" />
-                <p className="text-sm text-slate-500">Aucun mouvement sur cette période</p>
+              <div className="flex-1 flex flex-col items-center justify-center py-20 text-center">
+                <FileText size={28} strokeWidth={1} className="text-zinc-200 mb-4" />
+                <p className="font-serif text-sm text-zinc-400 tracking-tight">Aucun mouvement sur cette période</p>
               </div>
             )}
           </div>
@@ -368,9 +352,11 @@ function TableCheckbox({ checked, onChange }: { checked: boolean; onChange: () =
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`w-4 h-4 rounded border-[1.5px] cursor-pointer transition-colors duration-150 flex items-center justify-center ${checked ? 'bg-indigo-600 border-indigo-600' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+      className={`w-4 h-4 border cursor-pointer transition-all duration-200 flex items-center justify-center ${
+        checked ? 'bg-zinc-900 border-zinc-900' : 'border-zinc-200 bg-white hover:border-zinc-600'
+      }`}
     >
-      {checked && <span className="text-white text-[8px] leading-none">✓</span>}
+      {checked && <Check size={9} strokeWidth={2.5} className="text-white" />}
     </div>
   );
 }
@@ -388,10 +374,10 @@ function SortHeader({
   return (
     <button
       onClick={() => onSort(field)}
-      className="flex items-center gap-1 text-[11px] font-medium text-slate-500 hover:text-slate-700 transition-colors"
+      className="flex items-center gap-1.5 font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400 hover:text-zinc-900 transition-colors"
     >
       {label}
-      {current === field && <ArrowUpDown size={10} className="text-indigo-500" />}
+      {current === field && <ArrowUpDown size={9} strokeWidth={1.5} className="text-zinc-900" />}
     </button>
   );
 }
