@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Save, Sparkles, Heart, Wind, Droplets, ShieldCheck, Thermometer } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/Navbar';
 
 export default function PreSessionForm() {
   const router = useRouter();

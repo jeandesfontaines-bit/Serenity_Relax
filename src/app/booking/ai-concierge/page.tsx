@@ -6,7 +6,7 @@ import {
   Sparkles, Send, ArrowRight, Heart, Brain, 
   Wind, Zap, Bot, ArrowLeft, Loader2, CheckCircle
 } from 'lucide-react';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 
 export default function AIConcierge() {

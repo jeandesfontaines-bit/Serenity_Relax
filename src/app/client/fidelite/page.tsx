@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Gift, Heart, Trophy, Crown, Zap, ChevronRight, ShieldCheck, ArrowLeft } from 'lucide-react';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/Navbar';
 import { useFirestore, useUser } from '@/firebase';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';

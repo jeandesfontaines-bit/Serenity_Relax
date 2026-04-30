@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Search, Plus, ShieldCheck, ArrowRight, Users } from 'lucide-react';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/Navbar';
 
 export default function ClientsCRM() {
   const firestore = useFirestore();

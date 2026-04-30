@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Send, Search, CreditCard, Banknote, Smartphone, ChevronRight, CheckCircle2, AlertCircle, Clock, FileText, Filter } from 'lucide-react';
 import jsPDF from 'jspdf';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 
 export default function InvoicesPage() {

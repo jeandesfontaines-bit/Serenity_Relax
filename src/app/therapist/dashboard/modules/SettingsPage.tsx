@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  Smartphone, Bell, Target, Clock, Save, 
+  Bell, Target, Save, 
   MessageSquare, Briefcase, ChevronRight,
   Info, CheckCircle2, Sparkles
 } from 'lucide-react';
@@ -18,16 +18,21 @@ interface SettingsPageProps {
   onUpdateMetadata: (data: any) => void;
 }
 
+const DEFAULT_REMINDER = "Bonjour {firstName}, petit rappel concernant le paiement de votre séance {service} du {date}. Montant restant: {price} CHF. Merci beaucoup.";
+const DEFAULT_CONFIRMATION = "Bonjour {firstName}, votre rendez-vous pour {service} est confirmé le {date} à {time}. Au plaisir de vous accueillir.";
+const DEFAULT_FOLLOWUP = "Bonjour {firstName}, j'espère que vous vous sentez bien après votre séance. Pensez à bien vous hydrater aujourd'hui.";
+const DEFAULT_EMAIL = "Bonjour {firstName}, votre rendez-vous est confirmé pour le {date} à {time}. Bien à vous.";
+
 export default function SettingsPage({ 
   monthlyGoal, reminderTemplate, confirmationTemplate, followupTemplate,
   emailTemplate, emailEnabled, cabinetName, cabinetAddress, cabinetEmail,
   onUpdateMetadata 
 }: SettingsPageProps) {
   const [localGoal, setLocalGoal] = useState(monthlyGoal.toString());
-  const [localTemplate, setLocalTemplate] = useState(reminderTemplate);
-  const [localConfirmation, setLocalConfirmation] = useState(confirmationTemplate);
-  const [localFollowup, setLocalFollowup] = useState(followupTemplate);
-  const [localEmail, setLocalEmail] = useState(emailTemplate || "Bonjour {firstName}, votre rendez-vous est confirmé pour le {date} à {time}.");
+  const [localTemplate, setLocalTemplate] = useState(reminderTemplate || DEFAULT_REMINDER);
+  const [localConfirmation, setLocalConfirmation] = useState(confirmationTemplate || DEFAULT_CONFIRMATION);
+  const [localFollowup, setLocalFollowup] = useState(followupTemplate || DEFAULT_FOLLOWUP);
+  const [localEmail, setLocalEmail] = useState(emailTemplate || DEFAULT_EMAIL);
   const [localEmailEnabled, setLocalEmailEnabled] = useState(emailEnabled);
   const [localCabinetName, setLocalCabinetName] = useState(cabinetName);
   const [localCabinetEmail, setLocalCabinetEmail] = useState(cabinetEmail);
@@ -55,7 +60,7 @@ export default function SettingsPage({
     { id: 'whatsapp', label: 'WhatsApp', icon: MessageSquare },
     { id: 'email', label: 'Emails', icon: Bell },
     { id: 'cabinet', label: 'Cabinet', icon: Briefcase },
-    { id: 'objectives', label: 'Business', icon: Target },
+    { id: 'objectives', label: 'Objectifs', icon: Target },
   ];
 
   return (
@@ -69,7 +74,7 @@ export default function SettingsPage({
            </div>
            <div>
               <h1 className="text-[24px] font-semibold text-onyx tracking-tighter uppercase leading-none">Réglages</h1>
-              <p className="text-[10px] font-bold text-earth/30 uppercase tracking-[0.2em] mt-1.5 font-semibold">Studio Infrastructure</p>
+              <p className="text-[10px] font-bold text-earth/30 uppercase tracking-[0.2em] mt-1.5">Messages, cabinet et objectifs</p>
            </div>
         </div>
         
@@ -79,7 +84,7 @@ export default function SettingsPage({
             ${saved ? 'bg-forest text-white' : 'bg-onyx text-white hover:bg-forest'}`}
         >
           {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
-          {saved ? 'Enregistré' : 'Sauvegarder'}
+          {saved ? 'Enregistré' : 'Enregistrer les modifications'}
         </button>
       </header>
 
@@ -111,25 +116,40 @@ export default function SettingsPage({
               {activeTab === 'whatsapp' && (
                 <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
                   <header className="space-y-2">
-                     <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Automations</span>
-                     <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">WhatsApp Connect</h2>
+                     <span className="text-[10px] font-semibold text-forest uppercase tracking-[0.2em]">Messages rapides</span>
+                     <h2 className="text-[32px] font-semibold text-onyx tracking-tighter uppercase leading-none">WhatsApp Studio</h2>
+                     <p className="text-[14px] font-medium text-earth/50 max-w-xl leading-relaxed">
+                       Configurez les textes utilisés par les boutons WhatsApp du dashboard. Les variables sont remplacées automatiquement.
+                     </p>
                   </header>
 
                   <div className="space-y-12">
                      {[
-                       { label: 'Relance Impayé', val: localTemplate, set: setLocalTemplate },
-                       { label: 'Confirmation RDV', val: localConfirmation, set: setLocalConfirmation },
-                       { label: 'Suivi Séance', val: localFollowup, set: setLocalFollowup }
+                       { label: 'Relance paiement', val: localTemplate, set: setLocalTemplate, preset: DEFAULT_REMINDER },
+                       { label: 'Confirmation RDV', val: localConfirmation, set: setLocalConfirmation, preset: DEFAULT_CONFIRMATION },
+                       { label: 'Suivi après séance', val: localFollowup, set: setLocalFollowup, preset: DEFAULT_FOLLOWUP }
                      ].map((item, i) => (
                        <div key={i} className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 items-start border-t border-border/5 pt-10">
                           <div className="space-y-4">
-                             <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">{item.label}</label>
+                             <div className="flex items-center justify-between gap-4">
+                               <label className="text-[11px] font-semibold text-onyx uppercase tracking-widest">{item.label}</label>
+                               <button
+                                 type="button"
+                                 onClick={() => item.set(item.preset)}
+                                 className="text-[10px] font-semibold uppercase tracking-widest text-earth/40 hover:text-forest transition-all"
+                               >
+                                 Modèle par défaut
+                               </button>
+                             </div>
                              <textarea
                                value={item.val}
                                onChange={(e) => item.set(e.target.value)}
                                rows={4}
                                className="w-full bg-bg-soft/70 border border-border/10 rounded-[24px] p-6 text-[15px] font-medium text-onyx focus:bg-white focus:ring-1 focus:ring-onyx outline-none transition-all resize-none shadow-inner"
                              />
+                             <p className="text-[12px] font-medium text-earth/40 leading-relaxed">
+                               Variables: {'{firstName}'}, {'{date}'}, {'{time}'}, {'{service}'}, {'{price}'}.
+                             </p>
                           </div>
                           
                           {/* Chat Bubble Preview */}

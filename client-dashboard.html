@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sanctuary | Client Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dadad8",
+                        "secondary-container": "#fcdaaf",
+                        "on-tertiary-container": "#eee8dc",
+                        "on-secondary-fixed": "#291800",
+                        "surface-variant": "#e3e2e0",
+                        "primary": "#435544",
+                        "on-tertiary-fixed": "#1e1c14",
+                        "secondary": "#725a38",
+                        "outline": "#747872",
+                        "surface-container": "#efeeec",
+                        "tertiary-fixed-dim": "#cbc6ba",
+                        "secondary-fixed-dim": "#e1c298",
+                        "on-secondary-fixed-variant": "#594323",
+                        "primary-fixed": "#d4e8d2",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#b8ccb6",
+                        "surface-container-high": "#e9e8e6",
+                        "on-tertiary-fixed-variant": "#4a473e",
+                        "inverse-surface": "#2f3130",
+                        "surface-container-low": "#f4f3f1",
+                        "on-primary-fixed": "#0f1f11",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#e8e2d6",
+                        "surface-container-highest": "#e3e2e0",
+                        "on-primary-fixed-variant": "#3a4b3b",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#5b6d5b",
+                        "surface-bright": "#faf9f7",
+                        "on-background": "#1a1c1b",
+                        "on-surface": "#1a1c1b",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#6c685f",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c3c8c0",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#b8ccb6",
+                        "tertiary": "#535047",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#faf9f7",
+                        "inverse-on-surface": "#f1f1ef",
+                        "surface-tint": "#516351",
+                        "secondary-fixed": "#ffddb2",
+                        "on-surface-variant": "#434842",
+                        "on-secondary-container": "#775e3c",
+                        "on-primary-container": "#daeed8",
+                        "background": "#faf9f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "display": ["Public Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .headline-md { font-family: 'Public Sans'; font-size: 24px; font-weight: 400; line-height: 1.4; }
+        .body-lg { font-family: 'Manrope'; font-size: 18px; font-weight: 400; line-height: 1.6; }
+        .label-md { font-family: 'Manrope'; font-size: 14px; font-weight: 600; line-height: 1.2; letter-spacing: 0.05em; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-[#faf9f7]/80 dark:bg-[#1a1c1b]/80 backdrop-blur-md border-b border-[#efeeec] dark:border-[#434842] docked full-width top-0 sticky z-50 shadow-sm opacity-40">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+<h1 class="text-xl font-normal tracking-wide text-[#435544] dark:text-[#b8ccb6] font-['Public_Sans']">Sanctuary</h1>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="text-[#435544] font-semibold hover:text-[#5b6d5b] transition-colors font-body text-sm" href="#">Home</a>
+<a class="text-[#747872] hover:text-[#5b6d5b] transition-colors font-body text-sm" href="#">Rituals</a>
+<a class="text-[#747872] hover:text-[#5b6d5b] transition-colors font-body text-sm" href="#">Sanctuary</a>
+<a class="text-[#747872] hover:text-[#5b6d5b] transition-colors font-body text-sm" href="#">Concierge</a>
+</nav>
+<div class="flex items-center space-x-4">
+<button class="material-symbols-outlined text-[#435544] hover:text-[#5b6d5b] transition-transform scale-95 active:scale-100">notifications</button>
+<button class="material-symbols-outlined text-[#435544] hover:text-[#5b6d5b] transition-transform scale-95 active:scale-100">spa</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Client profile avatar" data-alt="A professional close-up portrait of a woman with a serene and relaxed expression, featuring soft natural lighting that complements the warm alabaster and soft sand color palette of the holistic brand. The background is a gently blurred minimalist interior with natural wood textures. Her skin glows with a healthy, hydrated look, embodying the wellness and restoration theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDXvIu383AJ8s2aD03mQo1e4K_FgMt1Tg9KPaVhOKsre6Dchzlxk7ZFvyQP9dDGYXyrZuUZMWA-8vaJC9GkC0xL-5jbpsmwuLxYNV8_PxV2oUkQt086w4fhkxhrNJGEJrFIVJVuPdLSp7BvPVx3U7KbauH6U0zqAs1U_83Wm6DfOJb0xRrHYOFw81pts5hNVMFWgU3-6ZgHIQt2Nja8D4qmRTwMHe-jndGLOth735adq9QKu93CsWEH3BjPVkowWgG9cgHw1V1tSo"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-12 space-y-12">
+<!-- Welcome Hero -->
+<section class="relative overflow-hidden rounded-[2rem] h-[320px] flex flex-col justify-end p-12 group shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+<div class="absolute inset-0 z-0">
+<img alt="Sanctuary atmosphere" class="w-full h-full object-cover grayscale-[20%] brightness-90 group-hover:scale-105 transition-transform duration-700" data-alt="A peaceful and atmospheric interior of a luxury holistic spa, featuring organic textures like linen, smooth river stones, and warm oak wood. Soft sunlight filters through sheer white curtains, casting gentle shadows across the space. The color palette consists of soft sage, warm alabaster, and earthy wood tones, creating a tranquil and restorative mood. The lighting is low-key and high-end, evoking a sense of calm and slow living." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuWqT9s1RIarAvOvso-lqbU2ODCmhtOfOcSPEZANLoCCGQaxxZkcEIKQxUh8wzAq1GxW8wbY8SRfpoGOpCFxiSRxjNPWDLW53O9-qqNsA0w3CVOKOMErzYB_rSvjBzpSJSNcPzzwC5aaJVfVVcBy15rGUsWnIqFU9kYVU-4ZovhvANz0N4_in7ZDS4WdbnPj1DMjni8AFOhy_PMM5xvp4xzwV_9P4avDsCVheemiJX8hh9sN6-IwqZhofGqfdKv6PLYEXcCNMfLc4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1a1c1b]/60 to-transparent"></div>
+</div>
+<div class="relative z-10 space-y-2">
+<h2 class="text-white font-display text-4xl md:text-5xl font-light tracking-tight">Welcome back, Alexandra</h2>
+<p class="text-white/80 font-body text-lg">Your next moment of restoration awaits.</p>
+</div>
+</section>
+<!-- Main Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Left Column -->
+<div class="lg:col-span-7 space-y-10">
+<!-- Upcoming Rituals -->
+<div class="bg-surface-container-low rounded-[1.5rem] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline text-xl text-primary">Upcoming Rituals</h3>
+<span class="text-primary-container material-symbols-outlined">calendar_today</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 flex flex-col md:flex-row md:items-center gap-6">
+<div class="bg-primary-fixed w-16 h-16 rounded-xl flex flex-col items-center justify-center text-on-primary-fixed">
+<span class="text-xs font-bold uppercase tracking-wider">Oct</span>
+<span class="text-2xl font-bold">24</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-headline text-lg font-medium">Signature Holistic Massage</h4>
+<p class="text-outline text-sm font-body">Thursday • 2:30 PM • 90 Minutes</p>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 rounded-full border border-outline text-outline font-label text-xs hover:bg-surface-container transition-colors">Reschedule</button>
+<button class="px-5 py-2.5 rounded-full bg-primary-container text-on-primary font-label text-xs hover:opacity-90 transition-opacity">Cancel</button>
+</div>
+</div>
+</div>
+<!-- Sanctuary Status (Loyalty) -->
+<div class="bg-surface-container-low rounded-[1.5rem] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col md:flex-row gap-8 items-center">
+<div class="relative w-40 h-40 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-outline-variant/30" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary-container" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="66" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-headline text-2xl font-bold text-primary">8,450</span>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Points</span>
+</div>
+</div>
+<div class="space-y-4 text-center md:text-left flex-grow">
+<div class="space-y-1">
+<div class="flex items-center justify-center md:justify-start gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+<h3 class="font-headline text-xl text-primary">Elite Tier Status</h3>
+</div>
+<p class="text-outline font-body text-sm">You are 1,550 points away from the 'Serenity Master' tier.</p>
+</div>
+<div class="flex flex-wrap gap-2 justify-center md:justify-start">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-label uppercase rounded-full">Priority Booking</span>
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-label uppercase rounded-full">Monthly Complimentary Ritual</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column -->
+<div class="lg:col-span-5 space-y-10">
+<!-- Past Sessions -->
+<div class="bg-surface-container-high rounded-[1.5rem] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-xl text-primary">Past Sessions</h3>
+<button class="text-primary text-xs font-label uppercase tracking-widest border-b border-primary/20 hover:border-primary">View All</button>
+</div>
+<div class="space-y-6">
+<!-- Session 1 -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl">self_care</span>
+</div>
+<div class="flex-grow pb-4 border-b border-outline-variant/20">
+<div class="flex justify-between">
+<h4 class="font-body font-bold text-on-surface">Deep Tissue Recovery</h4>
+<span class="text-outline text-xs">Sep 12</span>
+</div>
+<p class="text-outline text-sm mt-1">Therapist: Elena Vance</p>
+<button class="mt-2 flex items-center gap-1 text-primary-container text-xs font-semibold">
+<span class="material-symbols-outlined text-sm">rebase_edit</span> Rebook
+                                </button>
+</div>
+</div>
+<!-- Session 2 -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl">potted_plant</span>
+</div>
+<div class="flex-grow pb-4 border-b border-outline-variant/20">
+<div class="flex justify-between">
+<h4 class="font-body font-bold text-on-surface">Aromatherapy Session</h4>
+<span class="text-outline text-xs">Aug 28</span>
+</div>
+<p class="text-outline text-sm mt-1">Therapist: Julian Reed</p>
+<button class="mt-2 flex items-center gap-1 text-primary-container text-xs font-semibold">
+<span class="material-symbols-outlined text-sm">rebase_edit</span> Rebook
+                                </button>
+</div>
+</div>
+<!-- Session 3 -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl">spa</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<h4 class="font-body font-bold text-on-surface">Swedish Serenity</h4>
+<span class="text-outline text-xs">Aug 05</span>
+</div>
+<p class="text-outline text-sm mt-1">Therapist: Elena Vance</p>
+<button class="mt-2 flex items-center gap-1 text-primary-container text-xs font-semibold">
+<span class="material-symbols-outlined text-sm">rebase_edit</span> Rebook
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- My Invoices Table -->
+<section class="bg-surface-container rounded-[1.5rem] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+<h3 class="font-headline text-xl text-primary mb-8">My Invoices</h3>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="text-left border-b border-outline-variant/40">
+<th class="pb-4 font-label text-[10px] uppercase tracking-widest text-outline">Date</th>
+<th class="pb-4 font-label text-[10px] uppercase tracking-widest text-outline">Reference</th>
+<th class="pb-4 font-label text-[10px] uppercase tracking-widest text-outline">Session / Ritual</th>
+<th class="pb-4 font-label text-[10px] uppercase tracking-widest text-outline">Amount</th>
+<th class="pb-4 font-label text-[10px] uppercase tracking-widest text-outline text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-body text-sm divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-5 text-on-surface">Oct 24, 2023</td>
+<td class="py-5 text-outline">INV-2023-084</td>
+<td class="py-5 text-on-surface"><div class="flex flex-col">
+<span class="text-on-surface font-medium">Signature Holistic Massage</span>
+<button class="text-primary-container text-[10px] font-bold uppercase tracking-wider text-left flex items-center gap-1 hover:underline mt-1">
+<span class="material-symbols-outlined text-xs">history</span> View Session
+</button>
+</div></td>
+<td class="py-5 font-bold text-primary">$185.00</td>
+<td class="py-5 text-right">
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-primary-container text-xs font-bold hover:bg-white transition-all">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span> Download PDF
+                                </button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-5 text-on-surface">Sep 12, 2023</td>
+<td class="py-5 text-outline">INV-2023-071</td>
+<td class="py-5 text-on-surface"><div class="flex flex-col">
+<span class="text-on-surface font-medium">Deep Tissue Recovery</span>
+<button class="text-primary-container text-[10px] font-bold uppercase tracking-wider text-left flex items-center gap-1 hover:underline mt-1">
+<span class="material-symbols-outlined text-xs">history</span> View Session
+</button>
+</div></td>
+<td class="py-5 font-bold text-primary">$160.00</td>
+<td class="py-5 text-right">
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-primary-container text-xs font-bold hover:bg-white transition-all">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span> Download PDF
+                                </button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-5 text-on-surface">Aug 28, 2023</td>
+<td class="py-5 text-outline">INV-2023-062</td>
+<td class="py-5 text-on-surface"><div class="flex flex-col">
+<span class="text-on-surface font-medium">Aromatherapy Session</span>
+<button class="text-primary-container text-[10px] font-bold uppercase tracking-wider text-left flex items-center gap-1 hover:underline mt-1">
+<span class="material-symbols-outlined text-xs">history</span> View Session
+</button>
+</div></td>
+<td class="py-5 font-bold text-primary">$145.00</td>
+<td class="py-5 text-right">
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-primary-container text-xs font-bold hover:bg-white transition-all">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span> Download PDF
+                                </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#faf9f7] dark:bg-[#1a1c1b] rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.04)] z-50 border-t border-[#efeeec] dark:border-[#434842]">
+<a class="flex flex-col items-center justify-center bg-[#5b6d5b] text-[#ffffff] rounded-xl px-4 py-1.5 transition-all duration-300 ease-out active:scale-98" href="#">
+<span class="material-symbols-outlined">home_max</span>
+<span class="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#747872] px-4 py-1.5 hover:bg-[#f4f3f1] dark:hover:bg-[#2f3130] rounded-xl transition-all duration-300 ease-out active:scale-98" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase mt-1">Rituals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#747872] px-4 py-1.5 hover:bg-[#f4f3f1] dark:hover:bg-[#2f3130] rounded-xl transition-all duration-300 ease-out active:scale-98" href="#">
+<span class="material-symbols-outlined">loyalty</span>
+<span class="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase mt-1">Sanctuary</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#747872] px-4 py-1.5 hover:bg-[#f4f3f1] dark:hover:bg-[#2f3130] rounded-xl transition-all duration-300 ease-out active:scale-98" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+<span class="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase mt-1">Concierge</span>
+</a>
+</nav>
+</body></html>

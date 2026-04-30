@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { format, isSameDay, addDays } from 'date-fns';
+import React, { useState, useEffect } from 'react';
+import { format, addDays } from 'date-fns';
 import { useFirestore, useUser } from '@/firebase';
 import {
   collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc, setDoc, 
   getDoc, getDocs, query, where, serverTimestamp
 } from 'firebase/firestore';
-import { motion, AnimatePresence } from 'framer-motion';
+import { SERVICES } from '@/lib/types';
 
 // --- Modules ---
 import AppLayout from './modules/AppLayout';
@@ -24,8 +24,27 @@ import WeeklySettingsModal from './modules/WeeklySettingsModal';
 // --- Types ---
 import { Appointment, Client, Invoice } from './types';
 
+// Legacy CSS removed — all modules now use Tailwind
+
 // --- Helpers ---
-const fmt = (d: Date) => format(d, 'yyyy-MM-dd');
+const fmt    = (d: Date) => format(d, 'yyyy-MM-dd');
+const DEFAULT_REMINDER = "Bonjour {firstName}, petit rappel concernant le paiement de votre séance {service} du {date}. Montant restant: {price} CHF. Merci beaucoup.";
+const DEFAULT_CONFIRMATION = "Bonjour {firstName}, votre rendez-vous pour {service} est confirmé le {date} à {time}. Au plaisir de vous accueillir.";
+const DEFAULT_FOLLOWUP = "Bonjour {firstName}, j'espère que vous vous sentez bien après votre séance. Pensez à bien vous hydrater aujourd'hui.";
+
+const normalizeAppointment = (id: string, data: any): Appointment => {
+  const start = data.startTime ? new Date(data.startTime) : null;
+  const validStart = start && !Number.isNaN(start.getTime());
+
+  return {
+    id,
+    ...data,
+    date: data.date || (validStart ? format(start, 'yyyy-MM-dd') : ''),
+    time: data.time || (validStart ? format(start, 'HH:mm') : ''),
+    title: data.title || data.clientNameSnapshot || data.serviceName || 'Séance',
+    price: data.price ?? data.totalAmount,
+  } as Appointment;
+};
 
 export default function TherapistDashboard() {
   const firestore = useFirestore();
@@ -40,19 +59,24 @@ export default function TherapistDashboard() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [configSlots, setConfigSlots] = useState<Record<number, string[]>>({});
+  const [configSlots, setConfigSlots] = useState<Record<number, string[]>>({
+    0: [], 1: ['09:00','10:30','12:00','14:00','15:30','17:00'],
+    2: ['09:00','10:30','12:00','14:00','15:30','17:00'],
+    3: ['09:00','10:30','12:00','14:00','15:30','17:00'],
+    4: ['09:00','10:30','12:00','14:00','15:30','17:00'],
+    5: ['09:00','10:30','12:00','14:00','15:30','17:00'],
+    6: ['10:00','11:30','14:00'],
+  });
   const [availability, setAvailability] = useState<any[]>([]);
   const [monthlyGoal, setMonthlyGoal] = useState<number>(12000);
-  const [reminderTemplate, setReminderTemplate] = useState<string>("");
-  const [confirmationTemplate, setConfirmationTemplate] = useState<string>("");
-  const [followupTemplate, setFollowupTemplate] = useState<string>("");
+  const [reminderTemplate, setReminderTemplate] = useState<string>(DEFAULT_REMINDER);
+  const [confirmationTemplate, setConfirmationTemplate] = useState<string>(DEFAULT_CONFIRMATION);
+  const [followupTemplate, setFollowupTemplate] = useState<string>(DEFAULT_FOLLOWUP);
   const [emailTemplate, setEmailTemplate] = useState<string>("");
   const [emailEnabled, setEmailEnabled] = useState<boolean>(false);
   const [cabinetName, setCabinetName] = useState<string>("Mon Cabinet");
   const [cabinetEmail, setCabinetEmail] = useState<string>("");
   const [cabinetAddress, setCabinetAddress] = useState<string>("");
-
-  const [comptaFilter, setComptaFilter] = useState<'all' | 'unpaid' | 'late'>('all');
 
   // Interaction State
   const [blockMode, setBlockMode] = useState(false);
@@ -66,13 +90,10 @@ export default function TherapistDashboard() {
   useEffect(() => {
     if (!firestore) return;
     const unsubAppts = onSnapshot(collection(firestore, 'appointments'), (snap) => {
-      setAppointments(snap.docs.map(d => ({ id: d.id, ...d.data() } as Appointment)));
+      setAppointments(snap.docs.map(d => normalizeAppointment(d.id, d.data())));
     });
     const unsubClients = onSnapshot(collection(firestore, 'clients'), (snap) => {
       setClients(snap.docs.map(d => ({ id: d.id, ...d.data() } as Client)));
-    });
-    const unsubInvs = onSnapshot(collection(firestore, 'invoices'), (snap) => {
-      setInvoices(snap.docs.map(d => ({ id: d.id, ...d.data() } as Invoice)));
     });
     const unsubAvail = onSnapshot(collection(firestore, 'availability'), (snap) => {
       setAvailability(snap.docs.map(d => ({ id: d.id, ...d.data() })));
@@ -95,18 +116,27 @@ export default function TherapistDashboard() {
       }
     });
 
-    return () => { unsubAppts(); unsubClients(); unsubInvs(); unsubAvail(); unsubConfig(); unsubMeta(); };
+    return () => { unsubAppts(); unsubClients(); unsubAvail(); unsubConfig(); unsubMeta(); };
   }, [firestore]);
 
   // --- Handlers ---
-  const handleUpdateClient = async (id: string, data: Partial<Client>) => {
-    if (!firestore) return;
-    await updateDoc(doc(firestore, 'clients', id), data);
+  const isDayOpen = (d: string) => !availability.find(a => a.id === d)?.closed;
+  const isSlotBlocked = (d: string, t: string) => !!availability.find(a => a.id === d)?.blockedSlots?.includes(t);
+  
+  const toggleSlot = async (dStr: string, t: string) => {
+     if (!firestore) return;
+     const docRef = doc(firestore, 'availability', dStr);
+     const dayData = availability.find(a => a.id === dStr) || { closed: false, blockedSlots: [] };
+     const blocked = dayData.blockedSlots || [];
+     const next = blocked.includes(t) ? blocked.filter((x: string) => x !== t) : [...blocked, t];
+     await setDoc(docRef, { ...dayData, blockedSlots: next }, { merge: true });
   };
 
-  const handleMoveAppt = async (id: string, date: string, time: string) => {
+  const handleToggleDay = async (dStr: string) => {
     if (!firestore) return;
-    await updateDoc(doc(firestore, 'appointments', id), { date, time });
+    const docRef = doc(firestore, 'availability', dStr);
+    const dayData = availability.find(a => a.id === dStr) || { closed: false, blockedSlots: [] };
+    await setDoc(docRef, { ...dayData, closed: !dayData.closed }, { merge: true });
   };
 
   const handleTogglePayment = async (id: string, current: boolean, method?: string) => {
@@ -119,38 +149,254 @@ export default function TherapistDashboard() {
 
   const handleSendWhatsApp = (appt: Appointment, type: 'reminder' | 'confirmation' | 'followup') => {
     const client = clients.find(c => c.id === appt.clientId);
-    const phone = client?.phone?.replace(/\D/g, '') || '';
-    const firstName = appt.clientNameSnapshot?.split(' ')[0] || 'Client';
+    const phone = (client?.phone || appt.phone || '').replace(/\D/g, '');
+    const firstName = client?.firstName || appt.clientNameSnapshot?.split(' ')[0] || 'Client';
+    const template =
+      type === 'confirmation' ? confirmationTemplate :
+      type === 'followup' ? followupTemplate :
+      reminderTemplate;
 
-    let template = reminderTemplate;
-    if (type === 'confirmation') template = confirmationTemplate;
-    if (type === 'followup') template = followupTemplate;
-
-    const message = template
+    const message = (template || DEFAULT_REMINDER)
       .replace(/{firstName}/g, firstName)
       .replace(/{date}/g, appt.date || '')
       .replace(/{time}/g, appt.time || '')
       .replace(/{service}/g, appt.serviceName || 'Soin')
-      .replace(/{price}/g, (appt.price || 150).toString());
+      .replace(/{price}/g, String(appt.price || 150));
 
-    const url = phone 
+    const url = phone
       ? `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
       : `https://wa.me/?text=${encodeURIComponent(message)}`;
-    
+
     window.open(url, '_blank');
+  };
+
+  const handleUpdateGoal = async () => {
+    if (!firestore) return;
+    const val = prompt("Nouvel objectif mensuel (CHF) :", monthlyGoal.toString());
+    if (val) {
+      const num = parseInt(val);
+      if (!isNaN(num)) {
+        await setDoc(doc(firestore, 'config', 'metadata'), { monthlyGoal: num }, { merge: true });
+      }
+    }
+  };
+
+  // --- Render ---
+  const renderContent = () => {
+    switch (tab) {
+      case 'dashboard':
+        return (
+          <HomePage 
+            appointments={appointments} 
+            monthlyGoal={monthlyGoal} 
+            onSelectAppt={setSelectedAppt}
+            onNavigate={setTab}
+            onEditGoal={handleUpdateGoal}
+          />
+        );
+      case 'scheduler':
+        return (
+          <AgendaPage 
+            view={view}
+            cur={cur}
+            onPeriod={(dir) => setCur(addDays(cur, dir * (view === 'month' ? 30 : 7)))}
+            onToday={() => setCur(new Date())}
+            onToggleView={setView}
+            onSelectAppt={setSelectedAppt}
+            onOpenSlot={(date, time) => setBookingData({ date, time })}
+            appointments={appointments}
+            configSlots={configSlots}
+            isDayOpen={isDayOpen}
+            isSlotBlocked={isSlotBlocked}
+            toggleSlot={toggleSlot}
+            onToggleDay={handleToggleDay}
+            blockMode={blockMode}
+            setBlockMode={setBlockMode}
+            absenceMode={absenceMode}
+            setAbsenceMode={setAbsenceMode}
+            onOpenWeeklySettings={() => setWeeklySettingsOpen(true)}
+            onMoveAppt={handleMoveAppt}
+          />
+        );
+      case 'clients':
+        return selectedClient ? (
+          <ClientDetail 
+            client={selectedClient} 
+            onClose={() => setSelectedClient(null)} 
+            appointments={appointments}
+            onSelectAppt={setSelectedAppt}
+            onUpdateClient={handleUpdateClient}
+          />
+        ) : (
+          <ClientsPage 
+            clients={clients} 
+            appointments={appointments}
+            onSelectClient={setSelectedClient}
+            onNewClient={(name: string | undefined) => setBookingData({ date: fmt(new Date()), time: '09:00', initialSearch: name })}
+            onMergeClients={handleMergeClients}
+            onDeleteClients={handleDeleteClients}
+          />
+        );
+      case 'accounting':
+        return (
+          <ComptaPage 
+            appointments={appointments}
+            invoices={invoices}
+            onTogglePayment={handleTogglePayment}
+            onSelectAppt={setSelectedAppt}
+            onDeleteInvoices={handleDeleteAppointments}
+          />
+        );
+      case 'settings':
+        return (
+          <SettingsPage
+            monthlyGoal={monthlyGoal}
+            reminderTemplate={reminderTemplate}
+            confirmationTemplate={confirmationTemplate}
+            followupTemplate={followupTemplate}
+            emailTemplate={emailTemplate}
+            emailEnabled={emailEnabled}
+            cabinetName={cabinetName}
+            cabinetEmail={cabinetEmail}
+            cabinetAddress={cabinetAddress}
+            onUpdateMetadata={(data) => {
+              if (firestore) setDoc(doc(firestore, 'config', 'metadata'), data, { merge: true });
+            }}
+          />
+        );
+      default:
+        return <div>Sélectionnez un onglet</div>;
+    }
+  };
+
+  const handleUpdateClient = async (id: string, data: Partial<Client>) => {
+    if (!firestore) return;
+    await updateDoc(doc(firestore, 'clients', id), data);
+  };
+
+  const handleMoveAppt = async (id: string, date: string, time: string) => {
+    if (!firestore) return;
+    await updateDoc(doc(firestore, 'appointments', id), { date, time, startTime: `${date}T${time}:00` });
+  };
+
+  const handleMergeClients = async (primaryId: string, secondaryIds: string[]) => {
+    if (!firestore) return;
+
+    const primaryRef = doc(firestore, 'clients', primaryId);
+    const primarySnap = await getDoc(primaryRef);
+    if (!primarySnap.exists()) return;
+
+    let mergedData = primarySnap.data() as Client;
+    let combinedNotes = mergedData.notes || '';
+
+    for (const sid of secondaryIds) {
+      const secondaryRef = doc(firestore, 'clients', sid);
+      const secondarySnap = await getDoc(secondaryRef);
+      if (!secondarySnap.exists()) continue;
+
+      const secondaryData = secondarySnap.data() as Client;
+
+      // Merge missing fields
+      const fields: (keyof Client)[] = ['phone', 'email', 'street', 'zip', 'city', 'insurance', 'birthDate'];
+      fields.forEach(f => {
+        if (!mergedData[f] && secondaryData[f]) {
+          (mergedData as any)[f] = secondaryData[f];
+        }
+      });
+
+      // Combine notes
+      if (secondaryData.notes) {
+        combinedNotes += `\n\n--- Note fusionnée (${secondaryData.firstName} ${secondaryData.lastName}) ---\n${secondaryData.notes}`;
+      }
+
+      // Update appointments
+      const qAppts = query(collection(firestore, 'appointments'), where('clientId', '==', sid));
+      const snapAppts = await getDocs(qAppts);
+      for (const d of snapAppts.docs) {
+        await updateDoc(d.ref, { 
+          clientId: primaryId,
+          clientNameSnapshot: `${mergedData.firstName} ${mergedData.lastName}`
+        });
+      }
+
+      // Update invoices (if they exist in a collection)
+      const qInvs = query(collection(firestore, 'invoices'), where('clientId', '==', sid));
+      const snapInvs = await getDocs(qInvs);
+      for (const d of snapInvs.docs) {
+        await updateDoc(d.ref, { clientId: primaryId });
+      }
+
+      // Delete secondary client
+      await deleteDoc(secondaryRef);
+    }
+
+    // Save final merged primary client
+    await updateDoc(primaryRef, { ...mergedData, notes: combinedNotes });
+  };
+  
+  const handleDeleteClients = async (ids: string[]) => {
+    if (!firestore) return;
+
+    for (const id of ids) {
+      // 1. Delete client document
+      await deleteDoc(doc(firestore, 'clients', id));
+
+      // 2. Delete associated appointments
+      const qAppts = query(collection(firestore, 'appointments'), where('clientId', '==', id));
+      const snapAppts = await getDocs(qAppts);
+      for (const d of snapAppts.docs) {
+        await deleteDoc(d.ref);
+      }
+
+      // 3. Delete associated invoices
+      const qInvs = query(collection(firestore, 'invoices'), where('clientId', '==', id));
+      const snapInvs = await getDocs(qInvs);
+      for (const d of snapInvs.docs) {
+        await deleteDoc(d.ref);
+      }
+    }
+  };
+
+  const handleDeleteAppointments = async (ids: string[]) => {
+    if (!firestore) return;
+
+    for (const id of ids) {
+      // 1. Delete appointment
+      await deleteDoc(doc(firestore, 'appointments', id));
+
+      // 2. Delete associated invoice
+      const qInvs = query(collection(firestore, 'invoices'), where('appointmentId', '==', id));
+      const snapInvs = await getDocs(qInvs);
+      for (const d of snapInvs.docs) {
+        await deleteDoc(d.ref);
+      }
+
+      // 3. Delete associated availability (if any)
+      await deleteDoc(doc(firestore, 'availability', id));
+    }
   };
 
   const handleBook = async (clientId: string, service: string, isNew?: boolean) => {
     if (!firestore || !bookingData) return;
+    
     let finalClientId = clientId;
     let finalClientName = "";
+    const selectedService = SERVICES.find(s => s.name === service || s.name.split(' - ')[0] === service);
+    const price = selectedService?.price || 150;
+    const magicToken = `${Math.random().toString(36).substring(2, 10)}${Math.random().toString(36).substring(2, 10)}`.toUpperCase();
 
     if (isNew) {
       const parts = clientId.split(' ');
       const lastName = parts.pop() || "";
       const firstName = parts.join(' ') || lastName;
       const docRef = await addDoc(collection(firestore, 'clients'), {
-        firstName, lastName, email: '', phone: '', notes: 'Nouveau client', color: 'bg-indigo-100'
+        firstName,
+        lastName,
+        email: '',
+        phone: '',
+        magicToken,
+        notes: 'Créé via réservation rapide',
+        color: 'bg-indigo-100 text-indigo-700'
       });
       finalClientId = docRef.id;
       finalClientName = `${firstName} ${lastName}`;
@@ -164,170 +410,57 @@ export default function TherapistDashboard() {
       clientNameSnapshot: finalClientName,
       date: bookingData.date,
       time: bookingData.time,
+      startTime: `${bookingData.date}T${bookingData.time}:00`,
       serviceName: service,
-      price: 150,
+      serviceId: selectedService?.id,
+      price,
+      magicToken,
       paid: false,
+      status: 'upcoming',
+      notes: '',
       createdAt: serverTimestamp()
     });
 
-    await addDoc(collection(firestore, 'invoices'), {
+    const invoiceRef = await addDoc(collection(firestore, 'invoices'), {
       appointmentId: apptRef.id,
       clientId: finalClientId,
-      date: serverTimestamp(),
-      amount: 150,
-      status: 'pending',
       clientNameSnapshot: finalClientName,
-      serviceName: service
+      invoiceNumber: `INV-${format(new Date(), 'yyyyMMdd')}-${apptRef.id.slice(-4).toUpperCase()}`,
+      date: bookingData.date,
+      issueDate: format(new Date(), 'yyyy-MM-dd'),
+      dueDate: bookingData.date,
+      amount: price,
+      totalAmount: price,
+      status: 'Pending',
+      serviceName: service,
+      createdAt: serverTimestamp()
     });
-    
+
+    await setDoc(doc(firestore, 'availability', apptRef.id), {
+      type: 'booked',
+      date: bookingData.date,
+      time: bookingData.time,
+      appointmentId: apptRef.id,
+      invoiceId: invoiceRef.id
+    });
+
     setBookingData(null);
   };
 
-  const handleCancelAppt = async (id: string) => {
+  const handleSaveWeeklySlots = async (slots: Record<number, string[]>) => {
     if (!firestore) return;
-    await updateDoc(doc(firestore, 'appointments', id), { status: 'cancelled', updatedAt: serverTimestamp() });
-  };
-
-  const handleResendConfirmation = (appt: Appointment) => {
-    handleSendWhatsApp(appt, 'confirmation');
-  };
-
-  const renderContent = () => {
-    return (
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={selectedClient ? `client-${selectedClient.id}` : tab}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-          className="flex-1 flex flex-col overflow-hidden"
-        >
-          {(() => {
-            if (selectedClient) {
-              return (
-                <ClientDetail 
-                  client={selectedClient} 
-                  onClose={() => setSelectedClient(null)} 
-                  appointments={appointments}
-                  onSelectAppt={setSelectedAppt}
-                  onUpdateClient={handleUpdateClient}
-                  onCancelAppt={handleCancelAppt}
-                  onResendConfirmation={handleResendConfirmation}
-                />
-              );
-            }
-
-            switch (tab) {
-              case 'dashboard':
-                return (
-                  <HomePage 
-                    appointments={appointments} 
-                    monthlyGoal={monthlyGoal} 
-                    onSelectAppt={setSelectedAppt}
-                    onNavigate={setTab}
-                    onFilterCompta={(f: any) => {
-                      setTab('accounting');
-                      setComptaFilter(f);
-                    }}
-                    onEditGoal={() => setTab('settings')}
-                  />
-                );
-              case 'scheduler':
-                return (
-                  <AgendaPage 
-                    view={view as any} 
-                    onToggleView={setView} 
-                    cur={cur} 
-                    onPeriod={(d: number) => setCur(addDays(cur, d * (view === 'week' ? 7 : 30)))}
-                    onToday={() => setCur(new Date())}
-                    appointments={appointments}
-                    configSlots={configSlots}
-                    isDayOpen={(d: string) => availability.find(a => a.id === d && !a.closed)}
-                    isSlotBlocked={(d: string, t: string) => !!availability.find(a => a.id === d)?.blockedSlots?.includes(t)}
-                    toggleSlot={async (dStr: string, t: string) => {
-                         if (!firestore) return;
-                         const docRef = doc(firestore, 'availability', dStr);
-                         const dayData = availability.find(a => a.id === dStr) || { blockedSlots: [] };
-                         const blocked = dayData.blockedSlots || [];
-                         const next = blocked.includes(t) ? blocked.filter((x: string) => x !== t) : [...blocked, t];
-                         await setDoc(docRef, { ...dayData, blockedSlots: next }, { merge: true });
-                    }}
-                    onToggleDay={async (dStr: string) => {
-                        if (!firestore) return;
-                        const docRef = doc(firestore, 'availability', dStr);
-                        const dayData = availability.find(a => a.id === dStr);
-                        await setDoc(docRef, { ...dayData, closed: !dayData?.closed }, { merge: true });
-                    }}
-                    blockMode={blockMode}
-                    setBlockMode={setBlockMode}
-                    absenceMode={absenceMode}
-                    setAbsenceMode={setAbsenceMode}
-                    onSelectAppt={setSelectedAppt}
-                    onOpenSlot={(d: string, t: string) => setBookingData({ date: d, time: t })}
-                    onOpenWeeklySettings={() => setWeeklySettingsOpen(true)}
-                    onMoveAppt={handleMoveAppt}
-                  />
-                );
-              case 'clients':
-                return (
-                  <ClientsPage 
-                    clients={clients} 
-                    appointments={appointments}
-                    onSelectClient={setSelectedClient}
-                    onNewClient={(name) => setBookingData({ date: fmt(new Date()), time: '09:00', initialSearch: name })}
-                    onMergeClients={async () => {}}
-                  />
-                );
-              case 'accounting':
-                return (
-                  <ComptaPage 
-                    appointments={appointments}
-                    clients={clients}
-                    invoices={invoices}
-                    reminderTemplate={reminderTemplate}
-                    initialFilter={comptaFilter}
-                    onUpdateReminder={(val) => {
-                      setReminderTemplate(val);
-                      if (firestore) setDoc(doc(firestore, 'config', 'metadata'), { reminderTemplate: val }, { merge: true });
-                    }}
-                    onTogglePayment={handleTogglePayment}
-                    onSelectAppt={setSelectedAppt}
-                  />
-                );
-              case 'settings':
-                return (
-                  <SettingsPage 
-                    monthlyGoal={monthlyGoal}
-                    reminderTemplate={reminderTemplate}
-                    confirmationTemplate={confirmationTemplate}
-                    followupTemplate={followupTemplate}
-                    emailTemplate={emailTemplate}
-                    emailEnabled={emailEnabled}
-                    cabinetName={cabinetName}
-                    cabinetEmail={cabinetEmail}
-                    cabinetAddress={cabinetAddress}
-                    onUpdateMetadata={(data: any) => {
-                      if (firestore) setDoc(doc(firestore, 'config', 'metadata'), data, { merge: true });
-                    }}
-                  />
-                );
-              default:
-                return <div>Sélectionnez un onglet</div>;
-            }
-          })()}
-        </motion.div>
-      </AnimatePresence>
-    );
+    await setDoc(doc(firestore, 'config', 'slots'), { days: slots }, { merge: true });
+    setWeeklySettingsOpen(false);
   };
 
   return (
-    <AppLayout activePage={tab} onNavigate={(page) => {
-      setTab(page);
-      setSelectedClient(null);
-      setSelectedAppt(null);
-    }}>
+    <AppLayout 
+      activePage={tab} 
+      onNavigate={setTab}
+    >
       {renderContent()}
+
+      {/* Legacy Modals Integration (Pending Full Modularization) */}
       {selectedAppt && (
         <AppointmentDetail 
           appt={selectedAppt} 
@@ -339,7 +472,7 @@ export default function TherapistDashboard() {
             if (c) {
               setSelectedClient(c);
               setTab('clients');
-              setSelectedAppt(null);
+              setSelectedAppt(null); // Close the detail modal
             }
           }}
         />
@@ -354,14 +487,14 @@ export default function TherapistDashboard() {
           onBook={handleBook}
         />
       )}
+
+      {/* SlotManagement removed as it is now handled inline in AgendaPage icons reveal */}
+
       {weeklySettingsOpen && (
         <WeeklySettingsModal 
           initialSlots={configSlots}
           onClose={() => setWeeklySettingsOpen(false)}
-          onSave={async (slots) => {
-            if (firestore) await setDoc(doc(firestore, 'config', 'slots'), { days: slots }, { merge: true });
-            setWeeklySettingsOpen(false);
-          }}
+          onSave={handleSaveWeeklySlots}
         />
       )}
     </AppLayout>

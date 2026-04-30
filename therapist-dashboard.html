@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#1e1c14",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#faf9f7",
+                    "tertiary-fixed-dim": "#cbc6ba",
+                    "inverse-primary": "#b8ccb6",
+                    "surface-dim": "#dadad8",
+                    "on-surface-variant": "#434842",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#e1c298",
+                    "secondary": "#725a38",
+                    "on-secondary-container": "#775e3c",
+                    "on-primary-fixed-variant": "#3a4b3b",
+                    "surface-container-high": "#e9e8e6",
+                    "secondary-container": "#fcdaaf",
+                    "on-secondary-fixed-variant": "#594323",
+                    "surface-container-highest": "#e3e2e0",
+                    "on-tertiary-fixed-variant": "#4a473e",
+                    "tertiary": "#535047",
+                    "primary-fixed-dim": "#b8ccb6",
+                    "on-primary-fixed": "#0f1f11",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#faf9f7",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#daeed8",
+                    "on-surface": "#1a1c1b",
+                    "inverse-surface": "#2f3130",
+                    "outline": "#747872",
+                    "tertiary-container": "#6c685f",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#516351",
+                    "secondary-fixed": "#ffddb2",
+                    "on-tertiary-container": "#eee8dc",
+                    "surface-variant": "#e3e2e0",
+                    "on-background": "#1a1c1b",
+                    "on-secondary-fixed": "#291800",
+                    "outline-variant": "#c3c8c0",
+                    "tertiary-fixed": "#e8e2d6",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#5b6d5b",
+                    "primary-fixed": "#d4e8d2",
+                    "primary": "#435544",
+                    "background": "#faf9f7",
+                    "surface-container": "#efeeec",
+                    "surface-container-low": "#f4f3f1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "xxl": "1rem",
+                    "xxxl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Public Sans"],
+                    "display": ["Public Sans"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400;
+        }
+        body {
+            background-color: #faf9f7;
+            color: #1a1c1b;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-screen w-64 flex flex-col p-6 z-50 bg-stone-50 border-r border-stone-200 transition-all duration-300">
+<div class="mb-10 flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined">spa</span>
+</div>
+<div>
+<h1 class="font-headline text-xl font-semibold tracking-tight text-emerald-900">Serene Sanctuary</h1>
+<p class="font-body text-xs tracking-wide text-stone-600">Therapist Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 px-4 py-3 text-emerald-900 bg-emerald-50 rounded-lg font-medium shadow-sm transition-all duration-300" href="#">
+<span class="material-symbols-outlined active-nav-icon">dashboard</span>
+<span class="text-sm">Dashboard</span>
+</a>
+<!-- Agenda -->
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 hover:text-stone-800 hover:bg-emerald-50/50 rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm">Agenda</span>
+</a>
+<!-- Clients -->
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 hover:text-stone-800 hover:bg-emerald-50/50 rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm">Clients</span>
+</a>
+<!-- Finances -->
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 hover:text-stone-800 hover:bg-emerald-50/50 rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm">Finances</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 hover:text-stone-800 hover:bg-emerald-50/50 rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 space-y-4">
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-primary text-on-primary rounded-xl font-medium shadow-md active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="text-sm">New Appointment</span>
+</button>
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 hover:text-stone-800 transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="text-sm">Help Center</span>
+</a>
+<div class="flex items-center gap-3 px-2 py-4 border-t border-stone-100">
+<img alt="Professional therapist profile picture" class="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-100" data-alt="A professional headshot of João, a male therapist with a warm and welcoming expression, set against a soft-focus studio background with natural wooden textures and a hint of a potted plant. The lighting is bright and airy, reflecting a high-end wellness aesthetic with organic, earthy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8xKgNfzfZUWy66iEIdCMM4ahzz9yHPFmnVE49KnBWdSm9KkxUxaIBOfjmnG6XI29zXRvzmbVwOndpeqF4zNQka8dBtbXGnBNsK8Rl7rvFD80XICiMiVSn00Mj32j9WD8mkeloPI3OEnCh-f4iKGXd88L7di39K-k8i4yHkLfEozl-vn_R_v9-aRATbYREguISElVGYMTbsq3yU_I3wHqOzpCghBjhJE0-AzHm7LRwD7AkLbzBLbvx6joz3hsVAdLWxM8yIWB7Y-c"/>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold text-stone-900 truncate">João Silva</p>
+<p class="text-xs text-stone-500 truncate">Holistic Practitioner</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-40 flex items-center justify-between px-8 py-4 bg-stone-50/80 backdrop-blur-xl border-b border-stone-100 transition-all duration-300">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-sm text-stone-600 focus:ring-1 focus:ring-emerald-500/30 outline-none" placeholder="Search appointments, clients, or notes..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<button class="relative text-stone-500 hover:text-emerald-700 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="text-stone-500 hover:text-emerald-700 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-10 max-w-7xl mx-auto space-y-10">
+<!-- Welcome Header -->
+<section class="space-y-2">
+<h2 class="font-headline text-3xl font-light text-stone-900">Welcome back, <span class="font-semibold text-primary">João</span></h2>
+<p class="font-body text-stone-500 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                    Today is Wednesday, October 25th. You have <span class="text-primary font-medium">4 sessions</span> remaining for the day.
+                </p>
+</section>
+<!-- Key Metrics Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-low p-6 rounded-xxxl border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-emerald-100 text-emerald-800 rounded-lg">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+12%</span>
+</div>
+<p class="text-stone-500 text-sm font-medium mb-1">Monthly Revenue</p>
+<h3 class="font-headline text-2xl font-semibold text-stone-900">$8,420.00</h3>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xxxl border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-stone-200 text-stone-700 rounded-lg">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+<span class="text-xs font-bold text-stone-500 bg-stone-100 px-2 py-1 rounded-full">On track</span>
+</div>
+<p class="text-stone-500 text-sm font-medium mb-1">Completed Sessions</p>
+<h3 class="font-headline text-2xl font-semibold text-stone-900">124</h3>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xxxl border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<span class="text-xs font-bold text-secondary px-2 py-1 rounded-full">3 urgent</span>
+</div>
+<p class="text-stone-500 text-sm font-medium mb-1">Pending Invoices</p>
+<h3 class="font-headline text-2xl font-semibold text-stone-900">7</h3>
+</div>
+</section>
+<!-- Main Interactive Section -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Today's Agenda -->
+<div class="lg:col-span-2 space-y-6">
+<div class="flex items-center justify-between">
+<h4 class="font-headline text-xl font-semibold text-stone-900">Today's Agenda</h4>
+<button class="text-sm font-medium text-primary hover:underline">View full schedule</button>
+</div>
+<div class="space-y-4">
+<!-- Agenda Item 1 -->
+<div class="group flex items-center gap-6 p-5 bg-white rounded-xxl border border-stone-100 hover:border-emerald-200 transition-all duration-300">
+<div class="text-center min-w-[60px]">
+<p class="text-sm font-bold text-stone-900">09:00</p>
+<p class="text-[10px] text-stone-400 uppercase tracking-widest">AM</p>
+</div>
+<div class="h-10 w-[2px] bg-emerald-200 group-hover:bg-emerald-500 transition-colors"></div>
+<div class="flex-1">
+<h5 class="text-sm font-semibold text-stone-900">Elena Richardson</h5>
+<p class="text-xs text-stone-500">Deep Tissue Ritual • 90 min</p>
+</div>
+<div class="flex items-center -space-x-2">
+<span class="bg-emerald-50 text-emerald-700 text-[10px] px-3 py-1 rounded-full font-bold">CONFIRMED</span>
+</div>
+<button class="material-symbols-outlined text-stone-300 hover:text-stone-600">more_vert</button>
+</div>
+<!-- Agenda Item 2 -->
+<div class="group flex items-center gap-6 p-5 bg-white rounded-xxl border border-stone-100 hover:border-emerald-200 transition-all duration-300">
+<div class="text-center min-w-[60px]">
+<p class="text-sm font-bold text-stone-900">11:30</p>
+<p class="text-[10px] text-stone-400 uppercase tracking-widest">AM</p>
+</div>
+<div class="h-10 w-[2px] bg-secondary-container group-hover:bg-secondary transition-colors"></div>
+<div class="flex-1">
+<h5 class="text-sm font-semibold text-stone-900">Marcus Thorne</h5>
+<p class="text-xs text-stone-500">Aromatherapy Session • 60 min</p>
+</div>
+<div class="flex items-center -space-x-2">
+<span class="bg-stone-100 text-stone-600 text-[10px] px-3 py-1 rounded-full font-bold">PENDING</span>
+</div>
+<button class="material-symbols-outlined text-stone-300 hover:text-stone-600">more_vert</button>
+</div>
+<!-- Agenda Item 3 -->
+<div class="group flex items-center gap-6 p-5 bg-white rounded-xxl border border-stone-100 hover:border-emerald-200 transition-all duration-300 opacity-60">
+<div class="text-center min-w-[60px]">
+<p class="text-sm font-bold text-stone-400">02:00</p>
+<p class="text-[10px] text-stone-400 uppercase tracking-widest">PM</p>
+</div>
+<div class="h-10 w-[2px] bg-stone-200 group-hover:bg-stone-400 transition-colors"></div>
+<div class="flex-1">
+<h5 class="text-sm font-semibold text-stone-400 line-through">Sarah Jenkins</h5>
+<p class="text-xs text-stone-400">Clinical Consultation • 30 min</p>
+</div>
+<div class="flex items-center -space-x-2">
+<span class="bg-error-container text-on-error-container text-[10px] px-3 py-1 rounded-full font-bold">CANCELLED</span>
+</div>
+<button class="material-symbols-outlined text-stone-300 hover:text-stone-600">more_vert</button>
+</div>
+</div>
+</div>
+<!-- Side Insights -->
+<div class="space-y-8">
+<!-- Recent Progress Notes -->
+<div class="bg-surface-container p-6 rounded-xxxl space-y-4">
+<h4 class="font-headline text-lg font-semibold text-stone-900">Recent Notes</h4>
+<div class="space-y-4">
+<div class="p-4 bg-white/50 rounded-xl border border-stone-100">
+<p class="text-xs font-bold text-primary mb-1">YESTERDAY</p>
+<p class="text-sm text-stone-800 font-medium truncate">Marcus Thorne: Tension in lumbar region...</p>
+<p class="text-xs text-stone-500 mt-2">Added 5:12 PM</p>
+</div>
+<div class="p-4 bg-white/50 rounded-xl border border-stone-100">
+<p class="text-xs font-bold text-primary mb-1">OCT 23</p>
+<p class="text-sm text-stone-800 font-medium truncate">Elena Richardson: Post-marathon recovery...</p>
+<p class="text-xs text-stone-500 mt-2">Added 3:45 PM</p>
+</div>
+</div>
+<button class="w-full py-2 text-sm font-medium text-stone-600 hover:text-primary transition-colors">
+                            Write new note
+                        </button>
+</div>
+<!-- Service Allocation Chart -->
+<div class="bg-surface-container p-6 rounded-xxxl space-y-6">
+<h4 class="font-headline text-lg font-semibold text-stone-900">Service Allocation</h4>
+<div class="relative flex items-center justify-center py-4">
+<!-- Visual Chart Mockup -->
+<div class="w-32 h-32 rounded-full border-[12px] border-stone-200 relative flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border-[12px] border-primary border-r-transparent border-b-transparent -rotate-12"></div>
+<div class="absolute inset-0 rounded-full border-[12px] border-secondary-container border-l-transparent border-t-transparent border-r-transparent rotate-45"></div>
+<div class="text-center">
+<p class="text-xs font-bold text-stone-900">78%</p>
+<p class="text-[8px] text-stone-500 uppercase">Capacity</p>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-xs text-stone-600">Deep Tissue</span>
+</div>
+<span class="text-xs font-bold text-stone-900">45%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+<span class="text-xs text-stone-600">Aromatherapy</span>
+</div>
+<span class="text-xs font-bold text-stone-900">30%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<span class="text-xs text-stone-600">Other</span>
+</div>
+<span class="text-xs font-bold text-stone-900">25%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Client Discovery / Quick Links -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
+<div class="relative h-48 rounded-xxxl overflow-hidden group">
+<img alt="Therapy Room" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A serene spa environment with soft ambient lighting illuminating a massage table with plush white linens. In the background, there is a stone wall and a wooden shelf with folded towels and essential oils. The color palette is composed of soft sage, muted taupe, and warm ivory, creating a peaceful and professional holistic therapy setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPaRBukscQbQOlF_Wzn70s27jimKubN_LdBwTO204FQl-JfKeDEvqyoq_Fpt3c75Domx6A8ge2H8JYAW32_4JAboD7ym4lxCqVi0HOJe5UzfXWiKsXi84wRnsyHH7OB8RPVjEJzKnEumDPZG76cXA8yYsaw421zdnFPY_mCB-SJPo23ncLTImpofqOA_4SC_Eaud2E1H7ZR7KXWmqAfBkD6INkgrlPxrImNCPQbllB4d8u8PFR1jW09fOx0Zy6EECGhRLwxP-nxiY"/>
+<div class="absolute inset-0 bg-gradient-to-r from-stone-900/60 to-transparent flex flex-col justify-end p-6">
+<h4 class="text-white font-headline text-xl font-medium">New Ritual Bundles</h4>
+<p class="text-stone-200 text-sm mb-4">Introduce curated experiences to your clients.</p>
+<button class="w-fit px-4 py-2 bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-lg text-xs font-bold hover:bg-white hover:text-stone-900 transition-all">
+                            Configure Services
+                        </button>
+</div>
+</div>
+<div class="bg-emerald-900 text-on-primary-container p-8 rounded-xxxl flex flex-col justify-between">
+<div>
+<h4 class="font-headline text-xl font-semibold mb-2 text-white">Optimize Your Schedule</h4>
+<p class="text-emerald-100/70 text-sm">Your busiest time is Thursday mornings. Try opening more slots to meet the demand of your recurring clients.</p>
+</div>
+<div class="flex items-center gap-4 mt-6">
+<div class="flex -space-x-3">
+<img alt="Client 1" class="w-8 h-8 rounded-full border-2 border-emerald-900 object-cover" data-alt="Close-up portrait of a woman with a serene expression, representing a satisfied client in a high-end wellness environment. Soft lighting, natural skin textures, and a neutral, warm background color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_4sEw_ELEGLzOS5ExgiWm4rj6-bBXQIJqJUtdsz-d436QzSO6YFCgyVPeFB8eqYI4cwTnovlKu4NYrrtWCDx4I1MJ4ywRjt2Oq1HWZCCeZuraiV13GTO7VVcTj9iss8qpUj37v3xdcYiyBL7yDr_xPSuoInYpKjzjoqD0k9jiqIpTtbj57bXWY51paTso04MyGKQKgpgT3PvALxSWa64EdNojuO1imURT1_wq37012jbA62qRddBNyZ1b-_CzGfM4vcnV_rGxmTI"/>
+<img alt="Client 2" class="w-8 h-8 rounded-full border-2 border-emerald-900 object-cover" data-alt="Close-up portrait of a man looking relaxed and refreshed, representing a professional client in a wellness setting. The lighting is soft and flattering, with an organic, minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7yt8Zx0TAbU8jMZ2_yb2Xv7GPN5qANDJF0F7wq6vSQeTwdcEhTiHHK_fZ-2Suz3br25vyF8ujPDk5wRmX_qblc0VsaCMSUu-BGkzTwkdUwktQq_nkl7lMzOCqza9l7b18pExovc4PsAQ-wR1WgiE9fR67FazH6Pto3Inept49yxLbDRb30FVtkbzzhnruPF5ogI621DrI6WiLmXKYa67BWN6IUw8IqvU9FeX5FsPxrCAwHAHntqi_hgy3cCCPgYHNbP_HZJi7OtU"/>
+<div class="w-8 h-8 rounded-full border-2 border-emerald-900 bg-emerald-700 flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+<p class="text-xs text-emerald-100">Waitlist active for Elena R.</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

@@ -6,7 +6,7 @@ import { doc, getDoc, collection, query, where, orderBy } from 'firebase/firesto
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/Navbar';
 import { Download, Sparkles, Clock, History, Loader2, Heart, Droplets, Wind, Calendar, Leaf, ShieldCheck } from 'lucide-react';
 import { format, isAfter } from 'date-fns';
 import { fr } from 'date-fns/locale';

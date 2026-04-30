@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, FileText, CheckCircle2, Clock, Calendar, Sparkles, ArrowLeft, Search, Filter } from 'lucide-react';
 import jsPDF from 'jspdf';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import { useFirestore, useUser } from '@/firebase';
 import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
