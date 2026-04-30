@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { format, addDays } from 'date-fns';
 import { useFirestore, useUser } from '@/firebase';
 import {
-  collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc, setDoc, 
+  collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc, setDoc,
   getDoc, getDocs, query, where, serverTimestamp
 } from 'firebase/firestore';
 import { SERVICES } from '@/lib/types';
@@ -27,7 +27,7 @@ import { Appointment, Client, Invoice } from './types';
 // Legacy CSS removed — all modules now use Tailwind
 
 // --- Helpers ---
-const fmt    = (d: Date) => format(d, 'yyyy-MM-dd');
+const fmt = (d: Date) => format(d, 'yyyy-MM-dd');
 const DEFAULT_REMINDER = "Bonjour {firstName}, petit rappel concernant le paiement de votre séance {service} du {date}. Montant restant: {price} CHF. Merci beaucoup.";
 const DEFAULT_CONFIRMATION = "Bonjour {firstName}, votre rendez-vous pour {service} est confirmé le {date} à {time}. Au plaisir de vous accueillir.";
 const DEFAULT_FOLLOWUP = "Bonjour {firstName}, j'espère que vous vous sentez bien après votre séance. Pensez à bien vous hydrater aujourd'hui.";
@@ -60,12 +60,12 @@ export default function TherapistDashboard() {
   const [clients, setClients] = useState<Client[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [configSlots, setConfigSlots] = useState<Record<number, string[]>>({
-    0: [], 1: ['09:00','10:30','12:00','14:00','15:30','17:00'],
-    2: ['09:00','10:30','12:00','14:00','15:30','17:00'],
-    3: ['09:00','10:30','12:00','14:00','15:30','17:00'],
-    4: ['09:00','10:30','12:00','14:00','15:30','17:00'],
-    5: ['09:00','10:30','12:00','14:00','15:30','17:00'],
-    6: ['10:00','11:30','14:00'],
+    0: [], 1: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00'],
+    2: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00'],
+    3: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00'],
+    4: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00'],
+    5: ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00'],
+    6: ['10:00', '11:30', '14:00'],
   });
   const [availability, setAvailability] = useState<any[]>([]);
   const [monthlyGoal, setMonthlyGoal] = useState<number>(12000);
@@ -122,14 +122,14 @@ export default function TherapistDashboard() {
   // --- Handlers ---
   const isDayOpen = (d: string) => !availability.find(a => a.id === d)?.closed;
   const isSlotBlocked = (d: string, t: string) => !!availability.find(a => a.id === d)?.blockedSlots?.includes(t);
-  
+
   const toggleSlot = async (dStr: string, t: string) => {
-     if (!firestore) return;
-     const docRef = doc(firestore, 'availability', dStr);
-     const dayData = availability.find(a => a.id === dStr) || { closed: false, blockedSlots: [] };
-     const blocked = dayData.blockedSlots || [];
-     const next = blocked.includes(t) ? blocked.filter((x: string) => x !== t) : [...blocked, t];
-     await setDoc(docRef, { ...dayData, blockedSlots: next }, { merge: true });
+    if (!firestore) return;
+    const docRef = doc(firestore, 'availability', dStr);
+    const dayData = availability.find(a => a.id === dStr) || { closed: false, blockedSlots: [] };
+    const blocked = dayData.blockedSlots || [];
+    const next = blocked.includes(t) ? blocked.filter((x: string) => x !== t) : [...blocked, t];
+    await setDoc(docRef, { ...dayData, blockedSlots: next }, { merge: true });
   };
 
   const handleToggleDay = async (dStr: string) => {
@@ -141,9 +141,9 @@ export default function TherapistDashboard() {
 
   const handleTogglePayment = async (id: string, current: boolean, method?: string) => {
     if (!firestore) return;
-    await updateDoc(doc(firestore, 'appointments', id), { 
+    await updateDoc(doc(firestore, 'appointments', id), {
       paid: !current,
-      paymentMethod: !current ? (method || 'Twint') : null 
+      paymentMethod: !current ? (method || 'Twint') : null
     });
   };
 
@@ -153,8 +153,8 @@ export default function TherapistDashboard() {
     const firstName = client?.firstName || appt.clientNameSnapshot?.split(' ')[0] || 'Client';
     const template =
       type === 'confirmation' ? confirmationTemplate :
-      type === 'followup' ? followupTemplate :
-      reminderTemplate;
+        type === 'followup' ? followupTemplate :
+          reminderTemplate;
 
     const message = (template || DEFAULT_REMINDER)
       .replace(/{firstName}/g, firstName)
@@ -186,9 +186,9 @@ export default function TherapistDashboard() {
     switch (tab) {
       case 'dashboard':
         return (
-          <HomePage 
-            appointments={appointments} 
-            monthlyGoal={monthlyGoal} 
+          <HomePage
+            appointments={appointments}
+            monthlyGoal={monthlyGoal}
             onSelectAppt={setSelectedAppt}
             onNavigate={setTab}
             onEditGoal={handleUpdateGoal}
@@ -196,7 +196,7 @@ export default function TherapistDashboard() {
         );
       case 'scheduler':
         return (
-          <AgendaPage 
+          <AgendaPage
             view={view}
             cur={cur}
             onPeriod={(dir) => setCur(addDays(cur, dir * (view === 'month' ? 30 : 7)))}
@@ -220,16 +220,16 @@ export default function TherapistDashboard() {
         );
       case 'clients':
         return selectedClient ? (
-          <ClientDetail 
-            client={selectedClient} 
-            onClose={() => setSelectedClient(null)} 
+          <ClientDetail
+            client={selectedClient}
+            onClose={() => setSelectedClient(null)}
             appointments={appointments}
             onSelectAppt={setSelectedAppt}
             onUpdateClient={handleUpdateClient}
           />
         ) : (
-          <ClientsPage 
-            clients={clients} 
+          <ClientsPage
+            clients={clients}
             appointments={appointments}
             onSelectClient={setSelectedClient}
             onNewClient={(name: string | undefined) => setBookingData({ date: fmt(new Date()), time: '09:00', initialSearch: name })}
@@ -239,7 +239,7 @@ export default function TherapistDashboard() {
         );
       case 'accounting':
         return (
-          <ComptaPage 
+          <ComptaPage
             appointments={appointments}
             invoices={invoices}
             onTogglePayment={handleTogglePayment}
@@ -277,6 +277,24 @@ export default function TherapistDashboard() {
   const handleMoveAppt = async (id: string, date: string, time: string) => {
     if (!firestore) return;
     await updateDoc(doc(firestore, 'appointments', id), { date, time, startTime: `${date}T${time}:00` });
+    
+    // Update availability
+    try {
+      await updateDoc(doc(firestore, 'availability', id), { date, time });
+    } catch (e) {
+      console.error('Availability doc might not exist for this appointment', e);
+    }
+
+    // Update invoice dates
+    try {
+      const qInvs = query(collection(firestore, 'invoices'), where('appointmentId', '==', id));
+      const snapInvs = await getDocs(qInvs);
+      for (const d of snapInvs.docs) {
+        await updateDoc(d.ref, { date, dueDate: date });
+      }
+    } catch (e) {
+      console.error('Failed to update invoice dates', e);
+    }
   };
 
   const handleMergeClients = async (primaryId: string, secondaryIds: string[]) => {
@@ -313,7 +331,7 @@ export default function TherapistDashboard() {
       const qAppts = query(collection(firestore, 'appointments'), where('clientId', '==', sid));
       const snapAppts = await getDocs(qAppts);
       for (const d of snapAppts.docs) {
-        await updateDoc(d.ref, { 
+        await updateDoc(d.ref, {
           clientId: primaryId,
           clientNameSnapshot: `${mergedData.firstName} ${mergedData.lastName}`
         });
@@ -333,7 +351,7 @@ export default function TherapistDashboard() {
     // Save final merged primary client
     await updateDoc(primaryRef, { ...mergedData, notes: combinedNotes });
   };
-  
+
   const handleDeleteClients = async (ids: string[]) => {
     if (!firestore) return;
 
@@ -378,7 +396,7 @@ export default function TherapistDashboard() {
 
   const handleBook = async (clientId: string, service: string, isNew?: boolean) => {
     if (!firestore || !bookingData) return;
-    
+
     let finalClientId = clientId;
     let finalClientName = "";
     const selectedService = SERVICES.find(s => s.name === service || s.name.split(' - ')[0] === service);
@@ -444,6 +462,32 @@ export default function TherapistDashboard() {
       invoiceId: invoiceRef.id
     });
 
+    // Send confirmation email if the client has an email address
+    const clientEmail = isNew ? '' : clients.find(c => c.id === clientId)?.email;
+    const clientPhone = isNew ? '' : clients.find(c => c.id === clientId)?.phone;
+
+    if (clientEmail) {
+      try {
+        await fetch('/api/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            appointmentId: apptRef.id,
+            clientName: finalClientName,
+            clientEmail: clientEmail,
+            clientPhone: clientPhone,
+            serviceName: service,
+            startTime: `${bookingData.date}T${bookingData.time}:00`,
+            duration: selectedService?.duration || '60 min',
+            magicToken,
+            clientId: finalClientId,
+          }),
+        });
+      } catch (err) {
+        console.error('Failed to notify client on manual booking:', err);
+      }
+    }
+
     setBookingData(null);
   };
 
@@ -454,17 +498,17 @@ export default function TherapistDashboard() {
   };
 
   return (
-    <AppLayout 
-      activePage={tab} 
+    <AppLayout
+      activePage={tab}
       onNavigate={setTab}
     >
       {renderContent()}
 
       {/* Legacy Modals Integration (Pending Full Modularization) */}
       {selectedAppt && (
-        <AppointmentDetail 
-          appt={selectedAppt} 
-          onClose={() => setSelectedAppt(null)} 
+        <AppointmentDetail
+          appt={selectedAppt}
+          onClose={() => setSelectedAppt(null)}
           appointments={appointments}
           onSendWhatsApp={handleSendWhatsApp}
           onGoToClient={(clientId) => {
@@ -478,8 +522,8 @@ export default function TherapistDashboard() {
         />
       )}
       {bookingData && (
-        <BookingModal 
-          date={bookingData.date} 
+        <BookingModal
+          date={bookingData.date}
           time={bookingData.time}
           clients={clients}
           initialSearch={bookingData.initialSearch}
@@ -491,7 +535,7 @@ export default function TherapistDashboard() {
       {/* SlotManagement removed as it is now handled inline in AgendaPage icons reveal */}
 
       {weeklySettingsOpen && (
-        <WeeklySettingsModal 
+        <WeeklySettingsModal
           initialSlots={configSlots}
           onClose={() => setWeeklySettingsOpen(false)}
           onSave={handleSaveWeeklySlots}

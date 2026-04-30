@@ -3,98 +3,102 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowRight, 
-  ArrowUpRight,
-  Plus,
-  Minus,
-  Instagram,
-  MapPin,
+  ArrowRight,
+  ArrowRightCircle,
   Calendar,
-  Layers,
-  Wind,
-  AlignCenter,
-  ArrowRightLeft
+  MapPin,
+  Instagram
 } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { BookingFlow } from '@/components/booking/booking-flow';
 
-const MY_PHOTO = "https://storage.googleapis.com/stitch-99c9c.firebasestorage.app/projects/6998478571438886640/assets/f41d99042b4d4554b706c4a675037d4f";
-const HERO_IMAGE = "https://images.unsplash.com/photo-1544161515-4ad6ce6db874?auto=format&fit=crop&q=80&w=2070";
+const MY_PHOTO = "https://lh3.googleusercontent.com/aida-public/AB6AXuCtmXhVe0lRYhnQqaWvADAxaaeP5H8CTaWgWnwnHuBWTCKuNavepC8xV4YvCsn7T25SmmvQ2LfIY9SUB36F_fF7YTVeEU0FzFIeafA7Ngm7bs_FfqqQnt0XYSeA6J3fIzpxgcYiYggiNjL_9MmBfyQl38IBcgUw3T1ctoEvfiHYzHr5U5UFgGE1JgjR-iOmBet4paske22SV4Y-ncw6VMXYF_7iNqRMybOklEd3VQFELmhDvWIjqGGaQmIA6Oc_PpkGuBQfHkfi5Lc";
+const HERO_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuB-f97ScrCfLi4ArzqF7XLGDNJ_MRRbIMv3KvSILd-5SAhlF5H4r1zfmr3kVHyi3ofFJENnVdt470pSBcglJc1C4AAxzKjw-3SE_rGEB0RV5N62Yh8Bi4m-7xhoRmIpMLriiYDtgQbQObJAoB6dWuVZpQPEy5xcS7Gdmy42mPvplv5sXRUHsYnCGh6geAnAmtrbcJPsLVK-CS_VTtwuCE9I2TuD24WffAA9iwRA2-moXobO3v1-k2zs5zPhLjEU1TlF610leGxubwE";
 
 const services = [
   {
-    id: 'bambous-60',
-    name: '01. BAMBOUS',
-    duration: '60 MINUTES',
-    price: '160 CHF',
-    description: 'Une séance de pressions glissées avec tiges de bambous pour dénouer les tensions profondes.',
-    tag: 'Structural alignment',
+    id: 'structural-90',
+    name: '01. STRUCTURAL ALIGNMENT',
+    duration: '90 MINUTES',
+    price: 120,
+    description: 'Une approche architecturale pour restaurer l\'équilibre corporel.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuANpHouC1EYQFGTfeb3LQe-QMbFkeT2atbAuVo1IDyxIvaVbkdBz3v0_aJxWQOmc65zYMvBn7UI0-G9-Cni-K4Ke2pVy73kXg4zGgk8cc3dluLfEwQ-CGJqP5E53__NOQraCO2SPCawyNsYwqgJ_AJ4PjVWhiOTv-oR47pu-1Y3GuJNqqIX9jf4JPUK9YhC3hxb4mLhYNDf06H9EaZNtNcJEaHHclLCZhYKRBhHTUnlnDxR-2fBGq-zlJJP72GOtKFBtLJNxO0v_k0'
   },
   {
-    id: 'draineur-90',
-    name: '02. DRAINEUR',
-    duration: '90 MINUTES',
-    price: '220 CHF',
-    description: 'Méthode de drainage lymphatique manuel pour une détoxification profonde et une légèreté retrouvée.',
-    tag: 'Lymphatic Flow',
+    id: 'lymphatic-60',
+    name: '02. LYMPHATIC FLOW',
+    duration: '60 MINUTES',
+    price: 85,
+    description: 'Drainage profond pour une détoxification cellulaire.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxU7jFYDcXbNkJkvvM2bCjXwZMkKXlZQnCRPQ3Q_jFmAcmRaZlO2vbEFxHbEhDFgWRoxlGXuUJIhdn9FP82-YWyOEz-2RqLRfIn2SxJmHLgu5iXG-9Trk4C00P6ox_AbtjCyN7sld7PIYObA1jGt28Lmqe-_IAibFv8XpWHnS4VSnCvXGFyJEQJetwM6p8LdHcglI50JLZ9lWw9rXD8PSQZv1XFy8ekwnffUIMFiIMNAvCCInyJQre2-LQm8tifQZLqp3XJDaR8Z4'
   },
   {
-    id: 'draineur-120',
-    name: '03. DRAINEUR MAX',
-    duration: '120 MINUTES',
-    price: '280 CHF',
-    description: 'Immersion complète dans le drainage lymphatique pour un renouvellement cellulaire optimal.',
-    tag: 'Metabolic Reset',
+    id: 'shiatsu-75',
+    name: '03. ZEN SHIATSU',
+    duration: '75 MINUTES',
+    price: 100,
+    description: 'Technique traditionnelle japonaise pour harmoniser l\'énergie.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfNQmWEecXnoaoF8DTSSJZlbIk8d2TMr3qMs4Ss_WTFP4mzCLoUbWcxkzgoP8RnQJ51qlhQAv2HJWTk395aGQ7xTlvyUSsb-RVqtCRmj_SrAEvr6f4i0eJx60GdNosbejcchn8aiX8GUUXy0x5Rb247Z9G8eAU4Tmq6TZHVhKOmHOGfIAtqsOcKMf1aFDsvWgzBwxRRBcDpJdgzSLxNxBccknQBwQyxl9vjIsBgfL5BA7J7hHca6CUgImdZ0i0NhdKmfSFPdC8JgE'
   },
   {
-    id: 'restauration-90',
-    name: '04. SUR-MESURE',
+    id: 'deeptissue-90',
+    name: '04. DEEP TISSUE SCULPT',
     duration: '90 MINUTES',
-    price: '240 CHF',
-    description: 'Une approche architecturale adaptée à vos besoins spécifiques pour restaurer l\'équilibre.',
-    tag: 'Bespoke study',
+    price: 130,
+    description: 'Relâchement profond des tensions chroniques et musculaires.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDIUraQMOw7lKKHCSCRUEG0wszxC8zCBJsIEi7_yw0MJgcbuKsnruc3KbDMu17LUCgOtpoW3PeCEU9fbj3N4pTGwjVPy_MPBioP0u0Hhj0KuYH7Qov4kbW2PC9Y4sGv0DbstrkOk7b0-m61Q7H0ZeN9eCznULb4T6b4_-BAPhUpk86bfpVw9snfktC2R7Hqt3JzRfECDh8RRWxANGAt-zmT4eaqOTFqLDVhUNMCv9S5ECZ_w9fkKk9PItNOith2Vcu8JhPTDuAuUSc'
-  }
-];
-
-const methodology = [
-  {
-    title: 'RÉDUCTION',
-    description: 'Éliminer le bruit pour révéler la structure essentielle de votre bien-être physique.',
-    icon: Wind
   },
   {
-    title: 'SYMÉTRIE',
-    description: 'Restaurer l\'équilibre naturel entre l\'alignement squelettique et la tension musculaire.',
-    icon: AlignCenter
+    id: 'privacy-120',
+    name: '05. PRIVACY SESSION',
+    duration: '120 MINUTES',
+    price: 180,
+    description: 'Une session premium exclusive conçue pour un lâcher-prise total.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9ZMRf4vBzN-Cs8Qjs8duytaYWrzpMKcNTCAPW0k0IuY6cEolxBE6xiYEnkY9l79ei-bV3-cJbNa_gwEAwoFhS_x2RQA3derpAFUM8vvlOfA821fizZubdwT4jx_p0C9L-dEOwb8OILHANEZzvvPMxsoW_dlfuWiFRbGlWarRe2FnWxBV_6n6Tf5J-eggCM34TpX1DQpi2-e_3W3b0yo0QwV4pmFo-rbba214v_D0LTXYLOlgGzptwggas9re3nXdJEKFE7xVxojE'
   },
   {
-    title: 'INTERVALLE',
-    description: 'Créer la pause nécessaire pour que les mécanismes de guérison innés du corps s\'activent.',
-    icon: Layers
+    id: 'cranial-45',
+    name: '06. CRANIAL RELEASE',
+    duration: '45 MINUTES',
+    price: 70,
+    description: 'Thérapie douce focalisée sur la sphère crânio-sacrée.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBlVE7xSwZMkC_8yM-ORMTiAwJfWAhqu_SLl6HoKtBfRS78f6XcNMF2ZAIda29_PUcGk6ML3_KdIez6pKNhXm7MW4gGBHNEGK63l99SASH_DnAQMedbKY85EfJPawR7wtn8l_J3FouRPsgxMifN5TmghxT8hIurjwdprrEBZgPE8EYv_aOdS9_WMzPUldi_zGMGtE5X5yuKFghgoxVvZ1WYG5RDjrikZubpnuvl6d22TT0dJa3qpsaoPvBGzHq3n0u6B9lovB_JTZU'
+  },
+  {
+    id: 'myofascial-90',
+    name: '07. MYOFASCIAL STUDY',
+    duration: '90 MINUTES',
+    price: 140,
+    description: 'Travail minutieux sur les fascias pour libérer la mobilité.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBVlro2hAMsDzw2gbl4jWqk98IdekhIl82v_3JrThYycIPE87nNV89YRbvAwbcnawuyTgl-ASY8poCdglAaDAmILoImjajo_GWn57XZ9sGxUDTt-QjhgMdmM0Fs2oypbSbLoeginE5nQOYOlH7u-9-YMkktyhSS72SZApyYXcn2Tr0EP3t4nzrq_lZZzYbfKsHFaGghaqot7SjmyzCxehVrVIZv7uY06xc1eTysV31xQXi4B2DoBnQwNYzW1oFbkbGull_Gz9Q9jWs'
+  },
+  {
+    id: 'metabolic-60',
+    name: '08. METABOLIC RESET',
+    duration: '60 MINUTES',
+    price: 95,
+    description: 'Stimulation du métabolisme pour une vitalité renouvelée.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBpxWRk8P2ArTRraJbs4A5aqIAAW1hodHjodY92Fr9hCBP7OmZkNkjr2qv3aNpWWaQ8bMOW4EnEuZQpe9RAVAUQg2gEQrvSZ0gBYPIgQLn_IFqdto0T4_4pMfA103yzVz4X5V6RnRl0vimLxziTJKX4NC65hIKJ_eDshQhBkZPR0ByZDTdldULASB8w4Tk7p0s8NgvqlSPjs2O-6qEuQIWNI6Yt27gDSC9MYhF6oNoYFmkLyJ_0WPO_SJig-vJg6casBMNURfkl-JI'
   }
 ];
 
 const faqs = [
   {
     question: "Comment se déroule une séance ?",
-    answer: "Chaque séance commence par une analyse structurelle pour adapter notre approche à votre architecture corporelle unique. Nous privilégions la lenteur et la précision pour une recalibration complète."
+    answer: "Chaque séance commence par une analyse structurelle pour adapter notre approche à votre architecture corporelle unique."
   },
   {
     question: "Quelle est la durée idéale ?",
-    answer: "Nous recommandons des sessions de 90 minutes pour permettre une décompression profonde et une recalibration émotionnelle et physique optimale."
+    answer: "Nous recommandons des sessions de 90 minutes pour permettre une décompression profonde et une recalibration complète."
   },
   {
     question: "Dois-je réserver à l'avance ?",
-    answer: "Oui, pour garantir une immersion totale, nos séances sont uniquement sur rendez-vous dans notre sanctuaire de Genève Cointrin."
+    answer: "Oui, pour garantir une immersion totale, nos séances sont uniquement sur rendez-vous dans notre studio de Lisbonne."
   },
   {
-    question: "Quelle est la philosophie de l'approche ?",
-    answer: "Mon approche est une architecture de l'instant. Inspiré par le design structurel, je traite le corps comme une construction vivante nécessitant équilibre, espace et maintenance intentionnelle."
+    question: "Politique d'annulation",
+    answer: "Nous demandons un préavis de 24 heures pour toute modification afin de respecter le flux de travail de nos architectes du bien-être."
   }
 ];
 
@@ -111,7 +115,7 @@ export default function HomePage() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as const }
     }
   };
 
@@ -126,121 +130,73 @@ export default function HomePage() {
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-[#faf9f7] text-[#1a1c1b] selection:bg-[#435544] selection:text-white overflow-x-hidden font-sans">
+    <main className="min-h-screen bg-background text-on-surface selection:bg-surface-container-highest selection:text-on-surface overflow-x-hidden font-sans">
+      {/* TopAppBar replaced with standard Navbar to keep auth features */}
       <Navbar onBookingClick={() => setIsBookingOpen(true)} />
       
-      {/* ── HERO SECTION (ARCHITECTURAL MINIMALISM) ── */}
-      <section id="hero" className="relative min-h-screen flex items-center pt-32 pb-24 px-8 md:px-16 lg:px-24 overflow-hidden">
-        {/* Architectural Grid Background */}
-        <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-px h-full bg-[#1a1c1b]"></div>
-          <div className="absolute top-0 left-2/4 w-px h-full bg-[#1a1c1b]"></div>
-          <div className="absolute top-0 left-3/4 w-px h-full bg-[#1a1c1b]"></div>
-          <div className="absolute top-1/3 left-0 w-full h-px bg-[#1a1c1b]"></div>
-          <div className="absolute top-2/3 left-0 w-full h-px bg-[#1a1c1b]"></div>
+      {/* ── HERO SECTION ── */}
+      <section id="hero" className="relative min-h-screen flex items-center pt-48 pb-24 px-8 md:px-16 overflow-hidden">
+        <div className="absolute top-0 right-0 w-full md:w-2/3 h-full z-0 opacity-20">
+          <div className="absolute top-[64px] right-[64px] w-48 h-48 border-t border-r border-outline-variant"></div>
         </div>
-
-        {/* Floating Architectural Marker */}
-        <div className="absolute top-40 right-20 w-12 h-12 border border-[#435544]/20 rotate-45 hidden lg:block animate-pulse"></div>
 
         <motion.div 
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="relative z-10 w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+          className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
         >
-          <div className="lg:col-span-7">
-            <motion.div variants={fadeIn} className="flex items-center gap-4 mb-12">
-              <div className="w-2 h-2 bg-[#435544] rotate-45"></div>
-              <span className="font-serif uppercase tracking-[0.6em] text-[10px] text-[#725a38]">
-                EST. 2024 — GENÈVE, CH
-              </span>
-            </motion.div>
+          <div className="lg:col-span-6">
+            <motion.h2 variants={fadeIn} className="font-label text-[10px] tracking-[0.6em] text-on-tertiary-container mb-8 block uppercase">
+              EST. 2024 — LISBON
+            </motion.h2>
             
-            <motion.h1 variants={fadeIn} className="font-serif text-[clamp(2.5rem,8vw,6.5rem)] leading-[0.85] tracking-tighter uppercase mb-16">
-              Stillness <br />
-              <span className="italic font-light text-[#c3c8c0] block mt-6 lowercase">is the new luxury.</span>
+            <motion.h1 variants={fadeIn} className="font-display text-5xl md:text-6xl lg:text-[48px] leading-[1.2] tracking-[-0.02em] mb-12 text-on-background max-w-xl">
+              Architectural Stillness for the Modern Soul.
             </motion.h1>
             
-            <motion.div variants={fadeIn} className="flex flex-col sm:flex-row items-start gap-12">
+            <motion.div variants={fadeIn} className="flex flex-col sm:flex-row items-start gap-8">
               <button 
                 onClick={() => setIsBookingOpen(true)}
-                className="bg-[#1a1c1b] text-white font-serif uppercase tracking-[0.4em] text-[10px] py-6 px-12 hover:bg-[#435544] transition-all duration-700 shadow-2xl relative group overflow-hidden"
+                className="bg-primary text-primary-foreground font-label text-[10px] py-5 px-10 tracking-[0.6em] uppercase hover:bg-on-surface-variant transition-colors"
               >
-                <span className="relative z-10">INITIER LE RITUEL</span>
-                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                EXPLORE SERVICES
               </button>
-              <div className="flex items-center gap-6 group cursor-pointer py-6 border-b border-[#efeeec] hover:border-[#1a1c1b] transition-all">
-                <span className="font-serif uppercase tracking-[0.4em] text-[10px] group-hover:pr-4 transition-all text-[#725a38]">DÉCOUVRIR L'APPROCHE</span>
-                <ArrowRight size={14} strokeWidth={1} className="group-hover:translate-x-2 transition-transform duration-700 text-[#1a1c1b]" />
+              <div className="flex items-center gap-4 group cursor-pointer py-4" onClick={() => document.getElementById('about')?.scrollIntoView({behavior: 'smooth'})}>
+                <span className="font-label text-[10px] tracking-[0.6em] uppercase border-b border-on-surface transition-all group-hover:pr-4">LEARN MORE</span>
+                <ArrowRight size={16} strokeWidth={1} className="group-hover:translate-x-2 transition-transform" />
               </div>
             </motion.div>
           </div>
 
-          <div className="lg:col-span-5 relative">
+          <div className="lg:col-span-6 relative">
             <motion.div 
               variants={fadeIn}
-              className="aspect-[3/4] w-full bg-[#efeeec] overflow-hidden relative group border border-[#efeeec]"
+              className="aspect-[3/4] w-full bg-surface-container overflow-hidden"
             >
               <img 
                 src={HERO_IMAGE}
                 alt="Sanctuary Space" 
-                className="w-full h-full object-cover grayscale transition-all duration-[2000ms] group-hover:scale-105" 
+                className="w-full h-full object-cover mix-blend-multiply hover:grayscale-0 transition-all duration-1000 grayscale" 
               />
-              <div className="absolute inset-0 bg-[#435544]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-              
-              {/* Corner markers */}
-              <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-white/30"></div>
-              <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-white/30"></div>
             </motion.div>
             
             {/* Float quote */}
             <motion.div 
               variants={fadeIn}
-              className="absolute -bottom-12 -left-12 bg-white p-12 max-w-xs hidden md:block border border-[#efeeec] shadow-2xl"
+              className="absolute -bottom-8 -left-8 bg-white p-8 max-w-xs hidden md:block border-l border-b border-zinc-100"
             >
-              <div className="w-4 h-4 border border-[#435544]/20 rotate-45 mb-6"></div>
-              <p className="font-serif text-lg text-[#1a1c1b] italic leading-relaxed">
-                "Nous ne proposons pas seulement une thérapie ; nous concevons des environnements pour une recalibration émotionnelle."
+              <p className="font-body text-[16px] text-on-surface-variant italic leading-[1.6]">
+                "We don't just provide therapy; we design environments for emotional recalibration."
               </p>
             </motion.div>
           </div>
         </motion.div>
       </section>
 
-      {/* ── METHODOLOGY SECTION ── */}
-      <section className="py-48 px-8 md:px-16 lg:px-24 bg-[#f4f3f1] border-y border-[#efeeec]">
-        <div className="max-w-[1440px] mx-auto">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={stagger}
-            className="grid grid-cols-1 md:grid-cols-3 gap-24"
-          >
-            {methodology.map((item, idx) => (
-              <motion.div key={idx} variants={fadeIn} className="flex flex-col items-center text-center group">
-                <div className="w-20 h-20 flex items-center justify-center border border-[#c3c8c0] rotate-45 mb-14 text-[#435544] group-hover:border-[#1a1c1b] transition-all duration-700 bg-white">
-                  <div className="-rotate-45">
-                    <item.icon size={28} strokeWidth={1} />
-                  </div>
-                </div>
-                <h3 className="font-serif text-[10px] uppercase tracking-[0.5em] text-[#725a38] mb-8">{item.title}</h3>
-                <p className="font-serif text-lg text-[#1a1c1b] italic leading-relaxed max-w-xs opacity-70 group-hover:opacity-100 transition-opacity duration-700">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── PHILOSOPHY SECTION (ABOUT JOÃO) ── */}
-      <section id="about" className="py-48 md:py-64 px-8 md:px-16 lg:px-24 overflow-hidden bg-[#faf9f7] relative">
-        {/* Decorative Vertical Line */}
-        <div className="absolute top-0 left-1/2 w-px h-32 bg-[#efeeec] hidden lg:block"></div>
-
-        <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-24 items-center">
+      {/* ── ABOUT JOÃO SECTION ── */}
+      <section id="about" className="py-[120px] px-8 md:px-16 bg-surface-container-low">
+        <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -248,14 +204,13 @@ export default function HomePage() {
             transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-5 relative"
           >
-            <div className="aspect-[4/5] relative overflow-hidden bg-[#efeeec] border border-[#efeeec]">
+            <div className="aspect-square relative overflow-hidden bg-surface-container">
               <img 
                 src={MY_PHOTO}
                 alt="João - Lead Therapist" 
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2000ms]" 
               />
-              <div className="absolute top-0 left-0 w-32 h-32 border-t border-l border-[#1a1c1b] opacity-10"></div>
-              <div className="absolute bottom-12 right-12 w-6 h-6 border border-[#435544] rotate-45"></div>
+              <div className="absolute top-0 left-0 w-32 h-32 border-t border-l border-on-surface opacity-10"></div>
             </div>
           </motion.div>
           
@@ -266,64 +221,62 @@ export default function HomePage() {
             variants={stagger}
             className="lg:col-span-7"
           >
-            <motion.div variants={fadeIn} className="flex items-center gap-4 mb-8">
-              <div className="w-1.5 h-1.5 bg-[#435544] rotate-45"></div>
-              <span className="font-serif uppercase tracking-[0.4em] text-[10px] text-[#725a38]">NOTRE FONDATEUR</span>
-            </motion.div>
+            <motion.span variants={fadeIn} className="font-label text-[10px] tracking-[0.6em] uppercase text-on-tertiary-container mb-6 block">
+              OUR FOUNDER
+            </motion.span>
             
-            <motion.h2 variants={fadeIn} className="font-serif text-5xl md:text-8xl mb-12 tracking-tighter leading-none uppercase">
-              João: Architecte <br /> <span className="italic text-[#c3c8c0] lowercase font-light">de la Présence.</span>
+            <motion.h2 variants={fadeIn} className="font-headline text-[24px] md:text-[32px] leading-[1.4] mb-8">
+              João: Architect of Presence
             </motion.h2>
             
-            <motion.div variants={fadeIn} className="space-y-10 max-w-xl">
-              <p className="font-serif text-xl md:text-2xl text-[#1a1c1b] leading-relaxed italic">
-                Avec un parcours mêlant design structurel et thérapie holistique, João aborde le corps humain comme une architecture vivante qui requiert équilibre, espace et maintenance intentionnelle.
+            <motion.div variants={fadeIn} className="space-y-6 max-w-2xl">
+              <p className="font-body text-[18px] text-on-surface leading-[1.6]">
+                With a background in both structural design and holistic therapy, João approaches the human body as a living architecture that requires balance, space, and intentional maintenance.
               </p>
-              <p className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#725a38] leading-loose border-l border-[#efeeec] pl-8">
-                Sa méthode, "The Centered Framework", intègre des techniques japonaises traditionnelles à une compréhension ergonomique moderne, créant un sanctuaire pour une restauration profonde dans un monde à haute vélocité.
+              <p className="font-body text-[16px] text-on-surface-variant leading-[1.6]">
+                His method, "The Centered Framework," integrates traditional Japanese techniques with modern ergonomic understanding, creating a sanctuary for those seeking deep restoration in a high-velocity world.
               </p>
             </motion.div>
             
-            <motion.div variants={fadeIn} className="mt-20 flex items-center gap-20">
+            <motion.div variants={fadeIn} className="mt-12 flex items-center gap-12">
               <div className="flex flex-col">
-                <span className="font-serif text-7xl mb-2 tracking-tighter leading-none">12<span className="text-[#c3c8c0] font-light">+</span></span>
-                <span className="font-serif uppercase tracking-[0.2em] text-[10px] text-[#725a38]">ANS D'EXPÉRIENCE</span>
+                <span className="font-display text-[40px] leading-[1.2] mb-2 tracking-[-0.02em]">12+</span>
+                <span className="font-label text-[10px] tracking-[0.6em] uppercase text-secondary">YEARS EXP.</span>
               </div>
-              <div className="h-24 w-[1px] bg-[#efeeec]"></div>
+              <div className="h-12 w-px bg-outline-variant"></div>
               <div className="flex flex-col">
-                <span className="font-serif text-7xl mb-2 tracking-tighter leading-none">4<span className="text-[#c3c8c0] font-light">k+</span></span>
-                <span className="font-serif uppercase tracking-[0.2em] text-[10px] text-[#725a38]">SÉANCES EFFECTUÉES</span>
+                <span className="font-display text-[40px] leading-[1.2] mb-2 tracking-[-0.02em]">4k+</span>
+                <span className="font-label text-[10px] tracking-[0.6em] uppercase text-secondary">SESSIONS</span>
               </div>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* ── SERVICES GRID (PRECISION MODULES) ── */}
-      <section id="services" className="py-48 px-8 md:px-16 lg:px-24 bg-white border-b border-[#efeeec]">
+      {/* ── SERVICES GRID ── */}
+      <section id="services" className="py-[120px] px-8 md:px-16 bg-background">
         <div className="max-w-[1440px] mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-32 flex flex-col md:flex-row md:items-end justify-between gap-12"
+            className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8"
           >
-            <div className="max-w-2xl">
-              <motion.div variants={fadeIn} className="flex items-center gap-4 mb-8">
-                <div className="w-1.5 h-1.5 bg-[#435544] rotate-45"></div>
-                <span className="font-serif uppercase tracking-[0.6em] text-[10px] text-[#725a38]">PROTOCOLES CURATÉS</span>
-              </motion.div>
-              <h2 className="font-serif text-5xl md:text-8xl tracking-tighter uppercase leading-[0.9]">
-                Precision <br /> Modules.
+            <div className="max-w-xl">
+              <span className="font-label text-[10px] text-on-tertiary-container mb-6 block uppercase tracking-[0.4em]">
+                Curated Treatments
+              </span>
+              <h2 className="font-headline text-[24px] md:text-[32px] leading-[1.4]">
+                Precision Wellness Modules.
               </h2>
             </div>
-            <div className="flex items-center gap-6 group cursor-pointer font-serif uppercase tracking-[0.5em] text-[10px] text-[#1a1c1b] border-b border-[#efeeec] pb-4 hover:border-[#1a1c1b] transition-all">
-              VOIR LE MENU COMPLET
-              <ArrowRight size={14} className="group-hover:translate-x-3 transition-transform duration-700" />
+            <div className="font-label text-[10px] flex items-center gap-4 cursor-pointer group tracking-[0.6em] uppercase">
+              VIEW FULL MENU
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-2" />
             </div>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#efeeec] border border-[#efeeec]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[2px] bg-outline-variant border border-outline-variant">
             {services.map((service, idx) => (
               <motion.div 
                 key={service.id} 
@@ -331,87 +284,53 @@ export default function HomePage() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1, duration: 1.5 }}
-                className="group relative aspect-square bg-[#faf9f7] overflow-hidden cursor-pointer"
+                className="group relative aspect-square bg-surface overflow-hidden cursor-pointer"
                 onClick={() => setIsBookingOpen(true)}
               >
                 <img 
                   src={service.image}
                   alt={service.name} 
-                  className="w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0" 
                 />
                 
-                {/* Overlay Shutter Effect */}
-                <div className="absolute inset-0 bg-[#1a1c1b]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 
-                <div className="absolute inset-0 flex flex-col justify-end p-12 translate-y-8 group-hover:translate-y-0 transition-transform duration-1000">
-                  <div className="relative z-10">
-                    <span className="font-serif uppercase tracking-[0.4em] text-[8px] text-white/60 mb-4 block">{service.tag}</span>
-                    <h3 className="font-serif text-2xl md:text-3xl text-white uppercase tracking-tighter leading-none mb-4 group-hover:italic transition-all duration-700">
-                      {service.name}
-                    </h3>
-                    <div className="flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-300">
-                      <p className="font-serif text-[10px] text-white/80 uppercase tracking-[0.2em]">{service.duration}</p>
-                      <p className="font-serif text-xl text-white tracking-tighter">{service.price}</p>
-                    </div>
-                  </div>
-                  {/* Shutter reveal background */}
-                  <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#1a1c1b]/80 to-transparent z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                <div className="absolute bottom-0 left-0 w-full p-8 translate-y-4 group-hover:translate-y-0 transition-transform bg-gradient-to-t from-black/60 to-transparent">
+                  <h3 className="font-label text-[12px] tracking-[0.03em] font-medium text-white mb-2 uppercase">
+                    {service.name}
+                  </h3>
+                  <p className="font-label text-[9px] tracking-[0.6em] uppercase text-white/80 opacity-0 group-hover:opacity-100 transition-opacity">
+                    {service.duration} — {service.price}
+                  </p>
                 </div>
               </motion.div>
             ))}
           </div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-48 p-24 md:p-32 border border-[#efeeec] flex flex-col md:flex-row justify-between items-center gap-24 relative overflow-hidden bg-[#f4f3f1]/50"
-          >
-            <div className="relative z-10">
-              <h3 className="font-serif text-4xl md:text-7xl tracking-tighter text-[#1a1c1b] text-center md:text-left leading-[0.9] uppercase">
-                Trouvez votre axe <br /> <span className="italic text-[#c3c8c0] font-light lowercase">dans un monde en mouvement.</span>
-              </h3>
-            </div>
-            <button 
-              onClick={() => setIsBookingOpen(true)}
-              className="relative z-10 bg-[#435544] text-white px-20 py-10 font-serif uppercase tracking-[0.6em] text-[10px] hover:bg-[#1a1c1b] transition-all duration-1000 shadow-2xl group"
-            >
-              <span className="relative z-10">INITIER LA RECALIBRATION</span>
-              <motion.div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-700" />
-            </button>
-            <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none flex items-center justify-center">
-              <span className="font-serif text-[20vw] uppercase tracking-tighter select-none">Serenity</span>
-            </div>
-          </motion.div>
         </div>
       </section>
 
       {/* ── FAQ SECTION ── */}
-      <section id="faq" className="py-48 md:py-64 px-8 md:px-16 lg:px-24 bg-[#faf9f7]">
-        <div className="max-w-[1440px] mx-auto text-center">
-          <motion.div 
+      <section id="faq" className="py-[120px] px-8 md:px-16 overflow-hidden bg-surface">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.span 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex flex-col items-center mb-16"
+            className="font-label text-[10px] tracking-[0.6em] uppercase text-on-tertiary-container mb-12 block"
           >
-            <div className="w-1.5 h-1.5 bg-[#435544] rotate-45 mb-6"></div>
-            <span className="font-serif uppercase tracking-[0.6em] text-[10px] text-[#725a38]">
-              QUESTIONS FRÉQUEMMENT POSÉES
-            </span>
-          </motion.div>
+            QUESTIONS FRÉQUEMMENT POSÉES
+          </motion.span>
           
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-serif text-5xl md:text-8xl tracking-tighter text-left mb-32 uppercase"
+            className="font-display text-[48px] leading-[1.2] tracking-[-0.02em] mb-20 text-left text-on-surface"
           >
-            Équilibre <br /> <span className="italic text-[#c3c8c0] lowercase font-light">et clarté.</span>
+            Équilibre et clarté.
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-24 text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16 text-left">
             {faqs.map((faq, idx) => (
               <motion.div 
                 key={idx}
@@ -419,15 +338,12 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="border-t border-[#efeeec] pt-12 group"
+                className="border-t border-outline-variant pt-8"
               >
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-1 h-1 bg-[#435544] rotate-45 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <h4 className="font-serif text-[11px] uppercase tracking-[0.4em] text-[#725a38] group-hover:text-[#1a1c1b] transition-colors duration-500">
-                    {faq.question}
-                  </h4>
-                </div>
-                <p className="font-serif text-xl md:text-2xl text-[#1a1c1b] leading-relaxed italic opacity-70 group-hover:opacity-100 transition-opacity duration-700">
+                <h4 className="font-label text-[14px] leading-[1.2] tracking-[0.05em] font-semibold mb-4 uppercase text-on-surface">
+                  {faq.question}
+                </h4>
+                <p className="font-body text-[16px] leading-[1.6] text-on-surface-variant italic">
                   {faq.answer}
                 </p>
               </motion.div>
@@ -436,61 +352,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── FINAL CTA SECTION ── */}
-      <section className="py-64 px-8 md:px-16 bg-[#1a1c1b] overflow-hidden relative text-white border-t border-white/5">
-        <div className="max-w-[1440px] mx-auto text-center relative z-10">
-          <motion.div
-             initial={{ opacity: 0, y: 30 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             transition={{ duration: 1.5 }}
-          >
-            <div className="flex flex-col items-center mb-20">
-              <div className="w-2 h-2 bg-[#435544] rotate-45 mb-6"></div>
-              <span className="font-serif uppercase tracking-[0.8em] text-[10px] text-[#435544]">
-                A HIGHER STANDARD OF THERAPY
-              </span>
-            </div>
-            
-            <h2 className="font-serif text-5xl md:text-[9rem] italic mb-32 tracking-tighter leading-[0.8] uppercase">
-              Où l'architecture <br /> <span className="text-[#435544] not-italic">rencontre le corps.</span>
-            </h2>
-            
-            <div className="flex flex-wrap justify-center gap-32 border-t border-white/10 pt-24">
-              <div className="flex flex-col items-center gap-6 group">
-                <MapPin size={20} strokeWidth={1} className="text-[#435544] group-hover:scale-110 transition-transform" />
-                <span className="font-serif uppercase tracking-[0.4em] text-[11px]">Genève, Suisse</span>
-                <span className="font-serif text-[10px] text-white/40 italic">Cointrin Sanctuary</span>
-              </div>
-              <div className="flex flex-col items-center gap-6 group">
-                <Instagram size={20} strokeWidth={1} className="text-[#435544] group-hover:scale-110 transition-transform" />
-                <span className="font-serif uppercase tracking-[0.4em] text-[11px]">@serenity_relax</span>
-                <span className="font-serif text-[10px] text-white/40 italic">Presence Digitale</span>
-              </div>
-              <div className="flex flex-col items-center gap-6 group">
-                <Calendar size={20} strokeWidth={1} className="text-[#435544] group-hover:scale-110 transition-transform" />
-                <span className="font-serif uppercase tracking-[0.4em] text-[11px]">Mardi - Samedi</span>
-                <span className="font-serif text-[10px] text-white/40 italic">Sur Rendez-vous</span>
-              </div>
-            </div>
-            
-            <button 
-              onClick={() => setIsBookingOpen(true)}
-              className="mt-32 font-serif uppercase tracking-[0.6em] text-[12px] py-10 px-24 border border-white/20 hover:bg-white hover:text-[#1a1c1b] transition-all duration-1000 relative group overflow-hidden"
-            >
-              <span className="relative z-10">RÉSERVER UNE SÉANCE</span>
-              <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-            </button>
-          </motion.div>
-        </div>
-        
-        {/* Large Background Typography */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-[0.02] select-none pointer-events-none">
-          <span className="font-serif text-[40vw] leading-none tracking-tighter uppercase">Serenity</span>
-        </div>
-      </section>
-
+      {/* Footer using Standard App Footer, but could be customized later if needed */}
       <Footer />
+      
       <BookingFlow 
         isOpen={isBookingOpen} 
         onClose={() => setIsBookingOpen(false)} 
