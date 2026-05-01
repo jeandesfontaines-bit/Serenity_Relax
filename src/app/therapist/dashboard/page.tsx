@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { format, addDays } from 'date-fns';
+import { format, addMonths, addWeeks } from 'date-fns';
 import { useFirestore, useUser } from '@/firebase';
 import {
   collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc, setDoc,
@@ -74,7 +74,7 @@ export default function TherapistDashboard() {
   const [followupTemplate, setFollowupTemplate] = useState<string>(DEFAULT_FOLLOWUP);
   const [emailTemplate, setEmailTemplate] = useState<string>("");
   const [emailEnabled, setEmailEnabled] = useState<boolean>(false);
-  const [cabinetName, setCabinetName] = useState<string>("Mon Cabinet");
+  const [cabinetName, setCabinetName] = useState<string>("Serenity Relax Therapy");
   const [cabinetEmail, setCabinetEmail] = useState<string>("");
   const [cabinetAddress, setCabinetAddress] = useState<string>("");
 
@@ -88,19 +88,23 @@ export default function TherapistDashboard() {
 
   // --- Data Loading ---
   useEffect(() => {
-    if (!firestore) return;
+    if (!firestore || !user) return;
     const unsubAppts = onSnapshot(collection(firestore, 'appointments'), (snap) => {
       setAppointments(snap.docs.map(d => normalizeAppointment(d.id, d.data())));
-    });
+    }, (err) => console.error("Appts snapshot error:", err));
+
     const unsubClients = onSnapshot(collection(firestore, 'clients'), (snap) => {
       setClients(snap.docs.map(d => ({ id: d.id, ...d.data() } as Client)));
-    });
+    }, (err) => console.error("Clients snapshot error:", err));
+
     const unsubAvail = onSnapshot(collection(firestore, 'availability'), (snap) => {
       setAvailability(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-    });
+    }, (err) => console.error("Avail snapshot error:", err));
+
     const unsubConfig = onSnapshot(doc(firestore, 'config', 'slots'), (doc) => {
       if (doc.exists()) setConfigSlots(doc.data().days || {});
-    });
+    }, (err) => console.error("Config slots snapshot error:", err));
+
     const unsubMeta = onSnapshot(doc(firestore, 'config', 'metadata'), (doc) => {
       if (doc.exists()) {
         const d = doc.data();
@@ -114,10 +118,10 @@ export default function TherapistDashboard() {
         if (d.cabinetEmail) setCabinetEmail(d.cabinetEmail);
         if (d.cabinetAddress) setCabinetAddress(d.cabinetAddress);
       }
-    });
+    }, (err) => console.error("Config meta snapshot error:", err));
 
     return () => { unsubAppts(); unsubClients(); unsubAvail(); unsubConfig(); unsubMeta(); };
-  }, [firestore]);
+  }, [firestore, user]);
 
   // --- Handlers ---
   const isDayOpen = (d: string) => !availability.find(a => a.id === d)?.closed;
@@ -199,7 +203,7 @@ export default function TherapistDashboard() {
           <AgendaPage
             view={view}
             cur={cur}
-            onPeriod={(dir) => setCur(addDays(cur, dir * (view === 'month' ? 30 : 7)))}
+            onPeriod={(dir) => setCur(prev => (view === 'month' ? addMonths(prev, dir) : addWeeks(prev, dir)))}
             onToday={() => setCur(new Date())}
             onToggleView={setView}
             onSelectAppt={setSelectedAppt}
@@ -216,6 +220,7 @@ export default function TherapistDashboard() {
             setAbsenceMode={setAbsenceMode}
             onOpenWeeklySettings={() => setWeeklySettingsOpen(true)}
             onMoveAppt={handleMoveAppt}
+            onSelectDate={setCur}
           />
         );
       case 'clients':

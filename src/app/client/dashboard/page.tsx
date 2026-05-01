@@ -19,11 +19,11 @@ export default function ClientDashboardPage() {
   return (
     <div className="bg-background text-on-background min-h-screen pb-24 md:pb-0">
       {/* TopAppBar */}
-      <header className="bg-[#faf9f7]/80 dark:bg-[#1a1c1b]/80 backdrop-blur-md border-b border-[#efeeec] dark:border-[#434842] docked full-width top-0 sticky z-50 shadow-sm opacity-40">
+      <header className="absolute top-0 left-0 bg-[#faf9f7]/80 dark:bg-[#1a1c1b]/80 backdrop-blur-md border-b border-[#efeeec] dark:border-[#434842] docked full-width z-50 shadow-sm opacity-40">
         <div className="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
           <Link href="/">
             <h1 className="text-xl font-normal tracking-wide text-[#435544] dark:text-[#b8ccb6] font-['Public_Sans']">
-              Sanctuary
+              Serenity Relax Therapy
             </h1>
           </Link>
           <nav className="hidden md:flex items-center space-x-8">
@@ -59,13 +59,13 @@ export default function ClientDashboardPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
+      <main className="max-w-7xl mx-auto px-6 pt-28 pb-12 space-y-12">
         {/* Welcome Hero */}
         <section className="relative overflow-hidden rounded-[2rem] h-[320px] flex flex-col justify-end p-12 group shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
           <div className="absolute inset-0 z-0">
             <Image 
               alt="Sanctuary atmosphere" 
-              className="w-full h-full object-cover grayscale-[20%] brightness-90 group-hover:scale-105 transition-transform duration-700" 
+              className="w-full h-full object-cover brightness-90 group-hover:scale-105 transition-transform duration-700" 
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuWqT9s1RIarAvOvso-lqbU2ODCmhtOfOcSPEZANLoCCGQaxxZkcEIKQxUh8wzAq1GxW8wbY8SRfpoGOpCFxiSRxjNPWDLW53O9-qqNsA0w3CVOKOMErzYB_rSvjBzpSJSNcPzzwC5aaJVfVVcBy15rGUsWnIqFU9kYVU-4ZovhvANz0N4_in7ZDS4WdbnPj1DMjni8AFOhy_PMM5xvp4xzwV_9P4avDsCVheemiJX8hh9sN6-IwqZhofGqfdKv6PLYEXcCNMfLc4"
               fill
             />
@@ -95,7 +95,7 @@ export default function ClientDashboardPage() {
                   <span className="text-2xl font-bold">24</span>
                 </div>
                 <div className="flex-grow">
-                  <h4 className="font-headline text-lg font-medium">Signature Holistic Massage</h4>
+                  <h4 className="font-headline text-lg font-medium">Signature Serenity Massage</h4>
                   <p className="text-outline text-sm font-body">Thursday • 2:30 PM • 90 Minutes</p>
                 </div>
                 <div className="flex gap-3">
@@ -217,7 +217,7 @@ export default function ClientDashboardPage() {
                   <td className="py-5 text-outline">INV-2023-084</td>
                   <td className="py-5 text-on-surface">
                     <div className="flex flex-col">
-                      <span className="text-on-surface font-medium">Signature Holistic Massage</span>
+                      <span className="text-on-surface font-medium">Signature Serenity Massage</span>
                       <button className="text-primary-container text-[10px] font-bold uppercase tracking-wider text-left flex items-center gap-1 hover:underline mt-1">
                         <History className="w-3 h-3" /> View Session
                       </button>

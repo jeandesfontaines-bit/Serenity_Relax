@@ -309,7 +309,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
           </motion.div>
 
           <div className="mt-auto hidden lg:block">
-            <p className="font-serif text-[10px] text-zinc-300 tracking-[0.2em] uppercase">Serenity & Relax © 2024</p>
+            <p className="font-serif text-[10px] text-zinc-300 tracking-[0.2em] uppercase">Serenity Relax Therapy by João © {new Date().getFullYear()}</p>
           </div>
         </div>
 
@@ -346,7 +346,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                         `}
                       >
                         <div className="flex items-start gap-12">
-                           <div className="w-24 h-32 bg-zinc-50 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000 shrink-0 relative">
+                           <div className="w-24 h-32 bg-zinc-50 overflow-hidden transition-all duration-1000 shrink-0 relative">
                              <img src={s.image || ''} alt="" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" />
                              <div className="absolute inset-0 bg-zinc-900/0 group-hover:bg-zinc-900/5 transition-colors"></div>
                            </div>

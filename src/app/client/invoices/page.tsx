@@ -39,7 +39,7 @@ export default function ClientInvoicesPage() {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(24);
         doc.setTextColor(95, 39, 205); 
-        doc.text('SERENITY RELAX', 20, 30);
+        doc.text('SERENITY RELAX THERAPY', 20, 30);
         
         doc.setFont("helvetica", "normal");
         doc.setFontSize(10);
@@ -77,7 +77,7 @@ export default function ClientInvoicesPage() {
         doc.setTextColor(95, 39, 205);
         doc.text(`TOTAL RÉGLÉ : ${inv.amount} CHF`, 20, 170);
         
-        doc.save(`Serenity-Relax-Justificatif-${inv.id}.pdf`);
+        doc.save(`Serenity-Relax-Therapy-Justificatif-${inv.id}.pdf`);
     } catch (err) {
         console.error("PDF Client Fail:", err);
     }

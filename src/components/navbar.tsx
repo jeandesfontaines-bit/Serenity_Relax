@@ -81,10 +81,15 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
   if (isLoginPage) return null;
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-[#faf9f7]/70 backdrop-blur-xl border-b border-[#efeeec]">
+    <header className="absolute top-0 left-0 w-full z-50 bg-[#faf9f7]/70 backdrop-blur-xl border-b border-[#efeeec]">
       <div className="flex justify-between items-center w-full px-8 md:px-16 py-8 max-w-[1440px] mx-auto">
-        <Link href="/" className="text-xl md:text-2xl font-serif font-medium tracking-tighter text-[#1a1c1b] uppercase">
-          SERENITY <span className="italic font-light text-[#c3c8c0]">Relax.</span>
+        <Link href="/" className="flex items-baseline gap-2 group">
+          <span className="font-sans font-medium text-[16px] md:text-[20px] tracking-[0.3em] text-[#1a1c1b] whitespace-nowrap uppercase">
+            SERENITY RELAX THERAPY
+          </span>
+          <span className="font-cursive text-[22px] md:text-[28px] text-[#5a6366] whitespace-nowrap lowercase" style={{ fontFamily: 'var(--font-signature)' }}>
+            by João
+          </span>
         </Link>
         
         <nav className="hidden lg:flex items-center space-x-16">
@@ -120,7 +125,7 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
               </div>
               <div className="w-10 h-10 border border-[#efeeec] flex items-center justify-center bg-white text-[#1a1c1b] overflow-hidden group hover:border-[#435544] transition-colors duration-700">
                 {effectiveUser.photo ? (
-                  <img src={effectiveUser.photo} alt="" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
+                  <img src={effectiveUser.photo} alt="" className="w-full h-full object-cover transition-all" />
                 ) : (
                   <UserIcon size={14} strokeWidth={1} />
                 )}
@@ -180,4 +185,3 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
     </header>
   );
 }
-

@@ -9,13 +9,16 @@ export function Footer() {
     <footer className="w-full bg-[#1a1c1b] border-t border-white/5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-24 px-8 md:px-16 py-32 max-w-[1440px] mx-auto text-white">
         <div className="space-y-12">
-          <div className="flex items-center gap-4">
-            <div className="w-1.5 h-1.5 bg-[#435544] rotate-45"></div>
-            <div className="font-serif text-2xl tracking-tighter text-white uppercase">SERENITY & RELAX</div>
+          <div className="flex items-baseline gap-4">
+            <div className="w-1.5 h-1.5 bg-[#435544] rotate-45 shrink-0"></div>
+            <div>
+              <div className="font-sans text-xl font-medium tracking-[0.2em] text-white uppercase">SERENITY RELAX THERAPY</div>
+              <div className="font-cursive text-[24px] tracking-[0.1em] text-white/60 mt-1 lowercase" style={{ fontFamily: 'var(--font-signature)' }}>by João</div>
+            </div>
           </div>
           <p className="font-serif uppercase tracking-[0.6em] text-[8px] max-w-sm leading-[2.2] text-white/40 italic">
-            A HIGHER STANDARD OF THERAPY. <br />
-            WHERE ARCHITECTURE MEETS THE BODY. <br />
+            THÉRAPIE DE BIEN-ÊTRE PREMIUM. <br />
+            UN ESPACE DE DÉTENTE POUR LE CORPS. <br />
             GENÈVE, SUISSE.
           </p>
         </div>
@@ -27,7 +30,7 @@ export function Footer() {
             <Link href="/#faq" className="font-serif uppercase tracking-[0.4em] text-[9px] text-white/60 hover:text-white transition-all duration-700 hover:tracking-[0.6em]">FAQ</Link>
           </nav>
           <div className="font-serif uppercase tracking-[0.4em] text-[8px] text-white/20">
-            © {currentYear} SERENITY & RELAX THERAPY. ARCHITECTURAL WELLNESS.
+            © {currentYear} SERENITY RELAX THERAPY BY JOÃO. GENÈVE, SUISSE.
           </div>
         </div>
       </div>

@@ -1,4 +1,6 @@
-'use client';
+import os
+
+page_content = """'use client';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,73 +15,73 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { BookingFlow } from '@/components/booking/booking-flow';
 
-const MY_PHOTO = "/joao-portrait.png";
-const HERO_IMAGE = "/studio-hero.jpg"; // Using the studio image for the hero section
+const MY_PHOTO = "https://lh3.googleusercontent.com/aida-public/AB6AXuCtmXhVe0lRYhnQqaWvADAxaaeP5H8CTaWgWnwnHuBWTCKuNavepC8xV4YvCsn7T25SmmvQ2LfIY9SUB36F_fF7YTVeEU0FzFIeafA7Ngm7bs_FfqqQnt0XYSeA6J3fIzpxgcYiYggiNjL_9MmBfyQl38IBcgUw3T1ctoEvfiHYzHr5U5UFgGE1JgjR-iOmBet4paske22SV4Y-ncw6VMXYF_7iNqRMybOklEd3VQFELmhDvWIjqGGaQmIA6Oc_PpkGuBQfHkfi5Lc";
+const HERO_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuB-f97ScrCfLi4ArzqF7XLGDNJ_MRRbIMv3KvSILd-5SAhlF5H4r1zfmr3kVHyi3ofFJENnVdt470pSBcglJc1C4AAxzKjw-3SE_rGEB0RV5N62Yh8Bi4m-7xhoRmIpMLriiYDtgQbQObJAoB6dWuVZpQPEy5xcS7Gdmy42mPvplv5sXRUHsYnCGh6geAnAmtrbcJPsLVK-CS_VTtwuCE9I2TuD24WffAA9iwRA2-moXobO3v1-k2zs5zPhLjEU1TlF610leGxubwE";
 
 const services = [
   {
     id: 'structural-90',
     name: '01. STRUCTURAL ALIGNMENT',
     duration: '90 MINUTES',
-    price: 120,
-    description: 'Une approche architecturale pour restaurer l\'équilibre corporel.',
-    image: '/services/service-1.jpg'
+    price: '120€',
+    description: 'Une approche architecturale pour restaurer l\\'équilibre corporel.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuANpHouC1EYQFGTfeb3LQe-QMbFkeT2atbAuVo1IDyxIvaVbkdBz3v0_aJxWQOmc65zYMvBn7UI0-G9-Cni-K4Ke2pVy73kXg4zGgk8cc3dluLfEwQ-CGJqP5E53__NOQraCO2SPCawyNsYwqgJ_AJ4PjVWhiOTv-oR47pu-1Y3GuJNqqIX9jf4JPUK9YhC3hxb4mLhYNDf06H9EaZNtNcJEaHHclLCZhYKRBhHTUnlnDxR-2fBGq-zlJJP72GOtKFBtLJNxO0v_k0'
   },
   {
     id: 'lymphatic-60',
     name: '02. LYMPHATIC FLOW',
     duration: '60 MINUTES',
-    price: 85,
+    price: '85€',
     description: 'Drainage profond pour une détoxification cellulaire.',
-    image: '/services/service-2.jpg'
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxU7jFYDcXbNkJkvvM2bCjXwZMkKXlZQnCRPQ3Q_jFmAcmRaZlO2vbEFxHbEhDFgWRoxlGXuUJIhdn9FP82-YWyOEz-2RqLRfIn2SxJmHLgu5iXG-9Trk4C00P6ox_AbtjCyN7sld7PIYObA1jGt28Lmqe-_IAibFv8XpWHnS4VSnCvXGFyJEQJetwM6p8LdHcglI50JLZ9lWw9rXD8PSQZv1XFy8ekwnffUIMFiIMNAvCCInyJQre2-LQm8tifQZLqp3XJDaR8Z4'
   },
   {
     id: 'shiatsu-75',
     name: '03. ZEN SHIATSU',
     duration: '75 MINUTES',
-    price: 100,
-    description: 'Technique traditionnelle japonaise pour harmoniser l\'énergie.',
-    image: '/services/service-1.jpg'
+    price: '100€',
+    description: 'Technique traditionnelle japonaise pour harmoniser l\\'énergie.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfNQmWEecXnoaoF8DTSSJZlbIk8d2TMr3qMs4Ss_WTFP4mzCLoUbWcxkzgoP8RnQJ51qlhQAv2HJWTk395aGQ7xTlvyUSsb-RVqtCRmj_SrAEvr6f4i0eJx60GdNosbejcchn8aiX8GUUXy0x5Rb247Z9G8eAU4Tmq6TZHVhKOmHOGfIAtqsOcKMf1aFDsvWgzBwxRRBcDpJdgzSLxNxBccknQBwQyxl9vjIsBgfL5BA7J7hHca6CUgImdZ0i0NhdKmfSFPdC8JgE'
   },
   {
     id: 'deeptissue-90',
     name: '04. DEEP TISSUE SCULPT',
     duration: '90 MINUTES',
-    price: 130,
+    price: '130€',
     description: 'Relâchement profond des tensions chroniques et musculaires.',
-    image: '/services/service-2.jpg'
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDIUraQMOw7lKKHCSCRUEG0wszxC8zCBJsIEi7_yw0MJgcbuKsnruc3KbDMu17LUCgOtpoW3PeCEU9fbj3N4pTGwjVPy_MPBioP0u0Hhj0KuYH7Qov4kbW2PC9Y4sGv0DbstrkOk7b0-m61Q7H0ZeN9eCznULb4T6b4_-BAPhUpk86bfpVw9snfktC2R7Hqt3JzRfECDh8RRWxANGAt-zmT4eaqOTFqLDVhUNMCv9S5ECZ_w9fkKk9PItNOith2Vcu8JhPTDuAuUSc'
   },
   {
     id: 'privacy-120',
     name: '05. PRIVACY SESSION',
     duration: '120 MINUTES',
-    price: 180,
+    price: '180€',
     description: 'Une session premium exclusive conçue pour un lâcher-prise total.',
-    image: '/services/service-1.jpg'
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9ZMRf4vBzN-Cs8Qjs8duytaYWrzpMKcNTCAPW0k0IuY6cEolxBE6xiYEnkY9l79ei-bV3-cJbNa_gwEAwoFhS_x2RQA3derpAFUM8vvlOfA821fizZubdwT4jx_p0C9L-dEOwb8OILHANEZzvvPMxsoW_dlfuWiFRbGlWarRe2FnWxBV_6n6Tf5J-eggCM34TpX1DQpi2-e_3W3b0yo0QwV4pmFo-rbba214v_D0LTXYLOlgGzptwggas9re3nXdJEKFE7xVxojE'
   },
   {
     id: 'cranial-45',
     name: '06. CRANIAL RELEASE',
     duration: '45 MINUTES',
-    price: 70,
+    price: '70€',
     description: 'Thérapie douce focalisée sur la sphère crânio-sacrée.',
-    image: '/services/service-2.jpg'
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBlVE7xSwZMkC_8yM-ORMTiAwJfWAhqu_SLl6HoKtBfRS78f6XcNMF2ZAIda29_PUcGk6ML3_KdIez6pKNhXm7MW4gGBHNEGK63l99SASH_DnAQMedbKY85EfJPawR7wtn8l_J3FouRPsgxMifN5TmghxT8hIurjwdprrEBZgPE8EYv_aOdS9_WMzPUldi_zGMGtE5X5yuKFghgoxVvZ1WYG5RDjrikZubpnuvl6d22TT0dJa3qpsaoPvBGzHq3n0u6B9lovB_JTZU'
   },
   {
     id: 'myofascial-90',
     name: '07. MYOFASCIAL STUDY',
     duration: '90 MINUTES',
-    price: 140,
+    price: '140€',
     description: 'Travail minutieux sur les fascias pour libérer la mobilité.',
-    image: '/services/service-1.jpg'
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBVlro2hAMsDzw2gbl4jWqk98IdekhIl82v_3JrThYycIPE87nNV89YRbvAwbcnawuyTgl-ASY8poCdglAaDAmILoImjajo_GWn57XZ9sGxUDTt-QjhgMdmM0Fs2oypbSbLoeginE5nQOYOlH7u-9-YMkktyhSS72SZApyYXcn2Tr0EP3t4nzrq_lZZzYbfKsHFaGghaqot7SjmyzCxehVrVIZv7uY06xc1eTysV31xQXi4B2DoBnQwNYzW1oFbkbGull_Gz9Q9jWs'
   },
   {
     id: 'metabolic-60',
     name: '08. METABOLIC RESET',
     duration: '60 MINUTES',
-    price: 95,
+    price: '95€',
     description: 'Stimulation du métabolisme pour une vitalité renouvelée.',
-    image: '/services/service-2.jpg'
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBpxWRk8P2ArTRraJbs4A5aqIAAW1hodHjodY92Fr9hCBP7OmZkNkjr2qv3aNpWWaQ8bMOW4EnEuZQpe9RAVAUQg2gEQrvSZ0gBYPIgQLn_IFqdto0T4_4pMfA103yzVz4X5V6RnRl0vimLxziTJKX4NC65hIKJ_eDshQhBkZPR0ByZDTdldULASB8w4Tk7p0s8NgvqlSPjs2O-6qEuQIWNI6Yt27gDSC9MYhF6oNoYFmkLyJ_0WPO_SJig-vJg6casBMNURfkl-JI'
   }
 ];
 
@@ -147,17 +149,12 @@ export default function HomePage() {
           className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
         >
           <div className="lg:col-span-6">
-            <motion.div variants={fadeIn} className="flex items-baseline gap-2 mb-8">
-              <span className="font-sans text-[10px] tracking-[0.4em] text-on-tertiary-container uppercase">
-                SERENITY RELAX THERAPY
-              </span>
-              <span className="font-cursive text-[18px] text-[#5a6366] lowercase" style={{ fontFamily: 'var(--font-signature)' }}>
-                by João
-              </span>
-            </motion.div>
+            <motion.h2 variants={fadeIn} className="font-label text-[10px] tracking-[0.6em] text-on-tertiary-container mb-8 block uppercase">
+              EST. 2024 — LISBON
+            </motion.h2>
             
             <motion.h1 variants={fadeIn} className="font-display text-5xl md:text-6xl lg:text-[48px] leading-[1.2] tracking-[-0.02em] mb-12 text-on-background max-w-xl">
-              Thérapie manuelle d'exception & restauration sensorielle.
+              Architectural Stillness for the Modern Soul.
             </motion.h1>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row items-start gap-8">
@@ -181,8 +178,8 @@ export default function HomePage() {
             >
               <img 
                 src={HERO_IMAGE}
-                alt="Studio Serenity" 
-                className="w-full h-full object-cover transition-all duration-1000" 
+                alt="Sanctuary Space" 
+                className="w-full h-full object-cover mix-blend-multiply hover:grayscale-0 transition-all duration-1000 grayscale" 
               />
             </motion.div>
             
@@ -192,7 +189,7 @@ export default function HomePage() {
               className="absolute -bottom-8 -left-8 bg-white p-8 max-w-xs hidden md:block border-l border-b border-zinc-100"
             >
               <p className="font-body text-[16px] text-on-surface-variant italic leading-[1.6]">
-                "Chaque corps mérite un espace de détente sur mesure, pensé avec soin par João."
+                "We don't just provide therapy; we design environments for emotional recalibration."
               </p>
             </motion.div>
           </div>
@@ -213,7 +210,7 @@ export default function HomePage() {
               <img 
                 src={MY_PHOTO}
                 alt="João - Lead Therapist" 
-                className="w-full h-full object-cover transition-all duration-&lsqb;2000ms&rsqb;" 
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2000ms]" 
               />
               <div className="absolute top-0 left-0 w-32 h-32 border-t border-l border-on-surface opacity-10"></div>
             </div>
@@ -231,15 +228,15 @@ export default function HomePage() {
             </motion.span>
             
             <motion.h2 variants={fadeIn} className="font-headline text-[24px] md:text-[32px] leading-[1.4] mb-8">
-              João — Fondateur & Thérapeute
+              João: Architect of Presence
             </motion.h2>
             
             <motion.div variants={fadeIn} className="space-y-6 max-w-2xl">
               <p className="font-body text-[18px] text-on-surface leading-[1.6]">
-                Fort d'une formation en thérapie holistique et d'une sensibilité unique, João accompagne ses clients vers un état de détente profonde et de mieux-être durable.
+                With a background in both structural design and holistic therapy, João approaches the human body as a living architecture that requires balance, space, and intentional maintenance.
               </p>
               <p className="font-body text-[16px] text-on-surface-variant leading-[1.6]">
-                Sa méthode allie techniques manuelles traditionnelles et approche corporelle globale — offrant à chaque client une expérience de soin personnalisée au sein de son studio à Genève.
+                His method, "The Centered Framework," integrates traditional Japanese techniques with modern ergonomic understanding, creating a sanctuary for those seeking deep restoration in a high-velocity world.
               </p>
             </motion.div>
             
@@ -295,7 +292,7 @@ export default function HomePage() {
                 <img 
                   src={service.image}
                   alt={service.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0" 
                 />
                 
                 <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -368,3 +365,7 @@ export default function HomePage() {
     </main>
   );
 }
+"""
+
+with open('src/app/page.tsx', 'w', encoding='utf-8') as f:
+    f.write(page_content)

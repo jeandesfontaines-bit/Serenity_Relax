@@ -146,7 +146,7 @@ export default function CarteFidelite() {
                     key={i}
                     whileHover={{ y: -10, scale: 1.02 }}
                     className={`glass p-8 rounded-[3rem] transition-all duration-500 relative group overflow-hidden ${
-                      isCurrent ? 'ring-4 ring-offset-8 ring-[#1DD1A1]/30 border-transparent shadow-2xl' : 'opacity-60 grayscale hover:grayscale-0 hover:opacity-100'
+                      isCurrent ? 'ring-4 ring-offset-8 ring-[#1DD1A1]/30 border-transparent shadow-2xl' : 'opacity-60 hover:opacity-100'
                     }`}
                   >
                     {isUnlocked && <div className="absolute top-4 right-4 text-[#1DD1A1]"><Sparkles size={14} /></div>}

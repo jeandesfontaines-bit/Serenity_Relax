@@ -22,7 +22,7 @@ export default function BookDateTimePage() {
   return (
     <div className="bg-background text-on-background min-h-screen pb-20">
       {/* TopAppBar */}
-      <header className="bg-[#faf9f7]/80 dark:bg-stone-950/80 backdrop-blur-lg border-b border-stone-200/40 dark:border-stone-800/40 shadow-sm sticky top-0 z-50 flex justify-between items-center w-full px-6 py-4">
+      <header className="absolute top-0 left-0 bg-[#faf9f7]/80 dark:bg-stone-950/80 backdrop-blur-lg border-b border-stone-200/40 dark:border-stone-800/40 shadow-sm z-50 flex justify-between items-center w-full px-6 py-4">
         <div className="flex items-center gap-2">
           <span className="text-lg font-medium tracking-[0.1em] uppercase text-[#435544] dark:text-[#b8ccb6] font-headline">Sanctuary</span>
         </div>
@@ -38,7 +38,7 @@ export default function BookDateTimePage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 md:py-12">
+      <main className="max-w-7xl mx-auto px-6 pt-28 pb-8 md:pt-32 md:pb-12">
         {/* Progress Indicator */}
         <nav className="flex items-center justify-center mb-16 max-w-2xl mx-auto">
           <div className="flex flex-col items-center flex-1">

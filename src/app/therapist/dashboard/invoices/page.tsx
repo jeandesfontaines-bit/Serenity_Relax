@@ -24,7 +24,7 @@ export default function InvoicesPage() {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(24);
         doc.setTextColor(95, 39, 205); 
-        doc.text('SERENITY RELAX', 20, 30);
+        doc.text('SERENITY RELAX THERAPY', 20, 30);
         
         doc.setFont("helvetica", "normal");
         doc.setFontSize(10);
