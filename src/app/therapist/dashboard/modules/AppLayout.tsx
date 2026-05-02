@@ -1,6 +1,15 @@
 import React from 'react';
 import { Ban, CheckCircle2, ChevronLeft, ChevronRight, Lock, Plus, Settings, SlidersHorizontal, Calendar, Download, Filter } from 'lucide-react';
-import { dashboardPrimaryButton, dashboardSecondaryButton, dashboardShell, dashboardTitleLg, dashboardMutedText } from './dashboardTheme';
+import {
+  dashboardIconButton,
+  dashboardMutedText,
+  dashboardPrimaryButton,
+  dashboardSecondaryButton,
+  dashboardShell,
+  dashboardTitleLg,
+  dashboardToolbarButton,
+  dashboardToolbarInput,
+} from './dashboardTheme';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -104,18 +113,18 @@ export default function AppLayout({
 
   return (
     <div className={`h-screen h-dvh overflow-hidden ${dashboardShell}`}>
-      <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-[#dde2db] bg-[#f4f3f1]/96 p-6 backdrop-blur md:flex">
+      <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-[#c4c7c3]/70 bg-[rgba(247,243,242,0.82)] p-6 backdrop-blur-[20px] md:flex">
         <div className="mb-10 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[#435544] text-white shadow-sm">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#635e55] text-white shadow-[0_14px_32px_rgba(99,94,85,0.14)]">
             <span className="material-symbols-outlined" style={filledIcon}>
               spa
             </span>
           </div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight text-[#1a1c1b] [font-family:'Public_Sans',sans-serif]">
+            <h1 className="text-[28px] font-normal tracking-[-0.02em] text-[#1c1b1b] [font-family:'Noto_Serif',serif]">
               Serene Sanctuary
             </h1>
-            <p className="text-xs tracking-wide text-[#747872]">Portail thérapeute</p>
+            <p className="text-[12px] uppercase tracking-[0.1em] text-[#757875]">Portail thérapeute</p>
           </div>
         </div>
 
@@ -126,10 +135,10 @@ export default function AppLayout({
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm transition-all duration-300 ${
+                className={`flex w-full items-center gap-3 rounded-[14px] px-4 py-3 text-left text-sm transition-all duration-300 ${
                   active
-                    ? 'bg-white font-medium text-[#1a1c1b] shadow-sm ring-1 ring-[#d8ddd7]'
-                    : 'text-[#5e655f] hover:bg-white/80 hover:text-[#1a1c1b]'
+                    ? 'border border-[#c4c7c3] bg-[rgba(255,255,255,0.78)] font-medium text-[#1c1b1b] shadow-[0_14px_32px_rgba(99,94,85,0.08)] backdrop-blur-[18px]'
+                    : 'border border-transparent text-[#444845] hover:border-[#c4c7c3] hover:bg-[rgba(255,255,255,0.74)] hover:text-[#1c1b1b]'
                 }`}
               >
                 <span className="material-symbols-outlined" style={active ? filledIcon : outlinedIcon}>
@@ -156,15 +165,15 @@ export default function AppLayout({
       </aside>
 
       <div className="flex h-full flex-col pb-20 md:ml-64 md:pb-0">
-        <header className="shrink-0 z-40 border-b border-[#e3e7e1] bg-[#faf9f7]/88 px-4 py-4 backdrop-blur-xl md:px-8">
+        <header className="z-40 shrink-0 border-b border-[#c4c7c3]/70 bg-[rgba(252,248,247,0.78)] px-4 py-4 backdrop-blur-[20px] md:px-8">
           {activePage === 'scheduler' && schedulerToolbar ? (
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
                 <div className="min-w-0">
-                  <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.35em] text-[#747872]">
+                  <span className="mb-1 block text-[12px] font-medium uppercase tracking-[0.1em] text-[#757875]">
                     {schedulerToolbar.eyebrow}
                   </span>
-                  <h2 className={`truncate capitalize font-bold tracking-tight ${dashboardTitleLg}`}>
+                  <h2 className={`truncate capitalize ${dashboardTitleLg}`}>
                     {schedulerToolbar.title}
                   </h2>
                 </div>
@@ -172,7 +181,7 @@ export default function AppLayout({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={schedulerToolbar.onPrev}
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-[#434842] transition-colors hover:bg-[#efeeec]"
+                    className={dashboardIconButton}
                   >
                     <ChevronLeft size={18} strokeWidth={1.5} />
                   </button>
@@ -184,7 +193,7 @@ export default function AppLayout({
                   </button>
                   <button
                     onClick={schedulerToolbar.onNext}
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-[#434842] transition-colors hover:bg-[#efeeec]"
+                    className={dashboardIconButton}
                   >
                     <ChevronRight size={18} strokeWidth={1.5} />
                   </button>
@@ -193,13 +202,13 @@ export default function AppLayout({
 
               <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-end">
                 <div className="flex items-center gap-3">
-                  <div className="flex rounded-full bg-[#efeeec] p-1">
+                  <div className="flex rounded-full border border-[#c4c7c3] bg-[rgba(255,255,255,0.72)] p-1 shadow-[0_14px_32px_rgba(99,94,85,0.06)] backdrop-blur-[18px]">
                     {(['week', 'month'] as const).map((view) => (
                       <button
                         key={view}
                         onClick={() => schedulerToolbar.onToggleView(view)}
-                        className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                          schedulerToolbar.view === view ? 'bg-white text-[#435544] shadow-sm' : 'text-[#434842] hover:text-[#1a1c1b]'
+                        className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${
+                          schedulerToolbar.view === view ? 'bg-[#635e55] text-white shadow-sm' : 'text-[#444845] hover:bg-[rgba(255,255,255,0.8)] hover:text-[#1c1b1b]'
                         }`}
                       >
                         {view === 'week' ? 'Semaine' : 'Mois'}
@@ -209,10 +218,10 @@ export default function AppLayout({
 
                   <button
                     onClick={schedulerToolbar.onToggleBlockMode}
-                    className={`hidden h-11 items-center gap-2 rounded-full border px-4 text-sm font-semibold transition-all sm:flex ${
+                    className={`hidden h-11 items-center gap-2 rounded-[14px] border px-4 text-sm font-semibold transition-all sm:flex ${
                       schedulerToolbar.blockMode
-                        ? 'border-[#435544] bg-[#435544] text-white'
-                        : 'border-[#c3c8c0] bg-white text-[#1a1c1b] hover:bg-[#f4f3f1]'
+                        ? 'border-[#635e55] bg-[#635e55] text-white'
+                        : 'border-[#c4c7c3] bg-[rgba(255,255,255,0.72)] text-[#1c1b1b] hover:bg-[rgba(255,255,255,0.92)]'
                     }`}
                   >
                     <Lock size={14} strokeWidth={1.6} />
@@ -221,10 +230,10 @@ export default function AppLayout({
 
                   <button
                     onClick={schedulerToolbar.onToggleAbsenceMode}
-                    className={`flex h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-all ${
+                    className={`flex h-11 items-center gap-2 rounded-[14px] px-4 text-sm font-semibold transition-all ${
                       schedulerToolbar.absenceMode
-                        ? 'bg-[#1a1c1b] text-white'
-                        : 'border border-[#c3c8c0] bg-white text-[#1a1c1b] hover:bg-[#f4f3f1]'
+                        ? 'border border-[#635e55] bg-[#635e55] text-white'
+                        : 'border border-[#c4c7c3] bg-[rgba(255,255,255,0.72)] text-[#1c1b1b] hover:bg-[rgba(255,255,255,0.92)]'
                     }`}
                   >
                     {schedulerToolbar.absenceMode ? <CheckCircle2 size={14} strokeWidth={1.6} /> : <Ban size={14} strokeWidth={1.6} />}
@@ -235,7 +244,7 @@ export default function AppLayout({
 
                   <button
                     onClick={schedulerToolbar.onOpenSettings}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c3c8c0] bg-white text-[#1a1c1b] transition-colors hover:bg-[#f4f3f1]"
+                    className={dashboardIconButton}
                     aria-label="Ouvrir la configuration"
                   >
                     <Settings size={16} strokeWidth={1.6} />
@@ -248,7 +257,7 @@ export default function AppLayout({
               <div className="flex min-w-0 items-center gap-4">
                 <button
                   onClick={clientDetailToolbar.onBack}
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#c3c8c0] bg-white text-[#434842] transition-colors hover:bg-[#f4f3f1]"
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[14px] border border-[#c3c8c0] bg-white text-[#434842] transition-colors hover:bg-[#f4f3f1]"
                   aria-label="Retour a la liste des clients"
                 >
                   <ChevronLeft size={20} strokeWidth={1.7} />
@@ -267,13 +276,13 @@ export default function AppLayout({
               <div className="hidden items-center gap-3 sm:flex">
                 <button
                   onClick={clientDetailToolbar.onOpenHistory}
-                  className="rounded-full border border-[#c3c8c0] bg-white px-6 py-3 text-sm font-semibold text-[#434842] transition-colors hover:bg-[#f4f3f1]"
+                  className={dashboardSecondaryButton}
                 >
                   Historique
                 </button>
                 <button
                   onClick={clientDetailToolbar.onOpenNotes}
-                  className="rounded-full border border-[#c3c8c0] bg-white px-6 py-3 text-sm font-semibold text-[#434842] transition-colors hover:bg-[#f4f3f1]"
+                  className={dashboardSecondaryButton}
                 >
                   Notes
                 </button>
@@ -299,14 +308,14 @@ export default function AppLayout({
                   value={globalSearch}
                   onChange={(e) => onGlobalSearchChange(e.target.value)}
                   placeholder={searchPlaceholder}
-                  className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
+                  className={dashboardToolbarInput}
                 />
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
                 <button
                   onClick={clientsToolbar.onToggleFilters}
-                  className="flex items-center justify-center gap-2 rounded-full border border-[#c8cdc6] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
+                  className={dashboardToolbarButton}
                 >
                   <SlidersHorizontal size={16} strokeWidth={1.75} />
                   Filtres avancés
@@ -339,13 +348,13 @@ export default function AppLayout({
                   value={globalSearch}
                   onChange={(e) => onGlobalSearchChange(e.target.value)}
                   placeholder={searchPlaceholder}
-                  className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
+                  className={dashboardToolbarInput}
                 />
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
                 {financeToolbar.showDateRange && (
-                  <div className="flex items-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-3 py-2.5">
+                  <div className="flex items-center gap-2 rounded-[14px] border border-[#c3c8c0] bg-white px-3 py-2.5">
                     <Calendar size={14} strokeWidth={1.6} className="text-[#747872]" />
                     <input
                       type="date"
@@ -365,7 +374,7 @@ export default function AppLayout({
                 
                 <button
                   onClick={financeToolbar.onToggleDateFilter}
-                  className="flex items-center justify-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
+                  className={dashboardToolbarButton}
                 >
                   <Filter size={16} strokeWidth={1.75} />
                   Filtre par date
@@ -373,7 +382,7 @@ export default function AppLayout({
 
                 <button
                   onClick={financeToolbar.onExport}
-                  className="flex items-center justify-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
+                  className={dashboardToolbarButton}
                 >
                   <Download size={16} strokeWidth={1.75} />
                   {financeToolbar.selectedCount > 0 ? `Exporter (${financeToolbar.selectedCount})` : 'Exporter'}
@@ -400,13 +409,13 @@ export default function AppLayout({
                   value={globalSearch}
                   onChange={(e) => onGlobalSearchChange(e.target.value)}
                   placeholder={searchPlaceholder}
-                  className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
+                  className={dashboardToolbarInput}
                 />
               </div>
 
               <div className="flex items-center justify-start lg:justify-end">
                 {settingsToolbar.statusLabel ? (
-                  <span className="rounded-full border border-[#d4e8d2] bg-[#f4fbf3] px-3 py-1.5 text-xs font-semibold text-[#435544]">
+                  <span className="rounded-[999px] border border-[#d4e8d2] bg-[#f4fbf3] px-3 py-1.5 text-xs font-semibold text-[#435544]">
                     {settingsToolbar.statusLabel}
                   </span>
                 ) : (
@@ -441,7 +450,7 @@ export default function AppLayout({
                   value={globalSearch}
                   onChange={(e) => onGlobalSearchChange(e.target.value)}
                   placeholder={searchPlaceholder}
-                  className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
+                  className={dashboardToolbarInput}
                 />
               </div>
 
@@ -460,7 +469,7 @@ export default function AppLayout({
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-1 py-2 text-[11px] transition-all ${
+              className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-[14px] px-1 py-2 text-[11px] transition-all ${
                 active ? 'text-emerald-900' : 'text-stone-500'
               }`}
             >

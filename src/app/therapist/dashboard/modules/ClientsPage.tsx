@@ -6,7 +6,7 @@ import {
 import { Client, Appointment } from '../types';
 import { format, differenceInCalendarDays, endOfMonth, isWithinInterval, startOfMonth, subMonths } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
-import { dashboardChip, dashboardPanel, dashboardPanelSoft, dashboardPrimaryButton, dashboardSecondaryButton, dashboardTitle, dashboardTitleLg } from './dashboardTheme';
+import { dashboardChip, dashboardPanel, dashboardPanelSoft, dashboardPrimaryButton, dashboardSecondaryButton, dashboardTableCell, dashboardTableHeader, dashboardTableSectionHeader, dashboardTitle, dashboardTitleLg } from './dashboardTheme';
 
 type FilterKey = 'all' | 'new' | 'loyalty' | 'hiatus';
 type SortDir = 'asc' | 'desc';
@@ -391,7 +391,7 @@ export default function ClientsPage({
               initial={{ opacity: 0, y: 8, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.98 }}
-              className="absolute right-4 top-28 z-50 w-[340px] rounded-[24px] border border-[#d9ddd7] bg-white p-5 shadow-[0_18px_40px_rgba(26,28,27,0.1)] lg:right-8"
+              className="absolute right-4 top-28 z-50 w-[340px] rounded-[18px] border border-[#d9ddd7] bg-white p-5 shadow-[0_18px_40px_rgba(26,28,27,0.1)] lg:right-8"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -402,7 +402,7 @@ export default function ClientsPage({
                 </div>
                 <button
                   onClick={() => onShowFilterPanelChange(false)}
-                  className="rounded-full p-2 text-[#747872] transition-colors hover:bg-[#efeeec]"
+                  className="rounded-[10px] p-2 text-[#747872] transition-colors hover:bg-[#efeeec]"
                 >
                   <X size={16} strokeWidth={1.75} />
                 </button>
@@ -416,7 +416,7 @@ export default function ClientsPage({
                       <button
                         key={col.id}
                         onClick={() => toggleSort(col.id)}
-                        className={`rounded-xl border px-3 py-2 text-left text-sm transition-colors ${
+                        className={`rounded-[12px] border px-3 py-2 text-left text-sm transition-colors ${
                           sortField === col.id
                             ? 'border-[#435544] bg-[#435544]/8 text-[#435544]'
                             : 'border-[#e3e2e0] text-[#434842] hover:bg-[#faf9f7]'
@@ -439,7 +439,7 @@ export default function ClientsPage({
                             ? prev.filter((id) => id !== col.id)
                             : [...prev, col.id],
                         )}
-                        className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-[#e3e2e0] px-3 py-2 text-sm text-[#1a1c1b] transition-colors hover:bg-[#faf9f7]"
+                        className="flex w-full cursor-pointer items-center justify-between rounded-[12px] border border-[#e3e2e0] px-3 py-2 text-sm text-[#1a1c1b] transition-colors hover:bg-[#faf9f7]"
                       >
                         <span>{col.label}</span>
                         <div className={`h-4 w-4 rounded border ${visibleColumns.includes(col.id) ? 'border-[#435544] bg-[#435544]' : 'border-[#c3c8c0] bg-white'}`}>
@@ -471,7 +471,7 @@ export default function ClientsPage({
                 {selectedClients.size > 1 && (
                   <button
                     onClick={handleMerge}
-                    className="flex items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
+                    className="flex items-center gap-2 rounded-[12px] bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
                   >
                     <GitPullRequest size={14} strokeWidth={1.75} />
                     Fusionner
@@ -479,14 +479,14 @@ export default function ClientsPage({
                 )}
                 <button
                   onClick={handleDelete}
-                  className="flex items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
+                  className="flex items-center gap-2 rounded-[12px] bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
                 >
                   <Trash2 size={14} strokeWidth={1.75} />
                   Supprimer
                 </button>
                 <button
                   onClick={() => setSelectedClients(new Set())}
-                  className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/12"
+                  className="flex items-center gap-2 rounded-[12px] border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/12"
                 >
                   <X size={14} strokeWidth={1.75} />
                   Effacer
@@ -500,12 +500,12 @@ export default function ClientsPage({
       <main className="flex-1 overflow-auto">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 lg:px-8 lg:py-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex max-w-full gap-2 overflow-x-auto rounded-full border border-[#dde2db] bg-white p-1.5 shadow-[0_8px_24px_rgba(26,28,27,0.04)]">
+            <div className="flex max-w-full gap-2 overflow-x-auto rounded-[18px] border border-[#dde2db] bg-white p-1.5 shadow-[0_8px_24px_rgba(26,28,27,0.04)]">
               {FILTERS.map((filter) => (
                 <button
                   key={filter.id}
                   onClick={() => setActiveFilter(filter.id)}
-                  className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm transition-all ${
+                  className={`whitespace-nowrap rounded-[12px] px-4 py-2 text-sm transition-all ${
                     activeFilter === filter.id
                       ? 'bg-[#435544] text-white shadow-sm'
                       : 'text-[#5e655f] hover:bg-[#f4f3f1] hover:text-[#435544]'
@@ -527,11 +527,28 @@ export default function ClientsPage({
           ) : (
             <>
               <div className={`hidden overflow-hidden lg:block ${dashboardPanel}`}>
+                <div className={dashboardTableSectionHeader}>
+                  <div>
+                    <h2 className={dashboardTitle}>Liste des clients</h2>
+                    <p className="mt-1 text-sm text-[#5e655f]">
+                      {filtered.length} client{filtered.length > 1 ? 's' : ''} affiché{filtered.length > 1 ? 's' : ''} dans le répertoire
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      onSearchQueryChange('');
+                      setActiveFilter('all');
+                    }}
+                    className="text-sm font-semibold text-[#435544] transition-colors hover:underline"
+                  >
+                    Tout voir
+                  </button>
+                </div>
                 <div
-                  className="grid items-center border-b border-[#e3e7e1] bg-[#f8f8f6] px-5 py-4"
+                  className={`grid items-center border-b border-[#e3e7e1] ${dashboardTableHeader}`}
                   style={{ gridTemplateColumns: gridTemplate }}
                 >
-                  <div className="flex justify-center">
+                  <div className={`flex justify-center ${dashboardTableCell}`}>
                     <Checkbox
                       checked={selectedClients.size === filtered.length && filtered.length > 0}
                       onChange={() => {
@@ -550,7 +567,7 @@ export default function ClientsPage({
                       <button
                         key={colId}
                         onClick={() => toggleSort(colId)}
-                        className={`flex items-center gap-2 px-2 text-xs font-bold uppercase tracking-[0.18em] text-[#747872] transition-colors hover:text-[#435544] ${
+                        className={`flex items-center gap-2 ${dashboardTableCell} transition-colors hover:text-[#435544] ${
                           col?.align === 'center' ? 'justify-center' : 'justify-start'
                         }`}
                       >
@@ -560,7 +577,7 @@ export default function ClientsPage({
                     );
                   })}
 
-                  <div className="px-2 text-right text-xs font-bold uppercase tracking-[0.18em] text-[#747872]">
+                  <div className={`${dashboardTableCell} text-right`}>
                     Actions
                   </div>
                 </div>
@@ -709,22 +726,22 @@ function ClientRow({
   return (
     <div
       onClick={() => onSelect(client)}
-      className={`grid items-center px-5 py-4 transition-colors cursor-pointer ${
+      className={`grid items-center transition-colors cursor-pointer ${
         isSelected ? 'bg-[#faf9f7]' : 'hover:bg-[#faf9f7]/50'
       }`}
       style={{ gridTemplateColumns: gridTemplate }}
     >
-      <div className="flex justify-center">
+      <div className={`flex justify-center ${dashboardTableCell}`}>
         <Checkbox checked={isSelected} onChange={() => onToggle(client.id)} />
       </div>
 
       {visibleColumns.map((colId) => (
-        <div key={colId} className="px-2">
+        <div key={colId} className={dashboardTableCell}>
           {renderDesktopCell(colId, client, summary)}
         </div>
       ))}
 
-      <div className="flex items-center justify-end gap-2 px-2">
+      <div className={`flex items-center justify-end gap-2 ${dashboardTableCell}`}>
         <ActionIconButton
           label="Voir les notes"
           tone="muted"

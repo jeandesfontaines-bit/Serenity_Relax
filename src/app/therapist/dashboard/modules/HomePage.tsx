@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 import { Appointment } from '../types';
-import { dashboardPanel, dashboardPanelSoft, dashboardTitle, dashboardTitleLg, dashboardMutedText } from './dashboardTheme';
+import { dashboardPageContainer, dashboardPanel, dashboardPanelSoft, dashboardSectionHeader, dashboardTitle, dashboardTitleLg, dashboardMutedText } from './dashboardTheme';
 
 interface HomePageProps {
   appointments: Appointment[];
@@ -154,11 +154,11 @@ export default function HomePage({
   const todayLabel = format(now, 'EEEE, MMMM do');
 
   return (
-    <div className="mx-auto max-w-7xl space-y-10 p-4 md:p-10">
+    <div className={`${dashboardPageContainer} space-y-8`}>
       {normalizedSearch && (
         <section className="space-y-2">
-          <p className="text-sm text-stone-500">
-            Filtre actif : <span className="font-medium text-[#435544]">{searchQuery.trim()}</span>
+          <p className="text-sm text-[#757875]">
+            Filtre actif : <span className="font-medium text-[#556253]">{searchQuery.trim()}</span>
           </p>
         </section>
       )}
@@ -166,24 +166,24 @@ export default function HomePage({
       <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <MetricCard
           icon="payments"
-          iconClass="bg-emerald-100 text-emerald-800"
-          badgeClass="bg-emerald-50 text-emerald-600"
+          iconClass="bg-[#e7ded3] text-[#635e55]"
+          badgeClass="bg-[#effce9] text-[#556253]"
           badgeLabel={`+${revenueChange}%`}
           label="Monthly Revenue"
           value={`${paidThisMonth.toLocaleString('en-US')} CHF`}
         />
         <MetricCard
           icon="task_alt"
-          iconClass="bg-stone-200 text-stone-700"
-          badgeClass="bg-stone-100 text-stone-500"
+          iconClass="bg-[#e5e2e1] text-[#5e5e5d]"
+          badgeClass="bg-[#f1edec] text-[#5e5e5d]"
           badgeLabel="On track"
           label="Completed Sessions"
           value={completedSessions.toString()}
         />
         <MetricCard
           icon="pending_actions"
-          iconClass="bg-[#fcdaaf] text-[#775e3c]"
-          badgeClass="bg-[#ffddb2] text-[#725a38]"
+          iconClass="bg-[#e7ded3] text-[#635e55]"
+          badgeClass="bg-[#eae1d6] text-[#635e55]"
           badgeLabel={`${urgentInvoices} urgent`}
           label="Pending Invoices"
           value={pendingInvoices.toString()}
@@ -192,13 +192,13 @@ export default function HomePage({
 
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <div className="flex items-center justify-between">
+          <div className={dashboardSectionHeader}>
             <h4 className={dashboardTitle}>
               Today&apos;s Agenda
             </h4>
             <button
               onClick={() => onNavigate('scheduler')}
-              className="text-sm font-medium text-[#435544] hover:underline"
+              className="text-sm font-medium text-[#556253] hover:underline"
             >
               View full schedule
             </button>
@@ -214,7 +214,7 @@ export default function HomePage({
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className={`group flex w-full items-center gap-6 p-5 text-left transition-all duration-300 hover:border-emerald-200 ${dashboardPanel} ${
+                    className={`group flex w-full items-center gap-6 p-5 text-left transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#bdcab9] ${dashboardPanel} ${
                       status.muted ? 'opacity-60' : ''
                     }`}
                   >
@@ -249,14 +249,14 @@ export default function HomePage({
         </div>
 
         <div className="flex h-full flex-col space-y-8">
-          <div className={`${dashboardPanelSoft} space-y-4 p-6`}>
-            <div className="flex items-center justify-between">
+            <div className={`${dashboardPanelSoft} space-y-4 p-6`}>
+            <div className={dashboardSectionHeader}>
               <h4 className={dashboardTitle}>
                 Recent Notes
               </h4>
               <button
                 onClick={onEditGoal}
-                className="text-xs font-medium text-[#435544] hover:underline"
+                className="text-xs font-medium text-[#556253] hover:underline"
               >
                 Review metrics
               </button>
@@ -288,7 +288,7 @@ export default function HomePage({
 
             <button
               onClick={() => onNavigate('clients')}
-              className="w-full py-2 text-sm font-medium text-stone-600 transition-colors hover:text-[#435544]"
+              className="w-full py-2 text-sm font-medium text-[#757875] transition-colors hover:text-[#556253]"
             >
               Write new note
             </button>
@@ -296,31 +296,31 @@ export default function HomePage({
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-8 pt-6 md:grid-cols-2">
-        <div className="group relative h-48 overflow-hidden rounded-[28px] border border-[#d9ddd7] shadow-[0_10px_30px_rgba(26,28,27,0.04)]">
+      <section className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2">
+        <div className="group relative h-48 overflow-hidden rounded-[18px] border border-[#d9ddd7] shadow-[0_10px_30px_rgba(26,28,27,0.04)]">
           <img
             alt="Therapy room"
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPaRBukscQbQOlF_Wzn70s27jimKubN_LdBwTO204FQl-JfKeDEvqyoq_Fpt3c75Domx6A8ge2H8JYAW32_4JAboD7ym4lxCqVi0HOJe5UzfXWiKsXi84wRnsyHH7OB8RPVjEJzKnEumDPZG76cXA8yYsaw421zdnFPY_mCB-SJPo23ncLTImpofqOA_4SC_Eaud2E1H7ZR7KXWmqAfBkD6INkgrlPxrImNCPQbllB4d8u8PFR1jW09fOx0Zy6EECGhRLwxP-nxiY"
           />
           <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-r from-stone-900/60 to-transparent p-6">
-            <h4 className="text-xl font-medium text-white [font-family:'Public_Sans',sans-serif]">New Ritual Bundles</h4>
+            <h4 className="text-[32px] font-normal text-white [font-family:'Noto_Serif',serif]">New Ritual Bundles</h4>
             <p className="mb-4 text-sm text-stone-200">Introduce curated experiences to your clients.</p>
             <button
               onClick={() => onNavigate('settings')}
-              className="w-fit rounded-xl border border-white/30 bg-white/20 px-4 py-2 text-xs font-bold text-white backdrop-blur-md transition-all hover:bg-white hover:text-stone-900"
+              className="w-fit rounded-[14px] border border-white/30 bg-white/20 px-4 py-2 text-xs font-bold text-white backdrop-blur-md transition-all hover:bg-white hover:text-stone-900"
             >
               Configure Services
             </button>
           </div>
         </div>
 
-        <div className="flex flex-col justify-between rounded-[28px] border border-[#355138] bg-[#435544] p-8 text-[#daeed8] shadow-[0_10px_30px_rgba(26,28,27,0.08)]">
+        <div className="flex flex-col justify-between rounded-[18px] border border-[#4b463e] bg-[#635e55] p-8 text-[#f4f0ef] shadow-[0_24px_60px_rgba(99,94,85,0.14)]">
           <div>
-            <h4 className="mb-2 text-xl font-semibold text-white [font-family:'Public_Sans',sans-serif]">
+            <h4 className="mb-2 text-[32px] font-normal leading-[1.2] text-white [font-family:'Noto_Serif',serif]">
               Optimize Your Schedule
             </h4>
-            <p className="text-sm text-emerald-100/70">
+            <p className="text-sm text-[#f4f0ef]/72">
               Your busiest time is Thursday mornings. Try opening more slots to meet the demand of your recurring clients.
             </p>
           </div>
@@ -337,11 +337,11 @@ export default function HomePage({
                 className="h-8 w-8 rounded-full border-2 border-emerald-900 object-cover"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7yt8Zx0TAbU8jMZ2_yb2Xv7GPN5qANDJF0F7wq6vSQeTwdcEhTiHHK_fZ-2Suz3br25vyF8ujPDk5wRmX_qblc0VsaCMSUu-BGkzTwkdUwktQq_nkl7lMzOCqza9l7b18pExovc4PsAQ-wR1WgiE9fR67FazH6Pto3Inept49yxLbDRb30FVtkbzzhnruPF5ogI621DrI6WiLmXKYa67BWN6IUw8IqvU9FeX5FsPxrCAwHAHntqi_hgy3cCCPgYHNbP_HZJi7OtU"
               />
-              <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-emerald-900 bg-emerald-700 text-[10px] font-bold">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#4b463e] bg-[#556253] text-[10px] font-bold">
                 +12
               </div>
             </div>
-            <p className="text-xs text-emerald-100">Waitlist active for Elena R.</p>
+            <p className="text-xs text-[#f4f0ef]">Waitlist active for Elena R.</p>
           </div>
         </div>
       </section>
@@ -365,14 +365,14 @@ function MetricCard({
   value: string;
 }) {
   return (
-    <div className="rounded-[28px] border border-stone-100 bg-[#f4f3f1] p-6 shadow-sm transition-shadow hover:shadow-md">
+    <div className="rounded-[18px] border border-[#c4c7c3] bg-[rgba(255,255,255,0.72)] p-6 shadow-[0_20px_48px_rgba(99,94,85,0.06)] backdrop-blur-[20px] transition-shadow hover:shadow-[0_24px_60px_rgba(99,94,85,0.1)]">
       <div className="mb-4 flex items-center justify-between">
         <div className={`rounded-xl p-2 ${iconClass}`}>
           <span className="material-symbols-outlined" style={filledIcon}>
             {icon}
           </span>
         </div>
-        <span className={`rounded-full px-2 py-1 text-xs font-bold ${badgeClass}`}>{badgeLabel}</span>
+        <span className={`rounded-full px-2.5 py-1 text-xs font-medium uppercase tracking-[0.1em] ${badgeClass}`}>{badgeLabel}</span>
       </div>
       <p className={`mb-1 font-medium ${dashboardMutedText}`}>{label}</p>
       <h3 className={dashboardTitleLg}>{value}</h3>

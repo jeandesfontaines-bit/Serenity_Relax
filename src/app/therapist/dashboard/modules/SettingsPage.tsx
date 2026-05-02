@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Target, MessageSquare, Info, User, Mail, Store } from 'lucide-react';
 import { updatePassword, reauthenticateWithCredential, EmailAuthProvider, signOut } from 'firebase/auth';
 import { useAuth, useUser } from '@/firebase';
-import { dashboardInset, dashboardPanel, dashboardTitle } from './dashboardTheme';
+import { dashboardInset, dashboardPageContainer, dashboardPanel, dashboardSectionHeader, dashboardTitle } from './dashboardTheme';
 
 interface SettingsPageProps {
   monthlyGoal: number;
@@ -232,11 +232,11 @@ export default function SettingsPage({
 
   return (
     <div className="flex-1 flex flex-col bg-[#faf9f7] h-full overflow-hidden text-[#1a1c1b] [font-family:'Manrope',sans-serif]">
-      <main className="flex-1 overflow-y-auto p-4 sm:p-8">
-        <div className="max-w-5xl mx-auto w-full">
+      <main className="flex-1 overflow-y-auto">
+        <div className={dashboardPageContainer}>
           <div className="flex flex-col gap-6">
               <div className="flex items-center justify-end">
-                <span className={`rounded-full px-3 py-1 text-[11px] font-semibold transition-colors ${
+                <span className={`rounded-[999px] px-3 py-1 text-[11px] font-semibold transition-colors ${
                   saveState === 'saving'
                     ? 'bg-[#efeeec] text-[#747872]'
                     : saveState === 'saved'
@@ -248,12 +248,12 @@ export default function SettingsPage({
               </div>
               
               {/* Desktop / Mobile Tab Navigation */}
-              <div className="sticky top-0 z-10 flex overflow-x-auto gap-2 rounded-full border border-[#dde2db] bg-white p-1.5 shadow-[0_8px_24px_rgba(26,28,27,0.04)]">
+              <div className="sticky top-0 z-10 flex overflow-x-auto gap-2 rounded-[18px] border border-[#dde2db] bg-white p-1.5 shadow-[0_8px_24px_rgba(26,28,27,0.04)]">
                 {TABS.map(t => (
                   <button
                     key={t.id}
                     onClick={() => setActiveTab(t.id)}
-                    className={`flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                    className={`flex items-center gap-2 whitespace-nowrap rounded-[12px] px-4 py-2 text-sm font-medium transition-colors ${
                       activeTab === t.id 
                         ? 'bg-[#435544] text-white shadow-sm' 
                         : 'text-[#747872] hover:bg-[#f4f3f1] border border-transparent'
@@ -276,9 +276,11 @@ export default function SettingsPage({
                 <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
                   {/* Personal Information */}
                   <div className={`${dashboardPanel} p-8`}>
-                    <div className="flex items-center gap-3 mb-8 border-b border-[#e3e2e0] pb-4">
+                    <div className={`${dashboardSectionHeader} mb-8 border-b border-[#e3e2e0] pb-4`}>
+                      <div className="flex items-center gap-3">
                       <span className="material-symbols-outlined text-[#725a38]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>person</span>
                       <h4 className={`${dashboardTitle} text-[#435544]`}>Personal Information</h4>
+                      </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                       <div className="space-y-1">
@@ -298,9 +300,11 @@ export default function SettingsPage({
 
                   {/* Notification Preferences */}
                   <div className={`${dashboardPanel} p-8`}>
-                    <div className="flex items-center gap-3 mb-8 border-b border-[#e3e2e0] pb-4">
+                    <div className={`${dashboardSectionHeader} mb-8 border-b border-[#e3e2e0] pb-4`}>
+                      <div className="flex items-center gap-3">
                       <span className="material-symbols-outlined text-[#725a38]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>notifications_active</span>
                       <h4 className={`${dashboardTitle} text-[#435544]`}>Notification Preferences</h4>
+                      </div>
                     </div>
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">

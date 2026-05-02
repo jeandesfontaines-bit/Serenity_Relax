@@ -8,7 +8,6 @@ import { DndContext, useDraggable, useDroppable, DragOverlay, DragEndEvent } fro
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { Appointment } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { dashboardPanel } from './dashboardTheme';
 
 /* ── CONSTANTS ── */
 const HOUR_H = 80;          // pixels per hour row
@@ -216,7 +215,7 @@ export default function AgendaPage({
       {/* ── CONTENT ── */}
       <div className="flex-1 flex">
         {/* Main calendar area */}
-        <div className={`flex-1 flex flex-col ${dashboardPanel} overflow-hidden`}>
+        <div className="flex-1 flex flex-col overflow-hidden border border-[#d9ddd7] bg-white shadow-[0_10px_30px_rgba(26,28,27,0.04)]">
           {view === 'week'
             ? <WeekTimeGrid
                 cur={cur}
@@ -457,7 +456,7 @@ function WeekTimeGrid({
                 } ${!isOpen ? 'bg-[#faf9f7]' : ''} ${isPending ? 'bg-[#435544]/8' : ''}`}
               >
                 {/* Hour grid lines */}
-                {HOURS.map(h => (
+                {isOpen && HOURS.map(h => (
                   <div
                     key={h}
                     className="absolute left-0 right-0 border-t border-[#e9e8e6]/60"
@@ -466,8 +465,11 @@ function WeekTimeGrid({
                 ))}
 
                 {!isOpen && (
-                  <div className="absolute inset-x-2 top-3 z-[1] rounded-xl border border-[#e9e8e6] bg-white/90 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#747872] shadow-sm">
-                    Journée fermée
+                  <div 
+                    className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none"
+                    style={{ backgroundImage: 'repeating-linear-gradient(45deg, rgba(196,199,195,0.15), rgba(196,199,195,0.15) 12px, transparent 12px, transparent 24px)' }}
+                  >
+                    <Lock size={36} strokeWidth={1.5} className="text-[#c4c7c3]/60" />
                   </div>
                 )}
                 
@@ -505,7 +507,7 @@ function WeekTimeGrid({
                       onClick={() => {
                         if (!absenceMode) toggleSlot(dStr, t);
                       }}
-                      className="absolute left-1 right-1 z-[2] flex items-center justify-center rounded-lg border border-[#e9e8e6] bg-[#f4f3f1]/90 px-2 text-center shadow-sm transition-all duration-200 hover:bg-[#efeeec]"
+                      className="absolute left-1 right-1 z-[2] flex items-center justify-center rounded-[10px] border border-[#e9e8e6] bg-[#f4f3f1]/90 px-2 text-center shadow-sm transition-all duration-200 hover:bg-[#efeeec]"
                       style={{ top: getTop(t) + 6, height: getHeight(DEFAULT_DURATION) - 12 }}
                     >
                       <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#747872]">
@@ -573,14 +575,14 @@ function AppointmentBlock({
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onSelect(appt); }}
-      className={`absolute left-1 right-1 z-[3] cursor-pointer overflow-hidden rounded-lg border-l-4 p-2.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.05)] ${meta.cardClassName} ${className}`}
+      className={`absolute left-1 right-1 z-[3] cursor-pointer overflow-hidden rounded-[12px] border-l-4 p-2.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.05)] ${meta.cardClassName} ${className}`}
       style={{ top: top + 6, height: Math.max(height - 12, 40) }}
     >
       <div className="flex items-start justify-between gap-2">
         <p className={`text-[10px] font-bold leading-none ${meta.timeClassName}`}>
           {formatAppointmentRange(appt.time, appt.duration)}
         </p>
-        <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-tight ${meta.badgeClassName}`}>
+        <span className={`rounded-[999px] px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-tight ${meta.badgeClassName}`}>
           {meta.label}
         </span>
       </div>
@@ -691,7 +693,7 @@ function MonthView({
                 onSelectDate(day);
                 onToggleView('week');
               }}
-              className={`group flex min-h-0 flex-col border-r border-b border-[#e9e8e6] ${dayCellPadding} transition-colors duration-200 ${
+              className={`relative group flex min-h-0 flex-col border-r border-b border-[#e9e8e6] ${dayCellPadding} transition-colors duration-200 ${
                 !inMonth
                   ? 'cursor-default bg-[#efeeec]/40 text-[#c3c8c0]'
                   : 'cursor-pointer bg-white hover:bg-[#fcfcfb]'
@@ -699,7 +701,16 @@ function MonthView({
                 !isOpen && inMonth ? 'bg-[#f4f3f1]' : ''
               } ${isPend ? 'bg-[#435544] text-white hover:bg-[#435544]' : ''}`}
             >
-              <div className="mb-2 flex shrink-0 items-start justify-between gap-2">
+              {inMonth && !isOpen && !isPend && (
+                <div 
+                  className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
+                  style={{ backgroundImage: 'repeating-linear-gradient(45deg, rgba(196,199,195,0.15), rgba(196,199,195,0.15) 12px, transparent 12px, transparent 24px)' }}
+                >
+                  <Lock size={24} strokeWidth={1.5} className="text-[#c4c7c3]/60" />
+                </div>
+              )}
+
+              <div className="relative z-10 mb-2 flex shrink-0 items-start justify-between gap-2">
                 <div className="flex flex-col">
                   <span className={`text-sm font-bold ${
                     inMonth ? (isPend ? 'text-white/80' : 'text-[#747872]') : 'text-[#c3c8c0]'
@@ -715,7 +726,7 @@ function MonthView({
                   )}
                 </div>
 
-                <span className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
+                <span className={`inline-flex h-8 w-8 items-center justify-center rounded-[10px] text-sm font-bold ${
                   isToday && !isPend
                     ? 'bg-[#435544] text-white ring-4 ring-[#435544]/10'
                     : inMonth
@@ -726,15 +737,7 @@ function MonthView({
                 </span>
               </div>
 
-              <div className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-hidden">
-                {inMonth && !isOpen && (
-                  <div className={`rounded-xl border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.25em] ${
-                    isPend ? 'border-white/20 bg-white/10 text-white/70' : 'border-[#e3e2e0] bg-[#faf9f7] text-[#747872]'
-                  }`}>
-                    Repos
-                  </div>
-                )}
-
+              <div className="relative z-10 flex min-h-0 flex-1 flex-col gap-1.5 overflow-hidden">
                 {inMonth && isOpen && visibleAppointments.map((appt, index) => {
                   const tone = getMonthAppointmentTone(appt, index);
                   const isPaid = appt.paid;
@@ -747,7 +750,7 @@ function MonthView({
                         e.stopPropagation();
                         onSelectAppt(appt);
                       }}
-                      className={`rounded-r-xl border-l-4 px-2 py-1.5 text-left transition-transform hover:-translate-y-0.5 ${tone}`}
+                      className={`rounded-r-[12px] border-l-4 px-2 py-1.5 text-left transition-transform hover:-translate-y-0.5 ${tone}`}
                     >
                       <div className={`text-[10px] font-bold leading-none ${isPaid ? 'text-white/80' : ''}`}>
                         {appt.time || '--:--'}{appt.duration ? ` · ${appt.duration}` : ''}
@@ -770,7 +773,7 @@ function MonthView({
                       onSelectDate(day);
                       onToggleView('week');
                     }}
-                    className={`mt-auto rounded-full px-3 py-1 text-left text-[11px] font-semibold transition-colors ${
+                    className={`mt-auto rounded-[10px] px-3 py-1 text-left text-[11px] font-semibold transition-colors ${
                       isPend
                         ? 'bg-white/10 text-white hover:bg-white/15'
                         : 'bg-[#f4f3f1] text-[#435544] hover:bg-[#efeeec]'
@@ -781,7 +784,7 @@ function MonthView({
                 )}
 
                 {inMonth && isOpen && dayAppointments.length === 0 && (
-                  <div className={`mt-auto rounded-xl border border-dashed px-3 py-3 text-[11px] ${
+                  <div className={`mt-auto rounded-[12px] border border-dashed px-3 py-3 text-[11px] ${
                     isPend ? 'border-white/20 text-white/70' : 'border-[#e3e2e0] text-[#747872]'
                   }`}>
                     Aucune séance planifiée
@@ -813,7 +816,7 @@ function DroppableSlot({
     <button
       ref={setNodeRef}
       onClick={onClick}
-      className={`absolute left-1 right-1 z-[2] flex items-center justify-center overflow-hidden rounded-lg border border-dashed transition-all duration-200 group ${
+      className={`absolute left-1 right-1 z-[2] flex items-center justify-center overflow-hidden rounded-[10px] border border-dashed transition-all duration-200 group ${
         isOver 
           ? 'border-[#1a1c1b] bg-[#faf9f7]' 
           : 'border-transparent bg-transparent hover:bg-[#faf9f7]/70 hover:border-[#d9ddd6]'

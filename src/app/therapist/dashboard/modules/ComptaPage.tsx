@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, subMonths, isWithinInterval } from 'date-fns';
 import { Appointment, Invoice } from '../types';
-import { dashboardPanel, dashboardPanelSoft, dashboardPrimaryButton, dashboardSecondaryButton, dashboardTitle, dashboardTitleLg } from './dashboardTheme';
+import { dashboardPanel, dashboardPanelSoft, dashboardPrimaryButton, dashboardSecondaryButton, dashboardTableCell, dashboardTableHeader, dashboardTableSectionHeader, dashboardTitle, dashboardTitleLg } from './dashboardTheme';
 
 interface ComptaPageProps {
   appointments: Appointment[];
@@ -324,14 +324,14 @@ export default function ComptaPage({
             <div className="flex items-center gap-3">
               <button
                 onClick={handleDelete}
-                className="flex items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
+                className="flex items-center gap-2 rounded-[12px] bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
               >
                 <Trash2 size={14} strokeWidth={1.75} />
                 Supprimer
               </button>
               <button
                 onClick={() => setSelectedIds(new Set())}
-                className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/12"
+                className="flex items-center gap-2 rounded-[12px] border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/12"
               >
                 <X size={14} strokeWidth={1.75} />
                 Effacer
@@ -342,9 +342,9 @@ export default function ComptaPage({
       )}
 
       <main className="flex-1 overflow-auto">
-        <section className="space-y-8 p-4 lg:p-8">
+        <section className="mx-auto w-full max-w-7xl space-y-8 p-4 lg:p-8">
           <div className={`${dashboardPanel} overflow-hidden`}>
-            <div className="flex flex-col gap-3 border-b border-[#e3e7e1] bg-[#f8f8f6] px-4 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+            <div className={dashboardTableSectionHeader}>
               <div>
                 <h2 className={dashboardTitle}>Liste des factures</h2>
                 <p className="mt-1 text-sm text-[#5e655f]">Toutes les transactions de la période en CHF</p>
@@ -363,8 +363,8 @@ export default function ComptaPage({
             <div className="overflow-x-auto">
               <table className="w-full min-w-[980px] text-left">
                 <thead>
-                  <tr className="bg-[#f4f3f1] text-xs font-bold uppercase tracking-[0.18em] text-[#747872]">
-                    <th className="px-4 py-4 lg:px-8">
+                  <tr className={dashboardTableHeader}>
+                    <th className={dashboardTableCell}>
                       <TableCheckbox checked={allSelected} onChange={() => {
                         if (allSelected) setSelectedIds(new Set());
                         else setSelectedIds(new Set(filtered.map((appt) => appt.id)));
@@ -374,7 +374,7 @@ export default function ComptaPage({
                     <SortableHeader label="Client" field="client" current={sortField} dir={sortDir} onSort={toggleSort} />
                     <SortableHeader label="Type de rituel" field="serviceName" current={sortField} dir={sortDir} onSort={toggleSort} />
                     <SortableHeader label="Statut" field="status" current={sortField} dir={sortDir} onSort={toggleSort} />
-                    <th className="px-4 py-4 lg:px-8">Facture</th>
+                    <th className={dashboardTableCell}>Facture</th>
                     <SortableHeader align="right" label="Montant" field="price" current={sortField} dir={sortDir} onSort={toggleSort} />
                   </tr>
                 </thead>
@@ -390,20 +390,20 @@ export default function ComptaPage({
                         key={appt.id}
                         className={`group transition-colors hover:bg-[#f4f3f1]/50 ${isSelected ? 'bg-[#faf9f7]' : ''}`}
                       >
-                        <td className="px-4 py-4 lg:px-8">
+                        <td className={dashboardTableCell}>
                           <TableCheckbox checked={isSelected} onChange={() => toggleSelection(appt.id)} />
                         </td>
 
-                        <td className="cursor-pointer px-4 py-4 text-[#747872] lg:px-8" onClick={() => onSelectAppt(appt)}>
+                        <td className={`cursor-pointer text-[#747872] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
                           {appt.date ? format(new Date(appt.date), 'MMM d, yyyy') : '—'}
                         </td>
-                        <td className="cursor-pointer px-4 py-4 font-medium text-[#1a1c1b] lg:px-8" onClick={() => onSelectAppt(appt)}>
+                        <td className={`cursor-pointer font-medium text-[#1a1c1b] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
                           {getClientDisplayName(appt)}
                         </td>
-                        <td className="cursor-pointer px-4 py-4 text-[#434842] lg:px-8" onClick={() => onSelectAppt(appt)}>
+                        <td className={`cursor-pointer text-[#434842] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
                           {appt.serviceName || 'Session'}
                         </td>
-                        <td className="px-4 py-4 lg:px-8">
+                        <td className={dashboardTableCell}>
                           <div onClick={(e) => e.stopPropagation()}>
                             {payingId === appt.id ? (
                               <div className="flex items-center gap-1">
@@ -414,7 +414,7 @@ export default function ComptaPage({
                                       onTogglePayment(appt.id, false, method);
                                       setPayingId(null);
                                     }}
-                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#c3c8c0] bg-white text-[#434842] transition-colors hover:border-[#435544] hover:bg-[#435544] hover:text-white"
+                                    className="flex h-8 w-8 items-center justify-center rounded-[10px] border border-[#c3c8c0] bg-white text-[#434842] transition-colors hover:border-[#435544] hover:bg-[#435544] hover:text-white"
                                     title={method}
                                   >
                                     {method === 'Twint'
@@ -426,7 +426,7 @@ export default function ComptaPage({
                                 ))}
                                 <button
                                   onClick={() => setPayingId(null)}
-                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#c3c8c0] bg-white text-[#747872] transition-colors hover:border-[#ba1a1a] hover:text-[#ba1a1a]"
+                                  className="flex h-8 w-8 items-center justify-center rounded-[10px] border border-[#c3c8c0] bg-white text-[#747872] transition-colors hover:border-[#ba1a1a] hover:text-[#ba1a1a]"
                                 >
                                   <X size={13} strokeWidth={1.75} />
                                 </button>
@@ -434,7 +434,7 @@ export default function ComptaPage({
                             ) : (
                               <button
                                 onClick={() => appt.paid ? onTogglePayment(appt.id, true) : setPayingId(appt.id)}
-                                className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${meta.className}`}
+                                className={`inline-flex rounded-[999px] px-3 py-1 text-xs font-semibold ${meta.className}`}
                               >
                                 {meta.label}
                                 {appt.paymentMethod ? ` · ${getPaymentMethodLabel(appt.paymentMethod)}` : ''}
@@ -442,11 +442,11 @@ export default function ComptaPage({
                             )}
                           </div>
                         </td>
-                        <td className="px-4 py-4 text-[#747872] lg:px-8">
+                        <td className={`${dashboardTableCell} text-[#747872]`}>
                           <button
                             onClick={() => handleInvoiceOpen(appt)}
                             disabled={status === 'cancelled'}
-                            className={`rounded-full p-2 transition-colors ${
+                            className={`rounded-[10px] p-2 transition-colors ${
                               status === 'cancelled'
                                 ? 'cursor-not-allowed opacity-30'
                                 : 'hover:bg-[#efeeec] hover:text-[#435544]'
@@ -456,12 +456,12 @@ export default function ComptaPage({
                             <Download size={18} strokeWidth={1.8} />
                           </button>
                         </td>
-                        <td className="px-4 py-4 text-right font-semibold text-[#1a1c1b] lg:px-8">
+                        <td className={`${dashboardTableCell} text-right font-semibold text-[#1a1c1b]`}>
                           {status === 'cancelled' ? formatCurrency(0) : formatCurrency(appt.price || 0)}
                           <div className="mt-1 flex justify-end gap-1">
                             <button
                               onClick={() => handleInvoiceOpen(appt)}
-                              className="rounded-full p-1.5 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]"
+                              className="rounded-[10px] p-1.5 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]"
                               title="Imprimer ou ouvrir la facture"
                             >
                               <Printer size={14} strokeWidth={1.75} />

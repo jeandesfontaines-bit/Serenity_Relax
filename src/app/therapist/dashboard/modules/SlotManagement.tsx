@@ -14,6 +14,8 @@ interface SlotManagementProps {
   onToggleBlock: () => void;
 }
 
+import { dashboardPanel, dashboardTitle, dashboardEyebrow } from './dashboardTheme';
+
 export default function SlotManagement({
   date, time, isBlocked, onClose, onBook, onToggleBlock,
 }: SlotManagementProps) {
@@ -25,61 +27,66 @@ export default function SlotManagement({
         className="absolute inset-0 bg-zinc-950/50 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         onClick={onClose}
       />
 
       <motion.div
-        className="relative w-full sm:max-w-sm bg-[#faf9f7] border border-zinc-200 overflow-hidden"
-        initial={{ opacity: 0, y: 30 }}
+        className={`relative w-full sm:max-w-sm flex flex-col overflow-hidden ${dashboardPanel}`}
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        exit={{ opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* Mobile handle */}
-        <div className="sm:hidden flex justify-center pt-3 pb-2">
+        <div className="sm:hidden flex justify-center pt-3 pb-2 shrink-0">
           <div className="w-12 h-1 bg-zinc-200" />
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-7 py-6 border-b border-zinc-100">
+        <div className="flex items-start justify-between px-8 py-7 border-b border-[#c4c7c3]/70">
           <div>
-            <p className="font-serif text-[8px] tracking-[0.5em] text-zinc-400 uppercase mb-1">Créneau</p>
-            <h2 className="font-serif text-base tracking-tighter text-zinc-900 uppercase">Gestion du créneau</h2>
-            <p className="font-serif text-[10px] text-zinc-400 tracking-[0.2em] uppercase mt-1 capitalize">
-              {format(d, 'EEEE d MMMM', { locale: fr })} · {time}
-            </p>
+            <p className={`${dashboardEyebrow} mb-3`}>Créneau</p>
+            <h2 className={dashboardTitle}>Gestion du créneau</h2>
+            <div className="flex items-center gap-3 mt-2">
+              <Clock size={12} className="text-zinc-400" />
+              <p className="font-serif text-[11px] text-zinc-500 tracking-[0.1em] capitalize">
+                {format(d, 'EEEE d MMMM', { locale: fr })} · {time}
+              </p>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center border border-zinc-200 text-zinc-400 hover:border-zinc-900 hover:text-zinc-900 transition-all duration-300"
+            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/50 text-[#757875] hover:text-[#1c1b1b] transition-colors"
           >
-            <X size={16} strokeWidth={1} />
+            <X size={18} strokeWidth={1} />
           </button>
         </div>
 
         {/* Actions */}
-        <div className="p-7 flex flex-col gap-3">
+        <div className="p-8 flex flex-col gap-4">
           {/* Book slot */}
           {!isBlocked ? (
             <button
               onClick={onBook}
-              className="w-full flex items-center gap-4 p-5 bg-zinc-900 hover:bg-zinc-700 transition-all duration-500 text-left group"
+              className="w-full flex items-center gap-4 p-5 rounded-xl bg-[#3d423c] hover:bg-[#1c1b1b] transition-all duration-300 text-left group shadow-sm"
             >
-              <div className="w-10 h-10 bg-white/10 flex items-center justify-center shrink-0">
-                <UserPlus size={18} strokeWidth={1.5} className="text-white" />
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                <UserPlus size={16} strokeWidth={1.5} className="text-white" />
               </div>
               <div>
-                <p className="font-serif text-sm text-white tracking-tight group-hover:italic transition-all">Réserver une session</p>
-                <p className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400 mt-1">Nouveau ou ancien client</p>
+                <p className="text-sm font-medium text-white tracking-tight group-hover:pl-1 transition-all">Réserver une session</p>
+                <p className="text-[10px] font-medium tracking-[0.1em] uppercase text-white/60 mt-1">Nouveau ou ancien client</p>
               </div>
             </button>
           ) : (
-            <div className="flex items-center gap-4 p-5 bg-zinc-50 border border-zinc-100">
-              <div className="w-10 h-10 bg-zinc-100 flex items-center justify-center shrink-0">
-                <Lock size={16} strokeWidth={1.5} className="text-zinc-400" />
+            <div className="flex items-center gap-4 p-5 rounded-xl bg-[#e3e6e0]/50 border border-[#c4c7c3]/40">
+              <div className="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center shrink-0">
+                <Lock size={16} strokeWidth={1.5} className="text-[#757875]" />
               </div>
               <div>
-                <p className="font-serif text-sm text-zinc-600 tracking-tight">Créneau bloqué</p>
-                <p className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400 mt-1">Non disponible à la réservation</p>
+                <p className="text-sm font-medium text-[#757875] tracking-tight">Créneau bloqué</p>
+                <p className="text-[10px] font-medium tracking-[0.1em] uppercase text-[#757875]/70 mt-1">Non disponible à la réservation</p>
               </div>
             </div>
           )}
@@ -87,22 +94,24 @@ export default function SlotManagement({
           {/* Block / unblock */}
           <button
             onClick={onToggleBlock}
-            className={`w-full flex items-center gap-4 p-5 border transition-all duration-500 text-left group ${
+            className={`w-full flex items-center gap-4 p-5 rounded-xl border transition-all duration-300 text-left group ${
               isBlocked
-                ? 'bg-white border-zinc-200 hover:border-zinc-900'
-                : 'bg-white border-zinc-200 hover:border-zinc-900'
+                ? 'bg-white/50 border-[#c4c7c3]/40 hover:border-[#bdcab9]'
+                : 'bg-white/50 border-[#c4c7c3]/40 hover:border-[#bdcab9]'
             }`}
           >
-            <div className="w-10 h-10 bg-zinc-50 flex items-center justify-center border border-zinc-100 group-hover:border-zinc-900 transition-all duration-500 shrink-0">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300 shrink-0 ${
+              isBlocked ? 'bg-white border-[#c4c7c3] group-hover:border-[#1c1b1b]' : 'bg-white border-[#c4c7c3] group-hover:border-[#1c1b1b]'
+            }`}>
               {isBlocked
-                ? <CheckCircle2 size={16} strokeWidth={1.5} className="text-zinc-500" />
-                : <Lock size={16} strokeWidth={1.5} className="text-zinc-400" />}
+                ? <CheckCircle2 size={16} strokeWidth={1.5} className="text-[#757875]" />
+                : <Lock size={16} strokeWidth={1.5} className="text-[#757875]" />}
             </div>
             <div>
-              <p className="font-serif text-sm text-zinc-900 tracking-tight group-hover:italic transition-all">
+              <p className="text-sm font-medium text-[#1c1b1b] tracking-tight group-hover:pl-1 transition-all">
                 {isBlocked ? 'Libérer le créneau' : 'Bloquer le créneau'}
               </p>
-              <p className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400 mt-1">
+              <p className="text-[10px] font-medium tracking-[0.1em] uppercase text-[#757875] mt-1">
                 {isBlocked ? 'Rendre à nouveau disponible' : 'Empêcher toute réservation'}
               </p>
             </div>
@@ -110,10 +119,10 @@ export default function SlotManagement({
         </div>
 
         {/* Footer */}
-        <div className="px-7 pb-7">
-          <div className="flex items-center gap-3 font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400 bg-zinc-50 border border-zinc-100 px-4 py-3">
-            <Clock size={11} strokeWidth={1.5} />
-            Durée standard : 60 min
+        <div className="px-8 pb-8">
+          <div className="flex items-center justify-center gap-3 bg-[#e3e6e0]/30 rounded-full border border-[#bdcab9] border-dashed px-4 py-3">
+            <Clock size={12} strokeWidth={1.5} className="text-[#757875]" />
+            <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-[#757875]">Durée standard : 60 min</span>
           </div>
         </div>
       </motion.div>

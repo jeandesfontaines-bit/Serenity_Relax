@@ -4,6 +4,7 @@ import { X, Search, UserPlus, CheckCircle2, ChevronRight } from 'lucide-react';
 import { Client } from '../types';
 import { SERVICES } from '@/lib/types';
 import { motion, AnimatePresence } from 'framer-motion';
+import * as dashboardTheme from './dashboardTheme';
 
 interface BookingModalProps {
   date?: string;
@@ -54,7 +55,7 @@ export default function BookingModal({
       />
 
       <motion.div
-        className="relative w-full sm:max-w-lg bg-[#faf9f7] border border-zinc-200 flex flex-col max-h-[90vh] overflow-hidden"
+        className={`${dashboardTheme.dashboardPanel} relative w-full sm:max-w-lg flex flex-col max-h-[90vh] overflow-hidden`}
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
@@ -65,12 +66,12 @@ export default function BookingModal({
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-7 border-b border-zinc-100 shrink-0">
+        <div className="flex items-center justify-between px-8 py-7 border-b border-zinc-100/50 shrink-0">
           <div>
-            <p className="font-serif text-[9px] tracking-[0.5em] text-zinc-400 uppercase mb-1">RÉSERVATION MANUELLE</p>
-            <h2 className="font-serif text-lg tracking-tighter text-zinc-900 uppercase">Nouvelle séance</h2>
+            <p className={`${dashboardTheme.dashboardEyebrow} mb-1`}>RÉSERVATION MANUELLE</p>
+            <h2 className={`${dashboardTheme.dashboardTitle} text-xl`}>Nouvelle séance</h2>
             {(date || time) && (
-              <p className="font-serif text-[10px] text-zinc-400 tracking-[0.2em] mt-1 uppercase">
+              <p className={`${dashboardTheme.dashboardEyebrow} text-zinc-400 mt-2`}>
                 {date && date} {time && `· ${time}`}
               </p>
             )}
@@ -91,8 +92,8 @@ export default function BookingModal({
             const isDone = (i === 0 && step === 'service');
             return (
               <div key={label} className="flex items-center gap-2">
-                <div className={`flex items-center gap-2 font-serif text-[9px] tracking-[0.3em] uppercase ${isActive ? 'text-zinc-900' : isDone ? 'text-zinc-900' : 'text-zinc-300'}`}>
-                  <div className={`w-5 h-5 flex items-center justify-center text-[9px] font-serif ${isActive ? 'bg-zinc-900 text-white' : isDone ? 'bg-zinc-100 text-zinc-600' : 'bg-zinc-50 text-zinc-300'}`}>
+                <div className={`flex items-center gap-2 ${dashboardTheme.dashboardEyebrow} ${isActive ? 'text-zinc-900' : isDone ? 'text-zinc-900' : 'text-zinc-300'}`}>
+                  <div className={`w-5 h-5 flex items-center justify-center rounded-full ${isActive ? 'bg-zinc-900 text-white' : isDone ? 'bg-zinc-100 text-zinc-600' : 'bg-zinc-50 text-zinc-300'}`}>
                     {isDone ? '✓' : i + 1}
                   </div>
                   {label}
@@ -124,7 +125,7 @@ export default function BookingModal({
                     onChange={e => setSearch(e.target.value)}
                     autoFocus
                     placeholder="Rechercher un client…"
-                    className="w-full h-12 bg-white border border-zinc-200 pl-10 pr-4 font-serif text-sm text-zinc-900 placeholder:text-zinc-300 focus:outline-none focus:border-zinc-900 transition-all"
+                    className="w-full h-12 bg-white/50 backdrop-blur-sm border border-zinc-200 rounded-xl pl-10 pr-4 font-sans text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900 transition-all"
                   />
                 </div>
 
@@ -134,14 +135,14 @@ export default function BookingModal({
                     <button
                       key={c.id}
                       onClick={() => handleSelectClient(c)}
-                      className="w-full flex items-center justify-between px-4 py-4 border-b border-zinc-50 hover:bg-white text-left transition-colors group"
+                      className="w-full flex items-center justify-between px-4 py-4 border-b border-zinc-100/50 hover:bg-white/50 text-left transition-colors group"
                     >
                       <div>
                         <p className="font-serif text-sm text-zinc-900 tracking-tight group-hover:italic transition-all">
                           {c.firstName} {c.lastName}
                         </p>
                         {(c.email || c.phone) && (
-                          <p className="font-serif text-[10px] text-zinc-400 tracking-[0.1em] mt-0.5">{c.email || c.phone}</p>
+                          <p className="font-sans text-[11px] text-zinc-500 mt-0.5">{c.email || c.phone}</p>
                         )}
                       </div>
                       <ChevronRight size={13} strokeWidth={1} className="text-zinc-200 group-hover:text-zinc-900 shrink-0 transition-colors" />
@@ -152,14 +153,14 @@ export default function BookingModal({
                   {filtered.length === 0 && search.trim() && (
                     <button
                       onClick={handleSelectNew}
-                      className="w-full flex items-center gap-4 p-4 border border-dashed border-zinc-200 bg-white hover:border-zinc-900 transition-all group"
+                      className="w-full flex items-center gap-4 p-4 border border-dashed border-zinc-200 rounded-xl bg-white/50 hover:border-zinc-900 transition-all group mt-2"
                     >
-                      <div className="w-8 h-8 bg-zinc-50 flex items-center justify-center border border-zinc-200 group-hover:border-zinc-900 shrink-0 transition-all">
+                      <div className="w-8 h-8 rounded-full bg-zinc-50 flex items-center justify-center border border-zinc-200 group-hover:border-zinc-900 shrink-0 transition-all">
                         <UserPlus size={13} strokeWidth={1.5} className="text-zinc-400 group-hover:text-zinc-900" />
                       </div>
                       <div className="text-left min-w-0">
-                        <p className="font-serif text-[9px] tracking-[0.4em] uppercase text-zinc-400 group-hover:text-zinc-700">Créer et réserver</p>
-                        <p className="font-serif text-sm text-zinc-900 truncate tracking-tight">{search}</p>
+                        <p className={`${dashboardTheme.dashboardEyebrow} text-zinc-400 group-hover:text-zinc-700`}>Créer et réserver</p>
+                        <p className="font-serif text-sm text-zinc-900 truncate tracking-tight mt-0.5">{search}</p>
                       </div>
                     </button>
                   )}
@@ -169,10 +170,10 @@ export default function BookingModal({
                 {filtered.length > 0 && (
                   <button
                     onClick={handleSelectNew}
-                    className="w-full flex items-center gap-3 p-4 border border-dashed border-zinc-100 text-zinc-400 hover:border-zinc-900 hover:text-zinc-900 transition-all"
+                    className="w-full flex items-center gap-3 p-4 border border-dashed border-zinc-200 rounded-xl text-zinc-400 hover:border-zinc-900 hover:text-zinc-900 transition-all mt-4"
                   >
                     <UserPlus size={13} strokeWidth={1.5} />
-                    <span className="font-serif text-[10px] tracking-[0.3em] uppercase">Nouveau client</span>
+                    <span className={`${dashboardTheme.dashboardEyebrow}`}>Nouveau client</span>
                   </button>
                 )}
               </motion.div>
@@ -188,16 +189,16 @@ export default function BookingModal({
                 className="px-8 py-6 space-y-6"
               >
                 {/* Selected client recap */}
-                <div className="flex items-center justify-between p-4 bg-white border border-zinc-100">
+                <div className="flex items-center justify-between p-4 bg-white/50 backdrop-blur-sm border border-zinc-200 rounded-xl">
                   <div className="min-w-0">
                     <p className="font-serif text-sm text-zinc-900 truncate tracking-tight">
                       {isCreatingNew ? search : `${selectedClient?.firstName} ${selectedClient?.lastName}`}
                     </p>
-                    {isCreatingNew && <p className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400">Nouveau client</p>}
+                    {isCreatingNew && <p className={`${dashboardTheme.dashboardEyebrow} text-zinc-400 mt-1`}>Nouveau client</p>}
                   </div>
                   <button
                     onClick={() => setStep('client')}
-                    className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400 hover:text-zinc-900 transition-colors shrink-0"
+                    className={`${dashboardTheme.dashboardEyebrow} text-zinc-400 hover:text-zinc-900 transition-colors shrink-0`}
                   >
                     Changer
                   </button>
@@ -205,7 +206,7 @@ export default function BookingModal({
 
                 {/* Service grid */}
                 <div>
-                  <p className="font-serif text-[9px] tracking-[0.5em] text-zinc-400 uppercase mb-4">Prestation</p>
+                  <p className={`${dashboardTheme.dashboardEyebrow} mb-4`}>Prestation</p>
                   <div className="grid grid-cols-2 gap-2">
                     {SERVICES.map(s => {
                       const displayName = s.name.split(' -')[0];
@@ -214,17 +215,17 @@ export default function BookingModal({
                         <button
                           key={s.id}
                           onClick={() => setSelectedService(s.name)}
-                          className={`px-4 py-4 border text-left transition-all duration-500 ${
+                          className={`px-4 py-4 border rounded-xl text-left transition-all duration-300 ${
                             isSelected
-                              ? 'border-zinc-900 bg-zinc-900 text-white'
-                              : 'border-zinc-100 bg-white text-zinc-700 hover:border-zinc-400'
+                              ? 'border-zinc-900 bg-zinc-900 text-white shadow-md'
+                              : 'border-zinc-200 bg-white/50 text-zinc-700 hover:border-zinc-400'
                           }`}
                         >
                           <p className={`font-serif text-sm tracking-tight truncate leading-tight ${isSelected ? 'text-white italic' : 'text-zinc-900'}`}>
                             {displayName}
                           </p>
                           {s.duration && (
-                            <p className={`font-serif text-[9px] tracking-[0.2em] uppercase mt-1 ${isSelected ? 'text-zinc-400' : 'text-zinc-400'}`}>
+                            <p className={`${dashboardTheme.dashboardEyebrow} mt-2 ${isSelected ? 'text-zinc-300' : 'text-zinc-500'}`}>
                               {s.duration}
                             </p>
                           )}
@@ -237,7 +238,7 @@ export default function BookingModal({
                 {/* Confirm */}
                 <button
                   onClick={handleConfirm}
-                  className="w-full h-12 bg-zinc-900 hover:bg-zinc-700 text-white font-serif text-[10px] tracking-[0.5em] uppercase flex items-center justify-center gap-3 transition-all duration-500"
+                  className={`${dashboardTheme.dashboardPrimaryButton} w-full h-12 flex items-center justify-center gap-3`}
                 >
                   <CheckCircle2 size={14} strokeWidth={1.5} />
                   {isCreatingNew ? 'Créer et confirmer' : 'Confirmer la réservation'}

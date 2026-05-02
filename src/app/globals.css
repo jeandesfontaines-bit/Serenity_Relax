@@ -44,7 +44,7 @@
   
   .font-display { font-family: 'Noto Serif', serif; }
   .font-headline { font-family: 'Noto Serif', serif; }
-  .font-body { font-family: 'Manrope', sans-serif; }
+  .font-body { font-family: 'Plus Jakarta Sans', sans-serif; }
 }
 
 @layer components {
@@ -81,4 +81,3 @@
 
   .serif-tracking { letter-spacing: 0.2em; }
 }
-
