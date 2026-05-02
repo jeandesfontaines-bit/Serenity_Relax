@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 import { Appointment } from '../types';
+import { dashboardPanel, dashboardPanelSoft, dashboardTitle, dashboardTitleLg, dashboardMutedText } from './dashboardTheme';
 
 interface HomePageProps {
   appointments: Appointment[];
@@ -192,7 +193,7 @@ export default function HomePage({
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <div className="flex items-center justify-between">
-            <h4 className="text-xl font-semibold text-stone-900 [font-family:'Public_Sans',sans-serif]">
+            <h4 className={dashboardTitle}>
               Today&apos;s Agenda
             </h4>
             <button
@@ -213,7 +214,7 @@ export default function HomePage({
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className={`group flex w-full items-center gap-6 rounded-[24px] border border-stone-100 bg-white p-5 text-left transition-all duration-300 hover:border-emerald-200 ${
+                    className={`group flex w-full items-center gap-6 p-5 text-left transition-all duration-300 hover:border-emerald-200 ${dashboardPanel} ${
                       status.muted ? 'opacity-60' : ''
                     }`}
                   >
@@ -240,7 +241,7 @@ export default function HomePage({
                 );
               })
             ) : (
-              <div className="rounded-[24px] border border-dashed border-stone-200 bg-white p-10 text-center text-stone-500">
+              <div className={`${dashboardPanel} border-dashed p-10 text-center text-stone-500`}>
                 {normalizedSearch ? 'Aucune séance ne correspond à cette recherche aujourd’hui.' : 'No sessions scheduled for today.'}
               </div>
             )}
@@ -248,9 +249,9 @@ export default function HomePage({
         </div>
 
         <div className="flex h-full flex-col space-y-8">
-          <div className="space-y-4 rounded-[28px] bg-[#efeeec] p-6">
+          <div className={`${dashboardPanelSoft} space-y-4 p-6`}>
             <div className="flex items-center justify-between">
-              <h4 className="text-lg font-semibold text-stone-900 [font-family:'Public_Sans',sans-serif]">
+              <h4 className={dashboardTitle}>
                 Recent Notes
               </h4>
               <button
@@ -267,7 +268,7 @@ export default function HomePage({
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className="block w-full rounded-2xl border border-stone-100 bg-white/60 p-4 text-left transition hover:bg-white"
+                  className={`block w-full p-4 text-left transition hover:bg-white ${dashboardPanel}`}
                   >
                     <p className="mb-1 text-xs font-bold text-[#435544]">{formatDayLabel(appt.date)}</p>
                     <p className="truncate text-sm font-medium text-stone-800">
@@ -279,7 +280,7 @@ export default function HomePage({
                   </button>
                 ))
               ) : (
-                <div className="rounded-2xl border border-stone-100 bg-white/60 p-4 text-sm text-stone-500">
+                <div className={`${dashboardPanel} p-4 text-sm text-stone-500`}>
                   {normalizedSearch ? 'Aucune note récente ne correspond à cette recherche.' : 'No recent notes available yet.'}
                 </div>
               )}
@@ -296,7 +297,7 @@ export default function HomePage({
       </section>
 
       <section className="grid grid-cols-1 gap-8 pt-6 md:grid-cols-2">
-        <div className="group relative h-48 overflow-hidden rounded-[28px]">
+        <div className="group relative h-48 overflow-hidden rounded-[28px] border border-[#d9ddd7] shadow-[0_10px_30px_rgba(26,28,27,0.04)]">
           <img
             alt="Therapy room"
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -314,7 +315,7 @@ export default function HomePage({
           </div>
         </div>
 
-        <div className="flex flex-col justify-between rounded-[28px] bg-emerald-900 p-8 text-[#daeed8]">
+        <div className="flex flex-col justify-between rounded-[28px] border border-[#355138] bg-[#435544] p-8 text-[#daeed8] shadow-[0_10px_30px_rgba(26,28,27,0.08)]">
           <div>
             <h4 className="mb-2 text-xl font-semibold text-white [font-family:'Public_Sans',sans-serif]">
               Optimize Your Schedule
@@ -373,8 +374,8 @@ function MetricCard({
         </div>
         <span className={`rounded-full px-2 py-1 text-xs font-bold ${badgeClass}`}>{badgeLabel}</span>
       </div>
-      <p className="mb-1 text-sm font-medium text-stone-500">{label}</p>
-      <h3 className="text-2xl font-semibold text-stone-900 [font-family:'Public_Sans',sans-serif]">{value}</h3>
+      <p className={`mb-1 font-medium ${dashboardMutedText}`}>{label}</p>
+      <h3 className={dashboardTitleLg}>{value}</h3>
     </div>
   );
 }

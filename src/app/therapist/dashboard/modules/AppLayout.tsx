@@ -1,5 +1,6 @@
 import React from 'react';
 import { Ban, CheckCircle2, ChevronLeft, ChevronRight, Lock, Plus, Settings, SlidersHorizontal, Calendar, Download, Filter } from 'lucide-react';
+import { dashboardPrimaryButton, dashboardSecondaryButton, dashboardShell, dashboardTitleLg, dashboardMutedText } from './dashboardTheme';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -102,8 +103,8 @@ export default function AppLayout({
             : 'Rechercher des rendez-vous, clients ou notes...';
 
   return (
-    <div className="h-screen h-dvh overflow-hidden bg-[#faf9f7] text-[#1a1c1b] [font-family:'Manrope',sans-serif]">
-      <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-stone-200 bg-stone-50 p-6 md:flex">
+    <div className={`h-screen h-dvh overflow-hidden ${dashboardShell}`}>
+      <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-[#dde2db] bg-[#f4f3f1]/96 p-6 backdrop-blur md:flex">
         <div className="mb-10 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[#435544] text-white shadow-sm">
             <span className="material-symbols-outlined" style={filledIcon}>
@@ -111,10 +112,10 @@ export default function AppLayout({
             </span>
           </div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight text-emerald-900 [font-family:'Public_Sans',sans-serif]">
+            <h1 className="text-xl font-semibold tracking-tight text-[#1a1c1b] [font-family:'Public_Sans',sans-serif]">
               Serene Sanctuary
             </h1>
-            <p className="text-xs tracking-wide text-stone-600">Portail thérapeute</p>
+            <p className="text-xs tracking-wide text-[#747872]">Portail thérapeute</p>
           </div>
         </div>
 
@@ -127,8 +128,8 @@ export default function AppLayout({
                 onClick={() => onNavigate(item.id)}
                 className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm transition-all duration-300 ${
                   active
-                    ? 'bg-emerald-50 font-medium text-emerald-900 shadow-sm'
-                    : 'text-stone-500 hover:bg-emerald-50/50 hover:text-stone-800'
+                    ? 'bg-white font-medium text-[#1a1c1b] shadow-sm ring-1 ring-[#d8ddd7]'
+                    : 'text-[#5e655f] hover:bg-white/80 hover:text-[#1a1c1b]'
                 }`}
               >
                 <span className="material-symbols-outlined" style={active ? filledIcon : outlinedIcon}>
@@ -143,7 +144,7 @@ export default function AppLayout({
         <div className="mt-auto space-y-4 pt-6">
           <button
             onClick={() => onNavigate('scheduler')}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#435544] py-3 text-sm font-medium text-white shadow-md transition-all active:scale-[0.98]"
+            className={`flex w-full items-center justify-center gap-2 ${dashboardPrimaryButton}`}
           >
             <span className="material-symbols-outlined text-[20px]" style={filledIcon}>
               add
@@ -155,7 +156,7 @@ export default function AppLayout({
       </aside>
 
       <div className="flex h-full flex-col pb-20 md:ml-64 md:pb-0">
-        <header className="shrink-0 z-40 border-b border-stone-100 bg-stone-50/80 px-4 py-4 backdrop-blur-xl md:px-8">
+        <header className="shrink-0 z-40 border-b border-[#e3e7e1] bg-[#faf9f7]/88 px-4 py-4 backdrop-blur-xl md:px-8">
           {activePage === 'scheduler' && schedulerToolbar ? (
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
@@ -163,7 +164,7 @@ export default function AppLayout({
                   <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.35em] text-[#747872]">
                     {schedulerToolbar.eyebrow}
                   </span>
-                  <h2 className="truncate font-['Public_Sans',sans-serif] text-2xl font-bold tracking-tight text-[#1a1c1b] capitalize">
+                  <h2 className={`truncate capitalize font-bold tracking-tight ${dashboardTitleLg}`}>
                     {schedulerToolbar.title}
                   </h2>
                 </div>
@@ -177,7 +178,7 @@ export default function AppLayout({
                   </button>
                   <button
                     onClick={schedulerToolbar.onToday}
-                    className="rounded-full border border-[#c3c8c0] bg-white px-4 py-2 text-sm font-semibold text-[#1a1c1b] transition-colors hover:bg-[#f4f3f1]"
+                    className={dashboardSecondaryButton}
                   >
                     Aujourd&apos;hui
                   </button>
@@ -281,10 +282,10 @@ export default function AppLayout({
           ) : activePage === 'clients' && clientsToolbar ? (
             <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(320px,384px)_minmax(0,1fr)] lg:items-center">
               <div className="min-w-0">
-                <h2 className="truncate text-2xl font-semibold tracking-tight text-[#435544] [font-family:'Public_Sans',sans-serif]">
+                <h2 className={`truncate tracking-tight text-[#435544] ${dashboardTitleLg}`}>
                   {clientsToolbar.title}
                 </h2>
-                <p className="mt-1 truncate text-sm text-[#747872]">
+                <p className={`mt-1 truncate ${dashboardMutedText}`}>
                   {clientsToolbar.subtitle}
                 </p>
               </div>
@@ -305,7 +306,7 @@ export default function AppLayout({
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
                 <button
                   onClick={clientsToolbar.onToggleFilters}
-                  className="flex items-center justify-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
+                  className="flex items-center justify-center gap-2 rounded-full border border-[#c8cdc6] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
                 >
                   <SlidersHorizontal size={16} strokeWidth={1.75} />
                   Filtres avancés
@@ -313,7 +314,7 @@ export default function AppLayout({
 
                 <button
                   onClick={clientsToolbar.onAddClient}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-[#435544] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  className={`flex items-center justify-center gap-2 ${dashboardPrimaryButton}`}
                 >
                   <Plus size={16} strokeWidth={1.9} />
                   Ajouter un client
@@ -382,10 +383,10 @@ export default function AppLayout({
           ) : activePage === 'settings' && settingsToolbar ? (
             <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(320px,384px)_minmax(0,1fr)] lg:items-center">
               <div className="min-w-0">
-                <h2 className="truncate text-2xl font-semibold tracking-tight text-[#435544] [font-family:'Public_Sans',sans-serif]">
+                <h2 className={`truncate tracking-tight text-[#435544] ${dashboardTitleLg}`}>
                   {settingsToolbar.title}
                 </h2>
-                <p className="mt-1 text-sm text-[#747872]">
+                <p className={`mt-1 ${dashboardMutedText}`}>
                   {settingsToolbar.subtitle}
                 </p>
               </div>
@@ -417,7 +418,7 @@ export default function AppLayout({
             <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(320px,384px)_minmax(0,1fr)] lg:items-center">
               {activePage === 'dashboard' && dashboardSummary ? (
               <div className="min-w-0">
-                <p className="truncate text-xl font-semibold tracking-tight text-stone-900 [font-family:'Public_Sans',sans-serif]">
+                <p className="truncate text-xl font-semibold tracking-tight text-[#1a1c1b] [font-family:'Public_Sans',sans-serif]">
                   {dashboardSummary.title}
                 </p>
                 <div className="mt-1 flex items-center gap-2 text-sm text-stone-500">

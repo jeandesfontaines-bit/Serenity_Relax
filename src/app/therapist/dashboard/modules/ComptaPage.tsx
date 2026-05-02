@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, subMonths, isWithinInterval } from 'date-fns';
 import { Appointment, Invoice } from '../types';
+import { dashboardPanel, dashboardPanelSoft, dashboardPrimaryButton, dashboardSecondaryButton, dashboardTitle, dashboardTitleLg } from './dashboardTheme';
 
 interface ComptaPageProps {
   appointments: Appointment[];
@@ -315,7 +316,7 @@ export default function ComptaPage({
     <div className="flex-1 flex flex-col overflow-hidden bg-[#faf9f7]">
 
       {selectedIds.size > 0 && (
-        <div className="shrink-0 bg-[#1a1c1b] px-4 py-3 text-white lg:px-8">
+        <div className="shrink-0 border-b border-[#d9ddd7] bg-[#435544] px-4 py-3 text-white lg:px-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <span className="text-sm font-medium">
               {selectedIds.size} transaction{selectedIds.size > 1 ? 's' : ''} selected
@@ -323,14 +324,14 @@ export default function ComptaPage({
             <div className="flex items-center gap-3">
               <button
                 onClick={handleDelete}
-                className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/15"
+                className="flex items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
               >
                 <Trash2 size={14} strokeWidth={1.75} />
                 Supprimer
               </button>
               <button
                 onClick={() => setSelectedIds(new Set())}
-                className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10"
+                className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/12"
               >
                 <X size={14} strokeWidth={1.75} />
                 Effacer
@@ -342,11 +343,11 @@ export default function ComptaPage({
 
       <main className="flex-1 overflow-auto">
         <section className="space-y-8 p-4 lg:p-8">
-          <div className="overflow-hidden rounded-xl border border-[#c3c8c0]/30 bg-white shadow-sm">
-            <div className="flex flex-col gap-3 border-b border-[#c3c8c0]/20 px-4 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <div className={`${dashboardPanel} overflow-hidden`}>
+            <div className="flex flex-col gap-3 border-b border-[#e3e7e1] bg-[#f8f8f6] px-4 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
               <div>
-                <h2 className="text-lg font-semibold text-[#1a1c1b]">Liste des factures</h2>
-                <p className="mt-1 text-sm text-[#747872]">Toutes les transactions de la période en CHF</p>
+                <h2 className={dashboardTitle}>Liste des factures</h2>
+                <p className="mt-1 text-sm text-[#5e655f]">Toutes les transactions de la période en CHF</p>
               </div>
               <button
                 onClick={() => {
@@ -362,7 +363,7 @@ export default function ComptaPage({
             <div className="overflow-x-auto">
               <table className="w-full min-w-[980px] text-left">
                 <thead>
-                  <tr className="bg-[#efeeec] text-xs font-bold uppercase tracking-[0.18em] text-[#747872]">
+                  <tr className="bg-[#f4f3f1] text-xs font-bold uppercase tracking-[0.18em] text-[#747872]">
                     <th className="px-4 py-4 lg:px-8">
                       <TableCheckbox checked={allSelected} onChange={() => {
                         if (allSelected) setSelectedIds(new Set());
@@ -522,11 +523,11 @@ export default function ComptaPage({
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <div className="rounded-xl border border-[#c3c8c0]/30 bg-white p-5 shadow-sm lg:col-span-2">
+            <div className={`${dashboardPanel} p-5 lg:col-span-2`}>
               <div className="mb-6 flex items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-base font-semibold text-[#1a1c1b]">Performance des revenus</h2>
-                  <p className="mt-1 text-xs text-[#747872]">Revenus encaissés sur les 6 derniers mois</p>
+                  <h2 className={dashboardTitle}>Performance des revenus</h2>
+                  <p className="mt-1 text-xs text-[#5e655f]">Revenus encaissés sur les 6 derniers mois</p>
                 </div>
                 <span className="rounded-full bg-[#efeeec] px-3 py-1 text-xs font-semibold text-[#434842]">
                   Tendance
@@ -554,10 +555,10 @@ export default function ComptaPage({
               </div>
             </div>
 
-            <div className="rounded-xl border border-[#c3c8c0]/30 bg-white p-5 shadow-sm">
+            <div className={`${dashboardPanelSoft} p-5`}>
               <div className="mb-6">
-                <h2 className="text-base font-semibold text-[#1a1c1b]">Répartition des services</h2>
-                <p className="mt-1 text-xs text-[#747872]">Part des revenus par type de soin</p>
+                <h2 className={dashboardTitle}>Répartition des services</h2>
+                <p className="mt-1 text-xs text-[#5e655f]">Part des revenus par type de soin</p>
               </div>
 
               <div className="space-y-4">
@@ -619,7 +620,7 @@ function MetricCard({
   compact?: boolean;
 }) {
   return (
-    <div className={`rounded-xl border border-[#c3c8c0]/30 bg-white shadow-sm transition-shadow hover:shadow-md ${compact ? 'p-4' : 'p-6'}`}>
+    <div className={`${dashboardPanel} transition-shadow hover:shadow-md ${compact ? 'p-4' : 'p-6'}`}>
       <div className={`flex items-start justify-between ${compact ? 'mb-3' : 'mb-4'}`}>
         <div className={`rounded-lg ${compact ? 'p-1.5' : 'p-2'} ${iconClassName}`}>
           {icon}

@@ -8,6 +8,7 @@ import { DndContext, useDraggable, useDroppable, DragOverlay, DragEndEvent } fro
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { Appointment } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { dashboardPanel } from './dashboardTheme';
 
 /* ── CONSTANTS ── */
 const HOUR_H = 80;          // pixels per hour row
@@ -215,7 +216,7 @@ export default function AgendaPage({
       {/* ── CONTENT ── */}
       <div className="flex-1 flex">
         {/* Main calendar area */}
-        <div className="flex-1 flex flex-col bg-white/20">
+        <div className={`flex-1 flex flex-col ${dashboardPanel} overflow-hidden`}>
           {view === 'week'
             ? <WeekTimeGrid
                 cur={cur}

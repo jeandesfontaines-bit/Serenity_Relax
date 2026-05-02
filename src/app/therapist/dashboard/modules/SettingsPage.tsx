@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Target, MessageSquare, Info, User, Mail, Store } from 'lucide-react';
 import { updatePassword, reauthenticateWithCredential, EmailAuthProvider, signOut } from 'firebase/auth';
 import { useAuth, useUser } from '@/firebase';
+import { dashboardInset, dashboardPanel, dashboardTitle } from './dashboardTheme';
 
 interface SettingsPageProps {
   monthlyGoal: number;
@@ -247,15 +248,15 @@ export default function SettingsPage({
               </div>
               
               {/* Desktop / Mobile Tab Navigation */}
-              <div className="flex overflow-x-auto gap-2 border-b border-[#e9e8e6] pb-4 sticky top-0 bg-[#faf9f7] z-10 pt-2">
+              <div className="sticky top-0 z-10 flex overflow-x-auto gap-2 rounded-full border border-[#dde2db] bg-white p-1.5 shadow-[0_8px_24px_rgba(26,28,27,0.04)]">
                 {TABS.map(t => (
                   <button
                     key={t.id}
                     onClick={() => setActiveTab(t.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors whitespace-nowrap ${
+                    className={`flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                       activeTab === t.id 
-                        ? 'bg-[#efeeec] text-[#435544] border border-[#c3c8c0]' 
-                        : 'text-[#747872] hover:bg-[#efeeec]/50 border border-transparent'
+                        ? 'bg-[#435544] text-white shadow-sm' 
+                        : 'text-[#747872] hover:bg-[#f4f3f1] border border-transparent'
                     }`}
                   >
                     <t.icon size={16} strokeWidth={1.8} />
@@ -265,7 +266,7 @@ export default function SettingsPage({
               </div>
 
               {normalizedSearch && matchingTabs.length === 0 && (
-                <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 text-sm text-[#747872] border border-[#efeeec]">
+                <div className={`${dashboardPanel} p-8 text-sm text-[#747872]`}>
                   Aucun réglage ne correspond à « {searchQuery.trim()} ».
                 </div>
               )}
@@ -274,32 +275,32 @@ export default function SettingsPage({
               {activeTab === 'account' && matchingTabs.length > 0 && (
                 <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
                   {/* Personal Information */}
-                  <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-[#efeeec]">
+                  <div className={`${dashboardPanel} p-8`}>
                     <div className="flex items-center gap-3 mb-8 border-b border-[#e3e2e0] pb-4">
                       <span className="material-symbols-outlined text-[#725a38]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>person</span>
-                      <h4 className="text-lg font-medium text-[#435544] [font-family:'Public_Sans',sans-serif]">Personal Information</h4>
+                      <h4 className={`${dashboardTitle} text-[#435544]`}>Personal Information</h4>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                       <div className="space-y-1">
                         <label className="text-[10px] uppercase tracking-[0.2em] text-[#747872] font-bold">Full Name</label>
-                        <input className="w-full bg-transparent border-0 border-b border-[#c3c8c0] py-2 text-[#1a1c1b] focus:ring-0 focus:border-[#435544] outline-none transition-colors" type="text" value={localFullName} onChange={(e) => setLocalFullName(e.target.value)} />
+                        <input className={`w-full px-4 py-3 text-[#1a1c1b] outline-none transition-colors focus:border-[#435544] focus:ring-1 focus:ring-[#435544] ${dashboardInset}`} type="text" value={localFullName} onChange={(e) => setLocalFullName(e.target.value)} />
                       </div>
                       <div className="space-y-1">
                         <label className="text-[10px] uppercase tracking-[0.2em] text-[#747872] font-bold">Email Address</label>
-                        <input className="w-full bg-transparent border-0 border-b border-[#c3c8c0] py-2 text-[#1a1c1b] focus:ring-0 focus:border-[#435544] outline-none transition-colors" type="email" value={localProfileEmail} onChange={(e) => setLocalProfileEmail(e.target.value)} />
+                        <input className={`w-full px-4 py-3 text-[#1a1c1b] outline-none transition-colors focus:border-[#435544] focus:ring-1 focus:ring-[#435544] ${dashboardInset}`} type="email" value={localProfileEmail} onChange={(e) => setLocalProfileEmail(e.target.value)} />
                       </div>
                       <div className="space-y-1">
                         <label className="text-[10px] uppercase tracking-[0.2em] text-[#747872] font-bold">Phone Number</label>
-                        <input className="w-full bg-transparent border-0 border-b border-[#c3c8c0] py-2 text-[#1a1c1b] focus:ring-0 focus:border-[#435544] outline-none transition-colors" type="tel" value={localPhone} onChange={(e) => setLocalPhone(e.target.value)} />
+                        <input className={`w-full px-4 py-3 text-[#1a1c1b] outline-none transition-colors focus:border-[#435544] focus:ring-1 focus:ring-[#435544] ${dashboardInset}`} type="tel" value={localPhone} onChange={(e) => setLocalPhone(e.target.value)} />
                       </div>
                     </div>
                   </div>
 
                   {/* Notification Preferences */}
-                  <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-[#efeeec]">
+                  <div className={`${dashboardPanel} p-8`}>
                     <div className="flex items-center gap-3 mb-8 border-b border-[#e3e2e0] pb-4">
                       <span className="material-symbols-outlined text-[#725a38]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>notifications_active</span>
-                      <h4 className="text-lg font-medium text-[#435544] [font-family:'Public_Sans',sans-serif]">Notification Preferences</h4>
+                      <h4 className={`${dashboardTitle} text-[#435544]`}>Notification Preferences</h4>
                     </div>
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">
@@ -333,23 +334,23 @@ export default function SettingsPage({
                   </div>
 
                   {/* Security & Connections */}
-                  <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-[#efeeec]">
+                  <div className={`${dashboardPanel} p-8`}>
                     <div className="flex items-center gap-3 mb-8 border-b border-[#e3e2e0] pb-4">
                       <span className="material-symbols-outlined text-[#725a38]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>shield</span>
-                      <h4 className="text-lg font-medium text-[#435544] [font-family:'Public_Sans',sans-serif]">Security &amp; Connections</h4>
+                      <h4 className={`${dashboardTitle} text-[#435544]`}>Security &amp; Connections</h4>
                     </div>
                     <div className="space-y-8">
                       <div>
                         <h5 className="text-sm font-semibold text-[#1a1c1b] mb-4">Change Password</h5>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-                          <input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className="w-full bg-transparent border-0 border-b border-[#c3c8c0] py-2 text-[#1a1c1b] focus:ring-0 focus:border-[#435544] outline-none transition-colors placeholder:text-[#c3c8c0] text-sm" placeholder="Current password" type="password" />
-                          <input value={newPassword} onChange={e => setNewPassword(e.target.value)} className="w-full bg-transparent border-0 border-b border-[#c3c8c0] py-2 text-[#1a1c1b] focus:ring-0 focus:border-[#435544] outline-none transition-colors placeholder:text-[#c3c8c0] text-sm" placeholder="New password" type="password" />
+                          <input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className={`w-full px-4 py-3 text-sm text-[#1a1c1b] outline-none transition-colors placeholder:text-[#c3c8c0] focus:border-[#435544] focus:ring-1 focus:ring-[#435544] ${dashboardInset}`} placeholder="Current password" type="password" />
+                          <input value={newPassword} onChange={e => setNewPassword(e.target.value)} className={`w-full px-4 py-3 text-sm text-[#1a1c1b] outline-none transition-colors placeholder:text-[#c3c8c0] focus:border-[#435544] focus:ring-1 focus:ring-[#435544] ${dashboardInset}`} placeholder="New password" type="password" />
                         </div>
                         <button onClick={handleUpdatePassword} className="mt-4 text-xs font-bold text-[#435544] hover:underline uppercase tracking-wider">Update Password</button>
                       </div>
                       <div>
                         <h5 className="text-sm font-semibold text-[#1a1c1b] mb-4">Linked Accounts</h5>
-                        <div className="flex items-center justify-between p-4 bg-[#f4f3f1] rounded-xl border border-[#e3e2e0]">
+                        <div className={`flex items-center justify-between p-4 ${dashboardInset}`}>
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm">
                               <svg fill="none" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
@@ -374,9 +375,9 @@ export default function SettingsPage({
 
               {/* ── WHATSAPP ── */}
               {activeTab === 'whatsapp' && matchingTabs.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-[#efeeec] animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
                   <div className="mb-8 border-b border-[#e3e2e0] pb-4">
-                    <h2 className="text-xl font-medium text-[#435544] [font-family:'Public_Sans',sans-serif]">WhatsApp Studio</h2>
+                    <h2 className={`${dashboardTitle} text-[#435544]`}>WhatsApp Studio</h2>
                     <p className="text-sm text-[#434842] mt-1">Configurez les textes utilisés par les boutons WhatsApp. Les variables sont remplacées automatiquement.</p>
                   </div>
                   <div className="space-y-10">
@@ -391,13 +392,13 @@ export default function SettingsPage({
                             </button>
                           </div>
                           <textarea value={item.val} onChange={e => item.set(e.target.value)} rows={4}
-                            className="w-full bg-[#f4f3f1] border-none rounded-xl p-4 text-sm text-[#1a1c1b] focus:ring-2 focus:ring-[#435544]/20 outline-none transition-all resize-none" />
+                            className={`w-full p-4 text-sm text-[#1a1c1b] focus:ring-2 focus:ring-[#435544]/20 outline-none transition-all resize-none ${dashboardInset}`} />
                           <p className="text-[10px] text-[#747872] leading-relaxed">
                             Variables : {'{firstName}'}, {'{date}'}, {'{time}'}, {'{service}'}, {'{price}'}
                           </p>
                         </div>
                         {/* Chat bubble preview */}
-                        <div className="bg-[#e9e8e6] rounded-xl p-4 relative shadow-inner">
+                        <div className={`${dashboardInset} relative p-4 shadow-inner`}>
                           <div className="bg-[#dcf8c6] rounded-lg p-3 shadow-sm relative ml-4">
                             <p className="text-sm text-[#1a1c1b] leading-snug break-words">
                               {item.val.replace(/{firstName}/g,'Jean').replace(/{service}/g,'Massage').replace(/{date}/g,'21/04').replace(/{price}/g,'150').replace(/{time}/g,'14:30')}
@@ -420,10 +421,10 @@ export default function SettingsPage({
 
               {/* ── EMAIL ── */}
               {activeTab === 'email' && matchingTabs.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-[#efeeec] animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
                   <div className="flex items-center justify-between mb-8 border-b border-[#e3e2e0] pb-4">
                     <div>
-                      <h2 className="text-xl font-medium text-[#435544] [font-family:'Public_Sans',sans-serif]">Email Butler</h2>
+                      <h2 className={`${dashboardTitle} text-[#435544]`}>Email Butler</h2>
                       <p className="text-sm text-[#434842] mt-1">Configuration de la communication par email automatisée.</p>
                     </div>
                     <button onClick={() => setLocalEmailEnabled(!localEmailEnabled)} className={`w-12 h-6 rounded-full relative transition-colors ${localEmailEnabled ? 'bg-[#435544]' : 'bg-[#e3e2e0]'}`}>
@@ -434,9 +435,9 @@ export default function SettingsPage({
                     <div className="space-y-3">
                       <label className="text-[10px] uppercase tracking-[0.2em] text-[#747872] font-bold">Modèle de corps d'email</label>
                       <textarea value={localEmail} onChange={e => setLocalEmail(e.target.value)} rows={6}
-                        className="w-full bg-[#f4f3f1] border-none rounded-xl p-4 text-sm text-[#1a1c1b] focus:ring-2 focus:ring-[#435544]/20 outline-none transition-all resize-none" />
+                        className={`w-full p-4 text-sm text-[#1a1c1b] focus:ring-2 focus:ring-[#435544]/20 outline-none transition-all resize-none ${dashboardInset}`} />
                     </div>
-                    <div className="p-4 bg-[#f4f3f1] rounded-xl border border-[#e3e2e0] flex items-start gap-3 text-[#747872]">
+                    <div className={`flex items-start gap-3 p-4 text-[#747872] ${dashboardInset}`}>
                       <Info size={16} className="mt-0.5 shrink-0" />
                       <p className="text-xs">L'email inclura automatiquement votre logo et les détails du cabinet configurés dans la section Entité Cabinet.</p>
                     </div>
@@ -446,9 +447,9 @@ export default function SettingsPage({
 
               {/* ── CABINET ── */}
               {activeTab === 'cabinet' && matchingTabs.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-[#efeeec] animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
                   <div className="mb-8 border-b border-[#e3e2e0] pb-4">
-                    <h2 className="text-xl font-medium text-[#435544] [font-family:'Public_Sans',sans-serif]">Entité Cabinet</h2>
+                    <h2 className={`${dashboardTitle} text-[#435544]`}>Entité Cabinet</h2>
                     <p className="text-sm text-[#434842] mt-1">Identité légale et publique de votre pratique.</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
@@ -456,7 +457,7 @@ export default function SettingsPage({
                       <div key={f.label} className={`space-y-2 ${f.full ? 'md:col-span-2' : ''}`}>
                         <label className="text-[10px] uppercase tracking-[0.2em] text-[#747872] font-bold">{f.label}</label>
                         <input value={f.value} onChange={e => f.set(e.target.value)}
-                          className="w-full bg-transparent border-0 border-b border-[#c3c8c0] py-2 text-[#1a1c1b] focus:ring-0 focus:border-[#435544] outline-none transition-colors" />
+                          className={`w-full px-4 py-3 text-[#1a1c1b] focus:border-[#435544] focus:ring-1 focus:ring-[#435544] outline-none transition-colors ${dashboardInset}`} />
                       </div>
                     ))}
                     {normalizedSearch && filteredCabinetFields.length === 0 && (
@@ -470,16 +471,16 @@ export default function SettingsPage({
 
               {/* ── OBJECTIVES ── */}
               {activeTab === 'objectives' && matchingTabs.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-[#efeeec] animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
                   <div className="mb-8 border-b border-[#e3e2e0] pb-4">
-                    <h2 className="text-xl font-medium text-[#435544] [font-family:'Public_Sans',sans-serif]">Performance Cible</h2>
+                    <h2 className={`${dashboardTitle} text-[#435544]`}>Performance Cible</h2>
                     <p className="text-sm text-[#434842] mt-1">Objectifs et stratégie business.</p>
                   </div>
                   <div className="max-w-md">
                     <label className="text-[10px] uppercase tracking-[0.2em] text-[#747872] font-bold block mb-4">Objectif CA Mensuel</label>
                     <div className="relative">
                       <input type="number" value={localGoal} onChange={e => setLocalGoal(e.target.value)}
-                        className="w-full bg-[#f4f3f1] border-none rounded-xl h-16 px-6 text-3xl font-semibold text-[#1a1c1b] focus:ring-2 focus:ring-[#435544]/20 outline-none transition-all tabular-nums" />
+                        className={`w-full h-16 px-6 text-3xl font-semibold text-[#1a1c1b] focus:ring-2 focus:ring-[#435544]/20 outline-none transition-all tabular-nums ${dashboardInset}`} />
                       <span className="absolute right-6 top-1/2 -translate-y-1/2 text-sm text-[#747872] font-bold uppercase tracking-widest">CHF</span>
                     </div>
                     <p className="text-xs text-[#747872] mt-3">

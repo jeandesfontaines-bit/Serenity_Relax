@@ -6,6 +6,7 @@ import {
 import { Client, Appointment } from '../types';
 import { format, differenceInCalendarDays, endOfMonth, isWithinInterval, startOfMonth, subMonths } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
+import { dashboardChip, dashboardPanel, dashboardPanelSoft, dashboardPrimaryButton, dashboardSecondaryButton, dashboardTitle, dashboardTitleLg } from './dashboardTheme';
 
 type FilterKey = 'all' | 'new' | 'loyalty' | 'hiatus';
 type SortDir = 'asc' | 'desc';
@@ -390,7 +391,7 @@ export default function ClientsPage({
               initial={{ opacity: 0, y: 8, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.98 }}
-              className="absolute right-4 top-28 z-50 w-[340px] rounded-2xl border border-[#e3e2e0] bg-white p-5 shadow-2xl lg:right-8"
+              className="absolute right-4 top-28 z-50 w-[340px] rounded-[24px] border border-[#d9ddd7] bg-white p-5 shadow-[0_18px_40px_rgba(26,28,27,0.1)] lg:right-8"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -460,7 +461,7 @@ export default function ClientsPage({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 60, opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="shrink-0 overflow-hidden bg-[#1a1c1b] px-4 text-white lg:px-8"
+            className="shrink-0 overflow-hidden border-b border-[#d9ddd7] bg-[#435544] px-4 text-white lg:px-8"
           >
             <div className="flex h-[60px] items-center justify-between gap-4">
               <p className="text-sm font-medium">
@@ -470,7 +471,7 @@ export default function ClientsPage({
                 {selectedClients.size > 1 && (
                   <button
                     onClick={handleMerge}
-                    className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/15"
+                    className="flex items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
                   >
                     <GitPullRequest size={14} strokeWidth={1.75} />
                     Fusionner
@@ -478,14 +479,14 @@ export default function ClientsPage({
                 )}
                 <button
                   onClick={handleDelete}
-                  className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/15"
+                  className="flex items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
                 >
                   <Trash2 size={14} strokeWidth={1.75} />
                   Supprimer
                 </button>
                 <button
                   onClick={() => setSelectedClients(new Set())}
-                  className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10"
+                  className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/12"
                 >
                   <X size={14} strokeWidth={1.75} />
                   Effacer
@@ -499,7 +500,7 @@ export default function ClientsPage({
       <main className="flex-1 overflow-auto">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 lg:px-8 lg:py-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex max-w-full gap-2 overflow-x-auto rounded-xl bg-[#f4f3f1] p-1">
+            <div className="flex max-w-full gap-2 overflow-x-auto rounded-full border border-[#dde2db] bg-white p-1.5 shadow-[0_8px_24px_rgba(26,28,27,0.04)]">
               {FILTERS.map((filter) => (
                 <button
                   key={filter.id}
@@ -507,7 +508,7 @@ export default function ClientsPage({
                   className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm transition-all ${
                     activeFilter === filter.id
                       ? 'bg-[#435544] text-white shadow-sm'
-                      : 'text-[#434842] hover:text-[#435544]'
+                      : 'text-[#5e655f] hover:bg-[#f4f3f1] hover:text-[#435544]'
                   }`}
                 >
                   {filter.label} <span className="opacity-70">{filterCounts[filter.id]}</span>
@@ -515,7 +516,7 @@ export default function ClientsPage({
               ))}
             </div>
 
-            <button className="flex items-center gap-2 self-start text-sm font-semibold text-[#725a38] transition-colors hover:text-[#435544]">
+            <button className={`${dashboardSecondaryButton} flex items-center gap-2 self-start`}>
               <Download size={16} strokeWidth={1.75} />
               Download Full Report
             </button>
@@ -525,9 +526,9 @@ export default function ClientsPage({
             <EmptyState search={search} onNewClient={onNewClient} />
           ) : (
             <>
-              <div className="hidden overflow-hidden rounded-xl border border-[#e9e8e6] bg-white shadow-sm lg:block">
+              <div className={`hidden overflow-hidden lg:block ${dashboardPanel}`}>
                 <div
-                  className="grid items-center border-b border-[#e9e8e6] bg-[#f4f3f1]/50 px-5 py-4"
+                  className="grid items-center border-b border-[#e3e7e1] bg-[#f8f8f6] px-5 py-4"
                   style={{ gridTemplateColumns: gridTemplate }}
                 >
                   <div className="flex justify-center">
@@ -605,7 +606,7 @@ export default function ClientsPage({
 
               <section className="space-y-5 pt-2">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-['Public_Sans',sans-serif] text-xl font-bold text-[#435544]">
+                  <h2 className={`${dashboardTitleLg} text-[#435544]`}>
                     Analyse de fidélisation
                   </h2>
                 </div>
@@ -670,7 +671,7 @@ function Checkbox({
 function StatusBadge({ status }: { status: ClientStatus }) {
   const meta = STATUS_META[status];
   return (
-    <span className={`inline-flex items-center rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-[0.16em] ${meta.className}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] ${meta.className}`}>
       {meta.label}
     </span>
   );
@@ -678,7 +679,7 @@ function StatusBadge({ status }: { status: ClientStatus }) {
 
 function RitualBadge({ label }: { label: string }) {
   return (
-    <span className="inline-flex max-w-full truncate rounded px-2 py-1 text-xs font-semibold text-[#3a4b3b] bg-[#d4e8d2]/40">
+    <span className={dashboardChip + " inline-flex max-w-full truncate border-[#d4e8d2] bg-[#d4e8d2]/40 text-[#3a4b3b]"}>
       {label}
     </span>
   );
@@ -799,10 +800,10 @@ function ClientCard({
   return (
     <div
       onClick={() => onSelect(client)}
-      className={`rounded-xl border p-6 shadow-sm transition-all cursor-pointer ${
+      className={`cursor-pointer rounded-[24px] border p-6 shadow-[0_10px_30px_rgba(26,28,27,0.04)] transition-all ${
         isSelected
           ? 'border-[#435544] bg-[#faf9f7]'
-          : 'border-[#e9e8e6] bg-white active:scale-[0.99]'
+          : 'border-[#d9ddd7] bg-white active:scale-[0.99]'
       }`}
     >
       <div className="mb-4 flex items-start justify-between gap-4">
@@ -845,7 +846,7 @@ function ClientCard({
             e.stopPropagation();
             onSelect(client);
           }}
-          className="rounded-lg border border-[#435544]/20 px-4 py-2.5 text-sm font-bold text-[#435544] transition-colors hover:bg-[#d4e8d2]/30"
+          className="rounded-xl border border-[#c8cdc6] px-4 py-2.5 text-sm font-bold text-[#435544] transition-colors hover:bg-[#f4f3f1]"
         >
           Voir les notes
         </button>
@@ -855,7 +856,7 @@ function ClientCard({
             e.stopPropagation();
             onSchedule(client);
           }}
-          className="rounded-lg bg-[#435544] px-4 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+          className={`${dashboardPrimaryButton} rounded-xl px-4 py-2.5 text-sm`}
         >
           Planifier
         </button>
@@ -876,12 +877,12 @@ function InsightCard({
   detail: string;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-[#efeeec] p-6">
+    <div className={`${dashboardPanelSoft} relative overflow-hidden p-6`}>
       <div className="relative z-10">
         <p className="text-sm font-medium text-[#747872]">{label}</p>
         <div className="mt-1 flex items-baseline gap-2">
-          <span className="text-2xl font-bold text-[#435544]">{value}</span>
-          <span className="text-xs font-bold text-[#5b6d5b]/70">{detail}</span>
+        <span className="text-2xl font-bold text-[#435544]">{value}</span>
+        <span className="text-xs font-bold text-[#5b6d5b]/70">{detail}</span>
         </div>
       </div>
       <div className="absolute bottom-0 right-0 opacity-10 text-[#435544]">
@@ -931,7 +932,7 @@ function TrendCard({
   maxTrend: number;
 }) {
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-[#fcdaaf] bg-[#fcdaaf]/30 p-6">
+    <div className="flex flex-col justify-between rounded-[24px] border border-[#ead5b5] bg-[#fcdaaf]/28 p-6 shadow-[0_10px_30px_rgba(26,28,27,0.03)]">
       <div>
         <p className="text-sm font-bold text-[#775e3c]">Analyse de tendance</p>
         <p className="mt-1 text-xs text-[#775e3c]/70">Clients actifs uniques sur les 6 derniers mois</p>
@@ -958,12 +959,12 @@ function TrendCard({
 
 function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?: string) => void }) {
   return (
-    <div className="flex min-h-[420px] flex-col items-center justify-center gap-8 rounded-2xl border border-[#e9e8e6] bg-white px-6 py-16 text-center">
+    <div className={`flex min-h-[420px] flex-col items-center justify-center gap-8 px-6 py-16 text-center ${dashboardPanel}`}>
       <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#f4f3f1]">
         <Users size={32} strokeWidth={1.2} className="text-[#747872]" />
       </div>
       <div className="space-y-3">
-        <h2 className="font-['Public_Sans',sans-serif] text-2xl font-semibold text-[#1a1c1b]">
+        <h2 className={dashboardTitleLg}>
           Aucun client trouvé
         </h2>
         <p className="mx-auto max-w-md text-sm leading-relaxed text-[#747872]">
@@ -974,7 +975,7 @@ function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?:
       </div>
       <button
         onClick={() => onNewClient(search.trim() || undefined)}
-        className="flex items-center gap-2 rounded-xl bg-[#435544] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+        className={`${dashboardPrimaryButton} flex items-center gap-2 rounded-xl px-5 py-3 text-sm`}
       >
         <Plus size={16} strokeWidth={1.9} />
         Créer un client

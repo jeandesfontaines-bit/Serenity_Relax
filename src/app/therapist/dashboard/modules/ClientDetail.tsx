@@ -3,6 +3,7 @@ import { ChevronRight, CreditCard, ShieldCheck } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Appointment, Client } from '../types';
+import { dashboardPanel, dashboardPanelSoft, dashboardTitle, dashboardTitleLg, dashboardSecondaryButton } from './dashboardTheme';
 
 interface ClientDetailProps {
   client: Client;
@@ -172,9 +173,9 @@ export default function ClientDetail({
   ].filter(Boolean).join(' • ');
 
   return (
-    <div className="flex-1 overflow-auto bg-[#efeeec] text-[#1a1c1b] [font-family:'Manrope',sans-serif]">
+    <div className="flex-1 overflow-auto bg-[#faf9f7] text-[#1a1c1b] [font-family:'Manrope',sans-serif]">
       <main className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-        <section className="mb-6 rounded-[24px] border border-[#c3c8c0] bg-white p-6 shadow-[0_10px_30px_rgba(26,28,27,0.04)]">
+        <section className={`mb-6 p-6 ${dashboardPanel}`}>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="min-w-0">
               <div className="mb-2 flex flex-wrap items-center gap-3">
@@ -229,7 +230,7 @@ export default function ClientDetail({
         </section>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          <section className="rounded-[24px] border border-[#c3c8c0] bg-white p-6 lg:col-span-4">
+          <section className={`${dashboardPanel} p-6 lg:col-span-4`}>
             <SectionHeader icon="badge" title="Informations personnelles" />
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -246,7 +247,7 @@ export default function ClientDetail({
             </div>
           </section>
 
-          <section className="rounded-[24px] border border-[#c3c8c0] bg-white p-6 lg:col-span-8">
+          <section className={`${dashboardPanel} p-6 lg:col-span-8`}>
             <SectionHeader icon="monitoring" title="Vue clinique" />
 
             <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -288,7 +289,7 @@ export default function ClientDetail({
 
           <section
             id="client-history"
-            className="overflow-hidden rounded-[24px] border border-[#c3c8c0] bg-white lg:col-span-7"
+            className={`overflow-hidden lg:col-span-7 ${dashboardPanel}`}
           >
             <div className="flex items-center justify-between border-b border-[#c3c8c0]/70 px-6 py-5">
               <SectionHeader icon="history" title="Historique des seances" noMargin />
@@ -374,7 +375,7 @@ export default function ClientDetail({
             )}
           </section>
 
-          <section className="flex flex-col rounded-[24px] border border-[#c3c8c0] bg-white p-6 lg:col-span-5">
+          <section className={`flex flex-col p-6 lg:col-span-5 ${dashboardPanel}`}>
             <div className="mb-4 flex items-center justify-between border-b border-[#c3c8c0]/60 pb-4">
               <SectionHeader icon="clinical_notes" title="Notes de suivi" noMargin />
               <span className="inline-flex items-center gap-1.5 rounded-full border border-[#c3c8c0] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#434842]">
@@ -410,7 +411,7 @@ export default function ClientDetail({
         </div>
 
         <section className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-12">
-          <div className="rounded-[24px] border border-[#c3c8c0] bg-white p-6 xl:col-span-4">
+          <div className={`${dashboardPanel} p-6 xl:col-span-4`}>
             <SectionHeader icon="payments" title="Synthese facturation" />
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 xl:grid-cols-1">
@@ -420,7 +421,7 @@ export default function ClientDetail({
             </div>
           </div>
 
-          <div className="rounded-[24px] border border-[#c3c8c0] bg-white p-6 xl:col-span-4">
+          <div className={`${dashboardPanel} p-6 xl:col-span-4`}>
             <SectionHeader icon="warning" title="Paiements en attente" />
 
             {unpaidAppts.length > 0 ? (
@@ -443,7 +444,7 @@ export default function ClientDetail({
             )}
           </div>
 
-          <div className="rounded-[24px] border border-[#c3c8c0] bg-white p-6 xl:col-span-4">
+          <div className={`${dashboardPanel} p-6 xl:col-span-4`}>
             <SectionHeader icon="receipt_long" title="Historique paiements" />
 
             {paidAppts.length > 0 ? (

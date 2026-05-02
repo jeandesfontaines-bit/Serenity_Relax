@@ -517,8 +517,8 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                     </div>
                   </nav>
 
-                  <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
-                    <div className="space-y-10 lg:col-span-7 xl:space-y-12">
+                  <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-8 xl:gap-10">
+                    <div className="space-y-8 lg:col-span-7 xl:space-y-10">
                       <div className="flex items-end justify-between">
                         <div>
                           <span className="mb-6 block font-serif text-[10px] uppercase tracking-[0.45em] text-zinc-300">02 / TEMPORALITÉ</span>
@@ -531,8 +531,8 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                         </button>
                       </div>
 
-                      <section className="rounded-[28px] bg-white p-6 shadow-[0_4px_30px_rgba(0,0,0,0.02)] md:p-8 lg:p-8 xl:rounded-[32px] xl:p-12">
-                        <div className="mb-8 flex flex-col items-center justify-center gap-5 text-center md:mb-10">
+                      <section className="rounded-[24px] border border-zinc-200 bg-white p-5 shadow-[0_12px_24px_rgba(0,0,0,0.03)] md:p-6 lg:p-6 xl:rounded-[28px] xl:p-8">
+                        <div className="mb-6 flex flex-col items-center justify-center gap-4 text-center md:mb-8">
                           <div>
                             <h3 className="font-serif text-[26px] font-semibold text-[#435544] md:text-[30px] xl:text-[34px]">
                               {format(currentMonth, 'MMMM yyyy', { locale: fr })}
@@ -541,11 +541,11 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                               Heure locale: Europe/Paris
                             </p>
                           </div>
-                          <div className="flex gap-4">
-                            <button onClick={handlePrevMonth} className="rounded-full border border-zinc-200 p-3 text-[#435544] transition-colors hover:bg-zinc-50">
+                          <div className="flex gap-3">
+                            <button onClick={handlePrevMonth} className="rounded-full border border-zinc-200 p-2.5 text-[#435544] transition-colors hover:bg-zinc-50">
                               <ChevronLeft size={18} strokeWidth={1.6} />
                             </button>
-                            <button onClick={handleNextMonth} className="rounded-full border border-zinc-200 p-3 text-[#435544] transition-colors hover:bg-zinc-50">
+                            <button onClick={handleNextMonth} className="rounded-full border border-zinc-200 p-2.5 text-[#435544] transition-colors hover:bg-zinc-50">
                               <ChevronRight size={18} strokeWidth={1.6} />
                             </button>
                           </div>
@@ -598,7 +598,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
 
                       <AnimatePresence>
                         {selectedDate && (
-                          <motion.div ref={timeSlotsRef} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-10 xl:space-y-12">
+                          <motion.div ref={timeSlotsRef} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4 xl:space-y-5">
                             {[
                               { key: 'morning', label: 'Matin', icon: Sun, slots: groupedSelectedDateSlots.morning },
                               { key: 'afternoon', label: 'Après-midi', icon: Sparkles, slots: groupedSelectedDateSlots.afternoon },
@@ -608,12 +608,14 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                               .map((group) => {
                                 const Icon = group.icon;
                                 return (
-                                  <section key={group.key} className="space-y-5">
-                                    <div className="flex items-center gap-4">
-                                      <Icon size={24} strokeWidth={1.8} className="text-[#725a38]" />
-                                      <h3 className="font-serif text-[22px] font-semibold text-zinc-900 xl:text-[26px]">{group.label}</h3>
+                                  <section key={group.key} className="rounded-[24px] border border-zinc-200 bg-white p-5 shadow-[0_12px_24px_rgba(0,0,0,0.03)] xl:rounded-[28px] xl:p-6">
+                                    <div className="mb-4 flex items-center gap-3">
+                                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-50 text-[#725a38]">
+                                        <Icon size={18} strokeWidth={1.8} />
+                                      </div>
+                                      <h3 className="font-serif text-[22px] font-semibold text-zinc-900 xl:text-[24px]">{group.label}</h3>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+                                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
                                       {group.slots.map((slot) => (
                                         <button
                                           key={slot}
@@ -633,7 +635,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                               })}
 
                             {getFreeSlotsForDate(selectedDate).length === 0 && (
-                              <div className="rounded-2xl border border-zinc-200 bg-zinc-50 px-5 py-4 text-sm text-zinc-500">
+                              <div className="rounded-2xl border border-zinc-200 bg-white px-5 py-4 text-sm text-zinc-500 shadow-[0_12px_24px_rgba(0,0,0,0.03)]">
                                 Aucun créneau disponible pour cette date.
                               </div>
                             )}
