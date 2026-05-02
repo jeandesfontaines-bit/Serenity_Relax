@@ -189,18 +189,11 @@ export default function BookingModal({
               >
                 {/* Selected client recap */}
                 <div className="flex items-center justify-between p-4 bg-white border border-zinc-100">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 bg-zinc-900 text-white flex items-center justify-center font-serif text-xs shrink-0">
-                      {isCreatingNew
-                        ? search[0]?.toUpperCase()
-                        : `${selectedClient?.firstName?.[0]}${selectedClient?.lastName?.[0]}`}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-serif text-sm text-zinc-900 truncate tracking-tight">
-                        {isCreatingNew ? search : `${selectedClient?.firstName} ${selectedClient?.lastName}`}
-                      </p>
-                      {isCreatingNew && <p className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400">Nouveau client</p>}
-                    </div>
+                  <div className="min-w-0">
+                    <p className="font-serif text-sm text-zinc-900 truncate tracking-tight">
+                      {isCreatingNew ? search : `${selectedClient?.firstName} ${selectedClient?.lastName}`}
+                    </p>
+                    {isCreatingNew && <p className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400">Nouveau client</p>}
                   </div>
                   <button
                     onClick={() => setStep('client')}

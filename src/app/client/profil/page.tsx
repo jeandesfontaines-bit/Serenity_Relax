@@ -10,6 +10,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 export default function ClientProfil() {
   const { user, isUserLoading: userLoading } = useUser();
   const firestore = useFirestore();
+  const [sessionClientId, setSessionClientId] = useState<string | null>(null);
 
   const [activeTab, setActiveTab] = useState<'info' | 'preferences' | 'history' | 'security'>('info');
   const [isEditing, setIsEditing] = useState(false);
@@ -26,29 +27,35 @@ export default function ClientProfil() {
   });
 
   useEffect(() => {
+    setSessionClientId(sessionStorage.getItem('serenity_client_id'));
+  }, []);
+
+  const effectiveClientId = user?.uid || sessionClientId;
+
+  useEffect(() => {
     async function fetchProfile() {
-      if (!user?.uid || !firestore) return;
-      const d = await getDoc(doc(firestore, 'clients', user.uid));
+      if (!effectiveClientId || !firestore) return;
+      const d = await getDoc(doc(firestore, 'clients', effectiveClientId));
       if (d.exists()) {
         const data = d.data();
         setProfile({
           firstName: data.firstName || '',
           lastName: data.lastName || '',
-          email: user.email || '',
+          email: user?.email || data.email || '',
           phone: data.phone || '',
           city: data.city || 'Genève',
           notes: data.notes || '',
         });
       }
     }
-    if (!userLoading && user) fetchProfile();
-  }, [user, userLoading, firestore]);
+    if (!userLoading && effectiveClientId) fetchProfile();
+  }, [effectiveClientId, user, userLoading, firestore]);
 
   const handleSave = async () => {
-    if (!user?.uid || !firestore) return;
+    if (!effectiveClientId || !firestore) return;
     setUpdating(true);
     try {
-      await updateDoc(doc(firestore, 'clients', user.uid), {
+      await updateDoc(doc(firestore, 'clients', effectiveClientId), {
         firstName: profile.firstName,
         lastName: profile.lastName,
         phone: profile.phone,

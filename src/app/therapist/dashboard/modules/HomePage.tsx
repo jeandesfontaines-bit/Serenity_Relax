@@ -8,6 +8,7 @@ interface HomePageProps {
   onSelectAppt: (appt: Appointment) => void;
   onNavigate: (tab: string) => void;
   onEditGoal: () => void;
+  searchQuery: string;
 }
 
 const filledIcon = {
@@ -74,23 +75,46 @@ function formatDayLabel(dateStr?: string) {
   return format(date, 'MMM d').toUpperCase();
 }
 
+function normalizeSearchQuery(value?: string) {
+  return (value || '').trim().toLowerCase();
+}
+
+function appointmentMatchesSearch(appt: Appointment, query: string) {
+  if (!query) return true;
+  const haystack = [
+    appt.clientNameSnapshot,
+    appt.title,
+    appt.serviceName,
+    appt.notes,
+    appt.date,
+    appt.time,
+    appt.status,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  return haystack.includes(query);
+}
+
 export default function HomePage({
   appointments,
   monthlyGoal,
   onSelectAppt,
   onNavigate,
   onEditGoal,
+  searchQuery,
 }: HomePageProps) {
   const now = new Date();
   const todayStr = format(now, 'yyyy-MM-dd');
   const currentMonth = format(now, 'yyyy-MM');
+  const normalizedSearch = normalizeSearchQuery(searchQuery);
 
   const todayAppts = useMemo(
     () =>
       appointments
-        .filter((appt) => appt.date === todayStr)
+        .filter((appt) => appt.date === todayStr && appointmentMatchesSearch(appt, normalizedSearch))
         .sort((a, b) => (a.time || '').localeCompare(b.time || '')),
-    [appointments, todayStr],
+    [appointments, normalizedSearch, todayStr],
   );
 
   const paidThisMonth = useMemo(
@@ -119,10 +143,10 @@ export default function HomePage({
   const progressNotes = useMemo(
     () =>
       appointments
-        .filter((appt) => appt.notes && appt.notes.trim())
+        .filter((appt) => appt.notes && appt.notes.trim() && appointmentMatchesSearch(appt, normalizedSearch))
         .sort((a, b) => `${b.date || ''}${b.time || ''}`.localeCompare(`${a.date || ''}${a.time || ''}`))
         .slice(0, 2),
-    [appointments],
+    [appointments, normalizedSearch],
   );
 
   const revenueChange = monthlyGoal > 0 ? Math.round((paidThisMonth / monthlyGoal) * 100) : 0;
@@ -130,20 +154,13 @@ export default function HomePage({
 
   return (
     <div className="mx-auto max-w-7xl space-y-10 p-4 md:p-10">
-      <section className="space-y-2">
-        <h2 className="text-3xl font-light text-stone-900 [font-family:'Public_Sans',sans-serif]">
-          Welcome back, <span className="font-semibold text-[#435544]">João</span>
-        </h2>
-        <p className="flex items-center gap-2 text-stone-500">
-          <span className="material-symbols-outlined text-[18px]" style={outlinedIcon}>
-            calendar_today
-          </span>
-          <span>
-            Today is {todayLabel}. You have{' '}
-            <span className="font-medium text-[#435544]">{todayAppts.length} sessions</span> remaining for the day.
-          </span>
-        </p>
-      </section>
+      {normalizedSearch && (
+        <section className="space-y-2">
+          <p className="text-sm text-stone-500">
+            Filtre actif : <span className="font-medium text-[#435544]">{searchQuery.trim()}</span>
+          </p>
+        </section>
+      )}
 
       <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <MetricCard
@@ -224,7 +241,7 @@ export default function HomePage({
               })
             ) : (
               <div className="rounded-[24px] border border-dashed border-stone-200 bg-white p-10 text-center text-stone-500">
-                No sessions scheduled for today.
+                {normalizedSearch ? 'Aucune séance ne correspond à cette recherche aujourd’hui.' : 'No sessions scheduled for today.'}
               </div>
             )}
           </div>
@@ -263,7 +280,7 @@ export default function HomePage({
                 ))
               ) : (
                 <div className="rounded-2xl border border-stone-100 bg-white/60 p-4 text-sm text-stone-500">
-                  No recent notes available yet.
+                  {normalizedSearch ? 'Aucune note récente ne correspond à cette recherche.' : 'No recent notes available yet.'}
                 </div>
               )}
             </div>

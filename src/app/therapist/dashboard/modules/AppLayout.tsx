@@ -1,17 +1,67 @@
 import React from 'react';
+import { Ban, CheckCircle2, ChevronLeft, ChevronRight, Lock, Plus, Settings, SlidersHorizontal, Calendar, Download, Filter } from 'lucide-react';
 
 interface AppLayoutProps {
   children: React.ReactNode;
   activePage: string;
   onNavigate: (page: string) => void;
+  globalSearch: string;
+  onGlobalSearchChange: (value: string) => void;
+  dashboardSummary?: {
+    title: string;
+    subtitle: string;
+  };
+  schedulerToolbar?: {
+    eyebrow: string;
+    title: string;
+    view: 'month' | 'week';
+    onPrev: () => void;
+    onNext: () => void;
+    onToday: () => void;
+    onToggleView: (view: 'month' | 'week') => void;
+    blockMode: boolean;
+    absenceMode: boolean;
+    absencePendingCount: number;
+    onToggleBlockMode: () => void;
+    onToggleAbsenceMode: () => void;
+    onOpenSettings: () => void;
+  };
+  clientsToolbar?: {
+    title: string;
+    subtitle: string;
+    onToggleFilters: () => void;
+    onAddClient: () => void;
+  };
+  clientDetailToolbar?: {
+    eyebrow: string;
+    title: string;
+    onBack: () => void;
+    onOpenHistory: () => void;
+    onOpenNotes: () => void;
+  };
+  financeToolbar?: {
+    title: string;
+    subtitle: string;
+    showDateRange: boolean;
+    dateRange: { start: string; end: string };
+    onDateRangeChange: (range: { start: string; end: string }) => void;
+    onToggleDateFilter: () => void;
+    onExport: () => void;
+    selectedCount: number;
+  };
+  settingsToolbar?: {
+    title: string;
+    subtitle: string;
+    statusLabel?: string;
+  };
 }
 
 const NAV_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+  { id: 'dashboard', label: 'Tableau de bord', icon: 'dashboard' },
   { id: 'scheduler', label: 'Agenda', icon: 'calendar_today' },
   { id: 'clients', label: 'Clients', icon: 'group' },
   { id: 'accounting', label: 'Finances', icon: 'payments' },
-  { id: 'settings', label: 'Settings', icon: 'settings' },
+  { id: 'settings', label: 'Paramètres', icon: 'settings' },
 ];
 
 const filledIcon = {
@@ -27,9 +77,32 @@ function isActive(itemId: string, activePage: string) {
   return itemId === activePage;
 }
 
-export default function AppLayout({ children, activePage, onNavigate }: AppLayoutProps) {
+export default function AppLayout({
+  children,
+  activePage,
+  onNavigate,
+  globalSearch,
+  onGlobalSearchChange,
+  dashboardSummary,
+  schedulerToolbar,
+  clientsToolbar,
+  clientDetailToolbar,
+  financeToolbar,
+  settingsToolbar,
+}: AppLayoutProps) {
+  const searchPlaceholder =
+    activePage === 'scheduler'
+      ? 'Rechercher un rendez-vous...'
+      : activePage === 'clients' || activePage === 'client-detail'
+        ? 'Rechercher un client...'
+        : activePage === 'accounting'
+          ? 'Rechercher une transaction...'
+          : activePage === 'settings'
+            ? 'Rechercher un réglage...'
+            : 'Rechercher des rendez-vous, clients ou notes...';
+
   return (
-    <div className="min-h-screen bg-[#faf9f7] text-[#1a1c1b] [font-family:'Manrope',sans-serif]">
+    <div className="h-screen h-dvh overflow-hidden bg-[#faf9f7] text-[#1a1c1b] [font-family:'Manrope',sans-serif]">
       <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-stone-200 bg-stone-50 p-6 md:flex">
         <div className="mb-10 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[#435544] text-white shadow-sm">
@@ -41,7 +114,7 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
             <h1 className="text-xl font-semibold tracking-tight text-emerald-900 [font-family:'Public_Sans',sans-serif]">
               Serene Sanctuary
             </h1>
-            <p className="text-xs tracking-wide text-stone-600">Therapist Portal</p>
+            <p className="text-xs tracking-wide text-stone-600">Portail thérapeute</p>
           </div>
         </div>
 
@@ -75,56 +148,305 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
             <span className="material-symbols-outlined text-[20px]" style={filledIcon}>
               add
             </span>
-            <span>New Appointment</span>
+            <span>Nouveau rendez-vous</span>
           </button>
 
-          <button className="flex items-center gap-3 px-4 py-3 text-sm text-stone-500 transition-all hover:text-stone-800">
-            <span className="material-symbols-outlined" style={outlinedIcon}>
-              help_outline
-            </span>
-            <span>Help Center</span>
-          </button>
-
-          <div className="flex items-center gap-3 border-t border-stone-100 px-2 py-4">
-            <img
-              alt="Professional therapist profile picture"
-              className="h-10 w-10 rounded-full object-cover ring-2 ring-emerald-100"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8xKgNfzfZUWy66iEIdCMM4ahzz9yHPFmnVE49KnBWdSm9KkxUxaIBOfjmnG6XI29zXRvzmbVwOndpeqF4zNQka8dBtbXGnBNsK8Rl7rvFD80XICiMiVSn00Mj32j9WD8mkeloPI3OEnCh-f4iKGXd88L7di39K-k8i4yHkLfEozl-vn_R_v9-aRATbYREguISElVGYMTbsq3yU_I3wHqOzpCghBjhJE0-AzHm7LRwD7AkLbzBLbvx6joz3hsVAdLWxM8yIWB7Y-c"
-            />
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-stone-900">João Silva</p>
-              <p className="truncate text-xs text-stone-500">Holistic Practitioner</p>
-            </div>
-          </div>
         </div>
       </aside>
 
-      <div className="flex min-h-screen flex-col pb-20 md:ml-64 md:pb-0">
-        <header className="sticky top-0 z-40 flex items-center justify-between border-b border-stone-100 bg-stone-50/80 px-4 py-4 backdrop-blur-xl md:px-8">
-          <div className="relative w-full max-w-96">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-stone-400" style={outlinedIcon}>
-              search
-            </span>
-            <input
-              type="text"
-              placeholder="Search appointments, clients, or notes..."
-              className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
-            />
-          </div>
+      <div className="flex h-full flex-col pb-20 md:ml-64 md:pb-0">
+        <header className="shrink-0 z-40 border-b border-stone-100 bg-stone-50/80 px-4 py-4 backdrop-blur-xl md:px-8">
+          {activePage === 'scheduler' && schedulerToolbar ? (
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+              <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
+                <div className="min-w-0">
+                  <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.35em] text-[#747872]">
+                    {schedulerToolbar.eyebrow}
+                  </span>
+                  <h2 className="truncate font-['Public_Sans',sans-serif] text-2xl font-bold tracking-tight text-[#1a1c1b] capitalize">
+                    {schedulerToolbar.title}
+                  </h2>
+                </div>
 
-          <div className="ml-4 hidden items-center gap-6 md:flex">
-            <button className="relative text-stone-500 transition-colors hover:text-emerald-700">
-              <span className="material-symbols-outlined" style={outlinedIcon}>
-                notifications
-              </span>
-              <span className="absolute right-0 top-0 h-2 w-2 rounded-full border-2 border-white bg-[#ba1a1a]" />
-            </button>
-            <button className="text-stone-500 transition-colors hover:text-emerald-700">
-              <span className="material-symbols-outlined" style={outlinedIcon}>
-                account_circle
-              </span>
-            </button>
-          </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={schedulerToolbar.onPrev}
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-[#434842] transition-colors hover:bg-[#efeeec]"
+                  >
+                    <ChevronLeft size={18} strokeWidth={1.5} />
+                  </button>
+                  <button
+                    onClick={schedulerToolbar.onToday}
+                    className="rounded-full border border-[#c3c8c0] bg-white px-4 py-2 text-sm font-semibold text-[#1a1c1b] transition-colors hover:bg-[#f4f3f1]"
+                  >
+                    Aujourd&apos;hui
+                  </button>
+                  <button
+                    onClick={schedulerToolbar.onNext}
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-[#434842] transition-colors hover:bg-[#efeeec]"
+                  >
+                    <ChevronRight size={18} strokeWidth={1.5} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-end">
+                <div className="flex items-center gap-3">
+                  <div className="flex rounded-full bg-[#efeeec] p-1">
+                    {(['week', 'month'] as const).map((view) => (
+                      <button
+                        key={view}
+                        onClick={() => schedulerToolbar.onToggleView(view)}
+                        className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                          schedulerToolbar.view === view ? 'bg-white text-[#435544] shadow-sm' : 'text-[#434842] hover:text-[#1a1c1b]'
+                        }`}
+                      >
+                        {view === 'week' ? 'Semaine' : 'Mois'}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={schedulerToolbar.onToggleBlockMode}
+                    className={`hidden h-11 items-center gap-2 rounded-full border px-4 text-sm font-semibold transition-all sm:flex ${
+                      schedulerToolbar.blockMode
+                        ? 'border-[#435544] bg-[#435544] text-white'
+                        : 'border-[#c3c8c0] bg-white text-[#1a1c1b] hover:bg-[#f4f3f1]'
+                    }`}
+                  >
+                    <Lock size={14} strokeWidth={1.6} />
+                    Créneaux
+                  </button>
+
+                  <button
+                    onClick={schedulerToolbar.onToggleAbsenceMode}
+                    className={`flex h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-all ${
+                      schedulerToolbar.absenceMode
+                        ? 'bg-[#1a1c1b] text-white'
+                        : 'border border-[#c3c8c0] bg-white text-[#1a1c1b] hover:bg-[#f4f3f1]'
+                    }`}
+                  >
+                    {schedulerToolbar.absenceMode ? <CheckCircle2 size={14} strokeWidth={1.6} /> : <Ban size={14} strokeWidth={1.6} />}
+                    <span>
+                      {schedulerToolbar.absenceMode ? `Valider (${schedulerToolbar.absencePendingCount})` : 'Absences'}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={schedulerToolbar.onOpenSettings}
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c3c8c0] bg-white text-[#1a1c1b] transition-colors hover:bg-[#f4f3f1]"
+                    aria-label="Ouvrir la configuration"
+                  >
+                    <Settings size={16} strokeWidth={1.6} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : activePage === 'client-detail' && clientDetailToolbar ? (
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-4">
+                <button
+                  onClick={clientDetailToolbar.onBack}
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#c3c8c0] bg-white text-[#434842] transition-colors hover:bg-[#f4f3f1]"
+                  aria-label="Retour a la liste des clients"
+                >
+                  <ChevronLeft size={20} strokeWidth={1.7} />
+                </button>
+
+                <div className="min-w-0">
+                  <p className="truncate text-[11px] font-semibold uppercase tracking-[0.3em] text-[#747872]">
+                    {clientDetailToolbar.eyebrow}
+                  </p>
+                  <h2 className="truncate text-3xl font-semibold leading-none text-[#435544] [font-family:'Public_Sans',sans-serif]">
+                    {clientDetailToolbar.title}
+                  </h2>
+                </div>
+              </div>
+
+              <div className="hidden items-center gap-3 sm:flex">
+                <button
+                  onClick={clientDetailToolbar.onOpenHistory}
+                  className="rounded-full border border-[#c3c8c0] bg-white px-6 py-3 text-sm font-semibold text-[#434842] transition-colors hover:bg-[#f4f3f1]"
+                >
+                  Historique
+                </button>
+                <button
+                  onClick={clientDetailToolbar.onOpenNotes}
+                  className="rounded-full border border-[#c3c8c0] bg-white px-6 py-3 text-sm font-semibold text-[#434842] transition-colors hover:bg-[#f4f3f1]"
+                >
+                  Notes
+                </button>
+              </div>
+            </div>
+          ) : activePage === 'clients' && clientsToolbar ? (
+            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(320px,384px)_minmax(0,1fr)] lg:items-center">
+              <div className="min-w-0">
+                <h2 className="truncate text-2xl font-semibold tracking-tight text-[#435544] [font-family:'Public_Sans',sans-serif]">
+                  {clientsToolbar.title}
+                </h2>
+                <p className="mt-1 truncate text-sm text-[#747872]">
+                  {clientsToolbar.subtitle}
+                </p>
+              </div>
+
+              <div className="relative w-full max-w-96">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-stone-400" style={outlinedIcon}>
+                  search
+                </span>
+                <input
+                  type="text"
+                  value={globalSearch}
+                  onChange={(e) => onGlobalSearchChange(e.target.value)}
+                  placeholder={searchPlaceholder}
+                  className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
+                />
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
+                <button
+                  onClick={clientsToolbar.onToggleFilters}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
+                >
+                  <SlidersHorizontal size={16} strokeWidth={1.75} />
+                  Filtres avancés
+                </button>
+
+                <button
+                  onClick={clientsToolbar.onAddClient}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-[#435544] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                >
+                  <Plus size={16} strokeWidth={1.9} />
+                  Ajouter un client
+                </button>
+              </div>
+            </div>
+          ) : activePage === 'accounting' && financeToolbar ? (
+            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(320px,384px)_minmax(0,1fr)] lg:items-center">
+              <div className="min-w-0">
+                <div className="text-xl font-normal tracking-tight text-[#435544] [font-family:'Public_Sans',sans-serif]">
+                  {financeToolbar.title} <span className="mx-2 text-sm text-[#747872]/40">/</span>
+                  <span className="text-base text-[#747872]">{financeToolbar.subtitle}</span>
+                </div>
+              </div>
+
+              <div className="relative w-full max-w-96">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-stone-400" style={outlinedIcon}>
+                  search
+                </span>
+                <input
+                  type="text"
+                  value={globalSearch}
+                  onChange={(e) => onGlobalSearchChange(e.target.value)}
+                  placeholder={searchPlaceholder}
+                  className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
+                />
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
+                {financeToolbar.showDateRange && (
+                  <div className="flex items-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-3 py-2.5">
+                    <Calendar size={14} strokeWidth={1.6} className="text-[#747872]" />
+                    <input
+                      type="date"
+                      value={financeToolbar.dateRange.start}
+                      onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, start: e.target.value })}
+                      className="bg-transparent text-sm text-[#434842] outline-none"
+                    />
+                    <span className="text-[#c3c8c0]">→</span>
+                    <input
+                      type="date"
+                      value={financeToolbar.dateRange.end}
+                      onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, end: e.target.value })}
+                      className="bg-transparent text-sm text-[#434842] outline-none"
+                    />
+                  </div>
+                )}
+                
+                <button
+                  onClick={financeToolbar.onToggleDateFilter}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
+                >
+                  <Filter size={16} strokeWidth={1.75} />
+                  Filtre par date
+                </button>
+
+                <button
+                  onClick={financeToolbar.onExport}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
+                >
+                  <Download size={16} strokeWidth={1.75} />
+                  {financeToolbar.selectedCount > 0 ? `Exporter (${financeToolbar.selectedCount})` : 'Exporter'}
+                </button>
+              </div>
+            </div>
+          ) : activePage === 'settings' && settingsToolbar ? (
+            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(320px,384px)_minmax(0,1fr)] lg:items-center">
+              <div className="min-w-0">
+                <h2 className="truncate text-2xl font-semibold tracking-tight text-[#435544] [font-family:'Public_Sans',sans-serif]">
+                  {settingsToolbar.title}
+                </h2>
+                <p className="mt-1 text-sm text-[#747872]">
+                  {settingsToolbar.subtitle}
+                </p>
+              </div>
+
+              <div className="relative w-full max-w-96">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-stone-400" style={outlinedIcon}>
+                  search
+                </span>
+                <input
+                  type="text"
+                  value={globalSearch}
+                  onChange={(e) => onGlobalSearchChange(e.target.value)}
+                  placeholder={searchPlaceholder}
+                  className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
+                />
+              </div>
+
+              <div className="flex items-center justify-start lg:justify-end">
+                {settingsToolbar.statusLabel ? (
+                  <span className="rounded-full border border-[#d4e8d2] bg-[#f4fbf3] px-3 py-1.5 text-xs font-semibold text-[#435544]">
+                    {settingsToolbar.statusLabel}
+                  </span>
+                ) : (
+                  <div className="hidden lg:block" />
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(320px,384px)_minmax(0,1fr)] lg:items-center">
+              {activePage === 'dashboard' && dashboardSummary ? (
+              <div className="min-w-0">
+                <p className="truncate text-xl font-semibold tracking-tight text-stone-900 [font-family:'Public_Sans',sans-serif]">
+                  {dashboardSummary.title}
+                </p>
+                <div className="mt-1 flex items-center gap-2 text-sm text-stone-500">
+                  <span className="material-symbols-outlined text-[18px]" style={outlinedIcon}>
+                    calendar_today
+                  </span>
+                  <span className="truncate">{dashboardSummary.subtitle}</span>
+                </div>
+              </div>
+              ) : (
+                <div />
+              )}
+
+              <div className="relative w-full max-w-96">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-stone-400" style={outlinedIcon}>
+                  search
+                </span>
+                <input
+                  type="text"
+                  value={globalSearch}
+                  onChange={(e) => onGlobalSearchChange(e.target.value)}
+                  placeholder={searchPlaceholder}
+                  className="w-full rounded-full border border-transparent bg-[#f4f3f1] py-2 pl-10 pr-4 text-sm text-stone-600 outline-none transition focus:border-emerald-500/20 focus:ring-2 focus:ring-emerald-500/10"
+                />
+              </div>
+
+              <div className="hidden lg:block" />
+            </div>
+          )}
         </header>
 
         <main className="flex-1 overflow-y-auto">{children}</main>

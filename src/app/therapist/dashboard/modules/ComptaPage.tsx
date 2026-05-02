@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import {
-  Search, Download, FileText, Smartphone,
-  CreditCard, Banknote, X, ArrowUpDown, Printer, Calendar,
-  ChevronRight, Trash2, Check,
+  Download, Smartphone, CreditCard, Banknote, X,
+  Trash2, Check, Printer, ChevronRight, Wallet, BadgeCheck,
+  CircleDollarSign, TrendingUp,
 } from 'lucide-react';
-import { format, startOfMonth, endOfMonth } from 'date-fns';
+import { format, startOfMonth, endOfMonth, subMonths, isWithinInterval } from 'date-fns';
 import { Appointment, Invoice } from '../types';
 
 interface ComptaPageProps {
@@ -13,371 +13,675 @@ interface ComptaPageProps {
   onTogglePayment: (id: string, current: boolean, method?: string) => void;
   onSelectAppt: (appt: Appointment) => void;
   onDeleteInvoices?: (ids: string[]) => void;
+  searchQuery: string;
+  onSearchQueryChange: (value: string) => void;
+  dateRange: { start: string; end: string };
+  onSelectedCountChange: (count: number) => void;
 }
 
-type SortField = 'date' | 'time' | 'lastName' | 'firstName' | 'price' | 'serviceName' | 'status';
+type SortField = 'date' | 'client' | 'serviceName' | 'price' | 'status';
+type PaymentMethod = 'Twint' | 'Card' | 'Cash';
+type TransactionStatus = 'completed' | 'pending' | 'cancelled' | 'late';
 
-const STATUS_CONFIG = {
-  wait: { label: 'En attente', cls: 'bg-amber-50 text-amber-700 border border-amber-100' },
-  late: { label: 'En retard',  cls: 'bg-rose-50 text-rose-600 border border-rose-100' },
-  paid: { label: 'Réglé',      cls: 'bg-zinc-900 text-white border border-zinc-900' },
+const STATUS_META: Record<TransactionStatus, { label: string; className: string }> = {
+  completed: {
+    label: 'Réglé',
+    className: 'bg-[#daeed8] text-[#435544]',
+  },
+  pending: {
+    label: 'En attente',
+    className: 'bg-[#ffddb2] text-[#594323]',
+  },
+  cancelled: {
+    label: 'Annulé',
+    className: 'bg-[#ffdad6] text-[#93000a]',
+  },
+  late: {
+    label: 'En retard',
+    className: 'bg-[#ffdad6] text-[#ba1a1a]',
+  },
 };
 
+function toComparableDate(date?: string): Date | null {
+  if (!date) return null;
+  const parsed = new Date(`${date}T12:00:00`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function getTransactionStatus(appt: Appointment, todayStr: string): TransactionStatus {
+  if (appt.status === 'cancelled') return 'cancelled';
+  if (appt.paid) return 'completed';
+  if (appt.date && appt.date < todayStr) return 'late';
+  return 'pending';
+}
+
+function getClientDisplayName(appt: Appointment): string {
+  return appt.clientNameSnapshot || appt.title || 'Client inconnu';
+}
+
+function getPaymentMethodLabel(method?: string): string {
+  if (!method) return 'Non précisé';
+  return method;
+}
+
+function formatCurrency(value: number): string {
+  return `${value.toLocaleString('fr-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CHF`;
+}
+
 export default function ComptaPage({
-  appointments, invoices, onTogglePayment, onSelectAppt, onDeleteInvoices,
+  appointments,
+  invoices,
+  onTogglePayment,
+  onSelectAppt,
+  onDeleteInvoices,
+  searchQuery,
+  onSearchQueryChange,
+  dateRange,
+  onSelectedCountChange,
 }: ComptaPageProps) {
-  const [search, setSearch] = useState('');
   const [sortField, setSortField] = useState<SortField>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
-  const [dateRange, setDateRange] = useState({
-    start: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
-    end: format(endOfMonth(new Date()), 'yyyy-MM-dd'),
-  });
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [showDateRange, setShowDateRange] = useState(false);
   const [payingId, setPayingId] = useState<string | null>(null);
+  const search = searchQuery;
+
+  React.useEffect(() => {
+    onSelectedCountChange(selectedIds.size);
+  }, [selectedIds.size, onSelectedCountChange]);
 
   const todayStr = format(new Date(), 'yyyy-MM-dd');
+  const invoiceByAppointmentId = useMemo(() => {
+    const map = new Map<string, Invoice>();
+    invoices.forEach((invoice) => {
+      if (invoice.appointmentId) map.set(invoice.appointmentId, invoice);
+    });
+    return map;
+  }, [invoices]);
 
   const filtered = useMemo(() =>
     appointments
-      .filter(a => {
-        const statusLabel = a.paid ? 'réglé' : (a.date && a.date < todayStr ? 'en retard' : 'en attente');
-        const searchStr = `${a.clientNameSnapshot} ${a.serviceName || ''} ${a.date || ''} ${a.time || ''} ${a.price || ''} ${statusLabel}`.toLowerCase();
-        const matchesSearch = searchStr.includes(search.toLowerCase());
-        const inRange = a.date && a.date >= dateRange.start && a.date <= dateRange.end;
+      .filter((appt) => {
+        const status = getTransactionStatus(appt, todayStr);
+        const haystack = [
+          getClientDisplayName(appt),
+          appt.serviceName,
+          appt.date,
+          appt.time,
+          appt.price,
+          STATUS_META[status].label,
+          invoiceByAppointmentId.get(appt.id)?.invoiceNumber,
+          appt.paymentMethod,
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+
+        const matchesSearch = haystack.includes(search.trim().toLowerCase());
+        const inRange = appt.date
+          ? appt.date >= dateRange.start && appt.date <= dateRange.end
+          : false;
+
         return matchesSearch && inRange;
       })
       .sort((a, b) => {
-        let valA: any = a[sortField as keyof Appointment] || '';
-        let valB: any = b[sortField as keyof Appointment] || '';
-        if (sortField === 'lastName') {
-          valA = (a.clientNameSnapshot || '').split(' ').pop() || '';
-          valB = (b.clientNameSnapshot || '').split(' ').pop() || '';
+        let valueA: string | number = '';
+        let valueB: string | number = '';
+
+        switch (sortField) {
+          case 'date':
+            valueA = `${a.date || ''} ${a.time || ''}`;
+            valueB = `${b.date || ''} ${b.time || ''}`;
+            break;
+          case 'client':
+            valueA = getClientDisplayName(a);
+            valueB = getClientDisplayName(b);
+            break;
+          case 'serviceName':
+            valueA = a.serviceName || 'Session';
+            valueB = b.serviceName || 'Session';
+            break;
+          case 'price':
+            valueA = a.price || 0;
+            valueB = b.price || 0;
+            break;
+          case 'status': {
+            const order = { cancelled: 0, late: 1, pending: 2, completed: 3 };
+            valueA = order[getTransactionStatus(a, todayStr)];
+            valueB = order[getTransactionStatus(b, todayStr)];
+            break;
+          }
+          default:
+            valueA = '';
+            valueB = '';
         }
-        if (sortField === 'firstName') {
-          valA = (a.clientNameSnapshot || '').split(' ').slice(0, -1).join(' ');
-          valB = (b.clientNameSnapshot || '').split(' ').slice(0, -1).join(' ');
-        }
-        if (sortField === 'status') {
-          const order = (apt: Appointment) => apt.paid ? 3 : (apt.date && apt.date < todayStr ? 1 : 2);
-          valA = order(a);
-          valB = order(b);
-        }
-        const res = String(valA).localeCompare(String(valB));
-        return sortDir === 'asc' ? res : -res;
+
+        const result = typeof valueA === 'string'
+          ? String(valueA).localeCompare(String(valueB))
+          : Number(valueA) - Number(valueB);
+
+        return sortDir === 'asc' ? result : -result;
       }),
-    [appointments, search, dateRange, sortField, sortDir, todayStr],
+    [appointments, dateRange.end, dateRange.start, invoiceByAppointmentId, search, sortDir, sortField, todayStr],
   );
 
-  const totalPaid = useMemo(() =>
-    filtered.filter(a => a.paid).reduce((acc, a) => acc + (a.price || 0), 0),
-    [filtered],
+  const totalRevenue = useMemo(
+    () => filtered
+      .filter((appt) => getTransactionStatus(appt, todayStr) === 'completed')
+      .reduce((sum, appt) => sum + (appt.price || 0), 0),
+    [filtered, todayStr],
   );
-  const totalUnpaid = useMemo(() =>
-    filtered.filter(a => !a.paid).reduce((acc, a) => acc + (a.price || 0), 0),
-    [filtered],
+  const completedSessions = useMemo(
+    () => filtered.filter((appt) => getTransactionStatus(appt, todayStr) === 'completed').length,
+    [filtered, todayStr],
   );
-  const lateCount = useMemo(() =>
-    filtered.filter(a => !a.paid && a.date && a.date < todayStr).length,
+  const pendingInvoiceAmount = useMemo(
+    () => filtered
+      .filter((appt) => {
+        const status = getTransactionStatus(appt, todayStr);
+        return status === 'pending' || status === 'late';
+      })
+      .reduce((sum, appt) => sum + (appt.price || 0), 0),
     [filtered, todayStr],
   );
 
+  const monthlyDelta = useMemo(() => {
+    const now = new Date();
+    const currentRange = { start: startOfMonth(now), end: endOfMonth(now) };
+    const previousDate = subMonths(now, 1);
+    const previousRange = { start: startOfMonth(previousDate), end: endOfMonth(previousDate) };
+
+    const computeRevenue = (range: { start: Date; end: Date }) =>
+      appointments.reduce((sum, appt) => {
+        const date = toComparableDate(appt.date);
+        if (!date || !isWithinInterval(date, range) || !appt.paid) return sum;
+        return sum + (appt.price || 0);
+      }, 0);
+
+    const currentRevenue = computeRevenue(currentRange);
+    const previousRevenue = computeRevenue(previousRange);
+
+    if (previousRevenue === 0) return currentRevenue > 0 ? 100 : 0;
+    return Math.round(((currentRevenue - previousRevenue) / previousRevenue) * 100);
+  }, [appointments]);
+
+  const serviceAllocations = useMemo(() => {
+    const totals = filtered.reduce((acc, appt) => {
+      if (getTransactionStatus(appt, todayStr) === 'cancelled') return acc;
+      const key = appt.serviceName || 'Session';
+      acc[key] = (acc[key] || 0) + (appt.price || 0);
+      return acc;
+    }, {} as Record<string, number>);
+
+    const entries = Object.entries(totals)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4);
+
+    const grandTotal = entries.reduce((sum, [, value]) => sum + value, 0) || 1;
+
+    return entries.map(([label, value]) => ({
+      label,
+      value,
+      percent: Math.round((value / grandTotal) * 100),
+    }));
+  }, [filtered, todayStr]);
+
+  const recentTrend = useMemo(() => {
+    const months = Array.from({ length: 6 }, (_, index) => {
+      const date = subMonths(new Date(), 5 - index);
+      const range = { start: startOfMonth(date), end: endOfMonth(date) };
+      const total = appointments.reduce((sum, appt) => {
+        const apptDate = toComparableDate(appt.date);
+        if (!apptDate || !isWithinInterval(apptDate, range) || !appt.paid) return sum;
+        return sum + (appt.price || 0);
+      }, 0);
+
+      return {
+        label: format(date, 'MMM'),
+        value: total,
+      };
+    });
+
+    const max = Math.max(...months.map((month) => month.value), 1);
+    return { months, max };
+  }, [appointments]);
+
   const toggleSort = useCallback((field: SortField) => {
-    if (sortField === field) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
-    else { setSortField(field); setSortDir('desc'); }
+    if (sortField === field) setSortDir((prev) => prev === 'asc' ? 'desc' : 'asc');
+    else {
+      setSortField(field);
+      setSortDir('desc');
+    }
   }, [sortField]);
 
-  const handlePrint = (id: string) => window.open(`/therapist/invoice/${id}`, '_blank');
-
-  const handleExport = () => {
-    const toExport = selectedIds.size > 0
-      ? filtered.filter(a => selectedIds.has(a.id))
+  const handleExport = useCallback(() => {
+    const rows = selectedIds.size > 0
+      ? filtered.filter((appt) => selectedIds.has(appt.id))
       : filtered;
+
     const csv = [
-      ['Date', 'Client', 'Service', 'Montant', 'Statut'].join(','),
-      ...toExport.map(a => [a.date, a.clientNameSnapshot, a.serviceName || 'Soin', a.price, a.paid ? 'RÉGLÉ' : 'EN ATTENTE'].join(','))
+      ['Date', 'Client', 'Type de rituel', 'Statut', 'Facture', 'Montant'].join(','),
+      ...rows.map((appt) => {
+        const invoice = invoiceByAppointmentId.get(appt.id);
+        return [
+          appt.date || '',
+          getClientDisplayName(appt),
+          appt.serviceName || 'Session',
+          STATUS_META[getTransactionStatus(appt, todayStr)].label,
+          invoice?.invoiceNumber || '',
+          appt.price || 0,
+        ].join(',');
+      }),
     ].join('\n');
+
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `compta-${dateRange.start}-${dateRange.end}.csv`);
+    link.setAttribute('download', `finances-${dateRange.start}-${dateRange.end}.csv`);
     document.body.appendChild(link);
     link.click();
     link.remove();
-  };
+  }, [dateRange.end, dateRange.start, filtered, invoiceByAppointmentId, selectedIds, todayStr]);
+
+  React.useEffect(() => {
+    const triggerExport = () => handleExport();
+    window.addEventListener('trigger-finance-export', triggerExport);
+    return () => window.removeEventListener('trigger-finance-export', triggerExport);
+  }, [handleExport]);
 
   const handleDelete = useCallback(() => {
     const ids = Array.from(selectedIds);
-    if (confirm(`Supprimer ces ${ids.length} mouvement(s) ? Les factures et rendez-vous associés seront également supprimés.`)) {
+    if (confirm(`Supprimer ${ids.length} transaction(s) ? Les rendez-vous et factures liés seront aussi supprimés.`)) {
       onDeleteInvoices?.(ids);
       setSelectedIds(new Set());
     }
-  }, [selectedIds, onDeleteInvoices]);
+  }, [onDeleteInvoices, selectedIds]);
 
-  const GRID = 'grid-cols-[36px_90px_56px_1.5fr_1fr_1fr_100px_120px_80px]';
+  const handleInvoiceOpen = useCallback((appt: Appointment) => {
+    window.open(`/therapist/invoice/${appt.id}`, '_blank');
+  }, []);
+
+  const toggleSelection = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }, []);
+
+  const allSelected = filtered.length > 0 && selectedIds.size === filtered.length;
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-[#faf9f7]">
 
-      {/* ── PAGE HEADER ── */}
-      <header className="h-16 border-b border-zinc-100 bg-[#faf9f7] px-8 sm:px-12 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-6 min-w-0 flex-1">
-          <div>
-            <p className="font-serif text-[8px] tracking-[0.5em] text-zinc-400 uppercase mb-0.5">MODULE</p>
-            <h1 className="font-serif text-base tracking-tighter text-zinc-900 uppercase">Facturation</h1>
-          </div>
-
-          <div className="relative flex-1 max-w-xs min-w-0">
-            <Search size={13} strokeWidth={1.5} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
-            <input
-              type="text"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Rechercher…"
-              className="w-full h-9 bg-white border border-zinc-200 pl-10 pr-4 font-serif text-sm text-zinc-900 placeholder:text-zinc-300 focus:outline-none focus:border-zinc-900 transition-all"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0">
-          {showDateRange && (
-            <div className="hidden sm:flex items-center gap-2 h-9 bg-white border border-zinc-200 px-3">
-              <Calendar size={12} strokeWidth={1.5} className="text-zinc-400" />
-              <input
-                type="date"
-                value={dateRange.start}
-                onChange={e => setDateRange({ ...dateRange, start: e.target.value })}
-                className="bg-transparent font-serif text-xs text-zinc-700 focus:outline-none"
-              />
-              <span className="font-serif text-xs text-zinc-200">→</span>
-              <input
-                type="date"
-                value={dateRange.end}
-                onChange={e => setDateRange({ ...dateRange, end: e.target.value })}
-                className="bg-transparent font-serif text-xs text-zinc-700 focus:outline-none"
-              />
-            </div>
-          )}
-
-          <button
-            onClick={() => {
-              if (selectedIds.size > 0 || showDateRange) {
-                handleExport();
-                if (showDateRange) setShowDateRange(false);
-              } else {
-                setShowDateRange(true);
-              }
-            }}
-            className="flex items-center gap-2 h-9 px-4 bg-white border border-zinc-200 font-serif text-[10px] tracking-[0.3em] uppercase text-zinc-700 hover:border-zinc-900 hover:text-zinc-900 transition-all duration-300"
-          >
-            <Download size={13} strokeWidth={1.5} />
-            {selectedIds.size > 0 ? `Exporter (${selectedIds.size})` : 'Exporter'}
-          </button>
-        </div>
-      </header>
-
-      {/* ── SELECTION BAR ── */}
       {selectedIds.size > 0 && (
-        <div className="h-10 bg-zinc-900 px-8 sm:px-12 flex items-center justify-between shrink-0">
-          <span className="font-serif text-[10px] tracking-[0.3em] uppercase text-zinc-300">
-            {selectedIds.size} sélectionné{selectedIds.size > 1 ? 's' : ''}
-          </span>
-          <div className="flex items-center gap-5">
-            <button
-              onClick={handleDelete}
-              className="font-serif text-[10px] tracking-[0.3em] uppercase text-rose-400 hover:text-rose-300 flex items-center gap-2 transition-colors"
-            >
-              <Trash2 size={12} strokeWidth={1.5} /> Supprimer
-            </button>
-            <button
-              onClick={() => setSelectedIds(new Set())}
-              className="font-serif text-[10px] tracking-[0.3em] uppercase text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors"
-            >
-              <X size={12} strokeWidth={1.5} /> Désélectionner
-            </button>
+        <div className="shrink-0 bg-[#1a1c1b] px-4 py-3 text-white lg:px-8">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <span className="text-sm font-medium">
+              {selectedIds.size} transaction{selectedIds.size > 1 ? 's' : ''} selected
+            </span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleDelete}
+                className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/15"
+              >
+                <Trash2 size={14} strokeWidth={1.75} />
+                Supprimer
+              </button>
+              <button
+                onClick={() => setSelectedIds(new Set())}
+                className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10"
+              >
+                <X size={14} strokeWidth={1.75} />
+                Effacer
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* ── SUMMARY BAR ── */}
-      <div className="h-10 bg-white border-b border-zinc-100 px-8 sm:px-12 flex items-center gap-8 shrink-0">
-        <span className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500">
-          <span className="text-zinc-900">{totalPaid} CHF</span> encaissés
-        </span>
-        <span className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500">
-          <span className="text-amber-600">{totalUnpaid} CHF</span> en attente
-        </span>
-        {lateCount > 0 && (
-          <span className="font-serif text-[10px] tracking-[0.2em] uppercase text-zinc-500">
-            <span className="text-rose-600">{lateCount}</span> en retard
-          </span>
-        )}
-        <span className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-300 ml-auto">{filtered.length} mouvements</span>
-      </div>
-
-      {/* ── TABLE ── */}
-      <main className="flex-1 overflow-hidden">
-        <div className="max-w-[1500px] mx-auto px-6 sm:px-10 py-6 h-full flex flex-col">
-          <div className="bg-white border border-zinc-100 flex-1 flex flex-col overflow-hidden">
-
-            {/* Table header */}
-            <div className={`grid ${GRID} px-5 h-10 items-center border-b border-zinc-100 bg-zinc-50 shrink-0`}>
-              <div className="flex justify-center">
-                <TableCheckbox
-                  checked={selectedIds.size === filtered.length && filtered.length > 0}
-                  onChange={() => {
-                    if (selectedIds.size === filtered.length) setSelectedIds(new Set());
-                    else setSelectedIds(new Set(filtered.map(a => a.id)));
-                  }}
-                />
+      <main className="flex-1 overflow-auto">
+        <section className="space-y-8 p-4 lg:p-8">
+          <div className="overflow-hidden rounded-xl border border-[#c3c8c0]/30 bg-white shadow-sm">
+            <div className="flex flex-col gap-3 border-b border-[#c3c8c0]/20 px-4 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+              <div>
+                <h2 className="text-lg font-semibold text-[#1a1c1b]">Liste des factures</h2>
+                <p className="mt-1 text-sm text-[#747872]">Toutes les transactions de la période en CHF</p>
               </div>
-              <SortHeader label="Date"    field="date"        current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Heure"   field="time"        current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Nom"     field="lastName"    current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Prénom"  field="firstName"   current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Soin"    field="serviceName" current={sortField} dir={sortDir} onSort={toggleSort} />
-              <SortHeader label="Montant" field="price"       current={sortField} dir={sortDir} onSort={toggleSort} />
-              <div className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400">Statut</div>
-              <div className="font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400">Actions</div>
+              <button
+                onClick={() => {
+                  onSearchQueryChange('');
+                  setSelectedIds(new Set());
+                }}
+                className="text-sm font-semibold text-[#435544] transition-colors hover:underline"
+              >
+                Tout voir
+              </button>
             </div>
 
-            {/* Rows */}
-            <div className="flex-1 overflow-y-auto divide-y divide-zinc-50">
-              {filtered.map(a => {
-                const status = a.paid ? 'paid' : (a.date && a.date < todayStr ? 'late' : 'wait');
-                const cfg = STATUS_CONFIG[status];
-                const isSelected = selectedIds.has(a.id);
-                const nameParts = (a.clientNameSnapshot || '').split(' ');
-                const lastName = nameParts.length > 1 ? nameParts.pop() : a.clientNameSnapshot;
-                const firstName = nameParts.join(' ');
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[980px] text-left">
+                <thead>
+                  <tr className="bg-[#efeeec] text-xs font-bold uppercase tracking-[0.18em] text-[#747872]">
+                    <th className="px-4 py-4 lg:px-8">
+                      <TableCheckbox checked={allSelected} onChange={() => {
+                        if (allSelected) setSelectedIds(new Set());
+                        else setSelectedIds(new Set(filtered.map((appt) => appt.id)));
+                      }} />
+                    </th>
+                    <SortableHeader label="Date" field="date" current={sortField} dir={sortDir} onSort={toggleSort} />
+                    <SortableHeader label="Client" field="client" current={sortField} dir={sortDir} onSort={toggleSort} />
+                    <SortableHeader label="Type de rituel" field="serviceName" current={sortField} dir={sortDir} onSort={toggleSort} />
+                    <SortableHeader label="Statut" field="status" current={sortField} dir={sortDir} onSort={toggleSort} />
+                    <th className="px-4 py-4 lg:px-8">Facture</th>
+                    <SortableHeader align="right" label="Montant" field="price" current={sortField} dir={sortDir} onSort={toggleSort} />
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#c3c8c0]/10 text-sm">
+                  {filtered.map((appt) => {
+                    const invoice = invoiceByAppointmentId.get(appt.id);
+                    const status = getTransactionStatus(appt, todayStr);
+                    const meta = STATUS_META[status];
+                    const isSelected = selectedIds.has(appt.id);
 
-                return (
-                  <div
-                    key={a.id}
-                    className={`grid ${GRID} px-5 h-12 items-center transition-colors duration-150 group ${isSelected ? 'bg-zinc-50' : 'hover:bg-zinc-50/60'}`}
-                  >
-                    <div className="flex justify-center">
-                      <TableCheckbox
-                        checked={isSelected}
-                        onChange={() => {
-                          setSelectedIds(prev => {
-                            const next = new Set(prev);
-                            next.has(a.id) ? next.delete(a.id) : next.add(a.id);
-                            return next;
-                          });
-                        }}
-                      />
-                    </div>
+                    return (
+                      <tr
+                        key={appt.id}
+                        className={`group transition-colors hover:bg-[#f4f3f1]/50 ${isSelected ? 'bg-[#faf9f7]' : ''}`}
+                      >
+                        <td className="px-4 py-4 lg:px-8">
+                          <TableCheckbox checked={isSelected} onChange={() => toggleSelection(appt.id)} />
+                        </td>
 
-                    <span className="font-serif text-sm text-zinc-500 cursor-pointer" onClick={() => onSelectAppt(a)}>
-                      {a.date ? format(new Date(a.date), 'dd/MM/yy') : '—'}
-                    </span>
-                    <span className="font-serif text-sm text-zinc-500 cursor-pointer" onClick={() => onSelectAppt(a)}>{a.time}</span>
-                    <span className="font-serif text-sm text-zinc-900 truncate tracking-tight cursor-pointer group-hover:italic transition-all" onClick={() => onSelectAppt(a)}>{lastName}</span>
-                    <span className="font-serif text-sm text-zinc-500 truncate cursor-pointer" onClick={() => onSelectAppt(a)}>{firstName}</span>
-                    <span className="font-serif text-sm text-zinc-500 truncate cursor-pointer" onClick={() => onSelectAppt(a)}>{a.serviceName || 'Séance'}</span>
-                    <span className="font-serif text-sm text-zinc-900 tracking-tight cursor-pointer" onClick={() => onSelectAppt(a)}>{a.price || 0} CHF</span>
-
-                    {/* Status / pay button */}
-                    <div onClick={e => e.stopPropagation()}>
-                      {payingId === a.id ? (
-                        <div className="flex items-center gap-1">
-                          {(['Twint', 'Card', 'Cash'] as const).map(m => (
-                            <button
-                              key={m}
-                              onClick={() => { onTogglePayment(a.id, false, m); setPayingId(null); }}
-                              className="w-7 h-7 bg-white border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-300"
-                              title={m}
-                            >
-                              {m === 'Twint' ? <Smartphone size={11} strokeWidth={1.5} /> : m === 'Card' ? <CreditCard size={11} strokeWidth={1.5} /> : <Banknote size={11} strokeWidth={1.5} />}
-                            </button>
-                          ))}
+                        <td className="cursor-pointer px-4 py-4 text-[#747872] lg:px-8" onClick={() => onSelectAppt(appt)}>
+                          {appt.date ? format(new Date(appt.date), 'MMM d, yyyy') : '—'}
+                        </td>
+                        <td className="cursor-pointer px-4 py-4 font-medium text-[#1a1c1b] lg:px-8" onClick={() => onSelectAppt(appt)}>
+                          {getClientDisplayName(appt)}
+                        </td>
+                        <td className="cursor-pointer px-4 py-4 text-[#434842] lg:px-8" onClick={() => onSelectAppt(appt)}>
+                          {appt.serviceName || 'Session'}
+                        </td>
+                        <td className="px-4 py-4 lg:px-8">
+                          <div onClick={(e) => e.stopPropagation()}>
+                            {payingId === appt.id ? (
+                              <div className="flex items-center gap-1">
+                                {(['Twint', 'Card', 'Cash'] as PaymentMethod[]).map((method) => (
+                                  <button
+                                    key={method}
+                                    onClick={() => {
+                                      onTogglePayment(appt.id, false, method);
+                                      setPayingId(null);
+                                    }}
+                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#c3c8c0] bg-white text-[#434842] transition-colors hover:border-[#435544] hover:bg-[#435544] hover:text-white"
+                                    title={method}
+                                  >
+                                    {method === 'Twint'
+                                      ? <Smartphone size={13} strokeWidth={1.75} />
+                                      : method === 'Card'
+                                        ? <CreditCard size={13} strokeWidth={1.75} />
+                                        : <Banknote size={13} strokeWidth={1.75} />}
+                                  </button>
+                                ))}
+                                <button
+                                  onClick={() => setPayingId(null)}
+                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#c3c8c0] bg-white text-[#747872] transition-colors hover:border-[#ba1a1a] hover:text-[#ba1a1a]"
+                                >
+                                  <X size={13} strokeWidth={1.75} />
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => appt.paid ? onTogglePayment(appt.id, true) : setPayingId(appt.id)}
+                                className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${meta.className}`}
+                              >
+                                {meta.label}
+                                {appt.paymentMethod ? ` · ${getPaymentMethodLabel(appt.paymentMethod)}` : ''}
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 text-[#747872] lg:px-8">
                           <button
-                            onClick={() => setPayingId(null)}
-                            className="w-7 h-7 bg-white border border-zinc-200 text-zinc-400 flex items-center justify-center hover:border-rose-400 hover:text-rose-500 transition-all"
+                            onClick={() => handleInvoiceOpen(appt)}
+                            disabled={status === 'cancelled'}
+                            className={`rounded-full p-2 transition-colors ${
+                              status === 'cancelled'
+                                ? 'cursor-not-allowed opacity-30'
+                                : 'hover:bg-[#efeeec] hover:text-[#435544]'
+                            }`}
+                            title={invoice?.invoiceNumber || 'Ouvrir la facture'}
                           >
-                            <X size={11} strokeWidth={1.5} />
+                            <Download size={18} strokeWidth={1.8} />
                           </button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => a.paid ? onTogglePayment(a.id, true) : setPayingId(a.id)}
-                          className={`px-2.5 py-1 font-serif text-[9px] tracking-[0.2em] uppercase transition-all ${cfg.cls}`}
-                        >
-                          {cfg.label}
-                        </button>
-                      )}
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-1">
-                      <button
-                        onClick={() => handlePrint(a.id)}
-                        className="w-7 h-7 bg-white border border-zinc-100 flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:border-zinc-900 transition-all duration-300"
-                        title="Imprimer"
-                      >
-                        <Printer size={12} strokeWidth={1.5} />
-                      </button>
-                      <button
-                        onClick={() => onSelectAppt(a)}
-                        className="w-7 h-7 bg-white border border-zinc-100 flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:border-zinc-900 transition-all duration-300"
-                        title="Détail"
-                      >
-                        <ChevronRight size={12} strokeWidth={1.5} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+                        </td>
+                        <td className="px-4 py-4 text-right font-semibold text-[#1a1c1b] lg:px-8">
+                          {status === 'cancelled' ? formatCurrency(0) : formatCurrency(appt.price || 0)}
+                          <div className="mt-1 flex justify-end gap-1">
+                            <button
+                              onClick={() => handleInvoiceOpen(appt)}
+                              className="rounded-full p-1.5 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]"
+                              title="Imprimer ou ouvrir la facture"
+                            >
+                              <Printer size={14} strokeWidth={1.75} />
+                            </button>
+                            <button
+                              onClick={() => onSelectAppt(appt)}
+                              className="rounded-full p-1.5 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]"
+                              title="Ouvrir le rendez-vous"
+                            >
+                              <ChevronRight size={14} strokeWidth={1.75} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
 
-            {/* Empty state */}
             {filtered.length === 0 && (
-              <div className="flex-1 flex flex-col items-center justify-center py-20 text-center">
-                <FileText size={28} strokeWidth={1} className="text-zinc-200 mb-4" />
-                <p className="font-serif text-sm text-zinc-400 tracking-tight">Aucun mouvement sur cette période</p>
+              <div className="flex flex-col items-center justify-center gap-4 px-6 py-20 text-center">
+                <Wallet size={28} strokeWidth={1.4} className="text-[#c3c8c0]" />
+                <div>
+                  <p className="text-base font-medium text-[#1a1c1b]">Aucune transaction trouvée</p>
+                  <p className="mt-1 text-sm text-[#747872]">
+                    Ajustez la recherche ou la période pour afficher l'activité financière.
+                  </p>
+                </div>
               </div>
             )}
           </div>
-        </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <MetricCard
+              icon={<Wallet size={20} strokeWidth={1.8} />}
+              iconClassName="bg-[#d4e8d2] text-[#435544]"
+              title="Revenu mensuel"
+              value={formatCurrency(totalRevenue)}
+              badge={monthlyDelta >= 0 ? `+${monthlyDelta}%` : `${monthlyDelta}%`}
+              badgeIcon={<TrendingUp size={12} strokeWidth={2} />}
+              badgeClassName="bg-[#daeed8] text-[#435544]"
+              compact
+            />
+            <MetricCard
+              icon={<BadgeCheck size={20} strokeWidth={1.8} />}
+              iconClassName="bg-[#ffddb2] text-[#725a38]"
+              title="Séances terminées"
+              value={String(completedSessions)}
+              compact
+            />
+            <MetricCard
+              icon={<CircleDollarSign size={20} strokeWidth={1.8} />}
+              iconClassName="bg-[#e8e2d6] text-[#535047]"
+              title="Factures en attente"
+              value={formatCurrency(pendingInvoiceAmount)}
+              compact
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="rounded-xl border border-[#c3c8c0]/30 bg-white p-5 shadow-sm lg:col-span-2">
+              <div className="mb-6 flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-base font-semibold text-[#1a1c1b]">Performance des revenus</h2>
+                  <p className="mt-1 text-xs text-[#747872]">Revenus encaissés sur les 6 derniers mois</p>
+                </div>
+                <span className="rounded-full bg-[#efeeec] px-3 py-1 text-xs font-semibold text-[#434842]">
+                  Tendance
+                </span>
+              </div>
+
+              <div className="flex h-44 items-end gap-3 rounded-xl bg-[#faf9f7] px-4 py-5">
+                {recentTrend.months.map((month) => (
+                  <div key={month.label} className="flex flex-1 flex-col items-center justify-end gap-3">
+                    <div className="w-full text-center text-xs font-semibold text-[#747872]">
+                      {month.value > 0 ? formatCurrency(month.value) : formatCurrency(0)}
+                    </div>
+                    <div
+                      className="w-full rounded-t-md bg-[#435544]"
+                      style={{
+                        height: `${Math.max((month.value / recentTrend.max) * 95, month.value > 0 ? 14 : 6)}px`,
+                        opacity: 0.35 + ((month.value / recentTrend.max) * 0.65),
+                      }}
+                    />
+                    <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#747872]">
+                      {month.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#c3c8c0]/30 bg-white p-5 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-base font-semibold text-[#1a1c1b]">Répartition des services</h2>
+                <p className="mt-1 text-xs text-[#747872]">Part des revenus par type de soin</p>
+              </div>
+
+              <div className="space-y-4">
+                {serviceAllocations.length > 0 ? serviceAllocations.map((service, index) => (
+                  <div key={service.label} className="space-y-2">
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="truncate text-sm font-medium text-[#1a1c1b]">{service.label}</span>
+                      <span className="text-sm font-semibold text-[#435544]">{service.percent}%</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-[#efeeec]">
+                      <div
+                        className="h-2 rounded-full"
+                        style={{
+                          width: `${service.percent}%`,
+                          backgroundColor: ['#435544', '#725a38', '#535047', '#5b6d5b'][index % 4],
+                        }}
+                      />
+                    </div>
+                    <div className="text-xs text-[#747872]">{formatCurrency(service.value)}</div>
+                  </div>
+                )) : (
+                  <div className="rounded-xl bg-[#faf9f7] px-4 py-5 text-sm text-[#747872]">
+                    Aucun revenu de service sur la période sélectionnée.
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <footer className="px-8 pb-8 pt-2 text-center">
+          <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#747872]/50">
+            Serene Portal © 2023 | Au service de la pratique holistique
+          </p>
+        </footer>
       </main>
     </div>
   );
 }
 
-/* ── TABLE CHECKBOX ── */
-function TableCheckbox({ checked, onChange }: { checked: boolean; onChange: () => void }) {
+function MetricCard({
+  icon,
+  iconClassName,
+  title,
+  value,
+  badge,
+  badgeIcon,
+  badgeClassName,
+  compact = false,
+}: {
+  icon: React.ReactNode;
+  iconClassName: string;
+  title: string;
+  value: string;
+  badge?: string;
+  badgeIcon?: React.ReactNode;
+  badgeClassName?: string;
+  compact?: boolean;
+}) {
   return (
-    <div
-      onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`w-4 h-4 border cursor-pointer transition-all duration-200 flex items-center justify-center ${
-        checked ? 'bg-zinc-900 border-zinc-900' : 'border-zinc-200 bg-white hover:border-zinc-600'
-      }`}
-    >
-      {checked && <Check size={9} strokeWidth={2.5} className="text-white" />}
+    <div className={`rounded-xl border border-[#c3c8c0]/30 bg-white shadow-sm transition-shadow hover:shadow-md ${compact ? 'p-4' : 'p-6'}`}>
+      <div className={`flex items-start justify-between ${compact ? 'mb-3' : 'mb-4'}`}>
+        <div className={`rounded-lg ${compact ? 'p-1.5' : 'p-2'} ${iconClassName}`}>
+          {icon}
+        </div>
+        {badge && (
+          <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-bold ${badgeClassName || ''}`}>
+            {badgeIcon && <span className="mr-1">{badgeIcon}</span>}
+            {badge}
+          </span>
+        )}
+      </div>
+      <p className="text-sm font-medium text-[#747872]">{title}</p>
+      <h3 className={`mt-1 font-medium text-[#1a1c1b] ${compact ? 'text-2xl' : 'text-3xl'}`}>{value}</h3>
     </div>
   );
 }
 
-/* ── SORT HEADER ── */
-function SortHeader({
-  label, field, current, dir, onSort,
+function TableCheckbox({ checked, onChange }: { checked: boolean; onChange: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        onChange();
+      }}
+      className={`flex h-4 w-4 items-center justify-center rounded border transition-colors ${
+        checked
+          ? 'border-[#435544] bg-[#435544] text-white'
+          : 'border-[#c3c8c0] bg-white text-transparent hover:border-[#435544]'
+      }`}
+    >
+      <Check size={10} strokeWidth={2.5} className="text-current" />
+    </button>
+  );
+}
+
+function SortableHeader({
+  label,
+  field,
+  current,
+  dir,
+  onSort,
+  align = 'left',
 }: {
   label: string;
   field: SortField;
   current: SortField;
   dir: 'asc' | 'desc';
-  onSort: (f: SortField) => void;
+  onSort: (field: SortField) => void;
+  align?: 'left' | 'right';
 }) {
   return (
-    <button
-      onClick={() => onSort(field)}
-      className="flex items-center gap-1.5 font-serif text-[9px] tracking-[0.3em] uppercase text-zinc-400 hover:text-zinc-900 transition-colors"
-    >
-      {label}
-      {current === field && <ArrowUpDown size={9} strokeWidth={1.5} className="text-zinc-900" />}
-    </button>
+    <th className={`px-4 py-4 lg:px-8 ${align === 'right' ? 'text-right' : 'text-left'}`}>
+      <button
+        onClick={() => onSort(field)}
+        className={`inline-flex items-center gap-1.5 ${align === 'right' ? 'justify-end' : 'justify-start'} hover:text-[#435544]`}
+      >
+        {label}
+        <span className={current === field ? 'text-[#435544]' : 'opacity-50'}>
+          {dir === 'asc' || current !== field ? '↑' : '↓'}
+        </span>
+      </button>
+    </th>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
-  Search, Plus, ArrowUpDown, Users, Download, GitPullRequest, Phone, MapPin,
-  X, Trash2, NotebookText, CalendarDays, BarChart3, SlidersHorizontal,
+  Plus, ArrowUpDown, Users, Download, GitPullRequest, Phone, MapPin,
+  X, Trash2, NotebookText, CalendarDays, BarChart3,
 } from 'lucide-react';
 import { Client, Appointment } from '../types';
 import { format, differenceInCalendarDays, endOfMonth, isWithinInterval, startOfMonth, subMonths } from 'date-fns';
@@ -30,39 +30,39 @@ interface ClientSummary {
 }
 
 const ALL_COLUMNS: ColDef[] = [
-  { id: 'name', label: 'Name', minWidth: '240px', flex: '2.2fr' },
-  { id: 'status', label: 'Status', minWidth: '140px', flex: '1.1fr' },
-  { id: 'lastVisit', label: 'Last Visit', minWidth: '120px', flex: '0.9fr' },
-  { id: 'preferredRitual', label: 'Preferred Ritual', minWidth: '220px', flex: '1.7fr' },
-  { id: 'sessions', label: 'Sessions', minWidth: '90px', flex: '0.7fr', align: 'center' },
-  { id: 'email', label: 'Email', minWidth: '220px', flex: '1.7fr' },
-  { id: 'phone', label: 'Phone', minWidth: '140px', flex: '1fr' },
-  { id: 'city', label: 'City', minWidth: '140px', flex: '1fr' },
-  { id: 'insurance', label: 'Insurance', minWidth: '160px', flex: '1.1fr' },
+  { id: 'name', label: 'Nom', minWidth: '240px', flex: '2.2fr' },
+  { id: 'status', label: 'Statut', minWidth: '140px', flex: '1.1fr' },
+  { id: 'lastVisit', label: 'Dernière visite', minWidth: '120px', flex: '0.9fr' },
+  { id: 'preferredRitual', label: 'Rituel préféré', minWidth: '220px', flex: '1.7fr' },
+  { id: 'sessions', label: 'Séances', minWidth: '90px', flex: '0.7fr', align: 'center' },
+  { id: 'email', label: 'E-mail', minWidth: '220px', flex: '1.7fr' },
+  { id: 'phone', label: 'Téléphone', minWidth: '140px', flex: '1fr' },
+  { id: 'city', label: 'Ville', minWidth: '140px', flex: '1fr' },
+  { id: 'insurance', label: 'Assurance', minWidth: '160px', flex: '1.1fr' },
 ];
 
 const FILTERS: Array<{ id: FilterKey; label: string }> = [
-  { id: 'all', label: 'All Clients' },
-  { id: 'new', label: 'New Clients' },
-  { id: 'loyalty', label: 'Loyalty Members' },
-  { id: 'hiatus', label: 'On Hiatus' },
+  { id: 'all', label: 'Tous les clients' },
+  { id: 'new', label: 'Nouveaux clients' },
+  { id: 'loyalty', label: 'Clients fidèles' },
+  { id: 'hiatus', label: 'En pause' },
 ];
 
 const STATUS_META: Record<ClientStatus, { label: string; className: string }> = {
   loyalty: {
-    label: 'Loyalty Member',
+    label: 'Client fidèle',
     className: 'bg-[#ffddb2] text-[#594323]',
   },
   new: {
-    label: 'New Client',
+    label: 'Nouveau client',
     className: 'bg-[#d4e8d2] text-[#3a4b3b]',
   },
   hiatus: {
-    label: 'On Hiatus',
+    label: 'En pause',
     className: 'bg-[#e3e2e0] text-[#434842]',
   },
   active: {
-    label: 'Active Client',
+    label: 'Client actif',
     className: 'bg-[#efeeec] text-[#435544]',
   },
 };
@@ -85,16 +85,17 @@ interface ClientsPageProps {
   onNewClient: (initialName?: string) => void;
   onMergeClients?: (primaryId: string, secondaryIds: string[]) => void;
   onDeleteClients?: (ids: string[]) => void;
+  searchQuery: string;
+  onSearchQueryChange: (value: string) => void;
+  showFilterPanel: boolean;
+  onShowFilterPanelChange: (value: boolean) => void;
+  onVisibleCountChange?: (count: number) => void;
 }
 
 function parseAppointmentDate(date?: string): Date | null {
   if (!date) return null;
   const parsed = new Date(`${date}T12:00:00`);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
-}
-
-function getClientInitials(client: Client): string {
-  return `${client.firstName?.[0] || ''}${client.lastName?.[0] || ''}`.toUpperCase() || 'CL';
 }
 
 function getClientStatus(sessionsCount: number, lastVisitDate: Date | null): ClientStatus {
@@ -109,25 +110,34 @@ function formatMetricPercent(value: number): string {
 }
 
 export default function ClientsPage({
-  clients, appointments, onSelectClient, onNewClient, onMergeClients, onDeleteClients,
+  clients,
+  appointments,
+  onSelectClient,
+  onNewClient,
+  onMergeClients,
+  onDeleteClients,
+  searchQuery,
+  onSearchQueryChange,
+  showFilterPanel,
+  onShowFilterPanelChange,
+  onVisibleCountChange,
 }: ClientsPageProps) {
-  const [search, setSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterKey>('all');
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
     ['name', 'status', 'lastVisit', 'preferredRitual', 'sessions'],
   );
   const [selectedClients, setSelectedClients] = useState<Set<string>>(new Set());
-  const [showFilterPanel, setShowFilterPanel] = useState(false);
   const [sortField, setSortField] = useState<string>('name');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
+  const search = searchQuery;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setShowFilterPanel(false);
+      if (e.key === 'Escape') onShowFilterPanelChange(false);
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, []);
+  }, [onShowFilterPanelChange]);
 
   const summaryByClient = useMemo(() => {
     const grouped = new Map<string, Appointment[]>();
@@ -154,11 +164,11 @@ export default function ClientsPage({
         acc[appt.serviceName] = (acc[appt.serviceName] || 0) + 1;
         return acc;
       }, {} as Record<string, number>);
-      const preferredRitual = Object.entries(ritualCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'No preference yet';
+      const preferredRitual = Object.entries(ritualCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Aucune préférence pour le moment';
       const sessionsCount = clientAppts.length;
       const fullName = `${client.firstName || ''} ${client.lastName || ''}`.trim();
       const status = getClientStatus(sessionsCount, lastVisitDate);
-      const lastVisitLabel = lastVisitDate ? format(lastVisitDate, 'MMM d, yyyy') : 'No visits yet';
+      const lastVisitLabel = lastVisitDate ? format(lastVisitDate, 'd MMM yyyy') : 'Aucune visite';
 
       summaryMap.set(client.id, {
         fullName,
@@ -280,7 +290,7 @@ export default function ClientsPage({
 
   const handleDelete = useCallback(() => {
     const ids = Array.from(selectedClients);
-    if (confirm(`Are you sure you want to delete ${ids.length} client(s)? This cannot be undone.`)) {
+    if (confirm(`Voulez-vous vraiment supprimer ${ids.length} client(s) ? Cette action est irréversible.`)) {
       onDeleteClients?.(ids);
       setSelectedClients(new Set());
     }
@@ -355,6 +365,10 @@ export default function ClientsPage({
     };
   }, [appointments, summaryByClient]);
 
+  useEffect(() => {
+    onVisibleCountChange?.(filtered.length);
+  }, [filtered.length, onVisibleCountChange]);
+
   return (
     <motion.div
       className="flex-1 flex flex-col overflow-hidden bg-[#faf9f7]"
@@ -362,50 +376,6 @@ export default function ClientsPage({
       animate="visible"
       variants={containerVariants}
     >
-      <header className="shrink-0 border-b border-[#e3e2e0] bg-[#faf9f7] px-4 py-4 lg:px-8">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-4">
-            <div>
-              <h1 className="font-['Public_Sans',sans-serif] text-2xl font-semibold tracking-tight text-[#435544]">
-                Client Directory
-              </h1>
-              <p className="mt-1 text-sm text-[#747872]">
-                {clients.length} profiles, {filtered.length} visible
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <label className="relative block min-w-0 sm:w-72">
-              <Search size={18} strokeWidth={1.75} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#747872]" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search clients..."
-                className="w-full rounded-full border-none bg-[#f4f3f1] py-2.5 pl-10 pr-4 text-sm text-[#1a1c1b] outline-none ring-1 ring-transparent transition-all focus:ring-[#435544]/20"
-              />
-            </label>
-
-            <button
-              onClick={() => setShowFilterPanel((prev) => !prev)}
-              className="flex items-center justify-center gap-2 rounded-xl border border-[#c3c8c0] bg-white px-4 py-2.5 text-sm font-medium text-[#434842] transition-colors hover:bg-[#efeeec]"
-            >
-              <SlidersHorizontal size={16} strokeWidth={1.75} />
-              Advanced Filters
-            </button>
-
-            <button
-              onClick={() => onNewClient(search.trim() || undefined)}
-              className="flex items-center justify-center gap-2 rounded-xl bg-[#435544] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            >
-              <Plus size={16} strokeWidth={1.9} />
-              Add Client
-            </button>
-          </div>
-        </div>
-      </header>
-
       <AnimatePresence>
         {showFilterPanel && (
           <>
@@ -414,7 +384,7 @@ export default function ClientsPage({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-40 bg-black/10"
-              onClick={() => setShowFilterPanel(false)}
+              onClick={() => onShowFilterPanelChange(false)}
             />
             <motion.div
               initial={{ opacity: 0, y: 8, scale: 0.98 }}
@@ -424,13 +394,13 @@ export default function ClientsPage({
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#725a38]">Display Setup</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#725a38]">Affichage</p>
                   <h3 className="mt-1 font-['Public_Sans',sans-serif] text-lg font-semibold text-[#1a1c1b]">
-                    Directory Controls
+                    Contrôles du répertoire
                   </h3>
                 </div>
                 <button
-                  onClick={() => setShowFilterPanel(false)}
+                  onClick={() => onShowFilterPanelChange(false)}
                   className="rounded-full p-2 text-[#747872] transition-colors hover:bg-[#efeeec]"
                 >
                   <X size={16} strokeWidth={1.75} />
@@ -439,7 +409,7 @@ export default function ClientsPage({
 
               <div className="mt-6 space-y-5">
                 <div>
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#747872]">Sorting</p>
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#747872]">Tri</p>
                   <div className="grid grid-cols-2 gap-2">
                     {ALL_COLUMNS.filter((col) => col.id !== 'insurance').map((col) => (
                       <button
@@ -458,7 +428,7 @@ export default function ClientsPage({
                 </div>
 
                 <div>
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#747872]">Visible Columns</p>
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#747872]">Colonnes visibles</p>
                   <div className="space-y-2">
                     {ALL_COLUMNS.map((col) => (
                       <div
@@ -494,7 +464,7 @@ export default function ClientsPage({
           >
             <div className="flex h-[60px] items-center justify-between gap-4">
               <p className="text-sm font-medium">
-                {selectedClients.size} client{selectedClients.size > 1 ? 's' : ''} selected
+                {selectedClients.size} client{selectedClients.size > 1 ? 's' : ''} sélectionné{selectedClients.size > 1 ? 's' : ''}
               </p>
               <div className="flex items-center gap-3">
                 {selectedClients.size > 1 && (
@@ -503,7 +473,7 @@ export default function ClientsPage({
                     className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/15"
                   >
                     <GitPullRequest size={14} strokeWidth={1.75} />
-                    Merge
+                    Fusionner
                   </button>
                 )}
                 <button
@@ -511,14 +481,14 @@ export default function ClientsPage({
                   className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/15"
                 >
                   <Trash2 size={14} strokeWidth={1.75} />
-                  Delete
+                  Supprimer
                 </button>
                 <button
                   onClick={() => setSelectedClients(new Set())}
                   className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10"
                 >
                   <X size={14} strokeWidth={1.75} />
-                  Clear
+                  Effacer
                 </button>
               </div>
             </div>
@@ -636,28 +606,28 @@ export default function ClientsPage({
               <section className="space-y-5 pt-2">
                 <div className="flex items-center justify-between">
                   <h2 className="font-['Public_Sans',sans-serif] text-xl font-bold text-[#435544]">
-                    Client Retention Insights
+                    Analyse de fidélisation
                   </h2>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                   <InsightCard
                     icon={<BarChart3 size={24} strokeWidth={1.75} />}
-                    label="Monthly Growth"
+                    label="Croissance mensuelle"
                     value={formatMetricPercent(insights.growth)}
-                    detail="vs last month"
+                    detail="vs mois précédent"
                   />
                   <InsightCard
                     icon={<Users size={24} strokeWidth={1.75} />}
-                    label="Returning Rate"
+                    label="Taux de retour"
                     value={`${insights.returningRate}%`}
-                    detail="returning clients"
+                    detail="clients récurrents"
                   />
                   <InsightCard
                     icon={<CalendarDays size={24} strokeWidth={1.75} />}
-                    label="Avg Sessions"
+                    label="Moy. séances"
                     value={insights.avgSessions}
-                    detail="per active client"
+                    detail="par client actif"
                   />
                   <TrendCard trend={insights.monthlyTrend} maxTrend={insights.maxTrend} />
                 </div>
@@ -694,14 +664,6 @@ function Checkbox({
     >
       <div className={`${compact ? 'h-1.5 w-1.5' : 'h-2 w-2'} rotate-45 bg-current`} />
     </button>
-  );
-}
-
-function ClientAvatar({ client }: { client: Client }) {
-  return (
-    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e9e8e6] bg-[#f4f3f1] text-sm font-bold text-[#435544]">
-      {getClientInitials(client)}
-    </div>
   );
 }
 
@@ -762,28 +724,26 @@ function ClientRow({
       ))}
 
       <div className="flex items-center justify-end gap-2 px-2">
-        <button
-          type="button"
-          title="View Notes"
+        <ActionIconButton
+          label="Voir les notes"
+          tone="muted"
           onClick={(e) => {
             e.stopPropagation();
             onSelect(client);
           }}
-          className="rounded-lg p-2 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]"
         >
           <NotebookText size={16} strokeWidth={1.75} />
-        </button>
-        <button
-          type="button"
-          title="Schedule"
+        </ActionIconButton>
+        <ActionIconButton
+          label="Planifier"
+          tone="primary"
           onClick={(e) => {
             e.stopPropagation();
             onSchedule(client);
           }}
-          className="rounded-lg p-2 text-[#435544] transition-colors hover:bg-[#435544] hover:text-white"
         >
           <CalendarDays size={16} strokeWidth={1.75} />
-        </button>
+        </ActionIconButton>
       </div>
     </div>
   );
@@ -793,14 +753,11 @@ function renderDesktopCell(colId: string, client: Client, summary: ClientSummary
   switch (colId) {
     case 'name':
       return (
-        <div className="flex items-center gap-3">
-          <ClientAvatar client={client} />
-          <div className="min-w-0">
-            <p className="truncate font-bold text-[#1a1c1b] transition-colors group-hover:text-[#435544]">
-              {summary.fullName}
-            </p>
-            <p className="truncate text-xs text-[#747872]">{client.email || 'No email provided'}</p>
-          </div>
+        <div className="min-w-0">
+          <p className="truncate font-bold text-[#1a1c1b] transition-colors group-hover:text-[#435544]">
+            {summary.fullName}
+          </p>
+          <p className="truncate text-xs text-[#747872]">{client.email || 'Aucun e-mail renseigné'}</p>
         </div>
       );
     case 'status':
@@ -849,10 +806,9 @@ function ClientCard({
       }`}
     >
       <div className="mb-4 flex items-start justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <ClientAvatar client={client} />
-          <div className="min-w-0">
-            <h3 className="truncate text-lg font-bold text-[#1a1c1b]">{summary.fullName}</h3>
+        <div className="min-w-0">
+          <h3 className="truncate text-lg font-bold text-[#1a1c1b]">{summary.fullName}</h3>
+          <div className="mt-2">
             <StatusBadge status={summary.status} />
           </div>
         </div>
@@ -861,24 +817,24 @@ function ClientCard({
 
       <div className="space-y-3 text-sm">
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#747872]">Last Visit</span>
+          <span className="text-[#747872]">Dernière visite</span>
           <span className="font-medium text-[#1a1c1b]">{summary.lastVisitLabel}</span>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#747872]">Preferred Ritual</span>
+          <span className="text-[#747872]">Rituel préféré</span>
           <div className="max-w-[60%] text-right"><RitualBadge label={summary.preferredRitual} /></div>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#747872]">Total Sessions</span>
+          <span className="text-[#747872]">Total séances</span>
           <span className="font-bold text-[#435544]">{summary.sessionsCount}</span>
         </div>
         <div className="flex items-center gap-2 text-[#434842]">
           <Phone size={14} strokeWidth={1.75} className="text-[#747872]" />
-          <span>{client.phone || 'No phone'}</span>
+          <span>{client.phone || 'Aucun téléphone'}</span>
         </div>
         <div className="flex items-center gap-2 text-[#434842]">
           <MapPin size={14} strokeWidth={1.75} className="text-[#747872]" />
-          <span>{client.city || 'Unknown city'}</span>
+          <span>{client.city || 'Ville inconnue'}</span>
         </div>
       </div>
 
@@ -891,7 +847,7 @@ function ClientCard({
           }}
           className="rounded-lg border border-[#435544]/20 px-4 py-2.5 text-sm font-bold text-[#435544] transition-colors hover:bg-[#d4e8d2]/30"
         >
-          View Notes
+          Voir les notes
         </button>
         <button
           type="button"
@@ -901,7 +857,7 @@ function ClientCard({
           }}
           className="rounded-lg bg-[#435544] px-4 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
         >
-          Schedule
+          Planifier
         </button>
       </div>
     </div>
@@ -935,6 +891,38 @@ function InsightCard({
   );
 }
 
+function ActionIconButton({
+  label,
+  tone,
+  onClick,
+  children,
+}: {
+  label: string;
+  tone: 'muted' | 'primary';
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  children: React.ReactNode;
+}) {
+  const className = tone === 'primary'
+    ? 'rounded-lg p-2 text-[#435544] transition-colors hover:bg-[#435544] hover:text-white'
+    : 'rounded-lg p-2 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]';
+
+  return (
+    <div className="group relative flex">
+      <button
+        type="button"
+        aria-label={label}
+        onClick={onClick}
+        className={className}
+      >
+        {children}
+      </button>
+      <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#1a1c1b] px-3 py-1 text-[11px] font-medium text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+        {label}
+      </span>
+    </div>
+  );
+}
+
 function TrendCard({
   trend,
   maxTrend,
@@ -945,8 +933,8 @@ function TrendCard({
   return (
     <div className="flex flex-col justify-between rounded-2xl border border-[#fcdaaf] bg-[#fcdaaf]/30 p-6">
       <div>
-        <p className="text-sm font-bold text-[#775e3c]">Trend Analysis</p>
-        <p className="mt-1 text-xs text-[#775e3c]/70">Unique active clients over the last 6 months</p>
+        <p className="text-sm font-bold text-[#775e3c]">Analyse de tendance</p>
+        <p className="mt-1 text-xs text-[#775e3c]/70">Clients actifs uniques sur les 6 derniers mois</p>
       </div>
       <div className="mt-5 flex h-14 items-end gap-1 px-1">
         {trend.map((item) => (
@@ -962,7 +950,7 @@ function TrendCard({
         ))}
       </div>
       <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#775e3c]">
-        Stability Growth: {trend[trend.length - 1]?.value >= trend[0]?.value ? 'Positive' : 'Needs attention'}
+        Croissance de stabilité : {trend[trend.length - 1]?.value >= trend[0]?.value ? 'Positive' : 'À surveiller'}
       </p>
     </div>
   );
@@ -976,12 +964,12 @@ function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?:
       </div>
       <div className="space-y-3">
         <h2 className="font-['Public_Sans',sans-serif] text-2xl font-semibold text-[#1a1c1b]">
-          No clients found
+          Aucun client trouvé
         </h2>
         <p className="mx-auto max-w-md text-sm leading-relaxed text-[#747872]">
           {search
-            ? `No profile matches "${search}". Try another query or create a new client record.`
-            : 'Your directory is empty. Start by creating a client profile or booking a first session.'}
+            ? `Aucun profil ne correspond à "${search}". Essayez une autre recherche ou créez une nouvelle fiche client.`
+            : 'Votre répertoire est vide. Commencez par créer une fiche client ou réserver une première séance.'}
         </p>
       </div>
       <button
@@ -989,7 +977,7 @@ function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?:
         className="flex items-center gap-2 rounded-xl bg-[#435544] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
       >
         <Plus size={16} strokeWidth={1.9} />
-        Create Client
+        Créer un client
       </button>
     </div>
   );

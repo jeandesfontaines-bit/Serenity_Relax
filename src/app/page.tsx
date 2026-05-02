@@ -104,6 +104,7 @@ const faqs = [
 
 export default function HomePage() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [bookingServiceId, setBookingServiceId] = useState<string | undefined>(undefined);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -132,10 +133,13 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-background text-on-surface selection:bg-surface-container-highest selection:text-on-surface overflow-x-hidden font-sans">
       {/* TopAppBar replaced with standard Navbar to keep auth features */}
-      <Navbar onBookingClick={() => setIsBookingOpen(true)} />
+      <Navbar onBookingClick={() => {
+        setBookingServiceId(undefined);
+        setIsBookingOpen(true);
+      }} />
       
       {/* ── HERO SECTION ── */}
-      <section id="hero" className="relative min-h-screen flex items-center pt-48 pb-24 px-8 md:px-16 overflow-hidden">
+      <section id="hero" className="relative min-h-screen flex items-center pt-36 pb-20 px-6 md:px-12 overflow-hidden">
         <div className="absolute top-0 right-0 w-full md:w-2/3 h-full z-0 opacity-20">
           <div className="absolute top-[64px] right-[64px] w-48 h-48 border-t border-r border-outline-variant"></div>
         </div>
@@ -147,7 +151,7 @@ export default function HomePage() {
           className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
         >
           <div className="lg:col-span-6">
-            <motion.div variants={fadeIn} className="flex items-baseline gap-2 mb-8">
+            <motion.div variants={fadeIn} className="mb-6 flex items-baseline gap-2">
               <span className="font-sans text-[10px] tracking-[0.4em] text-on-tertiary-container uppercase">
                 SERENITY RELAX THERAPY
               </span>
@@ -156,14 +160,17 @@ export default function HomePage() {
               </span>
             </motion.div>
             
-            <motion.h1 variants={fadeIn} className="font-display text-5xl md:text-6xl lg:text-[48px] leading-[1.2] tracking-[-0.02em] mb-12 text-on-background max-w-xl">
+            <motion.h1 variants={fadeIn} className="font-display text-4xl md:text-5xl lg:text-[44px] leading-[1.15] tracking-[-0.02em] mb-10 text-on-background max-w-xl">
               Thérapie manuelle d'exception & restauration sensorielle.
             </motion.h1>
             
-            <motion.div variants={fadeIn} className="flex flex-col sm:flex-row items-start gap-8">
+            <motion.div variants={fadeIn} className="flex flex-col items-start gap-6 sm:flex-row">
               <button 
-                onClick={() => setIsBookingOpen(true)}
-                className="bg-primary text-primary-foreground font-label text-[10px] py-5 px-10 tracking-[0.6em] uppercase hover:bg-on-surface-variant transition-colors"
+                onClick={() => {
+                  setBookingServiceId(undefined);
+                  setIsBookingOpen(true);
+                }}
+                className="bg-primary text-primary-foreground font-label text-[10px] py-4 px-8 tracking-[0.6em] uppercase hover:bg-on-surface-variant transition-colors"
               >
                 EXPLORE SERVICES
               </button>
@@ -175,10 +182,7 @@ export default function HomePage() {
           </div>
 
           <div className="lg:col-span-6 relative">
-            <motion.div 
-              variants={fadeIn}
-              className="aspect-[3/4] w-full bg-surface-container overflow-hidden"
-            >
+            <motion.div variants={fadeIn} className="aspect-[3/4] w-full bg-surface-container overflow-hidden">
               <img 
                 src={HERO_IMAGE}
                 alt="Studio Serenity" 
@@ -189,7 +193,7 @@ export default function HomePage() {
             {/* Float quote */}
             <motion.div 
               variants={fadeIn}
-              className="absolute -bottom-8 -left-8 bg-white p-8 max-w-xs hidden md:block border-l border-b border-zinc-100"
+              className="absolute -bottom-6 -left-6 hidden max-w-xs border-l border-b border-zinc-100 bg-white p-6 md:block"
             >
               <p className="font-body text-[16px] text-on-surface-variant italic leading-[1.6]">
                 "Chaque corps mérite un espace de détente sur mesure, pensé avec soin par João."
@@ -200,8 +204,8 @@ export default function HomePage() {
       </section>
 
       {/* ── ABOUT JOÃO SECTION ── */}
-      <section id="about" className="py-[120px] px-8 md:px-16 bg-surface-container-low">
-        <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+      <section id="about" className="bg-surface-container-low px-6 py-[96px] md:px-12">
+        <div className="mx-auto grid max-w-[1320px] grid-cols-1 items-center gap-16 lg:grid-cols-12">
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -226,31 +230,31 @@ export default function HomePage() {
             variants={stagger}
             className="lg:col-span-7"
           >
-            <motion.span variants={fadeIn} className="font-label text-[10px] tracking-[0.6em] uppercase text-on-tertiary-container mb-6 block">
+            <motion.span variants={fadeIn} className="font-label mb-5 block text-[10px] uppercase tracking-[0.6em] text-on-tertiary-container">
               OUR FOUNDER
             </motion.span>
             
-            <motion.h2 variants={fadeIn} className="font-headline text-[24px] md:text-[32px] leading-[1.4] mb-8">
+            <motion.h2 variants={fadeIn} className="font-headline mb-6 text-[22px] leading-[1.35] md:text-[28px]">
               João — Fondateur & Thérapeute
             </motion.h2>
             
-            <motion.div variants={fadeIn} className="space-y-6 max-w-2xl">
-              <p className="font-body text-[18px] text-on-surface leading-[1.6]">
+            <motion.div variants={fadeIn} className="max-w-2xl space-y-5">
+              <p className="font-body text-[17px] leading-[1.6] text-on-surface">
                 Fort d'une formation en thérapie holistique et d'une sensibilité unique, João accompagne ses clients vers un état de détente profonde et de mieux-être durable.
               </p>
-              <p className="font-body text-[16px] text-on-surface-variant leading-[1.6]">
+              <p className="font-body text-[15px] leading-[1.6] text-on-surface-variant">
                 Sa méthode allie techniques manuelles traditionnelles et approche corporelle globale — offrant à chaque client une expérience de soin personnalisée au sein de son studio à Genève.
               </p>
             </motion.div>
             
-            <motion.div variants={fadeIn} className="mt-12 flex items-center gap-12">
+            <motion.div variants={fadeIn} className="mt-10 flex items-center gap-10">
               <div className="flex flex-col">
-                <span className="font-display text-[40px] leading-[1.2] mb-2 tracking-[-0.02em]">12+</span>
+                <span className="font-display mb-2 text-[34px] leading-[1.2] tracking-[-0.02em]">12+</span>
                 <span className="font-label text-[10px] tracking-[0.6em] uppercase text-secondary">YEARS EXP.</span>
               </div>
               <div className="h-12 w-px bg-outline-variant"></div>
               <div className="flex flex-col">
-                <span className="font-display text-[40px] leading-[1.2] mb-2 tracking-[-0.02em]">4k+</span>
+                <span className="font-display mb-2 text-[34px] leading-[1.2] tracking-[-0.02em]">4k+</span>
                 <span className="font-label text-[10px] tracking-[0.6em] uppercase text-secondary">SESSIONS</span>
               </div>
             </motion.div>
@@ -259,19 +263,19 @@ export default function HomePage() {
       </section>
 
       {/* ── SERVICES GRID ── */}
-      <section id="services" className="py-[120px] px-8 md:px-16 bg-background">
-        <div className="max-w-[1440px] mx-auto">
+      <section id="services" className="bg-background px-6 py-[96px] md:px-12">
+        <div className="mx-auto max-w-[1320px]">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8"
+            className="mb-16 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end"
           >
             <div className="max-w-xl">
-              <span className="font-label text-[10px] text-on-tertiary-container mb-6 block uppercase tracking-[0.4em]">
+              <span className="font-label mb-5 block text-[10px] uppercase tracking-[0.4em] text-on-tertiary-container">
                 Curated Treatments
               </span>
-              <h2 className="font-headline text-[24px] md:text-[32px] leading-[1.4]">
+              <h2 className="font-headline text-[22px] leading-[1.35] md:text-[28px]">
                 Precision Wellness Modules.
               </h2>
             </div>
@@ -281,7 +285,7 @@ export default function HomePage() {
             </div>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[2px] bg-outline-variant border border-outline-variant">
+          <div className="grid grid-cols-1 gap-[2px] border border-outline-variant bg-outline-variant md:grid-cols-2 lg:grid-cols-4">
             {services.map((service, idx) => (
               <motion.div 
                 key={service.id} 
@@ -289,8 +293,11 @@ export default function HomePage() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1, duration: 1.5 }}
-                className="group relative aspect-square bg-surface overflow-hidden cursor-pointer"
-                onClick={() => setIsBookingOpen(true)}
+                className="group relative aspect-[4/3] cursor-pointer overflow-hidden bg-surface md:aspect-[5/4] lg:aspect-[4/5]"
+                onClick={() => {
+                  setBookingServiceId(service.id);
+                  setIsBookingOpen(true);
+                }}
               >
                 <img 
                   src={service.image}
@@ -300,11 +307,11 @@ export default function HomePage() {
                 
                 <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 
-                <div className="absolute bottom-0 left-0 w-full p-8 translate-y-4 group-hover:translate-y-0 transition-transform bg-gradient-to-t from-black/60 to-transparent">
-                  <h3 className="font-label text-[12px] tracking-[0.03em] font-medium text-white mb-2 uppercase">
+                <div className="absolute bottom-0 left-0 w-full translate-y-2 bg-gradient-to-t from-black/60 to-transparent p-4 transition-transform group-hover:translate-y-0 md:p-5">
+                  <h3 className="mb-1 font-label text-[10px] font-medium uppercase tracking-[0.03em] text-white md:text-[11px]">
                     {service.name}
                   </h3>
-                  <p className="font-label text-[9px] tracking-[0.6em] uppercase text-white/80 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="font-label text-[8px] tracking-[0.45em] uppercase text-white/80 opacity-0 transition-opacity group-hover:opacity-100 md:text-[9px]">
                     {service.duration} — {service.price}
                   </p>
                 </div>
@@ -315,13 +322,13 @@ export default function HomePage() {
       </section>
 
       {/* ── FAQ SECTION ── */}
-      <section id="faq" className="py-[120px] px-8 md:px-16 overflow-hidden bg-surface">
+      <section id="faq" className="overflow-hidden bg-surface px-6 py-[96px] md:px-12">
         <div className="max-w-4xl mx-auto text-center">
           <motion.span 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="font-label text-[10px] tracking-[0.6em] uppercase text-on-tertiary-container mb-12 block"
+            className="font-label mb-10 block text-[10px] uppercase tracking-[0.6em] text-on-tertiary-container"
           >
             QUESTIONS FRÉQUEMMENT POSÉES
           </motion.span>
@@ -330,12 +337,12 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-display text-[48px] leading-[1.2] tracking-[-0.02em] mb-20 text-left text-on-surface"
+            className="mb-16 text-left font-display text-[40px] leading-[1.15] tracking-[-0.02em] text-on-surface md:text-[44px]"
           >
             Équilibre et clarté.
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16 text-left">
+          <div className="grid grid-cols-1 gap-x-16 gap-y-12 text-left md:grid-cols-2">
             {faqs.map((faq, idx) => (
               <motion.div 
                 key={idx}
@@ -343,12 +350,12 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="border-t border-outline-variant pt-8"
+                className="border-t border-outline-variant pt-6"
               >
-                <h4 className="font-label text-[14px] leading-[1.2] tracking-[0.05em] font-semibold mb-4 uppercase text-on-surface">
+                <h4 className="mb-3 font-label text-[13px] font-semibold uppercase leading-[1.2] tracking-[0.05em] text-on-surface">
                   {faq.question}
                 </h4>
-                <p className="font-body text-[16px] leading-[1.6] text-on-surface-variant italic">
+                <p className="font-body text-[15px] italic leading-[1.6] text-on-surface-variant">
                   {faq.answer}
                 </p>
               </motion.div>
@@ -362,8 +369,12 @@ export default function HomePage() {
       
       <BookingFlow 
         isOpen={isBookingOpen} 
-        onClose={() => setIsBookingOpen(false)} 
+        onClose={() => {
+          setIsBookingOpen(false);
+          setBookingServiceId(undefined);
+        }} 
         services={services}
+        initialServiceId={bookingServiceId}
       />
     </main>
   );

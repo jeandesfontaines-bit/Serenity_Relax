@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { format, addMonths, addWeeks } from 'date-fns';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { format, addDays, addMonths, addWeeks, startOfMonth, endOfMonth } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import { useFirestore, useUser } from '@/firebase';
 import {
   collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc, setDoc,
@@ -54,6 +55,7 @@ export default function TherapistDashboard() {
   const [tab, setTab] = useState<string>('dashboard');
   const [view, setView] = useState<'month' | 'week'>('week');
   const [cur, setCur] = useState(new Date());
+  const [globalSearch, setGlobalSearch] = useState('');
 
   // Data State
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -77,6 +79,12 @@ export default function TherapistDashboard() {
   const [cabinetName, setCabinetName] = useState<string>("Serenity Relax Therapy");
   const [cabinetEmail, setCabinetEmail] = useState<string>("");
   const [cabinetAddress, setCabinetAddress] = useState<string>("");
+  const [fullName, setFullName] = useState<string>('João Silva');
+  const [profileEmail, setProfileEmail] = useState<string>('joao.silva@sereneholistic.com');
+  const [phone, setPhone] = useState<string>('+351 912 345 678');
+  const [notifyEmail, setNotifyEmail] = useState<boolean>(true);
+  const [notifyPush, setNotifyPush] = useState<boolean>(true);
+  const [notifySms, setNotifySms] = useState<boolean>(false);
 
   // Interaction State
   const [blockMode, setBlockMode] = useState(false);
@@ -85,6 +93,36 @@ export default function TherapistDashboard() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [bookingData, setBookingData] = useState<{ date: string; time: string; initialSearch?: string } | null>(null);
   const [weeklySettingsOpen, setWeeklySettingsOpen] = useState(false);
+  const [pendingAbsenceDates, setPendingAbsenceDates] = useState<Set<string>>(new Set());
+  const [showClientFilters, setShowClientFilters] = useState(false);
+  const [clientsVisibleCount, setClientsVisibleCount] = useState(0);
+
+  const [accountingDateRange, setAccountingDateRange] = useState({
+    start: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
+    end: format(endOfMonth(new Date()), 'yyyy-MM-dd'),
+  });
+  const [showAccountingDateRange, setShowAccountingDateRange] = useState(false);
+  const [accountingSelectedCount, setAccountingSelectedCount] = useState(0);
+
+  const todayStr = fmt(new Date());
+  const todaySessionsCount = appointments.filter(
+    (appt) => appt.date === todayStr && appt.status !== 'cancelled',
+  ).length;
+  const dashboardSummary = {
+    title: 'Welcome back, João',
+    subtitle: `Today is ${format(new Date(), 'EEEE, MMMM do')}. You have ${todaySessionsCount} session${todaySessionsCount > 1 ? 's' : ''} remaining for the day.`,
+  };
+  const schedulerTitle = useMemo(() => {
+    if (view === 'week') {
+      const start = new Date(cur);
+      const day = start.getDay();
+      const diff = start.getDate() - day + (day === 0 ? -6 : 1);
+      const weekStart = new Date(start.setDate(diff));
+      const weekEnd = addDays(weekStart, 6);
+      return `${format(weekStart, 'd')} – ${format(weekEnd, 'd MMM yyyy', { locale: fr })}`;
+    }
+    return format(cur, 'MMMM yyyy', { locale: fr });
+  }, [cur, view]);
 
   // --- Data Loading ---
   useEffect(() => {
@@ -117,6 +155,12 @@ export default function TherapistDashboard() {
         if (d.cabinetName) setCabinetName(d.cabinetName);
         if (d.cabinetEmail) setCabinetEmail(d.cabinetEmail);
         if (d.cabinetAddress) setCabinetAddress(d.cabinetAddress);
+        if (d.fullName) setFullName(d.fullName);
+        if (d.profileEmail) setProfileEmail(d.profileEmail);
+        if (d.phone) setPhone(d.phone);
+        if (d.notifyEmail !== undefined) setNotifyEmail(d.notifyEmail);
+        if (d.notifyPush !== undefined) setNotifyPush(d.notifyPush);
+        if (d.notifySms !== undefined) setNotifySms(d.notifySms);
       }
     }, (err) => console.error("Config meta snapshot error:", err));
 
@@ -126,6 +170,44 @@ export default function TherapistDashboard() {
   // --- Handlers ---
   const isDayOpen = (d: string) => !availability.find(a => a.id === d)?.closed;
   const isSlotBlocked = (d: string, t: string) => !!availability.find(a => a.id === d)?.blockedSlots?.includes(t);
+  const togglePendingAbsence = useCallback((dStr: string) => {
+    setPendingAbsenceDates((prev) => {
+      const next = new Set(prev);
+      next.has(dStr) ? next.delete(dStr) : next.add(dStr);
+      return next;
+    });
+  }, []);
+
+  const clearAbsenceMode = useCallback(() => {
+    setPendingAbsenceDates(new Set());
+    setAbsenceMode(false);
+  }, []);
+
+  const saveAbsences = useCallback(() => {
+    pendingAbsenceDates.forEach((date) => {
+      handleToggleDay(date);
+    });
+    setPendingAbsenceDates(new Set());
+    setAbsenceMode(false);
+  }, [pendingAbsenceDates]);
+
+  const toggleBlockModeFromHeader = useCallback(() => {
+    if (absenceMode) {
+      clearAbsenceMode();
+      setBlockMode(false);
+      return;
+    }
+    setBlockMode((prev) => !prev);
+  }, [absenceMode, clearAbsenceMode]);
+
+  const toggleAbsenceModeFromHeader = useCallback(() => {
+    if (absenceMode) {
+      saveAbsences();
+      return;
+    }
+    setAbsenceMode(true);
+    setBlockMode(false);
+  }, [absenceMode, saveAbsences]);
 
   const toggleSlot = async (dStr: string, t: string) => {
     if (!firestore) return;
@@ -196,6 +278,7 @@ export default function TherapistDashboard() {
             onSelectAppt={setSelectedAppt}
             onNavigate={setTab}
             onEditGoal={handleUpdateGoal}
+            searchQuery={globalSearch}
           />
         );
       case 'scheduler':
@@ -203,8 +286,6 @@ export default function TherapistDashboard() {
           <AgendaPage
             view={view}
             cur={cur}
-            onPeriod={(dir) => setCur(prev => (view === 'month' ? addMonths(prev, dir) : addWeeks(prev, dir)))}
-            onToday={() => setCur(new Date())}
             onToggleView={setView}
             onSelectAppt={setSelectedAppt}
             onOpenSlot={(date, time) => setBookingData({ date, time })}
@@ -213,14 +294,14 @@ export default function TherapistDashboard() {
             isDayOpen={isDayOpen}
             isSlotBlocked={isSlotBlocked}
             toggleSlot={toggleSlot}
-            onToggleDay={handleToggleDay}
             blockMode={blockMode}
-            setBlockMode={setBlockMode}
             absenceMode={absenceMode}
-            setAbsenceMode={setAbsenceMode}
-            onOpenWeeklySettings={() => setWeeklySettingsOpen(true)}
             onMoveAppt={handleMoveAppt}
             onSelectDate={setCur}
+            searchQuery={globalSearch}
+            pendingDates={pendingAbsenceDates}
+            togglePending={togglePendingAbsence}
+            onClearAbsenceMode={clearAbsenceMode}
           />
         );
       case 'clients':
@@ -231,6 +312,11 @@ export default function TherapistDashboard() {
             appointments={appointments}
             onSelectAppt={setSelectedAppt}
             onUpdateClient={handleUpdateClient}
+            onScheduleClient={(selected) => setBookingData({
+              date: fmt(new Date()),
+              time: '09:00',
+              initialSearch: `${selected.firstName || ''} ${selected.lastName || ''}`.trim() || undefined,
+            })}
           />
         ) : (
           <ClientsPage
@@ -240,6 +326,11 @@ export default function TherapistDashboard() {
             onNewClient={(name: string | undefined) => setBookingData({ date: fmt(new Date()), time: '09:00', initialSearch: name })}
             onMergeClients={handleMergeClients}
             onDeleteClients={handleDeleteClients}
+            searchQuery={globalSearch}
+            onSearchQueryChange={setGlobalSearch}
+            showFilterPanel={showClientFilters}
+            onShowFilterPanelChange={setShowClientFilters}
+            onVisibleCountChange={setClientsVisibleCount}
           />
         );
       case 'accounting':
@@ -250,6 +341,10 @@ export default function TherapistDashboard() {
             onTogglePayment={handleTogglePayment}
             onSelectAppt={setSelectedAppt}
             onDeleteInvoices={handleDeleteAppointments}
+            searchQuery={globalSearch}
+            onSearchQueryChange={setGlobalSearch}
+            dateRange={accountingDateRange}
+            onSelectedCountChange={setAccountingSelectedCount}
           />
         );
       case 'settings':
@@ -264,9 +359,16 @@ export default function TherapistDashboard() {
             cabinetName={cabinetName}
             cabinetEmail={cabinetEmail}
             cabinetAddress={cabinetAddress}
+            fullName={fullName}
+            profileEmail={profileEmail}
+            phone={phone}
+            notifyEmail={notifyEmail}
+            notifyPush={notifyPush}
+            notifySms={notifySms}
             onUpdateMetadata={(data) => {
               if (firestore) setDoc(doc(firestore, 'config', 'metadata'), data, { merge: true });
             }}
+            searchQuery={globalSearch}
           />
         );
       default:
@@ -502,11 +604,66 @@ export default function TherapistDashboard() {
     setWeeklySettingsOpen(false);
   };
 
+  const handleNavigate = useCallback((page: string) => {
+    setTab(page);
+    setSelectedClient(null);
+  }, []);
+
   return (
-    <AppLayout
-      activePage={tab}
-      onNavigate={setTab}
-    >
+      <AppLayout
+        activePage={tab === 'clients' && selectedClient ? 'client-detail' : tab}
+        onNavigate={handleNavigate}
+        globalSearch={globalSearch}
+        onGlobalSearchChange={setGlobalSearch}
+        dashboardSummary={dashboardSummary}
+        schedulerToolbar={tab === 'scheduler' ? {
+          eyebrow: 'Agenda professionnel',
+          title: schedulerTitle,
+          view,
+          onPrev: () => setCur((prev) => (view === 'month' ? addMonths(prev, -1) : addWeeks(prev, -1))),
+          onNext: () => setCur((prev) => (view === 'month' ? addMonths(prev, 1) : addWeeks(prev, 1))),
+          onToday: () => setCur(new Date()),
+          onToggleView: setView,
+          blockMode,
+          absenceMode,
+          absencePendingCount: pendingAbsenceDates.size,
+          onToggleBlockMode: toggleBlockModeFromHeader,
+          onToggleAbsenceMode: toggleAbsenceModeFromHeader,
+          onOpenSettings: () => setWeeklySettingsOpen(true),
+        } : undefined}
+        clientsToolbar={tab === 'clients' && !selectedClient ? {
+          title: 'Répertoire clients',
+          subtitle: `${clients.length} profil${clients.length > 1 ? 's' : ''}, ${clientsVisibleCount} visible${clientsVisibleCount > 1 ? 's' : ''}`,
+          onToggleFilters: () => setShowClientFilters((prev) => !prev),
+          onAddClient: () => setBookingData({ date: fmt(new Date()), time: '09:00', initialSearch: globalSearch.trim() || undefined }),
+        } : undefined}
+        clientDetailToolbar={tab === 'clients' && selectedClient ? {
+          eyebrow: 'Dossier client',
+          title: `${selectedClient.firstName || ''} ${selectedClient.lastName || ''}`.trim() || 'Client',
+          onBack: () => setSelectedClient(null),
+          onOpenHistory: () => document.getElementById('client-history')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+          onOpenNotes: () => {
+            const notesEl = document.getElementById('client-notes');
+            notesEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (notesEl instanceof HTMLTextAreaElement) notesEl.focus();
+          },
+        } : undefined}
+        financeToolbar={tab === 'accounting' ? {
+          title: 'Finances',
+          subtitle: 'Aperçu des revenus',
+          showDateRange: showAccountingDateRange,
+          dateRange: accountingDateRange,
+          onDateRangeChange: setAccountingDateRange,
+          onToggleDateFilter: () => setShowAccountingDateRange(p => !p),
+          onExport: () => window.dispatchEvent(new CustomEvent('trigger-finance-export')),
+          selectedCount: accountingSelectedCount,
+        } : undefined}
+        settingsToolbar={tab === 'settings' ? {
+          title: 'Paramètres du compte',
+          subtitle: 'Gérez votre profil professionnel, vos préférences de notification et la configuration de votre cabinet',
+          statusLabel: 'Enregistrement automatique',
+        } : undefined}
+      >
       {renderContent()}
 
       {/* Legacy Modals Integration (Pending Full Modularization) */}

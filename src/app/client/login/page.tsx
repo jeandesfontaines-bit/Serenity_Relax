@@ -45,7 +45,7 @@ function ClientLoginContent() {
           
           // Redirect to dashboard after a short delay
           setTimeout(() => {
-            router.push('/client/portal');
+            router.push('/client/dashboard');
           }, 1500);
         } else {
           setStatus('error');

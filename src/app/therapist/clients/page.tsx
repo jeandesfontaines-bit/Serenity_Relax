@@ -61,10 +61,7 @@ export default function ClientsCRM() {
                 {clients?.map((client) => (
                   <TableRow key={client.id} className="hover:bg-neutral-50 transition-colors group">
                     <TableCell className="pl-10 py-6">
-                      <div className="flex items-center gap-5">
-                        <div className="h-12 w-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-900 font-serif font-bold text-lg group-hover:bg-neutral-900 group-hover:text-white transition-all duration-500">
-                          {client.firstName[0]}{client.lastName[0]}
-                        </div>
+                      <div className="flex items-center">
                         <span className="font-serif font-bold text-2xl text-neutral-900">{client.firstName} {client.lastName}</span>
                       </div>
                     </TableCell>

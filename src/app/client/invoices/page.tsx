@@ -12,17 +12,27 @@ import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestor
 export default function ClientInvoicesPage() {
   const router = useRouter();
   const firestore = useFirestore();
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const [invoices, setInvoices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sessionClientId, setSessionClientId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!firestore || !user) return;
+    setSessionClientId(sessionStorage.getItem('serenity_client_id'));
+  }, []);
+
+  const effectiveClientId = user?.uid || sessionClientId;
+
+  useEffect(() => {
+    if (isUserLoading) return;
+    if (!firestore || !effectiveClientId) {
+      setLoading(false);
+      return;
+    }
     
-    // On filtre par clientId (qui correspond à l'ID utilisateur Firebase)
     const q = query(
       collection(firestore, 'invoices'), 
-      where('clientId', '==', user.uid),
+      where('clientId', '==', effectiveClientId),
       orderBy('createdAt', 'desc')
     );
 
@@ -31,7 +41,7 @@ export default function ClientInvoicesPage() {
       setLoading(false);
     });
     return unsub;
-  }, [firestore, user]);
+  }, [effectiveClientId, firestore, isUserLoading]);
 
   const generateLuxePDF = (inv: any) => {
     try {
