@@ -165,7 +165,6 @@ export default function ClientDetail({
   const statusMeta = STATUS_META[status];
   const ageLabel = getAgeLabel(editData.birthDate);
   const fullName = `${client.firstName || ''} ${client.lastName || ''}`.trim() || 'Client';
-  const address = getAddress(editData);
   const headerSummary = [
     ageLabel,
     clientAppts.length > 0 ? `${clientAppts.length} seance${clientAppts.length > 1 ? 's' : ''} enregistree${clientAppts.length > 1 ? 's' : ''}` : 'Aucune seance enregistree',
@@ -214,17 +213,6 @@ export default function ClientDetail({
                 {materialIcon('event_repeat', true)}
                 Planifier une seance
               </button>
-              <button
-                onClick={() => {
-                  const notesEl = document.getElementById('client-notes');
-                  notesEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  if (notesEl instanceof HTMLTextAreaElement) notesEl.focus();
-                }}
-                className={`flex items-center justify-center gap-2 ${dashboardSecondaryButton}`}
-              >
-                {materialIcon('edit_note')}
-                Nouvelle note
-              </button>
             </div>
           </div>
         </section>
@@ -269,7 +257,7 @@ export default function ClientDetail({
               />
             </div>
 
-            <div className="rounded-[20px] border border-[#bdcab9] bg-[rgba(239,252,233,0.6)] p-4 backdrop-blur-[18px]">
+            <div className="rounded-[20px] border border-[#bdcab9] bg-[rgba(239,252,233,0.6)] p-4">
               <div className="mb-2 flex items-center gap-2 text-[#556253]">
                 {materialIcon('psychiatry')}
                 <p className="text-[10px] font-medium uppercase tracking-[0.1em]">Directive praticien</p>
@@ -280,8 +268,6 @@ export default function ClientDetail({
             </div>
 
             <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              <SummaryChip label="Adresse" value={address} />
-              <SummaryChip label="Naissance" value={editData.birthDate ? formatDisplayDate(editData.birthDate) : 'Non renseignee'} />
               <SummaryChip label="Solde client" value={totalDue > 0 ? formatMoney(totalDue) : 'Aucun impaye'} tone={totalDue > 0 ? 'alert' : 'default'} />
               <SummaryChip label="Chiffre genere" value={formatMoney(totalRevenue)} />
             </div>
@@ -389,7 +375,7 @@ export default function ClientDetail({
               value={client.notes || ''}
               onChange={(e) => onUpdateClient(client.id, { notes: e.target.value })}
               placeholder="Renseignez ici les observations de seance, zones de tension, recommandations et plan de suivi..."
-              className="min-h-[300px] flex-1 rounded-[20px] border border-[#c3c8c0] bg-[#faf9f7] p-4 text-xs leading-6 text-[#1a1c1b] shadow-inner outline-none transition focus:border-[#435544] focus:ring-1 focus:ring-[#435544] resize-none"
+              className="min-h-[300px] flex-1 rounded-[20px] border border-[#c3c8c0] bg-[#faf9f7] p-4 text-xs leading-6 text-[#1a1c1b] outline-none transition focus:border-[#435544] focus:ring-1 focus:ring-[#435544] resize-none"
             />
 
             <div className="mt-4 flex items-center justify-between border-t border-[#c3c8c0]/60 pt-4">

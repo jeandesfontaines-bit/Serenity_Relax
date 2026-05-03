@@ -114,19 +114,7 @@ export default function AppLayout({
   return (
     <div className={`h-screen h-dvh overflow-hidden ${dashboardShell}`}>
       <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-[#c4c7c3]/70 bg-[rgba(247,243,242,0.82)] p-6 backdrop-blur-[20px] md:flex">
-        <div className="mb-10 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#635e55] text-white shadow-[0_14px_32px_rgba(99,94,85,0.14)]">
-            <span className="material-symbols-outlined" style={filledIcon}>
-              spa
-            </span>
-          </div>
-          <div>
-            <h1 className="text-[28px] font-normal tracking-[-0.02em] text-[#1c1b1b] [font-family:'Noto_Serif',serif]">
-              Serene Sanctuary
-            </h1>
-            <p className="text-[12px] uppercase tracking-[0.1em] text-[#757875]">Portail thérapeute</p>
-          </div>
-        </div>
+        <div className="mb-6" />
 
         <nav className="flex-1 space-y-1">
           {NAV_ITEMS.map((item) => {

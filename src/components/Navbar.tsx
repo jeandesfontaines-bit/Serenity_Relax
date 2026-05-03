@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, LogOut, User as UserIcon, ShieldCheck, Sparkles } from 'lucide-react';
+import { Menu, X, User as UserIcon, Sparkles } from 'lucide-react';
 import { useUser, useAuth, useFirestore } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
@@ -90,7 +89,7 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
 
   return (
     <header 
-      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ${
+      className={`fixed top-0 left-0 w-full z-[100] ${
         isScrolled 
           ? 'py-4 bg-white/70 backdrop-blur-2xl border-b border-black/[0.03] shadow-[0_4px_30px_rgba(0,0,0,0.02)]' 
           : 'py-10 bg-transparent'
@@ -98,18 +97,12 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
     >
       <div className="flex justify-between items-center w-full px-8 md:px-16 max-w-[1920px] mx-auto">
         <Link href="/" className="flex flex-col group relative">
-          <span className={`font-sans font-medium text-[15px] md:text-[17px] tracking-[0.5em] transition-all duration-700 uppercase ${isScrolled ? 'text-foreground' : 'text-white'}`}>
+          <span className={`font-sans font-medium text-[15px] md:text-[17px] tracking-[0.5em] uppercase ${isScrolled ? 'text-foreground' : 'text-white'}`}>
             SERENITY
           </span>
-          <span className={`font-signature text-[20px] md:text-[24px] transition-all duration-700 lowercase -mt-1.5 opacity-70 ${isScrolled ? 'text-secondary' : 'text-white/70'}`}>
+          <span className={`font-signature text-[20px] md:text-[24px] lowercase -mt-1.5 opacity-70 ${isScrolled ? 'text-secondary' : 'text-white/70'}`}>
             by João
           </span>
-          <motion.div 
-            className="absolute -bottom-2 left-0 h-[1px] bg-primary"
-            initial={{ width: 0 }}
-            whileHover={{ width: '100%' }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          />
         </Link>
         
         <nav className="hidden lg:flex items-center space-x-14">
@@ -117,13 +110,13 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
             <Link 
               key={link.label} 
               href={link.href} 
-              className={`relative font-sans uppercase tracking-[0.4em] text-[10px] transition-all duration-500 group ${
+              className={`relative font-sans uppercase tracking-[0.4em] text-[10px] group ${
                 isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/50 hover:text-white'
               }`}
             >
               {link.label}
-              <span className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary scale-0 group-hover:scale-100 transition-transform duration-500 ${
-                pathname === link.href ? 'scale-100' : ''
+              <span className={`absolute -bottom-2 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-primary ${
+                pathname === link.href ? '' : 'hidden'
               }`} />
             </Link>
           ))}
@@ -136,13 +129,13 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
                  <span className={`font-sans uppercase tracking-[0.3em] text-[9px] leading-none mb-1.5 ${isScrolled ? 'text-foreground' : 'text-white'}`}>
                    {effectiveUser.name}
                  </span>
-                 <button onClick={handleSignOut} className={`font-sans uppercase tracking-[0.3em] text-[9px] transition-colors leading-none ${isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/40 hover:text-white'}`}>
+                 <button onClick={handleSignOut} className={`font-sans uppercase tracking-[0.3em] text-[9px] leading-none ${isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/40 hover:text-white'}`}>
                    Sortie
                  </button>
               </div>
-              <div className={`w-10 h-10 rounded-full border flex items-center justify-center overflow-hidden transition-all duration-700 ${
+              <div className={`w-10 h-10 rounded-full border flex items-center justify-center overflow-hidden ${
                 isScrolled ? 'border-border bg-white text-foreground' : 'border-white/20 bg-white/10 text-white'
-              } group-hover:border-primary/50 group-hover:scale-105`}>
+              }`}>
                 {effectiveUser.photo ? (
                   <img src={effectiveUser.photo} alt="" className="w-full h-full object-cover" />
                 ) : (
@@ -153,7 +146,7 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
           ) : (
             <Link 
               href="/login" 
-              className={`hidden sm:block font-sans uppercase tracking-[0.4em] text-[10px] transition-all duration-500 ${
+              className={`hidden sm:block font-sans uppercase tracking-[0.4em] text-[10px] ${
                 isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/50 hover:text-white'
               }`}
             >
@@ -163,31 +156,23 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
 
           <button 
             onClick={onBookingClick}
-            className={`premium-button group rounded-full overflow-hidden ${
+            className={`premium-button rounded-full overflow-hidden ${
               isScrolled 
                 ? 'bg-foreground text-background hover:bg-primary' 
                 : 'bg-white text-foreground hover:bg-primary hover:text-white'
             }`}
           >
-            <span className="relative z-10">Réserver</span>
-            <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[0.22,1,0.36,1]" />
+            <span>Réserver</span>
           </button>
 
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`lg:hidden p-3 rounded-full transition-all ${isScrolled ? 'text-foreground hover:bg-black/5' : 'text-white hover:bg-white/10'}`}>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`lg:hidden rounded-full p-3 ${isScrolled ? 'text-foreground hover:bg-black/5' : 'text-white hover:bg-white/10'}`}>
             {isMenuOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
           </button>
         </div>
       </div>
 
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 1.05, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 1.05, y: -20 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 top-0 bg-background z-[90] flex flex-col p-16 md:p-32 gap-20"
-          >
+      {isMenuOpen && (
+          <div className="fixed inset-0 top-0 z-[90] flex flex-col gap-20 bg-background p-16 md:p-32">
             <div className="flex justify-between items-center mb-10">
                <span className="font-sans uppercase tracking-[0.6em] text-[12px] text-muted-foreground">Menu</span>
                <button onClick={() => setIsMenuOpen(false)} className="p-4 rounded-full bg-muted text-foreground">
@@ -196,22 +181,17 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
             </div>
 
             <nav className="flex flex-col gap-10">
-              {(isTherapistArea ? adminLinks : mainLinks).map((link, i) => (
-                <motion.div
-                  key={link.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 + 0.3 }}
-                >
+              {(isTherapistArea ? adminLinks : mainLinks).map((link) => (
+                <div key={link.label}>
                   <Link 
                     href={link.href} 
                     onClick={() => setIsMenuOpen(false)} 
-                    className="font-serif text-[48px] md:text-[64px] tracking-tight text-foreground hover:text-primary transition-colors duration-500 flex items-center justify-between group"
+                    className="flex items-center justify-between font-serif text-[48px] tracking-tight text-foreground hover:text-primary md:text-[64px]"
                   >
                     <span>{link.label}</span>
-                    <Sparkles className="opacity-0 group-hover:opacity-100 transition-opacity text-primary" size={32} strokeWidth={1} />
+                    <Sparkles className="text-primary" size={32} strokeWidth={1} />
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </nav>
             
@@ -220,7 +200,7 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
                 <Link 
                   href="/login" 
                   onClick={() => setIsMenuOpen(false)} 
-                  className="font-sans uppercase tracking-[0.5em] text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                  className="font-sans uppercase tracking-[0.5em] text-[11px] text-muted-foreground hover:text-foreground"
                 >
                   Espace Praticien
                 </Link>
@@ -232,9 +212,8 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
                 Initialiser un Soin
               </button>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </header>
   );
 }

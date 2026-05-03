@@ -26,7 +26,7 @@ export function Footer() {
               </p>
               <div className="flex items-center gap-8 mt-10">
                  {['Instagram', 'LinkedIn', 'Facebook'].map((social) => (
-                   <a key={social} href="#" className="text-[10px] font-bold uppercase tracking-[0.4em] text-background/30 hover:text-primary transition-colors">{social}</a>
+                   <a key={social} href="#" className="text-[10px] font-bold uppercase tracking-[0.4em] text-background/30 hover:text-primary">{social}</a>
                  ))}
               </div>
             </div>
@@ -41,7 +41,7 @@ export function Footer() {
                 { label: 'Philosophie', href: '/#about' },
                 { label: 'Questions', href: '/#faq' },
               ].map((link) => (
-                <Link key={link.label} href={link.href} className="text-[16px] font-light text-background/60 hover:text-white transition-colors">
+                <Link key={link.label} href={link.href} className="text-[16px] font-light text-background/60 hover:text-white">
                   {link.label}
                 </Link>
               ))}
@@ -63,8 +63,8 @@ export function Footer() {
             © {currentYear} Serenity Relax Therapy. Tous droits réservés.
           </p>
           <div className="flex items-center gap-10 text-[10px] uppercase tracking-[0.4em] text-white/20">
-            <Link href="/privacy" className="hover:text-white transition-colors">Confidentialité</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">Mentions Légales</Link>
+            <Link href="/privacy" className="hover:text-white">Confidentialité</Link>
+            <Link href="/terms" className="hover:text-white">Mentions Légales</Link>
           </div>
         </div>
       </div>

@@ -57,7 +57,6 @@
   }
   
   html {
-    scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -119,8 +118,7 @@
   }
 
   .premium-button {
-    @apply relative overflow-hidden px-12 py-6 text-[10px] font-bold uppercase tracking-[0.6em] transition-all duration-1000 flex items-center justify-center gap-4;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    @apply relative overflow-hidden px-12 py-6 text-[10px] font-bold uppercase tracking-[0.6em] flex items-center justify-center gap-4;
   }
 
   .button-fill {
@@ -140,8 +138,7 @@
   }
 
   .card-luxury {
-    @apply bg-white border border-border/40 rounded-none p-12 transition-all duration-1000 hover:shadow-[0_64px_128px_-32px_rgba(0,0,0,0.08)];
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    @apply bg-white border border-border/40 rounded-none p-12;
   }
 }
 
@@ -158,24 +155,6 @@
   .text-gradient-gold {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #d4af37 0%, #f1e4b3 50%, #aa8a2e 100%);
-  }
-
-  .animate-slow-zoom {
-    animation: slow-zoom 30s ease-in-out infinite alternate;
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-  }
-
-  @keyframes slow-zoom {
-    from { transform: scale(1); }
-    to { transform: scale(1.15); }
   }
 
   .perspective-2000 {
@@ -203,7 +182,6 @@
   @apply bg-background;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-muted-foreground/20 hover:bg-muted-foreground/40 transition-colors rounded-full;
+  @apply bg-muted-foreground/20 hover:bg-muted-foreground/40 rounded-full;
 }
-
 

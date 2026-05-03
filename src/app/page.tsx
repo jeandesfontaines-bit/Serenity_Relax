@@ -19,10 +19,10 @@ import { BookingFlow } from '@/components/booking/booking-flow';
 import { SERVICES } from '@/lib/types';
 
 /* ── Assets ── */
-const HERO_IMAGE = '/images/hero-selected.png';
+const HERO_IMAGE = '/images/hero-joao-hq.png';
 const STUDIO_IMAGE = '/images/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
 const DETAIL_IMAGE = '/images/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
-const JOAO_PORTRAIT = '/joao-portrait.png';
+const JOAO_PORTRAIT = '/images/joao-portrait-hq.png';
 
 /* ── FAQ Data ── */
 const faqs = [
@@ -165,7 +165,7 @@ export default function HomePage() {
       ════════════════════════════════════════ */}
       <section id="hero" className="relative h-[100vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image src={HERO_IMAGE} alt="" fill sizes="100vw" className="object-cover" priority />
+          <Image src={HERO_IMAGE} alt="" fill sizes="100vw" quality={100} className="object-cover" priority />
           <div className="absolute inset-0 bg-black/20" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background" />
         </div>
@@ -190,7 +190,7 @@ export default function HomePage() {
               <div className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12 mt-16">
                 <button
                   onClick={() => openBooking()}
-                  className="bg-white text-foreground rounded-full px-8 py-4 text-[14px] font-medium shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:bg-primary hover:text-white transition-colors"
+                  className="bg-white text-foreground rounded-full px-8 py-4 text-[14px] font-medium shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:bg-primary hover:text-white"
                 >
                   Réserver l&apos;Instant
                 </button>
@@ -222,8 +222,16 @@ export default function HomePage() {
         <div className="container-wide">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
             <div className="lg:col-span-5 relative">
-              <div className="aspect-[4/5] relative shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] overflow-hidden rounded-sm">
-                <Image src={JOAO_PORTRAIT} alt="João Silva" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+              <div className="mx-auto w-full max-w-[520px]">
+                <Image
+                  src={JOAO_PORTRAIT}
+                  alt="João Silva"
+                  width={2000}
+                  height={2000}
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  quality={100}
+                  className="h-auto w-full object-contain"
+                />
               </div>
             </div>
 
@@ -428,7 +436,7 @@ export default function HomePage() {
                <p className="text-[15px] text-foreground/70 font-light">
                 Une sélection de thérapies exclusives conçues pour répondre aux exigences du corps moderne.
                </p>
-               <button onClick={() => openBooking()} className="text-[11px] font-medium tracking-widest text-primary flex items-center gap-2 hover:opacity-70 transition-opacity">
+               <button onClick={() => openBooking()} className="flex items-center gap-2 text-[11px] font-medium tracking-widest text-primary hover:opacity-70">
                   Voir tout le catalogue <ArrowRight size={14} />
                </button>
             </div>
@@ -523,7 +531,7 @@ export default function HomePage() {
             </h2>
             <button
               onClick={() => openBooking()}
-              className="bg-white text-foreground rounded-full px-10 py-4 text-[14px] font-medium shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:bg-primary hover:text-white transition-colors"
+              className="bg-white text-foreground rounded-full px-10 py-4 text-[14px] font-medium shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:bg-primary hover:text-white"
             >
               Réserver votre Instant
             </button>

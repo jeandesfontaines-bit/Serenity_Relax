@@ -5,10 +5,10 @@ export const dashboardPageContainer =
   "mx-auto w-full max-w-[1140px] px-6 py-8 lg:px-8 lg:py-10";
 
 export const dashboardPanel =
-  "rounded-[32px] border border-black/[0.05] bg-white/60 backdrop-blur-xl shadow-2xl";
+  "rounded-[32px] border border-black/[0.05] bg-white/60 backdrop-blur-xl";
 
 export const dashboardPanelSoft =
-  "rounded-[24px] border border-black/[0.03] bg-white/40 backdrop-blur-md shadow-xl";
+  "rounded-[24px] border border-black/[0.03] bg-white/40 backdrop-blur-md";
 
 export const dashboardInset =
   "rounded-full border border-black/[0.03] bg-white/40 backdrop-blur-md";
@@ -46,7 +46,7 @@ export const dashboardEyebrow =
 export const dashboardMutedText = "text-[16px] text-foreground/40 font-light italic leading-relaxed";
 
 export const dashboardPrimaryButton =
-  "rounded-full bg-foreground text-background px-8 py-4 text-[11px] font-bold uppercase tracking-[0.4em] shadow-2xl transition-all duration-700 hover:opacity-90 active:scale-[0.98]";
+  "rounded-full bg-foreground text-background px-8 py-4 text-[11px] font-bold uppercase tracking-[0.4em] transition-all duration-700 hover:opacity-90 active:scale-[0.98]";
 
 export const dashboardSecondaryButton =
   "rounded-full border border-black/[0.05] bg-transparent px-8 py-4 text-[11px] font-bold uppercase tracking-[0.4em] text-foreground transition-all duration-700 hover:bg-white/50 backdrop-blur-sm";
