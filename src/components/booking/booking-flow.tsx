@@ -265,7 +265,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
             <div className="space-y-12">
               <div className="space-y-2">
                 <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-primary block">Serenity Geneva</span>
-                <p className="font-serif text-[13px] italic text-foreground/40">Le sanctuaire du bien-être</p>
+                <p className="font-sans text-[13px] italic text-foreground/40">Le sanctuaire du bien-être</p>
               </div>
 
               <div className="flex flex-col gap-8">
@@ -276,7 +276,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                     </div>
                     <div className="flex flex-col">
                       <span className={`text-[9px] font-bold uppercase tracking-widest ${step >= s.id ? 'text-primary' : 'text-foreground/20'}`}>{s.name}</span>
-                      <span className={`font-serif text-[16px] ${step >= s.id ? 'text-foreground' : 'text-foreground/10'}`}>{s.label}</span>
+                      <span className={`font-sans text-[16px] ${step >= s.id ? 'text-foreground' : 'text-foreground/10'}`}>{s.label}</span>
                     </div>
                   </div>
                 ))}
@@ -292,7 +292,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                 >
                   <div className="space-y-3">
                     <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-foreground/30">Votre Sélection</p>
-                    <p className="font-serif text-[24px] text-primary leading-tight">{selectedService.name}</p>
+                    <p className="font-sans text-[24px] text-primary leading-tight">{selectedService.name}</p>
                     <div className="flex items-center gap-3 text-[13px] text-foreground/40 font-light italic">
                       <Clock3 size={12} />
                       {selectedService.duration}
@@ -302,7 +302,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                   {selectedDate && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-2">
                       <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-foreground/30">Le Moment</p>
-                      <p className="font-serif text-[18px] capitalize">
+                      <p className="font-sans text-[18px] capitalize">
                         {format(selectedDate, 'EEEE d MMMM', { locale: fr })}
                         {selectedTime && <span className="text-primary block mt-1">à {selectedTime}</span>}
                       </p>
@@ -311,7 +311,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
 
                   <div className="flex justify-between items-end pt-6 border-t border-black/[0.05]">
                     <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-foreground/30">Investissement</span>
-                    <span className="font-serif text-[28px]">{selectedService.price} CHF</span>
+                    <span className="font-sans text-[28px]">{selectedService.price} CHF</span>
                   </div>
                 </motion.div>
               )}
@@ -350,7 +350,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                 >
                   <div className="space-y-6">
                     <span className="text-[11px] font-bold uppercase tracking-[0.5em] text-primary block">01 — L&apos;Intention</span>
-                    <h2 className="font-serif text-[48px] md:text-[64px] leading-[1.1] tracking-tight">
+                    <h2 className="font-sans text-[48px] md:text-[64px] leading-[1.1] tracking-tight">
                       Quel voyage <br />
                       <span className="italic font-light text-secondary">désirez-vous ?</span>
                     </h2>
@@ -381,12 +381,12 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
 
                         <div className="p-10 flex-1 flex flex-col justify-between">
                           <div className="space-y-4">
-                            <h4 className="font-serif text-[28px] leading-tight group-hover:text-primary transition-colors">{s.name}</h4>
+                            <h4 className="font-sans text-[28px] leading-tight group-hover:text-primary transition-colors">{s.name}</h4>
                             <p className="text-[14px] text-foreground/50 font-light leading-relaxed line-clamp-3">{s.description}</p>
                           </div>
                           
                           <div className="mt-8 flex items-center justify-between">
-                            <span className="font-serif text-2xl">{s.price} CHF</span>
+                            <span className="font-sans text-2xl">{s.price} CHF</span>
                             <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
                               Sélectionner <ArrowRight size={14} />
                             </div>
@@ -407,7 +407,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-black/[0.05] pb-12 gap-8">
                     <div className="space-y-6">
                       <span className="text-[11px] font-bold uppercase tracking-[0.5em] text-primary block">02 — Le Moment</span>
-                      <h2 className="font-serif text-[48px] md:text-[64px] leading-[1.1] tracking-tight">Le temps <br /><span className="italic font-light text-secondary">suspendu.</span></h2>
+                      <h2 className="font-sans text-[48px] md:text-[64px] leading-[1.1] tracking-tight">Le temps <br /><span className="italic font-light text-secondary">suspendu.</span></h2>
                     </div>
                     <Magnetic strength={0.1}>
                       <button onClick={() => setStep(1)} className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 hover:text-primary transition-colors flex items-center gap-3 py-4 px-6 rounded-full hover:bg-white/50 backdrop-blur-sm">
@@ -419,7 +419,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                   <div className="grid grid-cols-1 xl:grid-cols-12 gap-16">
                     <div className="xl:col-span-7 bg-white/60 backdrop-blur-md p-10 md:p-14 shadow-2xl border border-black/[0.03] rounded-[40px]">
                       <div className="flex items-center justify-between mb-12">
-                        <h3 className="font-serif text-[28px] capitalize">{format(currentMonth, 'MMMM yyyy', { locale: fr })}</h3>
+                        <h3 className="font-sans text-[28px] capitalize">{format(currentMonth, 'MMMM yyyy', { locale: fr })}</h3>
                         <div className="flex gap-4">
                           <Magnetic strength={0.3}>
                             <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} className="p-4 hover:bg-muted rounded-full transition-colors"><ChevronLeft size={20} strokeWidth={1} /></button>
@@ -461,7 +461,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                         <div className="space-y-12">
                           <div className="space-y-3">
                              <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-secondary">Instants Disponibles</p>
-                             <p className="font-serif text-[32px] capitalize leading-none">{format(selectedDate, 'EEEE d MMMM', { locale: fr })}</p>
+                             <p className="font-sans text-[32px] capitalize leading-none">{format(selectedDate, 'EEEE d MMMM', { locale: fr })}</p>
                           </div>
                           
                           <div className="space-y-10 max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
@@ -525,7 +525,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-black/[0.05] pb-12 gap-8">
                     <div className="space-y-6">
                       <span className="text-[11px] font-bold uppercase tracking-[0.5em] text-primary block">03 — Votre Identité</span>
-                      <h2 className="font-serif text-[48px] md:text-[64px] leading-[1.1] tracking-tight">Vos <br /><span className="italic font-light text-secondary">coordonnées.</span></h2>
+                      <h2 className="font-sans text-[48px] md:text-[64px] leading-[1.1] tracking-tight">Vos <br /><span className="italic font-light text-secondary">coordonnées.</span></h2>
                     </div>
                     <Magnetic strength={0.1}>
                       <button onClick={() => setStep(2)} className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 hover:text-primary transition-colors flex items-center gap-3 py-4 px-6 rounded-full hover:bg-white/50 backdrop-blur-sm">
@@ -579,7 +579,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                       </label>
                       <textarea 
                         id="input-message"
-                        className="w-full px-0 py-4 bg-transparent border-b border-black/10 text-[20px] focus:outline-none focus:border-primary transition-all h-32 resize-none font-serif placeholder:text-black/10 placeholder:font-sans placeholder:text-sm"
+                        className="w-full px-0 py-4 bg-transparent border-b border-black/10 text-[20px] focus:outline-none focus:border-primary transition-all h-32 resize-none font-sans placeholder:text-black/10 placeholder:font-sans placeholder:text-sm"
                         value={formData.message}
                         onChange={e => setFormData({...formData, message: e.target.value})}
                         placeholder="Pathologies, tensions spécifiques, ou attentes pour ce soin..."
@@ -616,7 +616,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                 >
                   <div className="space-y-6 text-center">
                     <span className="text-[11px] font-bold uppercase tracking-[0.5em] text-primary block">04 — Vérification</span>
-                    <h2 className="font-serif text-[48px] md:text-[64px] leading-[1.1] tracking-tight">Invitation au <br /><span className="italic font-light text-secondary">Lâcher-prise.</span></h2>
+                    <h2 className="font-sans text-[48px] md:text-[64px] leading-[1.1] tracking-tight">Invitation au <br /><span className="italic font-light text-secondary">Lâcher-prise.</span></h2>
                   </div>
 
                   <div className="max-w-3xl mx-auto perspective-2000">
@@ -631,7 +631,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                           <div className="flex flex-col md:flex-row justify-between items-start border-b border-black/[0.05] pb-16 gap-12">
                              <div className="space-y-4">
                                 <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/30">L&apos;Expérience</p>
-                                <h4 className="font-serif text-[42px] text-primary leading-tight">{selectedService?.name}</h4>
+                                <h4 className="font-sans text-[42px] text-primary leading-tight">{selectedService?.name}</h4>
                                 <div className="flex items-center gap-3 text-[16px] text-foreground/50 font-light italic">
                                   <Clock3 size={14} />
                                   {selectedService?.duration}
@@ -639,19 +639,19 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                              </div>
                              <div className="md:text-right">
                                 <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/30">Investissement</p>
-                                <p className="font-serif text-[48px]">{selectedService?.price} CHF</p>
+                                <p className="font-sans text-[48px]">{selectedService?.price} CHF</p>
                              </div>
                           </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 border-b border-black/[0.05] pb-16">
                              <div className="space-y-4">
                                 <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/30">Le Moment</p>
-                                <p className="font-serif text-[28px] capitalize">{selectedDate && format(selectedDate, 'EEEE d MMMM', { locale: fr })}</p>
-                                <p className="text-[24px] text-primary font-serif italic">à {selectedTime}</p>
+                                <p className="font-sans text-[28px] capitalize">{selectedDate && format(selectedDate, 'EEEE d MMMM', { locale: fr })}</p>
+                                <p className="text-[24px] text-primary font-sans italic">à {selectedTime}</p>
                              </div>
                              <div className="space-y-4">
                                 <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/30">Le Lieu</p>
-                                <p className="font-serif text-[28px]">Serenity Geneva</p>
+                                <p className="font-sans text-[28px]">Serenity Geneva</p>
                                 <p className="text-[16px] text-foreground/40 font-light italic">Route de l&apos;Aéroport 1, Genève</p>
                              </div>
                           </div>
@@ -663,7 +663,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                                    <User size={24} />
                                 </div>
                                 <div>
-                                   <p className="font-serif text-[24px]">{formData.firstName} {formData.lastName}</p>
+                                   <p className="font-sans text-[24px]">{formData.firstName} {formData.lastName}</p>
                                    <p className="text-[16px] text-foreground/40 font-light italic">{formData.email} · {formData.phone}</p>
                                 </div>
                              </div>
@@ -726,7 +726,7 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                   </div>
 
                   <div className="space-y-8 max-w-3xl mx-auto">
-                    <h2 className="font-serif text-[64px] md:text-[110px] leading-[0.8] tracking-tight">
+                    <h2 className="font-sans text-[64px] md:text-[110px] leading-[0.8] tracking-tight">
                       Expérience <br />
                       <span className="italic font-light text-secondary">Confirmée.</span>
                     </h2>
@@ -745,13 +745,13 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                     <div className="space-y-8">
                       <div className="flex justify-between items-end">
                         <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/30">Soin</span>
-                        <span className="font-serif text-[26px] text-primary">{selectedService?.name}</span>
+                        <span className="font-sans text-[26px] text-primary">{selectedService?.name}</span>
                       </div>
                       <div className="flex justify-between items-end">
                         <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/30">Moment</span>
                         <div className="text-right">
-                           <span className="font-serif text-[22px] block capitalize">{selectedDate && format(selectedDate, 'd MMMM yyyy', { locale: fr })}</span>
-                           <span className="font-serif text-[20px] text-primary italic">à {selectedTime}</span>
+                           <span className="font-sans text-[22px] block capitalize">{selectedDate && format(selectedDate, 'd MMMM yyyy', { locale: fr })}</span>
+                           <span className="font-sans text-[20px] text-primary italic">à {selectedTime}</span>
                         </div>
                       </div>
                     </div>
@@ -795,7 +795,7 @@ function SlotSection({ title, slots, selectedTime, onSelect }: { title: string, 
           <Magnetic key={t} strength={0.2}>
             <button
               onClick={() => onSelect(t)}
-              className={`w-full py-6 px-4 rounded-[20px] border text-[16px] transition-all duration-500 font-serif ${selectedTime === t ? 'border-primary bg-primary text-white shadow-xl scale-105' : 'border-black/[0.03] bg-white/60 hover:bg-white hover:border-primary/20 hover:shadow-md'}`}
+              className={`w-full py-6 px-4 rounded-[20px] border text-[16px] transition-all duration-500 font-sans ${selectedTime === t ? 'border-primary bg-primary text-white shadow-xl scale-105' : 'border-black/[0.03] bg-white/60 hover:bg-white hover:border-primary/20 hover:shadow-md'}`}
             >
               {t}
             </button>
@@ -833,7 +833,7 @@ function InputField({
       <input 
         id={id}
         type={type}
-        className="w-full px-0 py-4 bg-transparent border-b border-black/10 text-[20px] focus:outline-none focus:border-primary transition-all font-serif placeholder:text-black/10 placeholder:font-sans placeholder:text-sm"
+        className="w-full px-0 py-4 bg-transparent border-b border-black/10 text-[20px] focus:outline-none focus:border-primary transition-all font-sans placeholder:text-black/10 placeholder:font-sans placeholder:text-sm"
         value={value}
         onChange={e => onChange(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && onEnter?.()}
