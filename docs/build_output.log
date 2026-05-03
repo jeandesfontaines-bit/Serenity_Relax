@@ -1,0 +1,89 @@
+
+> nextn@0.1.0 build
+> NODE_ENV=production next build
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/jean/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /Users/jean/Downloads/project/package-lock.json
+
+   ▲ Next.js 15.5.9
+   - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+
+warn - The class `duration-[2000ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;2000ms&rsqb;` to silence this warning.
+
+warn - The class `duration-[3000ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;3000ms&rsqb;` to silence this warning.
+
+warn - The class `ease-[0.22,1,0.36,1]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;0.22,1,0.36,1&rsqb;` to silence this warning.
+
+warn - The class `ease-[cubic-bezier(0.22,1,0.36,1)]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.22,1,0.36,1)&rsqb;` to silence this warning.
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/Users/jean/Downloads/project/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!/Users/jean/Downloads/project/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!/Users/jean/Downloads/project/src/app/globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+Failed to compile.
+
+./src/app/globals.css:122:5
+Syntax error: /Users/jean/Downloads/project/src/app/globals.css The `ease-[cubic-bezier(0.22,1,0.36,1)]` class does not exist. If `ease-[cubic-bezier(0.22,1,0.36,1)]` is a custom class, make sure it is defined within a `@layer` directive.
+
+  120 | 
+  121 |   .premium-button {
+> 122 |     @apply relative overflow-hidden px-12 py-6 text-[10px] font-bold uppercase tracking-[0.6em] transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center gap-4;
+      |     ^
+  123 |   }
+  124 |
+
+./src/app/globals.css
+Syntax error: /Users/jean/Downloads/project/src/app/globals.css The `ease-[0.22,1,0.36,1]` class does not exist. If `ease-[0.22,1,0.36,1]` is a custom class, make sure it is defined within a `@layer` directive. (122:5)
+
+  120 | 
+  121 |   .premium-button {
+> 122 |     @apply relative overflow-hidden px-12 py-6 text-[10px] font-bold uppercase tracking-[0.6em] transition-all duration-1000 ease-[0.22,1,0.36,1] flex items-center justify-center gap-4;
+      |     ^
+  123 |   }
+  124 | 
+
+    at tryRunOrWebpackError (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:316119)
+    at __webpack_require_module__ (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:131532)
+    at __nested_webpack_require_161494__ (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:130967)
+    at /Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:131824
+    at symbolIterator (/Users/jean/Downloads/project/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+    at done (/Users/jean/Downloads/project/node_modules/next/dist/compiled/neo-async/async.js:1:14824)
+    at Hook.eval [as callAsync] (eval at create (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:14:9224), <anonymous>:15:1)
+    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:14:6378)
+    at /Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:130687
+    at symbolIterator (/Users/jean/Downloads/project/node_modules/next/dist/compiled/neo-async/async.js:1:14402)
+-- inner error --
+Syntax error: /Users/jean/Downloads/project/src/app/globals.css The `ease-[0.22,1,0.36,1]` class does not exist. If `ease-[0.22,1,0.36,1]` is a custom class, make sure it is defined within a `@layer` directive. (122:5)
+
+  120 | 
+  121 |   .premium-button {
+> 122 |     @apply relative overflow-hidden px-12 py-6 text-[10px] font-bold uppercase tracking-[0.6em] transition-all duration-1000 ease-[0.22,1,0.36,1] flex items-center justify-center gap-4;
+      |     ^
+  123 |   }
+  124 | 
+
+    at Object.<anonymous> (/Users/jean/Downloads/project/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!/Users/jean/Downloads/project/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!/Users/jean/Downloads/project/src/app/globals.css:1:7)
+    at /Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:962717
+    at Hook.eval [as call] (eval at create (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:14:9002), <anonymous>:7:1)
+    at Hook.CALL_DELEGATE [as _call] (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:14:6272)
+    at /Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:131565
+    at tryRunOrWebpackError (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:316073)
+    at __webpack_require_module__ (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:131532)
+    at __nested_webpack_require_161494__ (/Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:130967)
+    at /Users/jean/Downloads/project/node_modules/next/dist/compiled/webpack/bundle5.js:29:131824
+    at symbolIterator (/Users/jean/Downloads/project/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+
+Generated code for /Users/jean/Downloads/project/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!/Users/jean/Downloads/project/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!/Users/jean/Downloads/project/src/app/globals.css
+
+Import trace for requested module:
+./src/app/globals.css
+
+
+> Build failed because of webpack errors

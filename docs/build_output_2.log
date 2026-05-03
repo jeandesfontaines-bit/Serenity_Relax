@@ -1,0 +1,79 @@
+
+> nextn@0.1.0 build
+> NODE_ENV=production next build
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/jean/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /Users/jean/Downloads/project/package-lock.json
+
+   ▲ Next.js 15.5.9
+   - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+
+warn - The class `duration-[2000ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;2000ms&rsqb;` to silence this warning.
+
+warn - The class `duration-[3000ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;3000ms&rsqb;` to silence this warning.
+
+warn - The class `ease-[0.22,1,0.36,1]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;0.22,1,0.36,1&rsqb;` to silence this warning.
+
+warn - The class `ease-[cubic-bezier(0.22,1,0.36,1)]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.22,1,0.36,1)&rsqb;` to silence this warning.
+ ✓ Compiled successfully in 4.2s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/24) ...
+Automatic initialization failed. Falling back to firebase config object. Error [FirebaseError]: Firebase: Need to provide options, when not being deployed to hosting via source. (app/no-options).
+    at W (.next/server/chunks/905.js:1:76582)
+    at k (.next/server/chunks/903.js:2:809)
+    at <unknown> (.next/server/chunks/903.js:1:641)
+    at h (.next/server/chunks/903.js:1:628) {
+  code: 'app/no-options',
+  customData: {}
+}
+   Generating static pages (6/24) 
+   Generating static pages (12/24) 
+   Generating static pages (18/24) 
+ ✓ Generating static pages (24/24)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    30.3 kB         303 kB
+├ ○ /_not-found                             1 kB         102 kB
+├ ƒ /api/cron/reminders                    139 B         102 kB
+├ ƒ /api/magic-link                        139 B         102 kB
+├ ƒ /api/notify                            139 B         102 kB
+├ ○ /booking                               359 B         102 kB
+├ ○ /booking/ai-concierge                3.87 kB         149 kB
+├ ○ /booking/pre-session                 4.75 kB         270 kB
+├ ○ /client/book                          3.4 kB         105 kB
+├ ○ /client/book/details                 5.58 kB         274 kB
+├ ○ /client/dashboard                    7.36 kB         365 kB
+├ ○ /client/fidelite                      3.5 kB         272 kB
+├ ○ /client/invoices                     2.59 kB         399 kB
+├ ○ /client/login                        2.07 kB         221 kB
+├ ○ /client/portal                         139 B         102 kB
+├ ○ /client/profil                       3.69 kB         272 kB
+├ ○ /login                               3.65 kB         265 kB
+├ ○ /therapist/clients                   4.38 kB         230 kB
+├ ○ /therapist/dashboard                 54.9 kB         324 kB
+├ ○ /therapist/dashboard/invoices        2.79 kB         399 kB
+├ ƒ /therapist/invoice/[id]              3.36 kB         222 kB
+└ ○ /therapist/invoices                  3.79 kB         286 kB
++ First Load JS shared by all             101 kB
+  ├ chunks/1255-de0c1abd22c7cccd.js      45.2 kB
+  ├ chunks/4bd1b696-182b6b13bdad92e3.js  54.2 kB
+  └ other shared chunks (total)          2.08 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -5,28 +5,49 @@
 
 @layer base {
   :root {
-    /* ══════════ DESIGN TOKENS ══════════ */
-    --background: 40 20% 98%; /* #faf9f7 equivalent in HSL */
-    --foreground: 128 11% 30%; /* #435544 variant */
+    /* ══════════ LUXURY DESIGN TOKENS ══════════ */
+    --background: 30 20% 98%;    /* Cream Silk */
+    --foreground: 160 15% 10%;   /* Deep Obsidian Forest */
+    
     --card: 0 0% 100%;
-    --card-foreground: 128 11% 30%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 128 11% 30%;
-    --primary: 128 11% 30%;
-    --primary-foreground: 40 20% 98%;
-    --secondary: 35 34% 34%; /* #725a38 */
-    --secondary-foreground: 40 20% 98%;
-    --muted: 40 10% 95%;
-    --muted-foreground: 128 5% 45%;
-    --accent: 40 20% 98%;
-    --accent-foreground: 128 11% 30%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 128 11% 85%;
-    --input: 128 11% 85%;
-    --ring: 128 11% 30%;
-    --radius: 0rem;
-    --font-signature: "Meow Script", cursive;
+    --card-foreground: 160 15% 10%;
+    
+    --primary: 154 25% 25%;      /* Serenity Green */
+    --primary-foreground: 30 20% 98%;
+    
+    --secondary: 32 25% 40%;     /* Bronze Oak */
+    --secondary-foreground: 30 20% 98%;
+    
+    --muted: 40 10% 94%;         /* Soft Sand */
+    --muted-foreground: 160 10% 40%;
+    
+    --accent: 35 30% 90%;        /* Pearl Blush */
+    --accent-foreground: 154 25% 25%;
+    
+    --border: 160 15% 10% / 0.08;
+    --input: 160 15% 10% / 0.08;
+    --ring: 154 25% 25%;
+    
+    --radius: 0rem; /* Ultra sharp luxury edges or ultra round for specific cards */
+    
+    /* Luxury Gradients */
+    --grad-stone: linear-gradient(135deg, #f9f8f6 0%, #f1efe9 100%);
+    --grad-forest: linear-gradient(135deg, #1e2923 0%, #111814 100%);
+    --grad-gold: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%);
+    
+    --noise: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+  }
+
+  .dark {
+    --background: 160 15% 8%;
+    --foreground: 30 20% 98%;
+    --card: 160 15% 10%;
+    --card-foreground: 30 20% 98%;
+    --primary: 30 20% 98%;
+    --primary-foreground: 160 15% 10%;
+    --muted: 160 15% 15%;
+    --muted-foreground: 160 10% 60%;
+    --border: 30 20% 98% / 0.1;
   }
 }
 
@@ -34,50 +55,153 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/10;
-    background-color: #faf9f7;
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
+
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/10 selection:text-primary;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv11", "kern";
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: var(--noise);
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Typography System */
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif font-light tracking-tight;
+    text-wrap: balance;
+  }
+
+  .font-serif { 
+    font-family: var(--font-instrument-serif), 'Playfair Display', serif; 
   }
   
-  .font-display { font-family: 'Noto Serif', serif; }
-  .font-headline { font-family: 'Noto Serif', serif; }
-  .font-body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-sans { 
+    @apply font-light;
+    font-family: var(--font-inter), 'Inter', system-ui, sans-serif; 
+    letter-spacing: -0.01em;
+  }
+
+  .font-signature {
+    font-family: 'Meow Script', cursive;
+  }
 }
 
 @layer components {
-  .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
-  .scrollbar-hide::-webkit-scrollbar { display: none; }
-
-  .glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  .container-wide {
+    @apply max-w-[1600px] mx-auto px-8 md:px-16 lg:px-24;
   }
 
-  .high-end-card {
-    @apply bg-white/80 backdrop-blur-xl transition-all duration-500;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.04);
-    border: 1px solid rgba(255,255,255,0.6);
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .glass-premium {
+    @apply backdrop-blur-2xl bg-white/60 border border-white/40 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)];
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-2xl bg-black/60 border border-white/5 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.4)];
+  }
+
+  .premium-button {
+    @apply relative overflow-hidden px-12 py-6 text-[10px] font-bold uppercase tracking-[0.6em] transition-all duration-1000 ease-premium flex items-center justify-center gap-4;
+  }
+
+  .button-fill {
+    @apply bg-foreground text-background hover:bg-primary;
+  }
+
+  .button-outline {
+    @apply border border-foreground/10 text-foreground hover:border-foreground;
+  }
+
+  .section-subtitle {
+    @apply text-[10px] font-bold uppercase tracking-[0.8em] text-secondary/60 mb-10 block;
+  }
+
+  .section-title {
+    @apply font-serif text-[clamp(40px,6vw,80px)] leading-[0.82] tracking-[-0.05em] mb-12;
+  }
+
+  .card-luxury {
+    @apply bg-white border border-border/40 rounded-none p-12 transition-all duration-1000 ease-premium hover:shadow-[0_64px_128px_-32px_rgba(0,0,0,0.08)];
   }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
 
 @layer utilities {
+  .text-shadow-sm {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .mask-vignette {
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  }
+
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #d4af37 0%, #f1e4b3 50%, #aa8a2e 100%);
+  }
+
+  .animate-slow-zoom {
+    animation: slow-zoom 30s ease-in-out infinite alternate;
+  }
+
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
 
-  .mask-image-gradient {
-    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
   }
 
-  .serif-tracking { letter-spacing: 0.2em; }
+  @keyframes slow-zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+  }
+
+  .perspective-2000 {
+    perspective: 2000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/20 hover:bg-muted-foreground/40 transition-colors rounded-full;
+}
+
+

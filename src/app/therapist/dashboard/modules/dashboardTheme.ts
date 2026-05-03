@@ -1,32 +1,32 @@
 export const dashboardShell =
-  "bg-[#fcf8f7] text-[#1c1b1b] [font-family:'Plus_Jakarta_Sans',sans-serif]";
+  "bg-background text-foreground font-sans";
 
 export const dashboardPageContainer =
   "mx-auto w-full max-w-[1140px] px-6 py-8 lg:px-8 lg:py-10";
 
 export const dashboardPanel =
-  "rounded-2xl border border-[rgba(196,199,195,0.72)] bg-[rgba(255,255,255,0.74)] backdrop-blur-[20px] shadow-[0_24px_60px_rgba(99,94,85,0.07)]";
+  "rounded-[32px] border border-black/[0.05] bg-white/60 backdrop-blur-xl shadow-2xl";
 
 export const dashboardPanelSoft =
-  "rounded-2xl border border-[rgba(196,199,195,0.62)] bg-[rgba(247,243,242,0.82)] backdrop-blur-[20px] shadow-[0_20px_48px_rgba(99,94,85,0.05)]";
+  "rounded-[24px] border border-black/[0.03] bg-white/40 backdrop-blur-md shadow-xl";
 
 export const dashboardInset =
-  "rounded-full border border-[#c4c7c3] bg-[rgba(255,255,255,0.74)] backdrop-blur-[18px]";
+  "rounded-full border border-black/[0.03] bg-white/40 backdrop-blur-md";
 
 export const dashboardToolbarInput =
-  "w-full rounded-full border border-[#c4c7c3] bg-[rgba(255,255,255,0.78)] py-3 pl-10 pr-4 text-sm text-[#444845] outline-none backdrop-blur-[18px] transition focus:border-[#bdcab9] focus:ring-2 focus:ring-[#effce9]";
+  "w-full rounded-full border border-black/[0.05] bg-white/40 py-3 pl-10 pr-4 text-[14px] text-foreground font-light outline-none backdrop-blur-md transition focus:border-primary/50 focus:ring-1 focus:ring-primary/30 font-serif placeholder:font-sans placeholder:text-foreground/30";
 
 export const dashboardToolbarButton =
-  "flex items-center justify-center gap-2 rounded-full border border-[#c4c7c3] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-sm font-medium text-[#1c1b1b] backdrop-blur-[18px] transition-colors hover:bg-[rgba(255,255,255,0.92)]";
+  "flex items-center justify-center gap-2 rounded-full border border-black/[0.03] bg-white/40 px-6 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground/70 backdrop-blur-md transition-all hover:bg-white hover:text-primary";
 
 export const dashboardIconButton =
-  "flex h-11 w-11 items-center justify-center rounded-full border border-[#c4c7c3] bg-[rgba(255,255,255,0.74)] text-[#1c1b1b] backdrop-blur-[18px] transition-colors hover:bg-[rgba(255,255,255,0.94)]";
+  "flex h-12 w-12 items-center justify-center rounded-full border border-black/[0.03] bg-white/40 text-foreground/70 backdrop-blur-md transition-all hover:bg-white hover:text-primary";
 
 export const dashboardTableHeader =
-  "bg-[rgba(247,243,242,0.9)] text-[12px] font-medium uppercase tracking-[0.1em] text-[#757875]";
+  "bg-white/40 text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40 border-b border-black/[0.05]";
 
 export const dashboardTableSectionHeader =
-  "flex flex-col gap-3 border-b border-[#c4c7c3]/70 bg-[rgba(247,243,242,0.86)] px-4 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8";
+  "flex flex-col gap-3 border-b border-black/[0.05] bg-white/20 px-4 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8";
 
 export const dashboardTableCell =
   "px-4 py-4 lg:px-8";
@@ -35,21 +35,21 @@ export const dashboardSectionHeader =
   "flex items-center justify-between gap-4";
 
 export const dashboardTitle =
-  "text-2xl font-normal text-[#1c1b1b] [font-family:'Noto_Serif',serif] leading-[1.2] tracking-[-0.01em]";
+  "text-[32px] font-serif text-foreground leading-[1.1] tracking-tight";
 
 export const dashboardTitleLg =
-  "text-[32px] font-normal text-[#1c1b1b] [font-family:'Noto_Serif',serif] leading-[1.2] tracking-[-0.01em]";
+  "text-[48px] md:text-[64px] font-serif text-foreground leading-[1.1] tracking-tight";
 
 export const dashboardEyebrow =
-  "text-[12px] font-medium uppercase tracking-[0.1em] text-[#757875]";
+  "text-[10px] font-bold uppercase tracking-[0.5em] text-primary block";
 
-export const dashboardMutedText = "text-base text-[#444845]";
+export const dashboardMutedText = "text-[16px] text-foreground/40 font-light italic leading-relaxed";
 
 export const dashboardPrimaryButton =
-  "rounded-full bg-[#635e55] px-5 py-3 text-sm font-medium text-white shadow-[0_18px_40px_rgba(99,94,85,0.14)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:opacity-95 active:scale-[0.99]";
+  "rounded-full bg-foreground text-background px-8 py-4 text-[11px] font-bold uppercase tracking-[0.4em] shadow-2xl transition-all duration-700 hover:opacity-90 active:scale-[0.98]";
 
 export const dashboardSecondaryButton =
-  "rounded-full border border-[#c4c7c3] bg-transparent px-5 py-3 text-sm font-medium text-[#1c1b1b] transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[rgba(255,255,255,0.65)]";
+  "rounded-full border border-black/[0.05] bg-transparent px-8 py-4 text-[11px] font-bold uppercase tracking-[0.4em] text-foreground transition-all duration-700 hover:bg-white/50 backdrop-blur-sm";
 
 export const dashboardChip =
-  "rounded-full border border-[#bdcab9] bg-[#effce9] px-3 py-1 text-[12px] font-medium uppercase tracking-[0.1em] text-[#1c1b1b]";
+  "rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest text-primary";

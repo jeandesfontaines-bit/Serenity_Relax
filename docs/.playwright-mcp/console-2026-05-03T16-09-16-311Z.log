@@ -1,0 +1,6 @@
+[    2641ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/3243f_next_dist_compiled_react-dom_9f52da46._.js:14537
+[    3818ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/3243f_next_dist_client_06220fcf._.js:5949
+[    4343ms] [LOG] [Fast Refresh] done in 628ms @ http://localhost:9002/_next/static/chunks/3243f_next_dist_client_06220fcf._.js:5809
+[   17168ms] [WARNING] Image with src "/services/service-2.jpg" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes @ http://localhost:9002/_next/static/chunks/3243f_next_dist_71cc034f._.js:968
+[   46638ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/3243f_next_dist_client_06220fcf._.js:5949
+[   48917ms] [LOG] [Fast Refresh] done in 2312ms @ http://localhost:9002/_next/static/chunks/3243f_next_dist_client_06220fcf._.js:5809

@@ -347,14 +347,14 @@ export default function ComptaPage({
             <div className={dashboardTableSectionHeader}>
               <div>
                 <h2 className={dashboardTitle}>Liste des factures</h2>
-                <p className="mt-1 text-sm text-[#5e655f]">Toutes les transactions de la période en CHF</p>
+                <p className="mt-1 text-xs text-[#5e655f]">Toutes les transactions de la période en CHF</p>
               </div>
               <button
                 onClick={() => {
                   onSearchQueryChange('');
                   setSelectedIds(new Set());
                 }}
-                className="text-sm font-semibold text-[#435544] transition-colors hover:underline"
+                className="text-xs font-semibold text-[#435544] transition-colors hover:underline"
               >
                 Tout voir
               </button>
@@ -378,7 +378,7 @@ export default function ComptaPage({
                     <SortableHeader align="right" label="Montant" field="price" current={sortField} dir={sortDir} onSort={toggleSort} />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#c3c8c0]/10 text-sm">
+                <tbody className="divide-y divide-[#c3c8c0]/10 text-xs">
                   {filtered.map((appt) => {
                     const invoice = invoiceByAppointmentId.get(appt.id);
                     const status = getTransactionStatus(appt, todayStr);
@@ -483,11 +483,11 @@ export default function ComptaPage({
             </div>
 
             {filtered.length === 0 && (
-              <div className="flex flex-col items-center justify-center gap-4 px-6 py-20 text-center">
-                <Wallet size={28} strokeWidth={1.4} className="text-[#c3c8c0]" />
+              <div className="flex flex-col items-center justify-center gap-3 px-6 py-14 text-center">
+                <Wallet size={22} strokeWidth={1.4} className="text-[#c3c8c0]" />
                 <div>
-                  <p className="text-base font-medium text-[#1a1c1b]">Aucune transaction trouvée</p>
-                  <p className="mt-1 text-sm text-[#747872]">
+                  <p className="text-xs font-medium text-[#1a1c1b]">Aucune transaction trouvée</p>
+                  <p className="mt-0.5 text-xs text-[#747872]">
                     Ajustez la recherche ou la période pour afficher l'activité financière.
                   </p>
                 </div>
@@ -565,8 +565,8 @@ export default function ComptaPage({
                 {serviceAllocations.length > 0 ? serviceAllocations.map((service, index) => (
                   <div key={service.label} className="space-y-2">
                     <div className="flex items-center justify-between gap-4">
-                      <span className="truncate text-sm font-medium text-[#1a1c1b]">{service.label}</span>
-                      <span className="text-sm font-semibold text-[#435544]">{service.percent}%</span>
+                      <span className="truncate text-xs font-medium text-[#1a1c1b]">{service.label}</span>
+                      <span className="text-xs font-semibold text-[#435544]">{service.percent}%</span>
                     </div>
                     <div className="h-2 rounded-full bg-[#efeeec]">
                       <div
@@ -580,7 +580,7 @@ export default function ComptaPage({
                     <div className="text-xs text-[#747872]">{formatCurrency(service.value)}</div>
                   </div>
                 )) : (
-                  <div className="rounded-xl bg-[#faf9f7] px-4 py-5 text-sm text-[#747872]">
+                  <div className="rounded-xl bg-[#faf9f7] px-4 py-5 text-xs text-[#747872]">
                     Aucun revenu de service sur la période sélectionnée.
                   </div>
                 )}
@@ -620,20 +620,20 @@ function MetricCard({
   compact?: boolean;
 }) {
   return (
-    <div className={`${dashboardPanel} transition-shadow hover:shadow-md ${compact ? 'p-4' : 'p-6'}`}>
-      <div className={`flex items-start justify-between ${compact ? 'mb-3' : 'mb-4'}`}>
-        <div className={`rounded-lg ${compact ? 'p-1.5' : 'p-2'} ${iconClassName}`}>
+    <div className={`${dashboardPanel} transition-shadow hover:shadow-md ${compact ? 'p-3' : 'p-5'}`}>
+      <div className={`flex items-start justify-between ${compact ? 'mb-2' : 'mb-3'}`}>
+        <div className={`rounded-lg ${compact ? 'p-1' : 'p-1.5'} ${iconClassName}`}>
           {icon}
         </div>
         {badge && (
-          <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-bold ${badgeClassName || ''}`}>
+          <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ${badgeClassName || ''}`}>
             {badgeIcon && <span className="mr-1">{badgeIcon}</span>}
             {badge}
           </span>
         )}
       </div>
-      <p className="text-sm font-medium text-[#747872]">{title}</p>
-      <h3 className={`mt-1 font-medium text-[#1a1c1b] ${compact ? 'text-2xl' : 'text-3xl'}`}>{value}</h3>
+      <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-[#747872]">{title}</p>
+      <h3 className={`mt-0.5 font-semibold text-[#1a1c1b] ${compact ? 'text-xl' : 'text-2xl'}`}>{value}</h3>
     </div>
   );
 }
@@ -673,7 +673,7 @@ function SortableHeader({
   align?: 'left' | 'right';
 }) {
   return (
-    <th className={`px-4 py-4 lg:px-8 ${align === 'right' ? 'text-right' : 'text-left'}`}>
+    <th className={`px-3 py-2.5 lg:px-6 ${align === 'right' ? 'text-right' : 'text-left'}`}>
       <button
         onClick={() => onSort(field)}
         className={`inline-flex items-center gap-1.5 ${align === 'right' ? 'justify-end' : 'justify-start'} hover:text-[#435544]`}

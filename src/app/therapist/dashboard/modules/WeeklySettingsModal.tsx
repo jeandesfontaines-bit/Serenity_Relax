@@ -105,24 +105,23 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
           })}
         </div>
 
-        {/* Slots list — scrolls only if many slots */}
         <div className="overflow-y-auto px-8 pt-5 pb-3 flex-1">
           {(slots[activeDay] || []).length > 0 ? (
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               {slots[activeDay].map(time => (
                 <div
                   key={time}
-                  className="flex items-center justify-between px-5 py-4 bg-white/50 border border-zinc-200 rounded-xl"
+                  className="flex items-center justify-between px-4 py-3 bg-white/50 border border-zinc-200 rounded-xl"
                 >
-                  <div className="flex items-center gap-3 font-serif text-sm text-zinc-900 tracking-tighter">
-                    <Clock size={14} strokeWidth={1.5} className="text-zinc-400" />
+                  <div className="flex items-center gap-2 font-serif text-[13px] text-zinc-900 tracking-tighter">
+                    <Clock size={12} strokeWidth={1.5} className="text-zinc-400" />
                     {time}
                   </div>
                   <button
                     onClick={() => handleRemoveSlot(time)}
-                    className="w-8 h-8 border border-zinc-200 rounded-full flex items-center justify-center text-zinc-400 hover:border-zinc-900 hover:text-zinc-900 transition-all duration-500"
+                    className="w-7 h-7 border border-zinc-200 rounded-full flex items-center justify-center text-zinc-400 hover:border-zinc-900 hover:text-zinc-900 transition-all duration-300"
                   >
-                    <X size={13} strokeWidth={1.5} />
+                    <X size={11} strokeWidth={1.5} />
                   </button>
                 </div>
               ))}
@@ -136,20 +135,20 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         </div>
 
         {/* Add slot — always visible, outside scroll zone */}
-        <div className="flex gap-3 px-8 py-4 shrink-0">
+        <div className="flex gap-2 px-8 py-3 shrink-0">
           <div className="flex-1 relative">
             <input
               type="time"
               value={newTime}
               onChange={e => setNewTime(e.target.value)}
-              className="w-full h-12 bg-white/50 border border-zinc-200 rounded-xl px-5 font-serif text-sm text-zinc-900 focus:outline-none focus:border-zinc-900 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50"
+              className="w-full h-10 bg-white/50 border border-zinc-200 rounded-xl px-4 font-serif text-[13px] text-zinc-900 focus:outline-none focus:border-zinc-900 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50"
             />
           </div>
           <button
             onClick={handleAddSlot}
-            className={`${dashboardTheme.dashboardPrimaryButton} flex items-center gap-2 h-12 px-6 shrink-0`}
+            className={`${dashboardTheme.dashboardPrimaryButton} flex items-center gap-2 h-10 px-5 shrink-0 text-[11px]`}
           >
-            <Plus size={14} strokeWidth={1.5} />
+            <Plus size={13} strokeWidth={1.5} />
             Ajouter
           </button>
         </div>

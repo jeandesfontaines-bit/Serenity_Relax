@@ -1,0 +1,142 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - link "SERENITY RELAX THERAPY by João" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: SERENITY RELAX THERAPY
+        - generic [ref=e7]: by João
+      - navigation [ref=e8]:
+        - link "STUDIO" [ref=e9] [cursor=pointer]:
+          - /url: /#hero
+        - link "TREATMENTS" [ref=e10] [cursor=pointer]:
+          - /url: /#services
+        - link "PHILOSOPHY" [ref=e11] [cursor=pointer]:
+          - /url: /#about
+        - link "FAQ" [ref=e12] [cursor=pointer]:
+          - /url: /#faq
+      - generic [ref=e13]:
+        - link "ACCÈS" [ref=e14] [cursor=pointer]:
+          - /url: /login
+        - button "SÉANCE" [ref=e15] [cursor=pointer]
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e21]: Geneve • Therapie Manuelle d'Excellence
+        - heading "Le corps se souvient. On le libere." [level=1] [ref=e22]:
+          - text: Le corps se souvient.
+          - text: On le libere.
+        - paragraph [ref=e23]: Une approche precise et intuitive pour liberer les tensions profondes et retrouver un equilibre durable.
+        - generic [ref=e24]:
+          - button "Reserver une seance" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+            - text: Reserver une seance
+          - button "Decouvrir l'approche" [ref=e28] [cursor=pointer]:
+            - text: Decouvrir l'approche
+            - img [ref=e29]
+      - generic [ref=e31]:
+        - img "Seance de therapie" [ref=e32]
+        - generic [ref=e34]:
+          - generic [ref=e35]: Seance signature
+          - generic [ref=e36]: Relachement profond - 60 min
+    - generic [ref=e38]:
+      - img "João - Lead Therapist" [ref=e41]
+      - generic [ref=e43]:
+        - generic [ref=e44]: OUR FOUNDER
+        - heading "João — Fondateur & Thérapeute" [level=2] [ref=e45]
+        - generic [ref=e46]:
+          - paragraph [ref=e47]: Fort d'une formation en thérapie holistique et d'une sensibilité unique, João accompagne ses clients vers un état de détente profonde et de mieux-être durable.
+          - paragraph [ref=e48]: Sa méthode allie techniques manuelles traditionnelles et approche corporelle globale — offrant à chaque client une expérience de soin personnalisée au sein de son studio à Genève.
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: 12+
+            - generic [ref=e52]: YEARS EXP.
+          - generic [ref=e54]:
+            - generic [ref=e55]: 4k+
+            - generic [ref=e56]: SESSIONS
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - generic [ref=e60]:
+          - generic [ref=e61]: Curated Treatments
+          - heading "Precision Wellness Modules." [level=2] [ref=e62]
+        - generic [ref=e63] [cursor=pointer]:
+          - text: VIEW FULL MENU
+          - img [ref=e64]
+      - generic [ref=e66]:
+        - generic [ref=e67] [cursor=pointer]:
+          - img "01. STRUCTURAL ALIGNMENT" [ref=e68]
+          - generic [ref=e70]:
+            - heading "01. STRUCTURAL ALIGNMENT" [level=3] [ref=e71]
+            - paragraph [ref=e72]: 90 MINUTES — 120
+        - generic [ref=e73] [cursor=pointer]:
+          - img "02. LYMPHATIC FLOW" [ref=e74]
+          - generic [ref=e76]:
+            - heading "02. LYMPHATIC FLOW" [level=3] [ref=e77]
+            - paragraph [ref=e78]: 60 MINUTES — 85
+        - generic [ref=e79] [cursor=pointer]:
+          - img "03. ZEN SHIATSU" [ref=e80]
+          - generic [ref=e82]:
+            - heading "03. ZEN SHIATSU" [level=3] [ref=e83]
+            - paragraph [ref=e84]: 75 MINUTES — 100
+        - generic [ref=e85] [cursor=pointer]:
+          - img "04. DEEP TISSUE SCULPT" [ref=e86]
+          - generic [ref=e88]:
+            - heading "04. DEEP TISSUE SCULPT" [level=3] [ref=e89]
+            - paragraph [ref=e90]: 90 MINUTES — 130
+        - generic [ref=e91] [cursor=pointer]:
+          - img "05. PRIVACY SESSION" [ref=e92]
+          - generic [ref=e94]:
+            - heading "05. PRIVACY SESSION" [level=3] [ref=e95]
+            - paragraph [ref=e96]: 120 MINUTES — 180
+        - generic [ref=e97] [cursor=pointer]:
+          - img "06. CRANIAL RELEASE" [ref=e98]
+          - generic [ref=e100]:
+            - heading "06. CRANIAL RELEASE" [level=3] [ref=e101]
+            - paragraph [ref=e102]: 45 MINUTES — 70
+        - generic [ref=e103] [cursor=pointer]:
+          - img "07. MYOFASCIAL STUDY" [ref=e104]
+          - generic [ref=e106]:
+            - heading "07. MYOFASCIAL STUDY" [level=3] [ref=e107]
+            - paragraph [ref=e108]: 90 MINUTES — 140
+        - generic [ref=e109] [cursor=pointer]:
+          - img "08. METABOLIC RESET" [ref=e110]
+          - generic [ref=e112]:
+            - heading "08. METABOLIC RESET" [level=3] [ref=e113]
+            - paragraph [ref=e114]: 60 MINUTES — 95
+    - generic [ref=e116]:
+      - generic [ref=e117]: QUESTIONS FRÉQUEMMENT POSÉES
+      - heading "Équilibre et clarté." [level=2] [ref=e118]
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - heading "Comment se déroule une séance ?" [level=4] [ref=e121]
+          - paragraph [ref=e122]: Chaque séance commence par une analyse structurelle pour adapter notre approche à votre architecture corporelle unique.
+        - generic [ref=e123]:
+          - heading "Quelle est la durée idéale ?" [level=4] [ref=e124]
+          - paragraph [ref=e125]: Nous recommandons des sessions de 90 minutes pour permettre une décompression profonde et une recalibration complète.
+        - generic [ref=e126]:
+          - heading "Dois-je réserver à l'avance ?" [level=4] [ref=e127]
+          - paragraph [ref=e128]: Oui, pour garantir une immersion totale, nos séances sont uniquement sur rendez-vous dans notre studio de Lisbonne.
+        - generic [ref=e129]:
+          - heading "Politique d'annulation" [level=4] [ref=e130]
+          - paragraph [ref=e131]: Nous demandons un préavis de 24 heures pour toute modification afin de respecter le flux de travail de nos architectes du bien-être.
+    - generic [ref=e133]:
+      - generic [ref=e134]:
+        - generic [ref=e137]:
+          - generic [ref=e138]: SERENITY RELAX THERAPY
+          - generic [ref=e139]: by João
+        - paragraph [ref=e140]:
+          - text: THÉRAPIE DE BIEN-ÊTRE PREMIUM.
+          - text: UN ESPACE DE DÉTENTE POUR LE CORPS.
+          - text: GENÈVE, SUISSE.
+      - generic [ref=e141]:
+        - navigation [ref=e142]:
+          - link "STUDIO" [ref=e143] [cursor=pointer]:
+            - /url: /#hero
+          - link "TREATMENTS" [ref=e144] [cursor=pointer]:
+            - /url: /#services
+          - link "PHILOSOPHY" [ref=e145] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e146] [cursor=pointer]:
+            - /url: /#faq
+        - generic [ref=e147]: © 2026 SERENITY RELAX THERAPY BY JOÃO. GENÈVE, SUISSE.
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=e148]

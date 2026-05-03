@@ -17,11 +17,17 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [sessionClientId, setSessionClientId] = useState<string | null>(null);
   const [clientName, setClientName] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+
     const storedId = sessionStorage.getItem('serenity_client_id');
     setSessionClientId(storedId);
 
@@ -32,6 +38,8 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
         }
       });
     }
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [firestore]);
 
   if (!mounted) return null;
@@ -72,83 +80,101 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
   ];
 
   const mainLinks = [
-    { label: 'STUDIO', href: '/#hero' },
-    { label: 'TREATMENTS', href: '/#services' },
-    { label: 'PHILOSOPHY', href: '/#about' },
+    { label: 'Studio', href: '/#hero' },
+    { label: 'Soins', href: '/#services' },
+    { label: 'Philosophie', href: '/#about' },
     { label: 'FAQ', href: '/#faq' },
   ];
 
   if (isLoginPage) return null;
 
   return (
-    <header className="absolute top-0 left-0 w-full z-50 bg-[#faf9f7]/70 backdrop-blur-xl border-b border-[#efeeec]">
-      <div className="flex justify-between items-center w-full px-8 md:px-16 py-8 max-w-[1440px] mx-auto">
-        <Link href="/" className="flex items-baseline gap-2 group">
-          <span className="font-sans font-medium text-[16px] md:text-[20px] tracking-[0.3em] text-[#1a1c1b] whitespace-nowrap uppercase">
-            SERENITY RELAX THERAPY
+    <header 
+      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ${
+        isScrolled 
+          ? 'py-4 bg-white/70 backdrop-blur-2xl border-b border-black/[0.03] shadow-[0_4px_30px_rgba(0,0,0,0.02)]' 
+          : 'py-10 bg-transparent'
+      }`}
+    >
+      <div className="flex justify-between items-center w-full px-8 md:px-16 max-w-[1920px] mx-auto">
+        <Link href="/" className="flex flex-col group relative">
+          <span className={`font-sans font-medium text-[15px] md:text-[17px] tracking-[0.5em] transition-all duration-700 uppercase ${isScrolled ? 'text-foreground' : 'text-white'}`}>
+            SERENITY
           </span>
-          <span className="font-cursive text-[22px] md:text-[28px] text-[#5a6366] whitespace-nowrap lowercase" style={{ fontFamily: 'var(--font-signature)' }}>
+          <span className={`font-signature text-[20px] md:text-[24px] transition-all duration-700 lowercase -mt-1.5 opacity-70 ${isScrolled ? 'text-secondary' : 'text-white/70'}`}>
             by João
           </span>
+          <motion.div 
+            className="absolute -bottom-2 left-0 h-[1px] bg-primary"
+            initial={{ width: 0 }}
+            whileHover={{ width: '100%' }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          />
         </Link>
         
-        <nav className="hidden lg:flex items-center space-x-16">
-          {isTherapistArea ? (
-            adminLinks.map((link) => (
-                <Link 
-                  key={link.id} 
-                  href={link.href} 
-                  className={`font-serif uppercase tracking-[0.4em] text-[10px] transition-all duration-700 ${pathname === link.href ? 'text-[#1a1c1b] italic font-medium' : 'text-[#c3c8c0] hover:text-[#1a1c1b]'}`}
-                >
-                  {link.label}
-                </Link>
-              ))
-            ) : (
-              mainLinks.map((link) => (
-                <Link 
-                  key={link.label} 
-                  href={link.href} 
-                  className="font-serif uppercase tracking-[0.4em] text-[10px] text-[#c3c8c0] hover:text-[#1a1c1b] transition-all duration-700"
-                >
-                  {link.label}
-                </Link>
-              ))
-            )}
+        <nav className="hidden lg:flex items-center space-x-14">
+          {(isTherapistArea ? adminLinks : mainLinks).map((link) => (
+            <Link 
+              key={link.label} 
+              href={link.href} 
+              className={`relative font-sans uppercase tracking-[0.4em] text-[10px] transition-all duration-500 group ${
+                isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/50 hover:text-white'
+              }`}
+            >
+              {link.label}
+              <span className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary scale-0 group-hover:scale-100 transition-transform duration-500 ${
+                pathname === link.href ? 'scale-100' : ''
+              }`} />
+            </Link>
+          ))}
         </nav>
 
-        <div className="flex items-center gap-12">
+        <div className="flex items-center gap-10">
           {effectiveUser ? (
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-5 group cursor-pointer">
               <div className="flex flex-col items-end justify-center">
-                 <span className="font-serif uppercase tracking-[0.3em] text-[8px] text-[#1a1c1b] leading-none mb-1">{effectiveUser.name}</span>
-                 <button onClick={handleSignOut} className="font-serif uppercase tracking-[0.3em] text-[8px] text-[#c3c8c0] hover:text-[#1a1c1b] transition-colors leading-none">Sortie</button>
+                 <span className={`font-sans uppercase tracking-[0.3em] text-[9px] leading-none mb-1.5 ${isScrolled ? 'text-foreground' : 'text-white'}`}>
+                   {effectiveUser.name}
+                 </span>
+                 <button onClick={handleSignOut} className={`font-sans uppercase tracking-[0.3em] text-[9px] transition-colors leading-none ${isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/40 hover:text-white'}`}>
+                   Sortie
+                 </button>
               </div>
-              <div className="w-10 h-10 border border-[#efeeec] flex items-center justify-center bg-white text-[#1a1c1b] overflow-hidden group hover:border-[#435544] transition-colors duration-700">
+              <div className={`w-10 h-10 rounded-full border flex items-center justify-center overflow-hidden transition-all duration-700 ${
+                isScrolled ? 'border-border bg-white text-foreground' : 'border-white/20 bg-white/10 text-white'
+              } group-hover:border-primary/50 group-hover:scale-105`}>
                 {effectiveUser.photo ? (
-                  <img src={effectiveUser.photo} alt="" className="w-full h-full object-cover transition-all" />
+                  <img src={effectiveUser.photo} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <UserIcon size={14} strokeWidth={1} />
+                  <UserIcon size={14} strokeWidth={1.5} />
                 )}
               </div>
             </div>
           ) : (
             <Link 
               href="/login" 
-              className="font-serif uppercase tracking-[0.4em] text-[10px] text-[#c3c8c0] hover:text-[#1a1c1b] transition-all duration-700"
+              className={`hidden sm:block font-sans uppercase tracking-[0.4em] text-[10px] transition-all duration-500 ${
+                isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/50 hover:text-white'
+              }`}
             >
-              ACCÈS
+              Accès
             </Link>
           )}
 
           <button 
             onClick={onBookingClick}
-            className="font-serif uppercase tracking-[0.5em] text-[10px] px-8 py-4 bg-[#1a1c1b] text-white hover:bg-[#435544] transition-all duration-1000 hidden sm:block shadow-2xl shadow-[#1a1c1b]/10"
+            className={`premium-button group rounded-full overflow-hidden ${
+              isScrolled 
+                ? 'bg-foreground text-background hover:bg-primary' 
+                : 'bg-white text-foreground hover:bg-primary hover:text-white'
+            }`}
           >
-            SÉANCE
+            <span className="relative z-10">Réserver</span>
+            <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[0.22,1,0.36,1]" />
           </button>
 
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-[#1a1c1b] p-2 hover:bg-[#faf9f7] transition-colors">
-            {isMenuOpen ? <X size={20} strokeWidth={1} /> : <Menu size={20} strokeWidth={1} />}
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`lg:hidden p-3 rounded-full transition-all ${isScrolled ? 'text-foreground hover:bg-black/5' : 'text-white hover:bg-white/10'}`}>
+            {isMenuOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
           </button>
         </div>
       </div>
@@ -156,27 +182,54 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-[#efeeec] overflow-hidden"
+            initial={{ opacity: 0, scale: 1.05, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 1.05, y: -20 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 top-0 bg-background z-[90] flex flex-col p-16 md:p-32 gap-20"
           >
-            <div className="flex flex-col p-8 gap-6 text-center">
-              {(isTherapistArea ? adminLinks : mainLinks).map((link) => (
-                <Link key={link.label} href={link.href} onClick={() => setIsMenuOpen(false)} className="font-serif uppercase tracking-[0.4em] text-[10px] text-[#1a1c1b]">
-                  {link.label}
-                </Link>
+            <div className="flex justify-between items-center mb-10">
+               <span className="font-sans uppercase tracking-[0.6em] text-[12px] text-muted-foreground">Menu</span>
+               <button onClick={() => setIsMenuOpen(false)} className="p-4 rounded-full bg-muted text-foreground">
+                  <X size={24} strokeWidth={1.5} />
+               </button>
+            </div>
+
+            <nav className="flex flex-col gap-10">
+              {(isTherapistArea ? adminLinks : mainLinks).map((link, i) => (
+                <motion.div
+                  key={link.label}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 + 0.3 }}
+                >
+                  <Link 
+                    href={link.href} 
+                    onClick={() => setIsMenuOpen(false)} 
+                    className="font-serif text-[48px] md:text-[64px] tracking-tight text-foreground hover:text-primary transition-colors duration-500 flex items-center justify-between group"
+                  >
+                    <span>{link.label}</span>
+                    <Sparkles className="opacity-0 group-hover:opacity-100 transition-opacity text-primary" size={32} strokeWidth={1} />
+                  </Link>
+                </motion.div>
               ))}
+            </nav>
+            
+            <div className="mt-auto flex flex-col gap-8">
               {!effectiveUser && (
-                <Link href="/login" onClick={() => setIsMenuOpen(false)} className="font-serif uppercase tracking-[0.4em] text-[10px] text-[#1a1c1b] pt-4 border-t border-[#efeeec]">
-                  LOGIN
+                <Link 
+                  href="/login" 
+                  onClick={() => setIsMenuOpen(false)} 
+                  className="font-sans uppercase tracking-[0.5em] text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Espace Praticien
                 </Link>
               )}
               <button 
                 onClick={() => { setIsMenuOpen(false); onBookingClick?.(); }} 
-                className="font-serif uppercase tracking-[0.4em] text-[10px] px-6 py-4 bg-[#1a1c1b] text-white"
+                className="premium-button bg-foreground text-background rounded-full py-8 text-[14px]"
               >
-                Réserver
+                Initialiser un Soin
               </button>
             </div>
           </motion.div>
