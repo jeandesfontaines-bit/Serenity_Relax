@@ -1,0 +1,119 @@
+[    3181ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[   13839ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   14315ms] [LOG] [Fast Refresh] done in 586ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  378717ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  379706ms] [LOG] [Fast Refresh] done in 963ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  559720ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  563154ms] [LOG] [Fast Refresh] done in 2882ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 2489866ms] [ERROR] Cross-Origin-Opener-Policy policy would block the window.closed call. @ http://localhost:9002/_next/static/chunks/node_modules_%40firebase_auth_dist_esm2017_b45f2044._.js:9244
+[ 2489867ms] [ERROR] Cross-Origin-Opener-Policy policy would block the window.closed call. @ http://localhost:9002/_next/static/chunks/node_modules_%40firebase_auth_dist_esm2017_b45f2044._.js:9244
+[ 2499617ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[ 2609677ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 2609679ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 2658380ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 2658382ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 2725297ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 2725300ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 2762518ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=TYGD6BJdjy20pRGRMNr352B8Nru62IXp9umpMCtqTLOA5YNiJj54-w&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=YjbQC2QwQ9dJgeLxRwsGXg&AID=152&CI=0&TYPE=xmlhttp&zx=d1famdgr2wdw&t=1:0
+[ 2783429ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 2783431ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 2912440ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[ 2912866ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 2913106ms] [LOG] [Fast Refresh] done in 340ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 2913158ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[ 2913228ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 2913306ms] [LOG] [Fast Refresh] done in 179ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 2993794ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 2995397ms] [LOG] [Fast Refresh] done in 1658ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3005442ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3005631ms] [LOG] [Fast Refresh] done in 301ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3114964ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3115263ms] [LOG] [Fast Refresh] done in 443ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3118846ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3119508ms] [LOG] [Fast Refresh] done in 765ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3120506ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3120582ms] [LOG] [Fast Refresh] done in 176ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3196521ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3199033ms] [LOG] [Fast Refresh] done in 2583ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3237128ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3237386ms] [LOG] [Fast Refresh] done in 363ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3237643ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3238823ms] [LOG] [Fast Refresh] done in 1281ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3298999ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3299005ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3300108ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3300108ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3302972ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3302972ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3509622ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3509624ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3511035ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3511035ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3593749ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3598211ms] [LOG] [Fast Refresh] done in 4393ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3738098ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3741092ms] [LOG] [Fast Refresh] done in 2558ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3789644ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3789663ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3798500ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3798501ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3799417ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3799417ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3855779ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3855789ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3865266ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3865266ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3872236ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3872241ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 3933918ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3935270ms] [LOG] [Fast Refresh] done in 1473ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3975115ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3976060ms] [LOG] [Fast Refresh] done in 1030ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4002281ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4002534ms] [LOG] [Fast Refresh] done in 352ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4019451ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 4019453ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 4157104ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4158087ms] [LOG] [Fast Refresh] done in 1049ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4272881ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4274179ms] [LOG] [Fast Refresh] done in 1450ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4300000ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 4300001ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 4302494ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 4302494ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 4368364ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[ 4370955ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[ 4376466ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 4376470ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:9002/therapist/dashboard:0
+[ 4416859ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com'). @ https://www.youtube.com/s/player/cb017549/www-widgetapi.vflset/www-widgetapi.js:209
+[ 4417162ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com'). @ https://www.youtube.com/s/player/cb017549/www-widgetapi.vflset/www-widgetapi.js:209
+[ 4417422ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com'). @ https://www.youtube.com/s/player/cb017549/www-widgetapi.vflset/www-widgetapi.js:209
+[ 4417606ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com'). @ https://www.youtube.com/s/player/cb017549/www-widgetapi.vflset/www-widgetapi.js:209
+[ 4419032ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[ 4420138ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[ 4449332ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4451907ms] [LOG] [Fast Refresh] done in 2751ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4685289ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4686679ms] [LOG] [Fast Refresh] done in 1563ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4733423ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4733912ms] [LOG] [Fast Refresh] done in 484ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4765552ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4765591ms] [LOG] [Fast Refresh] done in 140ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4768982ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[ 4769546ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4769706ms] [LOG] [Fast Refresh] done in 264ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4769909ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4769961ms] [LOG] [Fast Refresh] done in 233ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4770015ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[ 4782789ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4785158ms] [LOG] [Fast Refresh] done in 2403ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4843484ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[ 4844106ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4844531ms] [LOG] [Fast Refresh] done in 526ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4844633ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[ 4978841ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4980689ms] [LOG] [Fast Refresh] done in 1781ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 5054250ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 5056076ms] [LOG] [Fast Refresh] done in 1924ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 5162684ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 5163601ms] [LOG] [Fast Refresh] done in 898ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

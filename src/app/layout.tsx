@@ -1,43 +1,56 @@
-import type {Metadata} from 'next';
-import { Inter, Instrument_Serif } from 'next/font/google';
+import type { Metadata } from 'next';
+import { Plus_Jakarta_Sans, DM_Serif_Display, Allison } from 'next/font/google';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { Toaster } from '@/components/ui/toaster';
+import { BookingProvider } from '@/context/BookingContext';
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-jakarta',
+  weight: ['300', '400', '500', '600', '700', '800'],
 });
 
-const instrumentSerif = Instrument_Serif({
-  weight: '400',
+const serif = DM_Serif_Display({
   subsets: ['latin'],
-  variable: '--font-instrument-serif',
+  variable: '--font-serif',
+  weight: ['400'],
+});
+
+const allison = Allison({
+  subsets: ['latin'],
+  variable: '--font-allison',
+  weight: ['400'],
 });
 
 export const metadata: Metadata = {
-  title: 'Serenity Relax Therapy by João',
-  description: 'Un sanctuaire sensoriel confidentiel à Genève Cointrin pour la restauration physique et mentale.',
+  title: "Serenity Relax by João | Massothérapie Genève",
+  description: "Expérience de massage thérapeutique et bien-être à Genève. Soins signatures : Bambous, Drainage Lymphatique, Aromathérapie et plus.",
+  icons: {
+    icon: '/favicon.ico',
+  },
+  openGraph: {
+    title: "Serenity Relax by João",
+    description: "L'équilibre par le toucher.",
+    images: [{ url: 'https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg' }],
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="fr" className={`${inter.variable} ${instrumentSerif.variable}`}>
-      <head>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" />
-      </head>
-      <body className="font-sans antialiased">
+    <html lang="fr" className={`${jakarta.variable} ${serif.variable} ${allison.variable}`}>
+      <body className="antialiased">
         <FirebaseClientProvider>
-          {children}
-          <Toaster />
+          <BookingProvider>
+            {children}
+            <Toaster />
+          </BookingProvider>
         </FirebaseClientProvider>
       </body>
     </html>
   );
 }
-

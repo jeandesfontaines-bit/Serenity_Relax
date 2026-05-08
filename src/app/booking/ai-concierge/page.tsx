@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, Send, ArrowRight, Heart, Brain, 
+  Sparkle, Send, ArrowRight, Heart, Brain, 
   Wind, Zap, Bot, ArrowLeft, Loader2, CheckCircle
 } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
@@ -83,7 +83,7 @@ export default function AIConcierge() {
         
         <div className="relative z-10 flex flex-col items-center text-center space-y-8">
            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#5F27CD] to-[#0ABDE3] text-white flex items-center justify-center animate-pulse"><Sparkles size={24} /></div>
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#5F27CD] to-[#0ABDE3] text-white flex items-center justify-center animate-pulse"><Sparkle size={24} /></div>
               <p className="text-[0.7rem] font-black uppercase tracking-[0.5em] text-[#0ABDE3]">Oracle Intelligent</p>
            </div>
            <h1 className="title-luxe text-6xl md:text-8xl">L&apos;Expérience <br/><span className="italic font-serif opacity-40 text-[#F8F5F0]">Assistée par IA.</span></h1>

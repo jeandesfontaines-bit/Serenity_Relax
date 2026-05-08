@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useFirestore } from '@/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { Printer, Mail, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { Printer, Mail, CheckCircle2, ArrowLeft, Download } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
+import { buildInvoicePdf } from '@/lib/pdf-utils';
 
 export default function InvoicePage() {
   const params = useParams();
@@ -16,11 +17,24 @@ export default function InvoicePage() {
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
 
+  const invoiceAmount = Number(invoice?.totalAmount ?? invoice?.amount ?? 0);
+
+  const handleDownloadPdf = () => {
+    if (!invoice) return;
+    buildInvoicePdf({
+      invoiceNumber: invoice.invoiceNumber || `INV-${id}`,
+      clientName: invoice.clientNameSnapshot || 'Client',
+      date: invoice.date || invoice.issueDate || new Date().toISOString().slice(0, 10),
+      serviceName: invoice.serviceName || invoice.items?.[0]?.description || 'Soin thérapeutique',
+      amount: invoiceAmount,
+    });
+  };
+
   const sendByEmail = async () => {
     setIsSending(true);
     // Simulation d'envoi
     await new Promise(r => setTimeout(r, 1500));
-    setIsSending(true);
+    setIsSending(false);
     setSent(true);
     setTimeout(() => setSent(false), 3000);
   };
@@ -32,9 +46,16 @@ export default function InvoicePage() {
         const docRef = doc(firestore, 'invoices', id);
         const snapshot = await getDoc(docRef);
         if (snapshot.exists()) {
-          setInvoice(snapshot.data());
+          setInvoice({ id: snapshot.id, ...snapshot.data() });
         } else {
-          console.error("Invoice not found");
+          const fallbackQuery = query(collection(firestore, 'invoices'), where('appointmentId', '==', id));
+          const fallbackSnapshot = await getDocs(fallbackQuery);
+          const fallbackInvoice = fallbackSnapshot.docs[0];
+          if (fallbackInvoice) {
+            setInvoice({ id: fallbackInvoice.id, ...fallbackInvoice.data() });
+          } else {
+            console.error("Invoice not found");
+          }
         }
       } catch (e) {
         console.error(e);
@@ -72,6 +93,12 @@ export default function InvoicePage() {
           </button>
           
           <div className="flex gap-6">
+            <button
+              onClick={handleDownloadPdf}
+              className="px-8 py-4 bg-white border border-zinc-200 text-zinc-900 font-display uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-zinc-50 transition-all flex items-center gap-3 shadow-sm"
+            >
+              <Download size={16} /> Télécharger PDF
+            </button>
             <button 
               onClick={() => window.print()} 
               className="px-8 py-4 bg-zinc-900 text-white font-display uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-zinc-800 transition-all flex items-center gap-3 shadow-xl shadow-zinc-200"
@@ -95,14 +122,14 @@ export default function InvoicePage() {
           {/* Header */}
           <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-32">
             <div>
-              <h1 className="text-7xl font-serif font-light text-zinc-900 tracking-tighter mb-6">Facture</h1>
+              <h1 className="text-7xl  font-light text-zinc-900 tracking-tighter mb-6">Facture</h1>
               <div className="flex items-center gap-6">
                 <span className="font-display uppercase tracking-[0.4em] text-[10px] text-zinc-300">Référence</span>
                 <p className="text-sm font-display font-bold tracking-widest text-zinc-900">#{invoice.invoiceNumber}</p>
               </div>
             </div>
             <div className="md:text-right flex flex-col md:items-end">
-              <span className="block font-serif text-3xl text-zinc-900 mb-2">Serenity Relax</span>
+              <span className="block  text-3xl text-zinc-900 mb-2">Serenity Relax</span>
               <span className="block font-display uppercase tracking-[0.4em] text-[9px] text-zinc-400 mb-8 leading-none">Architecture of Presence</span>
               <div className="font-display uppercase tracking-[0.2em] text-[10px] text-zinc-400 space-y-2">
                 <p>Route d'Exemple 123</p>
@@ -116,7 +143,7 @@ export default function InvoicePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 mb-32 py-16 border-y border-zinc-50">
             <div>
               <span className="font-display uppercase tracking-[0.4em] text-[9px] text-zinc-300 block mb-6">Destinataire</span>
-              <p className="text-3xl font-serif font-light text-zinc-900 mb-4">{invoice.clientNameSnapshot}</p>
+              <p className="text-3xl  font-light text-zinc-900 mb-4">{invoice.clientNameSnapshot}</p>
               <div className="font-display uppercase tracking-[0.2em] text-[10px] text-zinc-400 space-y-2">
                 <p>Dossier No. {invoice.clientId?.slice(0, 8).toUpperCase()}</p>
                 <p className="text-zinc-300">Méthode Thérapeutique : Soins Holistiques</p>
@@ -151,20 +178,20 @@ export default function InvoicePage() {
                 {(invoice.items || []).length > 0 ? (invoice.items.map((item: any, idx: number) => (
                   <tr key={idx} className="group">
                     <td className="py-12">
-                      <p className="text-2xl font-serif font-light text-zinc-900 mb-2">{item.description}</p>
+                      <p className="text-2xl  font-light text-zinc-900 mb-2">{item.description}</p>
                       <p className="font-display uppercase tracking-[0.3em] text-[9px] text-zinc-300">Code Tarifa 590 : 1001</p>
                     </td>
                     <td className="py-12 text-right font-display text-[11px] text-zinc-400">1</td>
-                    <td className="py-12 text-right font-serif text-2xl text-zinc-900">{item.amount.toFixed(2)} <span className="text-xs opacity-20 ml-1">CHF</span></td>
+                    <td className="py-12 text-right  text-2xl text-zinc-900">{item.amount.toFixed(2)} <span className="text-xs opacity-20 ml-1">CHF</span></td>
                   </tr>
                 ))) : (
                   <tr className="group">
                     <td className="py-12">
-                      <p className="text-2xl font-serif font-light text-zinc-900 mb-2">{invoice.serviceName || "Soin Holistique"}</p>
+                      <p className="text-2xl  font-light text-zinc-900 mb-2">{invoice.serviceName || "Soin Holistique"}</p>
                       <p className="font-display uppercase tracking-[0.3em] text-[9px] text-zinc-300">Code Tarifa 590 : 1001</p>
                     </td>
                     <td className="py-12 text-right font-display text-[11px] text-zinc-400">1</td>
-                    <td className="py-12 text-right font-serif text-2xl text-zinc-900">{invoice.totalAmount.toFixed(2)} <span className="text-xs opacity-20 ml-1">CHF</span></td>
+                    <td className="py-12 text-right  text-2xl text-zinc-900">{invoiceAmount.toFixed(2)} <span className="text-xs opacity-20 ml-1">CHF</span></td>
                   </tr>
                 )}
               </tbody>
@@ -183,10 +210,10 @@ export default function InvoicePage() {
             <div className="md:text-right flex flex-col md:items-end">
               <span className="font-display uppercase tracking-[0.4em] text-[9px] text-zinc-300 block mb-4">Total dû</span>
               <div className="flex flex-col md:items-end">
-                <p className="text-8xl font-serif font-light text-zinc-900 tracking-tighter leading-none">
-                  {invoice.totalAmount.toFixed(2)}
+                <p className="text-8xl  font-light text-zinc-900 tracking-tighter leading-none">
+                  {invoiceAmount.toFixed(2)}
                 </p>
-                <span className="font-serif text-xl text-zinc-200 mt-4 uppercase tracking-[0.2em]">Francs Suisses</span>
+                <span className=" text-xl text-zinc-200 mt-4 uppercase tracking-[0.2em]">Francs Suisses</span>
               </div>
             </div>
           </div>

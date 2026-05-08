@@ -1,320 +1,369 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Clock, 
+  Calendar as CalendarIcon, 
+  Check, 
+  Sparkle, 
+  ArrowRight,
+  Sun,
+  Sunrise,
+  Moon,
+  Info,
+  Loader2
+} from 'lucide-react';
+import { Navbar } from '@/components/Navbar';
+
+const DAYS_OF_WEEK = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+const MONTHS = [
+  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+];
 
 export default function BookDateTimePage() {
   const router = useRouter();
 
-  // Selected state for interactivity
-  const [selectedDate, setSelectedDate] = useState<number>(12);
-  const [selectedTime, setSelectedTime] = useState<string>('12:00 PM');
+  const [selectedDate, setSelectedDate] = useState<number | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [isLoading, setIsLoading] = useState(false);
 
-  const days = [
-    { num: 1 }, { num: 2 }, { num: 3 }, { num: 4 }, { num: 5 }, { num: 6 }, { num: 7 },
-    { num: 8 }, { num: 9 }, { num: 10 }, { num: 11 }, { num: 12 }, { num: 13 }, { num: 14 },
-    { num: 15 }, { num: 16 }, { num: 17 }, { num: 18 }, { num: 19 }, { num: 20 }, { num: 21 },
-    { num: 22 }, { num: 23 }, { num: 24 }, { num: 25 }, { num: 26 }, { num: 27 }, { num: 28 },
-    { num: 29 }, { num: 30 }, { num: 31 },
-  ];
+  // Generate days for the grid
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+  // Adjust for Monday start (JS getDay is 0 for Sunday)
+  const offset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+
+  const timeSlots = {
+    morning: ['09:00', '10:00', '11:30'],
+    afternoon: ['13:30', '14:30', '15:45', '17:00'],
+    evening: ['18:30', '19:45']
+  };
+
+  const handleContinue = () => {
+    if (!selectedDate || !selectedTime) return;
+    setIsLoading(true);
+    // Simulate prep time
+    setTimeout(() => {
+      router.push(`/client/book/details?date=${selectedDate}&month=${currentMonth}&year=${currentYear}&time=${selectedTime}`);
+    }, 800);
+  };
 
   return (
-    <div className="bg-background text-on-background min-h-screen pb-20">
-      {/* TopAppBar */}
-      <header className="absolute top-0 left-0 bg-[#faf9f7]/80 dark:bg-stone-950/80 backdrop-blur-lg border-b border-stone-200/40 dark:border-stone-800/40 shadow-sm z-50 flex justify-between items-center w-full px-6 py-4">
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-medium tracking-[0.1em] uppercase text-[#435544] dark:text-[#b8ccb6] font-headline">Sanctuary</span>
-        </div>
-        <div className="hidden md:flex items-center gap-8">
-          <a onClick={() => router.push('/client/dashboard')} className="cursor-pointer text-[#747872] dark:text-stone-500 hover:text-[#435544] transition-colors duration-300 font-label text-sm uppercase tracking-wider">Home</a>
-          <a className="cursor-pointer text-[#747872] dark:text-stone-500 hover:text-[#435544] transition-colors duration-300 font-label text-sm uppercase tracking-wider">Rituals</a>
-          <a className="cursor-pointer text-[#435544] dark:text-[#b8ccb6] font-semibold font-label text-sm uppercase tracking-wider">Bookings</a>
-          <a onClick={() => router.push('/client/profil')} className="cursor-pointer text-[#747872] dark:text-stone-500 hover:text-[#435544] transition-colors duration-300 font-label text-sm uppercase tracking-wider">Profile</a>
-        </div>
-        <div className="flex items-center gap-4">
-          <button className="material-symbols-outlined text-[#435544] dark:text-[#b8ccb6] p-2 hover:bg-stone-100 rounded-full transition-colors">notifications</button>
-          <button className="md:hidden material-symbols-outlined text-[#435544]">menu</button>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#FDFDFC] text-neutral-900 selection:bg-neutral-900 selection:text-white">
+      <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 pt-28 pb-8 md:pt-32 md:pb-12">
-        {/* Progress Indicator */}
-        <nav className="flex items-center justify-center mb-16 max-w-2xl mx-auto">
-          <div className="flex flex-col items-center flex-1">
-            <div className="flex items-center w-full">
-              <div className="h-[2px] flex-1 bg-primary"></div>
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white shadow-sm">
-                <span className="material-symbols-outlined text-base">check</span>
-              </div>
-              <div className="h-[2px] flex-1 bg-primary"></div>
-            </div>
-            <span className="mt-3 text-xs font-label font-semibold text-primary uppercase tracking-widest">Select Treatment</span>
-          </div>
-          <div className="flex flex-col items-center flex-1">
-            <div className="flex items-center w-full">
-              <div className="h-[2px] flex-1 bg-primary"></div>
-              <div className="w-10 h-10 rounded-full ring-4 ring-on-primary-container bg-primary flex items-center justify-center text-white shadow-md">
-                <span className="font-headline font-semibold">2</span>
-              </div>
-              <div className="h-[2px] flex-1 bg-outline-variant"></div>
-            </div>
-            <span className="mt-3 text-xs font-label font-bold text-primary uppercase tracking-widest">Date & Time</span>
-          </div>
-          <div className="flex flex-col items-center flex-1">
-            <div className="flex items-center w-full">
-              <div className="h-[2px] flex-1 bg-outline-variant"></div>
-              <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-outline shadow-sm">
-                <span className="font-headline font-semibold">3</span>
-              </div>
-              <div className="h-[2px] flex-1 bg-outline-variant"></div>
-            </div>
-            <span className="mt-3 text-xs font-label font-medium text-outline uppercase tracking-widest">Details</span>
-          </div>
-        </nav>
+      {/* Decorative Background Elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-emerald-50/30 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] bg-amber-50/30 rounded-full blur-[120px]" />
+      </div>
 
-        {/* Main Content Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Calendar & Time Section */}
-          <div className="lg:col-span-8 space-y-12">
+      <main className="relative pt-32 pb-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          
+          {/* Header Section */}
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <div className="h-px w-12 bg-neutral-200" />
+              <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-400">Étape 2 sur 3</span>
+            </motion.div>
             
-            {/* Hero Image Card */}
-            <div className="relative h-64 md:h-80 w-full rounded-xl overflow-hidden shadow-sm group">
-              <img 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                alt="A serene, high-end massage therapy room within a luxury wellness sanctuary." 
-                src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=2560&q=80" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-              <div className="absolute bottom-6 left-8">
-                <h1 className="text-white font-headline text-3xl font-light tracking-tight">Schedule Your Sanctuary</h1>
-                <p className="text-white/80 font-body text-sm mt-1">Select a space for your personal restoration ritual.</p>
-              </div>
-            </div>
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-5xl lg:text-7xl font-serif font-bold leading-[1.1] mb-6"
+            >
+              Choisissez votre<br />
+              <span className="text-neutral-400 italic font-light">instant de paix</span>
+            </motion.h1>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-neutral-500 font-sans text-xl italic max-w-2xl"
+            >
+              Sélectionnez la date et l'heure qui s'harmonisent le mieux avec votre emploi du temps.
+            </motion.p>
+          </div>
 
-            {/* Calendar */}
-            <section className="bg-surface-container-lowest p-8 rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
-              <div className="flex items-center justify-between mb-8 px-2">
-                <div>
-                  <h2 className="font-headline text-xl text-primary font-medium">October 2023</h2>
-                  <p className="text-xs text-outline font-label uppercase tracking-widest mt-1">Local Time: GMT +02:00</p>
-                </div>
-                <div className="flex gap-2">
-                  <button className="p-2 rounded-full border border-outline-variant hover:bg-surface-container transition-colors material-symbols-outlined text-primary">chevron_left</button>
-                  <button className="p-2 rounded-full border border-outline-variant hover:bg-surface-container transition-colors material-symbols-outlined text-primary">chevron_right</button>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-7 text-center mb-4">
-                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                  <span key={day} className="text-[10px] font-bold text-outline uppercase tracking-widest py-2">{day}</span>
-                ))}
-              </div>
-              
-              <div className="grid grid-cols-7 gap-2">
-                {/* Padding days */}
-                {[25, 26, 27, 28, 29, 30].map(day => (
-                  <div key={`prev-${day}`} className="aspect-square flex items-center justify-center text-outline-variant text-sm font-body">{day}</div>
-                ))}
-                
-                {/* Current Month Days */}
-                {days.map(day => (
-                  <button 
-                    key={day.num}
-                    onClick={() => setSelectedDate(day.num)}
-                    className={`aspect-square flex items-center justify-center rounded-lg transition-all text-sm font-body ${
-                      selectedDate === day.num 
-                        ? 'bg-primary text-white shadow-md font-bold' 
-                        : 'hover:bg-surface-container'
-                    }`}
-                  >
-                    {day.num}
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            {/* Time Slot Selection */}
-            <section className="space-y-8">
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="material-symbols-outlined text-secondary">wb_sunny</span>
-                  <h3 className="font-headline text-lg text-on-surface font-medium">Morning</h3>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {['09:00 AM', '10:00 AM', '11:30 AM'].map(time => (
-                    <button 
-                      key={time}
-                      onClick={() => setSelectedTime(time)}
-                      className={`py-4 rounded-lg border font-body text-sm font-medium transition-all ${
-                        selectedTime === time
-                          ? 'bg-primary-container/10 border-primary text-primary font-bold shadow-md'
-                          : 'border-outline-variant text-on-surface hover:border-primary hover:bg-on-primary-container/20'
-                      }`}
-                    >
-                      {time}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            
+            {/* Calendar Section */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="lg:col-span-7 space-y-12"
+            >
+              <div className="bg-white rounded-[3rem] p-10 shadow-2xl shadow-neutral-200/50 border border-neutral-100">
+                <div className="flex items-center justify-between mb-12">
+                  <div>
+                    <h2 className="text-3xl font-serif font-bold text-neutral-900">{MONTHS[currentMonth]} {currentYear}</h2>
+                    <p className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400 mt-2">Disponibilités en temps réel</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <button className="p-4 rounded-full border border-neutral-100 hover:bg-neutral-50 transition-all text-neutral-400 hover:text-neutral-900 group">
+                      <ChevronLeft className="w-5 h-5 group-active:-translate-x-1 transition-transform" />
                     </button>
+                    <button className="p-4 rounded-full border border-neutral-100 hover:bg-neutral-50 transition-all text-neutral-400 hover:text-neutral-900 group">
+                      <ChevronRight className="w-5 h-5 group-active:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-7 gap-y-8">
+                  {DAYS_OF_WEEK.map(day => (
+                    <div key={day} className="text-center">
+                      <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-300">{day}</span>
+                    </div>
                   ))}
                   
-                  {/* Selected Time example with loader */}
-                  <button 
-                    onClick={() => setSelectedTime('12:00 PM')}
-                    className={`py-4 rounded-lg font-body text-sm font-medium transition-all ${
-                      selectedTime === '12:00 PM'
-                        ? 'bg-primary text-white border-none shadow-md'
-                        : 'border border-outline-variant text-on-surface hover:border-primary hover:bg-on-primary-container/20'
-                    }`}
+                  {Array.from({ length: offset }).map((_, i) => (
+                    <div key={`empty-${i}`} />
+                  ))}
+                  
+                  {Array.from({ length: daysInMonth }).map((_, i) => {
+                    const day = i + 1;
+                    const isSelected = selectedDate === day;
+                    const isToday = day === new Date().getDate() && currentMonth === new Date().getMonth();
+                    
+                    return (
+                      <div key={day} className="flex justify-center">
+                        <button
+                          onClick={() => setSelectedDate(day)}
+                          className={`
+                            relative w-14 h-14 rounded-2xl flex flex-col items-center justify-center transition-all duration-300
+                            ${isSelected 
+                              ? 'bg-neutral-900 text-white shadow-xl shadow-neutral-900/20 scale-110 z-10' 
+                              : 'hover:bg-neutral-50 text-neutral-600'
+                            }
+                          `}
+                        >
+                          <span className="text-lg font-serif font-bold">{day}</span>
+                          {isToday && !isSelected && (
+                            <div className="absolute bottom-2 w-1 h-1 rounded-full bg-neutral-900" />
+                          )}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Time Slots Section */}
+              <AnimatePresence mode="wait">
+                {selectedDate && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="space-y-12"
                   >
-                    <div className="flex items-center justify-center gap-2">
-                      12:00 PM 
-                      {selectedTime === '12:00 PM' && <span className="material-symbols-outlined text-sm animate-spin">progress_activity</span>}
+                    <div className="flex items-center gap-4">
+                      <div className="h-px flex-1 bg-neutral-100" />
+                      <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-neutral-300">Horaires disponibles pour le {selectedDate} {MONTHS[currentMonth]}</span>
+                      <div className="h-px flex-1 bg-neutral-100" />
                     </div>
-                  </button>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      {/* Matin */}
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-3 px-2">
+                          <Sunrise className="w-4 h-4 text-amber-500" />
+                          <h3 className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400">Matin</h3>
+                        </div>
+                        <div className="grid grid-cols-1 gap-3">
+                          {timeSlots.morning.map(time => (
+                            <TimeButton 
+                              key={time} 
+                              time={time} 
+                              selected={selectedTime === time} 
+                              onClick={() => setSelectedTime(time)} 
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Après-midi */}
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-3 px-2">
+                          <Sun className="w-4 h-4 text-emerald-500" />
+                          <h3 className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400">Après-midi</h3>
+                        </div>
+                        <div className="grid grid-cols-1 gap-3">
+                          {timeSlots.afternoon.map(time => (
+                            <TimeButton 
+                              key={time} 
+                              time={time} 
+                              selected={selectedTime === time} 
+                              onClick={() => setSelectedTime(time)} 
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Soirée */}
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-3 px-2">
+                          <Moon className="w-4 h-4 text-indigo-400" />
+                          <h3 className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-400">Soirée</h3>
+                        </div>
+                        <div className="grid grid-cols-1 gap-3">
+                          {timeSlots.evening.map(time => (
+                            <TimeButton 
+                              key={time} 
+                              time={time} 
+                              selected={selectedTime === time} 
+                              onClick={() => setSelectedTime(time)} 
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Reservation Summary Sidebar */}
+            <motion.aside
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="lg:col-span-5 lg:sticky lg:top-36"
+            >
+              <div className="bg-neutral-900 rounded-[3rem] p-10 text-white shadow-2xl shadow-neutral-900/20 overflow-hidden relative">
+                {/* Decoration */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] -mr-32 -mt-32" />
+                
+                <h2 className="text-3xl font-serif font-bold mb-10 relative z-10">Résumé de votre séance</h2>
+                
+                <div className="space-y-8 relative z-10">
+                  <div className="flex items-start gap-5">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0">
+                      <Sparkle className="w-5 h-5 text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-white/40 mb-1">Rituel Sélectionné</p>
+                      <p className="text-xl font-serif font-bold">Massage aux Bambous</p>
+                      <p className="text-sm font-sans text-white/60 mt-1 italic">60 Minutes de restauration</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-5">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0">
+                      <CalendarIcon className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-white/40 mb-1">Date & Heure</p>
+                      {selectedDate ? (
+                        <>
+                          <p className="text-xl font-serif font-bold">Le {selectedDate} {MONTHS[currentMonth]}</p>
+                          <p className="text-sm font-sans text-white/60 mt-1 italic">{selectedTime || 'Heure à définir'}</p>
+                        </>
+                      ) : (
+                        <p className="text-xl font-serif font-bold text-white/20 italic">En attente de sélection...</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-8 border-t border-white/10">
+                    <div className="flex justify-between items-center mb-6">
+                      <span className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-white/40">Total</span>
+                      <span className="text-4xl font-serif font-bold">160 CHF</span>
+                    </div>
+                    
+                    <button
+                      onClick={handleContinue}
+                      disabled={!selectedDate || !selectedTime || isLoading}
+                      className={`
+                        w-full rounded-full py-6 flex items-center justify-center gap-3 transition-all duration-500
+                        ${selectedDate && selectedTime 
+                          ? 'bg-white text-neutral-900 hover:bg-neutral-100 shadow-xl shadow-white/10 scale-100 active:scale-95' 
+                          : 'bg-white/5 text-white/20 cursor-not-allowed'
+                        }
+                      `}
+                    >
+                      {isLoading ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <>
+                          <span className="text-[10px] font-sans font-black uppercase tracking-[0.2em]">Continuer vers les détails</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="material-symbols-outlined text-secondary">light_mode</span>
-                  <h3 className="font-headline text-lg text-on-surface font-medium">Afternoon</h3>
+              {/* Security Badge */}
+              <div className="mt-8 p-8 bg-emerald-50/50 rounded-[2rem] border border-emerald-100/50 flex items-center gap-5">
+                <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+                  <Check className="w-5 h-5 text-white" />
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {['01:30 PM', '02:00 PM', '03:30 PM', '04:45 PM'].map(time => (
-                    <button 
-                      key={time}
-                      onClick={() => setSelectedTime(time)}
-                      className={`py-4 rounded-lg border font-body text-sm font-medium transition-all ${
-                        selectedTime === time
-                          ? 'bg-primary text-white border-none shadow-md'
-                          : 'border-outline-variant text-on-surface hover:border-primary hover:bg-on-primary-container/20'
-                      }`}
-                    >
-                      {time}
-                    </button>
-                  ))}
+                <div>
+                  <p className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-emerald-700 mb-1">Sécurité Garantie</p>
+                  <p className="text-sm font-sans text-emerald-800/60 leading-relaxed">Annulation gratuite jusqu'à 24h avant la séance. Paiement sécurisé.</p>
                 </div>
               </div>
 
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="material-symbols-outlined text-secondary">dark_mode</span>
-                  <h3 className="font-headline text-lg text-on-surface font-medium">Evening</h3>
+              {/* Help Center */}
+              <div className="mt-6 p-8 bg-white rounded-[2rem] border border-neutral-100 shadow-xl shadow-neutral-200/20 flex items-center gap-6 group hover:border-neutral-200 transition-all cursor-pointer">
+                <div className="relative">
+                  <div className="w-14 h-14 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-400 group-hover:text-neutral-900 transition-colors">
+                    <Info className="w-6 h-6" />
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white animate-pulse" />
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {['06:00 PM', '07:15 PM', '08:00 PM'].map(time => (
-                    <button 
-                      key={time}
-                      onClick={() => setSelectedTime(time)}
-                      className={`py-4 rounded-lg border font-body text-sm font-medium transition-all ${
-                        selectedTime === time
-                          ? 'bg-primary text-white border-none shadow-md'
-                          : 'border-outline-variant text-on-surface hover:border-primary hover:bg-on-primary-container/20'
-                      }`}
-                    >
-                      {time}
-                    </button>
-                  ))}
-                  <button className="py-4 rounded-lg border border-outline-variant opacity-40 cursor-not-allowed font-body text-sm font-medium" disabled>
-                    09:30 PM
-                  </button>
+                <div className="flex-1">
+                  <p className="text-[10px] font-sans font-black uppercase tracking-[0.3em] text-neutral-300 group-hover:text-neutral-500 transition-colors">Besoin d'aide ?</p>
+                  <p className="text-sm font-serif font-bold text-neutral-900 italic">Notre concierge est à votre écoute</p>
                 </div>
+                <ChevronRight className="w-5 h-5 text-neutral-200 group-hover:text-neutral-900 group-hover:translate-x-1 transition-all" />
               </div>
-            </section>
+            </motion.aside>
           </div>
-
-          {/* Sidebar / Reservation Summary */}
-          <aside className="lg:col-span-4 sticky top-28">
-            <div className="bg-surface-container p-8 rounded-xl border border-outline-variant/30 space-y-8">
-              <h2 className="font-headline text-xl text-primary font-medium">Reservation Summary</h2>
-              
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary shrink-0">
-                    <span className="material-symbols-outlined">spa</span>
-                  </div>
-                  <div>
-                    <p className="text-xs font-label text-outline uppercase tracking-widest">Selected Ritual</p>
-                    <p className="font-headline font-medium text-on-surface text-lg">Deep Forest Aromatherapy</p>
-                    <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-white/60 text-[10px] font-bold text-primary uppercase tracking-tighter">90 Minutes</span>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-secondary-container/20 flex items-center justify-center text-secondary shrink-0">
-                    <span className="material-symbols-outlined">calendar_today</span>
-                  </div>
-                  <div>
-                    <p className="text-xs font-label text-outline uppercase tracking-widest">Date & Time</p>
-                    <p className="font-headline font-medium text-on-surface">Thursday, Oct {selectedDate}, 2023</p>
-                    <p className="text-on-surface-variant text-sm font-body">{selectedTime}</p>
-                  </div>
-                </div>
-
-                <div className="pt-6 border-t border-outline-variant/50">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-on-surface-variant font-body">Ritual Fee</span>
-                    <span className="text-on-surface font-semibold">$180.00</span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-on-surface-variant font-body">Facility Access</span>
-                    <span className="text-on-surface font-semibold">Included</span>
-                  </div>
-                  <div className="flex justify-between items-center pt-4 border-t border-outline-variant/50">
-                    <span className="text-primary font-headline font-semibold">Total</span>
-                    <span className="text-primary font-headline text-xl font-bold">$180.00</span>
-                  </div>
-                </div>
-                
-                <button className="w-full mt-6 p-3 rounded-lg bg-primary/5 border border-primary/20 flex items-center justify-center gap-3 transition-colors hover:bg-primary/10">
-                  <span className="material-symbols-outlined text-primary text-sm">auto_awesome</span>
-                  <p className="text-xs font-label text-primary uppercase tracking-widest font-semibold">Processing Selection...</p>
-                </button>
-              </div>
-
-              <p className="text-[11px] text-center text-outline font-label leading-relaxed px-4">
-                Selection will be confirmed automatically.<br/>
-                Free cancellation up to 24 hours before your ritual. Taxes included.
-              </p>
-            </div>
-
-            {/* Assistance Card */}
-            <div className="mt-6 p-6 rounded-xl border border-outline-variant/20 bg-white/40 flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
-                <img 
-                  className="w-full h-full object-cover" 
-                  alt="Concierge" 
-                  src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" 
-                />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-primary font-headline">Need assistance?</p>
-                <p className="text-xs text-on-surface-variant font-body">Our concierge is online.</p>
-              </div>
-              <button className="ml-auto material-symbols-outlined text-outline hover:text-primary">chat_bubble</button>
-            </div>
-          </aside>
         </div>
       </main>
-
-      {/* BottomNavBar (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-2 pb-6 bg-[#faf9f7]/90 dark:bg-stone-950/90 backdrop-blur-xl border-t border-stone-200/50 dark:border-stone-800/50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] z-50">
-        <a onClick={() => router.push('/client/dashboard')} className="flex flex-col items-center justify-center text-[#747872] dark:text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all rounded-xl px-3 py-1 cursor-pointer">
-          <span className="material-symbols-outlined">home_health</span>
-          <span className="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase mt-1">Home</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-[#747872] dark:text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all rounded-xl px-3 py-1 cursor-pointer">
-          <span className="material-symbols-outlined">spa</span>
-          <span className="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase mt-1">Rituals</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-[#435544] dark:text-[#b8ccb6] bg-[#daeed8]/50 dark:bg-[#435544]/20 rounded-xl px-3 py-1 transition-transform duration-200 cursor-pointer">
-          <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>calendar_today</span>
-          <span className="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase mt-1">Bookings</span>
-        </a>
-        <a onClick={() => router.push('/client/profil')} className="flex flex-col items-center justify-center text-[#747872] dark:text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all rounded-xl px-3 py-1 cursor-pointer">
-          <span className="material-symbols-outlined">person</span>
-          <span className="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase mt-1">Profile</span>
-        </a>
-      </nav>
     </div>
+  );
+}
+
+function TimeButton({ time, selected, onClick }: { time: string, selected: boolean, onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`
+        group relative px-6 py-5 rounded-[1.5rem] border-2 transition-all duration-500 flex items-center justify-between
+        ${selected 
+          ? 'bg-neutral-900 border-neutral-900 text-white shadow-2xl shadow-neutral-900/20' 
+          : 'bg-white border-neutral-50 text-neutral-600 hover:border-neutral-200 hover:shadow-xl hover:shadow-neutral-200/40'
+        }
+      `}
+    >
+      <div className="flex items-center gap-4">
+        <Clock className={`w-4 h-4 ${selected ? 'text-emerald-400' : 'text-neutral-300 group-hover:text-neutral-500'} transition-colors`} />
+        <span className="text-xl font-serif font-bold tracking-tight">{time}</span>
+      </div>
+      {selected ? (
+        <Check className="w-5 h-5 text-emerald-400" />
+      ) : (
+        <div className="w-2 h-2 rounded-full bg-neutral-100 group-hover:bg-neutral-200 transition-colors" />
+      )}
+    </button>
   );
 }

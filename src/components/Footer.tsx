@@ -13,11 +13,11 @@ export function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 lg:gap-16">
           <div className="lg:col-span-6">
             <div className="flex flex-col gap-10">
-              <Link href="/" className="flex flex-col group">
-                <span className="font-sans font-medium text-[20px] md:text-[24px] tracking-[0.5em] uppercase text-white">
+              <Link href="/" className="flex items-baseline gap-2 group">
+                <span className="font-sans font-semibold text-[0.72rem] tracking-[0.3em] uppercase text-white md:text-[0.8rem]">
                   SERENITY
                 </span>
-                <span className="font-signature text-[28px] md:text-[32px] text-primary lowercase -mt-2">
+                <span className="font-serif text-[0.64rem] italic leading-none text-primary md:text-[0.72rem]">
                   by João
                 </span>
               </Link>

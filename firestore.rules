@@ -12,14 +12,15 @@ service cloud.firestore {
 
     // Appointments rules
     match /appointments/{appointmentId} {
-      allow create: if request.auth != null;
+      allow create: if true; // Allow anyone to book from the landing page
       allow read, update, delete: if isTherapist() || (request.auth != null && resource.data.clientId == request.auth.uid);
     }
 
     // Clients rules
     match /clients/{clientId} {
       allow read, write: if isTherapist();
-      allow create, update, read: if request.auth != null && request.auth.uid == clientId;
+      allow create: if true; // Allow landing page to create new client profiles
+      allow update, read: if request.auth != null && request.auth.uid == clientId;
     }
 
     // Configuration rules (for slots and other settings)
@@ -31,7 +32,8 @@ service cloud.firestore {
     // Availability rules (for the therapist dashboard & public booking locks)
     match /availability/{slotId} {
       allow read: if true; // Everyone can see available slots
-      allow write: if isTherapist() || (request.auth != null && request.resource.data.type == 'booked');
+      allow create: if isTherapist() || request.resource.data.type == 'booked'; // Anyone can book a slot
+      allow update, delete: if isTherapist() || (request.auth != null && request.resource.data.type == 'booked');
     }
     
     // Settings rules
@@ -42,7 +44,9 @@ service cloud.firestore {
 
     // Invoices rules
     match /invoices/{invoiceId} {
-      allow read, write: if isTherapist();
+      allow create: if true; // Allow landing page to generate an invoice for the booking
+      allow read: if isTherapist() || (request.auth != null && resource.data.clientId == request.auth.uid);
+      allow update, delete: if isTherapist();
     }
   }
 }

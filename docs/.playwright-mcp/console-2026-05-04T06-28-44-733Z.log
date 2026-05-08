@@ -1,0 +1,7 @@
+[     664ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[     975ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[     976ms] [LOG] [Fast Refresh] done in 104ms @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 6035501ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/:0
+[ 6035619ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/favicon.ico:0
+[ 6037535ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/:0
+[ 6037643ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/favicon.ico:0

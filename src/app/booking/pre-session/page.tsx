@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Save, Sparkles, Heart, Wind, Droplets, ShieldCheck, Thermometer } from 'lucide-react';
+import { ArrowLeft, Save, Sparkle, Heart, Wind, Droplets, ShieldCheck, Thermometer } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 
@@ -33,7 +33,7 @@ export default function PreSessionForm() {
 
           <header className="space-y-6 text-center">
              <div className="inline-flex items-center gap-4 bg-white/70 backdrop-blur-3xl px-8 py-4 rounded-[2rem] border border-white shadow-xl shadow-indigo-100/10">
-                <Sparkles className="text-[#5F27CD]" />
+                <Sparkle className="text-[#5F27CD]" />
                 <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#5F27CD]">Personnalisation du Soin</p>
              </div>
              <h1 className="title-luxe text-6xl md:text-7xl leading-none">Vos Intentions <br/><span className="italic font-serif opacity-40">de Séance.</span></h1>

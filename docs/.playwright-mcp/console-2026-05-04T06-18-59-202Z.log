@@ -1,0 +1,270 @@
+[  106012ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[  213008ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  213208ms] [ERROR] ./src/app/page.tsx:4:1
+Export default doesn't exist in target module
+  2 |
+  3 | import React, { useEffect, useRef, useState } from "react";
+> 4 | import BookingModal from '@/components/BookingModal';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+  6 | const BRAND_NAME = "SERENITY RELAX THERAPY";
+  7 | const BRAND_ATTRIBUTION = "by João";
+
+The export default was not found in module [project]/src/components/BookingModal.tsx [app-client] (ecmascript).
+Did you mean to import BookingModal?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component] @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  213209ms] [ERROR] ./src/app/page.tsx:4:1
+Export default doesn't exist in target module
+  2 |
+  3 | import React, { useEffect, useRef, useState } from "react";
+> 4 | import BookingModal from '@/components/BookingModal';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+  6 | const BRAND_NAME = "SERENITY RELAX THERAPY";
+  7 | const BRAND_ATTRIBUTION = "by João";
+
+The export default was not found in module [project]/src/components/BookingModal.tsx [app-ssr] (ecmascript).
+Did you mean to import BookingModal?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component] @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  213233ms] [LOG] {file: Object} @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  249558ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  249871ms] [ERROR] ./src/app/page.tsx
+Module not found: Can't resolve './page.tsx'
+
+https://nextjs.org/docs/messages/module-not-found @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  249899ms] [LOG] {file: Object} @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  250040ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  250419ms] [ERROR] ./src/app/page.tsx
+Module not found: Can't resolve './page.tsx'
+
+https://nextjs.org/docs/messages/module-not-found @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  250521ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  250535ms] [ERROR] ./src/app/page.tsx
+Module not found: Can't resolve './page.tsx'
+
+https://nextjs.org/docs/messages/module-not-found @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  250636ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  251219ms] [ERROR] ./src/app/page.tsx
+Module not found: Can't resolve './page.tsx'
+
+https://nextjs.org/docs/messages/module-not-found @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  251272ms] [ERROR] ./src/app/page.tsx
+Module not found: Can't resolve './page.tsx'
+
+https://nextjs.org/docs/messages/module-not-found @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  251373ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  251451ms] [ERROR] ./src/app/page.tsx
+Module not found: Can't resolve './page.tsx'
+
+https://nextjs.org/docs/messages/module-not-found @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  251455ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/?_rsc=fsnpp:0
+[  251515ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/?_rsc=fsnpp:0
+[  251534ms] [ERROR] ./src/app/page.tsx
+Module not found: Can't resolve './page.tsx'
+
+https://nextjs.org/docs/messages/module-not-found @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  251566ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  251737ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/:0
+[  251812ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:9002/_next/static/chunks/node_modules_react-dom_4411d9bd._.js:15305
+[  251867ms] Error: Cannot find module '../../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/jean/Downloads/project/.next/server/app/_not-found/page.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/require.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/load-components.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/utils.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/swc/options.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/swc/index.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/config.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/next.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1421:15)
+    at <unknown> (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:57:36)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1227:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1504:12)
+    at mod.require (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:68:28)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (file:///Users/jean/Downloads/project/.next/server/app/_not-found/page.js:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1504:12)
+    at mod.require (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:68:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require.js:99:80)
+    at loadComponentsImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/load-components.js:132:57)
+    at async DevServer.findPageComponentsImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/next-server.js:899:36)
+    at async DevServer.findPageComponents (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:705:16)
+    at async DevServer.renderErrorToResponseImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1643:30)
+    at async pipe.req.req (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1610:30)
+    at async DevServer.pipeImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1025:25)
+    at async (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:399:20)
+    at async Span.traceAsyncFn (file:///Users/jean/Downloads/project/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:395:24)
+    at async invokeRender (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:240:21)
+    at async handleRequest (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:476:24)
+    at async requestHandlerImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:485:13)
+    at async Server.requestListener (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/start-server.js:226:13)
+[  251899ms] [LOG] [HMR] connected @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2207
+[  251923ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/favicon.ico:0
+[  382368ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/:0
+[  382497ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:9002/_next/static/chunks/node_modules_react-dom_4411d9bd._.js:15305
+[  382550ms] Error: Cannot find module '../../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/jean/Downloads/project/.next/server/app/_not-found/page.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/require.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/load-components.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/utils.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/swc/options.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/swc/index.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/config.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/next.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1421:15)
+    at <unknown> (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:57:36)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1227:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1504:12)
+    at mod.require (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:68:28)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (file:///Users/jean/Downloads/project/.next/server/app/_not-found/page.js:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1504:12)
+    at mod.require (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:68:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require.js:99:80)
+    at loadComponentsImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/load-components.js:132:57)
+    at async DevServer.findPageComponentsImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/next-server.js:899:36)
+    at async DevServer.findPageComponents (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:705:16)
+    at async DevServer.renderErrorToResponseImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1643:30)
+    at async pipe.req.req (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1610:30)
+    at async DevServer.pipeImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1025:25)
+    at async (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:399:20)
+    at async Span.traceAsyncFn (file:///Users/jean/Downloads/project/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:395:24)
+    at async invokeRender (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:240:21)
+    at async handleRequest (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:476:24)
+    at async requestHandlerImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:485:13)
+    at async Server.requestListener (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/start-server.js:226:13)
+[  382551ms] [LOG] [HMR] connected @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2207
+[  382615ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/favicon.ico:0
+[  484816ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2495
+[  485613ms] [WARNING] [Fast Refresh] performing full reload
+
+Fast Refresh will perform a full reload when you edit a file that's imported by modules outside of the React rendering tree.
+You might have a file which exports a React component but also exports a value that is imported by a non-React component file.
+Consider migrating the non-React component export to a separate file and importing it into both files.
+
+It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.
+Fast Refresh requires at least one parent function component in your React tree. @ http://127.0.0.1:9002/_next/static/chunks/%5Broot-of-the-server%5D__45f039c3._.js:34
+[  485625ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2842
+[  485872ms] [LOG] [Fast Refresh] done in 929ms @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2355
+[  486657ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/:0
+[  486923ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:9002/_next/static/chunks/node_modules_react-dom_4411d9bd._.js:15305
+[  486964ms] Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/jean/Downloads/project/.next/server/pages/_document.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/require.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/load-components.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/utils.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/swc/options.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/swc/index.js
+- /Users/jean/Downloads/project/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/config.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/next.js
+- /Users/jean/Downloads/project/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1421:15)
+    at <unknown> (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:57:36)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1227:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1504:12)
+    at mod.require (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:68:28)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (file:///Users/jean/Downloads/project/.next/server/pages/_document.js:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1504:12)
+    at mod.require (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require-hook.js:68:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (file:///Users/jean/Downloads/project/node_modules/next/dist/server/require.js:99:80)
+    at loadComponentsImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/load-components.js:86:38)
+    at DevServer.findPageComponentsImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/next-server.js:899:77)
+    at <unknown> (file:///Users/jean/Downloads/project/node_modules/next/dist/server/next-server.js:877:21)
+    at <unknown> (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/trace/tracer.js:170:36)
+    at NoopContextManager.with (file:///Users/jean/Downloads/project/node_modules/@opentelemetry/api/build/src/context/NoopContextManager.js:25:19)
+    at ContextAPI.with (file:///Users/jean/Downloads/project/node_modules/@opentelemetry/api/build/src/api/context.js:60:46)
+    at NoopTracer.startActiveSpan (file:///Users/jean/Downloads/project/node_modules/@opentelemetry/api/build/src/trace/NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (file:///Users/jean/Downloads/project/node_modules/@opentelemetry/api/build/src/trace/ProxyTracer.js:36:24)
+    at <unknown> (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/trace/tracer.js:152:103)
+    at NoopContextManager.with (file:///Users/jean/Downloads/project/node_modules/@opentelemetry/api/build/src/context/NoopContextManager.js:25:19)
+    at ContextAPI.with (file:///Users/jean/Downloads/project/node_modules/@opentelemetry/api/build/src/api/context.js:60:46)
+    at NextTracerImpl.trace (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/trace/tracer.js:152:28)
+    at DevServer.findPageComponents (file:///Users/jean/Downloads/project/node_modules/next/dist/server/next-server.js:872:41)
+    at DevServer.findPageComponents (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:705:28)
+    at async DevServer.renderErrorToResponseImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1687:26)
+    at async pipe.req.req (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1610:30)
+    at async DevServer.pipeImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (file:///Users/jean/Downloads/project/node_modules/next/dist/server/next-server.js:408:21)
+    at async DevServer.handleRequestImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:916:17)
+    at async (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:399:20)
+    at async Span.traceAsyncFn (file:///Users/jean/Downloads/project/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:395:24)
+    at async invokeRender (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:240:21)
+    at async handleRequest (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:437:24)
+    at async requestHandlerImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/router-server.js:485:13)
+    at async Server.requestListener (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/start-server.js:226:13)
+[  486961ms] [LOG] [HMR] connected @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2207
+[  487080ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2495
+[  487323ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:9002/favicon.ico:0
+[  487335ms] [LOG] [Fast Refresh] done in 356ms @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2355
+[  508231ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:9002/_next/webpack-hmr' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2250
+[  509236ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:9002/_next/webpack-hmr' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2250
+[  510238ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:9002/_next/webpack-hmr' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2250
+[  511242ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:9002/_next/webpack-hmr' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2250
+[  512244ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:9002/_next/webpack-hmr' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2250
+[  517247ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:9002/_next/webpack-hmr' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2250
+[  522254ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:9002/_next/webpack-hmr' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2250
+[  527274ms] [LOG] [HMR] connected @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2207
+[  531564ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://grainy-gradients.vercel.app/noise.svg:0
+[  531605ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537

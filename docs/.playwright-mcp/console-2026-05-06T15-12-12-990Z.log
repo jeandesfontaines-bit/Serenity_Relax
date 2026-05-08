@@ -1,0 +1,310 @@
+[     527ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[     642ms] [LOG] [Fast Refresh] done in 217ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[     838ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    1295ms] [LOG] [Fast Refresh] done in 558ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[    2234ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    2554ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    2739ms] [LOG] [Fast Refresh] done in 294ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[    2850ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[  336188ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  337515ms] [LOG] [Fast Refresh] done in 1487ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  344928ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  346153ms] [LOG] [Fast Refresh] done in 1308ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  373797ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  377384ms] [LOG] [Fast Refresh] done in 3647ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  377713ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  377822ms] [LOG] [Fast Refresh] done in 209ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  552040ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  554163ms] [LOG] [Fast Refresh] done in 2084ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  587638ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  588374ms] [LOG] [Fast Refresh] done in 797ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  954225ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  955481ms] [LOG] [Fast Refresh] done in 1371ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1147741ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1150173ms] [LOG] [Fast Refresh] done in 2420ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1446898ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1448139ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1448251ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[ 1449183ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1449279ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1449489ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1451975ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1452076ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1452548ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1452649ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1453318ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1454318ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1454324ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1455513ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1457304ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1457376ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1457407ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1459236ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1459258ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1459341ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1459715ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1460390ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1460454ms] [ERROR] ./src/app/therapist/dashboard/modules/AppLayout.tsx:344:9
+Parsing ecmascript source code failed
+  342 |
+  343 |         <main className={`flex-1 min-h-0 ${schedulerMode ? 'overflow-hidden' : 'overflow-y-auto'}`}>{children}</main>
+> 344 |       </div>
+      |         ^^^^
+  345 |
+  346 |       <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[#dbe3ef] bg-[rgba(251,252,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+  347 |         {NAV_ITEMS.map((item) => {
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppLayout.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 1460492ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3377110ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3380142ms] [LOG] [Fast Refresh] done in 2779ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3958170ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3961539ms] [LOG] [Fast Refresh] done in 3569ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 3990954ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 3993243ms] [LOG] [Fast Refresh] done in 2378ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4024986ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4028035ms] [LOG] [Fast Refresh] done in 3125ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 4059754ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 4060365ms] [LOG] [Fast Refresh] done in 804ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

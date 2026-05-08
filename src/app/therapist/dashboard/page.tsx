@@ -87,7 +87,6 @@ export default function TherapistDashboard() {
   const [notifySms, setNotifySms] = useState<boolean>(false);
 
   // Interaction State
-  const [blockMode, setBlockMode] = useState(false);
   const [absenceMode, setAbsenceMode] = useState(false);
   const [selectedAppt, setSelectedAppt] = useState<Appointment | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
@@ -131,6 +130,10 @@ export default function TherapistDashboard() {
       setAppointments(snap.docs.map(d => normalizeAppointment(d.id, d.data())));
     }, (err) => console.error("Appts snapshot error:", err));
 
+    const unsubInvoices = onSnapshot(collection(firestore, 'invoices'), (snap) => {
+      setInvoices(snap.docs.map(d => ({ id: d.id, ...d.data() } as Invoice)));
+    }, (err) => console.error("Invoices snapshot error:", err));
+
     const unsubClients = onSnapshot(collection(firestore, 'clients'), (snap) => {
       setClients(snap.docs.map(d => ({ id: d.id, ...d.data() } as Client)));
     }, (err) => console.error("Clients snapshot error:", err));
@@ -164,7 +167,7 @@ export default function TherapistDashboard() {
       }
     }, (err) => console.error("Config meta snapshot error:", err));
 
-    return () => { unsubAppts(); unsubClients(); unsubAvail(); unsubConfig(); unsubMeta(); };
+    return () => { unsubAppts(); unsubInvoices(); unsubClients(); unsubAvail(); unsubConfig(); unsubMeta(); };
   }, [firestore, user]);
 
   // --- Handlers ---
@@ -191,22 +194,12 @@ export default function TherapistDashboard() {
     setAbsenceMode(false);
   }, [pendingAbsenceDates]);
 
-  const toggleBlockModeFromHeader = useCallback(() => {
-    if (absenceMode) {
-      clearAbsenceMode();
-      setBlockMode(false);
-      return;
-    }
-    setBlockMode((prev) => !prev);
-  }, [absenceMode, clearAbsenceMode]);
-
   const toggleAbsenceModeFromHeader = useCallback(() => {
     if (absenceMode) {
       saveAbsences();
       return;
     }
     setAbsenceMode(true);
-    setBlockMode(false);
   }, [absenceMode, saveAbsences]);
 
   const toggleSlot = async (dStr: string, t: string) => {
@@ -231,6 +224,18 @@ export default function TherapistDashboard() {
       paid: !current,
       paymentMethod: !current ? (method || 'Twint') : null
     });
+
+    const qInvs = query(collection(firestore, 'invoices'), where('appointmentId', '==', id));
+    const invSnap = await getDocs(qInvs);
+    await Promise.all(
+      invSnap.docs.map((invoiceDoc) =>
+        updateDoc(invoiceDoc.ref, {
+          status: !current ? 'Paid' : 'Pending',
+          paymentMethod: !current ? (method || 'Twint') : null,
+          paidAt: !current ? serverTimestamp() : null,
+        }),
+      ),
+    );
   };
 
   const handleSendWhatsApp = (appt: Appointment, type: 'reminder' | 'confirmation' | 'followup') => {
@@ -294,7 +299,6 @@ export default function TherapistDashboard() {
             isDayOpen={isDayOpen}
             isSlotBlocked={isSlotBlocked}
             toggleSlot={toggleSlot}
-            blockMode={blockMode}
             absenceMode={absenceMode}
             onMoveAppt={handleMoveAppt}
             onSelectDate={setCur}
@@ -617,17 +621,15 @@ export default function TherapistDashboard() {
         onGlobalSearchChange={setGlobalSearch}
         dashboardSummary={dashboardSummary}
         schedulerToolbar={tab === 'scheduler' ? {
-          eyebrow: 'Agenda professionnel',
+          eyebrow: '',
           title: schedulerTitle,
           view,
           onPrev: () => setCur((prev) => (view === 'month' ? addMonths(prev, -1) : addWeeks(prev, -1))),
           onNext: () => setCur((prev) => (view === 'month' ? addMonths(prev, 1) : addWeeks(prev, 1))),
           onToday: () => setCur(new Date()),
           onToggleView: setView,
-          blockMode,
           absenceMode,
           absencePendingCount: pendingAbsenceDates.size,
-          onToggleBlockMode: toggleBlockModeFromHeader,
           onToggleAbsenceMode: toggleAbsenceModeFromHeader,
           onOpenSettings: () => setWeeklySettingsOpen(true),
         } : undefined}
@@ -660,7 +662,7 @@ export default function TherapistDashboard() {
         } : undefined}
         settingsToolbar={tab === 'settings' ? {
           title: 'Paramètres du compte',
-          subtitle: 'Gérez votre profil professionnel, vos préférences de notification et la configuration de votre cabinet',
+          subtitle: '',
           statusLabel: 'Enregistrement automatique',
         } : undefined}
       >

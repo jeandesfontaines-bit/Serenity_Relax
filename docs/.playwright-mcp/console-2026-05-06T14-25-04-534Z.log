@@ -1,0 +1,16 @@
+[    1444ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    1742ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[  218911ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  218918ms] [LOG] [Fast Refresh] done in 111ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  314386ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  315016ms] [LOG] [Fast Refresh] done in 814ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1032043ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1032856ms] [LOG] [Fast Refresh] done in 800ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1093536ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1093732ms] [LOG] [Fast Refresh] done in 311ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1259277ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1260523ms] [LOG] [Fast Refresh] done in 1125ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1356255ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1356397ms] [LOG] [Fast Refresh] done in 328ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1410763ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1411000ms] [LOG] [Fast Refresh] done in 348ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

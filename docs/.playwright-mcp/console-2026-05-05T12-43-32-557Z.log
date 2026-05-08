@@ -1,0 +1,9 @@
+[   11400ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[   13190ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9002/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1612117512251-51206f65805a%3Fq%3D80%26w%3D2070%26auto%3Dformat%26fit%3Dcrop&w=1920&q=75:0
+[   13559ms] [WARNING] Image with src "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[   14246ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   45252ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9002/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1519824141121-b9767426e056%3Fq%3D80%26w%3D2070%26auto%3Dformat%26fit%3Dcrop&w=1920&q=75:0
+[   45931ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9002/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1631518416391-48f615d74540%3Fq%3D80%26w%3D2012%26auto%3Dformat%26fit%3Dcrop&w=1920&q=75:0
+[   51971ms] [LOG] [Fast Refresh] done in 37824ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   77824ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   82942ms] [LOG] [Fast Refresh] done in 5015ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

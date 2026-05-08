@@ -1,0 +1,124 @@
+[    -726ms] [LOG] previewlib v20210114 15:00 init @ https://mrgay.tube/upd/20260505.112448.7032/assets/previewl1b.20210114.1.js:10
+[    -700ms] [WARNING] [calendar] Spot with id 6568 was not found in AdManager config. @ https://mrgay.tube/livesmatter/holly7.10.13.0fb7b162dc610cc0dc6e80826a46ed92.js:0
+[    -700ms] [WARNING] [in_stream_ad] Spot with id 71115 was not found in AdManager config. @ https://mrgay.tube/livesmatter/holly7.10.13.0fb7b162dc610cc0dc6e80826a46ed92.js:0
+[    -700ms] [WARNING] [banner] Spot with id 24401 was not found in AdManager config. @ https://mrgay.tube/livesmatter/holly7.10.13.0fb7b162dc610cc0dc6e80826a46ed92.js:0
+[    -620ms] [LOG] isShow 333333 @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:25
+[     293ms] [LOG] else Script loaded successfully @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[     830ms] [WARNING] Failed to execute 'write' on 'Document': It isn't possible to write into a document from an asynchronously-loaded external script unless it is explicitly opened. @ https://ads.exoclick.com/ads.js:0
+[     997ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://mrgay.tube/static/da/under_faphouse.html?url=aHR0cHM6Ly9maGd0ZS5jb20vZ2F5L3RvdXI/dXRtX2NhbXBhaWduPWFpLnpaWiZ1dG1fY29udGVudD1tcmdheS5jb21fdW5kZXJwbGF5ZXJfZG93bmxvYWRmbG93X2Rlc2t0b3Ama2V5d29yZHM9TmFzdHklMjBGYWNpYWxzJTIwVm9sLiUyMDc=&video_preview=Ly9tZ3ZwMS5tM3BkLmNvbS9jMS92aWRlb3MvMTA0OTkwMDAvMTA0OTk0NDUvMTA0OTk0NDVfdHIubXA0&desktop=aHR0cHM6Ly9jZG4tZmMuY29tL2NyZWF0aXZlcy91bml2ZXJzYWwvbmF0aXZlLz9zaXplPTcyOHg5MCZ1dG1fY2FtcGFpZ249YWkuelpaJnV0bV9jb250ZW50PW1yZ2F5LmNvbV83Mjh4OTBfdW5kZXJwbGF5ZXImZm9udF9jb2xvcj1mZmYmYmFja2dyb3VuZF9jb2xvcj0yRDMxM0Mmb3JpZW50YXRpb249Z2F5JmtleXdvcmRzPUFtYXRldXIsQmFyZWJhY2ssQmlnIENvY2ssQmxhY2ssQ29tcGlsYXRpb24sRGFkZHksSEQsSW50ZXJyYWNpYWwsTGF0aW4sT3V0ZG9vcixUd2luayw=&mobile=aHR0cHM6Ly9jZG4tZmMuY29tL2NyZWF0aXZlcy91bml2ZXJzYWwvbmF0aXZlLz9zaXplPTMwMHgxMDAmdXRtX2NhbXBhaWduPWFpLnpaWiZ1dG1fY29udGVudD1tcmdheS5jb21fMzAweDEwMF91bmRlcnBsYXllciZmb250X2NvbG9yPWZmZiZiYWNrZ3JvdW5kX2NvbG9yPTJEMzEzQyZvcmllbnRhdGlvbj1nYXkma2V5d29yZHM9QW1hdGV1cixCYXJlYmFjayxCaWcgQ29jayxCbGFjayxDb21waWxhdGlvbixEYWRkeSxIRCxJbnRlcnJhY2lhbCxMYXRpbixPdXRkb29yLFR3aW5rLA==:0
+[    1009ms] [LOG] [GA] Page /video/10499445/nasty-facials-vol-7/?campaign=10146 pageview success @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:25
+[    1817ms] TypeError: Cannot read properties of null (reading 'appendChild')
+    at setupTrafficStarsUnderplayer (https://mrgay.tube/video/10499445/nasty-facials-vol-7/?campaign=10146:663:54)
+    at https://mrgay.tube/video/10499445/nasty-facials-vol-7/?campaign=10146:804:11
+[    1390ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://mc.yandex.com/sync_cookie_image_decide?cid=86535096&scid=5733648f-2123-f127-84db-df0beec89758&token=11023.w8TpWWZcjsYovArmORwqnvnpmy_Tk0zXWvi0-ge7ZQDesK_TOFLxmayGQ62eX50UisDj-OtaKyADrXYVLlrIxVNo1o3wCpVLc2AtsXddsEs%2C.I7AqqoqKOeyLgnZ3Ga9PlNY5TnM%2C:0
+[    1462ms] [LOG] [GA] Page /video/10499445/nasty-facials-vol-7/?campaign=10146 pageview success @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:25
+[    1462ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://metricswpsh.com/in/track?data=eyJ3bCI6MSwic3ViaWQiOjg2NTM1MDk2LCJ1c2VyX2lkIjoiODc2NTk2ODgwMzg0OTgzOTAwMCIsInRpbWV6b25lIjoyLCJ2ZXIiOiIyLjQ3LjAiLCJ0YWdfaWQiOjE0NzYwLCJzY3JlZW5fcmVzb2x1dGlvbiI6IjE3MTB4MTEwNyIsImFkYmxvY2siOjAsInRpbWV6b25lX29sc29uIjoiRXVyb3BlL1p1cmljaCIsInV0bV9zb3VyY2UiOiJtY2siLCJ1dG1fbWVkaXVtIjoiMTAxNDYiLCJ1dG1fY2FtcGFpZ24iOjg2NTM1MDk2LCJ1dG1fY29udGVudCI6IiIsIm1tIjowLCJpbml0X3N0YXJ0X2xhdGVuY3kiOjIuMDEsImlzX3YyIjowLCJpc192Ml9lbXB0eSI6MH0=:0
+[    1768ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://metricswpsh.com/in/track?data=eyJ3bCI6MSwic3ViaWQiOjg2NTM1MDk2LCJ1c2VyX2lkIjoiODc2NTk2ODgwMzg0OTgzOTAwMCIsInRpbWV6b25lIjoyLCJ2ZXIiOiIyLjQ3LjAiLCJ0YWdfaWQiOjE0NzYwLCJzY3JlZW5fcmVzb2x1dGlvbiI6IjE3MTB4MTEwNyIsImFkYmxvY2siOjAsInRpbWV6b25lX29sc29uIjoiRXVyb3BlL1p1cmljaCIsInV0bV9zb3VyY2UiOiJtY2siLCJ1dG1fbWVkaXVtIjoiMTAxNDYiLCJ1dG1fY2FtcGFpZ24iOjg2NTM1MDk2LCJ1dG1fY29udGVudCI6IiIsIm1tIjowLCJpbml0X3N0YXJ0X2xhdGVuY3kiOjIuMDEsImlzX3YyIjowLCJpc192Ml9lbXB0eSI6MH0=:0
+[    2525ms] Error: Request failed with status code 400
+    at a (https://mrgay.tube/znw2ccj6yf/br9fjcbfe3.js:1:91496)
+    at https://mrgay.tube/znw2ccj6yf/br9fjcbfe3.js:1:93126
+    at l.onreadystatechange (https://mrgay.tube/znw2ccj6yf/br9fjcbfe3.js:1:93200)
+[    1882ms] [LOG] Video received: {id: 5057531, url: https://fr.faphouse.com/videos/first-time-bareback…hbmtlcg&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/first-time-bareback…y1iMmJiLTE3OTM3ZTcyYjUwZRIQZmhfd2lkZ2V0X3Jhbmtlcg, title: Première baise gay sans capote - le jour où j’ai rencontré ma salope gay, imageUrl: https://ic-nss.flixcdn.com/a/NTVkODc0MDE1NmFkY2JkO…2%2Ch%3A220%29/xc/5z/5zvf05/frame/original/16.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1883ms] [LOG] Video received: {id: 5768305, url: https://fr.faphouse.com/videos/dotadoo25-uses-25-c…hbmtlcg&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/dotadoo25-uses-25-c…y1iMmJiLTE3OTM3ZTcyYjUwZRIQZmhfd2lkZ2V0X3Jhbmtlcg, title: Dotadoo25 utilise est de 25 cm sur moi, imageUrl: https://ic-nss.flixcdn.com/a/ZmJmM2JjY2VlOTk2NTk0Z…2%2Ch%3A220%29/xc/Xl/Xl4014/frame/original/13.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1883ms] [LOG] Video received: {id: 66146, url: https://fr.faphouse.com/videos/ZsYu63?utm_term=aff…mFua2Vy&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/ZsYu63?utm_term=aff…zLWIyYmItMTc5MzdlNzJiNTBlEhBmaF93aWRnZXRfcmFua2Vy, title: Un jumelle sportif sexy se fait prendre, imageUrl: https://ic-nss.flixcdn.com/a/YzVjYTE3NTkxYTAyMjVkN…2%2Ch%3A220%29/xc/Zs/ZsYu63/frame/original/13.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1883ms] [LOG] Video received: {id: 1511871, url: https://fr.faphouse.com/videos/xbmt4e?utm_term=aff…mFua2Vy&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/xbmt4e?utm_term=aff…zLWIyYmItMTc5MzdlNzJiNTBlEhBmaF93aWRnZXRfcmFua2Vy, title: Friend Allows Me to Hump His Ass Until I Cum, imageUrl: https://ic-nss.flixcdn.com/a/ZjcwMWM1ZmYyM2FmYmI4N…2%2Ch%3A220%29/video/xb/xbmt4e/screen/000-k6n.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1883ms] [LOG] Video received: {id: 125083, url: https://fr.faphouse.com/videos/z9L217?utm_term=aff…mFua2Vy&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/z9L217?utm_term=aff…zLWIyYmItMTc5MzdlNzJiNTBlEhBmaF93aWRnZXRfcmFua2Vy, title: Deux mecs s'embrassent et se branlent jusqu'à l'orgasme, imageUrl: https://ic-nss.flixcdn.com/a/ZGZhOWJjZTllOWQxMmNmM…2%2Ch%3A220%29/xc/z9/z9L217/frame/original/13.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1883ms] [LOG] Video received: {id: 2435202, url: https://fr.faphouse.com/videos/k119ss?utm_term=aff…hbmtlcg&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/k119ss?utm_term=aff…y1iMmJiLTE3OTM3ZTcyYjUwZRIQZmhfd2lkZ2V0X3Jhbmtlcg, title: Prolapsus, gigante, imageUrl: https://ic-nss.flixcdn.com/a/YmQ4NDc0NWM5ZjkwY2E4M…2%2Ch%3A220%29/xc/k1/k119ss/frame/original/19.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1883ms] [LOG] Video received: {id: 1461128, url: https://fr.faphouse.com/videos/47h2R8?utm_term=aff…mFua2Vy&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/47h2R8?utm_term=aff…zLWIyYmItMTc5MzdlNzJiNTBlEhBmaF93aWRnZXRfcmFua2Vy, title: Bareback et pulsation, éjaculation dans le cul à l'extérieur, imageUrl: https://ic-nss.flixcdn.com/a/ZDNmZDE2YWVjMTkwY2ZmY…2%2Ch%3A220%29/xc/47/47h2R8/frame/original/23.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1883ms] [LOG] Video received: {id: 1349047, url: https://fr.faphouse.com/videos/KZ1B00?utm_term=aff…mFua2Vy&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/KZ1B00?utm_term=aff…zLWIyYmItMTc5MzdlNzJiNTBlEhBmaF93aWRnZXRfcmFua2Vy, title: J'ai enfin séduit le meilleur ami de mon beau-fils et il a eu son premier orgasme anal, imageUrl: https://ic-nss.flixcdn.com/a/ZmRkYmE1MjYxYmEwZGQ3O…2%2Ch%3A220%29/video/KZ/KZ1B00/screen/000-em8.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1884ms] [LOG] Video received: {id: 2410947, url: https://fr.faphouse.com/videos/x1Aa7B?utm_term=aff…hbmtlcg&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/x1Aa7B?utm_term=aff…y1iMmJiLTE3OTM3ZTcyYjUwZRIQZmhfd2lkZ2V0X3Jhbmtlcg, title: Gros cul droit freiné sans capote à minuit - partie 4, imageUrl: https://ic-nss.flixcdn.com/a/NmM2Zjg3NzFmYzU5OWE2N…2%2Ch%3A220%29/video/x1/x1Aa7B/screen/000-KnJ.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1884ms] [LOG] Video received: {id: 159224, url: https://fr.faphouse.com/videos/teen-soccer-sweety-…mFua2Vy&utm_campaign=ai.hhY&utm_content=suggested, originalUrl: https://fr.faphouse.com/videos/teen-soccer-sweety-…zLWIyYmItMTc5MzdlNzJiNTBlEhBmaF93aWRnZXRfcmFua2Vy, title: Teen soccer sweety tied and roughly, sexualy used, imageUrl: https://ic-nss.flixcdn.com/a/YmJmMDJkNDJiYWZmMDczZ…2%2Ch%3A220%29/xc/yv/yvIynI/frame/original/13.jpg} @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:46
+[    1986ms] [LOG] [GA] Page /video/10499445/nasty-facials-vol-7/?campaign=10146 pageview success @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:25
+[    2061ms] [LOG] [YMetrika] Page /video/10499445/nasty-facials-vol-7/?campaign=10146 hit success @ https://mrgay.tube/upd/20260505.112537.498713/static/assets/app.js:25
+[    2632ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2636ms] [LOG] 2026-05-06T19:15:21.605Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582684,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2636ms] [LOG] 2026-05-06T19:15:21.606Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2636ms] [LOG] 2026-05-06T19:15:21.606Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2638ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2651ms] [LOG] 2026-05-06T19:15:21.621Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582696,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2651ms] [LOG] 2026-05-06T19:15:21.621Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2652ms] [LOG] 2026-05-06T19:15:21.621Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2653ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2657ms] [LOG] 2026-05-06T19:15:21.627Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":4515078,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2657ms] [LOG] 2026-05-06T19:15:21.627Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2657ms] [LOG] 2026-05-06T19:15:21.627Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2658ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2658ms] [LOG] 2026-05-06T19:15:21.628Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582686,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2658ms] [LOG] 2026-05-06T19:15:21.628Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2658ms] [LOG] 2026-05-06T19:15:21.628Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2659ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2659ms] [LOG] 2026-05-06T19:15:21.629Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582698,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2659ms] [LOG] 2026-05-06T19:15:21.629Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2659ms] [LOG] 2026-05-06T19:15:21.629Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2664ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2669ms] [LOG] 2026-05-06T19:15:21.638Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582682,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2669ms] [LOG] 2026-05-06T19:15:21.638Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2669ms] [LOG] 2026-05-06T19:15:21.639Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2670ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_RESET @ https://cdnproxy.tsyndicate.com/cmp_6b5fd5195d69c3f8fa5785e10e1a49c2fc0afc4867ff11f2c0669b60ba9bf66e4248fde057a149432ecc73184fc0ab281efe73d549edc9bbcb481d025995d2003e5e588c2a895b8b949e2fd919d52e6390a6330046b70b830f269460664351e03968e639d3b500a60bdd1c012506ebbf9a3bea391f60e065b26000db5c349ee8636e14aac15956c1a39514c2f03a44/videos/9/c/3034325daa044e371b13cbd9bdeba57ce586ee/850x480.mp4:0
+[    2670ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2671ms] [LOG] 2026-05-06T19:15:21.640Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582688,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2671ms] [LOG] 2026-05-06T19:15:21.640Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2671ms] [LOG] 2026-05-06T19:15:21.641Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2672ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2673ms] [LOG] 2026-05-06T19:15:21.643Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582692,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2673ms] [LOG] 2026-05-06T19:15:21.643Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2674ms] [LOG] 2026-05-06T19:15:21.643Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2674ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2675ms] [LOG] 2026-05-06T19:15:21.644Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":4513318,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2675ms] [LOG] 2026-05-06T19:15:21.644Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2675ms] [LOG] 2026-05-06T19:15:21.645Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2676ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2676ms] [LOG] 2026-05-06T19:15:21.645Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":4515072,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2676ms] [LOG] 2026-05-06T19:15:21.645Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2676ms] [LOG] 2026-05-06T19:15:21.645Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2677ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2677ms] [LOG] 2026-05-06T19:15:21.646Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582690,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2677ms] [LOG] 2026-05-06T19:15:21.647Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2678ms] [LOG] 2026-05-06T19:15:21.647Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2678ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2679ms] [LOG] 2026-05-06T19:15:21.649Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582694,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2679ms] [LOG] 2026-05-06T19:15:21.649Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2679ms] [LOG] 2026-05-06T19:15:21.649Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    2790ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[    2791ms] [LOG] 2026-05-06T19:15:21.760Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":5582654,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[    2791ms] [LOG] 2026-05-06T19:15:21.760Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[    2791ms] [LOG] 2026-05-06T19:15:21.760Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[    3114ms] [LOG] 2026-05-06T19:15:22.084Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3116ms] [LOG] 2026-05-06T19:15:22.086Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3158ms] [LOG] 2026-05-06T19:15:22.128Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3159ms] [LOG] 2026-05-06T19:15:22.129Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3178ms] [LOG] 2026-05-06T19:15:22.148Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3181ms] [LOG] 2026-05-06T19:15:22.151Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3293ms] [LOG] 2026-05-06T19:15:22.262Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3294ms] [LOG] 2026-05-06T19:15:22.263Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3316ms] [LOG] 2026-05-06T19:15:22.286Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3318ms] [LOG] 2026-05-06T19:15:22.287Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3356ms] [LOG] 2026-05-06T19:15:22.326Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3358ms] [LOG] 2026-05-06T19:15:22.328Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3360ms] [LOG] 2026-05-06T19:15:22.329Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3362ms] [LOG] 2026-05-06T19:15:22.331Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3386ms] [LOG] 2026-05-06T19:15:22.355Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3389ms] [LOG] 2026-05-06T19:15:22.358Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3419ms] [LOG] 2026-05-06T19:15:22.388Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3424ms] [LOG] 2026-05-06T19:15:22.393Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3465ms] [LOG] 2026-05-06T19:15:22.435Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3467ms] [LOG] 2026-05-06T19:15:22.436Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3493ms] [LOG] 2026-05-06T19:15:22.462Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3494ms] [LOG] 2026-05-06T19:15:22.464Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3640ms] [LOG] 2026-05-06T19:15:22.609Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3640ms] [LOG] 2026-05-06T19:15:22.610Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[    3647ms] [LOG] 2026-05-06T19:15:22.616Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[    3647ms] [LOG] 2026-05-06T19:15:22.617Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[   61958ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[   61959ms] [LOG] 2026-05-06T19:16:20.929Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":4513318,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[   61959ms] [LOG] 2026-05-06T19:16:20.929Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[   61960ms] [LOG] 2026-05-06T19:16:20.929Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[   62185ms] [LOG] 2026-05-06T19:16:21.154Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[   62188ms] [LOG] 2026-05-06T19:16:21.157Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[   71968ms] [LOG] CMP not found. @ https://a.magsrv.com/ad-provider.js:0
+[   71969ms] [LOG] 2026-05-06T19:16:30.939Z: Request #0 Placement #0 was pushed with zone {"custom_targeting":{},"id":4515072,"sub":1722344848,"extra_params":{"first_request":true,"zone_type":2}} @ https://a.magsrv.com/ad-provider.js:0
+[   71969ms] [LOG] 2026-05-06T19:16:30.939Z: s.magsrv.com - Zones Batch Size: 10, Multi-zones Batch Size: 3 @ https://a.magsrv.com/ad-provider.js:0
+[   71970ms] [LOG] 2026-05-06T19:16:30.939Z: s.magsrv.com - Request #0 with 1 zone(s) of type BANNER is being served. @ https://a.magsrv.com/ad-provider.js:0
+[   72126ms] [LOG] 2026-05-06T19:16:31.095Z: Request #0 handling the response @ https://a.magsrv.com/ad-provider.js:0
+[   72127ms] [LOG] 2026-05-06T19:16:31.096Z: s.magsrv.com - 1 ad request(s) completed successfully @ https://a.magsrv.com/ad-provider.js:0
+[   87038ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://fhvfd.com/favicon.ico:0

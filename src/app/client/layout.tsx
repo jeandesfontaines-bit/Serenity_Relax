@@ -26,12 +26,12 @@ export default function ClientLayout({
   }, [isUserLoading, router, sessionClientId, sessionReady, user]);
 
   if (isUserLoading || !sessionReady) return (
-    <div className="h-screen flex items-center justify-center bg-[#F8F5F0]">
-       <div className="w-16 h-16 border-4 border-[#5F27CD]/20 border-t-[#5F27CD] rounded-full animate-spin" />
+    <div className="h-screen flex items-center justify-center bg-background">
+       <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
     </div>
   );
 
   if (!user && !sessionClientId) return null;
 
-  return <div className="min-h-screen bg-[#F8F5F0]">{children}</div>;
+  return <div className="min-h-screen bg-background">{children}</div>;
 }

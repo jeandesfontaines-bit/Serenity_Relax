@@ -72,7 +72,7 @@ export default function AppointmentDetail({
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6">
       <motion.div
-        className="absolute inset-0 bg-zinc-950/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -88,31 +88,31 @@ export default function AppointmentDetail({
       >
         {/* Mobile handle */}
         <div className="sm:hidden flex justify-center pt-3 pb-2 shrink-0">
-          <div className="w-12 h-1 bg-zinc-200" />
+          <div className="w-12 h-1 bg-slate-200" />
         </div>
 
         {/* Header */}
-        <div className="flex items-start justify-between px-8 py-7 border-b border-[#c4c7c3]/70">
+        <div className="flex items-start justify-between px-8 py-7 border-b border-[#e2e8f0]">
           <div>
             <p className={`${dashboardEyebrow} mb-3`}>RENDEZ-VOUS</p>
             <h2 className={dashboardTitle}>
               {current.clientNameSnapshot || current.title}
             </h2>
             <div className="flex items-center gap-3 mt-2">
-              <Calendar size={12} className="text-zinc-400" />
-              <span className="font-serif text-[11px] text-zinc-500 tracking-[0.1em] capitalize">{dateLabel}</span>
+              <Calendar size={12} className="text-slate-400" />
+              <span className=" text-[11px] text-slate-500 tracking-[0.1em] capitalize">{dateLabel}</span>
               {current.time && (
                 <>
-                  <span className="text-zinc-200">·</span>
-                  <Clock size={12} className="text-zinc-400" />
-                  <span className="font-serif text-[11px] font-medium text-zinc-700 tracking-[0.1em]">{current.time}</span>
+                  <span className="text-slate-200">·</span>
+                  <Clock size={12} className="text-slate-400" />
+                  <span className=" text-[11px] font-medium text-slate-700 tracking-[0.1em]">{current.time}</span>
                 </>
               )}
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/50 text-[#757875] hover:text-[#1c1b1b] transition-colors"
+            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#f8fafc] text-[#64748b] hover:text-[#1f2937] transition-colors"
           >
             <X size={18} strokeWidth={1} />
           </button>
@@ -124,7 +124,7 @@ export default function AppointmentDetail({
 
             {/* Service + price */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/50 border border-[#c4c7c3]/40 rounded-xl p-5">
+              <div className="bg-white/70 border border-[#e2e8f0] rounded-xl p-5">
                 <p className={`${dashboardEyebrow} mb-3`}>Prestation</p>
                 {isEditing ? (
                   <select
@@ -136,7 +136,7 @@ export default function AppointmentDetail({
                         price: selected ? selected.price : editData.price,
                       });
                     }}
-                    className="w-full bg-transparent border-0 border-b border-[#bdcab9] px-0 py-1 text-sm text-[#1c1b1b] outline-none transition-all cursor-pointer"
+                    className="w-full bg-transparent border-0 border-b border-[#c7d2fe] px-0 py-1 text-sm text-[#1f2937] outline-none transition-all cursor-pointer"
                   >
                     <option value="">— Choisir une prestation —</option>
                     {SERVICES.map((s: Service) => (
@@ -144,15 +144,15 @@ export default function AppointmentDetail({
                     ))}
                   </select>
                 ) : (
-                  <p className="text-sm text-[#1c1b1b] tracking-tight">{current.serviceName || 'Session'}</p>
+                  <p className="text-sm text-[#1f2937] tracking-tight">{current.serviceName || 'Session'}</p>
                 )}
               </div>
-              <div className="bg-white/50 border border-[#c4c7c3]/40 rounded-xl p-5">
+              <div className="bg-white/70 border border-[#e2e8f0] rounded-xl p-5">
                 <div className="flex items-center justify-between mb-3">
                   <p className={dashboardEyebrow}>Tarif</p>
                   <button
                     onClick={isEditing ? handleSaveEdit : () => setIsEditing(true)}
-                    className="text-[#757875] hover:text-[#1c1b1b] transition-colors"
+                    className="text-[#64748b] hover:text-[#4f46e5] transition-colors"
                     title={isEditing ? 'Enregistrer' : 'Modifier'}
                   >
                     {isEditing ? <Save size={13} strokeWidth={1.5} /> : <Edit3 size={13} strokeWidth={1.5} />}
@@ -163,16 +163,16 @@ export default function AppointmentDetail({
                     type="number"
                     value={editData.price}
                     onChange={(e) => setEditData({ ...editData, price: Number(e.target.value) })}
-                    className="w-full bg-transparent border-0 border-b border-[#bdcab9] px-0 py-1 text-sm text-[#1c1b1b] outline-none transition-all"
+                    className="w-full bg-transparent border-0 border-b border-[#c7d2fe] px-0 py-1 text-sm text-[#1f2937] outline-none transition-all"
                   />
                 ) : (
-                  <p className="text-sm font-medium text-[#1c1b1b]">{current.price || 150} CHF</p>
+                  <p className="text-sm font-medium text-[#1f2937]">{current.price || 150} CHF</p>
                 )}
               </div>
             </div>
 
             {/* Payment status */}
-            <div className="bg-white/50 border border-[#c4c7c3]/40 rounded-xl p-6">
+            <div className="bg-white/70 border border-[#e2e8f0] rounded-xl p-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <p className={`${dashboardEyebrow} mb-3`}>Paiement</p>
@@ -182,13 +182,13 @@ export default function AppointmentDetail({
                         <button
                           key={m}
                           onClick={() => handleUpdatePayment(m)}
-                          className="flex items-center gap-2 h-9 px-4 rounded-full bg-white border border-[#c4c7c3] text-[11px] uppercase tracking-[0.1em] text-[#1c1b1b] hover:bg-[#635e55] hover:text-white hover:border-[#635e55] transition-all duration-300"
+                          className="flex items-center gap-2 h-9 px-4 rounded-full bg-white border border-[#cbd5e1] text-[11px] uppercase tracking-[0.1em] text-[#1f2937] hover:bg-[#6366f1] hover:text-white hover:border-[#6366f1] transition-all duration-300"
                         >
                           {m === 'Twint' ? <Smartphone size={12} strokeWidth={1.5} /> : m === 'Card' ? <CreditCard size={12} strokeWidth={1.5} /> : <Banknote size={12} strokeWidth={1.5} />}
                           {m}
                         </button>
                       ))}
-                      <button onClick={() => setShowPaymentSelector(false)} className="w-9 h-9 flex items-center justify-center rounded-full border border-[#c4c7c3] text-[#757875] hover:border-[#1c1b1b] hover:text-[#1c1b1b] transition-all">
+                      <button onClick={() => setShowPaymentSelector(false)} className="w-9 h-9 flex items-center justify-center rounded-full border border-[#cbd5e1] text-[#64748b] hover:border-[#6366f1] hover:text-[#4f46e5] transition-all">
                         <X size={13} strokeWidth={1.5} />
                       </button>
                     </div>
@@ -213,12 +213,12 @@ export default function AppointmentDetail({
             {current.clientId && onGoToClient && (
               <button
                 onClick={() => onGoToClient(current.clientId as string)}
-                className="w-full flex items-center justify-between p-5 rounded-xl bg-white/50 border border-[#c4c7c3]/40 hover:border-[#1c1b1b] transition-all duration-500 group"
+                className="w-full flex items-center justify-between p-5 rounded-xl bg-white/70 border border-[#e2e8f0] hover:border-[#c7d2fe] transition-all duration-500 group"
               >
-                <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-[#757875] group-hover:text-[#1c1b1b] transition-colors">
+                <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-[#64748b] group-hover:text-[#4f46e5] transition-colors">
                   Ouvrir le dossier client
                 </span>
-                <ChevronRight size={14} strokeWidth={1.5} className="text-[#c4c7c3] group-hover:text-[#1c1b1b] transition-colors" />
+                <ChevronRight size={14} strokeWidth={1.5} className="text-[#cbd5e1] group-hover:text-[#4f46e5] transition-colors" />
               </button>
             )}
 
@@ -227,32 +227,32 @@ export default function AppointmentDetail({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   onClick={() => onSendWhatsApp(current, current.paid ? 'followup' : 'reminder')}
-                  className="w-full flex items-center justify-center gap-3 p-4 rounded-xl bg-white/50 border border-[#c4c7c3]/40 hover:border-[#1c1b1b] hover:text-[#1c1b1b] transition-all duration-500 group"
+                  className="w-full flex items-center justify-center gap-3 p-4 rounded-xl bg-white/70 border border-[#e2e8f0] hover:border-[#c7d2fe] hover:text-[#4f46e5] transition-all duration-500 group"
                 >
-                  <Smartphone size={14} strokeWidth={1.5} className="text-[#757875] group-hover:text-[#1c1b1b] transition-colors" />
-                  <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[#757875] group-hover:text-[#1c1b1b] transition-colors">
+                  <Smartphone size={14} strokeWidth={1.5} className="text-[#64748b] group-hover:text-[#4f46e5] transition-colors" />
+                  <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[#64748b] group-hover:text-[#4f46e5] transition-colors">
                     {current.paid ? 'Suivi WhatsApp' : 'Relance WhatsApp'}
                   </span>
                 </button>
                 <button
                   onClick={() => onSendWhatsApp(current, 'confirmation')}
-                  className="w-full flex items-center justify-center gap-3 p-4 rounded-xl bg-white/50 border border-[#c4c7c3]/40 hover:border-[#1c1b1b] hover:text-[#1c1b1b] transition-all duration-500 group"
+                  className="w-full flex items-center justify-center gap-3 p-4 rounded-xl bg-white/70 border border-[#e2e8f0] hover:border-[#c7d2fe] hover:text-[#4f46e5] transition-all duration-500 group"
                 >
-                  <Calendar size={14} strokeWidth={1.5} className="text-[#757875] group-hover:text-[#1c1b1b] transition-colors" />
-                  <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[#757875] group-hover:text-[#1c1b1b] transition-colors">Confirmation</span>
+                  <Calendar size={14} strokeWidth={1.5} className="text-[#64748b] group-hover:text-[#4f46e5] transition-colors" />
+                  <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[#64748b] group-hover:text-[#4f46e5] transition-colors">Confirmation</span>
                 </button>
               </div>
             )}
 
             {/* Client context summary */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/50 border border-[#c4c7c3]/40 rounded-xl p-5 text-center">
+              <div className="bg-white/70 border border-[#e2e8f0] rounded-xl p-5 text-center">
                 <p className={`${dashboardEyebrow} mb-3`}>Sessions</p>
-                <p className="text-2xl font-normal text-[#1c1b1b]">{sessionCount}</p>
+                <p className="text-2xl font-normal text-[#1f2937]">{sessionCount}</p>
               </div>
-              <div className="bg-white/50 border border-[#c4c7c3]/40 rounded-xl p-5 text-center">
+              <div className="bg-white/70 border border-[#e2e8f0] rounded-xl p-5 text-center">
                 <p className={`${dashboardEyebrow} mb-3`}>Solde dû</p>
-                <p className={`text-2xl font-normal ${totalDue > 0 ? 'text-[#93000a]' : 'text-[#1c1b1b]'}`}>
+                <p className={`text-2xl font-normal ${totalDue > 0 ? 'text-[#b91c1c]' : 'text-[#1f2937]'}`}>
                   {totalDue} CHF
                 </p>
               </div>

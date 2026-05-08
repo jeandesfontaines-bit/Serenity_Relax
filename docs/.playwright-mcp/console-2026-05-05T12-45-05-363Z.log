@@ -1,0 +1,20 @@
+[    1308ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    1319ms] [LOG] [Fast Refresh] done in 145ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[    3115ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    3131ms] [LOG] [Fast Refresh] done in 115ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   18326ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[   18931ms] [WARNING] Image with src "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[   19898ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   21569ms] [LOG] [Fast Refresh] done in 2361ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  756768ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  757075ms] [LOG] [Fast Refresh] done in 308ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  765992ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  769342ms] [LOG] [Fast Refresh] done in 3452ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  769447ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  770584ms] [LOG] [Fast Refresh] done in 1238ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  770686ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  772081ms] [LOG] [Fast Refresh] done in 1496ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  772182ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  772281ms] [LOG] [Fast Refresh] done in 201ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  772384ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  772809ms] [LOG] [Fast Refresh] done in 527ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

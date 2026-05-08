@@ -27,19 +27,19 @@ type TransactionStatus = 'completed' | 'pending' | 'cancelled' | 'late';
 const STATUS_META: Record<TransactionStatus, { label: string; className: string }> = {
   completed: {
     label: 'Réglé',
-    className: 'bg-[#daeed8] text-[#435544]',
+    className: 'border border-[#bbf7d0] bg-[#f0fdf4] text-[#15803d]',
   },
   pending: {
     label: 'En attente',
-    className: 'bg-[#ffddb2] text-[#594323]',
+    className: 'border border-[#fdba74] bg-[#fff7ed] text-[#c2410c]',
   },
   cancelled: {
     label: 'Annulé',
-    className: 'bg-[#ffdad6] text-[#93000a]',
+    className: 'border border-[#fecaca] bg-[#fff1f2] text-[#be123c]',
   },
   late: {
     label: 'En retard',
-    className: 'bg-[#ffdad6] text-[#ba1a1a]',
+    className: 'border border-[#fecaca] bg-[#fff1f2] text-[#be123c]',
   },
 };
 
@@ -299,8 +299,9 @@ export default function ComptaPage({
   }, [onDeleteInvoices, selectedIds]);
 
   const handleInvoiceOpen = useCallback((appt: Appointment) => {
-    window.open(`/therapist/invoice/${appt.id}`, '_blank');
-  }, []);
+    const invoice = invoiceByAppointmentId.get(appt.id);
+    window.open(`/therapist/invoice/${invoice?.id || appt.id}`, '_blank');
+  }, [invoiceByAppointmentId]);
 
   const toggleSelection = useCallback((id: string) => {
     setSelectedIds((prev) => {
@@ -313,10 +314,10 @@ export default function ComptaPage({
   const allSelected = filtered.length > 0 && selectedIds.size === filtered.length;
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-[#faf9f7]">
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#fafbfc]">
 
       {selectedIds.size > 0 && (
-        <div className="shrink-0 border-b border-[#d9ddd7] bg-[#435544] px-4 py-3 text-white lg:px-8">
+        <div className="shrink-0 border-b border-[#c7d2fe] bg-[linear-gradient(135deg,#5b21b6_0%,#6366f1_100%)] px-4 py-3 text-white lg:px-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <span className="text-sm font-medium">
               {selectedIds.size} transaction{selectedIds.size > 1 ? 's' : ''} selected
@@ -347,14 +348,14 @@ export default function ComptaPage({
             <div className={dashboardTableSectionHeader}>
               <div>
                 <h2 className={dashboardTitle}>Liste des factures</h2>
-                <p className="mt-1 text-xs text-[#5e655f]">Toutes les transactions de la période en CHF</p>
+                <p className="mt-1 text-xs text-[#64748b]">Toutes les transactions de la période en CHF</p>
               </div>
               <button
                 onClick={() => {
                   onSearchQueryChange('');
                   setSelectedIds(new Set());
                 }}
-                className="text-xs font-semibold text-[#435544] transition-colors hover:underline"
+                className="text-xs font-semibold text-[#4f46e5] transition-colors hover:underline"
               >
                 Tout voir
               </button>
@@ -378,7 +379,7 @@ export default function ComptaPage({
                     <SortableHeader align="right" label="Montant" field="price" current={sortField} dir={sortDir} onSort={toggleSort} />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#c3c8c0]/10 text-xs">
+                <tbody className="divide-y divide-[#e2e8f0] text-xs">
                   {filtered.map((appt) => {
                     const invoice = invoiceByAppointmentId.get(appt.id);
                     const status = getTransactionStatus(appt, todayStr);
@@ -388,19 +389,19 @@ export default function ComptaPage({
                     return (
                       <tr
                         key={appt.id}
-                        className={`group transition-colors hover:bg-[#f4f3f1]/50 ${isSelected ? 'bg-[#faf9f7]' : ''}`}
+                        className={`group transition-colors hover:bg-[#f8fafc] ${isSelected ? 'bg-[#f8fafc]' : ''}`}
                       >
                         <td className={dashboardTableCell}>
                           <TableCheckbox checked={isSelected} onChange={() => toggleSelection(appt.id)} />
                         </td>
 
-                        <td className={`cursor-pointer text-[#747872] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
+                        <td className={`cursor-pointer text-[#64748b] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
                           {appt.date ? format(new Date(appt.date), 'MMM d, yyyy') : '—'}
                         </td>
-                        <td className={`cursor-pointer font-medium text-[#1a1c1b] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
+                        <td className={`cursor-pointer font-medium text-[#1f2937] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
                           {getClientDisplayName(appt)}
                         </td>
-                        <td className={`cursor-pointer text-[#434842] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
+                        <td className={`cursor-pointer text-[#475569] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
                           {appt.serviceName || 'Session'}
                         </td>
                         <td className={dashboardTableCell}>
@@ -414,7 +415,7 @@ export default function ComptaPage({
                                       onTogglePayment(appt.id, false, method);
                                       setPayingId(null);
                                     }}
-                                    className="flex h-8 w-8 items-center justify-center rounded-[10px] border border-[#c3c8c0] bg-white text-[#434842] transition-colors hover:border-[#435544] hover:bg-[#435544] hover:text-white"
+                                    className="flex h-8 w-8 items-center justify-center rounded-[10px] border border-[#cbd5e1] bg-white text-[#475569] transition-colors hover:border-[#6366f1] hover:bg-[#6366f1] hover:text-white"
                                     title={method}
                                   >
                                     {method === 'Twint'
@@ -426,7 +427,7 @@ export default function ComptaPage({
                                 ))}
                                 <button
                                   onClick={() => setPayingId(null)}
-                                  className="flex h-8 w-8 items-center justify-center rounded-[10px] border border-[#c3c8c0] bg-white text-[#747872] transition-colors hover:border-[#ba1a1a] hover:text-[#ba1a1a]"
+                                  className="flex h-8 w-8 items-center justify-center rounded-[10px] border border-[#cbd5e1] bg-white text-[#64748b] transition-colors hover:border-[#ef4444] hover:text-[#ef4444]"
                                 >
                                   <X size={13} strokeWidth={1.75} />
                                 </button>
@@ -442,33 +443,33 @@ export default function ComptaPage({
                             )}
                           </div>
                         </td>
-                        <td className={`${dashboardTableCell} text-[#747872]`}>
+                        <td className={`${dashboardTableCell} text-[#64748b]`}>
                           <button
                             onClick={() => handleInvoiceOpen(appt)}
                             disabled={status === 'cancelled'}
                             className={`rounded-[10px] p-2 transition-colors ${
                               status === 'cancelled'
                                 ? 'cursor-not-allowed opacity-30'
-                                : 'hover:bg-[#efeeec] hover:text-[#435544]'
+                                : 'hover:bg-[#eef2ff] hover:text-[#4f46e5]'
                             }`}
                             title={invoice?.invoiceNumber || 'Ouvrir la facture'}
                           >
                             <Download size={18} strokeWidth={1.8} />
                           </button>
                         </td>
-                        <td className={`${dashboardTableCell} text-right font-semibold text-[#1a1c1b]`}>
+                        <td className={`${dashboardTableCell} text-right font-semibold text-[#1f2937]`}>
                           {status === 'cancelled' ? formatCurrency(0) : formatCurrency(appt.price || 0)}
                           <div className="mt-1 flex justify-end gap-1">
                             <button
                               onClick={() => handleInvoiceOpen(appt)}
-                              className="rounded-[10px] p-1.5 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]"
+                              className="rounded-[10px] p-1.5 text-[#64748b] transition-colors hover:bg-[#eef2ff] hover:text-[#4f46e5]"
                               title="Imprimer ou ouvrir la facture"
                             >
                               <Printer size={14} strokeWidth={1.75} />
                             </button>
                             <button
                               onClick={() => onSelectAppt(appt)}
-                              className="rounded-full p-1.5 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]"
+                              className="rounded-full p-1.5 text-[#64748b] transition-colors hover:bg-[#eef2ff] hover:text-[#4f46e5]"
                               title="Ouvrir le rendez-vous"
                             >
                               <ChevronRight size={14} strokeWidth={1.75} />
@@ -484,10 +485,10 @@ export default function ComptaPage({
 
             {filtered.length === 0 && (
               <div className="flex flex-col items-center justify-center gap-3 px-6 py-14 text-center">
-                <Wallet size={22} strokeWidth={1.4} className="text-[#c3c8c0]" />
+                <Wallet size={22} strokeWidth={1.4} className="text-[#cbd5e1]" />
                 <div>
-                  <p className="text-xs font-medium text-[#1a1c1b]">Aucune transaction trouvée</p>
-                  <p className="mt-0.5 text-xs text-[#747872]">
+                  <p className="text-xs font-medium text-[#1f2937]">Aucune transaction trouvée</p>
+                  <p className="mt-0.5 text-xs text-[#64748b]">
                     Ajustez la recherche ou la période pour afficher l'activité financière.
                   </p>
                 </div>
@@ -498,24 +499,24 @@ export default function ComptaPage({
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <MetricCard
               icon={<Wallet size={20} strokeWidth={1.8} />}
-              iconClassName="bg-[#d4e8d2] text-[#435544]"
+              iconClassName="bg-[#dcfce7] text-[#15803d]"
               title="Revenu mensuel"
               value={formatCurrency(totalRevenue)}
               badge={monthlyDelta >= 0 ? `+${monthlyDelta}%` : `${monthlyDelta}%`}
               badgeIcon={<TrendingUp size={12} strokeWidth={2} />}
-              badgeClassName="bg-[#daeed8] text-[#435544]"
+              badgeClassName="bg-[#ecfccb] text-[#4d7c0f]"
               compact
             />
             <MetricCard
               icon={<BadgeCheck size={20} strokeWidth={1.8} />}
-              iconClassName="bg-[#ffddb2] text-[#725a38]"
+              iconClassName="bg-[#eef2ff] text-[#4338ca]"
               title="Séances terminées"
               value={String(completedSessions)}
               compact
             />
             <MetricCard
               icon={<CircleDollarSign size={20} strokeWidth={1.8} />}
-              iconClassName="bg-[#e8e2d6] text-[#535047]"
+              iconClassName="bg-[#ffedd5] text-[#c2410c]"
               title="Factures en attente"
               value={formatCurrency(pendingInvoiceAmount)}
               compact
@@ -527,27 +528,27 @@ export default function ComptaPage({
               <div className="mb-6 flex items-center justify-between gap-4">
                 <div>
                   <h2 className={dashboardTitle}>Performance des revenus</h2>
-                  <p className="mt-1 text-xs text-[#5e655f]">Revenus encaissés sur les 6 derniers mois</p>
+                  <p className="mt-1 text-xs text-[#64748b]">Revenus encaissés sur les 6 derniers mois</p>
                 </div>
-                <span className="rounded-full bg-[#efeeec] px-3 py-1 text-xs font-semibold text-[#434842]">
+                <span className="rounded-full bg-[#eef2ff] px-3 py-1 text-xs font-semibold text-[#4338ca]">
                   Tendance
                 </span>
               </div>
 
-              <div className="flex h-44 items-end gap-3 rounded-xl bg-[#faf9f7] px-4 py-5">
+              <div className="flex h-44 items-end gap-3 rounded-xl bg-[#f8fafc] px-4 py-5">
                 {recentTrend.months.map((month) => (
                   <div key={month.label} className="flex flex-1 flex-col items-center justify-end gap-3">
-                    <div className="w-full text-center text-xs font-semibold text-[#747872]">
+                    <div className="w-full text-center text-xs font-semibold text-[#64748b]">
                       {month.value > 0 ? formatCurrency(month.value) : formatCurrency(0)}
                     </div>
                     <div
-                      className="w-full rounded-t-md bg-[#435544]"
+                      className="w-full rounded-t-md bg-[#6366f1]"
                       style={{
                         height: `${Math.max((month.value / recentTrend.max) * 95, month.value > 0 ? 14 : 6)}px`,
                         opacity: 0.35 + ((month.value / recentTrend.max) * 0.65),
                       }}
                     />
-                    <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#747872]">
+                    <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#64748b]">
                       {month.label}
                     </span>
                   </div>
@@ -558,29 +559,29 @@ export default function ComptaPage({
             <div className={`${dashboardPanelSoft} p-5`}>
               <div className="mb-6">
                 <h2 className={dashboardTitle}>Répartition des services</h2>
-                <p className="mt-1 text-xs text-[#5e655f]">Part des revenus par type de soin</p>
+                <p className="mt-1 text-xs text-[#64748b]">Part des revenus par type de soin</p>
               </div>
 
               <div className="space-y-4">
                 {serviceAllocations.length > 0 ? serviceAllocations.map((service, index) => (
                   <div key={service.label} className="space-y-2">
                     <div className="flex items-center justify-between gap-4">
-                      <span className="truncate text-xs font-medium text-[#1a1c1b]">{service.label}</span>
-                      <span className="text-xs font-semibold text-[#435544]">{service.percent}%</span>
+                      <span className="truncate text-xs font-medium text-[#1f2937]">{service.label}</span>
+                      <span className="text-xs font-semibold text-[#4f46e5]">{service.percent}%</span>
                     </div>
-                    <div className="h-2 rounded-full bg-[#efeeec]">
+                    <div className="h-2 rounded-full bg-[#eef2ff]">
                       <div
                         className="h-2 rounded-full"
                         style={{
                           width: `${service.percent}%`,
-                          backgroundColor: ['#435544', '#725a38', '#535047', '#5b6d5b'][index % 4],
+                          backgroundColor: ['#6366f1', '#8b5cf6', '#f59e0b', '#84cc16'][index % 4],
                         }}
                       />
                     </div>
-                    <div className="text-xs text-[#747872]">{formatCurrency(service.value)}</div>
+                    <div className="text-xs text-[#64748b]">{formatCurrency(service.value)}</div>
                   </div>
                 )) : (
-                  <div className="rounded-xl bg-[#faf9f7] px-4 py-5 text-xs text-[#747872]">
+                  <div className="rounded-xl bg-[#f8fafc] px-4 py-5 text-xs text-[#64748b]">
                     Aucun revenu de service sur la période sélectionnée.
                   </div>
                 )}
@@ -591,7 +592,7 @@ export default function ComptaPage({
         </section>
 
         <footer className="px-8 pb-8 pt-2 text-center">
-          <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#747872]/50">
+          <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#94a3b8]">
             Serene Portal © 2023 | Au service de la pratique holistique
           </p>
         </footer>
@@ -632,8 +633,8 @@ function MetricCard({
           </span>
         )}
       </div>
-      <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-[#747872]">{title}</p>
-      <h3 className={`mt-0.5 font-semibold text-[#1a1c1b] ${compact ? 'text-xl' : 'text-2xl'}`}>{value}</h3>
+      <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-[#64748b]">{title}</p>
+      <h3 className={`mt-0.5 font-semibold text-[#1f2937] ${compact ? 'text-xl' : 'text-2xl'}`}>{value}</h3>
     </div>
   );
 }
@@ -648,8 +649,8 @@ function TableCheckbox({ checked, onChange }: { checked: boolean; onChange: () =
       }}
       className={`flex h-4 w-4 items-center justify-center rounded border transition-colors ${
         checked
-          ? 'border-[#435544] bg-[#435544] text-white'
-          : 'border-[#c3c8c0] bg-white text-transparent hover:border-[#435544]'
+          ? 'border-[#6366f1] bg-[#6366f1] text-white'
+          : 'border-[#cbd5e1] bg-white text-transparent hover:border-[#6366f1]'
       }`}
     >
       <Check size={10} strokeWidth={2.5} className="text-current" />
@@ -676,10 +677,10 @@ function SortableHeader({
     <th className={`px-3 py-2.5 lg:px-6 ${align === 'right' ? 'text-right' : 'text-left'}`}>
       <button
         onClick={() => onSort(field)}
-        className={`inline-flex items-center gap-1.5 ${align === 'right' ? 'justify-end' : 'justify-start'} hover:text-[#435544]`}
+        className={`inline-flex items-center gap-1.5 ${align === 'right' ? 'justify-end' : 'justify-start'} hover:text-[#4f46e5]`}
       >
         {label}
-        <span className={current === field ? 'text-[#435544]' : 'opacity-50'}>
+        <span className={current === field ? 'text-[#4f46e5]' : 'opacity-50'}>
           {dir === 'asc' || current !== field ? '↑' : '↓'}
         </span>
       </button>

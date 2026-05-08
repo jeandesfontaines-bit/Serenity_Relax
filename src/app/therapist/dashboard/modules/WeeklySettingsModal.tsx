@@ -49,7 +49,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
   return (
     <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-6">
       <motion.div
-        className="absolute inset-0 bg-zinc-950/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         onClick={onClose}
@@ -63,25 +63,25 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
       >
         {/* Mobile handle */}
         <div className="sm:hidden flex justify-center pt-3 pb-2 shrink-0">
-          <div className="w-12 h-1 bg-zinc-200" />
+          <div className="w-12 h-1 bg-slate-200" />
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-zinc-100/50 shrink-0">
+        <div className="flex items-center justify-between px-8 py-5 border-b border-[#e2e8f0] shrink-0">
           <div>
             <p className={`${dashboardTheme.dashboardEyebrow} mb-1`}>CONFIGURATION</p>
             <h2 className={`${dashboardTheme.dashboardTitle} text-xl`}>Horaires types</h2>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center hover:bg-zinc-100 text-zinc-400 hover:text-zinc-900 transition-colors"
+            className="w-9 h-9 flex items-center justify-center hover:bg-[#f8fafc] text-slate-400 hover:text-slate-900 transition-colors"
           >
             <X size={18} strokeWidth={1} />
           </button>
         </div>
 
         {/* Day tabs — all 7 days including Sunday */}
-        <div className="flex border-b border-zinc-100 shrink-0">
+        <div className="flex border-b border-[#e2e8f0] shrink-0">
           {DAYS.map(day => {
             const count = (slots[day.id] || []).length;
             return (
@@ -90,13 +90,13 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 onClick={() => setActiveDay(day.id)}
                 className={`flex-1 py-3 px-1 ${dashboardTheme.dashboardEyebrow} whitespace-nowrap transition-colors flex items-center justify-center gap-1.5 ${
                   activeDay === day.id
-                    ? 'text-zinc-900 border-b-2 border-zinc-900 -mb-px'
-                    : 'text-zinc-400 hover:text-zinc-700'
+                    ? 'text-[#4f46e5] border-b-2 border-[#6366f1] -mb-px'
+                    : 'text-slate-400 hover:text-slate-700'
                 }`}
               >
                 {day.label}
                 <span className={`w-5 h-5 flex items-center justify-center rounded-full text-[10px] ${
-                  activeDay === day.id ? 'bg-zinc-900 text-white' : 'bg-zinc-100 text-zinc-500'
+                  activeDay === day.id ? 'bg-[#6366f1] text-white' : 'bg-[#eef2ff] text-[#4f46e5]'
                 }`}>
                   {count}
                 </span>
@@ -111,15 +111,15 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               {slots[activeDay].map(time => (
                 <div
                   key={time}
-                  className="flex items-center justify-between px-4 py-3 bg-white/50 border border-zinc-200 rounded-xl"
+                  className="flex items-center justify-between px-4 py-3 bg-white/70 border border-[#e2e8f0] rounded-xl"
                 >
-                  <div className="flex items-center gap-2 font-serif text-[13px] text-zinc-900 tracking-tighter">
-                    <Clock size={12} strokeWidth={1.5} className="text-zinc-400" />
+                  <div className="flex items-center gap-2  text-[13px] text-slate-900 tracking-tighter">
+                    <Clock size={12} strokeWidth={1.5} className="text-slate-400" />
                     {time}
                   </div>
                   <button
                     onClick={() => handleRemoveSlot(time)}
-                    className="w-7 h-7 border border-zinc-200 rounded-full flex items-center justify-center text-zinc-400 hover:border-zinc-900 hover:text-zinc-900 transition-all duration-300"
+                    className="w-7 h-7 border border-[#e2e8f0] rounded-full flex items-center justify-center text-slate-400 hover:border-[#6366f1] hover:text-[#4f46e5] transition-all duration-300"
                   >
                     <X size={11} strokeWidth={1.5} />
                   </button>
@@ -128,8 +128,8 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
             </div>
           ) : (
             <div className="py-6 text-center">
-              <Clock size={24} strokeWidth={1} className="text-zinc-200 mx-auto mb-3" />
-              <p className={`${dashboardTheme.dashboardEyebrow} text-zinc-400`}>Aucun créneau configuré</p>
+              <Clock size={24} strokeWidth={1} className="text-slate-200 mx-auto mb-3" />
+              <p className={`${dashboardTheme.dashboardEyebrow} text-slate-400`}>Aucun créneau configuré</p>
             </div>
           )}
         </div>
@@ -141,7 +141,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               type="time"
               value={newTime}
               onChange={e => setNewTime(e.target.value)}
-              className="w-full h-10 bg-white/50 border border-zinc-200 rounded-xl px-4 font-serif text-[13px] text-zinc-900 focus:outline-none focus:border-zinc-900 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50"
+              className="w-full h-10 bg-white/70 border border-[#e2e8f0] rounded-xl px-4  text-[13px] text-slate-900 focus:outline-none focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50"
             />
           </div>
           <button
@@ -154,10 +154,10 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         </div>
 
         {/* Footer — always visible */}
-        <div className="px-8 pb-6 pt-2 border-t border-zinc-100/50 flex flex-col items-center gap-4 shrink-0">
+        <div className="px-8 pb-6 pt-2 border-t border-[#e2e8f0] flex flex-col items-center gap-4 shrink-0">
           <button
             onClick={handleCopyToWeek}
-            className={`${dashboardTheme.dashboardEyebrow} text-zinc-400 hover:text-zinc-900 transition-colors`}
+            className={`${dashboardTheme.dashboardEyebrow} text-slate-400 hover:text-[#4f46e5] transition-colors`}
           >
             Appliquer à toute la semaine
           </button>

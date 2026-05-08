@@ -27,9 +27,9 @@ const DAYS_LABELS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 const HOURS = Array.from({ length: END_HOUR - START_HOUR }, (_, i) => i + START_HOUR);
 const MONTH_DAY_LABELS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 const MONTH_APPOINTMENT_TONES = [
-  'bg-primary/10 border-primary text-primary',
-  'bg-secondary/10 border-secondary text-secondary',
-  'bg-foreground/10 border-foreground/20 text-foreground/70',
+  'bg-[#eef2ff] border-[#818cf8] text-[#4338ca]',
+  'bg-[#f5f3ff] border-[#a78bfa] text-[#6d28d9]',
+  'bg-[#fdf2f8] border-[#f9a8d4] text-[#be185d]',
 ] as const;
 const TIME_COLUMN_WIDTH = 80;
 
@@ -71,43 +71,43 @@ function getWeekAppointmentMeta(appt: Appointment): {
   if (normalizedStatus === 'cancelled') {
     return {
       label: 'Annulé',
-      cardClassName: 'bg-red-900/10 border-red-900',
-      badgeClassName: 'bg-red-900 text-white',
-      timeClassName: 'text-red-900',
-      textClassName: 'text-foreground',
-      subtextClassName: 'text-foreground/70',
+      cardClassName: 'bg-[#fef2f2] border-[#fca5a5]',
+      badgeClassName: 'bg-[#fee2e2] text-[#b91c1c] border border-[#fecaca]',
+      timeClassName: 'text-[#dc2626]',
+      textClassName: 'text-[#7f1d1d]',
+      subtextClassName: 'text-[#f87171]',
     };
   }
 
   if (appt.paid || ['done', 'honoré', 'réglé'].includes(normalizedStatus)) {
     return {
       label: 'Réglé',
-      cardClassName: 'bg-primary/10 border-primary',
-      badgeClassName: 'bg-primary text-primary-foreground',
-      timeClassName: 'text-primary',
-      textClassName: 'text-foreground',
-      subtextClassName: 'text-foreground/70',
+      cardClassName: 'bg-[#f0fdf4] border-[#86efac]',
+      badgeClassName: 'bg-[#dcfce7] text-[#15803d] border border-[#86efac]',
+      timeClassName: 'text-[#16a34a]',
+      textClassName: 'text-[#1f2937]',
+      subtextClassName: 'text-[#64748b]',
     };
   }
 
   if (['pending', 'late'].includes(normalizedStatus)) {
     return {
       label: 'En attente',
-      cardClassName: 'bg-secondary/10 border-secondary',
-      badgeClassName: 'bg-secondary/20 text-secondary',
-      timeClassName: 'text-secondary',
-      textClassName: 'text-foreground',
-      subtextClassName: 'text-foreground/70',
+      cardClassName: 'bg-[#fff7ed] border-[#fdba74]',
+      badgeClassName: 'bg-[#ffedd5] text-[#c2410c] border border-[#fdba74]',
+      timeClassName: 'text-[#ea580c]',
+      textClassName: 'text-[#1f2937]',
+      subtextClassName: 'text-[#64748b]',
     };
   }
 
   return {
     label: 'Confirmé',
-    cardClassName: 'bg-primary/10 border-primary',
-    badgeClassName: 'bg-primary text-primary-foreground',
-    timeClassName: 'text-primary',
-    textClassName: 'text-foreground',
-    subtextClassName: 'text-foreground/70',
+    cardClassName: 'bg-[#eef2ff] border-[#a5b4fc]',
+    badgeClassName: 'bg-[#e0e7ff] text-[#4338ca] border border-[#c7d2fe]',
+    timeClassName: 'text-[#4f46e5]',
+    textClassName: 'text-[#1f2937]',
+    subtextClassName: 'text-[#64748b]',
   };
 }
 function normalizeSearchValue(value?: string): string {
@@ -132,8 +132,8 @@ function appointmentMatchesQuery(appt: Appointment, query: string): boolean {
   return haystack.includes(query);
 }
 function getMonthAppointmentTone(appt: Appointment, index: number): string {
-  if (appt.status === 'cancelled') return 'bg-red-900/10 border-red-900 text-red-900';
-  if (appt.paid) return 'bg-foreground border-foreground text-background';
+  if (appt.status === 'cancelled') return 'bg-[#fef2f2] border-[#fca5a5] text-[#b91c1c]';
+  if (appt.paid) return 'bg-[#f0fdf4] border-[#86efac] text-[#166534]';
   return MONTH_APPOINTMENT_TONES[index % MONTH_APPOINTMENT_TONES.length];
 }
 
@@ -169,7 +169,6 @@ interface AgendaPageProps {
   isDayOpen: (d: string) => boolean;
   isSlotBlocked: (d: string, t: string) => boolean;
   toggleSlot: (d: string, t: string) => void;
-  blockMode: boolean;
   absenceMode: boolean;
   onMoveAppt?: (id: string, date: string, time: string) => void;
   onSelectDate: (date: Date) => void;
@@ -186,7 +185,7 @@ export default function AgendaPage({
   view, cur, onToggleView,
   onSelectAppt, onOpenSlot, appointments,
   configSlots, isDayOpen, isSlotBlocked, toggleSlot,
-  blockMode, absenceMode, onMoveAppt, onSelectDate, searchQuery,
+  absenceMode, onMoveAppt, onSelectDate, searchQuery,
   pendingDates, togglePending, onClearAbsenceMode,
 }: AgendaPageProps) {
   // Escape cancels absence mode
@@ -207,15 +206,15 @@ export default function AgendaPage({
 
   return (
     <motion.div 
-      className="flex h-full min-h-full flex-col bg-background"
+      className="flex h-full min-h-0 min-w-0 flex-col bg-[#faf9f7]"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       {/* ── CONTENT ── */}
-      <div className="flex-1 flex">
+      <div className="flex min-h-0 flex-1">
         {/* Main calendar area */}
-        <div className="flex-1 flex flex-col overflow-hidden border border-border bg-card shadow-2xl">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden border border-[#e2e8f0] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
           {view === 'week'
             ? <WeekTimeGrid
                 cur={cur}
@@ -227,7 +226,6 @@ export default function AgendaPage({
                 onSelectAppt={onSelectAppt}
                 onOpenSlot={onOpenSlot}
                 absenceMode={absenceMode}
-                blockMode={blockMode}
                 pendingDates={pendingDates}
                 togglePending={togglePending}
                 onMoveAppt={onMoveAppt}
@@ -235,7 +233,9 @@ export default function AgendaPage({
             : <MonthView
                 cur={cur}
                 appointments={filteredAppointments}
+                configSlots={configSlots}
                 isDayOpen={isDayOpen}
+                isSlotBlocked={isSlotBlocked}
                 absenceMode={absenceMode}
                 pendingDates={pendingDates}
                 togglePending={togglePending}
@@ -268,32 +268,32 @@ function AgendaSidebar({
   );
 
   return (
-    <aside className="hidden xl:flex flex-col w-80 border-r border-border bg-white/30 backdrop-blur-sm shrink-0">
+    <aside className="hidden w-72 shrink-0 flex-col border-r border-[#e2e8f0] bg-[#fbfcff] xl:flex">
       {/* Today summary */}
-      <div className="p-10 border-b border-background">
-        <h3 className="text-[9px] font-serif text-secondary uppercase tracking-[0.4em] mb-6 opacity-60">AUJOURD'HUI</h3>
-        <p className="text-5xl font-serif text-foreground italic">{todayAppts.length}</p>
-        <p className="text-[10px] text-foreground/40 mt-4 font-serif uppercase tracking-[0.1em]">
+      <div className="border-b border-[#e2e8f0] p-8">
+        <h3 className="mb-4 text-[9px] font-bold uppercase tracking-[0.4em] text-[#6366f1]">AUJOURD'HUI</h3>
+        <p className="text-5xl font-bold text-[#0f172a]">{todayAppts.length}</p>
+        <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#64748b]">
           Soins confirmés
         </p>
       </div>
 
       {/* Upcoming today */}
-      <div className="flex-1 overflow-y-auto p-10 scrollbar-hide">
-        <h3 className="text-[9px] font-serif text-secondary uppercase tracking-[0.4em] mb-10 opacity-60">
+      <div className="flex-1 overflow-y-auto p-8 scrollbar-hide">
+        <h3 className="mb-6 text-[9px] font-bold uppercase tracking-[0.4em] text-[#6366f1]">
           PROCHAINES SÉANCES
         </h3>
         {todayAppts.length > 0 ? (
-          <div className="space-y-10">
+          <div className="space-y-5">
             {todayAppts.slice(0, 8).map(a => (
               <div key={a.id} className="group cursor-pointer">
-                <div className="flex items-start gap-6">
-                  <span className="text-[11px] font-serif text-secondary w-14 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity">{a.time}</span>
+                <div className="flex items-start gap-4">
+                  <span className="w-12 shrink-0 text-[11px] font-bold text-[#4f46e5]">{a.time}</span>
                   <div className="min-w-0">
-                    <p className="text-sm font-serif text-foreground truncate group-hover:italic transition-all duration-500">
+                    <p className="truncate text-sm font-semibold text-[#0f172a]">
                       {a.clientNameSnapshot || a.title}
                     </p>
-                    <p className="text-[9px] text-foreground/40 uppercase tracking-[0.2em] mt-2 group-hover:text-primary transition-colors">
+                    <p className="mt-1 text-[9px] uppercase tracking-[0.2em] text-[#64748b]">
                       {a.serviceName || 'Session'}
                     </p>
                   </div>
@@ -302,18 +302,19 @@ function AgendaSidebar({
             ))}
           </div>
         ) : (
-          <div className="py-20 text-center opacity-30">
-             <Clock size={32} className="text-foreground/40 mx-auto mb-6" strokeWidth={0.5} />
-             <p className="text-[9px] font-serif text-foreground/40 uppercase tracking-[0.3em]">Zone de repos</p>
+          <div className="py-16 text-center">
+             <Clock size={28} className="mx-auto mb-4 text-[#cbd5e1]" strokeWidth={1} />
+             <p className="text-[9px] font-semibold uppercase tracking-[0.3em] text-[#94a3b8]">Aucune séance</p>
           </div>
         )}
       </div>
 
       {/* Revenue */}
-      <div className="p-10 border-t border-background bg-muted/20">
-        <h3 className="text-[9px] font-serif text-secondary uppercase tracking-[0.4em] mb-3 opacity-60">REVENUS ESTIMÉS</h3>
-        <p className="text-2xl font-serif text-foreground">
-          {todayAppts.reduce((s, a) => s + (a.price || 150), 0)} <span className="text-[10px] font-serif text-foreground/40 ml-1 uppercase tracking-widest italic">CHF</span>
+      <div className="border-t border-[#e2e8f0] bg-white p-8">
+        <h3 className="mb-2 text-[9px] font-bold uppercase tracking-[0.4em] text-[#6366f1]">REVENUS ESTIMÉS</h3>
+        <p className="text-2xl font-bold text-[#0f172a]">
+          {todayAppts.reduce((s, a) => s + (a.price || 150), 0)}{' '}
+          <span className="ml-1 text-[11px] font-semibold uppercase tracking-widest text-[#64748b]">CHF</span>
         </p>
       </div>
     </aside>
@@ -333,7 +334,6 @@ interface WeekTimeGridProps {
   onSelectAppt: (a: Appointment) => void;
   onOpenSlot: (d: string, t: string) => void;
   absenceMode: boolean;
-  blockMode: boolean;
   pendingDates: Set<string>;
   togglePending: (d: string) => void;
   onMoveAppt?: (id: string, date: string, time: string) => void;
@@ -341,7 +341,7 @@ interface WeekTimeGridProps {
 
 function WeekTimeGrid({
   cur, appointments, configSlots, isDayOpen, isSlotBlocked,
-  toggleSlot, onSelectAppt, onOpenSlot, absenceMode, blockMode,
+  toggleSlot, onSelectAppt, onOpenSlot, absenceMode,
   pendingDates, togglePending, onMoveAppt,
 }: WeekTimeGridProps) {
   const days = useMemo(() => {
@@ -366,70 +366,80 @@ function WeekTimeGrid({
     }
   };
 
+  const now = new Date();
+  const nowTop = useMemo(() => {
+    const minutes = now.getHours() * 60 + now.getMinutes();
+    return ((minutes - START_HOUR * 60) / 60) * HOUR_H;
+  }, [now]);
+
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col bg-[#fafbfc]">
       {/* Day column headers */}
       <div
-        className="sticky top-0 z-30 grid shrink-0 border-b border-border bg-muted/70"
+        className="sticky top-0 z-30 grid shrink-0 border-b border-[#e2e8f0] bg-[rgba(255,255,255,0.94)] backdrop-blur"
         style={{ gridTemplateColumns: `${TIME_COLUMN_WIDTH}px repeat(7, minmax(0, 1fr))` }}
       >
         {/* Empty corner */}
-        <div className="border-r border-border bg-background" />
+        <div className="border-r border-[#e2e8f0] bg-[#f8fafc]/80" />
         {days.map((d, i) => {
           const dStr = fmt(d);
           const isToday = isSameDay(new Date(), d);
           const isOpen = isDayOpen(dStr);
           const isPending = pendingDates.has(dStr);
+          const closedStripeStyle = !isOpen && !isPending
+            ? {
+                backgroundImage:
+                  'repeating-linear-gradient(45deg, rgba(15,23,42,0.025), rgba(15,23,42,0.025) 12px, transparent 12px, transparent 24px)',
+              }
+            : undefined;
           return (
             <div
               key={i}
               onClick={() => absenceMode && togglePending(dStr)}
-              className={`border-r border-border px-2 py-4 text-center transition-colors duration-200 ${
-                absenceMode ? 'cursor-pointer hover:bg-background' : ''
-              } ${isPending ? 'bg-primary text-primary-foreground' : !isOpen ? 'bg-border/80' : ''} ${
-                isToday && !isPending ? 'bg-primary/10' : ''
+              className={`border-r border-[#e2e8f0] px-2 py-4 text-center transition-colors duration-200 ${
+                absenceMode ? 'cursor-pointer hover:bg-[#f8faff]' : ''
+              } ${isPending ? 'bg-[#6366f1] text-white' : !isOpen ? 'bg-[#f1f5f9]' : ''} ${
+                isToday && !isPending ? 'bg-[#eef2ff]' : ''
               }`}
+              style={closedStripeStyle}
             >
               <p className={`text-[10px] font-semibold uppercase tracking-[0.24em] ${
-                isToday && !isPending ? 'text-primary' : isPending ? 'text-primary-foreground/70' : 'text-foreground/60'
+                isToday && !isPending ? 'text-[#4f46e5]' : isPending ? 'text-white/70' : 'text-[#64748b]'
               }`}>
                 {format(d, 'EEE', { locale: fr })}
               </p>
               <p className={`mt-1 text-2xl font-bold leading-none ${
                 isToday && !isPending
-                  ? 'text-primary'
-                  : isOpen ? (isPending ? 'text-primary-foreground' : 'text-foreground') : 'text-foreground/60 opacity-60'
+                  ? 'text-[#4f46e5]'
+                  : isOpen ? (isPending ? 'text-white' : 'text-[#1f2937]') : 'text-[#94a3b8]'
               }`}>
                 {d.getDate()}
               </p>
-              {!isOpen && !isPending && (
-                <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-foreground/60">Fermé</p>
-              )}
             </div>
           );
         })}
       </div>
 
       {/* Scrollable time grid */}
-      <div className="flex-1 bg-white">
+      <div className="flex-1 bg-white/90">
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
           <div
             className="grid relative"
             style={{ gridTemplateColumns: `${TIME_COLUMN_WIDTH}px repeat(7, minmax(0, 1fr))`, height: gridHeight }}
           >
             {/* Time labels column */}
-          <div className="border-r border-border relative bg-background">
+          <div className="border-r border-[#e2e8f0] relative bg-white/90">
             {HOURS.map(h => (
               <div
                 key={`row-${h}`}
-                className="absolute inset-x-0 border-t border-border/60"
+                className="absolute inset-x-0 border-t border-[#e2e8f0]"
                 style={{ top: (h - START_HOUR) * HOUR_H }}
               />
             ))}
             {HOURS.map(h => (
               <div
                 key={h}
-                className="absolute right-3 top-0 text-xs font-medium text-foreground/60"
+                className="absolute right-3 top-0 text-xs font-medium text-[#94a3b8]"
                 style={{ top: (h - START_HOUR) * HOUR_H }}
               >
                 {String(h).padStart(2, '0')}:00
@@ -451,15 +461,15 @@ function WeekTimeGrid({
             return (
               <div
                 key={dayIdx}
-                className={`border-r border-border relative ${
-                  isToday ? 'bg-primary/5' : 'bg-white'
-                } ${!isOpen ? 'bg-background' : ''} ${isPending ? 'bg-primary/10' : ''}`}
+                className={`border-r border-[#e2e8f0] relative ${
+                  isToday ? 'bg-[#eef2ff]/60' : 'bg-white/90'
+                } ${!isOpen ? 'bg-[#f8fafc]' : ''} ${isPending ? 'bg-[#eef2ff]' : ''}`}
               >
                 {/* Hour grid lines */}
                 {isOpen && HOURS.map(h => (
                   <div
                     key={h}
-                    className="absolute left-0 right-0 border-t border-border/60"
+                    className="absolute left-0 right-0 border-t border-[#e2e8f0]"
                     style={{ top: (h - START_HOUR) * HOUR_H }}
                   />
                 ))}
@@ -469,7 +479,7 @@ function WeekTimeGrid({
                     className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none"
                     style={{ backgroundImage: 'repeating-linear-gradient(45deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02) 12px, transparent 12px, transparent 24px)' }}
                   >
-                    <Lock size={36} strokeWidth={1.5} className="text-foreground/20" />
+                    <Lock size={36} strokeWidth={1.5} className="text-[#cbd5e1]" />
                   </div>
                 )}
                 
@@ -484,11 +494,14 @@ function WeekTimeGrid({
                     <DroppableSlot
                       key={t}
                       id={`${dStr}|${t}`}
+                      time={t}
                       top={top}
-                      blockMode={blockMode}
+                      absenceMode={absenceMode}
                       onClick={() => {
-                        if (absenceMode) return;
-                        if (blockMode) { toggleSlot(dStr, t); return; }
+                        if (absenceMode) {
+                          toggleSlot(dStr, t);
+                          return;
+                        }
                         onOpenSlot(dStr, t);
                       }}
                     />
@@ -505,14 +518,16 @@ function WeekTimeGrid({
                     <div
                       key={`block-${t}`}
                       onClick={() => {
-                        if (!absenceMode) toggleSlot(dStr, t);
+                        if (absenceMode) toggleSlot(dStr, t);
                       }}
-                      className="absolute left-1 right-1 z-[2] flex items-center justify-center rounded-[10px] border border-border bg-muted/90 px-2 text-center shadow-sm transition-all duration-200 hover:bg-border"
+                      className={`absolute left-1 right-1 z-[2] flex items-center justify-center rounded-[10px] border border-[#e2e8f0] bg-[#f8fafc] px-2 text-center shadow-sm transition-all duration-200 ${
+                        absenceMode ? 'cursor-pointer hover:bg-[#fee2e2]' : 'cursor-default'
+                      }`}
                       style={{ top: getTop(t) + 6, height: getHeight(DEFAULT_DURATION) - 12 }}
                     >
-                      <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
-                        <Lock size={12} strokeWidth={1.5} className="text-foreground/60" />
-                        <span>Bloqué</span>
+                      <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+                        <Lock size={12} strokeWidth={1.5} className="text-[#94a3b8]" />
+                        <span>{absenceMode ? 'Rouvrir' : 'Bloqué'}</span>
                       </div>
                     </div>
                   );
@@ -531,10 +546,20 @@ function WeekTimeGrid({
                       height={height}
                       onSelect={onSelectAppt}
                       isDragging={activeId === appt.id}
-                      disabled={absenceMode || blockMode}
+                      disabled={absenceMode}
                     />
                   );
                 })}
+                {/* Current time indicator */}
+                {isToday && nowTop >= 0 && nowTop <= gridHeight && (
+                  <div 
+                    className="absolute left-0 right-0 z-[10] flex items-center pointer-events-none"
+                    style={{ top: nowTop }}
+                  >
+                    <div className="h-2 w-2 rounded-full bg-[#ef4444] -ml-1 shadow-sm" />
+                    <div className="h-[2px] flex-1 bg-[#ef4444] shadow-sm" />
+                  </div>
+                )}
               </div>
             );
           })}
@@ -615,7 +640,9 @@ function AppointmentBlock({
 interface MonthViewProps {
   cur: Date;
   appointments: Appointment[];
+  configSlots: { [key: number]: string[] };
   isDayOpen: (d: string) => boolean;
+  isSlotBlocked: (d: string, t: string) => boolean;
   absenceMode: boolean;
   pendingDates: Set<string>;
   togglePending: (d: string) => void;
@@ -628,7 +655,9 @@ interface MonthViewProps {
 function MonthView({
   cur,
   appointments,
+  configSlots,
   isDayOpen,
+  isSlotBlocked,
   absenceMode,
   pendingDates,
   togglePending,
@@ -642,31 +671,45 @@ function MonthView({
     end: endOfWeek(endOfMonth(cur), { weekStartsOn: 1 }),
   }), [cur]);
   const weekRows = Math.ceil(days.length / 7);
-  const visibleAppointmentLimit = weekRows >= 6 ? 2 : 3;
-  const dayCellPadding = weekRows >= 6 ? 'p-3' : 'p-4';
+  const denseMonth = weekRows >= 6;
+  const visibleAppointmentLimit = denseMonth ? 1 : 3;
+  const dayCellPadding = denseMonth ? 'p-2.5' : 'px-3 py-2.5';
+  const freeSlotPreviewLimit = denseMonth ? 1 : 2;
+  const headerMonthLabelClass = denseMonth ? 'text-[10px]' : 'text-[11px]';
+  const countLabelClass = 'text-[10px]';
+  const emptyStateClass = denseMonth ? 'px-2 py-2.5 text-[10px]' : 'px-3 py-3 text-[11px]';
+  const appointmentCardClass = denseMonth ? 'rounded-r-[10px] px-2 py-1' : 'rounded-r-[12px] px-2 py-1.5';
+  const appointmentTimeClass = denseMonth ? 'text-[9px]' : 'text-[10px]';
+  const appointmentTitleClass = denseMonth ? 'text-[10px]' : 'text-[11px]';
+  const appointmentSubtitleClass = denseMonth ? 'hidden' : 'truncate text-[10px] leading-tight';
+  const moreButtonClass = denseMonth ? 'rounded-[10px] px-2 py-1 text-[10px]' : 'rounded-[12px] px-3 py-1.5 text-[11px]';
+  const freeSlotBoxClass = denseMonth ? 'rounded-[10px] px-2 py-1.5 text-[10px]' : 'rounded-[12px] px-3 py-2 text-[11px]';
+  const dayNumberCapsuleClass = denseMonth
+    ? 'h-7 min-w-7 rounded-[9px] px-1 text-[13px]'
+    : 'h-7 min-w-7 rounded-[9px] px-1.5 text-[13px]';
 
   return (
-    <div className="flex h-full flex-1 flex-col overflow-hidden bg-background">
+    <div className="flex h-full flex-1 flex-col overflow-hidden bg-[#fafbfc]">
       {/* Column headers */}
       <div
-        className="sticky z-20 grid shrink-0 grid-cols-7 border-b border-border bg-background/95 backdrop-blur"
+        className="sticky z-20 grid shrink-0 grid-cols-7 border-b border-[#e2e8f0] bg-white/95 backdrop-blur"
         style={{ top: 0 }}
       >
         {MONTH_DAY_LABELS.map(d => (
           <div key={d} className="py-2.5 text-center">
-            <span className="text-[11px] font-bold uppercase tracking-[0.28em] text-foreground/60">{d}</span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#64748b]">{d}</span>
           </div>
         ))}
       </div>
 
       {searchQuery.trim() && (
-        <div className="border-b border-border bg-background px-4 py-2 text-sm text-foreground/60 sm:px-6">
+        <div className="border-b border-[#e2e8f0] bg-white px-4 py-2 text-sm text-[#64748b] sm:px-6">
           {`${appointments.length} séance${appointments.length > 1 ? 's' : ''} correspondent à “${searchQuery.trim()}”.`}
         </div>
       )}
 
       <div
-        className="grid min-h-0 flex-1 grid-cols-7 bg-muted/30"
+        className="grid min-h-0 flex-1 grid-cols-7 bg-[#f8fafc]"
         style={{ gridTemplateRows: `repeat(${weekRows}, minmax(0, 1fr))` }}
       >
         {days.map((day, i) => {
@@ -678,6 +721,14 @@ function MonthView({
           const dayAppointments = appointments
             .filter(e => e.date === dStr)
             .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+          const freeSlots = isOpen
+            ? [...(configSlots[isoDay(day)] || [])]
+                .sort()
+                .filter((time) => (
+                  !dayAppointments.some((appt) => appt.time === time) &&
+                  !isSlotBlocked(dStr, time)
+                ))
+            : [];
           const visibleAppointments = dayAppointments.slice(0, visibleAppointmentLimit);
           const hiddenCount = Math.max(dayAppointments.length - visibleAppointments.length, 0);
 
@@ -693,13 +744,13 @@ function MonthView({
                 onSelectDate(day);
                 onToggleView('week');
               }}
-              className={`relative group flex min-h-0 flex-col border-r border-b border-border ${dayCellPadding} transition-colors duration-200 ${
+              className={`relative group flex min-h-0 flex-col border-r border-b border-[#e2e8f0] ${dayCellPadding} transition-colors duration-200 ${
                 !inMonth
-                  ? 'cursor-default bg-muted/40 text-foreground/40'
-                  : 'cursor-pointer bg-background hover:bg-card/80'
-              } ${isToday && inMonth ? 'bg-primary/5' : ''} ${
-                !isOpen && inMonth ? 'bg-muted/30' : ''
-              } ${isPend ? 'bg-primary text-primary-foreground hover:bg-primary/90' : ''}`}
+                  ? 'cursor-default bg-[#f8fafc] text-[#94a3b8]'
+                  : 'cursor-pointer bg-white hover:bg-[#f8faff]'
+              } ${isToday && inMonth ? 'bg-[#eef2ff]/70' : ''} ${
+                !isOpen && inMonth ? 'bg-[#f8fafc]' : ''
+              } ${isPend ? 'bg-[#6366f1] text-white hover:bg-[#4f46e5]' : ''}`}
             >
               {inMonth && !isOpen && !isPend && (
                 <div 
@@ -710,28 +761,35 @@ function MonthView({
                 </div>
               )}
 
-              <div className="relative z-10 mb-2 flex shrink-0 items-start justify-between gap-2">
+              <div className="relative z-10 mb-1.5 flex shrink-0 items-start justify-between gap-1.5">
                 <div className="flex flex-col">
-                  <span className={`text-sm font-bold ${
-                    inMonth ? (isPend ? 'text-primary-foreground/80' : 'text-foreground/60') : 'text-foreground/40'
+                  <span className={`${headerMonthLabelClass} font-bold leading-none ${
+                    inMonth ? (isPend ? 'text-primary-foreground/80' : 'text-[#64748b]') : 'text-[#94a3b8]'
                   }`}>
                     {format(day, 'MMM').replace('.', '')}
                   </span>
                   {inMonth && dayAppointments.length > 0 && (
-                    <span className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${
-                      isPend ? 'text-primary-foreground/70' : 'text-foreground/60'
+                    <span className={`${countLabelClass} font-semibold uppercase tracking-[0.18em] ${
+                      isPend ? 'text-primary-foreground/70' : 'text-[#64748b]'
                     }`}>
                       {dayAppointments.length} séance{dayAppointments.length > 1 ? 's' : ''}
                     </span>
                   )}
+                  {inMonth && freeSlots.length > 0 && (
+                    <span className={`mt-1 ${countLabelClass} font-semibold uppercase tracking-[0.18em] ${
+                      isPend ? 'text-primary-foreground/70' : 'text-[#65a30d]'
+                    }`}>
+                      {freeSlots.length} créneau{freeSlots.length > 1 ? 'x' : ''} libre{freeSlots.length > 1 ? 's' : ''}
+                    </span>
+                  )}
                 </div>
 
-                <span className={`inline-flex h-8 w-8 items-center justify-center rounded-[10px] text-sm font-bold ${
+                <span className={`inline-flex items-center justify-center font-bold leading-none ${dayNumberCapsuleClass} ${
                   isToday && !isPend
-                    ? 'bg-primary text-primary-foreground ring-4 ring-primary/10'
+                    ? 'bg-[#6366f1] text-white ring-4 ring-[#6366f1]/10'
                     : inMonth
-                      ? (isPend ? 'bg-primary-foreground/10 text-primary-foreground' : 'text-foreground')
-                      : 'text-foreground/40'
+                      ? (isPend ? 'bg-white/20 text-white' : 'text-[#1f2937]')
+                      : 'text-[#94a3b8]'
                 }`}>
                   {day.getDate()}
                 </span>
@@ -750,17 +808,19 @@ function MonthView({
                         e.stopPropagation();
                         onSelectAppt(appt);
                       }}
-                      className={`rounded-r-[12px] border-l-4 px-2 py-1.5 text-left transition-transform hover:-translate-y-0.5 ${tone}`}
+                      className={`${appointmentCardClass} border-l-4 text-left transition-transform hover:-translate-y-0.5 ${tone}`}
                     >
-                      <div className={`text-[10px] font-bold leading-none ${isPaid ? 'text-primary-foreground/80' : ''}`}>
+                      <div className={`${appointmentTimeClass} font-bold leading-none ${isPaid ? 'text-emerald-800' : ''}`}>
                         {appt.time || '--:--'}{appt.duration ? ` · ${appt.duration}` : ''}
                       </div>
-                      <div className={`mt-1 truncate text-[11px] font-semibold leading-tight ${isPaid ? 'text-primary-foreground' : 'text-foreground'}`}>
+                      <div className={`mt-1 truncate ${appointmentTitleClass} font-semibold leading-tight ${isPaid ? 'text-emerald-950' : 'text-[#1f2937]'}`}>
                         {appt.clientNameSnapshot || appt.title || 'Séance'}
                       </div>
-                      <div className={`truncate text-[10px] leading-tight ${isPaid ? 'text-primary-foreground/70' : 'text-foreground/80'}`}>
-                        {appt.serviceName || 'Session'}
-                      </div>
+                      {!denseMonth && (
+                        <div className={`${appointmentSubtitleClass} ${isPaid ? 'text-emerald-800/80' : 'text-[#64748b]'}`}>
+                          {appt.serviceName || 'Session'}
+                        </div>
+                      )}
                     </button>
                   );
                 })}
@@ -773,21 +833,32 @@ function MonthView({
                       onSelectDate(day);
                       onToggleView('week');
                     }}
-                    className={`mt-auto rounded-[10px] px-3 py-1 text-left text-[11px] font-semibold transition-colors ${
+                    className={`mt-auto ${moreButtonClass} text-left font-bold transition-all duration-200 ${
                       isPend
-                        ? 'bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/15'
-                        : 'bg-muted/50 text-primary hover:bg-muted/80'
+                        ? 'bg-white/10 text-white hover:bg-white/20'
+                        : 'bg-[#f8fafc] text-[#4f46e5] hover:bg-[#eef2ff]'
                     }`}
                   >
-                    +{hiddenCount} autre{hiddenCount > 1 ? 's' : ''}
+                    +{hiddenCount} séance{hiddenCount > 1 ? 's' : ''}
                   </button>
                 )}
 
-                {inMonth && isOpen && dayAppointments.length === 0 && (
-                  <div className={`mt-auto rounded-[12px] border border-dashed px-3 py-3 text-[11px] ${
-                    isPend ? 'border-primary-foreground/20 text-primary-foreground/70' : 'border-border text-foreground/60'
+                {inMonth && isOpen && freeSlots.length > 0 && (
+                  <div className={`${freeSlotBoxClass} rounded-[12px] border ${
+                    isPend ? 'border-white/20 bg-white/10 text-white/80' : 'border-[#dbe3ef] bg-[#f8fafc] text-[#65a30d]'
                   }`}>
-                    Aucune séance planifiée
+                    <div className="font-bold uppercase tracking-[0.18em]">
+                      {freeSlots.slice(0, freeSlotPreviewLimit).join(' · ')}
+                      {freeSlots.length > freeSlotPreviewLimit ? ` +${freeSlots.length - freeSlotPreviewLimit}` : ''}
+                    </div>
+                  </div>
+                )}
+
+                {inMonth && isOpen && dayAppointments.length === 0 && (
+                  <div className={`mt-auto rounded-[12px] border border-dashed ${emptyStateClass} ${
+                    isPend ? 'border-white/20 text-white/70' : 'border-[#e2e8f0] text-[#94a3b8]'
+                  }`}>
+                    {freeSlots.length > 0 ? 'Disponible' : 'Aucune séance'}
                   </div>
                 )}
               </div>
@@ -802,36 +873,44 @@ function MonthView({
 /* ── DND-KIT WRAPPERS ── */
 function DroppableSlot({
   id,
+  time,
   onClick,
   top,
-  blockMode,
+  absenceMode,
 }: {
   id: string;
+  time: string;
   onClick: () => void;
   top: number;
-  blockMode: boolean;
+  absenceMode: boolean;
 }) {
   const { isOver, setNodeRef } = useDroppable({ id });
   return (
     <button
       ref={setNodeRef}
       onClick={onClick}
-      className={`absolute left-1 right-1 z-[2] flex items-center justify-center overflow-hidden rounded-[10px] border border-dashed transition-all duration-200 group ${
+      className={`absolute left-1 right-1 z-[2] flex items-center justify-between overflow-hidden rounded-[10px] border px-3 text-left transition-all duration-200 ${
         isOver 
-          ? 'border-[#1a1c1b] bg-[#faf9f7]' 
-          : 'border-transparent bg-transparent hover:bg-[#faf9f7]/70 hover:border-[#d9ddd6]'
+          ? 'border-[#312e81] bg-[#eef2ff]'
+          : absenceMode
+            ? 'border-[#fecaca] bg-[#fff7ed] hover:border-[#fca5a5] hover:bg-[#fee2e2]'
+            : 'border-[#dbe3ef] bg-[#f8fafc] hover:border-[#c7d2fe] hover:bg-[#f0f9ff]'
       }`}
       style={{ top: top + 6, height: getHeight(DEFAULT_DURATION) - 12 }}
     >
-      <div className={`flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.18em] transition-all duration-200 ${
-        isOver
-          ? 'text-[#1a1c1b] scale-105'
-          : blockMode
-            ? 'text-[#725a38] opacity-0 group-hover:opacity-100'
-            : 'text-[#435544] opacity-0 group-hover:opacity-100'
+      <div className="flex flex-col">
+        <span className="text-[11px] font-bold text-[#1f2937]">{time}</span>
+        <span className={`text-[10px] font-semibold uppercase tracking-[0.18em] ${
+          absenceMode ? 'text-[#b45309]' : 'text-[#65a30d]'
+        }`}>
+          {absenceMode ? 'Fermer ce créneau' : 'Disponible'}
+        </span>
+      </div>
+      <div className={`flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${
+        isOver ? 'text-[#312e81]' : absenceMode ? 'text-[#b45309]' : 'text-[#4f46e5]'
       }`}>
         <Plus size={14} strokeWidth={1.8} />
-        <span>{blockMode ? 'Bloquer' : 'Ajouter'}</span>
+        <span>{absenceMode ? 'Fermer' : 'Réserver'}</span>
       </div>
     </button>
   );

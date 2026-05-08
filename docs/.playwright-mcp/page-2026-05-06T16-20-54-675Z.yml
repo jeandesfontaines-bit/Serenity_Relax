@@ -1,0 +1,44 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - img "Sanctuary" [ref=e4]
+      - generic [ref=e8]:
+        - generic [ref=e12]:
+          - paragraph [ref=e13]: SERENITY RELAX THERAPY
+          - generic [ref=e14]: by João
+        - generic [ref=e15]:
+          - heading "Entrez dans votre espace de soin." [level=1] [ref=e16]:
+            - text: Entrez dans votre
+            - text: espace
+            - text: de soin.
+          - paragraph [ref=e17]:
+            - text: Un sanctuaire thérapeutique à Genève Cointrin
+            - text: dédié à la restauration du corps et de l'esprit.
+    - generic [ref=e19]:
+      - generic [ref=e21]:
+        - heading "Connexion" [level=2] [ref=e22]
+        - paragraph [ref=e25]: Serenity Relax Therapy
+      - paragraph [ref=e27]: Cet accès est réservé aux clients ayant une réservation confirmée ainsi qu'au praticien pour la gestion du cabinet.
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e31]:
+            - text: Quelle est votre adresse e-mail ?
+            - textbox "name@example.com" [ref=e32]
+          - generic [ref=e33]:
+            - button "Envoyer le lien de connexion" [disabled] [ref=e34]:
+              - text: Envoyer le lien de connexion
+              - img [ref=e35]
+            - generic [ref=e41]: Ou continuer avec
+            - generic [ref=e42]:
+              - button "Google Google" [ref=e43] [cursor=pointer]:
+                - img "Google" [ref=e44]
+                - generic [ref=e45]: Google
+              - button "Apple" [ref=e46] [cursor=pointer]:
+                - img [ref=e47]
+                - generic [ref=e49]: Apple
+        - paragraph [ref=e50]:
+          - text: Les clients reçoivent un lien de connexion par e-mail après
+          - text: leur première réservation. Aucun mot de passe n'est requis.
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=e51]

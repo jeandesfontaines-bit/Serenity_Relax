@@ -83,7 +83,7 @@ export default function InvoicingManagement() {
               <div className="h-[1px] w-12 bg-zinc-200" />
               <span className="font-display uppercase tracking-[0.3em] text-[10px] md:text-xs text-zinc-400">Comptabilité Privée</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-serif font-light text-zinc-900 tracking-tighter">Gestion des Flux</h1>
+            <h1 className="text-5xl md:text-7xl  font-light text-zinc-900 tracking-tighter">Gestion des Flux</h1>
           </div>
           
           <div className="flex items-center gap-4">
@@ -108,7 +108,7 @@ export default function InvoicingManagement() {
           ].map((stat, i) => (
             <div key={i} className={`p-10 ${stat.bg || 'bg-white'} flex flex-col justify-between min-h-[180px] group transition-all duration-500`}>
               <span className="font-display uppercase tracking-[0.3em] text-[9px] md:text-[10px] text-zinc-400">{stat.label}</span>
-              <p className={`text-4xl font-serif font-light tracking-tight ${stat.color} capitalize`}>{stat.value}</p>
+              <p className={`text-4xl  font-light tracking-tight ${stat.color} capitalize`}>{stat.value}</p>
             </div>
           ))}
         </div>
@@ -116,7 +116,7 @@ export default function InvoicingManagement() {
         {/* Invoices Table */}
         <div className="bg-white border border-zinc-200 overflow-hidden">
           <div className="p-10 border-b border-zinc-100 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <h2 className="text-2xl font-serif font-light text-zinc-900">Journal des Ventes</h2>
+            <h2 className="text-2xl  font-light text-zinc-900">Journal des Ventes</h2>
             <div className="flex items-center gap-6">
                <div className="relative hidden md:block">
                 <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-300" />
@@ -147,20 +147,20 @@ export default function InvoicingManagement() {
               </TableHeader>
               <TableBody>
                 {isLoading ? (
-                  <TableRow><TableCell colSpan={6} className="text-center py-32 font-serif text-zinc-300 italic text-2xl">Ouverture du registre...</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={6} className="text-center py-32  text-zinc-300 italic text-2xl">Ouverture du registre...</TableCell></TableRow>
                 ) : invoices?.length === 0 ? (
-                  <TableRow><TableCell colSpan={6} className="text-center py-32 font-serif text-zinc-300 italic text-2xl">Aucune écriture comptable.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={6} className="text-center py-32  text-zinc-300 italic text-2xl">Aucune écriture comptable.</TableCell></TableRow>
                 ) : invoices?.map((inv) => (
                   <TableRow key={inv.id} className="border-b border-zinc-50 hover:bg-zinc-50/50 transition-all group">
                     <TableCell className="pl-10 font-display text-[10px] tracking-[0.2em] text-zinc-400">#{inv.invoiceNumber}</TableCell>
                     <TableCell className="py-8">
-                      <p className="font-serif text-2xl font-light text-zinc-900">{inv.clientNameSnapshot}</p>
+                      <p className=" text-2xl font-light text-zinc-900">{inv.clientNameSnapshot}</p>
                       <span className="font-display text-[9px] text-zinc-400 uppercase tracking-[0.3em]">Dossier Holistique</span>
                     </TableCell>
                     <TableCell className="font-display text-[10px] text-zinc-500 uppercase tracking-[0.2em]">
                       {format(new Date(inv.issueDate), 'dd MMM yyyy', { locale: fr })}
                     </TableCell>
-                    <TableCell className="font-serif text-xl text-zinc-900">
+                    <TableCell className=" text-xl text-zinc-900">
                       {inv.totalAmount.toFixed(2)} <span className="text-xs opacity-20 ml-1">CHF</span>
                     </TableCell>
                     <TableCell>
@@ -203,7 +203,7 @@ export default function InvoicingManagement() {
             <div className="bg-white w-full max-w-xl border border-zinc-200 animate-in fade-in zoom-in duration-500 shadow-2xl">
               <div className="p-12 space-y-12">
                 <header className="flex items-center justify-between border-b border-zinc-100 pb-8">
-                  <h3 className="text-4xl font-serif font-light text-zinc-900 tracking-tight">Rectification</h3>
+                  <h3 className="text-4xl  font-light text-zinc-900 tracking-tight">Rectification</h3>
                   <button onClick={() => setIsEditing(false)} className="text-zinc-300 hover:text-zinc-900 transition-colors">
                     <X size={28} />
                   </button>
@@ -215,7 +215,7 @@ export default function InvoicingManagement() {
                     <input 
                       value={editName}
                       onChange={e => setEditName(e.target.value)}
-                      className="w-full px-8 py-5 bg-zinc-50 border-none text-xl font-serif text-zinc-900 focus:ring-1 focus:ring-zinc-200 outline-none transition-all"
+                      className="w-full px-8 py-5 bg-zinc-50 border-none text-xl  text-zinc-900 focus:ring-1 focus:ring-zinc-200 outline-none transition-all"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-10">
@@ -225,7 +225,7 @@ export default function InvoicingManagement() {
                         type="number"
                         value={editAmount}
                         onChange={e => setEditAmount(Number(e.target.value))}
-                        className="w-full px-8 py-5 bg-zinc-50 border-none text-xl font-serif text-zinc-900 focus:ring-1 focus:ring-zinc-200 outline-none transition-all"
+                        className="w-full px-8 py-5 bg-zinc-50 border-none text-xl  text-zinc-900 focus:ring-1 focus:ring-zinc-200 outline-none transition-all"
                       />
                     </div>
                     <div className="space-y-4">

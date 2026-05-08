@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, User as UserIcon, Sparkles } from 'lucide-react';
+import { Menu, X, User as UserIcon, Sparkle, CalendarDays } from 'lucide-react';
 import { useUser, useAuth, useFirestore } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
@@ -96,11 +96,11 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
       }`}
     >
       <div className="flex justify-between items-center w-full px-8 md:px-16 max-w-[1920px] mx-auto">
-        <Link href="/" className="flex flex-col group relative">
-          <span className={`font-sans font-medium text-[15px] md:text-[17px] tracking-[0.5em] uppercase ${isScrolled ? 'text-foreground' : 'text-white'}`}>
+        <Link href="/" className="flex items-baseline gap-2 group relative">
+          <span className={`font-sans font-semibold text-[0.72rem] tracking-[0.3em] uppercase md:text-[0.8rem] ${isScrolled ? 'text-foreground' : 'text-white'}`}>
             SERENITY
           </span>
-          <span className={`font-signature text-[20px] md:text-[24px] lowercase -mt-1.5 opacity-70 ${isScrolled ? 'text-secondary' : 'text-white/70'}`}>
+          <span className={`font-serif text-[0.64rem] italic leading-none opacity-70 md:text-[0.72rem] ${isScrolled ? 'text-secondary' : 'text-white/70'}`}>
             by João
           </span>
         </Link>
@@ -124,29 +124,41 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
 
         <div className="flex items-center gap-10">
           {effectiveUser ? (
-            <div className="flex items-center gap-5 group cursor-pointer">
-              <div className="flex flex-col items-end justify-center">
-                 <span className={`font-sans uppercase tracking-[0.3em] text-[9px] leading-none mb-1.5 ${isScrolled ? 'text-foreground' : 'text-white'}`}>
-                   {effectiveUser.name}
-                 </span>
-                 <button onClick={handleSignOut} className={`font-sans uppercase tracking-[0.3em] text-[9px] leading-none ${isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/40 hover:text-white'}`}>
-                   Sortie
-                 </button>
-              </div>
-              <div className={`w-10 h-10 rounded-full border flex items-center justify-center overflow-hidden ${
-                isScrolled ? 'border-border bg-white text-foreground' : 'border-white/20 bg-white/10 text-white'
-              }`}>
-                {effectiveUser.photo ? (
-                  <img src={effectiveUser.photo} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  <UserIcon size={14} strokeWidth={1.5} />
-                )}
+            <div className="flex items-center gap-6 group">
+              {effectiveUser.type === 'client' && (
+                <Link 
+                  href="/client/dashboard" 
+                  className={`hidden md:block font-sans uppercase tracking-[0.4em] text-[10px] transition-colors ${
+                    isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/50 hover:text-white'
+                  }`}
+                >
+                  Mes réservations
+                </Link>
+              )}
+              <div className="flex items-center gap-5 cursor-pointer">
+                <div className="flex flex-col items-end justify-center">
+                   <span className={`font-sans uppercase tracking-[0.3em] text-[9px] leading-none mb-1.5 font-bold ${isScrolled ? 'text-foreground' : 'text-white'}`}>
+                     {effectiveUser.name}
+                   </span>
+                   <button onClick={handleSignOut} className={`font-sans uppercase tracking-[0.3em] text-[9px] leading-none opacity-60 hover:opacity-100 transition-opacity ${isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/40 hover:text-white'}`}>
+                     Sortie
+                   </button>
+                </div>
+                <div className={`w-10 h-10 rounded-full border flex items-center justify-center overflow-hidden transition-all duration-500 group-hover:scale-105 ${
+                  isScrolled ? 'border-border bg-white text-foreground' : 'border-white/20 bg-white/10 text-white'
+                }`}>
+                  {effectiveUser.photo ? (
+                    <img src={effectiveUser.photo} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <UserIcon size={14} strokeWidth={1.5} />
+                  )}
+                </div>
               </div>
             </div>
           ) : (
             <Link 
               href="/login" 
-              className={`hidden sm:block font-sans uppercase tracking-[0.4em] text-[10px] ${
+              className={`hidden sm:block font-sans uppercase tracking-[0.4em] text-[10px] transition-colors ${
                 isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/50 hover:text-white'
               }`}
             >
@@ -156,60 +168,94 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
 
           <button 
             onClick={onBookingClick}
-            className={`premium-button rounded-full overflow-hidden ${
+            className={`premium-button rounded-full overflow-hidden px-8 py-3.5 transition-all duration-500 active:scale-95 ${
               isScrolled 
-                ? 'bg-foreground text-background hover:bg-primary' 
+                ? 'bg-foreground text-background hover:bg-primary shadow-[0_4px_20px_rgba(0,0,0,0.08)]' 
                 : 'bg-white text-foreground hover:bg-primary hover:text-white'
             }`}
           >
-            <span>Réserver</span>
+            <span className="font-sans uppercase tracking-[0.3em] text-[10px] font-bold">Réserver</span>
           </button>
 
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`lg:hidden rounded-full p-3 ${isScrolled ? 'text-foreground hover:bg-black/5' : 'text-white hover:bg-white/10'}`}>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`lg:hidden rounded-full p-3 transition-colors ${isScrolled ? 'text-foreground hover:bg-black/5' : 'text-white hover:bg-white/10'}`}>
             {isMenuOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
           </button>
         </div>
       </div>
 
       {isMenuOpen && (
-          <div className="fixed inset-0 top-0 z-[90] flex flex-col gap-20 bg-background p-16 md:p-32">
-            <div className="flex justify-between items-center mb-10">
-               <span className="font-sans uppercase tracking-[0.6em] text-[12px] text-muted-foreground">Menu</span>
-               <button onClick={() => setIsMenuOpen(false)} className="p-4 rounded-full bg-muted text-foreground">
+          <div className="fixed inset-0 top-0 z-[90] flex flex-col bg-background p-10 md:p-24 animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="flex justify-between items-center mb-16">
+               <div className="flex flex-col">
+                 <span className="font-sans uppercase tracking-[0.6em] text-[10px] text-muted-foreground mb-2">Navigation</span>
+                 <div className="h-[1px] w-12 bg-primary/30" />
+               </div>
+               <button onClick={() => setIsMenuOpen(false)} className="p-4 rounded-full bg-muted text-foreground hover:bg-primary hover:text-white transition-all duration-300">
                   <X size={24} strokeWidth={1.5} />
                </button>
             </div>
 
-            <nav className="flex flex-col gap-10">
+            <nav className="flex flex-col gap-8 md:gap-12">
               {(isTherapistArea ? adminLinks : mainLinks).map((link) => (
-                <div key={link.label}>
+                <div key={link.label} className="group overflow-hidden">
                   <Link 
                     href={link.href} 
                     onClick={() => setIsMenuOpen(false)} 
-                    className="flex items-center justify-between font-serif text-[48px] tracking-tight text-foreground hover:text-primary md:text-[64px]"
+                    className="flex items-center justify-between font-serif text-[40px] tracking-tight text-foreground hover:text-primary md:text-[64px] transition-all duration-500 hover:translate-x-4"
                   >
                     <span>{link.label}</span>
-                    <Sparkles className="text-primary" size={32} strokeWidth={1} />
+                    <Sparkle className="text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500" size={32} strokeWidth={1} />
                   </Link>
                 </div>
               ))}
+              
+              {effectiveUser?.type === 'client' && (
+                <div className="group overflow-hidden">
+                  <Link 
+                    href="/client/dashboard" 
+                    onClick={() => setIsMenuOpen(false)} 
+                    className="flex items-center justify-between font-serif text-[40px] tracking-tight text-primary md:text-[64px] transition-all duration-500 hover:translate-x-4"
+                  >
+                    <span>Mes réservations</span>
+                    <CalendarDays className="text-primary" size={32} strokeWidth={1} />
+                  </Link>
+                </div>
+              )}
             </nav>
             
-            <div className="mt-auto flex flex-col gap-8">
-              {!effectiveUser && (
-                <Link 
-                  href="/login" 
-                  onClick={() => setIsMenuOpen(false)} 
-                  className="font-sans uppercase tracking-[0.5em] text-[11px] text-muted-foreground hover:text-foreground"
-                >
-                  Espace Praticien
-                </Link>
-              )}
+            <div className="mt-auto pt-20 flex flex-col gap-10">
+              <div className="flex flex-col gap-4">
+                {!effectiveUser ? (
+                  <Link 
+                    href="/login" 
+                    onClick={() => setIsMenuOpen(false)} 
+                    className="font-sans uppercase tracking-[0.5em] text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Espace Praticien
+                  </Link>
+                ) : (
+                  <div className="flex items-center gap-4 py-4 border-t border-border">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                       {effectiveUser.photo ? (
+                         <img src={effectiveUser.photo} alt="" className="w-full h-full object-cover rounded-full" />
+                       ) : (
+                         <UserIcon size={18} strokeWidth={1.5} />
+                       )}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-sans uppercase tracking-[0.3em] text-[11px] font-bold text-foreground">{effectiveUser.name}</span>
+                      <button onClick={handleSignOut} className="font-sans uppercase tracking-[0.3em] text-[9px] text-primary text-left hover:underline transition-colors">Se déconnecter</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
               <button 
                 onClick={() => { setIsMenuOpen(false); onBookingClick?.(); }} 
-                className="premium-button bg-foreground text-background rounded-full py-8 text-[14px]"
+                className="premium-button bg-foreground text-background rounded-full py-8 text-[14px] w-full flex items-center justify-center gap-4 transition-all duration-500 hover:bg-primary active:scale-[0.98] shadow-xl"
               >
-                Initialiser un Soin
+                <Sparkle size={16} />
+                <span className="font-sans uppercase tracking-[0.4em] font-bold">Réserver un soin</span>
               </button>
             </div>
           </div>

@@ -34,7 +34,7 @@ export default function RescheduleModal({
   return (
     <div className="fixed inset-0 z-[300] flex items-end sm:items-center justify-center p-0 sm:p-6">
       <motion.div
-        className="absolute inset-0 bg-zinc-950/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -49,14 +49,14 @@ export default function RescheduleModal({
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* HEADER */}
-        <div className="px-8 py-7 flex items-start justify-between border-b border-[#c4c7c3]/70 shrink-0">
+        <div className="px-8 py-7 flex items-start justify-between border-b border-[#e2e8f0] shrink-0">
           <div>
             <div className={`flex items-center gap-2 mb-3 ${dashboardEyebrow}`}>
               <span>Clients</span>
               <span className="opacity-40">/</span>
               <span>{appt.clientNameSnapshot}</span>
               <span className="opacity-40">/</span>
-              <span className="text-[#1c1b1b]">Reprogrammer</span>
+              <span className="text-[#1f2937]">Reprogrammer</span>
             </div>
             <h1 className={dashboardTitle}>Gestion de la séance</h1>
           </div>
@@ -73,12 +73,12 @@ export default function RescheduleModal({
             </button>
             <button
               onClick={() => { onCancelAppt?.(appt.id); onClose(); }}
-              className="h-9 px-5 rounded-full bg-white border border-amber-600/40 text-amber-700 text-[11px] font-medium tracking-[0.1em] uppercase hover:bg-amber-50 flex items-center gap-2 transition-all duration-300"
+              className="h-9 px-5 rounded-full bg-white border border-[#fdba74] text-[#c2410c] text-[11px] font-medium tracking-[0.1em] uppercase hover:bg-[#fff7ed] flex items-center gap-2 transition-all duration-300"
             >
               <Trash2 size={13} strokeWidth={1.5} /> Annuler
             </button>
-            <div className="w-px h-6 bg-[#c4c7c3]/40 mx-1" />
-            <button onClick={onClose} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/50 text-[#757875] hover:text-[#1c1b1b] transition-colors">
+            <div className="w-px h-6 bg-[#e2e8f0] mx-1" />
+            <button onClick={onClose} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#f8fafc] text-[#64748b] hover:text-[#1f2937] transition-colors">
               <X size={18} strokeWidth={1} />
             </button>
           </div>
@@ -88,13 +88,13 @@ export default function RescheduleModal({
         <div className="flex-1 overflow-y-auto flex flex-col lg:flex-row p-8 gap-6">
 
           {/* LEFT SIDEBAR - INFO */}
-          <div className="w-full lg:w-[340px] bg-white/50 border border-[#c4c7c3]/40 rounded-xl p-8 shrink-0 flex flex-col gap-8 h-fit">
-            <div className="flex items-center gap-4 border-b border-[#c4c7c3]/40 pb-8">
-              <div className="w-12 h-12 rounded-full bg-[#e3e6e0] text-[#3d423c] flex items-center justify-center font-serif text-lg">
+          <div className="w-full lg:w-[340px] bg-white/70 border border-[#e2e8f0] rounded-xl p-8 shrink-0 flex flex-col gap-8 h-fit">
+            <div className="flex items-center gap-4 border-b border-[#e2e8f0] pb-8">
+              <div className="w-12 h-12 rounded-full bg-[#eef2ff] text-[#4f46e5] flex items-center justify-center  text-lg">
                 {appt.clientNameSnapshot?.charAt(0)}
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-serif text-lg tracking-tight text-[#1c1b1b] capitalize">{appt.clientNameSnapshot}</span>
+                <span className=" text-lg tracking-tight text-[#1f2937] capitalize">{appt.clientNameSnapshot}</span>
                 <span className={dashboardEyebrow}>Client</span>
               </div>
             </div>
@@ -108,10 +108,10 @@ export default function RescheduleModal({
                 { icon: CreditCard, label: 'Tarif', val: `${appt.price || 150} CHF` }
               ].map((d, i) => (
                 <div key={i} className="flex gap-4">
-                  <d.icon size={16} strokeWidth={1.5} className="text-[#757875] mt-0.5 shrink-0" />
+                  <d.icon size={16} strokeWidth={1.5} className="text-[#64748b] mt-0.5 shrink-0" />
                   <div className="flex flex-col gap-1">
                     <span className={dashboardEyebrow}>{d.label}</span>
-                    <span className="text-sm tracking-tight text-[#1c1b1b] capitalize">{d.val}</span>
+                    <span className="text-sm tracking-tight text-[#1f2937] capitalize">{d.val}</span>
                   </div>
                 </div>
               ))}
@@ -119,27 +119,27 @@ export default function RescheduleModal({
           </div>
 
           {/* RIGHT CONTENT - RESCHEDULE */}
-          <div className="flex-1 bg-white/50 border border-[#c4c7c3]/40 rounded-xl p-10 flex flex-col gap-8">
+          <div className="flex-1 bg-white/70 border border-[#e2e8f0] rounded-xl p-10 flex flex-col gap-8">
             <div className="flex items-center justify-between">
-              <h2 className="font-serif text-2xl tracking-tight text-[#1c1b1b] capitalize">Reprogrammer</h2>
-              <span className="px-3 py-1 rounded-full border border-[#c4c7c3] text-[10px] font-medium uppercase tracking-[0.1em] text-[#757875]">Modifiable</span>
+              <h2 className=" text-2xl tracking-tight text-[#1f2937] capitalize">Reprogrammer</h2>
+              <span className="px-3 py-1 rounded-full border border-[#dbe3ef] text-[10px] font-medium uppercase tracking-[0.1em] text-[#64748b]">Modifiable</span>
             </div>
 
-            <div className="flex items-center justify-between px-6 py-4 rounded-xl border border-dashed border-[#bdcab9] bg-[#e3e6e0]/30">
+            <div className="flex items-center justify-between px-6 py-4 rounded-xl border border-dashed border-[#c7d2fe] bg-[#eef2ff]/50">
               <div className="flex items-center gap-4">
-                <CalendarClock size={18} strokeWidth={1.5} className="text-[#757875]" />
-                <span className="text-sm tracking-tight text-[#757875]">
-                  Horaire actuel : <strong className="text-[#1c1b1b] font-medium">{appt.date} à {appt.time}</strong>
+                <CalendarClock size={18} strokeWidth={1.5} className="text-[#4f46e5]" />
+                <span className="text-sm tracking-tight text-[#64748b]">
+                  Horaire actuel : <strong className="text-[#1f2937] font-medium">{appt.date} à {appt.time}</strong>
                 </span>
               </div>
-              <ArrowDown size={16} strokeWidth={1} className="text-[#c4c7c3]" />
+              <ArrowDown size={16} strokeWidth={1} className="text-[#cbd5e1]" />
             </div>
 
             {/* DATE SCROLLER */}
             <div className="flex flex-col gap-4">
               <label className={dashboardEyebrow}>Choisir une nouvelle date</label>
               <div className="flex items-center gap-3">
-                <button className="w-10 h-10 rounded-full bg-white border border-[#c4c7c3] flex items-center justify-center text-[#757875] hover:border-[#1c1b1b] hover:text-[#1c1b1b] transition-all shrink-0">
+                <button className="w-10 h-10 rounded-full bg-white border border-[#dbe3ef] flex items-center justify-center text-[#64748b] hover:border-[#6366f1] hover:text-[#4f46e5] transition-all shrink-0">
                   <ChevronLeft size={16} strokeWidth={1.5} />
                 </button>
 
@@ -150,18 +150,18 @@ export default function RescheduleModal({
                       key={i}
                       onClick={() => setSelectedDate(d)}
                       className={`flex-1 h-[72px] flex flex-col items-center justify-center gap-1 border rounded-xl cursor-pointer transition-all duration-300 ${
-                        active ? 'bg-[#3d423c] border-[#3d423c] text-white shadow-sm' : 'bg-white border-[#c4c7c3] text-[#1c1b1b] hover:border-[#bdcab9]'
+                        active ? 'bg-[#6366f1] border-[#6366f1] text-white shadow-sm' : 'bg-white border-[#dbe3ef] text-[#1f2937] hover:border-[#a5b4fc]'
                       }`}
                     >
-                      <span className={`text-[10px] font-medium uppercase tracking-[0.1em] ${active ? 'text-white/80' : 'text-[#757875]'}`}>
+                      <span className={`text-[10px] font-medium uppercase tracking-[0.1em] ${active ? 'text-white/80' : 'text-[#64748b]'}`}>
                         {format(d, 'EEE', { locale: fr })}
                       </span>
-                      <span className="font-serif text-2xl tracking-tight leading-none">{format(d, 'd')}</span>
+                      <span className=" text-2xl tracking-tight leading-none">{format(d, 'd')}</span>
                     </div>
                   );
                 })}
 
-                <button className="w-10 h-10 rounded-full bg-white border border-[#c4c7c3] flex items-center justify-center text-[#757875] hover:border-[#1c1b1b] hover:text-[#1c1b1b] transition-all shrink-0">
+                <button className="w-10 h-10 rounded-full bg-white border border-[#dbe3ef] flex items-center justify-center text-[#64748b] hover:border-[#6366f1] hover:text-[#4f46e5] transition-all shrink-0">
                   <ChevronRight size={16} strokeWidth={1.5} />
                 </button>
               </div>
@@ -179,9 +179,9 @@ export default function RescheduleModal({
                       key={t}
                       onClick={() => !disabled && setSelectedTime(t)}
                       className={`h-10 flex items-center justify-center rounded-full text-[13px] tracking-wide transition-all duration-300 ${
-                        disabled ? 'bg-[#e3e6e0]/50 text-[#c4c7c3] line-through cursor-not-allowed' :
-                        active ? 'bg-[#3d423c] text-white cursor-pointer shadow-sm' :
-                        'bg-white border border-[#c4c7c3] text-[#1c1b1b] hover:border-[#bdcab9] cursor-pointer'
+                        disabled ? 'bg-[#f1f5f9] text-[#cbd5e1] line-through cursor-not-allowed' :
+                        active ? 'bg-[#6366f1] text-white cursor-pointer shadow-sm' :
+                        'bg-white border border-[#dbe3ef] text-[#1f2937] hover:border-[#a5b4fc] cursor-pointer'
                       }`}
                     >
                       {t}
@@ -198,12 +198,12 @@ export default function RescheduleModal({
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Ajouter une note ou un motif de décalage..."
-                className="w-full h-[90px] p-5 rounded-xl bg-white/50 border border-[#c4c7c3]/40 text-sm text-[#1c1b1b] placeholder:text-[#c4c7c3] outline-none focus:border-[#bdcab9] transition-all resize-none"
+                className="w-full h-[90px] p-5 rounded-xl bg-white/70 border border-[#e2e8f0] text-sm text-[#1f2937] placeholder:text-[#cbd5e1] outline-none focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 transition-all resize-none"
               />
             </div>
 
             {/* FOOTER ACTIONS */}
-            <div className="flex justify-end gap-3 pt-6 border-t border-[#c4c7c3]/40 mt-auto">
+            <div className="flex justify-end gap-3 pt-6 border-t border-[#e2e8f0] mt-auto">
               <button
                 onClick={onClose}
                 className={dashboardSecondaryButton}

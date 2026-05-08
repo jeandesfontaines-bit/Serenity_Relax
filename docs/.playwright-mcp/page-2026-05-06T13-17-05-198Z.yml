@@ -1,0 +1,232 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6]: ✦
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: Studio Board
+          - generic [ref=e9]: SERENITY & RELAX
+      - generic [ref=e10]:
+        - link "Sessions" [ref=e11] [cursor=pointer]:
+          - /url: "#sessions"
+        - link "Sanctuary" [ref=e12] [cursor=pointer]:
+          - /url: "#sanctuary"
+        - link "Journal" [ref=e13] [cursor=pointer]:
+          - /url: "#journal"
+        - link "Atelier" [ref=e14] [cursor=pointer]:
+          - /url: "#atelier"
+      - button "Réserver" [ref=e15] [cursor=pointer]
+    - main [ref=e16]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]: Architectural Wellness
+          - heading "The Art of Centering." [level=1] [ref=e21]:
+            - text: The Art of
+            - text: Centering.
+          - paragraph [ref=e22]: "Une parenthèse thérapeutique pensée comme un souffle profond: matières organiques, silence visuel et soins ciblés pour réancrer le corps."
+          - generic [ref=e23]:
+            - button "Commencer le rituel" [ref=e24] [cursor=pointer]
+            - link "Explorer les soins" [ref=e25] [cursor=pointer]:
+              - /url: "#sessions"
+          - generic [ref=e26]:
+            - generic [ref=e27]:
+              - paragraph [ref=e28]: Soins signatures
+              - paragraph [ref=e29]: "8"
+            - generic [ref=e30]:
+              - paragraph [ref=e31]: Rituels après-séance
+              - paragraph [ref=e32]: "3"
+            - generic [ref=e33]:
+              - paragraph [ref=e34]: Questions utiles
+              - paragraph [ref=e35]: "3"
+        - generic [ref=e37]:
+          - img "João massothérapie Genève" [ref=e41]
+          - generic [ref=e42]:
+            - paragraph [ref=e43]: Focus du jour
+            - paragraph [ref=e44]: Présence. Lâcher-prise.
+            - paragraph [ref=e45]: Approche thérapeutique douce, ciblée et premium.
+          - img "Draineur Lymphatique" [ref=e47]
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - generic [ref=e52]: La Collection
+            - heading "Nos Soins Exclusifs" [level=2] [ref=e53]
+          - paragraph [ref=e54]: "Une collection pensée comme un menu éditorial: plus lisible, plus sensorielle, plus premium, sans perdre la clarté de réservation."
+        - generic [ref=e55]:
+          - button "Bambous SIGNATURE 60 MIN Bambous Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions. Découvrir le rituel" [ref=e56] [cursor=pointer]:
+            - img "Bambous" [ref=e58]
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - generic [ref=e61]: SIGNATURE
+                - generic [ref=e62]: 60 MIN
+              - heading "Bambous" [level=3] [ref=e63]
+              - paragraph [ref=e64]: Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.
+              - generic [ref=e65]:
+                - text: Découvrir le rituel
+                - img [ref=e66]
+          - button "Draineur Lymphatique SIGNATURE 60 MIN Draineur Lymphatique Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation. Découvrir le rituel" [ref=e68] [cursor=pointer]:
+            - img "Draineur Lymphatique" [ref=e70]
+            - generic [ref=e71]:
+              - generic [ref=e72]:
+                - generic [ref=e73]: SIGNATURE
+                - generic [ref=e74]: 60 MIN
+              - heading "Draineur Lymphatique" [level=3] [ref=e75]
+              - paragraph [ref=e76]: Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.
+              - generic [ref=e77]:
+                - text: Découvrir le rituel
+                - img [ref=e78]
+          - button "Aromathérapie SIGNATURE 60 MIN Aromathérapie Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit. Découvrir le rituel" [ref=e80] [cursor=pointer]:
+            - img "Aromathérapie" [ref=e82]
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - generic [ref=e85]: SIGNATURE
+                - generic [ref=e86]: 60 MIN
+              - heading "Aromathérapie" [level=3] [ref=e87]
+              - paragraph [ref=e88]: Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.
+              - generic [ref=e89]:
+                - text: Découvrir le rituel
+                - img [ref=e90]
+          - button "Réflexologie Plantaire SIGNATURE 30 MIN Réflexologie Plantaire Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes. Découvrir le rituel" [ref=e92] [cursor=pointer]:
+            - img "Réflexologie Plantaire" [ref=e94]
+            - generic [ref=e95]:
+              - generic [ref=e96]:
+                - generic [ref=e97]: SIGNATURE
+                - generic [ref=e98]: 30 MIN
+              - heading "Réflexologie Plantaire" [level=3] [ref=e99]
+              - paragraph [ref=e100]: Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.
+              - generic [ref=e101]:
+                - text: Découvrir le rituel
+                - img [ref=e102]
+          - button "Sportif / Deep Tissue SIGNATURE 60 MIN Sportif / Deep Tissue Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération. Découvrir le rituel" [ref=e104] [cursor=pointer]:
+            - img "Sportif / Deep Tissue" [ref=e106]
+            - generic [ref=e107]:
+              - generic [ref=e108]:
+                - generic [ref=e109]: SIGNATURE
+                - generic [ref=e110]: 60 MIN
+              - heading "Sportif / Deep Tissue" [level=3] [ref=e111]
+              - paragraph [ref=e112]: Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.
+              - generic [ref=e113]:
+                - text: Découvrir le rituel
+                - img [ref=e114]
+          - button "Thérapeutique SIGNATURE 60 MIN Thérapeutique Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux. Découvrir le rituel" [ref=e116] [cursor=pointer]:
+            - img "Thérapeutique" [ref=e118]
+            - generic [ref=e119]:
+              - generic [ref=e120]:
+                - generic [ref=e121]: SIGNATURE
+                - generic [ref=e122]: 60 MIN
+              - heading "Thérapeutique" [level=3] [ref=e123]
+              - paragraph [ref=e124]: Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.
+              - generic [ref=e125]:
+                - text: Découvrir le rituel
+                - img [ref=e126]
+          - button "Deep Relax SIGNATURE 60 MIN Deep Relax Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux. Découvrir le rituel" [ref=e128] [cursor=pointer]:
+            - img "Deep Relax" [ref=e130]
+            - generic [ref=e131]:
+              - generic [ref=e132]:
+                - generic [ref=e133]: SIGNATURE
+                - generic [ref=e134]: 60 MIN
+              - heading "Deep Relax" [level=3] [ref=e135]
+              - paragraph [ref=e136]: Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.
+              - generic [ref=e137]:
+                - text: Découvrir le rituel
+                - img [ref=e138]
+          - button "Thaï aux Huiles Chaudes SIGNATURE 60 MIN Thaï aux Huiles Chaudes Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale. Découvrir le rituel" [ref=e140] [cursor=pointer]:
+            - img "Thaï aux Huiles Chaudes" [ref=e142]
+            - generic [ref=e143]:
+              - generic [ref=e144]:
+                - generic [ref=e145]: SIGNATURE
+                - generic [ref=e146]: 60 MIN
+              - heading "Thaï aux Huiles Chaudes" [level=3] [ref=e147]
+              - paragraph [ref=e148]: Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.
+              - generic [ref=e149]:
+                - text: Découvrir le rituel
+                - img [ref=e150]
+      - generic [ref=e153]:
+        - generic [ref=e154]:
+          - img "Sanctuary portrait" [ref=e157]
+          - generic [ref=e158]:
+            - paragraph [ref=e159]: Après la séance
+            - heading "Réhydratation Consciente" [level=3] [ref=e160]
+            - paragraph [ref=e161]: Buvez 500ml d'eau tempérée juste après la séance.
+        - generic [ref=e164]:
+          - generic [ref=e165]:
+            - generic [ref=e166]: 01 / Neuro-Apaisement
+            - heading "Restorative Reset" [level=2] [ref=e167]
+            - paragraph [ref=e168]: Régulation immédiate du cortisol et stimulation de l'ocytocine.
+          - generic [ref=e170]:
+            - generic [ref=e171]: 02 / Relâchement Myofascial
+            - heading "Myofascial Ease" [level=2] [ref=e172]
+            - paragraph [ref=e173]: Dissolution des noeuds et élasticité des tissus.
+          - generic [ref=e175]:
+            - generic [ref=e176]: 03 / Flux & Oxygène
+            - heading "Circulatory Flow" [level=2] [ref=e177]
+            - paragraph [ref=e178]: Optimisation de la microcirculation sanguine.
+          - generic [ref=e180]:
+            - generic [ref=e181]: 04 / Régénération
+            - heading "Deep Regeneration" [level=2] [ref=e182]
+            - paragraph [ref=e183]: Soutien immunitaire et sommeil réparateur.
+      - generic [ref=e185]:
+        - generic [ref=e186]: Journal du Corps
+        - heading "Le rituel continue après la séance." [level=2] [ref=e187]
+        - paragraph [ref=e188]: Chaque soin appelle une intégration. Sélectionnez une étape pour prolonger les effets du massage et soutenir votre récupération.
+        - generic [ref=e189]:
+          - generic [ref=e190]:
+            - generic [ref=e191]: 💧
+            - generic [ref=e192]:
+              - paragraph [ref=e193]: IMMÉDIAT
+              - heading "Réhydratation Consciente" [level=3] [ref=e194]
+          - paragraph [ref=e195]: Le massage libère les toxines accumulées dans les fascias. Boire de l'eau purifie votre système et aide vos reins à éliminer les résidus métaboliques libérés lors du soin.
+          - paragraph [ref=e196]: L'eau est le vecteur de votre récupération cellulaire.
+        - generic [ref=e197]:
+          - button "Afficher Réhydratation Consciente" [ref=e198] [cursor=pointer]
+          - button "Afficher Silence Sensoriel" [ref=e199] [cursor=pointer]
+          - button "Afficher Immersion Thermique" [ref=e200] [cursor=pointer]
+      - generic [ref=e202]:
+        - generic [ref=e203]:
+          - generic [ref=e204]: Atelier
+          - heading "Questions fréquentes" [level=2] [ref=e205]
+          - generic [ref=e206]:
+            - button "Comment se préparer à une séance ?" [ref=e208] [cursor=pointer]:
+              - generic [ref=e209]: Comment se préparer à une séance ?
+              - img [ref=e211]
+            - button "Quelle est votre politique d'annulation ?" [ref=e214] [cursor=pointer]:
+              - generic [ref=e215]: Quelle est votre politique d'annulation ?
+              - img [ref=e217]
+            - button "Proposez-vous des massages à domicile ?" [ref=e220] [cursor=pointer]:
+              - generic [ref=e221]: Proposez-vous des massages à domicile ?
+              - img [ref=e223]
+        - generic [ref=e225]:
+          - generic [ref=e226]:
+            - generic [ref=e227]: Join the Sanctuary
+            - heading "Recevez nos prochains rituels et disponibilités." [level=3] [ref=e228]
+            - paragraph [ref=e229]: Conseils de récupération, nouveautés du cabinet et ouvertures de créneaux transmis avec discrétion.
+            - generic [ref=e230]:
+              - textbox "Votre adresse email" [ref=e231]
+              - button "S'inscrire" [ref=e232] [cursor=pointer]
+          - generic [ref=e233]:
+            - generic [ref=e234]:
+              - img [ref=e235]
+              - generic [ref=e238]:
+                - paragraph [ref=e239]: Rue du Rhône 12, 1204 Genève
+                - paragraph [ref=e240]: Lundi au samedi, 09:00 à 19:00
+            - button "Réserver un soin" [ref=e241] [cursor=pointer]:
+              - text: Réserver un soin
+              - img [ref=e242]
+    - contentinfo [ref=e244]:
+      - generic [ref=e245]:
+        - generic [ref=e246]: SERENITY & RELAX
+        - generic [ref=e247]: © 2026 Serenity Relax Therapy. Massothérapie Genève.
+      - generic [ref=e248]:
+        - link "Privacy" [ref=e249] [cursor=pointer]:
+          - /url: "#"
+        - link "Terms" [ref=e250] [cursor=pointer]:
+          - /url: "#"
+        - link "Instagram" [ref=e251] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e252]
+          - text: Instagram
+        - link "LinkedIn" [ref=e255] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e256]
+          - text: LinkedIn
+  - region "Notifications (F8)":
+    - list

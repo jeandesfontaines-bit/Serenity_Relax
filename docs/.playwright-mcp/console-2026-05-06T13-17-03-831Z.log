@@ -1,0 +1,8 @@
+[     492ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[     624ms] [LOG] [Fast Refresh] done in 233ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[    1167ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    4382ms] [WARNING] The resource http://localhost:9002/_next/image?url=https%3A%2F%2Ffiles.cdn-files-a.com%2Fuploads%2F11301091%2F2000_68f25aa9ea85d.jpg&w=1200&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:9002/:0
+[    7951ms] [WARNING] Image with src "https://files.cdn-files-a.com/uploads/11301091/2000_68f25aa9ea85d.jpg" was detected as the Largest Contentful Paint (LCP). Please add the "priority" property if this image is above the fold.
+Read more: https://nextjs.org/docs/api-reference/next/image#priority @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[   44813ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   45251ms] [LOG] [Fast Refresh] done in 479ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

@@ -1,0 +1,320 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - button "Réserver maintenant" [ref=e4] [cursor=pointer]
+      - generic [ref=e5]:
+        - generic [ref=e6]: Serenity Relax
+        - generic [ref=e7]: by João
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - generic [ref=e11]: Massothérapie Genève
+          - heading "L'équilibre par le toucher." [level=1] [ref=e12]:
+            - text: L'équilibre
+            - text: par le toucher.
+          - paragraph [ref=e13]: Une expérience sensorielle sur-mesure pour harmoniser votre corps et apaiser votre esprit au cœur de Genève.
+          - button "Explorer la carte des soins" [ref=e14] [cursor=pointer]:
+            - img [ref=e16]
+            - generic [ref=e18]: Explorer la carte des soins
+        - img "João - Massothérapeute à Genève" [ref=e20]
+      - generic [ref=e22]: Découvrir l'univers
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e30]: ⚡
+          - heading "Neuro-Apaisement" [level=4] [ref=e31]
+          - paragraph [ref=e32]: Régulation immédiate du cortisol et stimulation de l'ocytocine.
+        - generic [ref=e33]:
+          - generic [ref=e34]: 🏋️
+          - heading "Relâchement Myofascial" [level=4] [ref=e35]
+          - paragraph [ref=e36]: Dissolution des noeuds et élasticité des tissus.
+        - generic [ref=e37]:
+          - generic [ref=e38]: 🌬️
+          - heading "Flux & Oxygène" [level=4] [ref=e39]
+          - paragraph [ref=e40]: Optimisation de la microcirculation sanguine.
+        - generic [ref=e41]:
+          - generic [ref=e42]: 🛡️
+          - heading "Régénération" [level=4] [ref=e43]
+          - paragraph [ref=e44]: Soutien immunitaire et sommeil réparateur.
+      - generic [ref=e45]:
+        - generic [ref=e46]: La Science du Soin
+        - heading "L'écho du corps." [level=2] [ref=e47]:
+          - text: L'écho
+          - text: du corps.
+        - paragraph [ref=e48]: Une influence mesurable sur votre santé globale, votre récupération musculaire et votre vitalité cellulaire.
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: "-40%"
+            - text: Cortisol
+          - generic [ref=e52]:
+            - generic [ref=e53]: +25%
+            - text: Sommeil
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]: La Sélection Exclusive
+        - heading "Soins Signatures." [level=2] [ref=e59]:
+          - text: Soins
+          - text: Signatures.
+        - paragraph [ref=e60]: Chaque technique est adaptée à votre physiologie pour un résultat optimal.
+        - generic [ref=e61]:
+          - paragraph [ref=e62]: Informations
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - img [ref=e65]
+              - generic [ref=e68]: Séances de 30 à 60 minutes
+            - generic [ref=e69]:
+              - img [ref=e70]
+              - generic [ref=e73]: Cabinet privé à Genève
+      - generic [ref=e75]:
+        - generic [ref=e76] [cursor=pointer]:
+          - generic [ref=e77]:
+            - img "Bambous" [ref=e78]
+            - generic [ref=e79]:
+              - generic [ref=e80]: PHILOSOPHIE
+              - generic [ref=e81]: SIGNATURE
+            - generic [ref=e83]: Réserver ce soin →
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - heading "Bambous" [level=3] [ref=e86]
+              - paragraph [ref=e87]: Technique utilisant des bâtons de bambou pour travailler les tissus en profondeur et libérer les tensions.
+            - generic [ref=e95]:
+              - generic [ref=e96]: CHF 120
+              - text: 60 MIN
+        - generic [ref=e97] [cursor=pointer]:
+          - generic [ref=e98]:
+            - img "Draineur Lymphatique" [ref=e99]
+            - generic [ref=e100]:
+              - generic [ref=e101]: PHILOSOPHIE
+              - generic [ref=e102]: SIGNATURE
+            - generic [ref=e104]: Réserver ce soin →
+          - generic [ref=e105]:
+            - generic [ref=e106]:
+              - heading "Draineur Lymphatique" [level=3] [ref=e107]
+              - paragraph [ref=e108]: Technique de pompage douce pour revitaliser, détoxifier l'organisme et relancer la circulation.
+            - generic [ref=e116]:
+              - generic [ref=e117]: CHF 110
+              - text: 60 MIN
+        - generic [ref=e118] [cursor=pointer]:
+          - generic [ref=e119]:
+            - img "Aromathérapie" [ref=e120]
+            - generic [ref=e121]:
+              - generic [ref=e122]: PHILOSOPHIE
+              - generic [ref=e123]: SIGNATURE
+            - generic [ref=e125]: Réserver ce soin →
+          - generic [ref=e126]:
+            - generic [ref=e127]:
+              - heading "Aromathérapie" [level=3] [ref=e128]
+              - paragraph [ref=e129]: Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l'esprit.
+            - generic [ref=e137]:
+              - generic [ref=e138]: CHF 110
+              - text: 60 MIN
+        - generic [ref=e139] [cursor=pointer]:
+          - generic [ref=e140]:
+            - img "Réflexologie Plantaire" [ref=e141]
+            - generic [ref=e142]:
+              - generic [ref=e143]: PHILOSOPHIE
+              - generic [ref=e144]: SIGNATURE
+            - generic [ref=e146]: Réserver ce soin →
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - heading "Réflexologie Plantaire" [level=3] [ref=e149]
+              - paragraph [ref=e150]: Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l'énergie des organes internes.
+            - generic [ref=e158]:
+              - generic [ref=e159]: CHF 65
+              - text: 30 MIN
+        - generic [ref=e160] [cursor=pointer]:
+          - generic [ref=e161]:
+            - img "Sportif / Deep Tissue" [ref=e162]
+            - generic [ref=e163]:
+              - generic [ref=e164]: PHILOSOPHIE
+              - generic [ref=e165]: SIGNATURE
+            - generic [ref=e167]: Réserver ce soin →
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - heading "Sportif / Deep Tissue" [level=3] [ref=e170]
+              - paragraph [ref=e171]: Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.
+            - generic [ref=e179]:
+              - generic [ref=e180]: CHF 130
+              - text: 60 MIN
+        - generic [ref=e181] [cursor=pointer]:
+          - generic [ref=e182]:
+            - img "Thérapeutique" [ref=e183]
+            - generic [ref=e184]:
+              - generic [ref=e185]: PHILOSOPHIE
+              - generic [ref=e186]: SIGNATURE
+            - generic [ref=e188]: Réserver ce soin →
+          - generic [ref=e189]:
+            - generic [ref=e190]:
+              - heading "Thérapeutique" [level=3] [ref=e191]
+              - paragraph [ref=e192]: Soin ciblé pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.
+            - generic [ref=e200]:
+              - generic [ref=e201]: CHF 120
+              - text: 60 MIN
+        - generic [ref=e202] [cursor=pointer]:
+          - generic [ref=e203]:
+            - img "Deep Relax" [ref=e204]
+            - generic [ref=e205]:
+              - generic [ref=e206]: PHILOSOPHIE
+              - generic [ref=e207]: SIGNATURE
+            - generic [ref=e209]: Réserver ce soin →
+          - generic [ref=e210]:
+            - generic [ref=e211]:
+              - heading "Deep Relax" [level=3] [ref=e212]
+              - paragraph [ref=e213]: Technique lente et profonde pour une détente totale du corps, favorisant le lâcher-prise mental et nerveux.
+            - generic [ref=e221]:
+              - generic [ref=e222]: CHF 110
+              - text: 60 MIN
+        - generic [ref=e223] [cursor=pointer]:
+          - generic [ref=e224]:
+            - img "Thaï aux Huiles Chaudes" [ref=e225]
+            - generic [ref=e226]:
+              - generic [ref=e227]: PHILOSOPHIE
+              - generic [ref=e228]: SIGNATURE
+            - generic [ref=e230]: Réserver ce soin →
+          - generic [ref=e231]:
+            - generic [ref=e232]:
+              - heading "Thaï aux Huiles Chaudes" [level=3] [ref=e233]
+              - paragraph [ref=e234]: Technique dynamique combinant pressions profondes et étirements fluides pour relancer l'énergie vitale.
+            - generic [ref=e242]:
+              - generic [ref=e243]: CHF 125
+              - text: 60 MIN
+    - generic [ref=e246]:
+      - generic [ref=e247]:
+        - generic [ref=e248]:
+          - generic:
+            - generic: "01"
+          - generic [ref=e249]:
+            - generic [ref=e250]: 💧
+            - generic [ref=e251]:
+              - generic [ref=e252]: IMMÉDIAT
+              - heading "Réhydratation Consciente" [level=4] [ref=e253]
+          - generic [ref=e254]:
+            - paragraph [ref=e255]: "\"Le massage libère les toxines accumulées dans les fascias. Boire de l'eau purifie votre système et aide vos reins à éliminer les résidus métaboliques libérés lors du soin.\""
+            - generic [ref=e256]:
+              - generic [ref=e257]:
+                - paragraph [ref=e258]: Conseil João
+                - paragraph [ref=e259]: Buvez 500ml d'eau tempérée juste après la séance.
+              - generic [ref=e260]:
+                - paragraph [ref=e261]: Bénéfice
+                - paragraph [ref=e262]: Drainage Profond
+        - generic [ref=e263]:
+          - button "Rituel étape 1" [ref=e264] [cursor=pointer]
+          - button "Rituel étape 2" [ref=e265] [cursor=pointer]
+          - button "Rituel étape 3" [ref=e266] [cursor=pointer]
+      - generic [ref=e267]:
+        - generic [ref=e268]: L'Art de la Récupération
+        - heading "Rituel Après-Soin." [level=2] [ref=e269]:
+          - text: Rituel
+          - text: Après-Soin.
+        - paragraph [ref=e270]: La séance se poursuit bien après que vous ayez quitté la table de massage. Voici comment sceller les bénéfices.
+    - generic [ref=e272]:
+      - generic [ref=e273]:
+        - generic [ref=e274]: Confiance & Excellence
+        - heading "Ils témoignent de l'expérience." [level=2] [ref=e275]:
+          - text: Ils témoignent de
+          - text: l'expérience.
+      - generic [ref=e276]:
+        - generic [ref=e277]:
+          - generic [ref=e278]:
+            - generic [ref=e279]:
+              - img [ref=e280]
+              - img [ref=e282]
+              - img [ref=e284]
+              - img [ref=e286]
+              - img [ref=e288]
+            - img [ref=e290]
+            - paragraph [ref=e293]: "\"Une expertise rare. João comprend l'anatomie et adapte chaque pression avec une précision chirurgicale.\""
+          - generic [ref=e294]:
+            - generic [ref=e295]: S
+            - generic [ref=e296]:
+              - paragraph [ref=e297]: Sophie M.
+              - paragraph [ref=e298]: Athlète
+        - generic [ref=e299]:
+          - generic [ref=e300]:
+            - generic [ref=e301]:
+              - img [ref=e302]
+              - img [ref=e304]
+              - img [ref=e306]
+              - img [ref=e308]
+              - img [ref=e310]
+            - img [ref=e312]
+            - paragraph [ref=e315]: "\"Le seul moment de la semaine où je déconnecte réellement. Son approche thérapeutique est transformative.\""
+          - generic [ref=e316]:
+            - generic [ref=e317]: M
+            - generic [ref=e318]:
+              - paragraph [ref=e319]: Marc L.
+              - paragraph [ref=e320]: CEO
+        - generic [ref=e321]:
+          - generic [ref=e322]:
+            - generic [ref=e323]:
+              - img [ref=e324]
+              - img [ref=e326]
+              - img [ref=e328]
+              - img [ref=e330]
+              - img [ref=e332]
+            - img [ref=e334]
+            - paragraph [ref=e337]: "\"Le drainage lymphatique a changé ma récupération. Je me sens légère et revitalisée après chaque passage.\""
+          - generic [ref=e338]:
+            - generic [ref=e339]: E
+            - generic [ref=e340]:
+              - paragraph [ref=e341]: Elena R.
+              - paragraph [ref=e342]: Danseuse
+    - generic [ref=e344]:
+      - generic [ref=e345]:
+        - generic [ref=e346]: Informations & Précisions
+        - heading "Questions Fréquentes." [level=2] [ref=e347]:
+          - text: Questions
+          - text: Fréquentes.
+        - generic [ref=e348]:
+          - button "Comment se préparer à une séance ?" [ref=e350] [cursor=pointer]:
+            - generic [ref=e351]: Comment se préparer à une séance ?
+            - img [ref=e353]
+          - button "Quelle est votre politique d'annulation ?" [ref=e356] [cursor=pointer]:
+            - generic [ref=e357]: Quelle est votre politique d'annulation ?
+            - img [ref=e359]
+          - button "Proposez-vous des massages à domicile ?" [ref=e362] [cursor=pointer]:
+            - generic [ref=e363]: Proposez-vous des massages à domicile ?
+            - img [ref=e365]
+      - generic [ref=e367]:
+        - generic [ref=e369]:
+          - img [ref=e371]
+          - heading "Le Cabinet" [level=3] [ref=e374]
+          - paragraph [ref=e375]: Situé au cœur de Genève, notre espace est une véritable bulle de calme confidentielle conçue pour votre relaxation totale.
+          - generic [ref=e376]:
+            - generic [ref=e379]:
+              - paragraph [ref=e380]: Adresse
+              - paragraph [ref=e381]: Rue du Rhône 12, 1204 Genève
+            - generic [ref=e384]:
+              - paragraph [ref=e385]: Horaires
+              - paragraph [ref=e386]: "Lundi — Samedi : 09:00 — 19:00"
+        - button "Voir sur Google Maps →" [ref=e387] [cursor=pointer]
+    - contentinfo [ref=e388]:
+      - generic [ref=e389]:
+        - generic [ref=e390]:
+          - generic [ref=e391]:
+            - generic [ref=e392]:
+              - generic [ref=e393]: Serenity Relax
+              - generic [ref=e394]: by João
+            - paragraph [ref=e395]: © 2026 SERENITY RELAX GENÈVE. TOUS DROITS RÉSERVÉS.
+          - generic [ref=e396]:
+            - link [ref=e397] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e398]
+            - link [ref=e401] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e402]
+          - button "Retour en haut" [ref=e406] [cursor=pointer]: Retour en haut
+        - generic [ref=e409]:
+          - link "Mentions Légales" [ref=e410] [cursor=pointer]:
+            - /url: "#"
+          - link "Politique de Confidentialité" [ref=e411] [cursor=pointer]:
+            - /url: "#"
+          - link "Conditions Générales" [ref=e412] [cursor=pointer]:
+            - /url: "#"
+          - link "Contact" [ref=e413] [cursor=pointer]:
+            - /url: "#"
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e419] [cursor=pointer]:
+    - img [ref=e420]
+  - alert [ref=e423]

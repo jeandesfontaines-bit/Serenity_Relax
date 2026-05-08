@@ -1,0 +1,173 @@
+- generic [ref=e1]:
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - button "SERENITY by João" [ref=e8] [cursor=pointer]:
+          - paragraph [ref=e9]: SERENITY
+          - paragraph [ref=e10]: by João
+        - navigation [ref=e11]:
+          - button "Agenda" [active] [ref=e12] [cursor=pointer]:
+            - generic [ref=e13]: Agenda
+          - button "Clients" [ref=e14] [cursor=pointer]:
+            - generic [ref=e15]: Clients
+          - button "Finances" [ref=e16] [cursor=pointer]:
+            - generic [ref=e17]: Finances
+          - button "Paramètres" [ref=e18] [cursor=pointer]:
+            - generic [ref=e19]: Paramètres
+        - generic [ref=e20]:
+          - generic [ref=e21]: search
+          - textbox "Rechercher un rendez-vous" [ref=e22]
+        - generic [ref=e112]:
+          - generic [ref=e113]:
+            - button "Période précédente" [ref=e114] [cursor=pointer]:
+              - img [ref=e115]
+            - button "AUJOURD'HUI" [ref=e117] [cursor=pointer]
+            - button "Période suivante" [ref=e118] [cursor=pointer]:
+              - img [ref=e119]
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - button "Semaine" [ref=e123] [cursor=pointer]
+              - button "Mois" [ref=e124] [cursor=pointer]
+            - button "Absences" [ref=e125] [cursor=pointer]:
+              - img [ref=e126]
+            - button [ref=e129] [cursor=pointer]:
+              - img [ref=e130]
+    - main [ref=e23]:
+      - generic [ref=e136]:
+        - generic [ref=e137]:
+          - generic [ref=e139]:
+            - paragraph [ref=e140]: lun.
+            - paragraph [ref=e141]: "4"
+          - generic [ref=e142]:
+            - paragraph [ref=e143]: mar.
+            - paragraph [ref=e144]: "5"
+          - generic [ref=e145]:
+            - paragraph [ref=e146]: mer.
+            - paragraph [ref=e147]: "6"
+          - generic [ref=e148]:
+            - paragraph [ref=e149]: jeu.
+            - paragraph [ref=e150]: "7"
+          - generic [ref=e151]:
+            - paragraph [ref=e152]: ven.
+            - paragraph [ref=e153]: "8"
+          - generic [ref=e154]:
+            - paragraph [ref=e155]: sam.
+            - paragraph [ref=e156]: "9"
+          - generic [ref=e157]:
+            - paragraph [ref=e158]: dim.
+            - paragraph [ref=e159]: "10"
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - generic [ref=e162]:
+              - generic [ref=e175]: 08:00
+              - generic [ref=e176]: 09:00
+              - generic [ref=e177]: 10:00
+              - generic [ref=e178]: 11:00
+              - generic [ref=e179]: 12:00
+              - generic [ref=e180]: 13:00
+              - generic [ref=e181]: 14:00
+              - generic [ref=e182]: 15:00
+              - generic [ref=e183]: 16:00
+              - generic [ref=e184]: 17:00
+              - generic [ref=e185]: 18:00
+              - generic [ref=e186]: 19:00
+            - generic [ref=e187]:
+              - generic:
+                - img
+            - generic [ref=e188]:
+              - button "09:00 Disponible Réserver" [ref=e201] [cursor=pointer]:
+                - generic [ref=e202]:
+                  - generic [ref=e203]: 09:00
+                  - generic [ref=e204]: Disponible
+                - generic [ref=e205]:
+                  - img [ref=e206]
+                  - generic [ref=e207]: Réserver
+              - button "10:00 Disponible Réserver" [ref=e208] [cursor=pointer]:
+                - generic [ref=e209]:
+                  - generic [ref=e210]: 10:00
+                  - generic [ref=e211]: Disponible
+                - generic [ref=e212]:
+                  - img [ref=e213]
+                  - generic [ref=e214]: Réserver
+              - button "12:30 Disponible Réserver" [ref=e215] [cursor=pointer]:
+                - generic [ref=e216]:
+                  - generic [ref=e217]: 12:30
+                  - generic [ref=e218]: Disponible
+                - generic [ref=e219]:
+                  - img [ref=e220]
+                  - generic [ref=e221]: Réserver
+            - generic [ref=e222]:
+              - button "09:00 Disponible Réserver" [ref=e235] [cursor=pointer]:
+                - generic [ref=e236]:
+                  - generic [ref=e237]: 09:00
+                  - generic [ref=e238]: Disponible
+                - generic [ref=e239]:
+                  - img [ref=e240]
+                  - generic [ref=e241]: Réserver
+              - button "10:00 - 11:30 Confirmé Réflexologie Plantaire Séance ciblée - 30 min Jean j Jean j 60 CHF":
+                - generic [ref=e242] [cursor=pointer]:
+                  - generic [ref=e243]:
+                    - paragraph [ref=e244]: 10:00 - 11:30
+                    - generic [ref=e245]: Confirmé
+                  - paragraph [ref=e246]: Réflexologie Plantaire Séance ciblée - 30 min
+                  - paragraph [ref=e247]: Jean j
+                  - generic [ref=e248]:
+                    - generic [ref=e249]: Jean j
+                    - generic [ref=e250]: 60 CHF
+              - button "12:30 - 14:00 Confirmé Réflexologie Plantaire Séance ciblée - 30 min Jean j Jean j 60 CHF":
+                - generic [ref=e251] [cursor=pointer]:
+                  - generic [ref=e252]:
+                    - paragraph [ref=e253]: 12:30 - 14:00
+                    - generic [ref=e254]: Confirmé
+                  - paragraph [ref=e255]: Réflexologie Plantaire Séance ciblée - 30 min
+                  - paragraph [ref=e256]: Jean j
+                  - generic [ref=e257]:
+                    - generic [ref=e258]: Jean j
+                    - generic [ref=e259]: 60 CHF
+            - generic [ref=e260]:
+              - generic:
+                - img
+              - button "09:00 - 10:30 Confirmé Draineur Lymphatique - Séance ciblée 60 min j j j j 110 CHF":
+                - generic [ref=e261] [cursor=pointer]:
+                  - generic [ref=e262]:
+                    - paragraph [ref=e263]: 09:00 - 10:30
+                    - generic [ref=e264]: Confirmé
+                  - paragraph [ref=e265]: Draineur Lymphatique - Séance ciblée 60 min
+                  - paragraph [ref=e266]: j j
+                  - generic [ref=e267]:
+                    - generic [ref=e268]: j j
+                    - generic [ref=e269]: 110 CHF
+            - generic [ref=e270]:
+              - generic:
+                - img
+            - generic [ref=e271]:
+              - generic:
+                - img
+            - generic [ref=e272]:
+              - button "09:00 Disponible Réserver" [ref=e285] [cursor=pointer]:
+                - generic [ref=e286]:
+                  - generic [ref=e287]: 09:00
+                  - generic [ref=e288]: Disponible
+                - generic [ref=e289]:
+                  - img [ref=e290]
+                  - generic [ref=e291]: Réserver
+              - button "10:00 Disponible Réserver" [ref=e292] [cursor=pointer]:
+                - generic [ref=e293]:
+                  - generic [ref=e294]: 10:00
+                  - generic [ref=e295]: Disponible
+                - generic [ref=e296]:
+                  - img [ref=e297]
+                  - generic [ref=e298]: Réserver
+              - button "12:30 Disponible Réserver" [ref=e299] [cursor=pointer]:
+                - generic [ref=e300]:
+                  - generic [ref=e301]: 12:30
+                  - generic [ref=e302]: Disponible
+                - generic [ref=e303]:
+                  - img [ref=e304]
+                  - generic [ref=e305]: Réserver
+          - status [ref=e306]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e106] [cursor=pointer]:
+    - img [ref=e107]
+  - alert [ref=e110]

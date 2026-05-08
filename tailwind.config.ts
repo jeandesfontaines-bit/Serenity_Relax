@@ -10,11 +10,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Manrope', 'sans-serif'],
+        sans: ['var(--font-jakarta)', 'Inter', 'sans-serif'],
         serif: ['"Noto Serif"', 'serif'],
-        display: ['"Public Sans"', 'sans-serif'],
-        headline: ['"Public Sans"', 'sans-serif'],
-        label: ['Manrope', 'sans-serif'],
+        display: ['var(--font-jakarta)', 'Inter', 'sans-serif'],
+        headline: ['var(--font-jakarta)', 'Inter', 'sans-serif'],
+        label: ['var(--font-jakarta)', 'Inter', 'sans-serif'],
         cursive: ['"Meow Script"', 'cursive'],
         code: ['monospace'],
       },
@@ -30,16 +30,16 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: '#435544', // Sage Green
-          foreground: '#faf9f7',
+          DEFAULT: '#6366F1',
+          foreground: '#ffffff',
         },
         secondary: {
-          DEFAULT: '#725a38', // Warm Wood
-          foreground: '#faf9f7',
+          DEFAULT: '#A3E635',
+          foreground: '#1F2937',
         },
         accent: {
-          DEFAULT: '#faf9f7', // Soft Sand
-          foreground: '#435544',
+          DEFAULT: '#EEF2FF',
+          foreground: '#4338CA',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
@@ -52,19 +52,19 @@ export default {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        'on-surface': '#1a1c1b',
-        'on-surface-variant': '#434842',
-        'outline-variant': '#c3c8c0',
-        'surface-container': '#efeeec',
-        'surface-container-low': '#f4f3f1',
+        'on-surface': '#1F2937',
+        'on-surface-variant': '#64748B',
+        'outline-variant': '#CBD5E1',
+        'surface-container': '#F1F5F9',
+        'surface-container-low': '#F8FAFC',
         'surface-container-lowest': '#ffffff',
-        'surface-container-highest': '#e3e2e0',
-        'primary-fixed': '#d4e8d2',
-        'primary-container': '#5b6d5b',
-        'on-primary-container': '#daeed8',
-        'secondary-container': '#fcdaaf',
-        'on-secondary-container': '#775e3c',
-        'on-tertiary-container': '#775e3c',
+        'surface-container-highest': '#E2E8F0',
+        'primary-fixed': '#E0E7FF',
+        'primary-container': '#4F46E5',
+        'on-primary-container': '#EEF2FF',
+        'secondary-container': '#ECFCCB',
+        'on-secondary-container': '#3F6212',
+        'on-tertiary-container': '#9D174D',
       },
       fontSize: {
         'display-lg': ['48px', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '400' }],

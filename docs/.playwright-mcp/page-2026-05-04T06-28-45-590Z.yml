@@ -1,0 +1,155 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation "Navigation principale" [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6]:
+          - generic [ref=e7]: SERENITY RELAX THERAPY
+          - generic [ref=e8]: by João
+        - generic [ref=e9]:
+          - link "Nos soins" [ref=e10] [cursor=pointer]:
+            - /url: "#soins"
+          - link "Rituel" [ref=e11] [cursor=pointer]:
+            - /url: "#rituel"
+          - link "Studio" [ref=e12] [cursor=pointer]:
+            - /url: "#studio"
+        - generic [ref=e13]:
+          - button "Connexion" [ref=e14] [cursor=pointer]
+          - button "Réserver" [ref=e15] [cursor=pointer]
+    - main [ref=e16]:
+      - generic [ref=e18]:
+        - generic [ref=e19]: Genève · Professional Therapy
+        - heading "L’essentiel." [level=1] [ref=e20]
+        - paragraph [ref=e21]: rien de plus.
+        - generic [ref=e22]:
+          - button "Réserver maintenant" [ref=e23] [cursor=pointer]
+          - link "Découvrir les soins" [ref=e24] [cursor=pointer]:
+            - /url: "#soins"
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - generic [ref=e29]: Une carte sur mesure
+            - heading "Nos soins" [level=2] [ref=e30]
+          - generic "Contrôles du carousel" [ref=e31]:
+            - button "‹" [disabled] [ref=e32]
+            - button "›" [ref=e33] [cursor=pointer]
+        - generic [ref=e35]:
+          - button "Massage Découverte 30 MIN Découverte Massage Découverte 60 CHF" [ref=e36] [cursor=pointer]:
+            - generic [ref=e37]:
+              - img "Massage Découverte" [ref=e38]
+              - generic [ref=e39]: 30 MIN
+            - generic [ref=e40]:
+              - generic [ref=e41]: Découverte
+              - heading "Massage Découverte" [level=3] [ref=e42]
+              - generic [ref=e43]: 60 CHF
+          - button "Aromathérapie 60 MIN Bien-être Aromathérapie 110 CHF" [ref=e44] [cursor=pointer]:
+            - generic [ref=e45]:
+              - img "Aromathérapie" [ref=e46]
+              - generic [ref=e47]: 60 MIN
+            - generic [ref=e48]:
+              - generic [ref=e49]: Bien-être
+              - heading "Aromathérapie" [level=3] [ref=e50]
+              - generic [ref=e51]: 110 CHF
+          - button "Drainage Lymphatique 60 MIN Détox Drainage Lymphatique 110 CHF" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53]:
+              - img "Drainage Lymphatique" [ref=e54]
+              - generic [ref=e55]: 60 MIN
+            - generic [ref=e56]:
+              - generic [ref=e57]: Détox
+              - heading "Drainage Lymphatique" [level=3] [ref=e58]
+              - generic [ref=e59]: 110 CHF
+          - button "Deep Relax 60 MIN Relaxation Deep Relax 120 CHF" [ref=e60] [cursor=pointer]:
+            - generic [ref=e61]:
+              - img "Deep Relax" [ref=e62]
+              - generic [ref=e63]: 60 MIN
+            - generic [ref=e64]:
+              - generic [ref=e65]: Relaxation
+              - heading "Deep Relax" [level=3] [ref=e66]
+              - generic [ref=e67]: 120 CHF
+          - button "Massage Sportif 60 MIN Performance Massage Sportif 110 CHF" [ref=e68] [cursor=pointer]:
+            - generic [ref=e69]:
+              - img "Massage Sportif" [ref=e70]
+              - generic [ref=e71]: 60 MIN
+            - generic [ref=e72]:
+              - generic [ref=e73]: Performance
+              - heading "Massage Sportif" [level=3] [ref=e74]
+              - generic [ref=e75]: 110 CHF
+          - button "Thaï aux Huiles 60 MIN Traditionnel Thaï aux Huiles 120 CHF" [ref=e76] [cursor=pointer]:
+            - generic [ref=e77]:
+              - img "Thaï aux Huiles" [ref=e78]
+              - generic [ref=e79]: 60 MIN
+            - generic [ref=e80]:
+              - generic [ref=e81]: Traditionnel
+              - heading "Thaï aux Huiles" [level=3] [ref=e82]
+              - generic [ref=e83]: 120 CHF
+          - button "Thérapeutique 60 MIN Thérapeutique Thérapeutique 110 CHF" [ref=e84] [cursor=pointer]:
+            - generic [ref=e85]:
+              - img "Thérapeutique" [ref=e86]
+              - generic [ref=e87]: 60 MIN
+            - generic [ref=e88]:
+              - generic [ref=e89]: Thérapeutique
+              - heading "Thérapeutique" [level=3] [ref=e90]
+              - generic [ref=e91]: 110 CHF
+          - button "Massage aux Bambous 60 MIN Stimulation Massage aux Bambous 110 CHF" [ref=e92] [cursor=pointer]:
+            - generic [ref=e93]:
+              - img "Massage aux Bambous" [ref=e94]
+              - generic [ref=e95]: 60 MIN
+            - generic [ref=e96]:
+              - generic [ref=e97]: Stimulation
+              - heading "Massage aux Bambous" [level=3] [ref=e98]
+              - generic [ref=e99]: 110 CHF
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - generic [ref=e103]: Rituel post-soin
+          - heading "Maximiser les bienfaits" [level=2] [ref=e104]
+          - paragraph [ref=e105]: Le soin ne s’arrête pas à la table. Quelques gestes simples prolongent la sensation de calme et de récupération.
+          - generic [ref=e106]:
+            - article [ref=e107]:
+              - generic [ref=e108]: "01"
+              - heading "Accueillir" [level=3] [ref=e109]
+              - paragraph [ref=e110]: Laissez les sensations et émotions se déposer naturellement après le soin.
+            - article [ref=e111]:
+              - generic [ref=e112]: "02"
+              - heading "Ralentir" [level=3] [ref=e113]
+              - paragraph [ref=e114]: Prenez quelques minutes avant de reprendre votre rythme habituel.
+            - article [ref=e115]:
+              - generic [ref=e116]: "03"
+              - heading "Hydrater" [level=3] [ref=e117]
+              - paragraph [ref=e118]: Buvez de l’eau à température ambiante pour accompagner la récupération.
+            - article [ref=e119]:
+              - generic [ref=e120]: "04"
+              - heading "Prolonger" [level=3] [ref=e121]
+              - paragraph [ref=e122]: Évitez de surcharger votre corps juste après la séance.
+        - generic [ref=e123]:
+          - img "Portrait de Serenity Relax Therapy" [ref=e125]
+          - heading "Serenity Relax Therapy" [level=3] [ref=e126]
+          - generic [ref=e127]: Fondateur & thérapeute
+          - paragraph [ref=e128]: “Un soin sobre, précis, profondément attentif au rythme du corps.”
+    - contentinfo [ref=e129]:
+      - generic [ref=e130]:
+        - generic [ref=e131]:
+          - generic [ref=e133]:
+            - generic [ref=e134]: SERENITY RELAX THERAPY
+            - generic [ref=e135]: by João
+          - paragraph [ref=e136]: Excellence thérapeutique & sérénité absolue au cœur de Genève.
+        - generic [ref=e137]:
+          - heading "Studio" [level=4] [ref=e138]
+          - paragraph [ref=e139]:
+            - text: Chemin de Joinville 26
+            - text: 1216 Cointrin · Genève
+            - text: Suisse
+        - generic [ref=e140]:
+          - heading "Menu" [level=4] [ref=e141]
+          - generic [ref=e142]:
+            - link "Nos Soins" [ref=e143] [cursor=pointer]:
+              - /url: "#soins"
+            - link "Rituel" [ref=e144] [cursor=pointer]:
+              - /url: "#rituel"
+            - link "Studio" [ref=e145] [cursor=pointer]:
+              - /url: "#studio"
+        - generic [ref=e146]:
+          - heading "Contact" [level=4] [ref=e147]
+          - paragraph [ref=e148]:
+            - text: Réservation sur demande
+            - text: Soins en cabinet ou à domicile selon disponibilité.
+  - region "Notifications (F8)":
+    - list

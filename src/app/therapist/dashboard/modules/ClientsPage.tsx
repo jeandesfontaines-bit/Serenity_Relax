@@ -1,14 +1,12 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
-  Plus, ArrowUpDown, Users, Download, GitPullRequest, Phone, MapPin,
-  X, Trash2, NotebookText, CalendarDays, BarChart3,
+  Plus, ArrowUpDown, Users, GitPullRequest, Phone, MapPin,
+  X, Trash2, NotebookText, CalendarDays,
 } from 'lucide-react';
 import { Client, Appointment } from '../types';
-import { format, differenceInCalendarDays, endOfMonth, isWithinInterval, startOfMonth, subMonths } from 'date-fns';
+import { format, differenceInCalendarDays } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
-import { dashboardChip, dashboardPanel, dashboardPanelSoft, dashboardPrimaryButton, dashboardSecondaryButton, dashboardTableCell, dashboardTableHeader, dashboardTableSectionHeader, dashboardTitle, dashboardTitleLg } from './dashboardTheme';
-
-type FilterKey = 'all' | 'new' | 'loyalty' | 'hiatus';
+import { dashboardChip, dashboardPanel, dashboardPrimaryButton, dashboardTableCell, dashboardTableHeader, dashboardTitleLg } from './dashboardTheme';
 type SortDir = 'asc' | 'desc';
 type ClientStatus = 'new' | 'loyalty' | 'hiatus' | 'active';
 
@@ -42,13 +40,6 @@ const ALL_COLUMNS: ColDef[] = [
   { id: 'insurance', label: 'Assurance', minWidth: '160px', flex: '1.1fr' },
 ];
 
-const FILTERS: Array<{ id: FilterKey; label: string }> = [
-  { id: 'all', label: 'Tous les clients' },
-  { id: 'new', label: 'Nouveaux clients' },
-  { id: 'loyalty', label: 'Clients fidèles' },
-  { id: 'hiatus', label: 'En pause' },
-];
-
 const STATUS_META: Record<ClientStatus, { label: string; className: string }> = {
   loyalty: {
     label: 'Client fidèle',
@@ -60,11 +51,11 @@ const STATUS_META: Record<ClientStatus, { label: string; className: string }> = 
   },
   hiatus: {
     label: 'En pause',
-    className: 'bg-[#e3e2e0] text-[#434842]',
+    className: 'border border-[#cbd5e1] bg-[#f8fafc] text-[#475569]',
   },
   active: {
     label: 'Client actif',
-    className: 'bg-[#efeeec] text-[#435544]',
+    className: 'border border-[#c7d2fe] bg-[#eef2ff] text-[#4338ca]',
   },
 };
 
@@ -106,10 +97,6 @@ function getClientStatus(sessionsCount: number, lastVisitDate: Date | null): Cli
   return 'active';
 }
 
-function formatMetricPercent(value: number): string {
-  return `${value >= 0 ? '+' : ''}${value}%`;
-}
-
 export default function ClientsPage({
   clients,
   appointments,
@@ -123,7 +110,6 @@ export default function ClientsPage({
   onShowFilterPanelChange,
   onVisibleCountChange,
 }: ClientsPageProps) {
-  const [activeFilter, setActiveFilter] = useState<FilterKey>('all');
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
     ['name', 'status', 'lastVisit', 'preferredRitual', 'sessions'],
   );
@@ -194,26 +180,13 @@ export default function ClientsPage({
     return summaryMap;
   }, [appointments, clients]);
 
-  const filterCounts = useMemo(() => {
-    const counts: Record<FilterKey, number> = { all: clients.length, new: 0, loyalty: 0, hiatus: 0 };
-    clients.forEach((client) => {
-      const summary = summaryByClient.get(client.id);
-      if (!summary) return;
-      if (summary.status === 'new') counts.new += 1;
-      if (summary.status === 'loyalty') counts.loyalty += 1;
-      if (summary.status === 'hiatus') counts.hiatus += 1;
-    });
-    return counts;
-  }, [clients, summaryByClient]);
-
   const filtered = useMemo(() =>
     clients
       .filter((client) => {
         const summary = summaryByClient.get(client.id);
         if (!summary) return false;
         const matchesSearch = summary.searchText.includes(search.trim().toLowerCase());
-        const matchesFilter = activeFilter === 'all' ? true : summary.status === activeFilter;
-        return matchesSearch && matchesFilter;
+        return matchesSearch;
       })
       .sort((a, b) => {
         const summaryA = summaryByClient.get(a.id);
@@ -255,7 +228,7 @@ export default function ClientsPage({
 
         return sortDir === 'asc' ? result : -result;
       }),
-    [activeFilter, clients, search, sortDir, sortField, summaryByClient],
+    [clients, search, sortDir, sortField, summaryByClient],
   );
 
   const toggleSort = useCallback((id: string) => {
@@ -301,78 +274,13 @@ export default function ClientsPage({
     onNewClient(`${client.firstName || ''} ${client.lastName || ''}`.trim());
   }, [onNewClient]);
 
-  const insights = useMemo(() => {
-    const now = new Date();
-    const currentMonth = {
-      start: startOfMonth(now),
-      end: endOfMonth(now),
-    };
-    const previousMonthDate = subMonths(now, 1);
-    const previousMonth = {
-      start: startOfMonth(previousMonthDate),
-      end: endOfMonth(previousMonthDate),
-    };
-
-    const currentClientIds = new Set<string>();
-    const previousClientIds = new Set<string>();
-    appointments.forEach((appt) => {
-      if (!appt.clientId) return;
-      const date = parseAppointmentDate(appt.date);
-      if (!date) return;
-      if (isWithinInterval(date, currentMonth)) currentClientIds.add(appt.clientId);
-      if (isWithinInterval(date, previousMonth)) previousClientIds.add(appt.clientId);
-    });
-
-    const growth = previousClientIds.size === 0
-      ? (currentClientIds.size > 0 ? 100 : 0)
-      : Math.round(((currentClientIds.size - previousClientIds.size) / previousClientIds.size) * 100);
-
-    const activeClients = Array.from(summaryByClient.values()).filter((summary) => summary.sessionsCount > 0);
-    const returningRate = activeClients.length === 0
-      ? 0
-      : Math.round((activeClients.filter((summary) => summary.sessionsCount > 1).length / activeClients.length) * 100);
-
-    const avgSessions = activeClients.length === 0
-      ? '0.0'
-      : (activeClients.reduce((sum, summary) => sum + summary.sessionsCount, 0) / activeClients.length).toFixed(1);
-
-    const monthlyTrend = Array.from({ length: 6 }, (_, idx) => {
-      const date = subMonths(now, 5 - idx);
-      const start = startOfMonth(date);
-      const end = endOfMonth(date);
-      const uniqueClients = new Set<string>();
-
-      appointments.forEach((appt) => {
-        if (!appt.clientId) return;
-        const apptDate = parseAppointmentDate(appt.date);
-        if (!apptDate) return;
-        if (isWithinInterval(apptDate, { start, end })) uniqueClients.add(appt.clientId);
-      });
-
-      return {
-        label: format(date, 'MMM'),
-        value: uniqueClients.size,
-      };
-    });
-
-    const maxTrend = Math.max(...monthlyTrend.map((item) => item.value), 1);
-
-    return {
-      growth,
-      returningRate,
-      avgSessions,
-      maxTrend,
-      monthlyTrend,
-    };
-  }, [appointments, summaryByClient]);
-
   useEffect(() => {
     onVisibleCountChange?.(filtered.length);
   }, [filtered.length, onVisibleCountChange]);
 
   return (
     <motion.div
-      className="flex-1 flex flex-col overflow-hidden bg-[#faf9f7]"
+      className="flex-1 flex flex-col overflow-hidden bg-[#fafbfc]"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -391,18 +299,18 @@ export default function ClientsPage({
               initial={{ opacity: 0, y: 8, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.98 }}
-              className="absolute right-4 top-28 z-50 w-[340px] rounded-[18px] border border-[#d9ddd7] bg-white p-5 shadow-[0_18px_40px_rgba(26,28,27,0.1)] lg:right-8"
+              className="absolute right-4 top-28 z-50 w-[340px] rounded-[18px] border border-[#dbe3ef] bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.08)] lg:right-8"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#725a38]">Affichage</p>
-                  <h3 className="mt-1 font-['Public_Sans',sans-serif] text-lg font-semibold text-[#1a1c1b]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#6366f1]">Affichage</p>
+                  <h3 className="mt-1 font-sans text-lg font-semibold text-[#1f2937]">
                     Contrôles du répertoire
                   </h3>
                 </div>
                 <button
                   onClick={() => onShowFilterPanelChange(false)}
-                  className="rounded-[10px] p-2 text-[#747872] transition-colors hover:bg-[#efeeec]"
+                  className="rounded-[10px] p-2 text-[#64748b] transition-colors hover:bg-[#f8fafc]"
                 >
                   <X size={16} strokeWidth={1.75} />
                 </button>
@@ -410,7 +318,7 @@ export default function ClientsPage({
 
               <div className="mt-6 space-y-5">
                 <div>
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#747872]">Tri</p>
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">Tri</p>
                   <div className="grid grid-cols-2 gap-2">
                     {ALL_COLUMNS.filter((col) => col.id !== 'insurance').map((col) => (
                       <button
@@ -418,8 +326,8 @@ export default function ClientsPage({
                         onClick={() => toggleSort(col.id)}
                         className={`rounded-[12px] border px-3 py-2 text-left text-sm transition-colors ${
                           sortField === col.id
-                            ? 'border-[#435544] bg-[#435544]/8 text-[#435544]'
-                            : 'border-[#e3e2e0] text-[#434842] hover:bg-[#faf9f7]'
+                            ? 'border-[#6366f1] bg-[#eef2ff] text-[#4f46e5]'
+                            : 'border-[#e2e8f0] text-[#475569] hover:bg-[#f8fafc]'
                         }`}
                       >
                         {col.label}
@@ -429,7 +337,7 @@ export default function ClientsPage({
                 </div>
 
                 <div>
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#747872]">Colonnes visibles</p>
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">Colonnes visibles</p>
                   <div className="space-y-2">
                     {ALL_COLUMNS.map((col) => (
                       <div
@@ -439,10 +347,10 @@ export default function ClientsPage({
                             ? prev.filter((id) => id !== col.id)
                             : [...prev, col.id],
                         )}
-                        className="flex w-full cursor-pointer items-center justify-between rounded-[12px] border border-[#e3e2e0] px-3 py-2 text-sm text-[#1a1c1b] transition-colors hover:bg-[#faf9f7]"
+                        className="flex w-full cursor-pointer items-center justify-between rounded-[12px] border border-[#e2e8f0] px-3 py-2 text-sm text-[#1f2937] transition-colors hover:bg-[#f8fafc]"
                       >
                         <span>{col.label}</span>
-                        <div className={`h-4 w-4 rounded border ${visibleColumns.includes(col.id) ? 'border-[#435544] bg-[#435544]' : 'border-[#c3c8c0] bg-white'}`}>
+                        <div className={`h-4 w-4 rounded border ${visibleColumns.includes(col.id) ? 'border-[#6366f1] bg-[#6366f1]' : 'border-[#cbd5e1] bg-white'}`}>
                           {visibleColumns.includes(col.id) && <div className="mx-auto mt-[3px] h-1.5 w-1.5 rotate-45 bg-white" />}
                         </div>
                       </div>
@@ -461,7 +369,7 @@ export default function ClientsPage({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 60, opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="shrink-0 overflow-hidden border-b border-[#d9ddd7] bg-[#435544] px-4 text-white lg:px-8"
+            className="shrink-0 overflow-hidden border-b border-[#c7d2fe] bg-[linear-gradient(135deg,#5b21b6_0%,#6366f1_100%)] px-4 text-white lg:px-8"
           >
             <div className="flex h-[60px] items-center justify-between gap-4">
               <p className="text-sm font-medium">
@@ -499,53 +407,13 @@ export default function ClientsPage({
 
       <main className="flex-1 overflow-auto">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 lg:px-8 lg:py-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex max-w-full gap-2 overflow-x-auto rounded-[18px] border border-[#dde2db] bg-white p-1.5 shadow-[0_8px_24px_rgba(26,28,27,0.04)]">
-              {FILTERS.map((filter) => (
-                <button
-                  key={filter.id}
-                  onClick={() => setActiveFilter(filter.id)}
-                  className={`whitespace-nowrap rounded-[12px] px-4 py-2 text-sm transition-all ${
-                    activeFilter === filter.id
-                      ? 'bg-[#435544] text-white shadow-sm'
-                      : 'text-[#5e655f] hover:bg-[#f4f3f1] hover:text-[#435544]'
-                  }`}
-                >
-                  {filter.label} <span className="opacity-70">{filterCounts[filter.id]}</span>
-                </button>
-              ))}
-            </div>
-
-            <button className={`${dashboardSecondaryButton} flex items-center gap-2 self-start`}>
-              <Download size={16} strokeWidth={1.75} />
-              Download Full Report
-            </button>
-          </div>
-
           {filtered.length === 0 ? (
             <EmptyState search={search} onNewClient={onNewClient} />
           ) : (
             <>
               <div className={`hidden overflow-hidden lg:block ${dashboardPanel}`}>
-                <div className={dashboardTableSectionHeader}>
-                  <div>
-                    <h2 className={dashboardTitle}>Liste des clients</h2>
-                    <p className="mt-1 text-sm text-[#5e655f]">
-                      {filtered.length} client{filtered.length > 1 ? 's' : ''} affiché{filtered.length > 1 ? 's' : ''} dans le répertoire
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      onSearchQueryChange('');
-                      setActiveFilter('all');
-                    }}
-                    className="text-sm font-semibold text-[#435544] transition-colors hover:underline"
-                  >
-                    Tout voir
-                  </button>
-                </div>
                 <div
-                  className={`grid items-center border-b border-[#e3e7e1] ${dashboardTableHeader}`}
+                  className={`grid items-center border-b border-[#e2e8f0] ${dashboardTableHeader}`}
                   style={{ gridTemplateColumns: gridTemplate }}
                 >
                   <div className={`flex justify-center ${dashboardTableCell}`}>
@@ -567,12 +435,12 @@ export default function ClientsPage({
                       <button
                         key={colId}
                         onClick={() => toggleSort(colId)}
-                        className={`flex items-center gap-2 ${dashboardTableCell} transition-colors hover:text-[#435544] ${
+                        className={`flex items-center gap-2 ${dashboardTableCell} transition-colors hover:text-[#4f46e5] ${
                           col?.align === 'center' ? 'justify-center' : 'justify-start'
                         }`}
                       >
                         {col?.label}
-                        <ArrowUpDown size={12} strokeWidth={1.8} className={sortField === colId ? 'text-[#435544]' : 'opacity-50'} />
+                        <ArrowUpDown size={12} strokeWidth={1.8} className={sortField === colId ? 'text-[#4f46e5]' : 'opacity-50'} />
                       </button>
                     );
                   })}
@@ -582,7 +450,7 @@ export default function ClientsPage({
                   </div>
                 </div>
 
-                <div className="divide-y divide-[#e9e8e6]">
+                <div className="divide-y divide-[#e2e8f0]">
                   {filtered.map((client) => {
                     const summary = summaryByClient.get(client.id);
                     if (!summary) return null;
@@ -620,36 +488,6 @@ export default function ClientsPage({
                   );
                 })}
               </div>
-
-              <section className="space-y-5 pt-2">
-                <div className="flex items-center justify-between">
-                  <h2 className={`${dashboardTitleLg} text-[#435544]`}>
-                    Analyse de fidélisation
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  <InsightCard
-                    icon={<BarChart3 size={24} strokeWidth={1.75} />}
-                    label="Croissance mensuelle"
-                    value={formatMetricPercent(insights.growth)}
-                    detail="vs mois précédent"
-                  />
-                  <InsightCard
-                    icon={<Users size={24} strokeWidth={1.75} />}
-                    label="Taux de retour"
-                    value={`${insights.returningRate}%`}
-                    detail="clients récurrents"
-                  />
-                  <InsightCard
-                    icon={<CalendarDays size={24} strokeWidth={1.75} />}
-                    label="Moy. séances"
-                    value={insights.avgSessions}
-                    detail="par client actif"
-                  />
-                  <TrendCard trend={insights.monthlyTrend} maxTrend={insights.maxTrend} />
-                </div>
-              </section>
             </>
           )}
         </div>
@@ -676,8 +514,8 @@ function Checkbox({
       }}
       className={`${compact ? 'h-4 w-4' : 'h-5 w-5'} flex items-center justify-center rounded border transition-colors ${
         checked
-          ? 'border-[#435544] bg-[#435544] text-white'
-          : 'border-[#c3c8c0] bg-white text-transparent hover:border-[#435544]'
+          ? 'border-[#6366f1] bg-[#6366f1] text-white'
+          : 'border-[#cbd5e1] bg-white text-transparent hover:border-[#6366f1]'
       }`}
     >
       <div className={`${compact ? 'h-1.5 w-1.5' : 'h-2 w-2'} rotate-45 bg-current`} />
@@ -696,7 +534,7 @@ function StatusBadge({ status }: { status: ClientStatus }) {
 
 function RitualBadge({ label }: { label: string }) {
   return (
-    <span className={dashboardChip + " inline-flex max-w-full truncate border-[#d4e8d2] bg-[#d4e8d2]/40 text-[#3a4b3b]"}>
+    <span className={dashboardChip + " inline-flex max-w-full truncate border-[#ddd6fe] bg-[#f5f3ff] text-[#6d28d9]"}>
       {label}
     </span>
   );
@@ -727,7 +565,7 @@ function ClientRow({
     <div
       onClick={() => onSelect(client)}
       className={`grid items-center transition-colors cursor-pointer ${
-        isSelected ? 'bg-[#faf9f7]' : 'hover:bg-[#faf9f7]/50'
+        isSelected ? 'bg-[#f8fafc]' : 'hover:bg-[#f8fafc]'
       }`}
       style={{ gridTemplateColumns: gridTemplate }}
     >
@@ -772,28 +610,28 @@ function renderDesktopCell(colId: string, client: Client, summary: ClientSummary
     case 'name':
       return (
         <div className="min-w-0">
-          <p className="truncate font-bold text-[#1a1c1b] transition-colors group-hover:text-[#435544]">
+          <p className="truncate font-bold text-[#0f172a] transition-colors group-hover:text-[#4338ca]">
             {summary.fullName}
           </p>
-          <p className="truncate text-xs text-[#747872]">{client.email || 'Aucun e-mail renseigné'}</p>
+          <p className="truncate text-xs text-[#64748b]">{client.email || 'Aucun e-mail renseigné'}</p>
         </div>
       );
     case 'status':
       return <StatusBadge status={summary.status} />;
     case 'lastVisit':
-      return <span className="text-sm text-[#1a1c1b]">{summary.lastVisitLabel}</span>;
+      return <span className="text-sm text-[#0f172a]">{summary.lastVisitLabel}</span>;
     case 'preferredRitual':
       return <RitualBadge label={summary.preferredRitual} />;
     case 'sessions':
-      return <div className="flex justify-center"><span className="text-sm font-bold text-[#435544]">{summary.sessionsCount}</span></div>;
+      return <div className="flex justify-center"><span className="text-sm font-bold text-[#4338ca]">{summary.sessionsCount}</span></div>;
     case 'email':
-      return <span className="truncate text-sm text-[#434842]">{client.email || '—'}</span>;
+      return <span className="truncate text-sm text-[#475569]">{client.email || '—'}</span>;
     case 'phone':
-      return <span className="text-sm text-[#434842]">{client.phone || '—'}</span>;
+      return <span className="text-sm text-[#475569]">{client.phone || '—'}</span>;
     case 'city':
-      return <span className="text-sm text-[#434842]">{client.city || '—'}</span>;
+      return <span className="text-sm text-[#475569]">{client.city || '—'}</span>;
     case 'insurance':
-      return <span className="truncate text-sm text-[#434842]">{client.insurance || '—'}</span>;
+      return <span className="truncate text-sm text-[#475569]">{client.insurance || '—'}</span>;
     default:
       return null;
   }
@@ -819,13 +657,13 @@ function ClientCard({
       onClick={() => onSelect(client)}
       className={`cursor-pointer rounded-[24px] border p-6 shadow-[0_10px_30px_rgba(26,28,27,0.04)] transition-all ${
         isSelected
-          ? 'border-[#435544] bg-[#faf9f7]'
-          : 'border-[#d9ddd7] bg-white active:scale-[0.99]'
+          ? 'border-[#c7d2fe] bg-[#f8faff]'
+          : 'border-[#e2e8f0] bg-white active:scale-[0.99]'
       }`}
     >
       <div className="mb-4 flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h3 className="truncate text-lg font-bold text-[#1a1c1b]">{summary.fullName}</h3>
+          <h3 className="truncate text-lg font-bold text-[#0f172a]">{summary.fullName}</h3>
           <div className="mt-2">
             <StatusBadge status={summary.status} />
           </div>
@@ -835,35 +673,35 @@ function ClientCard({
 
       <div className="space-y-3 text-sm">
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#747872]">Dernière visite</span>
-          <span className="font-medium text-[#1a1c1b]">{summary.lastVisitLabel}</span>
+          <span className="text-[#64748b]">Dernière visite</span>
+          <span className="font-medium text-[#0f172a]">{summary.lastVisitLabel}</span>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#747872]">Rituel préféré</span>
+          <span className="text-[#64748b]">Rituel préféré</span>
           <div className="max-w-[60%] text-right"><RitualBadge label={summary.preferredRitual} /></div>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#747872]">Total séances</span>
-          <span className="font-bold text-[#435544]">{summary.sessionsCount}</span>
+          <span className="text-[#64748b]">Total séances</span>
+          <span className="font-bold text-[#4338ca]">{summary.sessionsCount}</span>
         </div>
-        <div className="flex items-center gap-2 text-[#434842]">
-          <Phone size={14} strokeWidth={1.75} className="text-[#747872]" />
+        <div className="flex items-center gap-2 text-[#475569]">
+          <Phone size={14} strokeWidth={1.75} className="text-[#94a3b8]" />
           <span>{client.phone || 'Aucun téléphone'}</span>
         </div>
-        <div className="flex items-center gap-2 text-[#434842]">
-          <MapPin size={14} strokeWidth={1.75} className="text-[#747872]" />
+        <div className="flex items-center gap-2 text-[#475569]">
+          <MapPin size={14} strokeWidth={1.75} className="text-[#94a3b8]" />
           <span>{client.city || 'Ville inconnue'}</span>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 border-t border-[#efeeec] pt-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 border-t border-[#e2e8f0] pt-4">
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
             onSelect(client);
           }}
-          className="rounded-xl border border-[#c8cdc6] px-4 py-2.5 text-sm font-bold text-[#435544] transition-colors hover:bg-[#f4f3f1]"
+          className="rounded-xl border border-[#dbe3ef] px-4 py-2.5 text-sm font-bold text-[#4338ca] transition-colors hover:bg-[#f8faff]"
         >
           Voir les notes
         </button>
@@ -882,33 +720,6 @@ function ClientCard({
   );
 }
 
-function InsightCard({
-  icon,
-  label,
-  value,
-  detail,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  detail: string;
-}) {
-  return (
-    <div className={`${dashboardPanelSoft} relative overflow-hidden p-6`}>
-      <div className="relative z-10">
-        <p className="text-sm font-medium text-[#747872]">{label}</p>
-        <div className="mt-1 flex items-baseline gap-2">
-        <span className="text-2xl font-bold text-[#435544]">{value}</span>
-        <span className="text-xs font-bold text-[#5b6d5b]/70">{detail}</span>
-        </div>
-      </div>
-      <div className="absolute bottom-0 right-0 opacity-10 text-[#435544]">
-        {icon}
-      </div>
-    </div>
-  );
-}
-
 function ActionIconButton({
   label,
   tone,
@@ -921,8 +732,8 @@ function ActionIconButton({
   children: React.ReactNode;
 }) {
   const className = tone === 'primary'
-    ? 'rounded-lg p-2 text-[#435544] transition-colors hover:bg-[#435544] hover:text-white'
-    : 'rounded-lg p-2 text-[#747872] transition-colors hover:bg-[#efeeec] hover:text-[#435544]';
+    ? 'rounded-lg p-2 text-[#4338ca] transition-colors hover:bg-[#4338ca] hover:text-white'
+    : 'rounded-lg p-2 text-[#94a3b8] transition-colors hover:bg-[#eef2ff] hover:text-[#4338ca]';
 
   return (
     <div className="group relative flex">
@@ -934,42 +745,9 @@ function ActionIconButton({
       >
         {children}
       </button>
-      <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#1a1c1b] px-3 py-1 text-[11px] font-medium text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+      <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#0f172a] px-3 py-1 text-[11px] font-medium text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
         {label}
       </span>
-    </div>
-  );
-}
-
-function TrendCard({
-  trend,
-  maxTrend,
-}: {
-  trend: Array<{ label: string; value: number }>;
-  maxTrend: number;
-}) {
-  return (
-    <div className="flex flex-col justify-between rounded-[24px] border border-[#ead5b5] bg-[#fcdaaf]/28 p-6 shadow-[0_10px_30px_rgba(26,28,27,0.03)]">
-      <div>
-        <p className="text-sm font-bold text-[#775e3c]">Analyse de tendance</p>
-        <p className="mt-1 text-xs text-[#775e3c]/70">Clients actifs uniques sur les 6 derniers mois</p>
-      </div>
-      <div className="mt-5 flex h-14 items-end gap-1 px-1">
-        {trend.map((item) => (
-          <div key={item.label} className="flex flex-1 flex-col items-center justify-end gap-1">
-            <div
-              className="w-full rounded-t-sm bg-[#725a38]"
-              style={{ height: `${Math.max((item.value / maxTrend) * 100, item.value > 0 ? 18 : 8)}%`, opacity: 0.35 + ((item.value / maxTrend) * 0.65) }}
-            />
-            <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#775e3c]/70">
-              {item.label}
-            </span>
-          </div>
-        ))}
-      </div>
-      <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#775e3c]">
-        Croissance de stabilité : {trend[trend.length - 1]?.value >= trend[0]?.value ? 'Positive' : 'À surveiller'}
-      </p>
     </div>
   );
 }
@@ -977,14 +755,14 @@ function TrendCard({
 function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?: string) => void }) {
   return (
     <div className={`flex min-h-[420px] flex-col items-center justify-center gap-8 px-6 py-16 text-center ${dashboardPanel}`}>
-      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#f4f3f1]">
-        <Users size={32} strokeWidth={1.2} className="text-[#747872]" />
+      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#f8fafc]">
+        <Users size={32} strokeWidth={1.2} className="text-[#94a3b8]" />
       </div>
       <div className="space-y-3">
         <h2 className={dashboardTitleLg}>
           Aucun client trouvé
         </h2>
-        <p className="mx-auto max-w-md text-sm leading-relaxed text-[#747872]">
+        <p className="mx-auto max-w-md text-sm leading-relaxed text-[#64748b]">
           {search
             ? `Aucun profil ne correspond à "${search}". Essayez une autre recherche ou créez une nouvelle fiche client.`
             : 'Votre répertoire est vide. Commencez par créer une fiche client ou réserver une première séance.'}

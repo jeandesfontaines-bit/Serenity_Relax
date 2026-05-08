@@ -9,8 +9,7 @@ import {
   signInWithEmailAndPassword 
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { Mail, ArrowRight, Loader2, Chrome, AlertCircle, Share2 } from 'lucide-react';
-import Link from 'next/link';
+import { Mail, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
   const auth = useAuth();
@@ -109,30 +108,38 @@ export default function LoginPage() {
 
   if (isUserLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#faf9f7]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#435544]" />
+      <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top_left,rgba(132,204,22,0.12),transparent_28%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.12),transparent_26%),linear-gradient(180deg,#fffdfa_0%,#f7f8fc_100%)]">
+        <Loader2 className="h-8 w-8 animate-spin text-[#6366f1]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#faf9f7]">
+    <div className="flex min-h-screen flex-col bg-[radial-gradient(circle_at_top_left,rgba(132,204,22,0.12),transparent_28%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.12),transparent_26%),linear-gradient(180deg,#fffdfa_0%,#f7f8fc_100%)] md:flex-row">
       {/* Left Panel - Image & Branding */}
       <div className="hidden md:flex md:w-1/2 relative h-screen overflow-hidden">
-        <img 
-          src="/images/login-bg.png" 
-          alt="Sanctuary" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(132,204,22,0.22),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.24),transparent_34%),linear-gradient(145deg,#f8fafc_0%,#eef2ff_42%,#e2e8f0_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(15,23,42,0.12))]" />
+        <div className="absolute -left-12 top-24 h-72 w-72 rounded-full bg-[#d9f99d]/35 blur-3xl" />
+        <div className="absolute right-[-4rem] top-[-2rem] h-80 w-80 rounded-full bg-[#c7d2fe]/45 blur-3xl" />
+        <div className="absolute bottom-10 left-20 h-64 w-64 rounded-full bg-white/60 blur-3xl" />
+        <div className="absolute bottom-16 right-12 h-56 w-56 rounded-[38%_62%_63%_37%/46%_43%_57%_54%] bg-[#0f172a]/88 shadow-[0_30px_80px_rgba(15,23,42,0.18)]" />
+        <div className="absolute left-[16%] top-[22%] h-72 w-72 rounded-[42%_58%_54%_46%/58%_40%_60%_42%] border border-white/50 bg-white/55 backdrop-blur-md shadow-[0_24px_60px_rgba(15,23,42,0.08)]" />
+        <div className="absolute left-[34%] top-[34%] h-56 w-56 rounded-[58%_42%_31%_69%/46%_50%_50%_54%] bg-[linear-gradient(135deg,rgba(255,255,255,0.85),rgba(224,231,255,0.78))] shadow-[0_24px_60px_rgba(15,23,42,0.1)]" />
+        <div className="absolute right-[12%] top-[22%] h-40 w-40 rounded-full border border-white/50 bg-white/45 backdrop-blur-md shadow-[0_18px_40px_rgba(15,23,42,0.08)]" />
+        <div className="absolute right-[18%] top-[46%] h-32 w-32 rounded-full bg-[#84cc16]/28 blur-2xl" />
         
         <div className="relative z-10 w-full h-full p-20 flex flex-col justify-between">
           <div className="flex items-center">
-            <div className="flex items-center gap-4">
-              <span className="text-[0.7rem] font-sans font-bold tracking-[0.6em] text-white uppercase opacity-90">
-                Serenity Relax Therapy
-              </span>
-              <span className="font-cursive text-4xl text-white/95 leading-none pt-2">by João</span>
+            <div className="rounded-[24px] border border-white/15 bg-white/8 px-5 py-4 backdrop-blur-md">
+              <div>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-white/78 md:text-[0.8rem]">
+                    SERENITY RELAX THERAPY
+                  </p>
+                  <span className="font-serif text-[0.64rem] italic leading-none text-white/95 md:text-[0.72rem]">by João</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -142,40 +149,40 @@ export default function LoginPage() {
               animate={{ opacity: 1, y: 0 }}
               className="text-[6rem] font-serif text-white leading-[0.9] tracking-tighter font-light"
             >
-              Discover your <br />
-              personal <br />
-              sanctuary.
+              Entrez dans votre <br />
+              espace <br />
+              de soin.
             </motion.h1>
             <motion.div 
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="w-32 h-[1px] bg-white/40 origin-left"
+              className="h-[1px] w-32 origin-left bg-[#d9f99d]/70"
             />
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-xl font-sans text-white/80 leading-relaxed font-light tracking-wide"
+              className="text-xl font-sans leading-relaxed font-light tracking-wide text-white/82"
             >
-              A sensory sanctuary in Geneva Cointrin <br />
-              dedicated to physical and mental restoration.
+              Un espace confidentiel à Genève Cointrin <br />
+              pensé pour prolonger votre expérience de soin.
             </motion.p>
           </div>
         </div>
       </div>
 
       {/* Right Panel - Auth Form */}
-      <div className="flex-1 flex items-center justify-center p-8 md:p-24 relative bg-[#faf9f7]">
-        <div className="w-full max-w-md space-y-16">
+      <div className="relative flex flex-1 items-center justify-center p-8 md:p-24">
+        <div className="w-full max-w-md space-y-14 rounded-[36px] border border-white/60 bg-[rgba(255,255,255,0.78)] p-8 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl md:p-10">
           <div className="space-y-4">
             <div className="space-y-2">
-              <h2 className="text-[4rem] font-serif text-[#1a1c1b] tracking-tighter leading-[0.9] font-light">
-                Création de Compte
+              <h2 className="text-[3.5rem] font-serif leading-[0.92] tracking-tighter text-[#0f172a] font-light md:text-[4rem]">
+                Connexion
               </h2>
               <div className="flex items-center gap-3 pt-2">
-                <div className="w-12 h-[1px] bg-[#435544]/20" />
-                <p className="text-[1.3rem] font-serif italic text-[#435544]/50 font-light">
+                <div className="h-[1px] w-12 bg-[#6366f1]/25" />
+                <p className="text-[1.15rem] font-serif italic font-light text-[#6366f1]/55 md:text-[1.3rem]">
                   Serenity Relax Therapy
                 </p>
               </div>
@@ -183,9 +190,9 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-6">
-            <p className="text-[1rem] font-sans text-[#434842] opacity-70 leading-relaxed font-light tracking-wide max-w-[90%]">
-              Access is exclusive to clients with a confirmed booking.
-              Join our community for a personalized wellness experience.
+            <p className="max-w-[90%] text-[1rem] font-sans font-light leading-relaxed tracking-wide text-[#475569]">
+              Cet accès est réservé aux personnes disposant d'une réservation
+              confirmée ou d'un lien de connexion envoyé par e-mail.
             </p>
           </div>
 
@@ -197,22 +204,22 @@ export default function LoginPage() {
                 animate={{ opacity: 1, x: 0 }}
                 className="space-y-8 py-4"
               >
-                <div className="p-8 rounded-2xl bg-white border border-[#efeeec] shadow-sm space-y-6">
-                  <div className="w-16 h-16 rounded-full bg-[#435544]/5 flex items-center justify-center mx-auto">
-                    <Mail className="text-[#435544] w-6 h-6" />
+                <div className="space-y-6 rounded-[28px] border border-[#e2e8f0] bg-white/90 p-8 shadow-[0_10px_32px_rgba(15,23,42,0.05)]">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#eef2ff]">
+                    <Mail className="h-6 w-6 text-[#4f46e5]" />
                   </div>
                   <div className="text-center space-y-2">
-                    <h3 className="text-xl font-serif text-[#1a1c1b]">Check your inbox</h3>
-                    <p className="text-sm font-['Manrope'] text-[#434842] leading-relaxed">
-                      We've sent a magic link to <br/>
-                      <span className="font-bold text-[#1a1c1b]">{email}</span>
+                    <h3 className="text-xl font-serif text-[#0f172a]">Vérifiez votre boîte mail</h3>
+                    <p className="text-sm leading-relaxed text-[#475569]">
+                      Nous avons envoyé un lien de connexion à <br/>
+                      <span className="font-bold text-[#0f172a]">{email}</span>
                     </p>
                   </div>
                   <button 
                     onClick={() => setMagicLinkSent(false)}
-                    className="w-full py-4 text-[0.7rem] font-bold uppercase tracking-widest text-[#435544] border-t border-[#efeeec] hover:text-[#725a38] transition-colors"
+                    className="w-full border-t border-[#e2e8f0] py-4 text-[0.7rem] font-bold uppercase tracking-widest text-[#4f46e5] transition-colors hover:text-[#312e81]"
                   >
-                    Resend link
+                    Renvoyer le lien
                   </button>
                 </div>
               </motion.div>
@@ -224,8 +231,8 @@ export default function LoginPage() {
                 className="space-y-10"
               >
                 {error && (
-                  <div className="p-4 rounded-xl bg-red-50 border border-red-100 flex items-center gap-3 text-red-600 text-sm">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
+                  <div className="flex items-center gap-3 rounded-[18px] border border-[#fecaca] bg-[#fff1f2] p-4 text-sm text-[#be123c]">
+                    <AlertCircle className="h-4 w-4 shrink-0" />
                     <p>{error}</p>
                   </div>
                 )}
@@ -234,15 +241,15 @@ export default function LoginPage() {
                   <div className="space-y-10">
                     {/* Email Field */}
                     <div className="space-y-4">
-                      <label className="text-[0.65rem] font-['Manrope'] font-bold uppercase tracking-[0.2em] text-[#434842]/60">
-                        What is your email address?
+                      <label className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[#64748b]">
+                        Quelle est votre adresse e-mail ?
                       </label>
                       <input 
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="name@example.com"
-                        className="w-full bg-transparent border-b border-[#c3c8c0] py-4 text-[1.1rem] font-['Manrope'] text-[#1a1c1b] focus:outline-none focus:border-[#435544] transition-all placeholder:text-[#c3c8c0]/30 font-light"
+                        className="w-full rounded-[18px] border border-[#dbe3ef] bg-white/78 px-5 py-4 text-[1.05rem] font-light text-[#0f172a] transition-all placeholder:text-[#94a3b8] focus:border-[#6366f1] focus:outline-none focus:ring-4 focus:ring-[#6366f1]/10"
                         required
                       />
                     </div>
@@ -254,15 +261,15 @@ export default function LoginPage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-4"
                       >
-                        <label className="text-[0.65rem] font-['Manrope'] font-bold uppercase tracking-[0.2em] text-[#434842]/60">
-                          {isTherapist ? 'Enter your password' : 'Confirm your password'}
+                        <label className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[#64748b]">
+                          {isTherapist ? 'Saisissez votre mot de passe' : 'Mot de passe'}
                         </label>
                         <input 
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           placeholder="••••••••"
-                          className="w-full bg-transparent border-b border-[#c3c8c0] py-4 text-[1.1rem] font-['Manrope'] text-[#1a1c1b] focus:outline-none focus:border-[#435544] transition-all placeholder:text-[#c3c8c0]/30 font-light"
+                          className="w-full rounded-[18px] border border-[#dbe3ef] bg-white/78 px-5 py-4 text-[1.05rem] font-light text-[#0f172a] transition-all placeholder:text-[#94a3b8] focus:border-[#6366f1] focus:outline-none focus:ring-4 focus:ring-[#6366f1]/10"
                         />
                       </motion.div>
                     )}
@@ -273,19 +280,19 @@ export default function LoginPage() {
                       <button 
                         onClick={handleEmailLogin}
                         disabled={isLoading || !password}
-                        className="w-full bg-[#435544] text-white py-5 rounded-lg text-[0.8rem] font-bold uppercase tracking-[0.2em] transition-all hover:bg-[#364436] disabled:opacity-50 flex items-center justify-center gap-3 shadow-xl shadow-[#435544]/10"
+                        className="flex w-full items-center justify-center gap-3 rounded-[18px] bg-gradient-to-r from-[#5b21b6] to-[#6366f1] py-5 text-[0.8rem] font-bold uppercase tracking-[0.2em] text-white shadow-[0_14px_28px_rgba(99,102,241,0.2)] transition-all hover:-translate-y-[1px] disabled:opacity-50"
                       >
-                        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
+                        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Se connecter'}
                       </button>
                     ) : (
                       <button 
                         onClick={handleSendMagicLink}
                         disabled={isLoading || !email}
-                        className="w-full bg-[#435544] text-white py-5 rounded-lg text-[0.8rem] font-bold uppercase tracking-[0.2em] transition-all hover:bg-[#364436] disabled:opacity-50 flex items-center justify-center gap-3 shadow-xl shadow-[#435544]/10"
+                        className="flex w-full items-center justify-center gap-3 rounded-[18px] bg-gradient-to-r from-[#5b21b6] to-[#6366f1] py-5 text-[0.8rem] font-bold uppercase tracking-[0.2em] text-white shadow-[0_14px_28px_rgba(99,102,241,0.2)] transition-all hover:-translate-y-[1px] disabled:opacity-50"
                       >
                         {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                           <>
-                            Send Magic Link
+                            Envoyer le lien de connexion
                             <ArrowRight className="w-4 h-4" />
                           </>
                         )}
@@ -294,10 +301,10 @@ export default function LoginPage() {
 
                     <div className="relative">
                       <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-[#efeeec]"></div>
+                        <div className="w-full border-t border-[#e2e8f0]"></div>
                       </div>
                       <div className="relative flex justify-center text-[0.6rem] uppercase tracking-[0.3em]">
-                        <span className="bg-[#faf9f7] px-6 text-[#747872] font-['Manrope'] font-medium">Or sign in with</span>
+                        <span className="bg-[rgba(255,255,255,0.88)] px-6 font-medium text-[#94a3b8]">Ou continuer avec</span>
                       </div>
                     </div>
 
@@ -305,27 +312,27 @@ export default function LoginPage() {
                       <button 
                         onClick={handleGoogleLogin}
                         type="button"
-                        className="flex items-center justify-center gap-3 bg-white border border-[#efeeec] py-4 rounded-xl hover:bg-white/80 transition-all shadow-sm group"
+                        className="group flex items-center justify-center gap-3 rounded-[18px] border border-[#e2e8f0] bg-white/88 py-4 transition-all shadow-sm hover:-translate-y-[1px] hover:bg-white"
                       >
                         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-4 h-4 transition-transform group-hover:scale-110" alt="Google" />
-                        <span className="text-[0.75rem] font-['Manrope'] font-bold uppercase tracking-wider text-[#435544]">Google</span>
+                        <span className="text-[0.75rem] font-bold uppercase tracking-wider text-[#312e81]">Google</span>
                       </button>
                       <button 
                         type="button"
-                        className="flex items-center justify-center gap-3 bg-white border border-[#efeeec] py-4 rounded-xl hover:bg-white/80 transition-all shadow-sm group"
+                        className="group flex items-center justify-center gap-3 rounded-[18px] border border-[#e2e8f0] bg-white/88 py-4 transition-all shadow-sm hover:-translate-y-[1px] hover:bg-white"
                       >
                         <svg className="w-4 h-4 transition-transform group-hover:scale-110" viewBox="0 0 384 512" fill="currentColor">
                           <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
                         </svg>
-                        <span className="text-[0.75rem] font-['Manrope'] font-bold uppercase tracking-wider text-[#435544]">Apple</span>
+                        <span className="text-[0.75rem] font-bold uppercase tracking-wider text-[#312e81]">Apple</span>
                       </button>
                     </div>
                   </div>
                 </form>
 
-                <p className="text-[0.8rem] font-['Manrope'] text-[#434842]/60 text-center leading-relaxed">
-                  Clients will receive an email to access their account after <br/>
-                  their first session is booked. No password required.
+                <p className="text-center text-[0.8rem] leading-relaxed text-[#64748b]">
+                  Les clients reçoivent un lien de connexion par e-mail après <br/>
+                  leur première réservation. Aucun mot de passe n'est requis.
                 </p>
               </motion.div>
             )}

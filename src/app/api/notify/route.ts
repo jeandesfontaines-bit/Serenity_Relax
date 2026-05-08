@@ -16,7 +16,9 @@ export async function POST(req: Request) {
       clientName, 
       clientEmail: rawClientEmail,
       email,
-      clientPhone, 
+      clientPhone,
+      clientAddress,
+      clientNotes,
       serviceName, 
       startTime, 
       duration, 
@@ -46,19 +48,27 @@ export async function POST(req: Request) {
         to: [clientEmail],
         subject: `Lien de connexion : Votre Sanctuaire Serenity`,
         html: `
-          <div style="font-family: sans-serif; color: #171717; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 12px;">
-            <h1 style="font-family: serif; font-size: 24px;">Bonjour ${clientName},</h1>
-            <p>Cliquez sur le bouton ci-dessous pour accéder à votre espace client Serenity Relax. Ce lien est valable pour une session unique.</p>
+          <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #171717; max-width: 600px; margin: 0 auto; padding: 40px 20px; background-color: #ffffff;">
+            <div style="text-align: center; margin-bottom: 40px;">
+              <h2 style="font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; font-size: 14px; margin-bottom: 8px; color: #888;">Serenity Relax</h2>
+              <div style="height: 1px; width: 40px; background-color: #e0e0e0; margin: 0 auto;"></div>
+            </div>
             
-            <div style="margin: 40px 0; text-align: center;">
-              <a href="${magicLink}" style="display: inline-block; background-color: #000; color: #fff; padding: 16px 32px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; letter-spacing: 0.1em;">
+            <h1 style="font-size: 28px; font-weight: 400; margin-bottom: 24px; color: #111;">Bonjour ${clientName},</h1>
+            <p style="font-size: 16px; line-height: 1.6; color: #444; margin-bottom: 32px;">Cliquez sur le bouton ci-dessous pour accéder à votre espace client Serenity Relax. Ce lien est valable pour une session unique.</p>
+            
+            <div style="text-align: center; margin: 48px 0;">
+              <a href="${magicLink}" style="display: inline-block; background-color: #111111; color: #ffffff; padding: 18px 36px; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase;">
                 ACCÉDER À MON ESPACE
               </a>
             </div>
 
-            <p style="font-size: 13px; color: #888;">Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
-            <p style="font-size: 14px;"><strong>Joao Manuel Castro Ramos - Serenity Relax</strong></p>
+            <p style="font-size: 13px; color: #999; text-align: center; margin-top: 48px;">Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p>
+            
+            <div style="margin-top: 64px; padding-top: 32px; border-top: 1px solid #f0f0f0; text-align: center;">
+              <p style="font-size: 14px; color: #111; margin-bottom: 4px;"><strong>Joao Manuel Castro Ramos</strong></p>
+              <p style="font-size: 12px; color: #888; letter-spacing: 0.05em;">Serenity Relax Therapy</p>
+            </div>
           </div>
         `,
       });
@@ -71,7 +81,7 @@ export async function POST(req: Request) {
        return NextResponse.json({ error: 'Missing appointmentId for confirmation' }, { status: 400 });
     }
 
-    const dateStr = new Date(startTime).toLocaleDateString('fr-CH');
+    const dateStr = new Date(startTime).toLocaleDateString('fr-CH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     const timeStr = new Date(startTime).toLocaleTimeString('fr-CH', { hour: '2-digit', minute: '2-digit' });
     
     const waPhone = clientPhone ? clientPhone.replace(/[^0-9]/g, '') : '';
@@ -90,28 +100,51 @@ export async function POST(req: Request) {
     const clientEmailPromise = resend.emails.send({
       from: 'Serenity Relax <booking@serenity-relax.com>',
       to: [clientEmail],
-      subject: `Confirmation de votre soin : ${serviceName}`,
+      subject: `Confirmation : Votre rituel ${serviceName}`,
       html: `
-        <div style="font-family: sans-serif; color: #171717; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 12px;">
-          <h1 style="font-family: serif; font-size: 24px;">Bonjour ${clientName},</h1>
-          <p>Votre réservation pour <strong>${serviceName}</strong> est confirmée.</p>
+        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #171717; max-width: 600px; margin: 0 auto; padding: 40px 20px; background-color: #ffffff;">
+          <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; font-size: 14px; margin-bottom: 8px; color: #888;">Serenity Relax</h2>
+            <div style="height: 1px; width: 40px; background-color: #e0e0e0; margin: 0 auto;"></div>
+          </div>
           
-          <div style="background-color: #f9f9f9; padding: 20px; border-radius: 12px; margin: 20px 0;">
-            <p style="margin: 0 0 10px 0;"><strong>📅 Date :</strong> ${dateStr}</p>
-            <p style="margin: 0 0 10px 0;"><strong>⏰ Heure :</strong> ${timeStr}</p>
-            <p style="margin: 0;"><strong>📍 Lieu :</strong> Avenue de Mategnin 4, 1217 Meyrin</p>
+          <h1 style="font-size: 28px; font-weight: 400; margin-bottom: 24px; color: #111; text-align: center;">Confirmation</h1>
+          <p style="font-size: 16px; line-height: 1.6; color: #444; margin-bottom: 32px; text-align: center;">Bonjour ${clientName},<br/>Votre rendez-vous pour <strong>${serviceName}</strong> a été validé.</p>
+          
+          <div style="background-color: #fafafa; padding: 32px; border-radius: 8px; margin: 40px 0; border: 1px solid #f0f0f0;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding-bottom: 16px; font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 0.1em;">Date</td>
+                <td style="padding-bottom: 16px; font-size: 15px; color: #111; font-weight: 500; text-align: right;">${dateStr}</td>
+              </tr>
+              <tr>
+                <td style="padding-bottom: 16px; font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 0.1em;">Heure</td>
+                <td style="padding-bottom: 16px; font-size: 15px; color: #111; font-weight: 500; text-align: right;">${timeStr}</td>
+              </tr>
+              <tr>
+                <td style="padding-bottom: 16px; font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 0.1em;">Lieu</td>
+                <td style="padding-bottom: 16px; font-size: 15px; color: #111; font-weight: 500; text-align: right;">À votre domicile</td>
+              </tr>
+              <tr>
+                <td style="font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 0.1em;">Durée</td>
+                <td style="font-size: 15px; color: #111; font-weight: 500; text-align: right;">${duration}</td>
+              </tr>
+            </table>
           </div>
 
-          <div style="margin: 30px 0; text-align: center;">
-            <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Accédez à votre espace client pour voir vos réservations et vos factures :</p>
-            <a href="${magicLink}" style="display: inline-block; background-color: #000; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px;">
+          <div style="text-align: center; margin: 48px 0;">
+            <p style="font-size: 14px; color: #666; margin-bottom: 24px;">Gérez vos rendez-vous et retrouvez vos factures :</p>
+            <a href="${magicLink}" style="display: inline-block; background-color: #111111; color: #ffffff; padding: 18px 36px; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase;">
               ACCÉDER À MON COMPTE
             </a>
           </div>
 
-          <p style="font-size: 13px; color: #888;">En cas d'empêchement, merci de nous avertir au minimum 24h à l'avance.</p>
-          <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
-          <p style="font-size: 14px;"><strong>Joao Manuel Castro Ramos - Serenity Relax</strong></p>
+          <p style="font-size: 13px; color: #999; text-align: center; margin-top: 48px; line-height: 1.6;">En cas d'empêchement, merci de nous avertir au minimum 24h à l'avance.</p>
+          
+          <div style="margin-top: 64px; padding-top: 32px; border-top: 1px solid #f0f0f0; text-align: center;">
+            <p style="font-size: 14px; color: #111; margin-bottom: 4px;"><strong>Joao Manuel Castro Ramos</strong></p>
+            <p style="font-size: 12px; color: #888; letter-spacing: 0.05em;">Serenity Relax Therapy</p>
+          </div>
         </div>
       `,
     });
@@ -120,22 +153,52 @@ export async function POST(req: Request) {
     const adminEmailPromise = resend.emails.send({
       from: 'Serenity Relax CRM <bot@serenity-relax.com>',
       to: [THERAPIST_EMAIL],
-      subject: `NOUVEAU RITUEL : ${clientName}`,
+      subject: `✨ Nouveau Soin : ${clientName}`,
       html: `
-        <div style="font-family: sans-serif; color: #171717; padding: 20px;">
-          <h2 style="font-family: serif;">Nouvelle Réservation Confirmée 🚀</h2>
-          <p><strong>Client :</strong> ${clientName}</p>
-          <p><strong>Email :</strong> ${clientEmail}</p>
-          <p><strong>Tel :</strong> ${clientPhone || 'Non renseigné'}</p>
-          <p><strong>Soin :</strong> ${serviceName}</p>
-          <p><strong>RDV :</strong> ${dateStr} à ${timeStr}</p>
-          <br/>
-          <div style="margin-top: 20px;">
-            ${whatsappLink ? `
-              <a href="${whatsappLink}" style="display: inline-block; background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; margin-right: 10px;">
-                CONTACTER SUR WHATSAPP
-              </a>
-            ` : ''}
+        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #171717; padding: 40px; background-color: #f9f9f9;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <h2 style="font-weight: 500; color: #111; margin-bottom: 32px; border-bottom: 1px solid #eee; padding-bottom: 16px;">Nouvelle Réservation ✨</h2>
+            
+            <div style="margin-bottom: 24px;">
+              <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">Client</p>
+              <p style="font-size: 18px; color: #111; font-weight: 500;">${clientName}</p>
+            </div>
+            
+            <div style="display: flex; gap: 40px; margin-bottom: 24px;">
+              <div style="flex: 1;">
+                <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">Soin</p>
+                <p style="font-size: 16px; color: #111;">${serviceName}</p>
+              </div>
+              <div style="flex: 1;">
+                <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">RDV</p>
+                <p style="font-size: 16px; color: #111;">${dateStr} à ${timeStr}</p>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">Coordonnées</p>
+              <p style="font-size: 15px; color: #111; margin-bottom: 4px;">📧 ${clientEmail}</p>
+              <p style="font-size: 15px; color: #111;">📞 ${clientPhone || 'Non renseigné'}</p>
+            </div>
+
+            <div style="margin-bottom: 24px; padding: 20px; background-color: #fdfdfd; border: 1px solid #f0f0f0; border-radius: 8px;">
+              <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">Adresse de consultation</p>
+              <p style="font-size: 15px; color: #111; line-height: 1.5;">📍 ${clientAddress || 'À Meyrin (Avenue de Mategnin 4)'}</p>
+              ${clientNotes ? `
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #eee;">
+                  <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">Notes du client</p>
+                  <p style="font-size: 14px; color: #555; font-style: italic;">"${clientNotes}"</p>
+                </div>
+              ` : ''}
+            </div>
+
+            <div style="margin-top: 40px; text-align: center;">
+              ${whatsappLink ? `
+                <a href="${whatsappLink}" style="display: inline-block; background-color: #25D366; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; letter-spacing: 0.02em;">
+                  CONTACTER SUR WHATSAPP
+                </a>
+              ` : ''}
+            </div>
           </div>
         </div>
       `,

@@ -1,564 +1,424 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  ArrowRight, 
-  ChevronDown, 
-  Sparkles, 
-  ShieldCheck, 
-  Clock,
-  Compass,
-  Wind,
-  Layers,
-  ChevronRight
-} from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
-import { BookingFlow } from '@/components/booking/booking-flow';
-import { SERVICES } from '@/lib/types';
+import { ArrowRight, Instagram, Linkedin, MapPin } from 'lucide-react';
 
-/* ── Assets ── */
-const HERO_IMAGE = '/images/hero-joao-hq.png';
-const STUDIO_IMAGE = '/images/Gemini_Generated_Image_4vxbi24vxbi24vxb.png';
-const DETAIL_IMAGE = '/images/Gemini_Generated_Image_4vxbi24vxbi24vxb (2).png';
-const JOAO_PORTRAIT = '/images/joao-portrait-hq.png';
+import BookingFunnel from '@/components/BookingFunnel';
+import Accordion from '@/components/Accordion';
+import { useBooking } from '@/context/BookingContext';
+import {
+  SERVICES,
+  IMPACTS,
+  AFTERCARE_EXPERIENCE,
+  FAQ_ITEMS,
+  MY_PHOTO,
+} from '@/data';
 
-/* ── FAQ Data ── */
-const faqs = [
-  {
-    q: 'Comment se déroule une première séance ?',
-    a: "La séance commence par un bref échange sur vos besoins et éventuelles tensions. João adapte ensuite sa technique à votre corps en temps réel — chaque séance est unique.",
-  },
-  {
-    q: 'Combien de temps à l\'avance dois-je réserver ?',
-    a: "Nous recommandons de réserver au moins 48h à l'avance pour garantir votre créneau. Les créneaux du week-end partent rapidement.",
-  },
-  {
-    q: 'Quelle est votre politique d\'annulation ?',
-    a: "Toute annulation doit être faite au moins 24h avant la séance. En cas d'annulation tardive, la séance peut être facturée à 50%.",
-  },
-  {
-    q: 'Où est situé le cabinet ?',
-    a: "Le studio est situé à Genève Cointrin. L'adresse exacte vous est communiquée lors de la confirmation de votre réservation.",
-  },
-];
+export default function Home() {
+  const { openModal } = useBooking();
+  const [selectedTip, setSelectedTip] = useState(0);
+  const heroHighlights = [
+    { label: 'Soins signatures', value: `${SERVICES.length}` },
+    { label: 'Rituels après-séance', value: `${AFTERCARE_EXPERIENCE.length}` },
+    { label: 'Questions utiles', value: `${FAQ_ITEMS.length}` },
+  ];
 
-const testimonials = [
-  {
-    quote: "Un moment de suspension absolue. L'approche de João est d'une précision rare, on sent une expertise qui dépasse la simple technique.",
-    author: "Elena M.",
-    role: "Cliente régulière"
-  },
-  {
-    quote: "Le studio est un havre de paix. Dès l'entrée, on change de dimension. Le soin est profond, millimétré, salvateur.",
-    author: "Marc-Antoine D.",
-    role: "Chef d'entreprise"
-  },
-  {
-    quote: "Enfin un thérapeute qui écoute vraiment le corps. Chaque séance est une redécouverte de sa propre fluidité.",
-    author: "Sophie L.",
-    role: "Sportive de haut niveau"
-  }
-];
-
-/* ── Components ── */
-
-function FaqItem({ q, a }: { q: string; a: string; }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-black/[0.05] last:border-0 overflow-hidden">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between py-6 text-left group"
-      >
-        <span className="text-[16px] md:text-[18px] font-sans font-medium text-foreground tracking-tight group-hover:text-primary">
-          {q}
-        </span>
-        <div className={`w-10 h-10 rounded-full border border-black/[0.05] flex items-center justify-center ${open ? 'bg-foreground border-foreground text-background rotate-180' : 'group-hover:border-foreground'}`}>
-          <ChevronDown size={16} strokeWidth={1.5} />
-        </div>
-      </button>
-      {open && (
-        <div className="pb-8">
-          <p className="text-[15px] leading-relaxed text-foreground/60 font-light max-w-2xl">
-            {a}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ServiceCard({
-  service,
-  onBook,
-}: {
-  service: (typeof SERVICES)[0];
-  onBook: () => void;
-}) {
-  return (
-    <div
-      className="group relative bg-white overflow-hidden border border-black/[0.03] cursor-pointer hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)]"
-      onClick={onBook}
-    >
-      <div className="relative aspect-[4/5] overflow-hidden">
-        {service.image ? (
-          <Image
-            src={service.image}
-            alt={service.name}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            className="object-cover"
-          />
-        ) : (
-          <div className="w-full h-full bg-muted" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80" />
-        
-        <div className="absolute inset-0 p-6 flex flex-col justify-end">
-          <div>
-            <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-medium tracking-widest text-white rounded-full mb-4">
-              {service.duration}
-            </span>
-            <h3 className="font-sans text-[18px] md:text-[20px] font-medium leading-tight text-white mb-2">
-              {service.name}
-            </h3>
-            <p className="text-[13px] text-white/70 font-light line-clamp-2 mb-6">
-              {service.description}
-            </p>
-            <div className="flex items-center justify-between border-t border-white/10 pt-4">
-              <span className="font-sans text-[16px] font-medium text-white">
-                {service.price} <span className="text-[10px] font-sans text-white/50 uppercase tracking-wider ml-1">CHF</span>
-              </span>
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-foreground group-hover:bg-primary group-hover:text-white">
-                <ChevronRight size={18} strokeWidth={1.5} />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="relative overflow-x-hidden bg-[radial-gradient(circle_at_top_left,rgba(132,204,22,0.11),transparent_22%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.11),transparent_24%),linear-gradient(180deg,#fffdfa_0%,#f7f8fc_42%,#fbfcfe_100%)] text-[#0f172a] selection:bg-[#d9f99d] selection:text-[#0f172a]">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-0 top-0 h-[28rem] w-[28rem] rounded-full bg-[#84cc16]/[0.08] blur-3xl" />
+        <div className="absolute right-0 top-0 h-[24rem] w-[24rem] rounded-full bg-[#6366f1]/[0.08] blur-3xl" />
+        <div className="absolute bottom-[16%] left-[8%] h-[18rem] w-[18rem] rounded-full bg-white/70 blur-3xl" />
       </div>
-    </div>
-  );
-}
 
-export default function HomePage() {
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const [bookingServiceId, setBookingServiceId] = useState<string | undefined>(undefined);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
-
-  const openBooking = (serviceId?: string) => {
-    setBookingServiceId(serviceId);
-    setIsBookingOpen(true);
-  };
-
-  if (!mounted) return null;
-
-  return (
-    <main className="min-h-screen bg-background text-foreground overflow-x-hidden font-sans selection:bg-primary/10 selection:text-primary">
-      <Navbar onBookingClick={() => openBooking()} />
-
-      {/* ════════════════════════════════════════
-          HERO SECTION (EDITORIAL)
-      ════════════════════════════════════════ */}
-      <section id="hero" className="relative h-[100vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src={HERO_IMAGE} alt="" fill sizes="100vw" quality={100} className="object-cover" priority />
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background" />
-        </div>
-
-        <div className="container-wide relative z-10 pt-20">
-          <div className="max-w-4xl">
-            <div>
-              <div className="flex items-center gap-4 mb-8">
-                <div className="h-[1px] w-12 bg-white/30" />
-                <span className="text-[10px] font-medium tracking-widest text-white/70">
-                  Genève Cointrin · Thérapeute Agréé
-                </span>
-              </div>
-              
-              <h1 className="font-sans text-[clamp(36px,6vw,72px)] leading-tight tracking-tight font-light text-white mb-12">
-                L&apos;Espace <br />
-                <span className="font-medium text-white ml-2">
-                  Suspendu.
-                </span>
-              </h1>
-              
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12 mt-16">
-                <button
-                  onClick={() => openBooking()}
-                  className="bg-white text-foreground rounded-full px-8 py-4 text-[14px] font-medium shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:bg-primary hover:text-white"
-                >
-                  Réserver l&apos;Instant
-                </button>
-                
-                <div className="max-w-xs border-l border-white/20 pl-6 py-1">
-                  <p className="text-[14px] text-white/70 font-light leading-relaxed tracking-wide mb-3">
-                    Un sanctuaire confidentiel dédié à la restauration profonde du corps et de l&apos;esprit.
-                  </p>
-                  <div className="flex items-center gap-2 text-[10px] text-white/50 tracking-widest font-medium">
-                     ASCA & RME <ShieldCheck size={14} className="text-primary" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40">
-           <span className="text-[10px] tracking-widest [writing-mode:vertical-lr] text-white">Explorer</span>
-           <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════
-          FOUNDER SECTION (PORTRAIT)
-      ════════════════════════════════════════ */}
-      <section id="practitioner" className="section-padding bg-white relative overflow-hidden">
-        <div className="container-wide">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
-            <div className="lg:col-span-5 relative">
-              <div className="mx-auto w-full max-w-[520px]">
-                <Image
-                  src={JOAO_PORTRAIT}
-                  alt="João Silva"
-                  width={2000}
-                  height={2000}
-                  sizes="(max-width: 768px) 100vw, 40vw"
-                  quality={100}
-                  className="h-auto w-full object-contain"
-                />
-              </div>
-            </div>
-
-            <div className="lg:col-span-7">
-              <div>
-                <span className="text-[11px] tracking-widest text-primary uppercase font-medium block mb-4">Le Praticien</span>
-                <h2 className="font-sans text-[clamp(28px,4vw,48px)] leading-tight font-light tracking-tight mb-8">João — <span className="font-medium text-secondary">La Présence.</span></h2>
-                
-                <div className="space-y-8 max-w-xl">
-                  <p className="text-[16px] md:text-[18px] leading-relaxed text-foreground font-light text-balance border-l-2 border-primary/20 pl-6 py-2">
-                    "Mon approche est une écoute attentive des tensions silencieuses, une quête de l&apos;équilibre absolu."
-                  </p>
-                  <p className="text-[15px] leading-relaxed text-foreground/70 font-light">
-                    Avec plus de 12 ans d&apos;expérience au cœur de Genève, João Silva a développé une signature thérapeutique où la rigueur scientifique rencontre une intuition sensorielle. Sa pratique est dédiée à une clientèle exigeante en quête de résultats tangibles et de sérénité profonde.
-                  </p>
-                  
-                  <div className="pt-12">
-                    <p className="font-sans text-[24px] text-foreground font-medium leading-none mb-2">
-                      João Silva
-                    </p>
-                    <p className="text-[11px] font-medium tracking-widest text-secondary">Thérapeute Agréé ASCA & RME</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Partners / Accreditations Row */}
-          <div className="mt-24 pt-12 border-t border-black/[0.05] flex flex-wrap justify-center items-center gap-10 md:gap-20 text-foreground/40">
-            {['ASCA', 'RME', 'VISANA', 'GROUPE MUTUEL', 'SWICA'].map((partner) => (
-              <span key={partner} className="text-[11px] font-medium tracking-widest uppercase">{partner}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════
-          PHILOSOPHY SECTION (MAGAZINE STYLE)
-      ════════════════════════════════════════ */}
-      <section id="about" className="section-padding bg-background relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[50%] h-full bg-muted/30 -z-0" />
-        
-        <div className="container-wide relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
-            <div className="lg:col-span-5 order-2 lg:order-1">
-              <div className="pt-12">
-                <span className="text-[11px] tracking-widest text-primary uppercase font-medium block mb-4">
-                  Philosophie
-                </span>
-                <h2 className="font-sans text-[clamp(28px,4vw,48px)] leading-tight font-light tracking-tight mb-8">
-                  L&apos;Éloge du <br />
-                  <span className="font-medium text-secondary">Mouvement.</span>
-                </h2>
-                <div className="space-y-6 max-w-xl">
-                  <p className="text-[16px] leading-relaxed text-foreground font-medium">
-                    Dans le silence de notre studio, nous réapprenons au corps l&apos;art de la fluidité.
-                  </p>
-                  <p className="text-[15px] leading-relaxed text-foreground/70 font-light">
-                    Chaque soin est une immersion architecturée autour de votre physiologie unique. Nous fusionnons l&apos;anatomie moderne et les rituels de restauration pour libérer les tensions cristallisées et restaurer une vitalité souveraine.
-                  </p>
-                  <div className="pt-10 grid grid-cols-2 gap-8 border-t border-black/[0.05]">
-                    <div>
-                      <span className="font-sans text-[36px] text-foreground font-light block leading-none">12</span>
-                      <span className="text-[10px] tracking-widest text-secondary font-medium mt-3 block">Ans d&apos;Expertise</span>
-                    </div>
-                    <div>
-                      <span className="font-sans text-[36px] text-foreground font-light block leading-none">∞</span>
-                      <span className="text-[10px] tracking-widest text-secondary font-medium mt-3 block">Soin Sur-Mesure</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-7 order-1 lg:order-2">
-              <div className="relative aspect-[4/5] lg:aspect-[1/1.1] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group overflow-hidden rounded-sm">
-                <div className="absolute inset-0">
-                  <Image src={STUDIO_IMAGE} alt="Studio Serenity" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
-                </div>
-                
-                {/* Floating Quote Card */}
-                <div className="absolute bottom-8 -left-8 md:-left-16 bg-foreground p-8 md:p-10 text-background max-w-[360px] shadow-xl hidden md:block rounded-sm">
-                  <Wind size={24} className="text-primary mb-6" strokeWidth={1.5} />
-                  <p className="font-sans text-[16px] md:text-[18px] leading-relaxed font-light mb-6">
-                    "La thérapie manuelle est une conversation où le corps retrouve sa voix."
-                  </p>
-                  <div className="flex items-center gap-4">
-                     <div className="w-8 h-[1px] bg-primary" />
-                     <span className="text-[10px] tracking-widest text-white/50 font-medium">João Silva</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════
-          PROCESS SECTION (MINIMAL)
-      ════════════════════════════════════════ */}
-      <section className="section-padding bg-foreground text-background">
-        <div className="container-wide">
-          <div className="flex flex-col md:flex-row justify-between items-end gap-12 mb-24">
-            <div className="max-w-2xl">
-              <span className="text-[11px] tracking-widest text-primary uppercase font-medium block mb-4">La Méthode</span>
-              <h2 className="font-sans text-[clamp(28px,4vw,48px)] leading-tight font-light tracking-tight text-background mb-0">Un cycle de <br /><span className="font-medium text-background/80">régénération.</span></h2>
-            </div>
-            <p className="max-w-sm text-[15px] text-background/60 font-light leading-relaxed pb-2">
-              Trois piliers fondamentaux pour une transformation durable et profonde.
+      <nav className="fixed left-0 top-0 z-50 flex w-full items-center justify-between border-b border-[#e2e8f0]/80 bg-[rgba(255,255,255,0.72)] px-6 py-5 backdrop-blur-xl md:px-10 lg:px-16">
+        <div>
+          <div className="flex items-baseline gap-2">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-[#64748b] md:text-[0.8rem]">
+              SERENITY RELAX THERAPY
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border-t border-background/10">
-            {[
-              {
-                icon: Compass,
-                title: 'L’Écoute',
-                desc: 'Un diagnostic sensoriel précis pour identifier les blocages énergétiques et musculaires.'
-              },
-              {
-                icon: Layers,
-                title: 'La Profondeur',
-                desc: 'Une application technique rigoureuse, où chaque geste est orchestré selon votre anatomie.'
-              },
-              {
-                icon: Clock,
-                title: 'L’Ancrage',
-                desc: 'Une phase de retour progressif accompagnée de conseils pour pérenniser les bénéfices.'
-              }
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="p-10 md:p-14 border-b lg:border-b-0 lg:border-r border-background/10 last:border-0"
-              >
-                <div className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center mb-10">
-                  <item.icon size={20} strokeWidth={1.5} className="text-primary" />
-                </div>
-                <h3 className="font-sans text-[20px] font-medium mb-4">{item.title}</h3>
-                <p className="text-[14px] leading-relaxed text-background/60 font-light">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════
-          ATMOSPHÈRE SECTION (GALLERY)
-      ════════════════════════════════════════ */}
-      <section id="studio" className="py-0 bg-background overflow-hidden">
-        <div className="container-wide py-24 border-t border-black/[0.05]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-end mb-20">
-            <div className="lg:col-span-8">
-               <span className="text-[11px] tracking-widest text-primary uppercase font-medium block mb-4">Le Lieu</span>
-               <h2 className="font-sans text-[clamp(28px,4vw,48px)] leading-tight font-light tracking-tight">Un Sanctuaire <br /><span className="font-medium text-secondary">de Sérénité.</span></h2>
-            </div>
-            <div className="lg:col-span-4 pb-2">
-               <p className="text-[15px] text-foreground/70 font-light leading-relaxed">
-                 Situé au cœur de Cointrin, notre studio est une enclave de calme absolu, conçue pour favoriser l&apos;introspection et la détente profonde.
-               </p>
-            </div>
+            <span className="font-serif text-[0.64rem] italic leading-none text-[#0f172a] md:text-[0.72rem]">
+              by João
+            </span>
           </div>
         </div>
 
-        <div className="flex gap-6 overflow-x-auto no-scrollbar pb-24 px-6 md:px-12 lg:px-20">
-          {[
-            { img: STUDIO_IMAGE, title: 'L\'Équilibre', subtitle: 'Lumière Naturelle' },
-            { img: DETAIL_IMAGE, title: 'Le Détail', subtitle: 'Matériaux Nobles' },
-            { img: HERO_IMAGE, title: 'L\'Essence', subtitle: 'Espace Minimal' },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="relative flex-shrink-0 w-[85vw] md:w-[50vw] lg:w-[35vw] aspect-[16/10] overflow-hidden rounded-sm"
-            >
-              <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 85vw, (max-width: 1024px) 50vw, 35vw" className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              <div className="absolute bottom-8 left-8 text-white">
-                <span className="text-[10px] tracking-widest font-medium block mb-2 opacity-80">
-                  {item.subtitle}
-                </span>
-                <h4 className="font-sans text-[20px] font-medium leading-none">
-                  {item.title}
-                </h4>
-              </div>
-            </div>
-          ))}
+        <div className="hidden items-center space-x-10 md:flex">
+          <a className="border-b border-[#0f172a] pb-1 text-xs uppercase tracking-[0.2em] text-[#0f172a]" href="#sessions">
+            Sessions
+          </a>
+          <a className="text-xs uppercase tracking-[0.2em] text-[#64748b] transition-colors duration-500 hover:text-[#0f172a]" href="#sanctuary">
+            Sanctuary
+          </a>
+          <a className="text-xs uppercase tracking-[0.2em] text-[#64748b] transition-colors duration-500 hover:text-[#0f172a]" href="#journal">
+            Journal
+          </a>
+          <a className="text-xs uppercase tracking-[0.2em] text-[#64748b] transition-colors duration-500 hover:text-[#0f172a]" href="#atelier">
+            Atelier
+          </a>
         </div>
-      </section>
 
-      {/* ════════════════════════════════════════
-          SERVICES SECTION (GRID)
-      ════════════════════════════════════════ */}
-      <section id="services" className="section-padding bg-background">
-        <div className="container-wide">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20">
-            <div className="max-w-2xl">
-              <span className="text-[11px] tracking-widest text-primary uppercase font-medium block mb-4">Les Soins</span>
-              <h2 className="font-sans text-[clamp(28px,4vw,48px)] leading-tight font-light tracking-tight">Architectures de <br /><span className="font-medium text-secondary">Bien-être.</span></h2>
-            </div>
-            <div className="flex flex-col gap-4 max-w-sm pb-2">
-               <p className="text-[15px] text-foreground/70 font-light">
-                Une sélection de thérapies exclusives conçues pour répondre aux exigences du corps moderne.
-               </p>
-               <button onClick={() => openBooking()} className="flex items-center gap-2 text-[11px] font-medium tracking-widest text-primary hover:opacity-70">
-                  Voir tout le catalogue <ArrowRight size={14} />
-               </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {SERVICES.map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                onBook={() => openBooking(service.id)}
-              />
-            ))}
-          </div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/login"
+            className="rounded-full border border-[#dbe3ef] bg-white/84 px-5 py-3 text-[11px] font-bold uppercase tracking-[0.22em] text-[#0f172a] transition-all duration-500 hover:-translate-y-[1px] hover:bg-white md:px-6"
+          >
+            Connexion
+          </Link>
+          <button
+            onClick={() => openModal(SERVICES[0])}
+            className="rounded-full bg-gradient-to-r from-[#5b21b6] to-[#6366f1] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.22em] text-white shadow-[0_12px_24px_rgba(99,102,241,0.22)] transition-all duration-500 hover:-translate-y-[1px] md:px-8"
+          >
+            Réserver
+          </button>
         </div>
-      </section>
+      </nav>
 
-      {/* ════════════════════════════════════════
-          TESTIMONIALS SECTION (EDITORIAL)
-      ════════════════════════════════════════ */}
-      <section className="section-padding bg-muted/30 overflow-hidden">
-        <div className="container-wide">
-          <div className="text-center mb-24">
-            <span className="text-[11px] tracking-widest text-primary uppercase font-medium block mb-4">Témoignages</span>
-            <h2 className="font-sans text-[clamp(28px,4vw,48px)] leading-tight font-light tracking-tight">Paroles de <br /><span className="font-medium text-secondary">Confiance.</span></h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
-            {testimonials.map((t, i) => (
-              <div key={i} className="relative bg-white p-8 rounded-sm shadow-sm border border-black/[0.03]">
-                <div className="mb-6 text-primary/30">
-                  <Sparkles size={24} strokeWidth={1.5} />
-                </div>
-                <p className="font-sans text-[15px] md:text-[16px] leading-relaxed text-foreground mb-8 font-light italic">
-                  "{t.quote}"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-[1px] bg-secondary" />
-                  <div>
-                    <p className="text-[12px] font-medium text-foreground">{t.author}</p>
-                    <p className="text-[10px] text-foreground/50 tracking-wide mt-0.5">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════
-          FAQ SECTION
-      ════════════════════════════════════════ */}
-      <section id="faq" className="section-padding bg-background">
-        <div className="container-wide">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-            <div className="lg:col-span-5">
-              <span className="text-[11px] tracking-widest text-primary uppercase font-medium block mb-4">FAQ</span>
-              <h2 className="font-sans text-[clamp(28px,4vw,48px)] leading-tight font-light tracking-tight mb-6">Questions <br /><span className="font-medium text-secondary">Fréquentes.</span></h2>
-              <p className="text-[15px] text-foreground/70 font-light max-w-sm">
-                Tout ce que vous devez savoir pour préparer votre immersion chez Serenity.
+      <main className="relative overflow-hidden pt-28">
+        <section className="relative flex min-h-[85vh] items-center px-6 pb-24 pt-10 md:px-10 lg:px-16 lg:pt-16">
+          <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-8 lg:grid-cols-12">
+            <div className="relative z-30 lg:col-span-5 lg:pr-8">
+              <span className="mb-6 inline-block rounded-full border border-[#d9f99d] bg-[#f7fee7] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#3f6212]">
+                Architectural Wellness
+              </span>
+              <h1 className="serif-font mb-8 text-[3.4rem] leading-[1.02] tracking-[-0.04em] text-[#0f172a] md:text-[5rem] lg:text-[6.25rem]">
+                The Art of <br />
+                <span className="italic text-[#6366f1]">Centering.</span>
+              </h1>
+              <p className="mb-12 max-w-md text-lg leading-relaxed text-[#475569]">
+                Une parenthèse thérapeutique pensée comme un souffle profond: matières
+                organiques, silence visuel et soins ciblés pour réancrer le corps.
               </p>
-            </div>
-            <div className="lg:col-span-7">
-              <div className="space-y-0">
-                {faqs.map((faq, i) => (
-                  <FaqItem key={i} q={faq.q} a={faq.a} />
+              <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+                <button
+                  onClick={() => openModal(SERVICES[0])}
+                  className="rounded-full bg-[#111827] px-8 py-4 text-xs font-bold uppercase tracking-[0.24em] text-white shadow-[0_14px_26px_rgba(15,23,42,0.18)] transition-all duration-500 hover:-translate-y-[1px]"
+                >
+                  Commencer le rituel
+                </button>
+                <a
+                  href="#sessions"
+                  className="inline-flex items-center justify-center rounded-full border border-[#dbe3ef] bg-white/78 px-8 py-4 text-xs font-bold uppercase tracking-[0.24em] text-[#0f172a] transition-colors duration-500 hover:bg-[#f8faff]"
+                >
+                  Explorer les soins
+                </a>
+              </div>
+
+              <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {heroHighlights.map((item) => (
+                  <div
+                    key={item.label}
+                    className="rounded-[20px] border border-[#e2e8f0] bg-white/76 px-4 py-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm"
+                  >
+                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#94a3b8]">
+                      {item.label}
+                    </p>
+                    <p className="mt-2 text-2xl font-semibold text-[#0f172a]">{item.value}</p>
+                  </div>
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ════════════════════════════════════════
-          CTA SECTION (IMMERSIVE)
-      ════════════════════════════════════════ */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-foreground">
-        <div className="absolute inset-0">
-          <Image src={DETAIL_IMAGE} alt="" fill sizes="100vw" className="object-cover opacity-50" />
-        </div>
-        
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground via-foreground/80 to-foreground" />
-        
-        <div className="container-wide relative z-10 text-center">
-          <div>
-            <span className="inline-block px-6 py-2 border border-white/20 rounded-full text-[10px] font-medium tracking-widest text-white/80 mb-10 backdrop-blur-sm">
-              Disponibilités Limitées
+            <div className="relative z-20 mt-16 flex justify-end lg:col-span-7 lg:mt-0">
+              <div className="relative w-full max-w-[600px] overflow-visible">
+                <div className="absolute -left-12 top-10 hidden h-40 w-40 rounded-full bg-[#d9f99d]/50 blur-3xl lg:block" />
+                <div className="absolute right-[-2rem] top-[-2rem] hidden h-44 w-44 rounded-full bg-[#c7d2fe]/55 blur-3xl lg:block" />
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[40px] border border-white/70 shadow-[0_24px_60px_rgba(15,23,42,0.16)]">
+                  <Image
+                    src={MY_PHOTO}
+                    alt="João massothérapie Genève"
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 600px"
+                  />
+                </div>
+
+                <div className="absolute bottom-6 right-6 rounded-[24px] border border-white/70 bg-[rgba(255,255,255,0.88)] px-5 py-4 shadow-[0_18px_40px_rgba(15,23,42,0.12)] backdrop-blur-md">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#94a3b8]">
+                    Focus du jour
+                  </p>
+                  <p className="mt-2 text-xl font-semibold text-[#0f172a]">Présence. Lâcher-prise.</p>
+                  <p className="mt-1 text-sm text-[#64748b]">Approche thérapeutique douce, ciblée et premium.</p>
+                </div>
+
+                <div className="absolute -bottom-10 -left-3 hidden aspect-[3/4] w-[180px] overflow-hidden rounded-[28px] border-[10px] border-[#f8faff] shadow-[0_18px_36px_rgba(15,23,42,0.14)] md:block lg:-bottom-16 lg:-left-16 lg:w-[250px]">
+                  <Image
+                    src={SERVICES[1].image}
+                    alt={SERVICES[1].name}
+                    fill
+                    className="object-cover"
+                    sizes="250px"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="sessions" className="bg-[linear-gradient(180deg,rgba(248,250,252,0.3),rgba(241,245,249,0.66))] px-6 py-24 md:px-10 lg:px-16 lg:py-[120px]">
+          <div className="mx-auto max-w-[1440px]">
+            <div className="mb-16 flex flex-col gap-6 lg:mb-20 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <span className="mb-4 block text-[11px] font-bold uppercase tracking-[0.3em] text-[#6366f1]">
+                La Collection
+                </span>
+                <h2 className="serif-font text-4xl text-[#0f172a] md:text-5xl">
+                  Nos Soins Exclusifs
+                </h2>
+              </div>
+              <p className="max-w-xl text-base leading-relaxed text-[#64748b]">
+                Une collection pensée comme un menu éditorial: plus lisible, plus sensorielle,
+                plus premium, sans perdre la clarté de réservation.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-2 xl:grid-cols-4">
+              {SERVICES.map((service) => (
+                <button
+                  key={service.id}
+                  onClick={() => openModal(service)}
+                  className="group rounded-[28px] border border-[#e2e8f0] bg-white/80 p-4 text-left shadow-[0_8px_24px_rgba(15,23,42,0.05)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_18px_34px_rgba(15,23,42,0.1)]"
+                >
+                  <div className="mb-6 aspect-[3/4] overflow-hidden rounded-[22px] bg-[#e5e7eb]">
+                    <Image
+                      src={service.image}
+                      alt={service.name}
+                      width={700}
+                      height={900}
+                      className="h-full w-full object-cover grayscale-[20%] transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                    />
+                  </div>
+                  <div className="space-y-2 px-1 pb-1">
+                    <div className="flex items-baseline justify-between gap-4">
+                      <span className="rounded-full border border-[#d9f99d] bg-[#f7fee7] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#4d7c0f]">
+                        {service.tag}
+                      </span>
+                      <span className="text-[11px] text-[#64748b]">{service.duration}</span>
+                    </div>
+                    <h3 className="serif-font text-[1.45rem] text-[#0f172a]">{service.name}</h3>
+                    <p className="max-w-xs text-sm leading-relaxed text-[#475569]">{service.desc}</p>
+                    <div className="inline-flex items-center gap-2 pt-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#0f172a]">
+                      Découvrir le rituel <ArrowRight size={12} />
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="sanctuary" className="px-6 py-24 md:px-10 lg:px-16 lg:py-[120px]">
+          <div className="mx-auto grid max-w-[1440px] grid-cols-12 gap-6 lg:gap-10">
+            <div className="relative col-span-12 lg:col-span-7">
+              <div className="relative overflow-hidden rounded-[36px] border border-[#e2e8f0] bg-[linear-gradient(135deg,#eef2ff,#ffffff)] p-5 shadow-[0_20px_40px_rgba(15,23,42,0.08)]">
+                <div className="relative h-[520px] w-full overflow-hidden rounded-[30px] shadow-2xl shadow-stone-200">
+                <Image
+                  src={SERVICES[2].image}
+                  alt={SERVICES[2].name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 800px"
+                />
+              </div>
+              </div>
+
+              <div className="absolute -bottom-8 right-0 z-20 max-w-xs rounded-[24px] border border-white/70 bg-white/92 p-8 shadow-[0_18px_38px_rgba(15,23,42,0.12)] backdrop-blur-md md:-bottom-12 md:-right-6 md:p-10">
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#6366f1]">
+                  Après la séance
+                </p>
+                <h3 className="serif-font mb-3 text-2xl text-[#0f172a]">
+                  {AFTERCARE_EXPERIENCE[selectedTip].title}
+                </h3>
+                <p className="text-sm leading-relaxed text-[#475569]">
+                  {AFTERCARE_EXPERIENCE[selectedTip].advice}
+                </p>
+              </div>
+            </div>
+
+            <div className="col-span-12 mt-20 lg:col-span-4 lg:col-start-9 lg:mt-0">
+              <div className="rounded-[30px] border border-[#e2e8f0] bg-white/76 p-8 shadow-[0_10px_32px_rgba(15,23,42,0.05)] lg:p-10">
+              <div className="space-y-12 lg:space-y-16">
+                {IMPACTS.map((impact, index) => (
+                  <div key={impact.title}>
+                    <span className="text-sm font-bold uppercase tracking-widest text-[#6366f1]">
+                      0{index + 1} / {impact.title}
+                    </span>
+                    <h2 className="serif-font mb-4 mt-4 text-3xl text-[#0f172a] md:text-[2rem]">
+                      {index === 0
+                        ? 'Restorative Reset'
+                        : index === 1
+                          ? 'Myofascial Ease'
+                          : index === 2
+                            ? 'Circulatory Flow'
+                            : 'Deep Regeneration'}
+                    </h2>
+                    <p className="text-base leading-relaxed text-[#475569]">{impact.desc}</p>
+                    {index !== IMPACTS.length - 1 && (
+                      <div className="mt-12 h-px w-full bg-[#e2e8f0]" />
+                    )}
+                  </div>
+                ))}
+              </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="journal" className="px-6 py-24 text-center md:px-10 lg:px-16 lg:py-[120px]">
+          <div className="mx-auto max-w-3xl">
+            <span className="mb-6 inline-block text-[11px] font-bold uppercase tracking-[0.3em] text-[#6366f1]">
+              Journal du Corps
             </span>
-            <h2 className="font-sans text-[clamp(32px,6vw,64px)] leading-tight tracking-tight font-light text-white mb-16">
-              Retrouvez votre <br />
-              <span className="font-medium text-white ml-2">Souveraineté.</span>
+            <h2 className="serif-font mb-10 text-4xl text-[#0f172a] md:text-5xl">
+              Le rituel continue après la séance.
             </h2>
-            <button
-              onClick={() => openBooking()}
-              className="bg-white text-foreground rounded-full px-10 py-4 text-[14px] font-medium shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:bg-primary hover:text-white"
-            >
-              Réserver votre Instant
-            </button>
+            <p className="mx-auto mb-12 max-w-2xl text-base leading-relaxed text-[#475569] md:text-lg">
+              Chaque soin appelle une intégration. Sélectionnez une étape pour prolonger les
+              effets du massage et soutenir votre récupération.
+            </p>
+
+            <div className="mx-auto max-w-3xl rounded-[32px] border border-[#e2e8f0] bg-[linear-gradient(135deg,#ffffff,#f8fafc)] p-8 text-left shadow-[0_14px_34px_rgba(15,23,42,0.06)] md:p-12">
+              <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-start">
+                <div className="flex h-20 w-20 items-center justify-center rounded-[24px] bg-[#eef2ff] text-5xl shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                  {AFTERCARE_EXPERIENCE[selectedTip].icon}
+                </div>
+                <div>
+                  <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.28em] text-[#6366f1]">
+                    {AFTERCARE_EXPERIENCE[selectedTip].time}
+                  </p>
+                  <h3 className="serif-font text-3xl text-[#0f172a]">
+                    {AFTERCARE_EXPERIENCE[selectedTip].title}
+                  </h3>
+                </div>
+              </div>
+              <p className="mb-8 text-lg leading-relaxed text-[#475569]">
+                {AFTERCARE_EXPERIENCE[selectedTip].desc}
+              </p>
+              <p className="text-sm uppercase tracking-[0.24em] text-[#64748b]">
+                {AFTERCARE_EXPERIENCE[selectedTip].quote}
+              </p>
+            </div>
+
+            <div className="mt-8 flex justify-center gap-4">
+              {AFTERCARE_EXPERIENCE.map((item, index) => (
+                <button
+                  key={item.id}
+                  onClick={() => setSelectedTip(index)}
+                  aria-label={`Afficher ${item.title}`}
+                  className={`h-2 rounded-full transition-all ${
+                    selectedTip === index ? 'w-12 bg-[#6366f1]' : 'w-8 bg-[#cbd5e1]'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="atelier" className="px-6 py-24 md:px-10 lg:px-16 lg:py-[120px]">
+          <div className="mx-auto grid max-w-[1440px] gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+            <div>
+              <span className="mb-4 block text-[11px] font-bold uppercase tracking-[0.3em] text-[#6366f1]">
+                Atelier
+              </span>
+              <h2 className="serif-font mb-10 text-4xl text-[#0f172a] md:text-5xl">
+                Questions fréquentes
+              </h2>
+              <div className="space-y-2">
+                {FAQ_ITEMS.map((item, index) => (
+                  <Accordion key={index} item={item} />
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col justify-between rounded-[32px] border border-[#e2e8f0] bg-[linear-gradient(135deg,#ffffff,#f8fafc)] p-8 shadow-[0_12px_32px_rgba(15,23,42,0.06)] md:p-12">
+              <div>
+                <span className="mb-4 inline-block rounded-full border border-[#d9f99d] bg-[#f7fee7] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#4d7c0f]">
+                  Join the Sanctuary
+                </span>
+                <h3 className="serif-font mb-6 text-3xl text-[#0f172a] md:text-4xl">
+                  Recevez nos prochains rituels et disponibilités.
+                </h3>
+                <p className="mb-10 max-w-md text-base leading-relaxed text-[#475569]">
+                  Conseils de récupération, nouveautés du cabinet et ouvertures de créneaux
+                  transmis avec discrétion.
+                </p>
+
+                <form className="max-w-md">
+                  <input
+                    type="email"
+                    placeholder="Votre adresse email"
+                    className="w-full rounded-[18px] border border-[#dbe3ef] bg-white/88 px-5 py-4 text-base text-[#0f172a] placeholder:text-[#94a3b8] focus:border-[#6366f1] focus:outline-none focus:ring-4 focus:ring-[#6366f1]/10"
+                  />
+                  <button
+                    type="button"
+                    className="mt-6 rounded-full bg-[#111827] px-6 py-3 text-xs font-bold uppercase tracking-[0.3em] text-white transition-all hover:-translate-y-[1px]"
+                  >
+                    S'inscrire
+                  </button>
+                </form>
+              </div>
+
+              <div className="mt-12 border-t border-[#e2e8f0] pt-8">
+                <div className="flex items-start gap-3 text-sm text-[#475569]">
+                  <MapPin size={18} className="mt-0.5 text-[#6366f1]" />
+                  <div>
+                    <p>Rue du Rhône 12, 1204 Genève</p>
+                    <p>Lundi au samedi, 09:00 à 19:00</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => openModal(SERVICES[0])}
+                  className="mt-8 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#5b21b6] to-[#6366f1] px-7 py-3 text-xs font-bold uppercase tracking-[0.24em] text-white shadow-[0_12px_28px_rgba(99,102,241,0.2)] transition-transform hover:scale-[1.02]"
+                >
+                  Réserver un soin <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="flex w-full flex-col justify-between gap-12 bg-[#0f172a] px-6 py-20 md:px-10 md:py-24 lg:flex-row lg:items-end lg:px-16">
+        <div className="flex flex-col items-start">
+          <div className="mb-6 flex items-baseline gap-2">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-white/75 md:text-[0.8rem]">
+              SERENITY RELAX THERAPY
+            </p>
+            <span className="font-serif text-[0.64rem] italic leading-none text-white md:text-[0.72rem]">
+              by João
+            </span>
+          </div>
+          <div className="text-[10px] uppercase tracking-[0.24em] text-slate-400">
+            © 2026 Serenity Relax Therapy. Massothérapie Genève.
           </div>
         </div>
-      </section>
 
-      <Footer />
+        <div className="flex flex-wrap gap-8 text-[10px] uppercase tracking-[0.24em] text-slate-400 md:gap-12">
+          <a className="transition-colors duration-300 hover:text-white" href="#">
+            Privacy
+          </a>
+          <a className="transition-colors duration-300 hover:text-white" href="#">
+            Terms
+          </a>
+          <a
+            className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-white"
+            href="#"
+          >
+            <Instagram size={14} /> Instagram
+          </a>
+          <a
+            className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-white"
+            href="#"
+          >
+            <Linkedin size={14} /> LinkedIn
+          </a>
+        </div>
+      </footer>
 
-      {/* Booking Overlay */}
-      {isBookingOpen && (
-        <BookingFlow
-          isOpen={isBookingOpen}
-          onClose={() => {
-            setIsBookingOpen(false);
-            setBookingServiceId(undefined);
-          }}
-          services={SERVICES}
-          initialServiceId={bookingServiceId}
-        />
-      )}
-
-      <style jsx global>{`
-        .text-balance {
-          text-wrap: balance;
-        }
-      `}</style>
-    </main>
+      <BookingFunnel />
+    </div>
   );
 }
