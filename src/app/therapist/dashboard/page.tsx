@@ -663,7 +663,6 @@ export default function TherapistDashboard() {
         settingsToolbar={tab === 'settings' ? {
           title: 'Paramètres du compte',
           subtitle: '',
-          statusLabel: 'Enregistrement automatique',
         } : undefined}
       >
       {renderContent()}

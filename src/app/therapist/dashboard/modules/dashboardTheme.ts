@@ -1,11 +1,11 @@
 /* ─────────────────────────────────────────
    Dashboard Design Tokens — Serenity Relax
-   Calm premium, modern clarity, soft therapeutic warmth.
+   Aligned to the shared dashboard palette in globals.css.
    ───────────────────────────────────────── */
 
 /* ── Layout shells ── */
 export const dashboardShell =
-  "bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.08),_transparent_28%),linear-gradient(180deg,#fafbfc_0%,#f5f7fb_100%)] text-[#1f2937] font-sans";
+  "bg-[radial-gradient(circle_at_top,_rgba(183,209,220,0.24),_transparent_30%),linear-gradient(180deg,#f7f4ec_0%,#f1ece2_100%)] text-[var(--dashboard-asphalt)] font-sans";
 
 export const dashboardPageContainer =
   "mx-auto w-full max-w-[1140px] px-6 py-8 lg:px-8 lg:py-10";
@@ -32,10 +32,10 @@ export const dashboardIconButton =
 
 /* ── Table elements ── */
 export const dashboardTableHeader =
-  "bg-[#f8fafc] text-[10px] font-semibold uppercase tracking-[0.18em] text-[#64748b] border-b border-[#e2e8f0]";
+  "bg-[var(--dashboard-light)] text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--dashboard-rooftop-grey)] border-b border-[var(--dashboard-border)]";
 
 export const dashboardTableSectionHeader =
-  "flex flex-col gap-3 border-b border-[#e2e8f0] bg-[#fbfcff] px-5 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8";
+  "flex flex-col gap-3 border-b border-[var(--dashboard-border)] bg-[color:rgba(255,255,255,0.86)] px-5 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8";
 
 export const dashboardTableCell =
   "px-4 py-4 lg:px-6";
@@ -68,12 +68,12 @@ export const dashboardSecondaryButton =
 export const dashboardChip =
   "dashboard-chip";
 
-/* ── Status badges — richly differentiated ── */
+/* ── Status badges ── */
 export const statusBadge = {
-  confirmed:  "bg-[#eef2ff] text-[#4338ca] border border-[#c7d2fe]",
-  scheduled:  "bg-[#ede9fe] text-[#6d28d9] border border-[#ddd6fe]",
-  pending:    "bg-[#fef3c7] text-[#b45309] border border-[#fcd34d]",
-  cancelled:  "bg-[#fee2e2] text-[#b91c1c] border border-[#fecaca]",
-  late:       "bg-[#ffedd5] text-[#c2410c] border border-[#fdba74]",
-  paid:       "bg-[#dcfce7] text-[#15803d] border border-[#86efac]",
+  confirmed: "border border-[#bad5c8] bg-[#e8f2ee] text-[var(--dashboard-bench-green)]",
+  scheduled: "border border-[#bdd0e5] bg-[#e9f0f8] text-[var(--dashboard-real-blue)]",
+  pending: "border border-[#f0cfb8] bg-[#f8ebdf] text-[#9d5f32]",
+  cancelled: "border border-[#f2bec2] bg-[#fdeced] text-[var(--dashboard-deep-red)]",
+  late: "border border-[#f0c5a7] bg-[#fdf0e6] text-[#ab612f]",
+  paid: "border border-[#bfe2c9] bg-[#ebf7ef] text-[var(--dashboard-fresh-green)]",
 } as const;

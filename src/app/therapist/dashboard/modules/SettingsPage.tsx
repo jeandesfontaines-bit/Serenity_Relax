@@ -231,7 +231,7 @@ export default function SettingsPage({
   );
 
   return (
-    <div className="flex-1 flex flex-col bg-[#fafbfc] h-full overflow-hidden text-[#1f2937]">
+    <div className="flex-1 flex flex-col bg-[#fafbfc] h-full overflow-hidden text-[#1d292e]">
       <main className="flex-1 overflow-y-auto">
         <div className={dashboardPageContainer}>
           <div className="flex flex-col gap-6">
@@ -240,7 +240,7 @@ export default function SettingsPage({
                   saveState === 'saving'
                     ? 'bg-[#efeeec] text-[#747872]'
                     : saveState === 'saved'
-                      ? 'bg-[#eef2ff] text-[#4338ca]'
+                      ? 'bg-[#e8f2ee] text-[#184f40]'
                       : 'bg-transparent text-transparent'
                 }`}>
                   {saveState === 'saving' ? 'Enregistrement…' : saveState === 'saved' ? 'Enregistré automatiquement' : 'Statut'}
@@ -248,15 +248,15 @@ export default function SettingsPage({
               </div>
               
               {/* Desktop / Mobile Tab Navigation */}
-              <div className="sticky top-0 z-10 flex overflow-x-auto gap-2 rounded-[18px] border border-[#dbe3ef] bg-white p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+              <div className="sticky top-0 z-10 flex overflow-x-auto gap-2 rounded-[18px] border border-[#d9dee4] bg-white p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
                 {TABS.map(t => (
                   <button
                     key={t.id}
                     onClick={() => setActiveTab(t.id)}
                     className={`flex items-center gap-2 whitespace-nowrap rounded-[12px] px-4 py-2 text-sm font-medium transition-colors ${
                       activeTab === t.id 
-                        ? 'bg-[#6366f1] text-white shadow-sm' 
-                        : 'text-[#64748b] hover:bg-[#f8fafc] border border-transparent'
+                        ? 'bg-[#2e5b97] text-white shadow-sm' 
+                        : 'text-[#3f565f] hover:bg-[#f7f4ec] border border-transparent'
                     }`}
                   >
                     <t.icon size={16} strokeWidth={1.8} />
@@ -266,7 +266,7 @@ export default function SettingsPage({
               </div>
 
               {normalizedSearch && matchingTabs.length === 0 && (
-                <div className={`${dashboardPanel} p-8 text-sm text-[#64748b]`}>
+                <div className={`${dashboardPanel} p-8 text-sm text-[#3f565f]`}>
                   Aucun réglage ne correspond à « {searchQuery.trim()} ».
                 </div>
               )}
@@ -276,61 +276,61 @@ export default function SettingsPage({
                 <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
                   {/* Personal Information */}
                   <div className={`${dashboardPanel} p-8`}>
-                    <div className={`${dashboardSectionHeader} mb-8 border-b border-[#e2e8f0] pb-4`}>
+                    <div className={`${dashboardSectionHeader} mb-8 border-b border-[#d9dee4] pb-4`}>
                       <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-[#6366f1]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>person</span>
+                      <span className="material-symbols-outlined text-[#2e5b97]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>person</span>
                       <h4 className={dashboardTitle}>Personal Information</h4>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#64748b] font-bold">Full Name</label>
-                        <input className={`w-full px-4 py-3 text-[#1f2937] outline-none transition-colors focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 ${dashboardInset}`} type="text" value={localFullName} onChange={(e) => setLocalFullName(e.target.value)} />
+                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">Full Name</label>
+                        <input className={`w-full px-4 py-3 text-[#1d292e] outline-none transition-colors focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} type="text" value={localFullName} onChange={(e) => setLocalFullName(e.target.value)} />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#64748b] font-bold">Email Address</label>
-                        <input className={`w-full px-4 py-3 text-[#1f2937] outline-none transition-colors focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 ${dashboardInset}`} type="email" value={localProfileEmail} onChange={(e) => setLocalProfileEmail(e.target.value)} />
+                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">Email Address</label>
+                        <input className={`w-full px-4 py-3 text-[#1d292e] outline-none transition-colors focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} type="email" value={localProfileEmail} onChange={(e) => setLocalProfileEmail(e.target.value)} />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#64748b] font-bold">Phone Number</label>
-                        <input className={`w-full px-4 py-3 text-[#1f2937] outline-none transition-colors focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 ${dashboardInset}`} type="tel" value={localPhone} onChange={(e) => setLocalPhone(e.target.value)} />
+                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">Phone Number</label>
+                        <input className={`w-full px-4 py-3 text-[#1d292e] outline-none transition-colors focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} type="tel" value={localPhone} onChange={(e) => setLocalPhone(e.target.value)} />
                       </div>
                     </div>
                   </div>
 
                   {/* Notification Preferences */}
                   <div className={`${dashboardPanel} p-8`}>
-                    <div className={`${dashboardSectionHeader} mb-8 border-b border-[#e2e8f0] pb-4`}>
+                    <div className={`${dashboardSectionHeader} mb-8 border-b border-[#d9dee4] pb-4`}>
                       <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-[#6366f1]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>notifications_active</span>
+                      <span className="material-symbols-outlined text-[#2e5b97]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>notifications_active</span>
                       <h4 className={dashboardTitle}>Notification Preferences</h4>
                       </div>
                     </div>
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h5 className="text-sm font-semibold text-[#1f2937]">Email Notifications</h5>
-                          <p className="text-xs text-[#64748b]">Receive weekly reports and appointment reminders via email.</p>
+                          <h5 className="text-sm font-semibold text-[#1d292e]">Email Notifications</h5>
+                          <p className="text-xs text-[#3f565f]">Receive weekly reports and appointment reminders via email.</p>
                         </div>
-                        <button onClick={() => setLocalNotifyEmail(!localNotifyEmail)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifyEmail ? 'bg-[#6366f1]' : 'bg-[#e2e8f0]'}`}>
+                        <button onClick={() => setLocalNotifyEmail(!localNotifyEmail)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifyEmail ? 'bg-[#2e5b97]' : 'bg-[#d9dee4]'}`}>
                           <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[3px] transition-transform ${localNotifyEmail ? 'translate-x-[20px]' : 'translate-x-[3px]'}`} />
                         </button>
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h5 className="text-sm font-semibold text-[#1f2937]">Push Notifications</h5>
-                          <p className="text-xs text-[#64748b]">Get instant updates on client messages and schedule changes.</p>
+                          <h5 className="text-sm font-semibold text-[#1d292e]">Push Notifications</h5>
+                          <p className="text-xs text-[#3f565f]">Get instant updates on client messages and schedule changes.</p>
                         </div>
-                        <button onClick={() => setLocalNotifyPush(!localNotifyPush)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifyPush ? 'bg-[#6366f1]' : 'bg-[#e2e8f0]'}`}>
+                        <button onClick={() => setLocalNotifyPush(!localNotifyPush)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifyPush ? 'bg-[#2e5b97]' : 'bg-[#d9dee4]'}`}>
                           <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[3px] transition-transform ${localNotifyPush ? 'translate-x-[20px]' : 'translate-x-[3px]'}`} />
                         </button>
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h5 className="text-sm font-semibold text-[#1f2937]">SMS Reminders</h5>
-                          <p className="text-xs text-[#64748b]">Emergency alerts and same-day appointment confirmations.</p>
+                          <h5 className="text-sm font-semibold text-[#1d292e]">SMS Reminders</h5>
+                          <p className="text-xs text-[#3f565f]">Emergency alerts and same-day appointment confirmations.</p>
                         </div>
-                        <button onClick={() => setLocalNotifySms(!localNotifySms)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifySms ? 'bg-[#6366f1]' : 'bg-[#e2e8f0]'}`}>
+                        <button onClick={() => setLocalNotifySms(!localNotifySms)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifySms ? 'bg-[#2e5b97]' : 'bg-[#d9dee4]'}`}>
                           <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[3px] transition-transform ${localNotifySms ? 'translate-x-[20px]' : 'translate-x-[3px]'}`} />
                         </button>
                       </div>
@@ -339,21 +339,21 @@ export default function SettingsPage({
 
                   {/* Security & Connections */}
                   <div className={`${dashboardPanel} p-8`}>
-                    <div className="flex items-center gap-3 mb-8 border-b border-[#e2e8f0] pb-4">
-                      <span className="material-symbols-outlined text-[#6366f1]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>shield</span>
+                    <div className="flex items-center gap-3 mb-8 border-b border-[#d9dee4] pb-4">
+                      <span className="material-symbols-outlined text-[#2e5b97]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>shield</span>
                       <h4 className={dashboardTitle}>Security &amp; Connections</h4>
                     </div>
                     <div className="space-y-8">
                       <div>
-                        <h5 className="text-sm font-semibold text-[#1f2937] mb-4">Change Password</h5>
+                        <h5 className="text-sm font-semibold text-[#1d292e] mb-4">Change Password</h5>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-                          <input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className={`w-full px-4 py-3 text-sm text-[#1f2937] outline-none transition-colors placeholder:text-[#cbd5e1] focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 ${dashboardInset}`} placeholder="Current password" type="password" />
-                          <input value={newPassword} onChange={e => setNewPassword(e.target.value)} className={`w-full px-4 py-3 text-sm text-[#1f2937] outline-none transition-colors placeholder:text-[#cbd5e1] focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 ${dashboardInset}`} placeholder="New password" type="password" />
+                          <input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className={`w-full px-4 py-3 text-sm text-[#1d292e] outline-none transition-colors placeholder:text-[#c4cdd7] focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} placeholder="Current password" type="password" />
+                          <input value={newPassword} onChange={e => setNewPassword(e.target.value)} className={`w-full px-4 py-3 text-sm text-[#1d292e] outline-none transition-colors placeholder:text-[#c4cdd7] focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} placeholder="New password" type="password" />
                         </div>
-                        <button onClick={handleUpdatePassword} className="mt-4 text-xs font-bold text-[#4f46e5] hover:underline uppercase tracking-wider">Update Password</button>
+                        <button onClick={handleUpdatePassword} className="mt-4 text-xs font-bold text-[#2e5b97] hover:underline uppercase tracking-wider">Update Password</button>
                       </div>
                       <div>
-                        <h5 className="text-sm font-semibold text-[#1f2937] mb-4">Linked Accounts</h5>
+                        <h5 className="text-sm font-semibold text-[#1d292e] mb-4">Linked Accounts</h5>
                         <div className={`flex items-center justify-between p-4 ${dashboardInset}`}>
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm">
@@ -366,7 +366,7 @@ export default function SettingsPage({
                             </div>
                             <div>
                               <span className="text-sm font-medium">Google Account</span>
-                              <p className="text-[11px] text-[#64748b]">Connected as {user?.email || 'joao.silva@gmail.com'}</p>
+                              <p className="text-[11px] text-[#3f565f]">Connected as {user?.email || 'joao.silva@gmail.com'}</p>
                             </div>
                           </div>
                           <button onClick={handleDisconnect} className="text-xs font-semibold text-[#ba1a1a] hover:underline uppercase tracking-widest">Disconnect</button>
@@ -380,42 +380,42 @@ export default function SettingsPage({
               {/* ── WHATSAPP ── */}
               {activeTab === 'whatsapp' && matchingTabs.length > 0 && (
                 <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
-                  <div className="mb-8 border-b border-[#e2e8f0] pb-4">
+                  <div className="mb-8 border-b border-[#d9dee4] pb-4">
                     <h2 className={dashboardTitle}>WhatsApp Studio</h2>
-                    <p className="text-sm text-[#64748b] mt-1">Configurez les textes utilisés par les boutons WhatsApp. Les variables sont remplacées automatiquement.</p>
+                    <p className="text-sm text-[#3f565f] mt-1">Configurez les textes utilisés par les boutons WhatsApp. Les variables sont remplacées automatiquement.</p>
                   </div>
                   <div className="space-y-10">
                     {filteredWhatsappFields.map((item, i) => (
                       <div key={i} className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-8 items-start">
                         <div className="space-y-4">
                           <div className="flex items-center justify-between">
-                            <label className="text-[10px] uppercase tracking-[0.2em] text-[#64748b] font-bold">{item.label}</label>
+                            <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">{item.label}</label>
                             <button type="button" onClick={() => item.set(item.preset)}
-                              className="text-[10px] uppercase tracking-wider text-[#4f46e5] hover:underline font-semibold">
+                              className="text-[10px] uppercase tracking-wider text-[#2e5b97] hover:underline font-semibold">
                               Défaut
                             </button>
                           </div>
                           <textarea value={item.val} onChange={e => item.set(e.target.value)} rows={4}
-                            className={`w-full p-4 text-sm text-[#1f2937] focus:ring-2 focus:ring-[#6366f1]/15 outline-none transition-all resize-none ${dashboardInset}`} />
-                          <p className="text-[10px] text-[#64748b] leading-relaxed">
+                            className={`w-full p-4 text-sm text-[#1d292e] focus:ring-2 focus:ring-[#2e5b97]/15 outline-none transition-all resize-none ${dashboardInset}`} />
+                          <p className="text-[10px] text-[#3f565f] leading-relaxed">
                             Variables : {'{firstName}'}, {'{date}'}, {'{time}'}, {'{service}'}, {'{price}'}
                           </p>
                         </div>
                         {/* Chat bubble preview */}
                         <div className={`${dashboardInset} relative p-4 shadow-inner`}>
-                          <div className="bg-[#eef2ff] rounded-lg p-3 shadow-sm relative ml-4">
-                            <p className="text-sm text-[#1f2937] leading-snug break-words">
+                          <div className="bg-[#e8f2ee] rounded-lg p-3 shadow-sm relative ml-4">
+                            <p className="text-sm text-[#1d292e] leading-snug break-words">
                               {item.val.replace(/{firstName}/g,'Jean').replace(/{service}/g,'Massage').replace(/{date}/g,'21/04').replace(/{price}/g,'150').replace(/{time}/g,'14:30')}
                             </p>
-                            <span className="text-[9px] text-[#64748b] block text-right mt-1">14:20 ✓✓</span>
+                            <span className="text-[9px] text-[#3f565f] block text-right mt-1">14:20 ✓✓</span>
                             {/* Tail */}
-                            <div className="absolute top-0 right-[-6px] w-0 h-0 border-t-[8px] border-t-[#eef2ff] border-r-[8px] border-r-transparent"></div>
+                            <div className="absolute top-0 right-[-6px] w-0 h-0 border-t-[8px] border-t-[#e8f2ee] border-r-[8px] border-r-transparent"></div>
                           </div>
                         </div>
                       </div>
                     ))}
                     {normalizedSearch && filteredWhatsappFields.length === 0 && (
-                      <div className="p-4 text-sm text-[#64748b] text-center bg-[#f8fafc] rounded-xl">
+                      <div className="p-4 text-sm text-[#3f565f] text-center bg-[#f7f4ec] rounded-xl">
                         Aucun modèle WhatsApp ne correspond à cette recherche.
                       </div>
                     )}
@@ -426,22 +426,22 @@ export default function SettingsPage({
               {/* ── EMAIL ── */}
               {activeTab === 'email' && matchingTabs.length > 0 && (
                 <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
-                  <div className="flex items-center justify-between mb-8 border-b border-[#e2e8f0] pb-4">
+                  <div className="flex items-center justify-between mb-8 border-b border-[#d9dee4] pb-4">
                     <div>
                       <h2 className={dashboardTitle}>Email Butler</h2>
-                      <p className="text-sm text-[#64748b] mt-1">Configuration de la communication par email automatisée.</p>
+                      <p className="text-sm text-[#3f565f] mt-1">Configuration de la communication par email automatisée.</p>
                     </div>
-                    <button onClick={() => setLocalEmailEnabled(!localEmailEnabled)} className={`w-12 h-6 rounded-full relative transition-colors ${localEmailEnabled ? 'bg-[#6366f1]' : 'bg-[#e2e8f0]'}`}>
+                    <button onClick={() => setLocalEmailEnabled(!localEmailEnabled)} className={`w-12 h-6 rounded-full relative transition-colors ${localEmailEnabled ? 'bg-[#2e5b97]' : 'bg-[#d9dee4]'}`}>
                       <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[3px] transition-transform ${localEmailEnabled ? 'translate-x-[26px]' : 'translate-x-[3px]'}`} />
                     </button>
                   </div>
                   <div className={`space-y-6 transition-all ${localEmailEnabled ? 'opacity-100' : 'opacity-50 pointer-events-none grayscale'}`}>
                     <div className="space-y-3">
-                      <label className="text-[10px] uppercase tracking-[0.2em] text-[#64748b] font-bold">Modèle de corps d'email</label>
+                      <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">Modèle de corps d'email</label>
                       <textarea value={localEmail} onChange={e => setLocalEmail(e.target.value)} rows={6}
-                        className={`w-full p-4 text-sm text-[#1f2937] focus:ring-2 focus:ring-[#6366f1]/15 outline-none transition-all resize-none ${dashboardInset}`} />
+                        className={`w-full p-4 text-sm text-[#1d292e] focus:ring-2 focus:ring-[#2e5b97]/15 outline-none transition-all resize-none ${dashboardInset}`} />
                     </div>
-                    <div className={`flex items-start gap-3 p-4 text-[#64748b] ${dashboardInset}`}>
+                    <div className={`flex items-start gap-3 p-4 text-[#3f565f] ${dashboardInset}`}>
                       <Info size={16} className="mt-0.5 shrink-0" />
                       <p className="text-xs">L'email inclura automatiquement votre logo et les détails du cabinet configurés dans la section Entité Cabinet.</p>
                     </div>
@@ -452,20 +452,20 @@ export default function SettingsPage({
               {/* ── CABINET ── */}
               {activeTab === 'cabinet' && matchingTabs.length > 0 && (
                 <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
-                  <div className="mb-8 border-b border-[#e2e8f0] pb-4">
+                  <div className="mb-8 border-b border-[#d9dee4] pb-4">
                     <h2 className={dashboardTitle}>Entité Cabinet</h2>
-                    <p className="text-sm text-[#64748b] mt-1">Identité légale et publique de votre pratique.</p>
+                    <p className="text-sm text-[#3f565f] mt-1">Identité légale et publique de votre pratique.</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                     {filteredCabinetFields.map(f => (
                       <div key={f.label} className={`space-y-2 ${f.full ? 'md:col-span-2' : ''}`}>
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#64748b] font-bold">{f.label}</label>
+                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">{f.label}</label>
                         <input value={f.value} onChange={e => f.set(e.target.value)}
-                          className={`w-full px-4 py-3 text-[#1f2937] focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 outline-none transition-colors ${dashboardInset}`} />
+                          className={`w-full px-4 py-3 text-[#1d292e] focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 outline-none transition-colors ${dashboardInset}`} />
                       </div>
                     ))}
                     {normalizedSearch && filteredCabinetFields.length === 0 && (
-                      <div className="md:col-span-2 p-4 text-sm text-[#64748b] text-center bg-[#f8fafc] rounded-xl">
+                      <div className="md:col-span-2 p-4 text-sm text-[#3f565f] text-center bg-[#f7f4ec] rounded-xl">
                         Aucun réglage cabinet ne correspond à cette recherche.
                       </div>
                     )}
@@ -476,18 +476,18 @@ export default function SettingsPage({
               {/* ── OBJECTIVES ── */}
               {activeTab === 'objectives' && matchingTabs.length > 0 && (
                 <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
-                  <div className="mb-8 border-b border-[#e2e8f0] pb-4">
+                  <div className="mb-8 border-b border-[#d9dee4] pb-4">
                     <h2 className={dashboardTitle}>Performance Cible</h2>
-                    <p className="text-sm text-[#64748b] mt-1">Objectifs et stratégie business.</p>
+                    <p className="text-sm text-[#3f565f] mt-1">Objectifs et stratégie business.</p>
                   </div>
                   <div className="max-w-md">
-                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#64748b] font-bold block mb-4">Objectif CA Mensuel</label>
+                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold block mb-4">Objectif CA Mensuel</label>
                     <div className="relative">
                       <input type="number" value={localGoal} onChange={e => setLocalGoal(e.target.value)}
-                        className={`w-full h-16 px-6 text-3xl font-semibold text-[#1f2937] focus:ring-2 focus:ring-[#6366f1]/15 outline-none transition-all tabular-nums ${dashboardInset}`} />
-                      <span className="absolute right-6 top-1/2 -translate-y-1/2 text-sm text-[#64748b] font-bold uppercase tracking-widest">CHF</span>
+                        className={`w-full h-16 px-6 text-3xl font-semibold text-[#1d292e] focus:ring-2 focus:ring-[#2e5b97]/15 outline-none transition-all tabular-nums ${dashboardInset}`} />
+                      <span className="absolute right-6 top-1/2 -translate-y-1/2 text-sm text-[#3f565f] font-bold uppercase tracking-widest">CHF</span>
                     </div>
-                    <p className="text-xs text-[#64748b] mt-3">
+                    <p className="text-xs text-[#3f565f] mt-3">
                       Cet objectif alimente la jauge de progression sur le tableau de bord principal.
                     </p>
                   </div>

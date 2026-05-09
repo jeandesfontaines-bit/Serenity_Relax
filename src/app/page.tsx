@@ -33,7 +33,7 @@ export default function Home() {
         <div className="absolute bottom-[16%] left-[8%] h-[18rem] w-[18rem] rounded-full bg-white/70 blur-3xl" />
       </div>
 
-      <nav className="fixed left-0 top-0 z-50 flex w-full items-center justify-between border-b border-[#e2e8f0]/80 bg-[rgba(255,255,255,0.72)] px-6 py-5 backdrop-blur-xl md:px-10 lg:px-16">
+      <nav className="absolute left-0 top-0 z-50 flex w-full items-center justify-between border-b border-[#e2e8f0]/80 bg-[rgba(255,255,255,0.72)] px-6 py-5 backdrop-blur-xl md:px-10 lg:px-16">
         <div>
           <div className="flex items-baseline gap-2">
             <p className="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-[#64748b] md:text-[0.8rem]">

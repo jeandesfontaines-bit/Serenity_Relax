@@ -67,21 +67,21 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[#e2e8f0] shrink-0">
+        <div className="flex items-center justify-between px-8 py-5 border-b border-[#d9dee4] shrink-0">
           <div>
             <p className={`${dashboardTheme.dashboardEyebrow} mb-1`}>CONFIGURATION</p>
             <h2 className={`${dashboardTheme.dashboardTitle} text-xl`}>Horaires types</h2>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center hover:bg-[#f8fafc] text-slate-400 hover:text-slate-900 transition-colors"
+            className="w-9 h-9 flex items-center justify-center hover:bg-[#f7f4ec] text-slate-400 hover:text-slate-900 transition-colors"
           >
             <X size={18} strokeWidth={1} />
           </button>
         </div>
 
         {/* Day tabs — all 7 days including Sunday */}
-        <div className="flex border-b border-[#e2e8f0] shrink-0">
+        <div className="flex border-b border-[#d9dee4] shrink-0">
           {DAYS.map(day => {
             const count = (slots[day.id] || []).length;
             return (
@@ -90,13 +90,13 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 onClick={() => setActiveDay(day.id)}
                 className={`flex-1 py-3 px-1 ${dashboardTheme.dashboardEyebrow} whitespace-nowrap transition-colors flex items-center justify-center gap-1.5 ${
                   activeDay === day.id
-                    ? 'text-[#4f46e5] border-b-2 border-[#6366f1] -mb-px'
+                    ? 'text-[#2e5b97] border-b-2 border-[#2e5b97] -mb-px'
                     : 'text-slate-400 hover:text-slate-700'
                 }`}
               >
                 {day.label}
                 <span className={`w-5 h-5 flex items-center justify-center rounded-full text-[10px] ${
-                  activeDay === day.id ? 'bg-[#6366f1] text-white' : 'bg-[#eef2ff] text-[#4f46e5]'
+                  activeDay === day.id ? 'bg-[#2e5b97] text-white' : 'bg-[#e8f2ee] text-[#2e5b97]'
                 }`}>
                   {count}
                 </span>
@@ -111,7 +111,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               {slots[activeDay].map(time => (
                 <div
                   key={time}
-                  className="flex items-center justify-between px-4 py-3 bg-white/70 border border-[#e2e8f0] rounded-xl"
+                  className="flex items-center justify-between px-4 py-3 bg-white/70 border border-[#d9dee4] rounded-xl"
                 >
                   <div className="flex items-center gap-2  text-[13px] text-slate-900 tracking-tighter">
                     <Clock size={12} strokeWidth={1.5} className="text-slate-400" />
@@ -119,7 +119,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                   </div>
                   <button
                     onClick={() => handleRemoveSlot(time)}
-                    className="w-7 h-7 border border-[#e2e8f0] rounded-full flex items-center justify-center text-slate-400 hover:border-[#6366f1] hover:text-[#4f46e5] transition-all duration-300"
+                    className="w-7 h-7 border border-[#d9dee4] rounded-full flex items-center justify-center text-slate-400 hover:border-[#2e5b97] hover:text-[#2e5b97] transition-all duration-300"
                   >
                     <X size={11} strokeWidth={1.5} />
                   </button>
@@ -141,7 +141,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               type="time"
               value={newTime}
               onChange={e => setNewTime(e.target.value)}
-              className="w-full h-10 bg-white/70 border border-[#e2e8f0] rounded-xl px-4  text-[13px] text-slate-900 focus:outline-none focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1]/15 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50"
+              className="w-full h-10 bg-white/70 border border-[#d9dee4] rounded-xl px-4  text-[13px] text-slate-900 focus:outline-none focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50"
             />
           </div>
           <button
@@ -154,10 +154,10 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         </div>
 
         {/* Footer — always visible */}
-        <div className="px-8 pb-6 pt-2 border-t border-[#e2e8f0] flex flex-col items-center gap-4 shrink-0">
+        <div className="px-8 pb-6 pt-2 border-t border-[#d9dee4] flex flex-col items-center gap-4 shrink-0">
           <button
             onClick={handleCopyToWeek}
-            className={`${dashboardTheme.dashboardEyebrow} text-slate-400 hover:text-[#4f46e5] transition-colors`}
+            className={`${dashboardTheme.dashboardEyebrow} text-slate-400 hover:text-[#2e5b97] transition-colors`}
           >
             Appliquer à toute la semaine
           </button>

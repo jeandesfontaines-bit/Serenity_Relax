@@ -51,11 +51,11 @@ const STATUS_META: Record<ClientStatus, { label: string; className: string }> = 
   },
   hiatus: {
     label: 'En pause',
-    className: 'border border-[#cbd5e1] bg-[#f8fafc] text-[#475569]',
+    className: 'border border-[#c4cdd7] bg-[#f7f4ec] text-[#3f565f]',
   },
   active: {
     label: 'Client actif',
-    className: 'border border-[#c7d2fe] bg-[#eef2ff] text-[#4338ca]',
+    className: 'border border-[#bdd0e5] bg-[#e8f2ee] text-[#184f40]',
   },
 };
 
@@ -299,18 +299,18 @@ export default function ClientsPage({
               initial={{ opacity: 0, y: 8, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.98 }}
-              className="absolute right-4 top-28 z-50 w-[340px] rounded-[18px] border border-[#dbe3ef] bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.08)] lg:right-8"
+              className="absolute right-4 top-28 z-50 w-[340px] rounded-[18px] border border-[#d9dee4] bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.08)] lg:right-8"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#6366f1]">Affichage</p>
-                  <h3 className="mt-1 font-sans text-lg font-semibold text-[#1f2937]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#2e5b97]">Affichage</p>
+                  <h3 className="mt-1 font-sans text-lg font-semibold text-[#1d292e]">
                     Contrôles du répertoire
                   </h3>
                 </div>
                 <button
                   onClick={() => onShowFilterPanelChange(false)}
-                  className="rounded-[10px] p-2 text-[#64748b] transition-colors hover:bg-[#f8fafc]"
+                  className="rounded-[10px] p-2 text-[#3f565f] transition-colors hover:bg-[#f7f4ec]"
                 >
                   <X size={16} strokeWidth={1.75} />
                 </button>
@@ -318,7 +318,7 @@ export default function ClientsPage({
 
               <div className="mt-6 space-y-5">
                 <div>
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">Tri</p>
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#3f565f]">Tri</p>
                   <div className="grid grid-cols-2 gap-2">
                     {ALL_COLUMNS.filter((col) => col.id !== 'insurance').map((col) => (
                       <button
@@ -326,8 +326,8 @@ export default function ClientsPage({
                         onClick={() => toggleSort(col.id)}
                         className={`rounded-[12px] border px-3 py-2 text-left text-sm transition-colors ${
                           sortField === col.id
-                            ? 'border-[#6366f1] bg-[#eef2ff] text-[#4f46e5]'
-                            : 'border-[#e2e8f0] text-[#475569] hover:bg-[#f8fafc]'
+                            ? 'border-[#2e5b97] bg-[#e8f2ee] text-[#2e5b97]'
+                            : 'border-[#d9dee4] text-[#3f565f] hover:bg-[#f7f4ec]'
                         }`}
                       >
                         {col.label}
@@ -337,7 +337,7 @@ export default function ClientsPage({
                 </div>
 
                 <div>
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">Colonnes visibles</p>
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#3f565f]">Colonnes visibles</p>
                   <div className="space-y-2">
                     {ALL_COLUMNS.map((col) => (
                       <div
@@ -347,10 +347,10 @@ export default function ClientsPage({
                             ? prev.filter((id) => id !== col.id)
                             : [...prev, col.id],
                         )}
-                        className="flex w-full cursor-pointer items-center justify-between rounded-[12px] border border-[#e2e8f0] px-3 py-2 text-sm text-[#1f2937] transition-colors hover:bg-[#f8fafc]"
+                        className="flex w-full cursor-pointer items-center justify-between rounded-[12px] border border-[#d9dee4] px-3 py-2 text-sm text-[#1d292e] transition-colors hover:bg-[#f7f4ec]"
                       >
                         <span>{col.label}</span>
-                        <div className={`h-4 w-4 rounded border ${visibleColumns.includes(col.id) ? 'border-[#6366f1] bg-[#6366f1]' : 'border-[#cbd5e1] bg-white'}`}>
+                        <div className={`h-4 w-4 rounded border ${visibleColumns.includes(col.id) ? 'border-[#2e5b97] bg-[#2e5b97]' : 'border-[#c4cdd7] bg-white'}`}>
                           {visibleColumns.includes(col.id) && <div className="mx-auto mt-[3px] h-1.5 w-1.5 rotate-45 bg-white" />}
                         </div>
                       </div>
@@ -369,7 +369,7 @@ export default function ClientsPage({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 60, opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="shrink-0 overflow-hidden border-b border-[#c7d2fe] bg-[linear-gradient(135deg,#5b21b6_0%,#6366f1_100%)] px-4 text-white lg:px-8"
+            className="shrink-0 overflow-hidden border-b border-[#bdd0e5] bg-[linear-gradient(135deg,#184f40_0%,#2e5b97_100%)] px-4 text-white lg:px-8"
           >
             <div className="flex h-[60px] items-center justify-between gap-4">
               <p className="text-sm font-medium">
@@ -413,7 +413,7 @@ export default function ClientsPage({
             <>
               <div className={`hidden overflow-hidden lg:block ${dashboardPanel}`}>
                 <div
-                  className={`grid items-center border-b border-[#e2e8f0] ${dashboardTableHeader}`}
+                  className={`grid items-center border-b border-[#d9dee4] ${dashboardTableHeader}`}
                   style={{ gridTemplateColumns: gridTemplate }}
                 >
                   <div className={`flex justify-center ${dashboardTableCell}`}>
@@ -435,12 +435,12 @@ export default function ClientsPage({
                       <button
                         key={colId}
                         onClick={() => toggleSort(colId)}
-                        className={`flex items-center gap-2 ${dashboardTableCell} transition-colors hover:text-[#4f46e5] ${
+                        className={`flex items-center gap-2 ${dashboardTableCell} transition-colors hover:text-[#2e5b97] ${
                           col?.align === 'center' ? 'justify-center' : 'justify-start'
                         }`}
                       >
                         {col?.label}
-                        <ArrowUpDown size={12} strokeWidth={1.8} className={sortField === colId ? 'text-[#4f46e5]' : 'opacity-50'} />
+                        <ArrowUpDown size={12} strokeWidth={1.8} className={sortField === colId ? 'text-[#2e5b97]' : 'opacity-50'} />
                       </button>
                     );
                   })}
@@ -450,7 +450,7 @@ export default function ClientsPage({
                   </div>
                 </div>
 
-                <div className="divide-y divide-[#e2e8f0]">
+                <div className="divide-y divide-[#d9dee4]">
                   {filtered.map((client) => {
                     const summary = summaryByClient.get(client.id);
                     if (!summary) return null;
@@ -514,8 +514,8 @@ function Checkbox({
       }}
       className={`${compact ? 'h-4 w-4' : 'h-5 w-5'} flex items-center justify-center rounded border transition-colors ${
         checked
-          ? 'border-[#6366f1] bg-[#6366f1] text-white'
-          : 'border-[#cbd5e1] bg-white text-transparent hover:border-[#6366f1]'
+          ? 'border-[#2e5b97] bg-[#2e5b97] text-white'
+          : 'border-[#c4cdd7] bg-white text-transparent hover:border-[#2e5b97]'
       }`}
     >
       <div className={`${compact ? 'h-1.5 w-1.5' : 'h-2 w-2'} rotate-45 bg-current`} />
@@ -565,7 +565,7 @@ function ClientRow({
     <div
       onClick={() => onSelect(client)}
       className={`grid items-center transition-colors cursor-pointer ${
-        isSelected ? 'bg-[#f8fafc]' : 'hover:bg-[#f8fafc]'
+        isSelected ? 'bg-[#f7f4ec]' : 'hover:bg-[#f7f4ec]'
       }`}
       style={{ gridTemplateColumns: gridTemplate }}
     >
@@ -610,28 +610,28 @@ function renderDesktopCell(colId: string, client: Client, summary: ClientSummary
     case 'name':
       return (
         <div className="min-w-0">
-          <p className="truncate font-bold text-[#0f172a] transition-colors group-hover:text-[#4338ca]">
+          <p className="truncate font-bold text-[#101416] transition-colors group-hover:text-[#184f40]">
             {summary.fullName}
           </p>
-          <p className="truncate text-xs text-[#64748b]">{client.email || 'Aucun e-mail renseigné'}</p>
+          <p className="truncate text-xs text-[#3f565f]">{client.email || 'Aucun e-mail renseigné'}</p>
         </div>
       );
     case 'status':
       return <StatusBadge status={summary.status} />;
     case 'lastVisit':
-      return <span className="text-sm text-[#0f172a]">{summary.lastVisitLabel}</span>;
+      return <span className="text-sm text-[#101416]">{summary.lastVisitLabel}</span>;
     case 'preferredRitual':
       return <RitualBadge label={summary.preferredRitual} />;
     case 'sessions':
-      return <div className="flex justify-center"><span className="text-sm font-bold text-[#4338ca]">{summary.sessionsCount}</span></div>;
+      return <div className="flex justify-center"><span className="text-sm font-bold text-[#184f40]">{summary.sessionsCount}</span></div>;
     case 'email':
-      return <span className="truncate text-sm text-[#475569]">{client.email || '—'}</span>;
+      return <span className="truncate text-sm text-[#3f565f]">{client.email || '—'}</span>;
     case 'phone':
-      return <span className="text-sm text-[#475569]">{client.phone || '—'}</span>;
+      return <span className="text-sm text-[#3f565f]">{client.phone || '—'}</span>;
     case 'city':
-      return <span className="text-sm text-[#475569]">{client.city || '—'}</span>;
+      return <span className="text-sm text-[#3f565f]">{client.city || '—'}</span>;
     case 'insurance':
-      return <span className="truncate text-sm text-[#475569]">{client.insurance || '—'}</span>;
+      return <span className="truncate text-sm text-[#3f565f]">{client.insurance || '—'}</span>;
     default:
       return null;
   }
@@ -657,13 +657,13 @@ function ClientCard({
       onClick={() => onSelect(client)}
       className={`cursor-pointer rounded-[24px] border p-6 shadow-[0_10px_30px_rgba(26,28,27,0.04)] transition-all ${
         isSelected
-          ? 'border-[#c7d2fe] bg-[#f8faff]'
-          : 'border-[#e2e8f0] bg-white active:scale-[0.99]'
+          ? 'border-[#bdd0e5] bg-[#f7f4ec]'
+          : 'border-[#d9dee4] bg-white active:scale-[0.99]'
       }`}
     >
       <div className="mb-4 flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h3 className="truncate text-lg font-bold text-[#0f172a]">{summary.fullName}</h3>
+          <h3 className="truncate text-lg font-bold text-[#101416]">{summary.fullName}</h3>
           <div className="mt-2">
             <StatusBadge status={summary.status} />
           </div>
@@ -673,35 +673,35 @@ function ClientCard({
 
       <div className="space-y-3 text-sm">
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#64748b]">Dernière visite</span>
-          <span className="font-medium text-[#0f172a]">{summary.lastVisitLabel}</span>
+          <span className="text-[#3f565f]">Dernière visite</span>
+          <span className="font-medium text-[#101416]">{summary.lastVisitLabel}</span>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#64748b]">Rituel préféré</span>
+          <span className="text-[#3f565f]">Rituel préféré</span>
           <div className="max-w-[60%] text-right"><RitualBadge label={summary.preferredRitual} /></div>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[#64748b]">Total séances</span>
-          <span className="font-bold text-[#4338ca]">{summary.sessionsCount}</span>
+          <span className="text-[#3f565f]">Total séances</span>
+          <span className="font-bold text-[#184f40]">{summary.sessionsCount}</span>
         </div>
-        <div className="flex items-center gap-2 text-[#475569]">
-          <Phone size={14} strokeWidth={1.75} className="text-[#94a3b8]" />
+        <div className="flex items-center gap-2 text-[#3f565f]">
+          <Phone size={14} strokeWidth={1.75} className="text-[#8fa1b2]" />
           <span>{client.phone || 'Aucun téléphone'}</span>
         </div>
-        <div className="flex items-center gap-2 text-[#475569]">
-          <MapPin size={14} strokeWidth={1.75} className="text-[#94a3b8]" />
+        <div className="flex items-center gap-2 text-[#3f565f]">
+          <MapPin size={14} strokeWidth={1.75} className="text-[#8fa1b2]" />
           <span>{client.city || 'Ville inconnue'}</span>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 border-t border-[#e2e8f0] pt-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 border-t border-[#d9dee4] pt-4">
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
             onSelect(client);
           }}
-          className="rounded-xl border border-[#dbe3ef] px-4 py-2.5 text-sm font-bold text-[#4338ca] transition-colors hover:bg-[#f8faff]"
+          className="rounded-xl border border-[#d9dee4] px-4 py-2.5 text-sm font-bold text-[#184f40] transition-colors hover:bg-[#f7f4ec]"
         >
           Voir les notes
         </button>
@@ -732,8 +732,8 @@ function ActionIconButton({
   children: React.ReactNode;
 }) {
   const className = tone === 'primary'
-    ? 'rounded-lg p-2 text-[#4338ca] transition-colors hover:bg-[#4338ca] hover:text-white'
-    : 'rounded-lg p-2 text-[#94a3b8] transition-colors hover:bg-[#eef2ff] hover:text-[#4338ca]';
+    ? 'rounded-lg p-2 text-[#184f40] transition-colors hover:bg-[#184f40] hover:text-white'
+    : 'rounded-lg p-2 text-[#8fa1b2] transition-colors hover:bg-[#e8f2ee] hover:text-[#184f40]';
 
   return (
     <div className="group relative flex">
@@ -745,7 +745,7 @@ function ActionIconButton({
       >
         {children}
       </button>
-      <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#0f172a] px-3 py-1 text-[11px] font-medium text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+      <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#101416] px-3 py-1 text-[11px] font-medium text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
         {label}
       </span>
     </div>
@@ -755,14 +755,14 @@ function ActionIconButton({
 function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?: string) => void }) {
   return (
     <div className={`flex min-h-[420px] flex-col items-center justify-center gap-8 px-6 py-16 text-center ${dashboardPanel}`}>
-      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#f8fafc]">
-        <Users size={32} strokeWidth={1.2} className="text-[#94a3b8]" />
+      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#f7f4ec]">
+        <Users size={32} strokeWidth={1.2} className="text-[#8fa1b2]" />
       </div>
       <div className="space-y-3">
         <h2 className={dashboardTitleLg}>
           Aucun client trouvé
         </h2>
-        <p className="mx-auto max-w-md text-sm leading-relaxed text-[#64748b]">
+        <p className="mx-auto max-w-md text-sm leading-relaxed text-[#3f565f]">
           {search
             ? `Aucun profil ne correspond à "${search}". Essayez une autre recherche ou créez une nouvelle fiche client.`
             : 'Votre répertoire est vide. Commencez par créer une fiche client ou réserver une première séance.'}

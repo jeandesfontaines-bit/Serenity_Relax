@@ -59,8 +59,8 @@ function appointmentStatus(appt: Appointment, todayStr: string) {
   // future / unpaid
   return {
     label: 'CONFIRMÉ',
-    badgeClass: 'bg-[#eef2ff] text-[#4338ca] border border-[#c7d2fe]',
-    lineClass: 'bg-[#6366f1]',
+    badgeClass: 'bg-[#e8f2ee] text-[#184f40] border border-[#bdd0e5]',
+    lineClass: 'bg-[#2e5b97]',
     muted: false,
   };
 }
@@ -165,8 +165,8 @@ export default function HomePage({
     <div className={`${dashboardPageContainer} space-y-8`}>
       {normalizedSearch && (
         <section className="space-y-2">
-          <p className="text-sm text-[#64748b]">
-            Filtre actif&nbsp;: <span className="font-semibold text-[#4f46e5]">{searchQuery.trim()}</span>
+          <p className="text-sm text-[#3f565f]">
+            Filtre actif&nbsp;: <span className="font-semibold text-[#2e5b97]">{searchQuery.trim()}</span>
           </p>
         </section>
       )}
@@ -183,8 +183,8 @@ export default function HomePage({
         />
         <MetricCard
           icon="task_alt"
-          iconClass="bg-[#eef2ff] text-[#4338ca]"
-          badgeClass="bg-[#eef2ff] text-[#4338ca] border border-[#c7d2fe]"
+          iconClass="bg-[#e8f2ee] text-[#184f40]"
+          badgeClass="bg-[#e8f2ee] text-[#184f40] border border-[#bdd0e5]"
           badgeLabel="Séances réglées"
           label="Séances complètes"
           value={completedSessions.toString()}
@@ -210,7 +210,7 @@ export default function HomePage({
             </div>
             <button
               onClick={() => onNavigate('scheduler')}
-              className="text-sm font-semibold text-[#4f46e5] hover:underline"
+              className="text-sm font-semibold text-[#2e5b97] hover:underline"
             >
               Voir l&apos;agenda →
             </button>
@@ -226,14 +226,14 @@ export default function HomePage({
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className={`group flex w-full items-center gap-5 rounded-[18px] border border-[#e2e8f0] bg-[rgba(255,255,255,0.94)] p-4 text-left shadow-[0_4px_16px_rgba(15,23,42,0.04)] transition-all hover:-translate-y-[1px] hover:shadow-[0_10px_24px_rgba(15,23,42,0.08)] hover:border-[#c7d2fe] ${
+                    className={`group flex w-full items-center gap-5 rounded-[18px] border border-[#d9dee4] bg-[rgba(255,255,255,0.94)] p-4 text-left shadow-[0_4px_16px_rgba(15,23,42,0.04)] transition-all hover:-translate-y-[1px] hover:shadow-[0_10px_24px_rgba(15,23,42,0.08)] hover:border-[#bdd0e5] ${
                       status.muted ? 'opacity-55' : ''
                     }`}
                   >
                     {/* Time */}
                     <div className="min-w-[52px] text-center">
-                      <p className={`text-base font-bold leading-none ${status.muted ? 'text-[#94a3b8]' : 'text-[#1f2937]'}`}>{hour}</p>
-                      <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.2em] text-[#94a3b8]">{period}</p>
+                      <p className={`text-base font-bold leading-none ${status.muted ? 'text-[#8fa1b2]' : 'text-[#1d292e]'}`}>{hour}</p>
+                      <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.2em] text-[#8fa1b2]">{period}</p>
                     </div>
 
                     {/* Accent line */}
@@ -241,10 +241,10 @@ export default function HomePage({
 
                     {/* Details */}
                     <div className="min-w-0 flex-1">
-                      <h5 className={`truncate text-sm font-semibold leading-tight ${status.muted ? 'text-[#94a3b8] line-through' : 'text-[#1f2937]'}`}>
+                      <h5 className={`truncate text-sm font-semibold leading-tight ${status.muted ? 'text-[#8fa1b2] line-through' : 'text-[#1d292e]'}`}>
                         {appt.clientNameSnapshot || appt.title || 'Client'}
                       </h5>
-                      <p className={`mt-0.5 truncate text-xs ${status.muted ? 'text-[#cbd5e1]' : 'text-[#64748b]'}`}>
+                      <p className={`mt-0.5 truncate text-xs ${status.muted ? 'text-[#c4cdd7]' : 'text-[#3f565f]'}`}>
                         {appt.serviceName || 'Consultation'} · {appt.duration || '60 min'}
                       </p>
                     </div>
@@ -255,7 +255,7 @@ export default function HomePage({
                     </span>
 
                     <span
-                      className="material-symbols-outlined text-[18px] text-[#cbd5e1] transition-colors group-hover:text-[#4f46e5]"
+                      className="material-symbols-outlined text-[18px] text-[#c4cdd7] transition-colors group-hover:text-[#2e5b97]"
                       style={outlinedIcon}
                     >
                       chevron_right
@@ -268,7 +268,7 @@ export default function HomePage({
                 <span className="material-symbols-outlined text-[40px] text-[#d5d9d4] block mb-3" style={outlinedIcon}>
                   calendar_today
                 </span>
-                <p className="text-sm font-medium text-[#64748b]">
+                <p className="text-sm font-medium text-[#3f565f]">
                   {normalizedSearch ? 'Aucune séance ne correspond à cette recherche.' : 'Pas de séances aujourd\'hui.'}
                 </p>
               </div>
@@ -283,7 +283,7 @@ export default function HomePage({
               <h4 className={dashboardTitle}>Notes récentes</h4>
               <button
                 onClick={onEditGoal}
-                className="text-xs font-semibold text-[#4f46e5] hover:underline"
+                className="text-xs font-semibold text-[#2e5b97] hover:underline"
               >
                 Metrics
               </button>
@@ -295,21 +295,21 @@ export default function HomePage({
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className="block w-full rounded-[14px] border border-[#e2e8f0] bg-white p-4 text-left transition hover:-translate-y-[1px] hover:shadow-[0_8px_18px_rgba(15,23,42,0.06)]"
+                    className="block w-full rounded-[14px] border border-[#d9dee4] bg-white p-4 text-left transition hover:-translate-y-[1px] hover:shadow-[0_8px_18px_rgba(15,23,42,0.06)]"
                   >
-                    <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8b5cf6]">
+                    <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#334e72]">
                       {formatDayLabel(appt.date)}
                     </p>
-                    <p className="truncate text-sm font-semibold text-[#1f2937]">
+                    <p className="truncate text-sm font-semibold text-[#1d292e]">
                       {appt.clientNameSnapshot || appt.title || 'Client'}
                     </p>
-                    <p className="mt-1 line-clamp-2 text-xs text-[#64748b]">
+                    <p className="mt-1 line-clamp-2 text-xs text-[#3f565f]">
                       {appt.notes?.trim()}
                     </p>
                   </button>
                 ))
               ) : (
-                <div className="rounded-[14px] border border-dashed border-[#dbe3ef] p-4 text-sm text-[#94a3b8] text-center">
+                <div className="rounded-[14px] border border-dashed border-[#d9dee4] p-4 text-sm text-[#8fa1b2] text-center">
                   {normalizedSearch ? 'Aucune note ne correspond.' : 'Aucune note récente.'}
                 </div>
               )}
@@ -317,7 +317,7 @@ export default function HomePage({
 
             <button
               onClick={() => onNavigate('clients')}
-              className="w-full rounded-[14px] border border-[#dbe3ef] bg-white py-2.5 text-sm font-semibold text-[#475569] transition hover:bg-[#f8faff] hover:text-[#312e81]"
+              className="w-full rounded-[14px] border border-[#d9dee4] bg-white py-2.5 text-sm font-semibold text-[#3f565f] transition hover:bg-[#f7f4ec] hover:text-[#312e81]"
             >
               Voir les clients
             </button>
@@ -347,7 +347,7 @@ export default function HomePage({
         </div>
 
         {/* Insight card */}
-        <div className="flex flex-col justify-between rounded-[20px] bg-[linear-gradient(135deg,#5b21b6_0%,#6366f1_100%)] p-6 shadow-[0_18px_40px_rgba(99,102,241,0.24)]">
+        <div className="flex flex-col justify-between rounded-[20px] bg-[linear-gradient(135deg,#184f40_0%,#2e5b97_100%)] p-6 shadow-[0_18px_40px_rgba(99,102,241,0.24)]">
           <div>
             <span className="mb-3 inline-block rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white/80">
               Insight agenda
@@ -372,7 +372,7 @@ export default function HomePage({
                 className="h-8 w-8 rounded-full border-2 border-[#4c1d95] object-cover"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7yt8Zx0TAbU8jMZ2_yb2Xv7GPN5qANDJF0F7wq6vSQeTwdcEhTiHHK_fZ-2Suz3br25vyF8ujPDk5wRmX_qblc0VsaCMSUu-BGkzTwkdUwktQq_nkl7lMzOCqza9l7b18pExovc4PsAQ-wR1WgiE9fR67FazH6Pto3Inept49yxLbDRb30FVtkbzzhnruPF5ogI621DrI6WiLmXKYa67BWN6IUw8IqvU9FeX5FsPxrCAwHAHntqi_hgy3cCCPgYHNbP_HZJi7OtU"
               />
-              <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#4c1d95] bg-[#84cc16] text-[10px] font-bold text-[#1f2937]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#4c1d95] bg-[#84cc16] text-[10px] font-bold text-[#1d292e]">
                 +12
               </div>
             </div>
@@ -400,7 +400,7 @@ function MetricCard({
   value: string;
 }) {
   return (
-    <div className="rounded-[20px] border border-[#e2e8f0] bg-[rgba(255,255,255,0.94)] p-5 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.06)] transition-all hover:-translate-y-[1px] hover:shadow-[0_12px_26px_rgba(15,23,42,0.08)]">
+    <div className="rounded-[20px] border border-[#d9dee4] bg-[rgba(255,255,255,0.94)] p-5 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.06)] transition-all hover:-translate-y-[1px] hover:shadow-[0_12px_26px_rgba(15,23,42,0.08)]">
       <div className="mb-4 flex items-center justify-between">
         <div className={`rounded-[12px] p-2.5 ${iconClass}`}>
           <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}>
@@ -409,8 +409,8 @@ function MetricCard({
         </div>
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${badgeClass}`}>{badgeLabel}</span>
       </div>
-      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#64748b]">{label}</p>
-      <h3 className="mt-1 text-2xl font-semibold text-[#1f2937]">{value}</h3>
+      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#3f565f]">{label}</p>
+      <h3 className="mt-1 text-2xl font-semibold text-[#1d292e]">{value}</h3>
     </div>
   );
 }
