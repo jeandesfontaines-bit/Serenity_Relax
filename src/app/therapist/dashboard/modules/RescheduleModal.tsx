@@ -1,10 +1,14 @@
 'use client';
 import React, { useState } from 'react';
-import { X, CalendarClock, ArrowDown, ChevronLeft, ChevronRight, Check, Activity, Calendar, Clock, MapPin, CreditCard, Mail, Trash2, FileText } from 'lucide-react';
+import { 
+  X, CalendarClock, ArrowDown, ChevronLeft, ChevronRight, Check, 
+  Activity, Calendar, Clock, MapPin, CreditCard, Mail, Trash2, 
+  FileText, ArrowRight, Save, Info, AlertTriangle, User
+} from 'lucide-react';
 import { Appointment } from '../types';
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface RescheduleModalProps {
   appt: Appointment;
@@ -13,8 +17,6 @@ interface RescheduleModalProps {
   onCancelAppt?: (id: string) => void;
   onResendConfirmation?: (appt: Appointment) => void;
 }
-
-import { dashboardPanel, dashboardTitle, dashboardEyebrow, dashboardPrimaryButton, dashboardSecondaryButton } from './dashboardTheme';
 
 const AVAILABLE_TIMES = ['08:00', '09:00', '10:00', '11:00', '13:30', '14:30', '15:30', '16:30'];
 const DISABLED_TIMES = ['08:00', '09:00', '14:30'];
@@ -29,12 +31,12 @@ export default function RescheduleModal({
   const [selectedTime, setSelectedTime] = useState<string>('11:00');
   const [note, setNote] = useState('');
 
-  const weekDays = Array.from({ length: 5 }).map((_, i) => addDays(startDay, i));
+  const weekDays = Array.from({ length: 6 }).map((_, i) => addDays(startDay, i));
 
   return (
-    <div className="fixed inset-0 z-[300] flex items-end sm:items-center justify-center p-0 sm:p-6">
+    <div className="fixed inset-0 z-[400] flex items-center justify-center p-6">
       <motion.div
-        className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-neutral-900/60 backdrop-blur-2xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -42,184 +44,206 @@ export default function RescheduleModal({
       />
 
       <motion.div
-        className={`relative w-full sm:max-w-[1100px] flex flex-col overflow-hidden max-h-[94vh] sm:max-h-[85vh] ${dashboardPanel}`}
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 40 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full max-w-[1200px] bg-[#FDFDFB] rounded-[4rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border border-white"
+        initial={{ opacity: 0, scale: 0.9, y: 100 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 100 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* HEADER */}
-        <div className="px-8 py-7 flex items-start justify-between border-b border-[#d9dee4] shrink-0">
-          <div>
-            <div className={`flex items-center gap-2 mb-3 ${dashboardEyebrow}`}>
-              <span>Clients</span>
-              <span className="opacity-40">/</span>
-              <span>{appt.clientNameSnapshot}</span>
-              <span className="opacity-40">/</span>
-              <span className="text-[#1d292e]">Reprogrammer</span>
-            </div>
-            <h1 className={dashboardTitle}>Gestion de la séance</h1>
+        {/* Header */}
+        <div className="px-16 py-12 border-b border-neutral-100 flex items-center justify-between bg-white">
+          <div className="flex items-center gap-10">
+             <div className="w-16 h-16 bg-neutral-900 rounded-[2rem] flex items-center justify-center text-white shadow-2xl rotate-3">
+                <CalendarClock size={28} strokeWidth={2.5} />
+             </div>
+             <div>
+                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-2">
+                   <span>GESTION SÉANCE</span>
+                   <span className="opacity-40">/</span>
+                   <span className="text-neutral-900">{appt.clientNameSnapshot}</span>
+                </div>
+                <h2 className="text-5xl font-bold text-neutral-900 tracking-tighter leading-none">Reprogrammer</h2>
+             </div>
           </div>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => onResendConfirmation?.(appt)}
-              className={dashboardSecondaryButton + " flex items-center gap-2"}
-            >
-              <Mail size={13} strokeWidth={1.5} /> Confirmation
-            </button>
-            <button className={dashboardSecondaryButton + " flex items-center gap-2"}>
-              <FileText size={13} strokeWidth={1.5} /> Facture
-            </button>
-            <button
-              onClick={() => { onCancelAppt?.(appt.id); onClose(); }}
-              className="h-9 px-5 rounded-full bg-white border border-[#fdba74] text-[#c2410c] text-[11px] font-medium tracking-[0.1em] uppercase hover:bg-[#fff7ed] flex items-center gap-2 transition-all duration-300"
-            >
-              <Trash2 size={13} strokeWidth={1.5} /> Annuler
-            </button>
-            <div className="w-px h-6 bg-[#d9dee4] mx-1" />
-            <button onClick={onClose} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#f7f4ec] text-[#3f565f] hover:text-[#1d292e] transition-colors">
-              <X size={18} strokeWidth={1} />
-            </button>
+          
+          <div className="flex items-center gap-4">
+             <button onClick={() => onResendConfirmation?.(appt)} className="h-12 px-6 rounded-full border border-neutral-100 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 hover:text-neutral-900 hover:border-neutral-900 transition-all flex items-center gap-3">
+                <Mail size={16} strokeWidth={2.5} /> CONFIRMATION
+             </button>
+             <button onClick={() => { onCancelAppt?.(appt.id); onClose(); }} className="h-12 px-6 rounded-full border border-red-100 text-[10px] font-bold uppercase tracking-[0.2em] text-red-400 hover:bg-red-500 hover:text-white transition-all flex items-center gap-3 group">
+                <Trash2 size={16} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" /> ANNULER RDV
+             </button>
+             <div className="w-px h-10 bg-neutral-100 mx-2" />
+             <button onClick={onClose} className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all">
+                <X size={20} strokeWidth={3} />
+             </button>
           </div>
         </div>
 
-        {/* CONTENT GRID */}
-        <div className="flex-1 overflow-y-auto flex flex-col lg:flex-row p-8 gap-6">
-
-          {/* LEFT SIDEBAR - INFO */}
-          <div className="w-full lg:w-[340px] bg-white/70 border border-[#d9dee4] rounded-xl p-8 shrink-0 flex flex-col gap-8 h-fit">
-            <div className="flex items-center gap-4 border-b border-[#d9dee4] pb-8">
-              <div className="w-12 h-12 rounded-full bg-[#e8f2ee] text-[#2e5b97] flex items-center justify-center  text-lg">
-                {appt.clientNameSnapshot?.charAt(0)}
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className=" text-lg tracking-tight text-[#1d292e] capitalize">{appt.clientNameSnapshot}</span>
-                <span className={dashboardEyebrow}>Client</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-6">
-              {[
-                { icon: Activity, label: 'Prestation', val: appt.serviceName || 'Séance' },
-                { icon: Calendar, label: 'Date prévue', val: appt.date ? format(new Date(appt.date), 'EEEE d MMMM yyyy', { locale: fr }) : '—' },
-                { icon: Clock, label: 'Horaire', val: `${appt.time || '—'}` },
-                { icon: MapPin, label: 'Lieu', val: 'Cabinet Principal' },
-                { icon: CreditCard, label: 'Tarif', val: `${appt.price || 150} CHF` }
-              ].map((d, i) => (
-                <div key={i} className="flex gap-4">
-                  <d.icon size={16} strokeWidth={1.5} className="text-[#3f565f] mt-0.5 shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <span className={dashboardEyebrow}>{d.label}</span>
-                    <span className="text-sm tracking-tight text-[#1d292e] capitalize">{d.val}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT CONTENT - RESCHEDULE */}
-          <div className="flex-1 bg-white/70 border border-[#d9dee4] rounded-xl p-10 flex flex-col gap-8">
-            <div className="flex items-center justify-between">
-              <h2 className=" text-2xl tracking-tight text-[#1d292e] capitalize">Reprogrammer</h2>
-              <span className="px-3 py-1 rounded-full border border-[#d9dee4] text-[10px] font-medium uppercase tracking-[0.1em] text-[#3f565f]">Modifiable</span>
-            </div>
-
-            <div className="flex items-center justify-between px-6 py-4 rounded-xl border border-dashed border-[#bdd0e5] bg-[#e8f2ee]/50">
-              <div className="flex items-center gap-4">
-                <CalendarClock size={18} strokeWidth={1.5} className="text-[#2e5b97]" />
-                <span className="text-sm tracking-tight text-[#3f565f]">
-                  Horaire actuel : <strong className="text-[#1d292e] font-medium">{appt.date} à {appt.time}</strong>
-                </span>
-              </div>
-              <ArrowDown size={16} strokeWidth={1} className="text-[#c4cdd7]" />
-            </div>
-
-            {/* DATE SCROLLER */}
-            <div className="flex flex-col gap-4">
-              <label className={dashboardEyebrow}>Choisir une nouvelle date</label>
-              <div className="flex items-center gap-3">
-                <button className="w-10 h-10 rounded-full bg-white border border-[#d9dee4] flex items-center justify-center text-[#3f565f] hover:border-[#2e5b97] hover:text-[#2e5b97] transition-all shrink-0">
-                  <ChevronLeft size={16} strokeWidth={1.5} />
-                </button>
-
-                {weekDays.map((d, i) => {
-                  const active = isSameDay(d, selectedDate);
-                  return (
-                    <div
-                      key={i}
-                      onClick={() => setSelectedDate(d)}
-                      className={`flex-1 h-[72px] flex flex-col items-center justify-center gap-1 border rounded-xl cursor-pointer transition-all duration-300 ${
-                        active ? 'bg-[#2e5b97] border-[#2e5b97] text-white shadow-sm' : 'bg-white border-[#d9dee4] text-[#1d292e] hover:border-[#9ec4b2]'
-                      }`}
-                    >
-                      <span className={`text-[10px] font-medium uppercase tracking-[0.1em] ${active ? 'text-white/80' : 'text-[#3f565f]'}`}>
-                        {format(d, 'EEE', { locale: fr })}
-                      </span>
-                      <span className=" text-2xl tracking-tight leading-none">{format(d, 'd')}</span>
+        {/* Content Grid */}
+        <div className="flex-1 overflow-y-auto scrollbar-hide grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-16 p-16">
+           
+           {/* Sidebar Info */}
+           <aside className="space-y-12">
+              <div className="bg-white rounded-[3.5rem] p-12 border border-neutral-100 shadow-sm space-y-12 relative overflow-hidden group">
+                 <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-700">
+                    <User size={120} strokeWidth={1} />
+                 </div>
+                 
+                 <div className="flex items-center gap-6 border-b border-neutral-50 pb-10">
+                    <div className="w-16 h-16 rounded-[1.5rem] bg-neutral-900 flex items-center justify-center text-white text-2xl font-bold shadow-xl">
+                       {appt.clientNameSnapshot?.charAt(0)}
                     </div>
-                  );
-                })}
-
-                <button className="w-10 h-10 rounded-full bg-white border border-[#d9dee4] flex items-center justify-center text-[#3f565f] hover:border-[#2e5b97] hover:text-[#2e5b97] transition-all shrink-0">
-                  <ChevronRight size={16} strokeWidth={1.5} />
-                </button>
-              </div>
-            </div>
-
-            {/* TIME GRID */}
-            <div className="flex flex-col gap-4">
-              <label className={dashboardEyebrow}>Créneaux disponibles</label>
-              <div className="grid grid-cols-4 gap-2">
-                {AVAILABLE_TIMES.map(t => {
-                  const disabled = DISABLED_TIMES.includes(t);
-                  const active = selectedTime === t;
-                  return (
-                    <div
-                      key={t}
-                      onClick={() => !disabled && setSelectedTime(t)}
-                      className={`h-10 flex items-center justify-center rounded-full text-[13px] tracking-wide transition-all duration-300 ${
-                        disabled ? 'bg-[#e6ebf0] text-[#c4cdd7] line-through cursor-not-allowed' :
-                        active ? 'bg-[#2e5b97] text-white cursor-pointer shadow-sm' :
-                        'bg-white border border-[#d9dee4] text-[#1d292e] hover:border-[#9ec4b2] cursor-pointer'
-                      }`}
-                    >
-                      {t}
+                    <div>
+                       <p className="text-2xl font-bold tracking-tighter text-neutral-900">{appt.clientNameSnapshot}</p>
+                       <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mt-2">DOSSIER ACTIF</p>
                     </div>
-                  );
-                })}
+                 </div>
+
+                 <div className="space-y-8">
+                    <InfoRow icon={Activity} label="PRESTATION" value={appt.serviceName || 'Soin'} />
+                    <InfoRow icon={Calendar} label="DATE ACTUELLE" value={appt.date || '—'} />
+                    <InfoRow icon={Clock} label="HORAIRE" value={appt.time || '—'} />
+                    <InfoRow icon={CreditCard} label="VALEUR" value={`${appt.price || 150} CHF`} />
+                 </div>
+
+                 <div className="pt-6 border-t border-neutral-50">
+                    <button className="w-full h-14 rounded-full bg-neutral-50 text-neutral-400 text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-neutral-900 hover:text-white transition-all group">
+                       <FileText size={16} strokeWidth={2.5} /> VOIR FACTURE
+                    </button>
+                 </div>
               </div>
-            </div>
 
-            {/* NOTE TEXTAREA */}
-            <div className="flex flex-col gap-3">
-              <label className={dashboardEyebrow}>Message au patient</label>
-              <textarea
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder="Ajouter une note ou un motif de décalage..."
-                className="w-full h-[90px] p-5 rounded-xl bg-white/70 border border-[#d9dee4] text-sm text-[#1d292e] placeholder:text-[#c4cdd7] outline-none focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 transition-all resize-none"
-              />
-            </div>
+              <div className="bg-orange-50 rounded-[3rem] p-10 border border-orange-100 flex items-start gap-6">
+                 <AlertTriangle size={24} className="text-orange-400 shrink-0 mt-1" />
+                 <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-orange-400 mb-2">ATTENTION</p>
+                    <p className="text-sm font-medium text-orange-900 leading-relaxed">Toute modification enverra une notification automatique au patient.</p>
+                 </div>
+              </div>
+           </aside>
 
-            {/* FOOTER ACTIONS */}
-            <div className="flex justify-end gap-3 pt-6 border-t border-[#d9dee4] mt-auto">
-              <button
-                onClick={onClose}
-                className={dashboardSecondaryButton}
-              >
-                Fermer
-              </button>
-              <button
-                onClick={() => onConfirm(format(selectedDate, 'yyyy-MM-dd'), selectedTime, note)}
-                className={dashboardPrimaryButton + " flex items-center gap-2"}
-              >
-                <Check size={14} strokeWidth={1.5} /> Valider
-              </button>
-            </div>
-          </div>
+           {/* Main Selection Area */}
+           <div className="space-y-16">
+              <div className="flex items-center justify-between border-b border-neutral-100 pb-8">
+                 <h3 className="text-4xl font-bold tracking-tighter text-neutral-900">Nouvel Horaire</h3>
+                 <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-300">
+                    <span className="w-2 h-2 rounded-full bg-blue-500" /> DISPONIBILITÉS EN TEMPS RÉEL
+                 </div>
+              </div>
+
+              {/* Current Status Recap */}
+              <div className="bg-neutral-900 rounded-[3rem] p-10 flex items-center justify-between text-white shadow-2xl relative overflow-hidden group">
+                 <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-20" />
+                 <div className="flex items-center gap-8 relative z-10">
+                    <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
+                       <CalendarClock size={24} strokeWidth={2.5} />
+                    </div>
+                    <div>
+                       <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 mb-2">PROGRAMMATION INITIALE</p>
+                       <p className="text-2xl font-bold tracking-tighter">{appt.date} à {appt.time}</p>
+                    </div>
+                 </div>
+                 <ArrowRight size={32} strokeWidth={2} className="text-white/20 group-hover:translate-x-4 transition-transform duration-700" />
+              </div>
+
+              {/* Date Scroller */}
+              <div className="space-y-6">
+                 <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-neutral-300 px-6">SÉLECTION DE LA DATE</p>
+                 <div className="flex items-center gap-4">
+                    <button className="w-12 h-12 flex items-center justify-center rounded-full border border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all">
+                       <ChevronLeft size={20} strokeWidth={3} />
+                    </button>
+                    <div className="flex-1 grid grid-cols-6 gap-3">
+                       {weekDays.map((d, i) => {
+                         const active = isSameDay(d, selectedDate);
+                         return (
+                           <button
+                             key={i}
+                             onClick={() => setSelectedDate(d)}
+                             className={`h-24 flex flex-col items-center justify-center rounded-[2rem] border-2 transition-all duration-500 ${
+                               active 
+                                 ? 'bg-neutral-900 border-neutral-900 text-white shadow-xl scale-105 z-10' 
+                                 : 'bg-white border-neutral-50 text-neutral-900 hover:border-neutral-900'
+                             }`}
+                           >
+                             <span className={`text-[10px] font-bold uppercase tracking-[0.2em] mb-2 ${active ? 'text-white/40' : 'text-neutral-300'}`}>
+                               {format(d, 'EEE', { locale: fr })}
+                             </span>
+                             <span className="text-3xl font-bold tracking-tighter leading-none">{format(d, 'd')}</span>
+                           </button>
+                         );
+                       })}
+                    </div>
+                    <button className="w-12 h-12 flex items-center justify-center rounded-full border border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all">
+                       <ChevronRight size={20} strokeWidth={3} />
+                    </button>
+                 </div>
+              </div>
+
+              {/* Time Grid */}
+              <div className="space-y-6">
+                 <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-neutral-300 px-6">CRÉNEAUX DISPONIBLES</p>
+                 <div className="grid grid-cols-4 gap-4">
+                    {AVAILABLE_TIMES.map(t => {
+                      const disabled = DISABLED_TIMES.includes(t);
+                      const active = selectedTime === t;
+                      return (
+                        <button
+                          key={t}
+                          disabled={disabled}
+                          onClick={() => setSelectedTime(t)}
+                          className={`h-16 rounded-full text-lg font-bold tracking-tighter transition-all duration-500 border-2 ${
+                            disabled ? 'bg-neutral-50 border-neutral-50 text-neutral-200 cursor-not-allowed opacity-50' :
+                            active ? 'bg-neutral-900 border-neutral-900 text-white shadow-xl scale-105 z-10' :
+                            'bg-white border-neutral-50 text-neutral-900 hover:border-neutral-900 shadow-sm'
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      );
+                    })}
+                 </div>
+              </div>
+
+              {/* Note */}
+              <div className="space-y-4">
+                 <label className="text-[11px] font-bold uppercase tracking-[0.4em] text-neutral-300 px-6">NOTE AU PATIENT (OPTIONNEL)</label>
+                 <textarea
+                   value={note}
+                   onChange={(e) => setNote(e.target.value)}
+                   placeholder="Indiquez le motif de la reprogrammation..."
+                   className="w-full h-32 p-10 rounded-[3rem] bg-white border border-neutral-100 text-lg font-medium text-neutral-900 focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-inner"
+                 />
+              </div>
+
+              {/* Action */}
+              <div className="pt-8">
+                 <button
+                   onClick={() => onConfirm(format(selectedDate, 'yyyy-MM-dd'), selectedTime, note)}
+                   className="w-full h-24 bg-neutral-900 rounded-[3rem] text-white text-[13px] font-bold uppercase tracking-[0.5em] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)] hover:-translate-y-2 active:scale-95 transition-all flex items-center justify-center gap-6 group"
+                 >
+                   <Save size={24} strokeWidth={2.5} className="group-hover:scale-125 transition-transform" />
+                   VALIDER LA REPROGRAMMATION
+                 </button>
+              </div>
+           </div>
         </div>
       </motion.div>
     </div>
   );
+}
+
+function InfoRow({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
+   return (
+      <div className="flex items-center gap-6 group">
+         <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white transition-all shadow-inner">
+            <Icon size={18} strokeWidth={2.5} />
+         </div>
+         <div>
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-300 mb-1">{label}</p>
+            <p className="text-base font-bold tracking-tighter text-neutral-900">{value}</p>
+         </div>
+      </div>
+   );
 }

@@ -59,34 +59,41 @@ type AppointmentTone = {
   dot: string;
 };
 
-const APPOINTMENT_TONES: Record<'default' | 'paid' | 'cancelled' | 'pending', AppointmentTone> = {
+const APPOINTMENT_TONES: Record<'default' | 'paid' | 'cancelled' | 'pending' | 'confirmed', AppointmentTone> = {
   default: {
     surface: 'bg-white',
-    border: 'border-[var(--dashboard-border)]',
-    title: 'text-[var(--dashboard-asphalt)]',
-    meta: 'text-[var(--dashboard-rooftop-grey)]',
-    dot: 'bg-[var(--dashboard-bench-green)]',
+    border: 'border-neutral-100',
+    title: 'text-neutral-900',
+    meta: 'text-neutral-400',
+    dot: 'bg-neutral-900',
+  },
+  confirmed: {
+    surface: 'bg-[var(--accent-blue)]/60',
+    border: 'border-blue-200/50',
+    title: 'text-blue-950',
+    meta: 'text-blue-600',
+    dot: 'bg-blue-500',
   },
   paid: {
-    surface: 'bg-[color:rgba(232,242,238,0.85)]',
-    border: 'border-[#bad5c8]',
-    title: 'text-[var(--dashboard-bench-green)]',
-    meta: 'text-[var(--dashboard-rooftop-grey)]',
-    dot: 'bg-[var(--dashboard-fresh-green)]',
+    surface: 'bg-[var(--accent-teal)]/60',
+    border: 'border-emerald-200/50',
+    title: 'text-emerald-950',
+    meta: 'text-emerald-600',
+    dot: 'bg-emerald-500',
   },
   cancelled: {
-    surface: 'bg-[color:rgba(253,236,237,0.9)]',
-    border: 'border-[#f2bec2]',
-    title: 'text-[var(--dashboard-deep-red)]',
-    meta: 'text-[#ab5a61]',
-    dot: 'bg-[var(--dashboard-bright-red)]',
+    surface: 'bg-red-50/60',
+    border: 'border-red-100',
+    title: 'text-red-950',
+    meta: 'text-red-600',
+    dot: 'bg-red-500',
   },
   pending: {
-    surface: 'bg-[color:rgba(248,235,223,0.9)]',
-    border: 'border-[#f0cfb8]',
-    title: 'text-[#9d5f32]',
-    meta: 'text-[#9d5f32]',
-    dot: 'bg-[var(--dashboard-matte-orange)]',
+    surface: 'bg-[var(--accent-yellow)]/60',
+    border: 'border-amber-200/50',
+    title: 'text-amber-950',
+    meta: 'text-amber-600',
+    dot: 'bg-amber-500',
   },
 };
 
@@ -97,6 +104,7 @@ function getAppointmentTone(appt: Appointment): AppointmentTone {
     return APPOINTMENT_TONES.paid;
   }
   if (status === 'pending' || status === 'late') return APPOINTMENT_TONES.pending;
+  if (status === 'confirmed') return APPOINTMENT_TONES.confirmed;
   return APPOINTMENT_TONES.default;
 }
 
@@ -137,6 +145,34 @@ interface AgendaPageProps {
   pendingDates?: Set<string>;
   togglePending?: (date: string) => void;
   onClearAbsenceMode?: () => void;
+}
+
+interface WeekTimeGridProps {
+  cur: Date;
+  appointments: Appointment[];
+  configSlots: { [key: number]: string[] };
+  isDayOpen: (d: string) => boolean;
+  isSlotBlocked: (d: string, t: string) => boolean;
+  toggleSlot: (d: string, t: string) => void;
+  onSelectAppt: (appt: Appointment) => void;
+  onOpenSlot: (date: string, time: string) => void;
+  absenceMode: boolean;
+  blockMode: boolean;
+  pendingDates: Set<string>;
+  togglePending: (d: string) => void;
+  onMoveAppt?: (id: string, date: string, time: string) => void;
+}
+
+interface MonthViewProps {
+  cur: Date;
+  appointments: Appointment[];
+  configSlots: { [key: number]: string[] };
+  isDayOpen: (d: string) => boolean;
+  isSlotBlocked: (d: string, t: string) => boolean;
+  absenceMode: boolean;
+  pendingDates: Set<string>;
+  togglePending: (d: string) => void;
+  onToggleView: (v: 'month' | 'week') => void;
 }
 
 /* ══════════════════════════════════════════════════
@@ -210,86 +246,67 @@ export default function AgendaPage({
 
   return (
     <motion.div 
-      className="flex-1 flex flex-col overflow-hidden bg-[var(--dashboard-sandstone)]"
+      className="flex-1 flex flex-col overflow-hidden bg-white"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      {/* ── HEADER ── */}
-      <header className="h-24 border-b border-[var(--dashboard-border)] bg-white/50 backdrop-blur-md px-8 sm:px-16 flex items-center justify-between shrink-0">
-        {/* Left: navigation */}
-        <div className="flex items-center gap-10 min-w-0">
+      {/* ── HEADER (Integrated into AppLayout, this acts as secondary if needed or can be minimal) ── */}
+      {/* Keeping a minimal header if used standalone, but usually AppLayout handles this */}
+      <header className="h-20 border-b border-neutral-100 bg-white px-8 sm:px-12 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
             <button
               onClick={() => safeOnPeriod(-1)}
-              className="w-10 h-10 flex items-center justify-center rounded-none border border-[var(--dashboard-border)] hover:border-[var(--dashboard-bench-green)] text-[var(--dashboard-asphalt)] transition-all duration-500 bg-white"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all"
             >
-              <ChevronLeft size={16} strokeWidth={1} />
+              <ChevronLeft size={18} strokeWidth={2.5} />
             </button>
             <button
               onClick={() => safeOnPeriod(1)}
-              className="w-10 h-10 flex items-center justify-center rounded-none border border-[var(--dashboard-border)] hover:border-[var(--dashboard-bench-green)] text-[var(--dashboard-asphalt)] transition-all duration-500 bg-white"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all"
             >
-              <ChevronRight size={16} strokeWidth={1} />
+              <ChevronRight size={18} strokeWidth={2.5} />
             </button>
           </div>
-
           <div>
-            <span className="text-[9px] font-sans uppercase tracking-[0.4em] text-[var(--dashboard-rooftop-grey)] block mb-1">PROGRAMMATION</span>
-            <h2 className="text-xl font-sans text-[var(--dashboard-asphalt)] capitalize truncate tracking-tight uppercase">
+            <h2 className="text-xl font-bold text-neutral-900 tracking-tight uppercase">
               {titleLabel}
             </h2>
           </div>
-
-          <button
-            onClick={safeOnToday}
-            className="h-10 px-6 text-[9px] font-sans uppercase tracking-[0.3em] text-[var(--dashboard-blue-grey)] border border-transparent hover:text-[var(--dashboard-asphalt)] hover:border-[var(--dashboard-border)] transition-all duration-500 hidden sm:block bg-white/50"
-          >
-            Aujourd'hui
-          </button>
         </div>
 
-        {/* Right: actions */}
-        <div className="flex items-center gap-6">
-          <div className="hidden sm:flex h-10 bg-[var(--dashboard-light)] p-1">
+        <div className="flex items-center gap-4">
+          <div className="flex bg-neutral-50 rounded-full p-1">
             {(['week', 'month'] as const).map(v => (
               <button
                 key={v}
                 onClick={() => onToggleView(v)}
-                className={`h-full px-6 flex items-center text-[9px] font-sans uppercase tracking-[0.2em] transition-all duration-500 ${
-                  view === v ? 'bg-white text-[var(--dashboard-asphalt)] shadow-sm' : 'text-[var(--dashboard-blue-grey)] hover:text-[var(--dashboard-rooftop-grey)]'
+                className={`px-6 py-2 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] transition-all ${
+                  view === v ? 'bg-white text-neutral-900 shadow-sm' : 'text-neutral-300 hover:text-neutral-900'
                 }`}
               >
                 {v === 'week' ? 'Semaine' : 'Mois'}
               </button>
             ))}
           </div>
-
           <button
             onClick={resolvedAbsenceMode ? handleSaveAbsences : () => { safeSetAbsenceMode(true); safeSetBlockMode(false); }}
-            className={`h-10 px-6 flex items-center gap-3 text-[9px] font-sans uppercase tracking-[0.2em] transition-all duration-500 ${
+            className={`h-10 px-6 flex items-center gap-3 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] transition-all ${
               resolvedAbsenceMode
-                ? 'bg-[var(--dashboard-asphalt)] text-white'
-                : 'bg-white border border-[var(--dashboard-border)] text-[var(--dashboard-asphalt)] hover:border-[var(--dashboard-bench-green)]'
+                ? 'bg-neutral-900 text-white shadow-xl scale-105'
+                : 'bg-white border border-neutral-100 text-neutral-400 hover:text-neutral-900 hover:border-neutral-900'
             }`}
           >
-            {resolvedAbsenceMode ? <CheckCircle2 size={12} strokeWidth={1} /> : <Ban size={12} strokeWidth={1} />}
-            <span className="hidden sm:inline">{resolvedAbsenceMode ? `Valider (${activePendingDates.size})` : 'Absences'}</span>
-          </button>
-
-          <button
-            onClick={safeOnOpenWeeklySettings}
-            className="h-10 w-10 sm:w-auto sm:px-6 flex items-center justify-center gap-3 text-[9px] font-sans uppercase tracking-[0.2em] bg-white border border-[var(--dashboard-border)] text-[var(--dashboard-asphalt)] hover:border-[var(--dashboard-bench-green)] transition-all duration-500"
-          >
-            <Settings size={12} strokeWidth={1} />
-            <span className="hidden sm:inline text-xs mt-0.5">Configuration</span>
+            {resolvedAbsenceMode ? <CheckCircle2 size={12} strokeWidth={3} /> : <Ban size={12} strokeWidth={2.5} />}
+            <span className="hidden sm:inline">{resolvedAbsenceMode ? `Valider (${activePendingDates.size})` : 'Gérer Absences'}</span>
           </button>
         </div>
       </header>
 
       {/* ── CONTENT ── */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar (desktop only) */}
+        {/* Sidebar */}
         <AgendaSidebar
           cur={cur}
           appointments={appointments}
@@ -297,7 +314,7 @@ export default function AgendaPage({
         />
 
         {/* Main calendar area */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-white/20">
+        <div className="flex-1 flex flex-col overflow-hidden">
           {view === 'week'
             ? <WeekTimeGrid
                 cur={cur}
@@ -344,57 +361,56 @@ function AgendaSidebar({
 }) {
   const todayStr = fmt(new Date());
   const todayAppts = useMemo(
-    () => appointments.filter(a => a.date === todayStr).sort((a, b) => (a.time || '').localeCompare(b.time || '')),
+    () => appointments.filter((a: Appointment) => a.date === todayStr).sort((a: Appointment, b: Appointment) => (a.time || '').localeCompare(b.time || '')),
     [appointments, todayStr],
   );
 
   return (
-    <aside className="hidden xl:flex flex-col w-80 border-r border-[var(--dashboard-border)] bg-white/30 backdrop-blur-sm shrink-0">
-      {/* Today summary */}
-      <div className="p-10 border-b border-[var(--dashboard-border)]">
-        <h3 className="text-[9px] font-sans text-[var(--dashboard-rooftop-grey)] uppercase tracking-[0.4em] mb-6 opacity-60">AUJOURD'HUI</h3>
-        <p className="text-5xl font-sans text-[var(--dashboard-asphalt)] ">{todayAppts.length}</p>
-        <p className="text-[10px] text-[var(--dashboard-blue-grey)] mt-4 font-sans uppercase tracking-[0.1em]">
-          Soins confirmés
+    <aside className="hidden xl:flex flex-col w-80 border-r border-neutral-100 bg-white shrink-0">
+      <div className="p-12 border-b border-neutral-100 bg-neutral-50/30">
+        <h3 className="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.4em] mb-6">Aujourd'hui</h3>
+        <p className="text-7xl font-extrabold text-neutral-900 tracking-tighter leading-none">{todayAppts.length}</p>
+        <p className="text-[11px] text-neutral-400 mt-6 font-bold uppercase tracking-[0.2em]">
+          Séances de ce jour
         </p>
       </div>
 
-      {/* Upcoming today */}
-      <div className="flex-1 overflow-y-auto p-10 scrollbar-hide">
-        <h3 className="text-[9px] font-sans text-[var(--dashboard-rooftop-grey)] uppercase tracking-[0.4em] mb-10 opacity-60">
-          PROCHAINES SÉANCES
-        </h3>
-        {todayAppts.length > 0 ? (
-          <div className="space-y-10">
-            {todayAppts.slice(0, 8).map(a => (
-              <div key={a.id} className="group cursor-pointer">
-                <div className="flex items-start gap-6">
-                  <span className="text-[11px] font-sans text-[var(--dashboard-rooftop-grey)] w-14 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity">{a.time}</span>
-                  <div className="min-w-0">
-                    <p className="text-sm font-sans text-[var(--dashboard-asphalt)] truncate transition-all duration-500">
-                      {a.clientNameSnapshot || a.title}
-                    </p>
-                    <p className="text-[9px] text-[var(--dashboard-blue-grey)] uppercase tracking-[0.2em] mt-2 group-hover:text-[var(--dashboard-bench-green)] transition-colors">
-                      {cleanServiceLabel(a.serviceName) || cleanServiceLabel(a.title) || 'RDV'}
-                    </p>
+      <div className="flex-1 overflow-y-auto p-12 scrollbar-hide space-y-12">
+        <div>
+          <h3 className="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.4em] mb-10">
+            PROCHAINS PATIENTS
+          </h3>
+          {todayAppts.length > 0 ? (
+            <div className="space-y-10">
+              {todayAppts.slice(0, 8).map(a => (
+                <div key={a.id} className="group cursor-pointer">
+                  <div className="flex items-start gap-6">
+                    <span className="text-[11px] font-bold text-neutral-300 w-14 shrink-0 group-hover:text-neutral-900 transition-colors leading-tight">{a.time}</span>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-neutral-900 truncate tracking-tight transition-all">
+                        {a.clientNameSnapshot || a.title}
+                      </p>
+                      <p className="text-[9px] text-neutral-400 font-bold uppercase tracking-[0.2em] mt-2 group-hover:text-neutral-900 transition-colors">
+                        {cleanServiceLabel(a.serviceName) || cleanServiceLabel(a.title) || 'SÉANCE'}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="py-20 text-center opacity-30">
-             <Clock size={32} className="text-[var(--dashboard-blue-grey)] mx-auto mb-6" strokeWidth={0.5} />
-             <p className="text-[9px] font-sans text-[var(--dashboard-blue-grey)] uppercase tracking-[0.3em]">Zone de repos</p>
-          </div>
-        )}
+              ))}
+            </div>
+          ) : (
+            <div className="py-24 text-center">
+               <Clock size={32} className="text-neutral-100 mx-auto mb-6" strokeWidth={1} />
+               <p className="text-[9px] font-bold text-neutral-200 uppercase tracking-[0.4em]">CALENDRIER VIDE</p>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Revenue */}
-      <div className="p-10 border-t border-[var(--dashboard-border)] bg-[color:rgba(230,235,240,0.2)]">
-        <h3 className="text-[9px] font-sans text-[var(--dashboard-rooftop-grey)] uppercase tracking-[0.4em] mb-3 opacity-60">REVENUS ESTIMÉS</h3>
-        <p className="text-2xl font-sans text-[var(--dashboard-asphalt)]">
-          {todayAppts.reduce((s, a) => s + (a.price || 150), 0)} <span className="text-[10px] font-sans text-[var(--dashboard-blue-grey)] ml-1 uppercase tracking-widest ">CHF</span>
+      <div className="p-12 border-t border-neutral-100 bg-neutral-900 text-white rounded-tr-[3rem]">
+        <h3 className="text-[10px] font-bold text-white/30 uppercase tracking-[0.4em] mb-4">REVENUS ESTIMÉS</h3>
+        <p className="text-4xl font-extrabold tracking-tighter">
+          {todayAppts.reduce((s, a) => s + (a.price || 150), 0)} <span className="text-[10px] font-bold text-white/40 ml-1 uppercase tracking-widest ">CHF</span>
         </p>
       </div>
     </aside>
@@ -404,22 +420,6 @@ function AgendaSidebar({
 /* ══════════════════════════════════════════════════
    WEEK TIME GRID
    ══════════════════════════════════════════════════ */
-interface WeekTimeGridProps {
-  cur: Date;
-  appointments: Appointment[];
-  configSlots: { [key: number]: string[] };
-  isDayOpen: (d: string) => boolean;
-  isSlotBlocked: (d: string, t: string) => boolean;
-  toggleSlot: (d: string, t: string) => void;
-  onSelectAppt: (a: Appointment) => void;
-  onOpenSlot: (d: string, t: string) => void;
-  absenceMode: boolean;
-  blockMode: boolean;
-  pendingDates: Set<string>;
-  togglePending: (d: string) => void;
-  onMoveAppt?: (id: string, date: string, time: string) => void;
-}
-
 function WeekTimeGrid({
   cur, appointments, configSlots, isDayOpen, isSlotBlocked,
   toggleSlot, onSelectAppt, onOpenSlot, absenceMode, blockMode,
@@ -432,7 +432,6 @@ function WeekTimeGrid({
 
   const gridHeight = HOURS.length * HOUR_H;
   const [activeId, setActiveId] = useState<string | null>(null);
-  const activeAppt = useMemo(() => activeId ? appointments.find(a => a.id === activeId) : null, [activeId, appointments]);
 
   const handleDragStart = (event: any) => {
     const nextId = event?.active?.id;
@@ -449,12 +448,13 @@ function WeekTimeGrid({
     }
   };
 
+  const activeAppt = useMemo(() => activeId ? appointments.find((a: Appointment) => a.id === activeId) : null, [activeId, appointments]);
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-white">
       {/* Day column headers */}
-      <div className="grid shrink-0 border-b border-[var(--dashboard-border)]" style={{ gridTemplateColumns: '100px repeat(7, 1fr)' }}>
-        {/* Empty corner */}
-        <div className="border-r border-[var(--dashboard-border)] bg-[color:rgba(246,242,234,0.5)]" />
+      <div className="grid shrink-0 border-b border-neutral-100" style={{ gridTemplateColumns: '100px repeat(7, 1fr)' }}>
+        <div className="border-r border-neutral-100 bg-neutral-50/30" />
         {days.map((d, i) => {
           const dStr = fmt(d);
           const isToday = isSameDay(new Date(), d);
@@ -464,21 +464,21 @@ function WeekTimeGrid({
             <div
               key={i}
               onClick={() => absenceMode && togglePending(dStr)}
-              className={`py-8 text-center border-r border-[var(--dashboard-border)] transition-all duration-700 ${
-                absenceMode ? 'cursor-pointer hover:bg-[var(--dashboard-sandstone)]' : ''
-              } ${isPending ? 'bg-[var(--dashboard-asphalt)] text-white' : !isOpen ? 'bg-[color:rgba(230,235,240,0.5)]' : ''}`}
+              className={`py-8 text-center border-r border-neutral-100 transition-all duration-500 ${
+                absenceMode ? 'cursor-pointer hover:bg-neutral-50' : ''
+              } ${isPending ? 'bg-neutral-900 text-white shadow-2xl z-10' : !isOpen ? 'bg-neutral-50/30' : 'bg-white'}`}
             >
-              <p className={`text-[9px] font-sans uppercase tracking-[0.4em] mb-3 ${isToday ? 'text-[var(--dashboard-bench-green)]' : 'text-[var(--dashboard-blue-grey)]'}`}>
+              <p className={`text-[9px] font-bold uppercase tracking-[0.4em] mb-4 ${isToday ? 'text-blue-500' : 'text-neutral-300'}`}>
                 {DAYS_LABELS[i]}
               </p>
-              <p className={`text-3xl font-sans leading-none ${
+              <p className={`text-3xl font-extrabold leading-none tracking-tighter ${
                 isToday && !isPending
-                  ? 'text-[var(--dashboard-asphalt)] relative'
-                  : isOpen ? (isPending ? 'text-white' : 'text-[var(--dashboard-asphalt)]') : 'text-[var(--dashboard-blue-grey)] opacity-40'
+                  ? 'text-neutral-900 relative'
+                  : isOpen ? (isPending ? 'text-white' : 'text-neutral-900') : 'text-neutral-200'
               }`}>
                 {d.getDate()}
                 {isToday && !isPending && (
-                   <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-1 h-1 bg-[var(--dashboard-bench-green)] rounded-none rotate-45" />
+                   <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-blue-500 rounded-full shadow-lg" />
                 )}
               </p>
             </div>
@@ -494,11 +494,11 @@ function WeekTimeGrid({
             style={{ gridTemplateColumns: '100px repeat(7, 1fr)', height: gridHeight }}
           >
             {/* Time labels column */}
-          <div className="border-r border-[var(--dashboard-border)] relative bg-[color:rgba(246,242,234,0.2)]">
+          <div className="border-r border-neutral-100 relative bg-neutral-50/10">
             {HOURS.map(h => (
               <div
                 key={h}
-                className="absolute right-6 text-[10px] font-sans text-[var(--dashboard-blue-grey)] -translate-y-1/2 uppercase tracking-widest "
+                className="absolute right-8 text-[10px] font-bold text-neutral-300 -translate-y-1/2 uppercase tracking-widest"
                 style={{ top: (h - START_HOUR) * HOUR_H }}
               >
                 {String(h).padStart(2, '0')}:00
@@ -512,23 +512,23 @@ function WeekTimeGrid({
             const isOpen = isDayOpen(dStr);
             const daySlots = [...(configSlots[isoDay(d)] || [])].sort();
             const dayAppts = appointments.filter(
-              (a) => a && typeof a.id === 'string' && a.id.trim().length > 0 && a.date === dStr && typeof a.time === 'string',
+              (a: Appointment) => a && typeof a.id === 'string' && a.id.trim().length > 0 && a.date === dStr && typeof a.time === 'string',
             );
 
             return (
-              <div key={dayIdx} className="border-r border-[var(--dashboard-border)] relative">
+              <div key={dayIdx} className="border-r border-neutral-100 relative">
                 {/* Hour grid lines */}
                 {HOURS.map(h => (
                   <div
                     key={h}
-                    className="absolute left-0 right-0 border-t border-[color:rgba(217,222,228,0.3)]"
+                    className="absolute left-0 right-0 border-t border-neutral-50"
                     style={{ top: (h - START_HOUR) * HOUR_H }}
                   />
                 ))}
                 
                 {/* Available slot markers */}
                 {isOpen && daySlots.map(t => {
-                  const hasAppt = dayAppts.some(a => a.time === t);
+                  const hasAppt = dayAppts.some((a: Appointment) => a.time === t);
                   const blocked = isSlotBlocked(dStr, t);
                   if (hasAppt || blocked) return null;
 
@@ -550,7 +550,7 @@ function WeekTimeGrid({
                 {/* Blocked slot markers */}
                 {isOpen && daySlots.map(t => {
                   if (!isSlotBlocked(dStr, t)) return null;
-                  const hasAppt = dayAppts.some(a => a.time === t);
+                  const hasAppt = dayAppts.some((a: Appointment) => a.time === t);
                   if (hasAppt) return null;
 
                   return (
@@ -559,16 +559,16 @@ function WeekTimeGrid({
                       onClick={() => {
                         if (!absenceMode) toggleSlot(dStr, t);
                       }}
-                      className="absolute left-3 right-3 z-[2] rounded-[14px] bg-[color:rgba(230,235,240,0.8)] border border-[var(--dashboard-border)] flex items-center justify-center cursor-pointer hover:bg-[var(--dashboard-light)] transition-all duration-500"
-                      style={{ top: getTop(t) + 6, height: getHeight(DEFAULT_DURATION) - 12 }}
+                      className="absolute left-4 right-4 z-[2] rounded-[1.5rem] bg-neutral-50/80 border border-neutral-100 flex items-center justify-center cursor-pointer hover:bg-neutral-100 transition-all duration-500 shadow-inner"
+                      style={{ top: getTop(t) + 8, height: getHeight(DEFAULT_DURATION) - 16 }}
                     >
-                      <Lock size={12} strokeWidth={1} className="text-[var(--dashboard-blue-grey)]" />
+                      <Lock size={14} strokeWidth={2} className="text-neutral-300" />
                     </div>
                   );
                 })}
 
                 {/* Appointment blocks */}
-                {isOpen && dayAppts.map(appt => {
+                {isOpen && dayAppts.map((appt: Appointment) => {
                   if (!appt.time) return null;
                   const top = getTop(appt.time);
                   const height = getHeight(parseDuration(appt.duration));
@@ -588,14 +588,14 @@ function WeekTimeGrid({
             );
           })}
           
-          <DragOverlay zIndex={100} dropAnimation={null}>
+          <DragOverlay zIndex={500} dropAnimation={null}>
             {activeAppt ? (
               <AppointmentBlock
                 appt={activeAppt}
                 top={0}
                 height={getHeight(parseDuration(activeAppt.duration))}
                 onSelect={() => {}}
-                className="shadow-2xl opacity-90 scale-[1.02]"
+                className="shadow-[0_40px_80px_rgba(0,0,0,0.15)] opacity-90 scale-[1.02]"
               />
             ) : null}
           </DragOverlay>
@@ -617,48 +617,40 @@ function AppointmentBlock({
   className?: string;
 }) {
   const tone = getAppointmentTone(appt);
-  const serviceLabel = cleanServiceLabel(appt.serviceName) || cleanServiceLabel(appt.title) || 'RDV';
+  const serviceLabel = cleanServiceLabel(appt.serviceName) || cleanServiceLabel(appt.title) || 'SÉANCE';
 
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onSelect(appt); }}
-      className={`absolute left-3 right-3 z-[3] rounded-[14px] p-4 cursor-pointer border transition-all duration-300 overflow-hidden group shadow-sm ${tone.surface} ${tone.border} ${className}`}
-      style={{ top: top + 6, height: Math.max(height - 12, 40) }}
+      className={`absolute left-4 right-4 z-[3] rounded-[2.5rem] p-6 cursor-pointer border transition-all duration-500 overflow-hidden group shadow-md hover:shadow-2xl hover:scale-[1.01] active:scale-95 ${tone.surface} ${tone.border} ${className}`}
+      style={{ top: top + 10, height: Math.max(height - 20, 60) }}
     >
-      <div className="flex items-start justify-between gap-4">
-        <p className={`text-[13px] font-semibold font-sans leading-tight truncate ${tone.title}`}>
+      <div className="flex items-start justify-between gap-6">
+        <p className={`text-base font-bold tracking-tight leading-tight transition-all ${tone.title}`}>
           {appt.clientNameSnapshot || appt.title}
         </p>
-        <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${tone.dot}`} />
+        <div className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 shadow-sm ${tone.dot}`} />
       </div>
-      {height >= 70 && (
-        <p className={`text-[9px] mt-2 truncate uppercase tracking-[0.16em] font-medium font-sans ${tone.meta}`}>
+      
+      {height >= 100 && (
+        <p className={`text-[10px] mt-3 truncate font-bold uppercase tracking-[0.25em] ${tone.meta}`}>
           {serviceLabel}
         </p>
       )}
-      {height >= 100 && (
-        <div className="mt-auto pt-3 flex items-center border-t border-[color:rgba(217,222,228,0.35)]">
-          <span className={`text-[9px] font-medium font-sans uppercase tracking-[0.15em] ${tone.meta}`}>{appt.time}</span>
+      
+      {height >= 140 && (
+        <div className="mt-auto pt-4 flex items-center border-t border-neutral-100/50">
+          <span className={`text-[10px] font-bold uppercase tracking-[0.3em] ${tone.meta}`}>{appt.time}</span>
         </div>
       )}
-      <div className={`absolute left-0 top-0 h-full w-[3px] ${tone.dot}`} />
+      
+      {/* Editorial side accent */}
+      <div className={`absolute left-0 top-0 h-full w-[6px] ${tone.dot} opacity-20`} />
     </div>
   );
 }
 
 /* ── Month view ── */
-type MonthViewProps = {
-  cur: Date;
-  appointments: Appointment[];
-  configSlots: { [key: number]: string[] };
-  isDayOpen: (d: string) => boolean;
-  isSlotBlocked: (d: string, t: string) => boolean;
-  absenceMode: boolean;
-  pendingDates: Set<string>;
-  togglePending: (d: string) => void;
-  onToggleView: (v: 'month' | 'week') => void;
-};
-
 function MonthView({
   cur,
   appointments,
@@ -678,15 +670,15 @@ function MonthView({
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-white">
       {/* Column headers */}
-      <div className="grid grid-cols-7 border-b border-[var(--dashboard-border)] shrink-0 bg-[color:rgba(246,242,234,0.5)]">
+      <div className="grid grid-cols-7 border-b border-neutral-100 shrink-0 bg-neutral-50/20">
         {DAYS_LABELS.map(d => (
-          <div key={d} className="py-6 text-center border-r border-[var(--dashboard-border)]">
-            <span className="text-[9px] font-sans text-[var(--dashboard-rooftop-grey)] uppercase tracking-[0.4em] opacity-60">{d}</span>
+          <div key={d} className="py-6 text-center border-r border-neutral-100">
+            <span className="text-[10px] font-bold text-neutral-300 uppercase tracking-[0.4em] opacity-80">{d}</span>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 flex-1 overflow-auto scrollbar-hide bg-[var(--dashboard-light)]">
+      <div className="grid grid-cols-7 flex-1 overflow-auto scrollbar-hide bg-neutral-50/10">
         {days.map((day, i) => {
           const dStr = fmt(day);
           const isOpen = isDayOpen(dStr);
@@ -694,13 +686,13 @@ function MonthView({
           const isToday = isSameDay(new Date(), day);
           const inMonth = isSameMonth(day, cur);
           const dayAppointments = appointments
-            .filter((e) => e && typeof e.id === 'string' && e.id.trim().length > 0 && e.date === dStr)
-            .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+            .filter((e: Appointment) => e && typeof e.id === 'string' && e.id.trim().length > 0 && e.date === dStr)
+            .sort((a: Appointment, b: Appointment) => (a.time || '').localeCompare(b.time || ''));
           const freeSlots = isOpen
             ? [...(configSlots[isoDay(day)] || [])]
                 .sort()
                 .filter((time) => (
-                  !dayAppointments.some((appt) => appt.time === time) &&
+                  !dayAppointments.some((appt: Appointment) => appt.time === time) &&
                   !isSlotBlocked(dStr, time)
                 ))
             : [];
@@ -712,62 +704,58 @@ function MonthView({
                 if (!inMonth) return;
                 absenceMode ? togglePending(dStr) : onToggleView('week');
               }}
-              className={`border-r border-b border-[var(--dashboard-border)] p-4 flex flex-col min-h-[165px] transition-all duration-300 relative group ${
-                !inMonth ? 'opacity-20 cursor-default bg-white' : 'cursor-pointer bg-white hover:bg-[var(--dashboard-sandstone)]'
-              } ${isToday && inMonth ? 'bg-[var(--dashboard-sandstone)]' : ''} ${
-                !isOpen && inMonth ? 'bg-[var(--dashboard-light)]' : ''
-              } ${isPend ? 'bg-[var(--dashboard-sandstone-strong)]' : ''}`}
+              className={`border-r border-b border-neutral-100 p-8 flex flex-col min-h-[200px] transition-all duration-500 relative group ${
+                !inMonth ? 'opacity-10 cursor-default bg-white' : 'cursor-pointer bg-white hover:bg-neutral-50'
+              } ${isToday && inMonth ? 'bg-blue-50/10 shadow-inner' : ''} ${
+                !isOpen && inMonth ? 'bg-neutral-50/40' : ''
+              } ${isPend ? 'bg-neutral-900 shadow-2xl z-10' : ''}`}
             >
               <div className="flex items-start justify-between">
-                <span className={`text-[10px] font-semibold uppercase tracking-[0.15em] ${
-                  inMonth ? 'text-[var(--dashboard-rooftop-grey)]' : 'text-[var(--dashboard-blue-grey)]'
+                <span className={`text-[10px] font-bold uppercase tracking-[0.4em] ${
+                  inMonth ? (isPend ? 'text-white/30' : 'text-neutral-400') : 'text-neutral-100'
                 }`}>
-                  {format(day, 'MMM', { locale: fr }).replace('.', '')}
+                  {format(day, 'MMM', { locale: fr }).toUpperCase()}
                 </span>
-                <span className={`text-[2rem] font-semibold leading-none ${
-                  isToday && !isPend ? 'text-[var(--dashboard-rooftop-grey)]' : inMonth ? 'text-[var(--dashboard-asphalt)]' : 'text-[var(--dashboard-blue-grey)]'
+                <span className={`text-4xl font-extrabold leading-none tracking-tighter ${
+                  isPend ? 'text-white' : isToday && inMonth ? 'text-blue-500' : inMonth ? 'text-neutral-900' : 'text-neutral-100'
                 }`}>
                   {day.getDate()}
                 </span>
               </div>
 
-              {inMonth && isOpen && (
-                <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--dashboard-fresh-green)]">
-                  {freeSlots.length > 1 ? `${freeSlots.length} créneaux libres` : `${freeSlots.length} créneau libre`}
-                </p>
-              )}
-
-              {inMonth && isOpen && (
-                <div className="mt-2 rounded-[14px] bg-[var(--dashboard-sandstone-strong)] px-4 py-2 text-[11px] font-semibold tracking-[0.18em] text-[var(--dashboard-fresh-green)]">
-                  {freeSlots.length > 0
-                    ? `${freeSlots.slice(0, 2).join(' · ')}${freeSlots.length > 2 ? ` +${freeSlots.length - 2}` : ''}`
-                    : 'COMPLET'}
-                </div>
-              )}
-
-              {inMonth && isOpen && dayAppointments.slice(0, 1).map((appt) => {
-                const tone = getAppointmentTone(appt);
-                const serviceLabel = cleanServiceLabel(appt.serviceName) || cleanServiceLabel(appt.title) || 'RDV';
-                return (
-                  <div
-                    key={appt.id}
-                    className={`mt-2 rounded-[14px] border px-3 py-2 text-[11px] font-medium truncate ${tone.surface} ${tone.border} ${tone.title}`}
-                  >
-                    <span className={`font-semibold ${tone.meta}`}>{appt.time || '--:--'}</span>
-                    {' · '}
-                    {serviceLabel}
+              {inMonth && isOpen && !isPend && (
+                <div className="mt-6 space-y-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-500">
+                    {freeSlots.length} LIBRES
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {freeSlots.slice(0, 2).map(t => (
+                      <span key={t} className="px-3 py-1 rounded-full bg-neutral-50 text-[10px] font-bold text-neutral-400 border border-neutral-100">
+                        {t}
+                      </span>
+                    ))}
+                    {freeSlots.length > 2 && (
+                      <span className="text-[10px] font-bold text-neutral-200 self-center">+{freeSlots.length - 2}</span>
+                    )}
                   </div>
-                );
-              })}
-
-              {inMonth && isOpen && (
-                <div className="mt-auto rounded-[14px] border border-dashed border-[var(--dashboard-border)] bg-white px-4 py-2 text-[11px] text-[var(--dashboard-rooftop-grey)]">
-                  {freeSlots.length > 0 ? 'Libre' : 'Complet'}
                 </div>
               )}
 
-              {inMonth && !isOpen && (
-                <div className="absolute inset-0 pointer-events-none bg-[repeating-linear-gradient(45deg,rgba(47,101,114,0.06),rgba(47,101,114,0.06)_12px,transparent_12px,transparent_24px)]" />
+                  {dayAppointments.length > 0 && (
+                    <div className="mt-auto pt-6 border-t border-neutral-50">
+                       {dayAppointments.slice(0, 1).map((appt: Appointment) => (
+                         <div key={appt.id} className="flex items-center gap-3">
+                            <div className={`w-2 h-2 rounded-full shadow-sm ${getAppointmentTone(appt).dot}`} />
+                            <p className="text-[11px] font-bold text-neutral-900 truncate tracking-tight uppercase">
+                              {appt.clientNameSnapshot || appt.title}
+                            </p>
+                         </div>
+                       ))}
+                    </div>
+                  )}
+
+              {!inMonth && (
+                <div className="absolute inset-0 pointer-events-none opacity-5 bg-[repeating-linear-gradient(45deg,#000,#000_10px,transparent_10px,transparent_20px)]" />
               )}
             </div>
           );
@@ -784,15 +772,14 @@ function DroppableSlot({ id, onClick, top }: { id: string; onClick: () => void; 
     <button
       ref={setNodeRef}
       onClick={onClick}
-      className={`absolute left-3 right-3 z-[2] rounded-[14px] border border-dashed transition-all duration-700 group flex items-center justify-center overflow-hidden ${
+      className={`absolute left-4 right-4 z-[2] rounded-[1.5rem] border-2 border-dashed transition-all duration-700 group flex items-center justify-center overflow-hidden ${
         isOver 
-          ? 'border-[var(--dashboard-asphalt)] bg-[var(--dashboard-sandstone)]' 
-          : 'border-transparent bg-transparent hover:bg-[color:rgba(246,242,234,0.5)] hover:border-[var(--dashboard-border)]'
+          ? 'border-neutral-900 bg-neutral-50 shadow-2xl' 
+          : 'border-transparent bg-transparent hover:bg-neutral-50/50 hover:border-neutral-100'
       }`}
-      style={{ top: top + 6, height: getHeight(DEFAULT_DURATION) - 12 }}
+      style={{ top: top + 8, height: getHeight(DEFAULT_DURATION) - 16 }}
     >
-      <Plus size={18} strokeWidth={1} className={`transition-all duration-700 ${isOver ? 'text-[var(--dashboard-asphalt)] scale-110' : 'text-transparent group-hover:text-[var(--dashboard-blue-grey)]'}`} />
-      <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-transparent group-hover:to-[color:rgba(246,242,234,0.2)] transition-colors" />
+      <Plus size={24} strokeWidth={2} className={`transition-all duration-700 ${isOver ? 'text-neutral-900 scale-110' : 'text-transparent group-hover:text-neutral-200'}`} />
     </button>
   );
 }
@@ -806,17 +793,17 @@ function DraggableAppointmentBlock({ appt, top, height, onSelect, isDragging, di
 
   const style = transform ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    zIndex: 50,
+    zIndex: 100,
   } : undefined;
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={`${isDragging ? 'opacity-30' : ''}`}>
-      <AppointmentBlock 
-        appt={appt} 
-        top={top} 
-        height={height} 
-        onSelect={onSelect} 
-        className={`${isDragging ? 'pointer-events-none' : ''} ${!disabled ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}`} 
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <AppointmentBlock
+        appt={appt}
+        top={top}
+        height={height}
+        onSelect={onSelect}
+        className={isDragging ? 'opacity-0' : ''}
       />
     </div>
   );

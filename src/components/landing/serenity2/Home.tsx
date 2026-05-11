@@ -7,6 +7,8 @@ import Hero from "./sections/Hero";
 import Sessions from "./sections/Sessions";
 import Sanctuary from "./sections/Sanctuary";
 import Journal from "./sections/Journal";
+import About from "./sections/About";
+import Advice from "./sections/Advice";
 import Atelier from "./sections/Atelier";
 import BookingFunnel from "@/components/BookingFunnel";
 import AIConciergeOverlay from "./AIConciergeOverlay";
@@ -33,18 +35,31 @@ function BookingQueryHandler() {
 
 export default function Home() {
   const [aiOpen, setAiOpen] = useState(false);
+  const [showAiHint, setShowAiHint] = useState(false);
+
+  useEffect(() => {
+    const showTimer = window.setTimeout(() => setShowAiHint(true), 3000);
+    const hideTimer = window.setTimeout(() => setShowAiHint(false), 11000);
+    return () => {
+      window.clearTimeout(showTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, []);
+
   return (
     <Suspense fallback={<div className="min-h-screen bg-background" />}>
       <BookingQueryHandler />
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="landing-v2 min-h-screen bg-background text-foreground">
       <Navbar />
       <main>
         <Hero />
         <div className="mx-auto max-w-[1480px] px-6 md:px-10 lg:px-14">
           <div className="hairline" />
         </div>
+        <About />
         <Sessions />
         <Sanctuary />
+        <Advice />
         <Journal />
         <div className="mx-auto max-w-[1480px] px-6 md:px-10 lg:px-14">
           <div className="hairline" />
@@ -56,8 +71,19 @@ export default function Home() {
       <AIConciergeOverlay open={aiOpen} onClose={() => setAiOpen(false)} />
 
       {/* Floating AI Concierge Button */}
+      {showAiHint && !aiOpen && (
+        <div className="fixed bottom-28 right-8 z-50 max-w-[280px] rounded-2xl border border-[var(--teal-deep)]/20 bg-white/95 p-4 text-[13px] leading-relaxed text-[var(--off-black)] shadow-xl backdrop-blur-sm">
+          <p className="font-semibold">Besoin d&apos;être guidé ?</p>
+          <p className="mt-1 text-[var(--teal-deep)]/80">
+            Cliquez sur le chatbot, décrivez votre état en quelques mots et je vous recommande le soin idéal.
+          </p>
+        </div>
+      )}
       <button
-        onClick={() => setAiOpen(true)}
+        onClick={() => {
+          setShowAiHint(false);
+          setAiOpen(true);
+        }}
         className="fixed bottom-8 right-8 z-50 flex items-center gap-3 rounded-full bg-[var(--periwinkle)] px-5 py-4 text-[var(--off-black)] shadow-2xl transition-all duration-500 hover:scale-105 hover:bg-[var(--teal-deep)] hover:text-[var(--neon)] group"
       >
         <div className="flex -space-x-1">

@@ -102,9 +102,9 @@ export default function InvoicesPage() {
             <div className="space-y-4 relative z-10">
               <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-[#059669] text-white flex items-center justify-center shadow-lg"><FileText size={20} /></div>
-                  <p className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-[#059669]">Gestion Administrative</p>
+                  <p className="text-[0.6rem] font-bold uppercase tracking-[0.4em] text-[#059669]">Gestion Administrative</p>
               </div>
-              <h1 className="title-luxe text-2xl md:text-3xl leading-none">Invoices <br/><span className="italic font-sans opacity-40">Archive.</span></h1>
+              <h1 className="title-luxe text-2xl md:text-3xl leading-none">Invoices <br/><span className="font-sans opacity-40">Archive.</span></h1>
             </div>
 
             <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4 relative z-10">
@@ -127,12 +127,12 @@ export default function InvoicesPage() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-50/50">
-                    <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Identifiant</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Destinataire</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Émission</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Montant</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400">Statut</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-black uppercase tracking-widest text-gray-400 text-right">Actions</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Identifiant</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Destinataire</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Émission</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Montant</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Statut</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -148,10 +148,10 @@ export default function InvoicesPage() {
                       <td className="px-6 py-8 font-sans font-bold text-lg">{inv.client}</td>
                       <td className="px-6 py-8 text-sm text-gray-400 font-medium">{inv.date}</td>
                       <td className="px-6 py-8">
-                        <span className="text-2xl font-light text-[#222F3E]">{inv.amount} <small className="text-[10px] opacity-30 font-black">CHF</small></span>
+                        <span className="text-2xl font-light text-[#222F3E]">{inv.amount} <small className="text-[10px] opacity-30 font-bold">CHF</small></span>
                       </td>
                       <td className="px-6 py-8">
-                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[0.6rem] font-black uppercase tracking-widest ${inv.status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-600'}`}>
+                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[0.6rem] font-bold uppercase tracking-widest ${inv.status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-600'}`}>
                           {inv.status === 'paid' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
                           {inv.status === 'paid' ? 'Réglé' : 'En Attente'}
                         </div>

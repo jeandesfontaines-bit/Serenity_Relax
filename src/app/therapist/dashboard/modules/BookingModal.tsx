@@ -1,10 +1,12 @@
 'use client';
 import React, { useState } from 'react';
-import { X, Search, UserPlus, CheckCircle2, ChevronRight } from 'lucide-react';
+import { 
+  X, Search, UserPlus, CheckCircle2, ChevronRight, Calendar, 
+  Clock, Sparkles, ArrowRight, User, ShieldCheck
+} from 'lucide-react';
 import { Client } from '../types';
 import { SERVICES } from '@/lib/types';
 import { motion, AnimatePresence } from 'framer-motion';
-import * as dashboardTheme from './dashboardTheme';
 
 interface BookingModalProps {
   date?: string;
@@ -46,134 +48,131 @@ export default function BookingModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-6">
+    <div className="fixed inset-0 z-[400] flex items-center justify-center p-6">
       <motion.div
-        className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-neutral-900/60 backdrop-blur-2xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         onClick={onClose}
       />
 
       <motion.div
-        className={`${dashboardTheme.dashboardPanel} relative w-full sm:max-w-lg flex flex-col max-h-[90vh] overflow-hidden`}
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full max-w-3xl bg-[#FDFDFB] rounded-[4rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border border-white"
+        initial={{ opacity: 0, scale: 0.9, y: 100 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 100 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Mobile handle */}
-        <div className="sm:hidden flex justify-center pt-3 pb-2 shrink-0">
-          <div className="w-12 h-1 bg-slate-200" />
-        </div>
-
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-7 border-b border-[#d9dee4] shrink-0">
-          <div>
-            <p className={`${dashboardTheme.dashboardEyebrow} mb-1`}>RÉSERVATION MANUELLE</p>
-            <h2 className={`${dashboardTheme.dashboardTitle} text-xl`}>Nouvelle séance</h2>
-            {(date || time) && (
-              <p className={`${dashboardTheme.dashboardEyebrow} text-slate-400 mt-2`}>
-                {date && date} {time && `· ${time}`}
-              </p>
-            )}
+        <div className="px-16 pt-16 pb-12 border-b border-neutral-100 flex items-center justify-between">
+          <div className="flex items-center gap-10">
+             <div className="w-16 h-16 bg-neutral-900 rounded-[2rem] flex items-center justify-center text-white shadow-2xl rotate-3">
+                <Sparkles size={28} strokeWidth={2.5} />
+             </div>
+             <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none">RÉSERVATION EXECUTIVE</p>
+                <h2 className="text-5xl font-bold text-neutral-900 tracking-tighter leading-none">Nouvelle Séance</h2>
+             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center hover:bg-[#f7f4ec] text-slate-400 hover:text-slate-900 transition-colors"
+            className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all"
           >
-            <X size={18} strokeWidth={1} />
+            <X size={20} strokeWidth={3} />
           </button>
         </div>
 
-        {/* Steps indicator */}
-        <div className="flex shrink-0 px-8 py-5 gap-1 border-b border-[#e6ebf0]">
-          {['Client', 'Prestation'].map((label, i) => {
-            const stepId = i === 0 ? 'client' : 'service';
-            const isActive = step === stepId;
-            const isDone = (i === 0 && step === 'service');
-            return (
-              <div key={label} className="flex items-center gap-2">
-                <div className={`flex items-center gap-2 ${dashboardTheme.dashboardEyebrow} ${isActive ? 'text-slate-900' : isDone ? 'text-slate-900' : 'text-slate-300'}`}>
-                  <div className={`w-5 h-5 flex items-center justify-center rounded-full ${isActive ? 'bg-[#2e5b97] text-white' : isDone ? 'bg-[#e8f2ee] text-[#2e5b97]' : 'bg-slate-50 text-slate-300'}`}>
-                    {isDone ? '✓' : i + 1}
-                  </div>
-                  {label}
-                </div>
-                {i === 0 && <ChevronRight size={12} strokeWidth={1} className="text-slate-200 mx-1" />}
+        {/* Status Line */}
+        {(date || time) && (
+           <div className="bg-neutral-900 px-16 py-4 flex items-center gap-8 overflow-x-auto scrollbar-hide">
+              <div className="flex items-center gap-3 text-white/40">
+                 <Calendar size={14} strokeWidth={2.5} />
+                 <span className="text-[10px] font-bold uppercase tracking-[0.3em]">{date}</span>
               </div>
-            );
-          })}
-        </div>
+              <div className="w-1 h-1 rounded-full bg-white/10" />
+              <div className="flex items-center gap-3 text-white/40">
+                 <Clock size={14} strokeWidth={2.5} />
+                 <span className="text-[10px] font-bold uppercase tracking-[0.3em]">{time}</span>
+              </div>
+           </div>
+        )}
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto scrollbar-hide">
           <AnimatePresence mode="wait">
             {step === 'client' && (
               <motion.div
                 key="step-client"
-                initial={{ opacity: 0, x: 10 }}
+                initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.3 }}
-                className="px-8 py-6 space-y-4"
+                exit={{ opacity: 0, x: -20 }}
+                className="p-16 space-y-12"
               >
                 {/* Search */}
-                <div className="relative">
-                  <Search size={13} strokeWidth={1.5} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <div className="relative group">
+                  <Search size={22} strokeWidth={3} className="absolute left-8 top-1/2 -translate-y-1/2 text-neutral-300 group-focus-within:text-neutral-900 transition-colors pointer-events-none" />
                   <input
                     type="text"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     autoFocus
-                    placeholder="Rechercher un client…"
-                    className="w-full h-12 bg-white/70 backdrop-blur-sm border border-[#d9dee4] rounded-xl pl-10 pr-4 font-sans text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 transition-all"
+                    placeholder="Rechercher un patient..."
+                    className="w-full h-24 bg-neutral-50 border-2 border-transparent rounded-[2.5rem] pl-20 pr-10 text-2xl font-bold tracking-tighter placeholder:text-neutral-200 focus:bg-white focus:border-neutral-900 transition-all outline-none shadow-inner"
                   />
                 </div>
 
-                {/* Results */}
-                <div className="space-y-0 max-h-56 overflow-y-auto">
-                  {filtered.map(c => (
+                {/* Results Grid */}
+                <div className="grid grid-cols-1 gap-4">
+                  {filtered.slice(0, 5).map(c => (
                     <button
                       key={c.id}
                       onClick={() => handleSelectClient(c)}
-                      className="w-full flex items-center justify-between px-4 py-4 border-b border-[#e6ebf0] hover:bg-[#f7f4ec] text-left transition-colors group"
+                      className="group w-full flex items-center justify-between p-10 rounded-[3rem] bg-white border border-neutral-50 hover:bg-neutral-900 hover:text-white transition-all shadow-sm hover:shadow-2xl hover:-translate-y-1"
                     >
-                      <div>
-                        <p className=" text-sm text-slate-900 tracking-tight group-hover:italic transition-all">
-                          {c.firstName} {c.lastName}
-                        </p>
-                        {(c.email || c.phone) && (
-                          <p className="font-sans text-[11px] text-slate-500 mt-0.5">{c.email || c.phone}</p>
-                        )}
+                      <div className="flex items-center gap-8 text-left">
+                        <div className="w-14 h-14 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-300 group-hover:bg-white/10 group-hover:text-white transition-all">
+                           <User size={20} strokeWidth={2.5} />
+                        </div>
+                         <div>
+                          <p className="text-2xl font-bold tracking-tighter leading-none transition-all">
+                            {c.firstName} {c.lastName}
+                          </p>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.3em] mt-3 text-neutral-300 group-hover:text-white/40">
+                             {c.email || c.phone || 'Aucun contact enregistré'}
+                          </p>
+                        </div>
                       </div>
-                      <ChevronRight size={13} strokeWidth={1} className="text-slate-200 group-hover:text-slate-900 shrink-0 transition-colors" />
+                      <ArrowRight size={24} strokeWidth={3} className="text-neutral-100 group-hover:text-white group-hover:translate-x-2 transition-all" />
                     </button>
                   ))}
 
-                  {/* No results → create new */}
+                  {/* Create new */}
                   {filtered.length === 0 && search.trim() && (
                     <button
                       onClick={handleSelectNew}
-                      className="w-full flex items-center gap-4 p-4 border border-dashed border-[#d9dee4] rounded-xl bg-white/70 hover:border-[#2e5b97] transition-all group mt-2"
+                      className="w-full flex items-center justify-between p-10 border-2 border-dashed border-neutral-100 rounded-[3.5rem] bg-neutral-50/50 hover:border-neutral-900 hover:bg-white transition-all group"
                     >
-                      <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-[#d9dee4] group-hover:border-[#2e5b97] shrink-0 transition-all">
-                        <UserPlus size={13} strokeWidth={1.5} className="text-slate-400 group-hover:text-[#2e5b97]" />
+                      <div className="flex items-center gap-8 text-left">
+                        <div className="w-20 h-20 rounded-[2rem] bg-neutral-900 shadow-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                          <UserPlus size={28} strokeWidth={2.5} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none">NOUVEAU PATIENT</p>
+                          <p className="text-4xl font-bold tracking-tighter text-neutral-900 leading-none">{search}</p>
+                        </div>
                       </div>
-                      <div className="text-left min-w-0">
-                        <p className={`${dashboardTheme.dashboardEyebrow} text-slate-400 group-hover:text-[#2e5b97]`}>Créer et réserver</p>
-                        <p className=" text-sm text-slate-900 truncate tracking-tight mt-0.5">{search}</p>
-                      </div>
+                      <ArrowRight size={28} strokeWidth={3} className="text-neutral-900 group-hover:translate-x-3 transition-transform" />
                     </button>
                   )}
                 </div>
 
-                {/* New client shortcut */}
                 {filtered.length > 0 && (
                   <button
                     onClick={handleSelectNew}
-                    className="w-full flex items-center gap-3 p-4 border border-dashed border-[#d9dee4] rounded-xl text-slate-400 hover:border-[#2e5b97] hover:text-[#2e5b97] transition-all mt-4"
+                    className="w-full flex items-center justify-center gap-4 py-8 border-t border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all font-bold uppercase tracking-[0.4em] text-[10px]"
                   >
-                    <UserPlus size={13} strokeWidth={1.5} />
-                    <span className={`${dashboardTheme.dashboardEyebrow}`}>Nouveau client</span>
+                    <UserPlus size={16} strokeWidth={3} /> CRÉER UN NOUVEAU PROFIL
                   </button>
                 )}
               </motion.div>
@@ -182,32 +181,36 @@ export default function BookingModal({
             {step === 'service' && (
               <motion.div
                 key="step-service"
-                initial={{ opacity: 0, x: 10 }}
+                initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.3 }}
-                className="px-8 py-6 space-y-6"
+                exit={{ opacity: 0, x: -20 }}
+                className="p-16 space-y-16"
               >
-                {/* Selected client recap */}
-                <div className="flex items-center justify-between p-4 bg-white/70 backdrop-blur-sm border border-[#d9dee4] rounded-xl">
-                  <div className="min-w-0">
-                    <p className=" text-sm text-slate-900 truncate tracking-tight">
-                      {isCreatingNew ? search : `${selectedClient?.firstName} ${selectedClient?.lastName}`}
-                    </p>
-                    {isCreatingNew && <p className={`${dashboardTheme.dashboardEyebrow} text-slate-400 mt-1`}>Nouveau client</p>}
+                {/* Header Recap */}
+                <div className="flex items-center justify-between p-10 bg-neutral-50 rounded-[3rem] border border-neutral-100 shadow-inner">
+                  <div className="flex items-center gap-8">
+                     <div className="w-16 h-16 rounded-[1.5rem] bg-neutral-900 flex items-center justify-center text-white shadow-xl">
+                        <User size={24} strokeWidth={2.5} />
+                     </div>
+                     <div className="min-w-0">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-300 mb-2 leading-none">SÉLECTIONNÉ</p>
+                        <p className="text-3xl font-bold tracking-tighter text-neutral-900 truncate leading-none">
+                          {isCreatingNew ? search : `${selectedClient?.firstName} ${selectedClient?.lastName}`}
+                        </p>
+                     </div>
                   </div>
                   <button
                     onClick={() => setStep('client')}
-                    className={`${dashboardTheme.dashboardEyebrow} text-slate-400 hover:text-[#2e5b97] transition-colors shrink-0`}
+                    className="h-12 px-8 rounded-full border-2 border-neutral-200 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 hover:text-neutral-900 hover:border-neutral-900 transition-all"
                   >
-                    Changer
+                    MODIFIER
                   </button>
                 </div>
 
-                {/* Service grid */}
-                <div>
-                  <p className={`${dashboardTheme.dashboardEyebrow} mb-4`}>Prestation</p>
-                  <div className="grid grid-cols-2 gap-2">
+                {/* Service Selection */}
+                <div className="space-y-6">
+                   <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-neutral-300 px-6">SÉLECTION DU SOIN</p>
+                   <div className="grid grid-cols-2 gap-6">
                     {SERVICES.map(s => {
                       const displayName = s.name.split(' -')[0];
                       const isSelected = selectedService === s.name;
@@ -215,34 +218,40 @@ export default function BookingModal({
                         <button
                           key={s.id}
                           onClick={() => setSelectedService(s.name)}
-                          className={`px-4 py-4 border rounded-xl text-left transition-all duration-300 ${
+                          className={`p-10 rounded-[3.5rem] border-2 text-left transition-all duration-700 relative overflow-hidden group ${
                             isSelected
-                              ? 'border-[#2e5b97] bg-[#2e5b97] text-white shadow-md'
-                              : 'border-[#d9dee4] bg-white/70 text-slate-700 hover:border-[#9ec4b2]'
+                              ? 'border-neutral-900 bg-neutral-900 text-white shadow-[0_40px_80px_-20px_rgba(0,0,0,0.3)] scale-105 z-10'
+                              : 'border-neutral-50 bg-white text-neutral-900 hover:border-neutral-900 shadow-sm'
                           }`}
                         >
-                          <p className={` text-sm tracking-tight truncate leading-tight ${isSelected ? 'text-white italic' : 'text-slate-900'}`}>
+                          {isSelected && (
+                             <motion.div layoutId="selection-glow" className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                          )}
+                          <p className={`text-2xl font-bold tracking-tighter leading-tight transition-all group-hover:${isSelected ? 'text-white' : 'text-neutral-900'}`}>
                             {displayName}
                           </p>
-                          {s.duration && (
-                            <p className={`${dashboardTheme.dashboardEyebrow} mt-2 ${isSelected ? 'text-indigo-100' : 'text-slate-500'}`}>
-                              {s.duration}
-                            </p>
-                          )}
+                          <div className="flex items-center justify-between mt-6">
+                             <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${isSelected ? 'text-white/40' : 'text-neutral-300'}`}>
+                               {s.duration || '60 MIN'}
+                             </p>
+                             {isSelected && <CheckCircle2 size={18} strokeWidth={3} className="text-white" />}
+                          </div>
                         </button>
                       );
                     })}
-                  </div>
+                   </div>
                 </div>
 
-                {/* Confirm */}
-                <button
-                  onClick={handleConfirm}
-                  className={`${dashboardTheme.dashboardPrimaryButton} w-full h-12 flex items-center justify-center gap-3`}
-                >
-                  <CheckCircle2 size={14} strokeWidth={1.5} />
-                  {isCreatingNew ? 'Créer et confirmer' : 'Confirmer la réservation'}
-                </button>
+                {/* Confirm Action */}
+                <div className="pt-8">
+                   <button
+                    onClick={handleConfirm}
+                    className="w-full h-24 bg-neutral-900 rounded-[3rem] text-white text-[13px] font-bold uppercase tracking-[0.5em] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)] hover:-translate-y-2 active:scale-95 transition-all flex items-center justify-center gap-6 group"
+                   >
+                     <ShieldCheck size={24} strokeWidth={2.5} className="group-hover:scale-125 transition-transform" />
+                     {isCreatingNew ? 'FINALISER ET CRÉER PROFIL' : 'CONFIRMER LA RÉSERVATION'}
+                   </button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

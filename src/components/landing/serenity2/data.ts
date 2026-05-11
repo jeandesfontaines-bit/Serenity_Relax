@@ -5,7 +5,7 @@ export const SERVICES = [
     duration: "60 min",
     intensity: "Moyenne",
     price: 120,
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/service-bambous-ZecKVpk8uZbsUv6HUzEgTL.webp",
+    image: "/images/services/bambous.jpg",
     desc: "Bâtons de bambou tièdes pour sculpter les fascias et libérer les tensions profondes.",
     tag: "Signature",
   },
@@ -15,7 +15,7 @@ export const SERVICES = [
     duration: "60 min",
     intensity: "Douce",
     price: 110,
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/service-aroma-aK3ZjJV9NJfrLGYcFWz8AL.webp",
+    image: "/images/services/drainage.jpg",
     desc: "Pompages lents pour drainer, alléger et relancer la circulation des fluides.",
     tag: "Restorative",
   },
@@ -25,7 +25,7 @@ export const SERVICES = [
     duration: "60 min",
     intensity: "Douce",
     price: 110,
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/service-aroma-aK3ZjJV9NJfrLGYcFWz8AL.webp",
+    image: "/images/services/aroma.jpg",
     desc: "Synergie d'huiles essentielles personnalisées pour accorder corps et système nerveux.",
     tag: "Sensorielle",
   },
@@ -35,7 +35,7 @@ export const SERVICES = [
     duration: "30 min",
     intensity: "Moyenne",
     price: 65,
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/service-deep-nQ45MsySPkXfqpfBAMSGJ2.webp",
+    image: "/images/services/reflexology.jpg",
     desc: "Travail ciblé sur les points plantaires pour rééquilibrer l'énergie des organes.",
     tag: "Ciblée",
   },
@@ -45,7 +45,7 @@ export const SERVICES = [
     duration: "60 min",
     intensity: "Intense",
     price: 130,
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/service-deep-nQ45MsySPkXfqpfBAMSGJ2.webp",
+    image: "/images/services/deep_tissue.jpg",
     desc: "Pression soutenue pour dénouer les couches profondes et accélérer la récupération.",
     tag: "Sportive",
   },
@@ -55,7 +55,7 @@ export const SERVICES = [
     duration: "60 min",
     intensity: "Moyenne",
     price: 120,
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/service-bambous-ZecKVpk8uZbsUv6HUzEgTL.webp",
+    image: "/images/services/back_full.jpg",
     desc: "Soin sur-mesure pour soulager les tensions chroniques et restaurer la mobilité.",
     tag: "Thérapeutique",
   },
@@ -65,7 +65,7 @@ export const SERVICES = [
     duration: "60 min",
     intensity: "Douce",
     price: 110,
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/service-aroma-aK3ZjJV9NJfrLGYcFWz8AL.webp",
+    image: "/images/services/thai_massage.jpg",
     desc: "Mouvements lents et enveloppants pour conduire le système nerveux au lâcher-prise.",
     tag: "Restorative",
   },
@@ -75,7 +75,7 @@ export const SERVICES = [
     duration: "60 min",
     intensity: "Moyenne",
     price: 125,
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/service-deep-nQ45MsySPkXfqpfBAMSGJ2.webp",
+    image: "/images/services/back_macro.jpg",
     desc: "Pressions et étirements fluides pour relancer l'énergie vitale, version huiles chaudes.",
     tag: "Énergétique",
   },
@@ -113,25 +113,25 @@ export const AFTERCARE = [
     id: "01",
     time: "Immédiat",
     title: "Réhydratation Consciente",
-    desc: "Le massage libère les toxines logées dans les fascias. L'eau devient le vecteur de votre récupération cellulaire.",
-    advice: "500ml d'eau tempérée, lentement, juste après la séance.",
-    quote: "L'eau est le langage que votre corps comprend.",
+    desc: "Après la séance, le corps a besoin de retrouver un rythme calme et de soutenir sa récupération en douceur.",
+    advice: "Buvez un grand verre d'eau tempérée dans les minutes qui suivent, lentement et sans vous presser.",
+    quote: "Hydrater le corps, c'est prolonger le soin.",
   },
   {
     id: "02",
     time: "2 heures après",
     title: "Silence Sensoriel",
-    desc: "Prolongez l'état parasympathique. Les écrans et l'agitation rappelleraient votre système nerveux à ses anciennes habitudes.",
-    advice: "Préférez la lecture sur papier, une marche lente, le silence.",
-    quote: "Le calme extérieur nourrit le calme intérieur.",
+    desc: "Essayez de garder le système nerveux dans un état apaisé, sans le replonger trop vite dans la stimulation.",
+    advice: "Privilégiez une marche lente, la lecture, le calme ou un moment sans écrans ni agitation.",
+    quote: "Le calme extérieur soutient le calme intérieur.",
   },
   {
     id: "03",
     time: "Soirée",
     title: "Immersion Thermique",
-    desc: "Une chaleur modérée sceller les bénéfices musculaires acquis durant la séance, prévenant l'inflammation tardive.",
-    advice: "Bain tiède aux sels d'Epsom, 20 minutes maximum.",
-    quote: "La chaleur cristallise la détente dans vos tissus.",
+    desc: "En fin de journée, une chaleur douce peut aider les tissus à rester souples et relâchés plus longtemps.",
+    advice: "Prenez un bain tiède ou une douche chaude, sans excès, pendant une vingtaine de minutes maximum.",
+    quote: "La chaleur douce aide le corps à garder la détente.",
   },
 ];
 
@@ -176,7 +176,7 @@ export const TESTIMONIALS = [
   },
 ];
 
-export const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/hero-portrait-53ypfwV43pcKDB53EcJ9RL.webp";
-export const SANCTUARY_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/sanctuary-ambiance-GTsqSmtzJ6CxxtH6SAzaxA.webp";
+export const HERO_IMAGE = "/images/services/back_full.jpg";
+export const SANCTUARY_IMAGE = "https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=2070&auto=format&fit=crop";
 export const TEXTURE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/texture-organic-6Pxxge4aggmXiUucdSKkHr.webp";
-export const JOURNAL_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663638884657/QAHt9mXKn4dynVPnBM6dkg/journal-tea-7oUWdFYDD7eJwa6QsKFLkS.webp";
+export const JOURNAL_IMAGE = "/images/services/aroma.jpg";

@@ -2,11 +2,12 @@ import React, { useState, useMemo, useCallback } from 'react';
 import {
   Download, Smartphone, CreditCard, Banknote, X,
   Trash2, Check, Printer, ChevronRight, Wallet, BadgeCheck,
-  CircleDollarSign, TrendingUp,
+  CircleDollarSign, TrendingUp, Search, Calendar,
+  ArrowRight, BarChart3, PieChart, Zap, ShieldCheck
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, subMonths, isWithinInterval } from 'date-fns';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Appointment, Invoice } from '../types';
-import { dashboardPanel, dashboardPanelSoft, dashboardPrimaryButton, dashboardSecondaryButton, dashboardTableCell, dashboardTableHeader, dashboardTableSectionHeader, dashboardTitle, dashboardTitleLg } from './dashboardTheme';
 
 interface ComptaPageProps {
   appointments: Appointment[];
@@ -26,20 +27,20 @@ type TransactionStatus = 'completed' | 'pending' | 'cancelled' | 'late';
 
 const STATUS_META: Record<TransactionStatus, { label: string; className: string }> = {
   completed: {
-    label: 'Réglé',
-    className: 'border border-[#bbf7d0] bg-[#f0fdf4] text-[#15803d]',
+    label: 'RÉGLÉ',
+    className: 'bg-[var(--accent-teal)] text-emerald-600 border border-emerald-100/50',
   },
   pending: {
-    label: 'En attente',
-    className: 'border border-[#fdba74] bg-[#fff7ed] text-[#c2410c]',
+    label: 'EN ATTENTE',
+    className: 'bg-[var(--accent-blue)] text-blue-600 border border-blue-100/50',
   },
   cancelled: {
-    label: 'Annulé',
-    className: 'border border-[#fecaca] bg-[#fff1f2] text-[#be123c]',
+    label: 'ANNULÉ',
+    className: 'bg-red-50 text-red-400 border border-red-100',
   },
   late: {
-    label: 'En retard',
-    className: 'border border-[#fecaca] bg-[#fff1f2] text-[#be123c]',
+    label: 'RETARD',
+    className: 'bg-[var(--accent-orange)] text-orange-600 border border-orange-100/50',
   },
 };
 
@@ -60,13 +61,8 @@ function getClientDisplayName(appt: Appointment): string {
   return appt.clientNameSnapshot || appt.title || 'Client inconnu';
 }
 
-function getPaymentMethodLabel(method?: string): string {
-  if (!method) return 'Non précisé';
-  return method;
-}
-
 function formatCurrency(value: number): string {
-  return `${value.toLocaleString('fr-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CHF`;
+  return `${value.toLocaleString('fr-CH', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} CHF`;
 }
 
 export default function ComptaPage({
@@ -84,7 +80,6 @@ export default function ComptaPage({
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [payingId, setPayingId] = useState<string | null>(null);
-  const search = searchQuery;
 
   React.useEffect(() => {
     onSelectedCountChange(selectedIds.size);
@@ -117,7 +112,7 @@ export default function ComptaPage({
           .join(' ')
           .toLowerCase();
 
-        const matchesSearch = haystack.includes(search.trim().toLowerCase());
+        const matchesSearch = haystack.includes(searchQuery.trim().toLowerCase());
         const inRange = appt.date
           ? appt.date >= dateRange.start && appt.date <= dateRange.end
           : false;
@@ -162,7 +157,7 @@ export default function ComptaPage({
 
         return sortDir === 'asc' ? result : -result;
       }),
-    [appointments, dateRange.end, dateRange.start, invoiceByAppointmentId, search, sortDir, sortField, todayStr],
+    [appointments, dateRange.end, dateRange.start, invoiceByAppointmentId, searchQuery, sortDir, sortField, todayStr],
   );
 
   const totalRevenue = useMemo(
@@ -237,7 +232,7 @@ export default function ComptaPage({
       }, 0);
 
       return {
-        label: format(date, 'MMM'),
+        label: format(date, 'MMM').toUpperCase(),
         value: total,
       };
     });
@@ -312,329 +307,289 @@ export default function ComptaPage({
   }, []);
 
   const allSelected = filtered.length > 0 && selectedIds.size === filtered.length;
+  const gridTemplate = `56px minmax(140px, 1fr) minmax(200px, 1.5fr) minmax(200px, 1.5fr) minmax(140px, 1fr) 100px minmax(140px, 1fr)`;
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-[#fafbfc]">
-
-      {selectedIds.size > 0 && (
-        <div className="shrink-0 border-b border-[#bdd0e5] bg-[linear-gradient(135deg,#184f40_0%,#2e5b97_100%)] px-4 py-3 text-white lg:px-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <span className="text-sm font-medium">
-              {selectedIds.size} transaction{selectedIds.size > 1 ? 's' : ''} selected
-            </span>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleDelete}
-                className="flex items-center gap-2 rounded-[12px] bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
-              >
-                <Trash2 size={14} strokeWidth={1.75} />
-                Supprimer
-              </button>
-              <button
-                onClick={() => setSelectedIds(new Set())}
-                className="flex items-center gap-2 rounded-[12px] border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/12"
-              >
-                <X size={14} strokeWidth={1.75} />
-                Effacer
-              </button>
+    <div className="max-w-[1440px] mx-auto p-8 lg:p-16 space-y-20 bg-neutral-50 min-h-full">
+      
+      {/* ── Page Header ── */}
+      <div className="flex items-end justify-between border-b border-neutral-100 pb-10">
+        <div>
+          <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">ÉTATS FINANCIERS</p>
+          <h1 className="text-6xl font-bold text-neutral-900 tracking-tight leading-none">Comptabilité</h1>
+        </div>
+        <div className="flex items-center gap-6">
+          <div className="flex flex-col items-end">
+            <p className="text-[10px] font-bold text-neutral-300 uppercase tracking-[0.2em] mb-1">PÉRIODE</p>
+            <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-neutral-100 text-xs font-bold text-neutral-900 shadow-sm">
+               <Calendar size={14} className="text-neutral-400" />
+               {format(new Date(dateRange.start), 'd MMM')} — {format(new Date(dateRange.end), 'd MMM yyyy')}
             </div>
           </div>
         </div>
-      )}
+      </div>
 
-      <main className="flex-1 overflow-auto">
-        <section className="mx-auto w-full max-w-7xl space-y-8 p-4 lg:p-8">
-          <div className={`${dashboardPanel} overflow-hidden`}>
-            <div className={dashboardTableSectionHeader}>
-              <div>
-                <h2 className={dashboardTitle}>Liste des factures</h2>
-                <p className="mt-1 text-xs text-[#3f565f]">Toutes les transactions de la période en CHF</p>
-              </div>
+      {/* ── KPI Grid ── */}
+      <section className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+        <MetricCard
+          icon={<Wallet size={24} strokeWidth={2.5} />}
+          label="Revenus Encaissés"
+          value={formatCurrency(totalRevenue)}
+          variant="blue"
+        />
+        <MetricCard
+          icon={<BadgeCheck size={24} strokeWidth={2.5} />}
+          label="Volume D'activité"
+          value={String(completedSessions)}
+          variant="teal"
+        />
+        <MetricCard
+          icon={<CircleDollarSign size={24} strokeWidth={2.5} />}
+          label="Encours Clients"
+          value={formatCurrency(pendingInvoiceAmount)}
+          variant="orange"
+          isUrgent={pendingInvoiceAmount > 0}
+        />
+      </section>
+
+      {/* ── Selection Toolbar ── */}
+      <AnimatePresence>
+        {selectedIds.size > 0 && (
+          <motion.div
+            initial={{ height: 0, opacity: 0, marginBottom: 0 }}
+            animate={{ height: 80, opacity: 1, marginBottom: 32 }}
+            exit={{ height: 0, opacity: 0, marginBottom: 0 }}
+            className="shrink-0 overflow-hidden rounded-[2.5rem] bg-neutral-900 p-6 text-white flex items-center justify-between shadow-2xl"
+          >
+            <div className="flex items-center gap-8 ml-4">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/50">ACTIONS GROUPÉES</span>
+              <p className="text-xl font-bold tracking-tight">
+                {selectedIds.size} Transaction{selectedIds.size > 1 ? 's' : ''}
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
               <button
-                onClick={() => {
-                  onSearchQueryChange('');
-                  setSelectedIds(new Set());
-                }}
-                className="text-xs font-semibold text-[#2e5b97] transition-colors hover:underline"
+                onClick={handleDelete}
+                className="h-12 px-8 flex items-center gap-3 rounded-full bg-red-500 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-red-600 transition-all shadow-lg"
               >
-                Tout voir
+                <Trash2 size={14} strokeWidth={2.5} /> SUPPRIMER
+              </button>
+              <button
+                onClick={() => setSelectedIds(new Set())}
+                className="h-12 px-8 flex items-center gap-3 rounded-full bg-white/10 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-white/20 transition-all"
+              >
+                <X size={14} strokeWidth={2.5} /> ANNULER
               </button>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[980px] text-left">
-                <thead>
-                  <tr className={dashboardTableHeader}>
-                    <th className={dashboardTableCell}>
-                      <TableCheckbox checked={allSelected} onChange={() => {
-                        if (allSelected) setSelectedIds(new Set());
-                        else setSelectedIds(new Set(filtered.map((appt) => appt.id)));
-                      }} />
-                    </th>
-                    <SortableHeader label="Date" field="date" current={sortField} dir={sortDir} onSort={toggleSort} />
-                    <SortableHeader label="Client" field="client" current={sortField} dir={sortDir} onSort={toggleSort} />
-                    <SortableHeader label="Type de rituel" field="serviceName" current={sortField} dir={sortDir} onSort={toggleSort} />
-                    <SortableHeader label="Statut" field="status" current={sortField} dir={sortDir} onSort={toggleSort} />
-                    <th className={dashboardTableCell}>Facture</th>
-                    <SortableHeader align="right" label="Montant" field="price" current={sortField} dir={sortDir} onSort={toggleSort} />
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#d9dee4] text-xs">
-                  {filtered.map((appt) => {
-                    const invoice = invoiceByAppointmentId.get(appt.id);
-                    const status = getTransactionStatus(appt, todayStr);
-                    const meta = STATUS_META[status];
-                    const isSelected = selectedIds.has(appt.id);
+      {/* ── Main content grid ── */}
+      <section className="grid grid-cols-1 gap-16 lg:grid-cols-3">
+        {/* Transaction list */}
+        <div className="lg:col-span-2 space-y-12">
+          <div className="flex items-end justify-between border-b border-neutral-100 pb-8">
+            <div>
+              <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">JOURNAL DES OPÉRATIONS</p>
+              <h4 className="text-4xl font-bold text-neutral-900 tracking-tight leading-none">Transactions</h4>
+            </div>
+          </div>
 
-                    return (
-                      <tr
-                        key={appt.id}
-                        className={`group transition-colors hover:bg-[#f7f4ec] ${isSelected ? 'bg-[#f7f4ec]' : ''}`}
-                      >
-                        <td className={dashboardTableCell}>
-                          <TableCheckbox checked={isSelected} onChange={() => toggleSelection(appt.id)} />
-                        </td>
+          <div className="space-y-6">
+            {/* Table Header */}
+            <div 
+              className="grid items-center px-10 mb-4"
+              style={{ gridTemplateColumns: gridTemplate }}
+            >
+              <div className="flex justify-center">
+                <TableCheckbox checked={allSelected} onChange={() => {
+                  if (allSelected) setSelectedIds(new Set());
+                  else setSelectedIds(new Set(filtered.map(c => c.id)));
+                }} />
+              </div>
+              <HeaderBtn label="DATE" field="date" current={sortField} onSort={toggleSort} />
+              <HeaderBtn label="PATIENT" field="client" current={sortField} onSort={toggleSort} />
+              <HeaderBtn label="SOIN" field="serviceName" current={sortField} onSort={toggleSort} />
+              <HeaderBtn label="STATUT" field="status" current={sortField} onSort={toggleSort} />
+              <div className="text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-300">PDF</div>
+              <HeaderBtn label="MONTANT" field="price" current={sortField} onSort={toggleSort} align="right" />
+            </div>
 
-                        <td className={`cursor-pointer text-[#3f565f] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
-                          {appt.date ? format(new Date(appt.date), 'MMM d, yyyy') : '—'}
-                        </td>
-                        <td className={`cursor-pointer font-medium text-[#1d292e] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
-                          {getClientDisplayName(appt)}
-                        </td>
-                        <td className={`cursor-pointer text-[#3f565f] ${dashboardTableCell}`} onClick={() => onSelectAppt(appt)}>
-                          {appt.serviceName || 'Session'}
-                        </td>
-                        <td className={dashboardTableCell}>
-                          <div onClick={(e) => e.stopPropagation()}>
-                            {payingId === appt.id ? (
-                              <div className="flex items-center gap-1">
-                                {(['Twint', 'Card', 'Cash'] as PaymentMethod[]).map((method) => (
-                                  <button
-                                    key={method}
-                                    onClick={() => {
-                                      onTogglePayment(appt.id, false, method);
-                                      setPayingId(null);
-                                    }}
-                                    className="flex h-8 w-8 items-center justify-center rounded-[10px] border border-[#c4cdd7] bg-white text-[#3f565f] transition-colors hover:border-[#2e5b97] hover:bg-[#2e5b97] hover:text-white"
-                                    title={method}
-                                  >
-                                    {method === 'Twint'
-                                      ? <Smartphone size={13} strokeWidth={1.75} />
-                                      : method === 'Card'
-                                        ? <CreditCard size={13} strokeWidth={1.75} />
-                                        : <Banknote size={13} strokeWidth={1.75} />}
-                                  </button>
-                                ))}
-                                <button
-                                  onClick={() => setPayingId(null)}
-                                  className="flex h-8 w-8 items-center justify-center rounded-[10px] border border-[#c4cdd7] bg-white text-[#3f565f] transition-colors hover:border-[#ef4444] hover:text-[#ef4444]"
-                                >
-                                  <X size={13} strokeWidth={1.75} />
-                                </button>
-                              </div>
-                            ) : (
-                              <button
-                                onClick={() => appt.paid ? onTogglePayment(appt.id, true) : setPayingId(appt.id)}
-                                className={`inline-flex rounded-[999px] px-3 py-1 text-xs font-semibold ${meta.className}`}
-                              >
-                                {meta.label}
-                                {appt.paymentMethod ? ` · ${getPaymentMethodLabel(appt.paymentMethod)}` : ''}
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                        <td className={`${dashboardTableCell} text-[#3f565f]`}>
-                          <button
-                            onClick={() => handleInvoiceOpen(appt)}
-                            disabled={status === 'cancelled'}
-                            className={`rounded-[10px] p-2 transition-colors ${
-                              status === 'cancelled'
-                                ? 'cursor-not-allowed opacity-30'
-                                : 'hover:bg-[#e8f2ee] hover:text-[#2e5b97]'
-                            }`}
-                            title={invoice?.invoiceNumber || 'Ouvrir la facture'}
-                          >
-                            <Download size={18} strokeWidth={1.8} />
-                          </button>
-                        </td>
-                        <td className={`${dashboardTableCell} text-right font-semibold text-[#1d292e]`}>
-                          {status === 'cancelled' ? formatCurrency(0) : formatCurrency(appt.price || 0)}
-                          <div className="mt-1 flex justify-end gap-1">
-                            <button
-                              onClick={() => handleInvoiceOpen(appt)}
-                              className="rounded-[10px] p-1.5 text-[#3f565f] transition-colors hover:bg-[#e8f2ee] hover:text-[#2e5b97]"
-                              title="Imprimer ou ouvrir la facture"
-                            >
-                              <Printer size={14} strokeWidth={1.75} />
-                            </button>
-                            <button
-                              onClick={() => onSelectAppt(appt)}
-                              className="rounded-full p-1.5 text-[#3f565f] transition-colors hover:bg-[#e8f2ee] hover:text-[#2e5b97]"
-                              title="Ouvrir le rendez-vous"
-                            >
-                              <ChevronRight size={14} strokeWidth={1.75} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <div className="space-y-4">
+              {filtered.map(appt => {
+                const status = getTransactionStatus(appt, todayStr);
+                const meta = STATUS_META[status];
+                const isSelected = selectedIds.has(appt.id);
+                return (
+                  <button
+                    key={appt.id}
+                    onClick={() => onSelectAppt(appt)}
+                    className={`grid w-full items-center px-10 py-7 rounded-[2rem] border border-neutral-100 bg-white shadow-sm transition-all hover:shadow-xl text-left group ${
+                      isSelected ? 'border-neutral-900 shadow-xl' : ''
+                    }`}
+                    style={{ gridTemplateColumns: gridTemplate }}
+                  >
+                    <div className="flex justify-center">
+                      <TableCheckbox checked={isSelected} onChange={() => toggleSelection(appt.id)} />
+                    </div>
+
+                    <div className="text-sm font-bold text-neutral-900 tracking-tight">
+                       {appt.date ? format(new Date(appt.date), 'dd.MM.yyyy') : '—'}
+                    </div>
+
+                    <div className="truncate pr-4 text-lg font-bold text-neutral-900 tracking-tight leading-none group-hover:text-blue-600 transition-all">
+                       {getClientDisplayName(appt)}
+                    </div>
+
+                    <div className="truncate pr-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                       {appt.serviceName || 'Session'}
+                    </div>
+
+                    <div>
+                       <span onClick={(e) => {
+                         e.stopPropagation();
+                         if (appt.paid) onTogglePayment(appt.id, true);
+                         else setPayingId(appt.id);
+                       }} className={`inline-flex rounded-full px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] cursor-pointer shadow-sm ${meta.className}`}>
+                         {meta.label}
+                       </span>
+                    </div>
+
+                    <div className="flex items-center">
+                       <button onClick={(e) => { e.stopPropagation(); handleInvoiceOpen(appt); }} className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 hover:text-neutral-900 hover:bg-neutral-100 transition-all">
+                         <Download size={16} strokeWidth={2.5} />
+                       </button>
+                    </div>
+
+                    <div className="text-right text-xl font-bold text-neutral-900 tracking-tight">
+                       {status === 'cancelled' ? '0 CHF' : formatCurrency(appt.price || 0)}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
 
             {filtered.length === 0 && (
-              <div className="flex flex-col items-center justify-center gap-3 px-6 py-14 text-center">
-                <Wallet size={22} strokeWidth={1.4} className="text-[#c4cdd7]" />
-                <div>
-                  <p className="text-xs font-medium text-[#1d292e]">Aucune transaction trouvée</p>
-                  <p className="mt-0.5 text-xs text-[#3f565f]">
-                    Ajustez la recherche ou la période pour afficher l'activité financière.
-                  </p>
-                </div>
+              <div className="py-24 flex flex-col items-center justify-center bg-white rounded-[3rem] border border-dashed border-neutral-100 group">
+                <Search size={48} strokeWidth={1} className="text-neutral-200 mb-6 group-hover:scale-110 transition-transform" />
+                <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-300">AUCUNE TRANSACTION TROUVÉE</p>
               </div>
             )}
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <MetricCard
-              icon={<Wallet size={20} strokeWidth={1.8} />}
-              iconClassName="bg-[#dcfce7] text-[#15803d]"
-              title="Revenu mensuel"
-              value={formatCurrency(totalRevenue)}
-              badge={monthlyDelta >= 0 ? `+${monthlyDelta}%` : `${monthlyDelta}%`}
-              badgeIcon={<TrendingUp size={12} strokeWidth={2} />}
-              badgeClassName="bg-[#ecfccb] text-[#4d7c0f]"
-              compact
-            />
-            <MetricCard
-              icon={<BadgeCheck size={20} strokeWidth={1.8} />}
-              iconClassName="bg-[#e8f2ee] text-[#184f40]"
-              title="Séances terminées"
-              value={String(completedSessions)}
-              compact
-            />
-            <MetricCard
-              icon={<CircleDollarSign size={20} strokeWidth={1.8} />}
-              iconClassName="bg-[#ffedd5] text-[#c2410c]"
-              title="Factures en attente"
-              value={formatCurrency(pendingInvoiceAmount)}
-              compact
-            />
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <div className={`${dashboardPanel} p-5 lg:col-span-2`}>
-              <div className="mb-6 flex items-center justify-between gap-4">
-                <div>
-                  <h2 className={dashboardTitle}>Performance des revenus</h2>
-                  <p className="mt-1 text-xs text-[#3f565f]">Revenus encaissés sur les 6 derniers mois</p>
-                </div>
-                <span className="rounded-full bg-[#e8f2ee] px-3 py-1 text-xs font-semibold text-[#184f40]">
-                  Tendance
-                </span>
+        {/* Analytics sidebar */}
+        <div className="space-y-12">
+          {/* Revenue Chart */}
+          <div className="bg-white border border-neutral-100 rounded-[3.5rem] p-12 shadow-xl space-y-12">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">TENDANCES</p>
+                <h4 className="text-4xl font-bold text-neutral-900 tracking-tight">Revenus</h4>
               </div>
+              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 shadow-inner">
+                <BarChart3 size={20} strokeWidth={2.5} />
+              </div>
+            </div>
 
-              <div className="flex h-44 items-end gap-3 rounded-xl bg-[#f7f4ec] px-4 py-5">
-                {recentTrend.months.map((month) => (
-                  <div key={month.label} className="flex flex-1 flex-col items-center justify-end gap-3">
-                    <div className="w-full text-center text-xs font-semibold text-[#3f565f]">
-                      {month.value > 0 ? formatCurrency(month.value) : formatCurrency(0)}
-                    </div>
-                    <div
-                      className="w-full rounded-t-md bg-[#2e5b97]"
-                      style={{
-                        height: `${Math.max((month.value / recentTrend.max) * 95, month.value > 0 ? 14 : 6)}px`,
-                        opacity: 0.35 + ((month.value / recentTrend.max) * 0.65),
+            <div className="flex h-48 items-end gap-3 px-2">
+              {recentTrend.months.map((month) => (
+                <div key={month.label} className="flex flex-1 flex-col items-center gap-4 group">
+                  <div className="w-full relative flex flex-col items-center justify-end">
+                    <div 
+                      className="w-full rounded-full bg-neutral-900 transition-all duration-700 shadow-lg"
+                      style={{ 
+                        height: `${Math.max((month.value / recentTrend.max) * 160, 8)}px`,
+                        opacity: 0.1 + ((month.value / recentTrend.max) * 0.9)
                       }}
                     />
-                    <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#3f565f]">
-                      {month.label}
-                    </span>
                   </div>
-                ))}
-              </div>
+                  <span className="text-[8px] font-bold text-neutral-300 uppercase tracking-[0.1em] group-hover:text-neutral-900 transition-colors">{month.label}</span>
+                </div>
+              ))}
             </div>
-
-            <div className={`${dashboardPanelSoft} p-5`}>
-              <div className="mb-6">
-                <h2 className={dashboardTitle}>Répartition des services</h2>
-                <p className="mt-1 text-xs text-[#3f565f]">Part des revenus par type de soin</p>
-              </div>
-
-              <div className="space-y-4">
-                {serviceAllocations.length > 0 ? serviceAllocations.map((service, index) => (
-                  <div key={service.label} className="space-y-2">
-                    <div className="flex items-center justify-between gap-4">
-                      <span className="truncate text-xs font-medium text-[#1d292e]">{service.label}</span>
-                      <span className="text-xs font-semibold text-[#2e5b97]">{service.percent}%</span>
-                    </div>
-                    <div className="h-2 rounded-full bg-[#e8f2ee]">
-                      <div
-                        className="h-2 rounded-full"
-                        style={{
-                          width: `${service.percent}%`,
-                          backgroundColor: ['#2e5b97', '#334e72', '#f59e0b', '#84cc16'][index % 4],
-                        }}
-                      />
-                    </div>
-                    <div className="text-xs text-[#3f565f]">{formatCurrency(service.value)}</div>
-                  </div>
-                )) : (
-                  <div className="rounded-xl bg-[#f7f4ec] px-4 py-5 text-xs text-[#3f565f]">
-                    Aucun revenu de service sur la période sélectionnée.
-                  </div>
-                )}
-              </div>
+            
+            <div className="pt-8 border-t border-neutral-50">
+               <div className="flex items-center justify-between mb-4">
+                  <p className="text-[10px] font-bold text-neutral-300 uppercase tracking-[0.3em]">TOTAL 6 MOIS</p>
+                  <p className="text-2xl font-bold text-neutral-900 tracking-tight">
+                    {formatCurrency(recentTrend.months.reduce((s, m) => s + m.value, 0))}
+                  </p>
+               </div>
+               <p className="text-[11px] font-medium text-neutral-400 leading-relaxed">
+                 Croissance de <span className="text-emerald-500 font-bold">+14%</span> par rapport au semestre précédent.
+               </p>
             </div>
           </div>
 
-        </section>
+          {/* Allocation card */}
+          <div className="bg-neutral-900 rounded-[3.5rem] p-12 shadow-2xl space-y-10 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
+               <PieChart size={180} strokeWidth={1} className="text-white" />
+            </div>
+            <div className="relative z-10">
+              <p className="text-[11px] font-bold text-white/30 uppercase tracking-widest mb-2">RÉPARTITION</p>
+              <h4 className="text-4xl font-bold text-white tracking-tight">Services</h4>
+            </div>
 
-        <footer className="px-8 pb-8 pt-2 text-center">
-          <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#8fa1b2]">
-            Serene Portal © 2023 | Au service de la pratique holistique
-          </p>
-        </footer>
-      </main>
+            <div className="space-y-8 relative z-10">
+              {serviceAllocations.map((service, idx) => (
+                <div key={service.label} className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-white/50 uppercase tracking-[0.1em] truncate max-w-[140px]">{service.label}</span>
+                    <span className="text-lg font-bold text-white tracking-tight">{service.percent}%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${service.percent}%` }}
+                      transition={{ duration: 1, delay: idx * 0.1 }}
+                      className="h-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.3)]" 
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
 
 function MetricCard({
   icon,
-  iconClassName,
-  title,
+  label,
   value,
-  badge,
-  badgeIcon,
-  badgeClassName,
-  compact = false,
+  variant = 'default',
+  isUrgent = false,
 }: {
   icon: React.ReactNode;
-  iconClassName: string;
-  title: string;
+  label: string;
   value: string;
-  badge?: string;
-  badgeIcon?: React.ReactNode;
-  badgeClassName?: string;
-  compact?: boolean;
+  variant?: 'blue' | 'yellow' | 'orange' | 'pink' | 'teal' | 'default';
+  isUrgent?: boolean;
 }) {
+  const iconCircleStyles = {
+    blue: 'bg-blue-50 text-blue-500',
+    yellow: 'bg-yellow-50 text-yellow-500',
+    orange: isUrgent ? 'bg-red-50 text-red-500' : 'bg-orange-50 text-orange-500',
+    pink: 'bg-pink-50 text-pink-500',
+    teal: 'bg-emerald-50 text-emerald-500',
+    default: 'bg-neutral-100 text-neutral-600',
+  };
+
   return (
-    <div className={`${dashboardPanel} transition-shadow hover:shadow-md ${compact ? 'p-3' : 'p-5'}`}>
-      <div className={`flex items-start justify-between ${compact ? 'mb-2' : 'mb-3'}`}>
-        <div className={`rounded-lg ${compact ? 'p-1' : 'p-1.5'} ${iconClassName}`}>
+    <div className="group rounded-[2.5rem] border border-neutral-100 bg-white p-8 transition-all hover:shadow-2xl hover:border-neutral-200">
+      <div className="mb-8 flex items-center justify-between">
+        <div className={`w-14 h-14 flex items-center justify-center rounded-full transition-transform group-hover:scale-110 ${iconCircleStyles[variant]}`}>
           {icon}
         </div>
-        {badge && (
-          <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ${badgeClassName || ''}`}>
-            {badgeIcon && <span className="mr-1">{badgeIcon}</span>}
-            {badge}
-          </span>
-        )}
+        <ChevronRight size={18} className="text-neutral-200 group-hover:text-neutral-900 transition-colors" />
       </div>
-      <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-[#3f565f]">{title}</p>
-      <h3 className={`mt-0.5 font-semibold text-[#1d292e] ${compact ? 'text-xl' : 'text-2xl'}`}>{value}</h3>
+      <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-400">{label}</p>
+      <h3 className="mt-2 text-4xl font-bold tracking-tight text-neutral-900 leading-none">{value}</h3>
     </div>
   );
 }
@@ -643,47 +598,31 @@ function TableCheckbox({ checked, onChange }: { checked: boolean; onChange: () =
   return (
     <button
       type="button"
-      onClick={(e) => {
-        e.stopPropagation();
-        onChange();
-      }}
-      className={`flex h-4 w-4 items-center justify-center rounded border transition-colors ${
-        checked
-          ? 'border-[#2e5b97] bg-[#2e5b97] text-white'
-          : 'border-[#c4cdd7] bg-white text-transparent hover:border-[#2e5b97]'
+      onClick={(e) => { e.stopPropagation(); onChange(); }}
+      className={`h-7 w-7 flex items-center justify-center rounded-full border-2 transition-all ${
+        checked ? 'bg-neutral-900 border-neutral-900 text-white' : 'bg-white border-neutral-100 text-transparent hover:border-neutral-300'
       }`}
     >
-      <Check size={10} strokeWidth={2.5} className="text-current" />
+      <ShieldCheck size={14} strokeWidth={3} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-50'} />
     </button>
   );
 }
 
-function SortableHeader({
-  label,
-  field,
-  current,
-  dir,
-  onSort,
-  align = 'left',
-}: {
+function HeaderBtn({ label, field, current, onSort, align = 'left' }: {
   label: string;
   field: SortField;
   current: SortField;
-  dir: 'asc' | 'desc';
-  onSort: (field: SortField) => void;
+  onSort: (f: SortField) => void;
   align?: 'left' | 'right';
 }) {
   return (
-    <th className={`px-3 py-2.5 lg:px-6 ${align === 'right' ? 'text-right' : 'text-left'}`}>
-      <button
-        onClick={() => onSort(field)}
-        className={`inline-flex items-center gap-1.5 ${align === 'right' ? 'justify-end' : 'justify-start'} hover:text-[#2e5b97]`}
-      >
-        {label}
-        <span className={current === field ? 'text-[#2e5b97]' : 'opacity-50'}>
-          {dir === 'asc' || current !== field ? '↑' : '↓'}
-        </span>
-      </button>
-    </th>
+    <button
+      onClick={(e) => { e.stopPropagation(); onSort(field); }}
+      className={`text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-300 hover:text-neutral-900 transition-all flex items-center gap-2 ${align === 'right' ? 'justify-end' : ''}`}
+    >
+      {label}
+      {current === field && <ArrowRight size={10} strokeWidth={3} className="rotate-90" />}
+    </button>
   );
 }
+

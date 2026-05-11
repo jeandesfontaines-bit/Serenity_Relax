@@ -3,7 +3,9 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { format, addDays, addMonths, addWeeks, startOfMonth, endOfMonth } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { useFirestore, useUser } from '@/firebase';
+import { useAuth, useFirestore, useUser } from '@/firebase';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 import {
   collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc, setDoc,
   getDoc, getDocs, query, where, serverTimestamp
@@ -48,6 +50,8 @@ const normalizeAppointment = (id: string, data: any): Appointment => {
 };
 
 export default function TherapistDashboard() {
+  const router = useRouter();
+  const auth = useAuth();
   const firestore = useFirestore();
   const { user } = useUser();
 
@@ -558,7 +562,7 @@ export default function TherapistDashboard() {
       price,
       magicToken,
       paid: false,
-      status: 'upcoming',
+      status: 'confirmed',
       notes: '',
       createdAt: serverTimestamp()
     });
@@ -626,6 +630,15 @@ export default function TherapistDashboard() {
     setSelectedClient(null);
   }, []);
 
+  const handleLogout = useCallback(async () => {
+    try {
+      await signOut(auth);
+      router.push('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  }, [auth, router]);
+
   return (
       <AppLayout
         activePage={tab === 'clients' && selectedClient ? 'client-detail' : tab}
@@ -677,6 +690,7 @@ export default function TherapistDashboard() {
           title: 'Paramètres du compte',
           subtitle: '',
         } : undefined}
+        onLogout={handleLogout}
       >
       {renderContent()}
 

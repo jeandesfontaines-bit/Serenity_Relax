@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, Loader2, Send, Sparkles, X } from "lucide-react";
+import { Loader2, Send, Sparkles, X } from "lucide-react";
 import { recommendMassageService } from "@/ai/flows/ai-service-recommender";
 import { SERVICES } from "./data";
 import { useBooking } from "@/context/BookingContext";
@@ -69,89 +69,70 @@ export default function AIConciergeOverlay({ open, onClose }: { open: boolean; o
     <AnimatePresence>
       {open ? (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[120] bg-black/45 backdrop-blur-sm"
-          onClick={onClose}
+          initial={{ opacity: 0, y: 24, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.98 }}
+          transition={{ duration: 0.2 }}
+          className="fixed bottom-28 right-8 z-[120] flex h-[min(72vh,620px)] w-[min(92vw,390px)] flex-col overflow-hidden rounded-[24px] border border-[#153839]/35 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.28)]"
         >
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 20, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="mx-auto mt-8 flex h-[calc(100vh-4rem)] w-[min(1100px,94vw)] flex-col overflow-hidden rounded-[28px] border border-white/20 bg-[#F6F2EA]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between border-b border-foreground/10 px-6 py-4">
-              <div className="flex items-center gap-3">
-                <div className="rounded-xl bg-[var(--teal-deep)] p-2 text-[var(--neon)]"><Sparkles size={16} /></div>
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-foreground/45">IA Concierge</p>
-                  <p className="text-sm font-semibold">Recommandation personnalisée</p>
-                </div>
-              </div>
-              <button onClick={onClose} className="rounded-full border border-foreground/15 p-2 hover:bg-foreground/5"><X size={18} /></button>
-            </div>
-
-            <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-5">
-              <div className="col-span-3 flex min-h-0 flex-col border-r border-foreground/10">
-                <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto p-6">
-                  {messages.map((m, i) => (
-                    <div key={i} className={`flex ${m.role === "assistant" ? "justify-start" : "justify-end"}`}>
-                      <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${m.role === "assistant" ? "bg-[var(--teal-deep)] text-white" : "bg-white text-foreground border border-foreground/10"}`}>
-                        {m.text}
-                      </div>
-                    </div>
-                  ))}
-                  {isTyping && (
-                    <div className="flex justify-start">
-                      <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm text-foreground/60 border border-foreground/10">
-                        <Loader2 size={14} className="animate-spin" /> Réflexion en cours…
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex items-center gap-3 border-t border-foreground/10 p-4">
-                  <input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && send()}
-                    placeholder="Ex: stress, nuque tendue, sommeil léger..."
-                    className="flex-1 rounded-full border border-foreground/15 bg-white px-5 py-3 text-sm outline-none focus:border-foreground/30"
-                  />
-                  <button onClick={send} className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--orange)] text-white hover:bg-[var(--teal-deep)]">
-                    <Send size={16} />
-                  </button>
-                </div>
-              </div>
-
-              <div className="col-span-2 flex min-h-0 flex-col bg-white/55 p-6">
-                {!selected ? (
-                  <div className="m-auto text-center text-foreground/55">
-                    <Bot size={28} className="mx-auto mb-3" />
-                    <p className="text-sm">Parlez de votre besoin pour recevoir une recommandation.</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-600">Soin recommandé</p>
-                    <h3 className="text-2xl font-semibold">{selected.name}</h3>
-                    <p className="text-sm text-foreground/70">{selected.desc}</p>
-                    <button
-                      onClick={() => {
-                        openModal(selected);
-                        onClose();
-                      }}
-                      className="mt-4 w-full rounded-full bg-[var(--teal-deep)] px-5 py-3 text-sm font-semibold text-white hover:bg-[var(--orange)]"
-                    >
-                      Réserver ce soin
-                    </button>
-                  </div>
-                )}
+          <div className="flex items-center justify-between border-b border-[#153839]/15 bg-[linear-gradient(135deg,#153839,#275E6A)] px-4 py-3 text-white">
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl bg-white/15 p-2 text-[var(--neon)]"><Sparkles size={14} /></div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">IA Concierge</p>
+                <p className="text-sm font-semibold text-white">Assistant bien-être</p>
               </div>
             </div>
-          </motion.div>
+            <button onClick={onClose} className="rounded-full border border-white/25 p-2 text-white hover:bg-white/10"><X size={16} /></button>
+          </div>
+
+          <div className="flex min-h-0 flex-1 flex-col bg-[#F8FAFB]">
+            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
+              {messages.map((m, i) => (
+                <div key={i} className={`flex ${m.role === "assistant" ? "justify-start" : "justify-end"}`}>
+                  <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${m.role === "assistant" ? "bg-[var(--teal-deep)] text-white shadow-sm" : "bg-white text-foreground border border-[#153839]/15 shadow-sm"}`}>
+                    {m.text}
+                  </div>
+                </div>
+              ))}
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="inline-flex items-center gap-2 rounded-2xl border border-[#153839]/15 bg-white px-3.5 py-2.5 text-[13px] text-foreground/60">
+                    <Loader2 size={13} className="animate-spin" /> Réflexion...
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {selected ? (
+              <div className="border-t border-[#153839]/15 bg-white px-4 py-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-600">Soin recommandé</p>
+                <p className="mt-1 text-sm font-semibold">{selected.name}</p>
+                <button
+                  onClick={() => {
+                    openModal(selected);
+                    onClose();
+                  }}
+                  className="mt-2 w-full rounded-full bg-[var(--teal-deep)] px-4 py-2.5 text-xs font-semibold text-white hover:bg-[var(--orange)]"
+                >
+                  Réserver ce soin
+                </button>
+              </div>
+            ) : null}
+
+            <div className="flex items-center gap-2 border-t border-[#153839]/15 bg-white p-3">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && send()}
+                placeholder="Ex: stress, nuque tendue..."
+                className="flex-1 rounded-full border border-[#153839]/20 bg-[#FDFEFE] px-4 py-2.5 text-[13px] outline-none focus:border-[#153839]/45"
+              />
+              <button onClick={send} className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--orange)] text-white hover:bg-[var(--teal-deep)]">
+                <Send size={14} />
+              </button>
+            </div>
+          </div>
         </motion.div>
       ) : null}
     </AnimatePresence>

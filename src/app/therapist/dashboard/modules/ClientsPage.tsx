@@ -1,12 +1,14 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   Plus, ArrowUpDown, Users, GitPullRequest, Phone, MapPin,
-  X, Trash2, NotebookText, CalendarDays,
+  X, Trash2, NotebookText, CalendarDays, Search, Filter,
+  ChevronRight, Mail, ShieldCheck, MoreHorizontal,
+  LayoutGrid, List
 } from 'lucide-react';
 import { Client, Appointment } from '../types';
 import { format, differenceInCalendarDays } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
-import { dashboardChip, dashboardPanel, dashboardPrimaryButton, dashboardTableCell, dashboardTableHeader, dashboardTitleLg } from './dashboardTheme';
+
 type SortDir = 'asc' | 'desc';
 type ClientStatus = 'new' | 'loyalty' | 'hiatus' | 'active';
 
@@ -29,44 +31,29 @@ interface ClientSummary {
 }
 
 const ALL_COLUMNS: ColDef[] = [
-  { id: 'name', label: 'Nom', minWidth: '240px', flex: '2.2fr' },
-  { id: 'status', label: 'Statut', minWidth: '140px', flex: '1.1fr' },
-  { id: 'lastVisit', label: 'Dernière visite', minWidth: '120px', flex: '0.9fr' },
-  { id: 'preferredRitual', label: 'Rituel préféré', minWidth: '220px', flex: '1.7fr' },
-  { id: 'sessions', label: 'Séances', minWidth: '90px', flex: '0.7fr', align: 'center' },
-  { id: 'email', label: 'E-mail', minWidth: '220px', flex: '1.7fr' },
-  { id: 'phone', label: 'Téléphone', minWidth: '140px', flex: '1fr' },
-  { id: 'city', label: 'Ville', minWidth: '140px', flex: '1fr' },
-  { id: 'insurance', label: 'Assurance', minWidth: '160px', flex: '1.1fr' },
+  { id: 'name', label: 'PATIENT', minWidth: '280px', flex: '2.5fr' },
+  { id: 'status', label: 'STATUT', minWidth: '150px', flex: '1fr' },
+  { id: 'lastVisit', label: 'DERNIER SOIN', minWidth: '140px', flex: '1fr' },
+  { id: 'preferredRitual', label: 'RITUEL FAVORI', minWidth: '220px', flex: '1.8fr' },
+  { id: 'sessions', label: 'TOTAL', minWidth: '100px', flex: '0.8fr', align: 'center' },
 ];
 
 const STATUS_META: Record<ClientStatus, { label: string; className: string }> = {
   loyalty: {
-    label: 'Client fidèle',
-    className: 'bg-[#ffddb2] text-[#594323]',
+    label: 'FIDÈLE',
+    className: 'bg-[var(--accent-teal)] text-[#1a4a44]',
   },
   new: {
-    label: 'Nouveau client',
-    className: 'bg-[#d4e8d2] text-[#3a4b3b]',
+    label: 'NOUVEAU',
+    className: 'bg-[var(--accent-blue)] text-[#1e3a8a]',
   },
   hiatus: {
-    label: 'En pause',
-    className: 'border border-[#c4cdd7] bg-[#f7f4ec] text-[#3f565f]',
+    label: 'EN PAUSE',
+    className: 'bg-neutral-100 text-neutral-500',
   },
   active: {
-    label: 'Client actif',
-    className: 'border border-[#bdd0e5] bg-[#e8f2ee] text-[#184f40]',
-  },
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.04,
-      delayChildren: 0.08,
-    },
+    label: 'ACTIF',
+    className: 'bg-[var(--accent-blue)] text-[#1e3a8a]',
   },
 };
 
@@ -110,21 +97,10 @@ export default function ClientsPage({
   onShowFilterPanelChange,
   onVisibleCountChange,
 }: ClientsPageProps) {
-  const [visibleColumns, setVisibleColumns] = useState<string[]>(
-    ['name', 'status', 'lastVisit', 'preferredRitual', 'sessions'],
-  );
   const [selectedClients, setSelectedClients] = useState<Set<string>>(new Set());
   const [sortField, setSortField] = useState<string>('name');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
-  const search = searchQuery;
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onShowFilterPanelChange(false);
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [onShowFilterPanelChange]);
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
 
   const summaryByClient = useMemo(() => {
     const grouped = new Map<string, Appointment[]>();
@@ -151,11 +127,11 @@ export default function ClientsPage({
         acc[appt.serviceName] = (acc[appt.serviceName] || 0) + 1;
         return acc;
       }, {} as Record<string, number>);
-      const preferredRitual = Object.entries(ritualCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Aucune préférence pour le moment';
+      const preferredRitual = Object.entries(ritualCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Aucun soin';
       const sessionsCount = clientAppts.length;
       const fullName = `${client.firstName || ''} ${client.lastName || ''}`.trim();
       const status = getClientStatus(sessionsCount, lastVisitDate);
-      const lastVisitLabel = lastVisitDate ? format(lastVisitDate, 'd MMM yyyy') : 'Aucune visite';
+      const lastVisitLabel = lastVisitDate ? format(lastVisitDate, 'd MMM yyyy') : '—';
 
       summaryMap.set(client.id, {
         fullName,
@@ -185,8 +161,7 @@ export default function ClientsPage({
       .filter((client) => {
         const summary = summaryByClient.get(client.id);
         if (!summary) return false;
-        const matchesSearch = summary.searchText.includes(search.trim().toLowerCase());
-        return matchesSearch;
+        return summary.searchText.includes(searchQuery.trim().toLowerCase());
       })
       .sort((a, b) => {
         const summaryA = summaryByClient.get(a.id);
@@ -228,7 +203,7 @@ export default function ClientsPage({
 
         return sortDir === 'asc' ? result : -result;
       }),
-    [clients, search, sortDir, sortField, summaryByClient],
+    [clients, searchQuery, sortDir, sortField, summaryByClient],
   );
 
   const toggleSort = useCallback((id: string) => {
@@ -248,277 +223,220 @@ export default function ClientsPage({
     });
   }, []);
 
-  const gridTemplate = useMemo(() => {
-    const cols = visibleColumns.map((colId) => {
-      const col = ALL_COLUMNS.find((entry) => entry.id === colId);
-      return col ? `minmax(${col.minWidth}, ${col.flex})` : 'minmax(120px, 1fr)';
-    });
-    return `56px ${cols.join(' ')} 120px`;
-  }, [visibleColumns]);
-
-  const handleMerge = useCallback(() => {
-    const [primary, ...others] = Array.from(selectedClients);
-    onMergeClients?.(primary, others);
-    setSelectedClients(new Set());
-  }, [onMergeClients, selectedClients]);
-
   const handleDelete = useCallback(() => {
     const ids = Array.from(selectedClients);
-    if (confirm(`Voulez-vous vraiment supprimer ${ids.length} client(s) ? Cette action est irréversible.`)) {
+    if (confirm(`Voulez-vous vraiment supprimer ${ids.length} patient(s) ? Cette action est irréversible.`)) {
       onDeleteClients?.(ids);
       setSelectedClients(new Set());
     }
   }, [onDeleteClients, selectedClients]);
 
-  const handleSchedule = useCallback((client: Client) => {
-    onNewClient(`${client.firstName || ''} ${client.lastName || ''}`.trim());
-  }, [onNewClient]);
-
   useEffect(() => {
     onVisibleCountChange?.(filtered.length);
   }, [filtered.length, onVisibleCountChange]);
 
+  const gridTemplate = `56px minmax(280px, 2.5fr) minmax(150px, 1fr) minmax(140px, 1fr) minmax(220px, 1.8fr) minmax(100px, 0.8fr) 120px`;
+
   return (
-    <motion.div
-      className="flex-1 flex flex-col overflow-hidden bg-[#fafbfc]"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      <AnimatePresence>
-        {showFilterPanel && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/10"
-              onClick={() => onShowFilterPanelChange(false)}
-            />
-            <motion.div
-              initial={{ opacity: 0, y: 8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 8, scale: 0.98 }}
-              className="absolute right-4 top-28 z-50 w-[340px] rounded-[18px] border border-[#d9dee4] bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.08)] lg:right-8"
+    <div className="flex-1 flex flex-col bg-[#FDFDFB] p-10 lg:p-16 space-y-12">
+      
+      {/* ── Page Header ── */}
+      <div className="flex items-end justify-between border-b border-neutral-100 pb-10">
+        <div>
+          <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.4em] mb-4">BASE DE DONNÉES PATIENTS</p>
+          <h1 className="text-6xl font-bold text-neutral-900 tracking-tight leading-none">Répertoire</h1>
+        </div>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center p-1 bg-neutral-50 rounded-full border border-neutral-100">
+            <button 
+              onClick={() => setViewMode('list')}
+              className={`p-3 rounded-full transition-all ${viewMode === 'list' ? 'bg-white shadow-sm text-neutral-900' : 'text-neutral-300'}`}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#2e5b97]">Affichage</p>
-                  <h3 className="mt-1 font-sans text-lg font-semibold text-[#1d292e]">
-                    Contrôles du répertoire
-                  </h3>
-                </div>
-                <button
-                  onClick={() => onShowFilterPanelChange(false)}
-                  className="rounded-[10px] p-2 text-[#3f565f] transition-colors hover:bg-[#f7f4ec]"
-                >
-                  <X size={16} strokeWidth={1.75} />
-                </button>
-              </div>
+              <List size={18} strokeWidth={2.5} />
+            </button>
+            <button 
+              onClick={() => setViewMode('grid')}
+              className={`p-3 rounded-full transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-neutral-900' : 'text-neutral-300'}`}
+            >
+              <LayoutGrid size={18} strokeWidth={2.5} />
+            </button>
+          </div>
+          <button
+            onClick={() => onNewClient()}
+            className="h-16 px-10 flex items-center gap-4 rounded-full bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-2xl"
+          >
+            <Plus size={18} strokeWidth={3} />
+            NOUVEAU PATIENT
+          </button>
+        </div>
+      </div>
 
-              <div className="mt-6 space-y-5">
-                <div>
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#3f565f]">Tri</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {ALL_COLUMNS.filter((col) => col.id !== 'insurance').map((col) => (
-                      <button
-                        key={col.id}
-                        onClick={() => toggleSort(col.id)}
-                        className={`rounded-[12px] border px-3 py-2 text-left text-sm transition-colors ${
-                          sortField === col.id
-                            ? 'border-[#2e5b97] bg-[#e8f2ee] text-[#2e5b97]'
-                            : 'border-[#d9dee4] text-[#3f565f] hover:bg-[#f7f4ec]'
-                        }`}
-                      >
-                        {col.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#3f565f]">Colonnes visibles</p>
-                  <div className="space-y-2">
-                    {ALL_COLUMNS.map((col) => (
-                      <div
-                        key={col.id}
-                        onClick={() => setVisibleColumns((prev) =>
-                          prev.includes(col.id)
-                            ? prev.filter((id) => id !== col.id)
-                            : [...prev, col.id],
-                        )}
-                        className="flex w-full cursor-pointer items-center justify-between rounded-[12px] border border-[#d9dee4] px-3 py-2 text-sm text-[#1d292e] transition-colors hover:bg-[#f7f4ec]"
-                      >
-                        <span>{col.label}</span>
-                        <div className={`h-4 w-4 rounded border ${visibleColumns.includes(col.id) ? 'border-[#2e5b97] bg-[#2e5b97]' : 'border-[#c4cdd7] bg-white'}`}>
-                          {visibleColumns.includes(col.id) && <div className="mx-auto mt-[3px] h-1.5 w-1.5 rotate-45 bg-white" />}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
+      {/* ── Selection Toolbar ── */}
       <AnimatePresence>
         {selectedClients.size > 0 && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 60, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="shrink-0 overflow-hidden border-b border-[#bdd0e5] bg-[linear-gradient(135deg,#184f40_0%,#2e5b97_100%)] px-4 text-white lg:px-8"
+            initial={{ height: 0, opacity: 0, marginBottom: 0 }}
+            animate={{ height: 80, opacity: 1, marginBottom: 32 }}
+            exit={{ height: 0, opacity: 0, marginBottom: 0 }}
+            className="shrink-0 overflow-hidden rounded-[2.5rem] bg-neutral-900 p-6 text-white flex items-center justify-between shadow-2xl"
           >
-            <div className="flex h-[60px] items-center justify-between gap-4">
-              <p className="text-sm font-medium">
-                {selectedClients.size} client{selectedClients.size > 1 ? 's' : ''} sélectionné{selectedClients.size > 1 ? 's' : ''}
+            <div className="flex items-center gap-8 ml-4">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/50">SÉLECTION</span>
+              <p className="text-xl font-bold tracking-tight">
+                {selectedClients.size} Patient{selectedClients.size > 1 ? 's' : ''}
               </p>
-              <div className="flex items-center gap-3">
-                {selectedClients.size > 1 && (
-                  <button
-                    onClick={handleMerge}
-                    className="flex items-center gap-2 rounded-[12px] bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
-                  >
-                    <GitPullRequest size={14} strokeWidth={1.75} />
-                    Fusionner
-                  </button>
-                )}
-                <button
-                  onClick={handleDelete}
-                  className="flex items-center gap-2 rounded-[12px] bg-white/12 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/18"
-                >
-                  <Trash2 size={14} strokeWidth={1.75} />
-                  Supprimer
-                </button>
-                <button
-                  onClick={() => setSelectedClients(new Set())}
-                  className="flex items-center gap-2 rounded-[12px] border border-white/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/12"
-                >
-                  <X size={14} strokeWidth={1.75} />
-                  Effacer
-                </button>
-              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handleDelete}
+                className="h-12 px-8 flex items-center gap-3 rounded-full bg-red-500 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-red-600 transition-all shadow-lg"
+              >
+                <Trash2 size={14} strokeWidth={2.5} /> SUPPRIMER
+              </button>
+              <button
+                onClick={() => setSelectedClients(new Set())}
+                className="h-12 px-8 flex items-center gap-3 rounded-full bg-white/10 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-white/20 transition-all"
+              >
+                <X size={14} strokeWidth={2.5} /> ANNULER
+              </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <main className="flex-1 overflow-auto">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 lg:px-8 lg:py-8">
-          {filtered.length === 0 ? (
-            <EmptyState search={search} onNewClient={onNewClient} />
-          ) : (
-            <>
-              <div className={`hidden overflow-hidden lg:block ${dashboardPanel}`}>
-                <div
-                  className={`grid items-center border-b border-[#d9dee4] ${dashboardTableHeader}`}
-                  style={{ gridTemplateColumns: gridTemplate }}
+      {/* ── Content ── */}
+      <main className="flex-1">
+        {filtered.length === 0 ? (
+          <div className="py-40 flex flex-col items-center justify-center bg-neutral-50 rounded-[4rem] border-2 border-dashed border-neutral-100 group">
+             <Search size={64} strokeWidth={1} className="text-neutral-200 mb-8 group-hover:scale-110 transition-transform" />
+             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-300">
+               AUCUN RÉSULTAT CORRESPONDANT
+             </p>
+          </div>
+        ) : viewMode === 'list' ? (
+          <div className="space-y-6">
+            {/* Table Header */}
+            <div 
+              className="grid items-center px-10 mb-4"
+              style={{ gridTemplateColumns: gridTemplate }}
+            >
+              <div className="flex justify-center">
+                <Checkbox
+                  checked={selectedClients.size === filtered.length && filtered.length > 0}
+                  onChange={() => {
+                    if (selectedClients.size === filtered.length) setSelectedClients(new Set());
+                    else setSelectedClients(new Set(filtered.map(c => c.id)));
+                  }}
+                />
+              </div>
+               {ALL_COLUMNS.map(col => (
+                <button
+                  key={col.id}
+                  onClick={() => toggleSort(col.id)}
+                  className={`text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-300 hover:text-neutral-900 transition-all flex items-center gap-2 ${col.align === 'center' ? 'justify-center' : ''}`}
                 >
-                  <div className={`flex justify-center ${dashboardTableCell}`}>
-                    <Checkbox
-                      checked={selectedClients.size === filtered.length && filtered.length > 0}
-                      onChange={() => {
-                        if (selectedClients.size === filtered.length && filtered.length > 0) {
-                          setSelectedClients(new Set());
-                          return;
-                        }
-                        setSelectedClients(new Set(filtered.map((client) => client.id)));
-                      }}
-                    />
-                  </div>
+                  {col.label}
+                  {sortField === col.id && <ArrowUpDown size={10} strokeWidth={3} />}
+                </button>
+              ))}
+              <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-300 text-right pr-4">ACTIONS</div>
+            </div>
 
-                  {visibleColumns.map((colId) => {
-                    const col = ALL_COLUMNS.find((entry) => entry.id === colId);
-                    return (
-                      <button
-                        key={colId}
-                        onClick={() => toggleSort(colId)}
-                        className={`flex items-center gap-2 ${dashboardTableCell} transition-colors hover:text-[#2e5b97] ${
-                          col?.align === 'center' ? 'justify-center' : 'justify-start'
-                        }`}
-                      >
-                        {col?.label}
-                        <ArrowUpDown size={12} strokeWidth={1.8} className={sortField === colId ? 'text-[#2e5b97]' : 'opacity-50'} />
-                      </button>
-                    );
-                  })}
-
-                  <div className={`${dashboardTableCell} text-right`}>
-                    Actions
-                  </div>
-                </div>
-
-                <div className="divide-y divide-[#d9dee4]">
-                  {filtered.map((client) => {
-                    const summary = summaryByClient.get(client.id);
-                    if (!summary) return null;
-                    return (
-                      <ClientRow
-                        key={client.id}
-                        client={client}
-                        summary={summary}
-                        isSelected={selectedClients.has(client.id)}
-                        visibleColumns={visibleColumns}
-                        gridTemplate={gridTemplate}
-                        onSelect={onSelectClient}
-                        onToggle={toggleClient}
-                        onSchedule={handleSchedule}
+            {/* Table Body */}
+            <div className="space-y-4">
+              {filtered.map(client => {
+                const summary = summaryByClient.get(client.id);
+                if (!summary) return null;
+                return (
+                  <button
+                    key={client.id}
+                    onClick={() => onSelectClient(client)}
+                    className={`grid w-full items-center px-10 py-8 rounded-[3rem] border border-neutral-50 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-2xl text-left group ${
+                      selectedClients.has(client.id) ? 'border-neutral-900 shadow-xl' : ''
+                    }`}
+                    style={{ gridTemplateColumns: gridTemplate }}
+                  >
+                    <div className="flex justify-center">
+                      <Checkbox 
+                        checked={selectedClients.has(client.id)} 
+                        onChange={() => toggleClient(client.id)} 
                       />
-                    );
-                  })}
-                </div>
-              </div>
+                    </div>
+                    
+                    <div className="min-w-0 pr-8">
+                      <p className="text-xl font-bold text-neutral-900 tracking-tight leading-none truncate transition-all">
+                        {summary.fullName}
+                      </p>
+                      <p className="mt-2 text-[10px] font-bold text-neutral-400 uppercase tracking-[0.2em] truncate">
+                        {client.email || 'NO EMAIL'}
+                      </p>
+                    </div>
 
-              <div className="grid grid-cols-1 gap-5 lg:hidden md:grid-cols-2">
-                {filtered.map((client) => {
-                  const summary = summaryByClient.get(client.id);
-                  if (!summary) return null;
-                  return (
-                    <ClientCard
-                      key={client.id}
-                      client={client}
-                      summary={summary}
-                      isSelected={selectedClients.has(client.id)}
-                      onSelect={onSelectClient}
-                      onToggle={toggleClient}
-                      onSchedule={handleSchedule}
-                    />
-                  );
-                })}
-              </div>
-            </>
-          )}
-        </div>
+                    <div>
+                      <StatusBadge status={summary.status} />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-bold text-neutral-900 tracking-tight">
+                        {summary.lastVisitLabel}
+                      </p>
+                    </div>
+
+                    <div className="pr-8">
+                      <span className="inline-block px-4 py-1.5 rounded-full bg-neutral-50 border border-neutral-100 text-[10px] font-bold text-neutral-400 uppercase tracking-[0.1em] truncate max-w-full">
+                        {summary.preferredRitual}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-center">
+                      <span className="text-2xl font-bold text-neutral-900 tracking-tight">
+                        {summary.sessionsCount}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-end gap-3">
+                      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 group-hover:text-neutral-900 group-hover:bg-neutral-100 transition-all">
+                         <ChevronRight size={20} strokeWidth={2.5} />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {filtered.map(client => {
+              const summary = summaryByClient.get(client.id);
+              if (!summary) return null;
+              return (
+                <ClientCard 
+                  key={client.id}
+                  client={client}
+                  summary={summary}
+                  isSelected={selectedClients.has(client.id)}
+                  onSelect={onSelectClient}
+                  onToggle={() => toggleClient(client.id)}
+                />
+              );
+            })}
+          </div>
+        )}
       </main>
-    </motion.div>
+    </div>
   );
 }
 
-function Checkbox({
-  checked,
-  onChange,
-  compact = false,
-}: {
-  checked: boolean;
-  onChange: () => void;
-  compact?: boolean;
-}) {
+function Checkbox({ checked, onChange }: { checked: boolean; onChange: () => void }) {
   return (
     <button
       type="button"
-      onClick={(e) => {
-        e.stopPropagation();
-        onChange();
-      }}
-      className={`${compact ? 'h-4 w-4' : 'h-5 w-5'} flex items-center justify-center rounded border transition-colors ${
-        checked
-          ? 'border-[#2e5b97] bg-[#2e5b97] text-white'
-          : 'border-[#c4cdd7] bg-white text-transparent hover:border-[#2e5b97]'
+      onClick={(e) => { e.stopPropagation(); onChange(); }}
+      className={`h-7 w-7 flex items-center justify-center rounded-full border-2 transition-all ${
+        checked ? 'bg-neutral-900 border-neutral-900 text-white' : 'bg-white border-neutral-100 text-transparent hover:border-neutral-300'
       }`}
     >
-      <div className={`${compact ? 'h-1.5 w-1.5' : 'h-2 w-2'} rotate-45 bg-current`} />
+      <ShieldCheck size={14} strokeWidth={3} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-50'} />
     </button>
   );
 }
@@ -526,255 +444,61 @@ function Checkbox({
 function StatusBadge({ status }: { status: ClientStatus }) {
   const meta = STATUS_META[status];
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] ${meta.className}`}>
+    <span className={`inline-flex items-center rounded-full px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.1em] shadow-sm ${meta.className}`}>
       {meta.label}
     </span>
   );
 }
 
-function RitualBadge({ label }: { label: string }) {
-  return (
-    <span className={dashboardChip + " inline-flex max-w-full truncate border-[#ddd6fe] bg-[#f5f3ff] text-[#6d28d9]"}>
-      {label}
-    </span>
-  );
-}
-
-interface ClientRowProps {
+function ClientCard({ client, summary, isSelected, onSelect, onToggle }: {
   client: Client;
   summary: ClientSummary;
   isSelected: boolean;
-  visibleColumns: string[];
-  gridTemplate: string;
-  onSelect: (client: Client) => void;
-  onToggle: (id: string) => void;
-  onSchedule: (client: Client) => void;
-}
-
-function ClientRow({
-  client,
-  summary,
-  isSelected,
-  visibleColumns,
-  gridTemplate,
-  onSelect,
-  onToggle,
-  onSchedule,
-}: ClientRowProps) {
-  return (
-    <div
-      onClick={() => onSelect(client)}
-      className={`grid items-center transition-colors cursor-pointer ${
-        isSelected ? 'bg-[#f7f4ec]' : 'hover:bg-[#f7f4ec]'
-      }`}
-      style={{ gridTemplateColumns: gridTemplate }}
-    >
-      <div className={`flex justify-center ${dashboardTableCell}`}>
-        <Checkbox checked={isSelected} onChange={() => onToggle(client.id)} />
-      </div>
-
-      {visibleColumns.map((colId) => (
-        <div key={colId} className={dashboardTableCell}>
-          {renderDesktopCell(colId, client, summary)}
-        </div>
-      ))}
-
-      <div className={`flex items-center justify-end gap-2 ${dashboardTableCell}`}>
-        <ActionIconButton
-          label="Voir les notes"
-          tone="muted"
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelect(client);
-          }}
-        >
-          <NotebookText size={16} strokeWidth={1.75} />
-        </ActionIconButton>
-        <ActionIconButton
-          label="Planifier"
-          tone="primary"
-          onClick={(e) => {
-            e.stopPropagation();
-            onSchedule(client);
-          }}
-        >
-          <CalendarDays size={16} strokeWidth={1.75} />
-        </ActionIconButton>
-      </div>
-    </div>
-  );
-}
-
-function renderDesktopCell(colId: string, client: Client, summary: ClientSummary) {
-  switch (colId) {
-    case 'name':
-      return (
-        <div className="min-w-0">
-          <p className="truncate font-bold text-[#101416] transition-colors group-hover:text-[#184f40]">
-            {summary.fullName}
-          </p>
-          <p className="truncate text-xs text-[#3f565f]">{client.email || 'Aucun e-mail renseigné'}</p>
-        </div>
-      );
-    case 'status':
-      return <StatusBadge status={summary.status} />;
-    case 'lastVisit':
-      return <span className="text-sm text-[#101416]">{summary.lastVisitLabel}</span>;
-    case 'preferredRitual':
-      return <RitualBadge label={summary.preferredRitual} />;
-    case 'sessions':
-      return <div className="flex justify-center"><span className="text-sm font-bold text-[#184f40]">{summary.sessionsCount}</span></div>;
-    case 'email':
-      return <span className="truncate text-sm text-[#3f565f]">{client.email || '—'}</span>;
-    case 'phone':
-      return <span className="text-sm text-[#3f565f]">{client.phone || '—'}</span>;
-    case 'city':
-      return <span className="text-sm text-[#3f565f]">{client.city || '—'}</span>;
-    case 'insurance':
-      return <span className="truncate text-sm text-[#3f565f]">{client.insurance || '—'}</span>;
-    default:
-      return null;
-  }
-}
-
-function ClientCard({
-  client,
-  summary,
-  isSelected,
-  onSelect,
-  onToggle,
-  onSchedule,
-}: {
-  client: Client;
-  summary: ClientSummary;
-  isSelected: boolean;
-  onSelect: (client: Client) => void;
-  onToggle: (id: string) => void;
-  onSchedule: (client: Client) => void;
+  onSelect: (c: Client) => void;
+  onToggle: () => void;
 }) {
   return (
-    <div
+    <button
       onClick={() => onSelect(client)}
-      className={`cursor-pointer rounded-[24px] border p-6 shadow-[0_10px_30px_rgba(26,28,27,0.04)] transition-all ${
-        isSelected
-          ? 'border-[#bdd0e5] bg-[#f7f4ec]'
-          : 'border-[#d9dee4] bg-white active:scale-[0.99]'
+      className={`group flex flex-col text-left rounded-[3.5rem] border p-12 transition-all hover:-translate-y-2 hover:shadow-2xl bg-white ${
+        isSelected ? 'border-neutral-900 shadow-2xl ring-2 ring-neutral-900 ring-offset-8' : 'border-neutral-100 shadow-sm'
       }`}
     >
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <h3 className="truncate text-lg font-bold text-[#101416]">{summary.fullName}</h3>
-          <div className="mt-2">
-            <StatusBadge status={summary.status} />
-          </div>
+      <div className="flex items-start justify-between mb-10">
+        <div className="w-20 h-20 rounded-[2rem] bg-neutral-50 flex items-center justify-center text-neutral-300 group-hover:scale-110 transition-transform shadow-inner">
+          <Users size={32} strokeWidth={1.5} />
         </div>
-        <Checkbox checked={isSelected} onChange={() => onToggle(client.id)} />
+        <Checkbox checked={isSelected} onChange={onToggle} />
       </div>
 
-      <div className="space-y-3 text-sm">
-        <div className="flex items-center justify-between gap-3">
-          <span className="text-[#3f565f]">Dernière visite</span>
-          <span className="font-medium text-[#101416]">{summary.lastVisitLabel}</span>
+      <div className="space-y-2 mb-10">
+        <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.4em]">PATIENT</p>
+        <h3 className="text-3xl font-bold text-neutral-900 tracking-tight leading-none truncate transition-all">
+          {summary.fullName}
+        </h3>
+        <p className="text-sm font-medium text-neutral-400 truncate">{client.email || 'Aucun email'}</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-8 pt-8 border-t border-neutral-50">
+        <div className="space-y-1">
+          <p className="text-[8px] font-bold text-neutral-300 uppercase tracking-[0.2em]">STATUT</p>
+          <StatusBadge status={summary.status} />
         </div>
-        <div className="flex items-center justify-between gap-3">
-          <span className="text-[#3f565f]">Rituel préféré</span>
-          <div className="max-w-[60%] text-right"><RitualBadge label={summary.preferredRitual} /></div>
-        </div>
-        <div className="flex items-center justify-between gap-3">
-          <span className="text-[#3f565f]">Total séances</span>
-          <span className="font-bold text-[#184f40]">{summary.sessionsCount}</span>
-        </div>
-        <div className="flex items-center gap-2 text-[#3f565f]">
-          <Phone size={14} strokeWidth={1.75} className="text-[#8fa1b2]" />
-          <span>{client.phone || 'Aucun téléphone'}</span>
-        </div>
-        <div className="flex items-center gap-2 text-[#3f565f]">
-          <MapPin size={14} strokeWidth={1.75} className="text-[#8fa1b2]" />
-          <span>{client.city || 'Ville inconnue'}</span>
+        <div className="space-y-1">
+          <p className="text-[8px] font-bold text-neutral-400 uppercase tracking-[0.3em]">SÉANCES</p>
+          <p className="text-3xl font-bold text-neutral-900 tracking-tight">{summary.sessionsCount}</p>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 border-t border-[#d9dee4] pt-4">
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelect(client);
-          }}
-          className="rounded-xl border border-[#d9dee4] px-4 py-2.5 text-sm font-bold text-[#184f40] transition-colors hover:bg-[#f7f4ec]"
-        >
-          Voir les notes
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onSchedule(client);
-          }}
-          className={`${dashboardPrimaryButton} rounded-xl px-4 py-2.5 text-sm`}
-        >
-          Planifier
-        </button>
+      <div className="mt-10 flex items-center justify-between group-hover:pl-4 transition-all duration-500">
+        <div className="space-y-1">
+          <p className="text-[8px] font-bold text-neutral-400 uppercase tracking-[0.3em]">DERNIER SOIN</p>
+          <p className="text-sm font-bold text-neutral-900 tracking-tight">{summary.lastVisitLabel}</p>
+        </div>
+        <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-900 text-white shadow-xl opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0">
+          <ChevronRight size={20} strokeWidth={3} />
+        </div>
       </div>
-    </div>
-  );
-}
-
-function ActionIconButton({
-  label,
-  tone,
-  onClick,
-  children,
-}: {
-  label: string;
-  tone: 'muted' | 'primary';
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  children: React.ReactNode;
-}) {
-  const className = tone === 'primary'
-    ? 'rounded-lg p-2 text-[#184f40] transition-colors hover:bg-[#184f40] hover:text-white'
-    : 'rounded-lg p-2 text-[#8fa1b2] transition-colors hover:bg-[#e8f2ee] hover:text-[#184f40]';
-
-  return (
-    <div className="group relative flex">
-      <button
-        type="button"
-        aria-label={label}
-        onClick={onClick}
-        className={className}
-      >
-        {children}
-      </button>
-      <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#101416] px-3 py-1 text-[11px] font-medium text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
-        {label}
-      </span>
-    </div>
-  );
-}
-
-function EmptyState({ search, onNewClient }: { search: string; onNewClient: (s?: string) => void }) {
-  return (
-    <div className={`flex min-h-[420px] flex-col items-center justify-center gap-8 px-6 py-16 text-center ${dashboardPanel}`}>
-      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#f7f4ec]">
-        <Users size={32} strokeWidth={1.2} className="text-[#8fa1b2]" />
-      </div>
-      <div className="space-y-3">
-        <h2 className={dashboardTitleLg}>
-          Aucun client trouvé
-        </h2>
-        <p className="mx-auto max-w-md text-sm leading-relaxed text-[#3f565f]">
-          {search
-            ? `Aucun profil ne correspond à "${search}". Essayez une autre recherche ou créez une nouvelle fiche client.`
-            : 'Votre répertoire est vide. Commencez par créer une fiche client ou réserver une première séance.'}
-        </p>
-      </div>
-      <button
-        onClick={() => onNewClient(search.trim() || undefined)}
-        className={`${dashboardPrimaryButton} flex items-center gap-2 rounded-xl px-5 py-3 text-sm`}
-      >
-        <Plus size={16} strokeWidth={1.9} />
-        Créer un client
-      </button>
-    </div>
+    </button>
   );
 }

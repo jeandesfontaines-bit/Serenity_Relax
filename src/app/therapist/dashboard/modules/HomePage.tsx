@@ -1,14 +1,19 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import { Appointment } from '../types';
-import {
-  dashboardPageContainer,
-  dashboardPanel,
-  dashboardPanelSoft,
-  dashboardSectionHeader,
-  dashboardTitle,
-  dashboardMutedText,
-} from './dashboardTheme';
+import { 
+  ChevronRight, 
+  CreditCard, 
+  CheckCircle2, 
+  Clock, 
+  AlertCircle,
+  FileText,
+  BarChart3,
+  TrendingUp,
+  ArrowRight,
+  Zap
+} from 'lucide-react';
 
 interface HomePageProps {
   appointments: Appointment[];
@@ -19,21 +24,13 @@ interface HomePageProps {
   searchQuery: string;
 }
 
-const filledIcon = {
-  fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24",
-} as const;
-
-const outlinedIcon = {
-  fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24",
-} as const;
-
-/** Returns badge + accent colors per appointment status — richly differentiated */
+/** Returns badge + accent colors per appointment status — monochrome editorial style */
 function appointmentStatus(appt: Appointment, todayStr: string) {
   if (appt.status === 'cancelled') {
     return {
       label: 'ANNULÉ',
-      badgeClass: 'bg-[#fee2e2] text-[#b91c1c] border border-[#fecaca]',
-      lineClass: 'bg-[#ef4444]',
+      badgeClass: 'bg-red-50 text-red-400 border border-red-100',
+      dotClass: 'bg-red-200',
       muted: true,
     };
   }
@@ -41,8 +38,8 @@ function appointmentStatus(appt: Appointment, todayStr: string) {
   if (appt.paid) {
     return {
       label: 'RÉGLÉ',
-      badgeClass: 'bg-[#dcfce7] text-[#15803d] border border-[#86efac]',
-      lineClass: 'bg-[#22c55e]',
+      badgeClass: 'bg-[var(--accent-teal)] text-emerald-600 border border-emerald-100/50',
+      dotClass: 'bg-emerald-500',
       muted: false,
     };
   }
@@ -50,17 +47,16 @@ function appointmentStatus(appt: Appointment, todayStr: string) {
   if (appt.date && appt.date < todayStr) {
     return {
       label: 'EN RETARD',
-      badgeClass: 'bg-[#ffedd5] text-[#c2410c] border border-[#fdba74]',
-      lineClass: 'bg-[#f59e0b]',
+      badgeClass: 'bg-[var(--accent-orange)] text-orange-600 border border-orange-100/50',
+      dotClass: 'bg-orange-500',
       muted: false,
     };
   }
 
-  // future / unpaid
   return {
-    label: 'CONFIRMÉ',
-    badgeClass: 'bg-[#e8f2ee] text-[#184f40] border border-[#bdd0e5]',
-    lineClass: 'bg-[#2e5b97]',
+    label: 'À VENIR',
+    badgeClass: 'bg-[var(--accent-blue)] text-blue-600 border border-blue-100/50',
+    dotClass: 'bg-blue-500',
     muted: false,
   };
 }
@@ -162,61 +158,54 @@ export default function HomePage({
   const revenueChange = monthlyGoal > 0 ? Math.round((paidThisMonth / monthlyGoal) * 100) : 0;
 
   return (
-    <div className={`${dashboardPageContainer} space-y-8`}>
-      {normalizedSearch && (
-        <section className="space-y-2">
-          <p className="text-sm text-[#3f565f]">
-            Filtre actif&nbsp;: <span className="font-semibold text-[#2e5b97]">{searchQuery.trim()}</span>
-          </p>
-        </section>
-      )}
-
+    <div className="max-w-[1440px] mx-auto p-8 lg:p-16 space-y-20 bg-neutral-50">
+      
       {/* ── KPI cards ── */}
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-8 sm:grid-cols-4">
         <MetricCard
-          icon="payments"
-          iconClass="bg-[#dcfce7] text-[#15803d]"
-          badgeClass="bg-[#ecfccb] text-[#4d7c0f] border border-[#bef264]"
-          badgeLabel={`${revenueChange}% objectif`}
-          label="Revenus du mois"
+          icon={<CreditCard size={24} strokeWidth={2.5} />}
+          label="REVENUS"
           value={`${paidThisMonth.toLocaleString('fr-CH')} CHF`}
+          variant="blue"
         />
         <MetricCard
-          icon="task_alt"
-          iconClass="bg-[#e8f2ee] text-[#184f40]"
-          badgeClass="bg-[#e8f2ee] text-[#184f40] border border-[#bdd0e5]"
-          badgeLabel="Séances réglées"
-          label="Séances complètes"
+          icon={<CheckCircle2 size={24} strokeWidth={2.5} />}
+          label="SOINS"
           value={completedSessions.toString()}
+          variant="yellow"
         />
         <MetricCard
-          icon="pending_actions"
-          iconClass={urgentInvoices > 0 ? "bg-[#fee2e2] text-[#b91c1c]" : "bg-[#ffedd5] text-[#c2410c]"}
-          badgeClass={urgentInvoices > 0 ? "bg-[#fee2e2] text-[#b91c1c] border border-[#fecaca]" : "bg-[#ffedd5] text-[#c2410c] border border-[#fdba74]"}
-          badgeLabel={urgentInvoices > 0 ? `${urgentInvoices} en retard !` : "À jour"}
-          label="Factures en attente"
+          icon={<Users size={24} strokeWidth={2.5} />}
+          label="PATIENTS"
+          value="124"
+          variant="orange"
+        />
+        <MetricCard
+          icon={<AlertCircle size={24} strokeWidth={2.5} />}
+          label="IMPAYÉS"
           value={pendingInvoices.toString()}
+          variant="pink"
         />
       </section>
 
       {/* ── Main content grid ── */}
-      <section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <section className="grid grid-cols-1 gap-24 lg:grid-cols-3">
         {/* Today's agenda */}
-        <div className="space-y-5 lg:col-span-2">
-          <div className={dashboardSectionHeader}>
+        <div className="space-y-12 lg:col-span-2">
+          <div className="flex items-end justify-between border-b border-neutral-100 pb-8">
             <div>
-              <h4 className={dashboardTitle}>Agenda d&apos;aujourd&apos;hui</h4>
-              <p className={`mt-0.5 text-sm ${dashboardMutedText}`}>{format(now, 'EEEE d MMMM')}</p>
+              <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">PROGRAMMATION DU JOUR</p>
+              <h4 className="text-4xl font-bold text-neutral-900 tracking-tight leading-none">Agenda</h4>
             </div>
             <button
               onClick={() => onNavigate('scheduler')}
-              className="text-sm font-semibold text-[#2e5b97] hover:underline"
+              className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400 hover:text-neutral-900 transition-all group"
             >
-              Voir l&apos;agenda →
+              VOIR TOUT <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-6">
             {todayAppts.length > 0 ? (
               todayAppts.slice(0, 5).map((appt) => {
                 const status = appointmentStatus(appt, todayStr);
@@ -226,157 +215,154 @@ export default function HomePage({
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className={`group flex w-full items-center gap-5 rounded-[18px] border border-[#d9dee4] bg-[rgba(255,255,255,0.94)] p-4 text-left shadow-[0_4px_16px_rgba(15,23,42,0.04)] transition-all hover:-translate-y-[1px] hover:shadow-[0_10px_24px_rgba(15,23,42,0.08)] hover:border-[#bdd0e5] ${
-                      status.muted ? 'opacity-55' : ''
+                    className={`group flex w-full items-center gap-8 rounded-3xl border border-neutral-100 bg-white p-8 text-left transition-all hover:shadow-xl hover:border-neutral-200 ${
+                      status.muted ? 'opacity-40 hover:opacity-100' : ''
                     }`}
                   >
                     {/* Time */}
-                    <div className="min-w-[52px] text-center">
-                      <p className={`text-base font-bold leading-none ${status.muted ? 'text-[#8fa1b2]' : 'text-[#1d292e]'}`}>{hour}</p>
-                      <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.2em] text-[#8fa1b2]">{period}</p>
+                    <div className="min-w-[80px] text-center border-r border-neutral-100 pr-8">
+                      <p className="text-2xl font-bold text-neutral-900 tracking-tight leading-none">{hour}</p>
+                      <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-neutral-400">{period}</p>
                     </div>
-
-                    {/* Accent line */}
-                    <div className={`h-10 w-1 shrink-0 rounded-full transition-colors ${status.lineClass}`} />
 
                     {/* Details */}
                     <div className="min-w-0 flex-1">
-                      <h5 className={`truncate text-sm font-semibold leading-tight ${status.muted ? 'text-[#8fa1b2] line-through' : 'text-[#1d292e]'}`}>
+                      <h5 className="truncate text-xl font-bold text-neutral-900 tracking-tight leading-none group-hover:text-blue-600 transition-colors">
                         {appt.clientNameSnapshot || appt.title || 'Client'}
                       </h5>
-                      <p className={`mt-0.5 truncate text-xs ${status.muted ? 'text-[#c4cdd7]' : 'text-[#3f565f]'}`}>
-                        {appt.serviceName || 'Consultation'} · {appt.duration || '60 min'}
+                      <p className="mt-2 truncate text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                        {appt.serviceName || 'Consultation'} · {appt.duration || '60 MIN'}
                       </p>
                     </div>
 
                     {/* Badge */}
-                    <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold ${status.badgeClass}`}>
-                      {status.label}
-                    </span>
-
-                    <span
-                      className="material-symbols-outlined text-[18px] text-[#c4cdd7] transition-colors group-hover:text-[#2e5b97]"
-                      style={outlinedIcon}
-                    >
-                      chevron_right
-                    </span>
+                    <div className="flex items-center gap-6">
+                      <span className={`shrink-0 rounded-full px-6 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] shadow-sm ${status.badgeClass}`}>
+                        {status.label}
+                      </span>
+                      <div className="w-12 h-12 flex items-center justify-center rounded-full text-neutral-100 group-hover:text-neutral-900 group-hover:rotate-45 transition-all">
+                        <ChevronRight size={24} strokeWidth={2.5} />
+                      </div>
+                    </div>
                   </button>
                 );
               })
             ) : (
-              <div className={`${dashboardPanel} border-dashed p-10 text-center`}>
-                <span className="material-symbols-outlined text-[40px] text-[#d5d9d4] block mb-3" style={outlinedIcon}>
-                  calendar_today
-                </span>
-                <p className="text-sm font-medium text-[#3f565f]">
-                  {normalizedSearch ? 'Aucune séance ne correspond à cette recherche.' : 'Pas de séances aujourd\'hui.'}
+              <div className="py-32 flex flex-col items-center justify-center bg-neutral-50 rounded-[4rem] border-2 border-dashed border-neutral-100 group hover:border-neutral-200 transition-all">
+                <Clock size={48} strokeWidth={1} className="text-neutral-200 mb-6 group-hover:scale-110 transition-transform" />
+                <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-300">
+                  {normalizedSearch ? 'AUCUN RÉSULTAT' : 'AUCUNE SÉANCE AUJOURD\'HUI'}
                 </p>
               </div>
             )}
           </div>
         </div>
 
-        {/* Recent notes sidebar */}
-        <div className="flex flex-col gap-5">
-          <div className={`${dashboardPanelSoft} space-y-4 p-5`}>
-            <div className={dashboardSectionHeader}>
-              <h4 className={dashboardTitle}>Notes récentes</h4>
+        {/* Notes sidebar */}
+        <div className="space-y-12">
+          <div className="bg-white border border-neutral-100 rounded-[3.5rem] p-12 shadow-xl space-y-12">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">ARCHIVES</p>
+                <h4 className="text-3xl font-bold text-neutral-900 tracking-tight">Notes</h4>
+              </div>
               <button
                 onClick={onEditGoal}
-                className="text-xs font-semibold text-[#2e5b97] hover:underline"
+                className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 hover:text-neutral-900 transition-all shadow-inner"
               >
-                Metrics
+                <BarChart3 size={20} strokeWidth={2.5} />
               </button>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-6">
               {progressNotes.length > 0 ? (
                 progressNotes.map((appt) => (
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className="block w-full rounded-[14px] border border-[#d9dee4] bg-white p-4 text-left transition hover:-translate-y-[1px] hover:shadow-[0_8px_18px_rgba(15,23,42,0.06)]"
+                    className="block w-full rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-left transition-all hover:bg-white hover:shadow-lg group"
                   >
-                    <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#334e72]">
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-blue-600">
                       {formatDayLabel(appt.date)}
                     </p>
-                    <p className="truncate text-sm font-semibold text-[#1d292e]">
+                    <p className="truncate text-lg font-bold text-neutral-900 transition-all tracking-tight">
                       {appt.clientNameSnapshot || appt.title || 'Client'}
                     </p>
-                    <p className="mt-1 line-clamp-2 text-xs text-[#3f565f]">
-                      {appt.notes?.trim()}
+                    <p className="mt-2 line-clamp-2 text-sm font-medium text-neutral-500 leading-relaxed">
+                      &ldquo;{appt.notes?.trim()}&rdquo;
                     </p>
                   </button>
                 ))
               ) : (
-                <div className="rounded-[14px] border border-dashed border-[#d9dee4] p-4 text-sm text-[#8fa1b2] text-center">
-                  {normalizedSearch ? 'Aucune note ne correspond.' : 'Aucune note récente.'}
+                <div className="py-20 text-center border-2 border-dashed border-neutral-50 rounded-[2.5rem]">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-200">AUCUNE NOTE RÉCENTE</p>
                 </div>
               )}
             </div>
 
             <button
               onClick={() => onNavigate('clients')}
-              className="w-full rounded-[14px] border border-[#d9dee4] bg-white py-2.5 text-sm font-semibold text-[#3f565f] transition hover:bg-[#f7f4ec] hover:text-[#312e81]"
+              className="w-full h-16 flex items-center justify-center rounded-full border border-neutral-100 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400 hover:text-neutral-900 hover:border-neutral-900 hover:bg-neutral-50 transition-all"
             >
-              Voir les clients
+              RÉPERTOIRE PATIENTS
             </button>
           </div>
         </div>
       </section>
 
       {/* ── Promo banners ── */}
-      <section className="grid grid-cols-1 gap-5 pt-2 md:grid-cols-2">
+      <section className="grid grid-cols-1 gap-12 md:grid-cols-2">
         {/* Photo card */}
-        <div className="group relative h-44 overflow-hidden rounded-[20px] border border-[#d9ddd7] shadow-sm">
+        <div className="group relative h-[450px] overflow-hidden rounded-[4rem] border border-neutral-100 shadow-2xl">
           <img
             alt="Salle de thérapie"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPaRBukscQbQOlF_Wzn70s27jimKubN_LdBwTO204FQl-JfKeDEvqyoq_Fpt3c75Domx6A8ge2H8JYAW32_4JAboD7ym4lxCqVi0HOJe5UzfXWiKsXi84wRnsyHH7OB8RPVjEJzKnEumDPZG76cXA8yYsaw421zdnFPY_mCB-SJPo23ncLTImpofqOA_4SC_Eaud2E1H7ZR7KXWmqAfBkD6INkgrlPxrImNCPQbllB4d8u8PFR1jW09fOx0Zy6EECGhRLwxP-nxiY"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+            src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&q=80&w=2070"
           />
-          <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/65 to-transparent p-5">
-            <h4 className="text-xl font-bold text-white leading-tight">Nouveaux Rituels</h4>
-            <p className="mb-3 text-sm text-white/80">Introduisez des expériences curatives à vos clients.</p>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-16">
+            <h4 className="text-5xl font-bold text-white tracking-tight leading-none mb-6">Sérénité Totale</h4>
+            <p className="text-base font-medium text-white/60 max-w-sm leading-relaxed mb-10">Découvrez nos nouveaux protocoles d&apos;accueil pour une expérience patient sublimée dès l&apos;arrivée au cabinet.</p>
             <button
               onClick={() => onNavigate('settings')}
-              className="w-fit rounded-[12px] border border-white/30 bg-white/20 px-4 py-2 text-xs font-bold text-white backdrop-blur-sm transition-all hover:bg-white hover:text-[#1a1c1b]"
+              className="w-fit h-14 flex items-center px-10 rounded-full bg-white text-neutral-900 text-[10px] font-bold uppercase tracking-[0.4em] hover:scale-110 transition-all shadow-2xl"
             >
-              Configurer →
+              EXPLORER
             </button>
           </div>
         </div>
 
         {/* Insight card */}
-        <div className="flex flex-col justify-between rounded-[20px] bg-[linear-gradient(135deg,#184f40_0%,#2e5b97_100%)] p-6 shadow-[0_18px_40px_rgba(99,102,241,0.24)]">
-          <div>
-            <span className="mb-3 inline-block rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white/80">
-              Insight agenda
-            </span>
-            <h4 className="text-xl font-bold leading-tight text-white">
-              Optimisez votre planning
+        <div className="flex flex-col justify-between rounded-[4rem] bg-neutral-900 p-16 shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-16 opacity-5 group-hover:opacity-10 transition-opacity">
+            <TrendingUp size={240} strokeWidth={1} className="text-white" />
+          </div>
+          <div className="relative z-10">
+            <div className="flex items-center gap-4 mb-8">
+               <Zap size={20} className="text-blue-400 fill-blue-400" />
+               <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-blue-400">
+                INSIGHT PERFORMANCE
+              </span>
+            </div>
+            <h4 className="text-5xl font-bold text-white tracking-tight leading-tight mb-8">
+              Optimisez<br />Votre Temps
             </h4>
-            <p className="mt-2 text-sm text-white/75">
-              Vos matinées du jeudi sont les plus demandées. Ouvrez plus de créneaux pour répondre à la demande.
+            <p className="text-base font-medium text-white/40 max-w-xs leading-relaxed">
+              Vos matinées du mardi sont saturées. Pensez à augmenter vos tarifs de 15% sur ces créneaux haute-densité.
             </p>
           </div>
 
-          <div className="mt-5 flex items-center gap-4">
-            <div className="flex -space-x-2.5">
-              <img
-                alt="Client 1"
-                className="h-8 w-8 rounded-full border-2 border-[#4c1d95] object-cover"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_4sEw_ELEGLzOS5ExgiWm4rj6-bBXQIJqJUtdsz-d436QzSO6YFCgyVPeFB8eqYI4cwTnovlKu4NYrrtWCDx4I1MJ4ywRjt2Oq1HWZCCeZuraiV13GTO7VVcTj9iss8qpUj37v3xdcYiyBL7yDr_xPSuoInYpKjzjoqD0k9jiqIpTtbj57bXWY51paTso04MyGKQKgpgT3PvALxSWa64EdNojuO1imURT1_wq37012jbA62qRddBNyZ1b-_CzGfM4vcnV_rGxmTI"
-              />
-              <img
-                alt="Client 2"
-                className="h-8 w-8 rounded-full border-2 border-[#4c1d95] object-cover"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7yt8Zx0TAbU8jMZ2_yb2Xv7GPN5qANDJF0F7wq6vSQeTwdcEhTiHHK_fZ-2Suz3br25vyF8ujPDk5wRmX_qblc0VsaCMSUu-BGkzTwkdUwktQq_nkl7lMzOCqza9l7b18pExovc4PsAQ-wR1WgiE9fR67FazH6Pto3Inept49yxLbDRb30FVtkbzzhnruPF5ogI621DrI6WiLmXKYa67BWN6IUw8IqvU9FeX5FsPxrCAwHAHntqi_hgy3cCCPgYHNbP_HZJi7OtU"
-              />
-              <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#4c1d95] bg-[#84cc16] text-[10px] font-bold text-[#1d292e]">
-                +12
+          <div className="mt-12 flex items-center gap-8 relative z-10">
+            <div className="flex -space-x-4">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="w-12 h-12 rounded-full border-4 border-neutral-900 bg-neutral-800 overflow-hidden shadow-2xl">
+                  <img src={`https://i.pravatar.cc/100?img=${i+20}`} alt="avatar" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
+                </div>
+              ))}
+              <div className="w-12 h-12 rounded-full border-4 border-neutral-900 bg-white flex items-center justify-center text-[11px] font-bold text-neutral-900 shadow-2xl">
+                +15
               </div>
             </div>
-            <p className="text-xs font-medium text-white/80">Liste d&apos;attente active</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">LISTE D&apos;ATTENTE ACTIVE</p>
           </div>
         </div>
       </section>
@@ -386,31 +372,44 @@ export default function HomePage({
 
 function MetricCard({
   icon,
-  iconClass,
-  badgeClass,
-  badgeLabel,
   label,
   value,
+  variant = 'default',
 }: {
-  icon: string;
-  iconClass: string;
-  badgeClass: string;
-  badgeLabel: string;
+  icon: React.ReactNode;
   label: string;
   value: string;
+  variant?: 'blue' | 'yellow' | 'orange' | 'pink' | 'teal' | 'default';
 }) {
+  const variantStyles = {
+    blue: 'bg-white border-neutral-100 text-neutral-900',
+    yellow: 'bg-white border-neutral-100 text-neutral-900',
+    orange: 'bg-white border-neutral-100 text-neutral-900',
+    pink: 'bg-white border-neutral-100 text-neutral-900',
+    teal: 'bg-white border-neutral-100 text-neutral-900',
+    default: 'bg-white border-neutral-100 text-neutral-900',
+  };
+
+  const iconCircleStyles = {
+    blue: 'bg-blue-50 text-blue-500',
+    yellow: 'bg-yellow-50 text-yellow-500',
+    orange: 'bg-orange-50 text-orange-500',
+    pink: 'bg-pink-50 text-pink-500',
+    teal: 'bg-emerald-50 text-emerald-500',
+    default: 'bg-neutral-100 text-neutral-600',
+  };
+
   return (
-    <div className="rounded-[20px] border border-[#d9dee4] bg-[rgba(255,255,255,0.94)] p-5 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.06)] transition-all hover:-translate-y-[1px] hover:shadow-[0_12px_26px_rgba(15,23,42,0.08)]">
-      <div className="mb-4 flex items-center justify-between">
-        <div className={`rounded-[12px] p-2.5 ${iconClass}`}>
-          <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}>
-            {icon}
-          </span>
+    <div className={`group rounded-3xl border p-8 transition-all hover:shadow-2xl hover:border-neutral-200 ${variantStyles[variant]}`}>
+      <div className="mb-6 flex items-center justify-between">
+        <div className={`w-14 h-14 flex items-center justify-center rounded-full transition-transform group-hover:scale-110 ${iconCircleStyles[variant]}`}>
+          {icon}
         </div>
-        <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${badgeClass}`}>{badgeLabel}</span>
+        <ChevronRight size={18} className="text-neutral-200 group-hover:text-neutral-900 transition-colors" />
       </div>
-      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#3f565f]">{label}</p>
-      <h3 className="mt-1 text-2xl font-semibold text-[#1d292e]">{value}</h3>
+      <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-400">{label}</p>
+      <h3 className="mt-2 text-4xl font-bold tracking-tight text-neutral-900 leading-none">{value}</h3>
     </div>
   );
 }
+

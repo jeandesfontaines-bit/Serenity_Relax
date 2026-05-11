@@ -12,12 +12,12 @@ export default function Atelier() {
         <header className="mb-16 grid grid-cols-12 gap-6 lg:mb-20">
           <div className="col-span-12 lg:col-span-7">
             <span className="mono-caption text-[var(--sage-deep)]">— Questions fréquentes</span>
-            <h2 className="mt-6 display-tight text-5xl text-foreground md:text-6xl lg:text-7xl">
+            <h2 className="mt-6 display-tight text-4xl text-foreground md:text-6xl lg:text-7xl leading-[0.95]">
               Tout ce qu'il faut savoir <em>avant la première séance.</em>
             </h2>
           </div>
           <div className="col-span-12 lg:col-span-4 lg:col-start-9 lg:pt-8">
-            <p className="text-base leading-[1.6] text-foreground/65">
+            <p className="text-base leading-[1.65] text-foreground/65 md:text-lg">
               Une question qui n'est pas listée ? Contactez-nous directement,
               nous y répondons sous 24 heures.
             </p>

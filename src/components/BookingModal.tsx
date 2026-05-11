@@ -2,36 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { useBooking } from "@/context/BookingContext";
-
-// Duplicated simple icon component for the modal if needed, or import from somewhere.
-// Let's assume we can copy it or we'll just redefine the small ones we need here.
-function Icon({ name, size = 24, strokeWidth = 2 }: any) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {name === "close" && (
-        <><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></>
-      )}
-      {name === "chevron-left" && <polyline points="15 18 9 12 15 6"></polyline>}
-      {name === "chevron-right" && <polyline points="9 18 15 12 9 6"></polyline>}
-      {name === "user" && (
-        <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></>
-      )}
-      {name === "map-pin" && (
-        <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></>
-      )}
-      {name === "check" && <polyline points="20 6 9 17 4 12"></polyline>}
-    </svg>
-  );
-}
+import { 
+  X, ChevronLeft, ChevronRight, User, MapPin, Check, 
+  Calendar, Clock, Sparkles, ArrowRight, ShieldCheck,
+  CreditCard, Info
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const TIME_SLOTS = [
   "09:00", "10:30", "12:00",
@@ -69,14 +45,14 @@ export function BookingModal() {
 
   const getWeekInfo = () => {
     const today = new Date();
-    const startOfWeek = new Date(today);
+    const startOfWeekDate = new Date(today);
     const day = today.getDay();
     const diff = today.getDate() - day + (day === 0 ? -6 : 1);
-    startOfWeek.setDate(diff + weekOffset * 7);
+    startOfWeekDate.setDate(diff + weekOffset * 7);
 
     const days = Array.from({ length: 7 }, (_, index) => {
-      const date = new Date(startOfWeek);
-      date.setDate(startOfWeek.getDate() + index);
+      const date = new Date(startOfWeekDate);
+      date.setDate(startOfWeekDate.getDate() + index);
       return {
         fullDate: date.toISOString().split("T")[0],
         dayName: date.toLocaleDateString("fr-FR", { weekday: "short" }).replace(".", ""),
@@ -86,8 +62,8 @@ export function BookingModal() {
       };
     });
 
-    const midWeek = new Date(startOfWeek);
-    midWeek.setDate(startOfWeek.getDate() + 3);
+    const midWeek = new Date(startOfWeekDate);
+    midWeek.setDate(startOfWeekDate.getDate() + 3);
     const monthLabel = midWeek.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
 
     return { days, monthLabel };
@@ -95,7 +71,6 @@ export function BookingModal() {
 
   const { days, monthLabel } = getWeekInfo();
   
-  // Refined validation
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const isValidPhone = (phone: string) => phone.length >= 8;
   const canContinueInfo = Boolean(
@@ -114,149 +89,285 @@ export function BookingModal() {
 
   const selectTime = (time: string) => {
     updateBookingData("time", time);
-    window.setTimeout(() => setStep(2), 180);
+    window.setTimeout(() => setStep(2), 300);
   };
 
   return (
-    <div className="srt-modal-overlay" role="presentation">
-      <button className="srt-modal-backdrop" onClick={closeModal} aria-label="Fermer" type="button" />
-      <div className="srt-modal" role="dialog" aria-modal="true" aria-labelledby="booking-title">
-        <div className="srt-modal-header">
-          <div>
-            <p className="srt-modal-label">Réservation</p>
-            <h3 id="booking-title" className="srt-modal-title">{service.title}</h3>
-            <p className="srt-modal-subtitle">{service.price} · {service.duration}</p>
+    <div className="fixed inset-0 z-[500] flex items-center justify-center p-6">
+      <motion.div 
+        className="absolute inset-0 bg-neutral-900/60 backdrop-blur-2xl" 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={closeModal} 
+      />
+      
+      <motion.div 
+        className="relative w-full max-w-4xl bg-[#FDFDFB] rounded-[4rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border border-white"
+        initial={{ opacity: 0, scale: 0.9, y: 100 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 100 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {/* Header */}
+        <div className="px-16 pt-16 pb-12 border-b border-neutral-100 flex items-center justify-between">
+          <div className="flex items-center gap-10">
+             <div className="w-16 h-16 bg-neutral-900 rounded-[2rem] flex items-center justify-center text-white shadow-2xl rotate-3">
+                <Sparkles size={28} strokeWidth={2.5} />
+             </div>
+             <div>
+                <p className="text-[11px] font-black uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none italic">RÉSERVATION STUDIO</p>
+                <h3 className="text-5xl font-black text-neutral-900 tracking-tighter italic leading-none">{service.title}</h3>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 mt-4 italic">{service.price} · {service.duration}</p>
+             </div>
           </div>
-          <button className="srt-close-btn" onClick={closeModal} aria-label="Fermer la réservation" type="button">
-            <Icon name="close" size={18} />
+          <button className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all" onClick={closeModal}>
+            <X size={20} strokeWidth={3} />
           </button>
         </div>
 
-        <div className="srt-modal-body">
-          {error && (
-            <div style={{ padding: "12px", marginBottom: "16px", borderRadius: "8px", background: "#fee2e2", color: "#b91c1c", fontSize: "12px" }}>
-              {error}
-            </div>
-          )}
-          
-          {step < 4 && (
-            <div className="srt-step-bars" aria-hidden="true">
-              {[1, 2, 3].map((item) => (
-                <span key={item} className={`srt-step-bar ${step >= item ? "active" : ""}`} />
-              ))}
-            </div>
-          )}
-
-          {step === 1 && (
-            <div>
-              <div className="srt-week-head">
-                <span className="srt-month">{monthLabel}</span>
-                <div className="srt-week-controls">
-                  <button className="srt-mini-btn" onClick={() => setWeekOffset((value) => value - 1)} type="button" aria-label="Semaine précédente">
-                    <Icon name="chevron-left" size={12} />
-                  </button>
-                  <button className="srt-mini-btn" onClick={() => setWeekOffset((value) => value + 1)} type="button" aria-label="Semaine suivante">
-                    <Icon name="chevron-right" size={12} />
-                  </button>
-                </div>
+        <div className="flex-1 overflow-y-auto scrollbar-hide">
+          <div className="p-16">
+            {error && (
+              <div className="bg-red-50 text-red-500 p-8 rounded-[2rem] border border-red-100 text-[10px] font-black uppercase tracking-[0.2em] mb-12 flex items-center gap-4">
+                <Info size={16} /> {error}
               </div>
-
-              <div className="srt-week-days">
-                {days.map((day) => (
-                  <button
-                    key={day.fullDate}
-                    disabled={day.isPast || day.isWeekend}
-                    onClick={() => selectDate(day.fullDate)}
-                    className={`srt-day-btn ${bookingData.date === day.fullDate ? "active" : ""}`}
-                    type="button"
-                  >
-                    <span className="srt-day-name">{day.dayName}</span>
-                    <span className="srt-day-num">{day.dayNum}</span>
-                  </button>
+            )}
+            
+            {step < 4 && (
+              <div className="flex items-center gap-4 mb-16 px-4">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="flex-1 h-2 rounded-full bg-neutral-100 overflow-hidden">
+                    <motion.div 
+                      className="h-full bg-neutral-900" 
+                      initial={{ width: 0 }}
+                      animate={{ width: step >= item ? "100%" : "0%" }}
+                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                  </div>
                 ))}
               </div>
+            )}
 
-              {bookingData.date && (
-                <div className="srt-slots">
-                  <span className="srt-slots-title">Horaires disponibles</span>
-                  <div className="srt-time-grid">
-                    {TIME_SLOTS.map((slot) => (
+            <AnimatePresence mode="wait">
+              {step === 1 && (
+                <motion.div
+                  key="step-1"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-16"
+                >
+                  <div className="flex items-center justify-between border-b border-neutral-100 pb-8">
+                    <h4 className="text-3xl font-black tracking-tighter italic text-neutral-900">{monthLabel}</h4>
+                    <div className="flex items-center gap-4">
+                      <button className="w-12 h-12 flex items-center justify-center rounded-full border border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all" onClick={() => setWeekOffset((v) => v - 1)}>
+                        <ChevronLeft size={18} strokeWidth={3} />
+                      </button>
+                      <button className="w-12 h-12 flex items-center justify-center rounded-full border border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all" onClick={() => setWeekOffset((v) => v + 1)}>
+                        <ChevronRight size={18} strokeWidth={3} />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-7 gap-4">
+                    {days.map((day) => (
                       <button
-                        key={slot}
-                        onClick={() => selectTime(slot)}
-                        className={`srt-time-btn ${bookingData.time === slot ? "active" : ""}`}
-                        type="button"
+                        key={day.fullDate}
+                        disabled={day.isPast || day.isWeekend}
+                        onClick={() => selectDate(day.fullDate)}
+                        className={`h-28 flex flex-col items-center justify-center rounded-[2.5rem] border-2 transition-all duration-500 ${
+                          bookingData.date === day.fullDate 
+                            ? "bg-neutral-900 border-neutral-900 text-white shadow-2xl scale-110 z-10" 
+                            : day.isPast || day.isWeekend ? "opacity-10 border-transparent cursor-not-allowed" : "bg-white border-neutral-50 text-neutral-900 hover:border-neutral-900"
+                        }`}
                       >
-                        {slot}
+                        <span className={`text-[9px] font-black uppercase tracking-[0.2em] mb-2 ${bookingData.date === day.fullDate ? "text-white/40" : "text-neutral-300"}`}>{day.dayName}</span>
+                        <span className="text-3xl font-black tracking-tighter italic leading-none">{day.dayNum}</span>
                       </button>
                     ))}
                   </div>
-                </div>
+
+                  {bookingData.date && (
+                    <div className="space-y-8 pt-8">
+                      <p className="text-[11px] font-black uppercase tracking-[0.4em] text-neutral-300 px-6 italic">CRÉNEAUX DISPONIBLES</p>
+                      <div className="grid grid-cols-4 gap-4">
+                        {TIME_SLOTS.map((slot) => (
+                          <button
+                            key={slot}
+                            onClick={() => selectTime(slot)}
+                            className={`h-16 rounded-full text-lg font-black tracking-tighter italic transition-all duration-500 border-2 ${
+                              bookingData.time === slot 
+                                ? "bg-neutral-900 border-neutral-900 text-white shadow-xl scale-105 z-10" 
+                                : "bg-white border-neutral-50 text-neutral-900 hover:border-neutral-900 shadow-sm"
+                            }`}
+                          >
+                            {slot}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
               )}
-            </div>
-          )}
 
-          {step === 2 && (
-            <div>
-              <div className="srt-form-title"><Icon name="user" size={12} /> Vos informations</div>
-              <div className="srt-form-grid">
-                <input className="srt-input" value={bookingData.firstName} onChange={(event) => updateBookingData("firstName", event.target.value)} placeholder="Prénom *" />
-                <input className="srt-input" value={bookingData.lastName} onChange={(event) => updateBookingData("lastName", event.target.value)} placeholder="Nom *" />
-                <div className="srt-phone-row">
-                  <select className="srt-select" value={bookingData.phonePrefix} onChange={(event) => updateBookingData("phonePrefix", event.target.value)}>
-                    <option value="CH">CH +41</option>
-                    <option value="FR">FR +33</option>
-                    <option value="BE">BE +32</option>
-                  </select>
-                  <input className="srt-input" type="tel" value={bookingData.phone} onChange={(event) => updateBookingData("phone", event.target.value)} placeholder="Portable *" />
-                </div>
-                <input className="srt-input srt-field-full" type="email" value={bookingData.email} onChange={(event) => updateBookingData("email", event.target.value)} placeholder="Email *" />
-              </div>
-              <div className="srt-modal-actions">
-                <button className="srt-back-btn" onClick={() => setStep(1)} type="button">Retour</button>
-                <button className="srt-next-btn" disabled={!canContinueInfo} onClick={() => setStep(3)} type="button">Suivant</button>
-              </div>
-            </div>
-          )}
+              {step === 2 && (
+                <motion.div
+                  key="step-2"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-16"
+                >
+                  <div className="flex items-center gap-6 border-l-4 border-neutral-900 pl-8">
+                    <div className="w-14 h-14 bg-neutral-50 rounded-2xl flex items-center justify-center text-neutral-300 shadow-inner">
+                       <User size={24} strokeWidth={2.5} />
+                    </div>
+                    <h4 className="text-4xl font-black tracking-tighter italic text-neutral-900">Vos Informations</h4>
+                  </div>
 
-          {step === 3 && (
-            <div>
-              <div className="srt-form-title"><Icon name="map-pin" size={12} /> Adresse & notes</div>
-              <div className="srt-form-grid address">
-                <input className="srt-input srt-field-1" value={bookingData.streetNum} onChange={(event) => updateBookingData("streetNum", event.target.value)} placeholder="N°" />
-                <input className="srt-input srt-field-3" value={bookingData.streetName} onChange={(event) => updateBookingData("streetName", event.target.value)} placeholder="Rue" />
-                <input className="srt-input srt-field-2" value={bookingData.city} onChange={(event) => updateBookingData("city", event.target.value)} placeholder="Ville" />
-                <input className="srt-input srt-field-2" value={bookingData.canton} onChange={(event) => updateBookingData("canton", event.target.value)} placeholder="Canton" />
-                <input className="srt-input srt-field-4" value={bookingData.country} onChange={(event) => updateBookingData("country", event.target.value)} placeholder="Pays" />
-                <textarea className="srt-textarea srt-field-4" value={bookingData.note} onChange={(event) => updateBookingData("note", event.target.value)} placeholder="Notes (facultatif)" />
-              </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <InputGroup label="PRÉNOM" value={bookingData.firstName} onChange={(v) => updateBookingData("firstName", v)} />
+                    <InputGroup label="NOM" value={bookingData.lastName} onChange={(v) => updateBookingData("lastName", v)} />
+                    
+                    <div className="space-y-4">
+                       <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-300 px-6 italic">MOBILE</label>
+                       <div className="flex gap-4">
+                          <select 
+                            className="w-32 h-16 px-6 rounded-full bg-neutral-50 border-none text-[12px] font-black tracking-tight italic text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-inner"
+                            value={bookingData.phonePrefix} 
+                            onChange={(e) => updateBookingData("phonePrefix", e.target.value)}
+                          >
+                            <option value="CH">+41</option>
+                            <option value="FR">+33</option>
+                            <option value="BE">+32</option>
+                          </select>
+                          <input 
+                            className="flex-1 h-16 px-10 rounded-full bg-neutral-50 border-none text-xl font-black tracking-tighter italic text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-inner"
+                            type="tel" 
+                            value={bookingData.phone} 
+                            onChange={(e) => updateBookingData("phone", e.target.value)} 
+                            placeholder="Votre numéro..." 
+                          />
+                       </div>
+                    </div>
+                    
+                    <InputGroup label="EMAIL" type="email" value={bookingData.email} onChange={(v) => updateBookingData("email", v)} />
+                  </div>
 
-              <div className="srt-summary">
-                <div className="srt-summary-row"><span>Soin</span><strong>{service.title}</strong></div>
-                <div className="srt-summary-row"><span>Date</span><strong>{formattedDate} · {bookingData.time}</strong></div>
-              </div>
+                  <div className="flex items-center gap-4 pt-12">
+                    <button className="h-16 px-12 rounded-full border-2 border-neutral-100 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-300 hover:text-neutral-900 hover:border-neutral-900 transition-all" onClick={() => setStep(1)}>RETOUR</button>
+                    <button className="flex-1 h-16 rounded-full bg-neutral-900 text-white text-[11px] font-black uppercase tracking-[0.4em] shadow-xl hover:-translate-y-1 active:scale-95 transition-all disabled:opacity-10" disabled={!canContinueInfo} onClick={() => setStep(3)}>SUIVANT</button>
+                  </div>
+                </motion.div>
+              )}
 
-              <div className="srt-modal-actions">
-                <button className="srt-back-btn" onClick={() => setStep(2)} type="button" disabled={isSubmitting}>Retour</button>
-                <button className="srt-next-btn" onClick={submitBooking} type="button" disabled={isSubmitting}>
-                  {isSubmitting ? "En cours..." : "Confirmer"}
-                </button>
-              </div>
-            </div>
-          )}
+              {step === 3 && (
+                <motion.div
+                  key="step-3"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-16"
+                >
+                  <div className="flex items-center gap-6 border-l-4 border-neutral-900 pl-8">
+                    <div className="w-14 h-14 bg-neutral-50 rounded-2xl flex items-center justify-center text-neutral-300 shadow-inner">
+                       <MapPin size={24} strokeWidth={2.5} />
+                    </div>
+                    <h4 className="text-4xl font-black tracking-tighter italic text-neutral-900">Adresse & Notes</h4>
+                  </div>
 
-          {step === 4 && (
-            <div className="srt-success">
-              <div className="srt-success-icon"><Icon name="check" size={28} strokeWidth={3} /></div>
-              <div>
-                <h4>C’est validé.</h4>
-                <p>À bientôt au studio{bookingData.firstName ? `, ${bookingData.firstName}` : ""}.</p>
-              </div>
-              <button className="srt-next-btn" onClick={closeModal} type="button">Fermer</button>
-            </div>
-          )}
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div className="md:col-span-1"><InputGroup label="N°" value={bookingData.streetNum} onChange={(v) => updateBookingData("streetNum", v)} /></div>
+                    <div className="md:col-span-3"><InputGroup label="RUE" value={bookingData.streetName} onChange={(v) => updateBookingData("streetName", v)} /></div>
+                    <div className="md:col-span-2"><InputGroup label="VILLE" value={bookingData.city} onChange={(v) => updateBookingData("city", v)} /></div>
+                    <div className="md:col-span-2"><InputGroup label="CANTON" value={bookingData.canton} onChange={(v) => updateBookingData("canton", v)} /></div>
+                    <div className="md:col-span-4"><InputGroup label="PAYS" value={bookingData.country} onChange={(v) => updateBookingData("country", v)} /></div>
+                    <div className="md:col-span-4">
+                       <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-300 px-6 italic block mb-4">NOTES (FACULTATIF)</label>
+                       <textarea 
+                        className="w-full h-32 p-10 rounded-[3rem] bg-neutral-50 border-none text-xl font-black tracking-tighter italic text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-inner"
+                        value={bookingData.note} 
+                        onChange={(e) => updateBookingData("note", e.target.value)} 
+                        placeholder="Précisions pour votre séance..." 
+                       />
+                    </div>
+                  </div>
+
+                  <div className="bg-neutral-900 rounded-[3.5rem] p-12 text-white shadow-2xl space-y-8 relative overflow-hidden">
+                     <div className="absolute top-0 right-0 p-12 opacity-10 pointer-events-none">
+                        <ShieldCheck size={180} strokeWidth={1} />
+                     </div>
+                     <div className="flex items-center justify-between border-b border-white/10 pb-8 relative z-10">
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40 italic">RÉSUMÉ RÉSERVATION</p>
+                        <div className="flex items-center gap-3 text-emerald-400">
+                           <Check size={16} strokeWidth={3} />
+                           <span className="text-[10px] font-black uppercase tracking-[0.2em]">PRÊT À VALIDER</span>
+                        </div>
+                     </div>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+                        <div className="space-y-2">
+                           <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 italic">SOIN SÉLECTIONNÉ</p>
+                           <p className="text-3xl font-black tracking-tighter italic leading-none">{service.title}</p>
+                        </div>
+                        <div className="space-y-2">
+                           <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 italic">HORAIRE PRÉVU</p>
+                           <p className="text-3xl font-black tracking-tighter italic leading-none">{formattedDate} · {bookingData.time}</p>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-6 pt-8">
+                    <button className="h-20 px-12 rounded-full border-2 border-neutral-100 text-[11px] font-black uppercase tracking-[0.3em] text-neutral-300 hover:text-neutral-900 hover:border-neutral-900 transition-all" onClick={() => setStep(2)} disabled={isSubmitting}>RETOUR</button>
+                    <button className="flex-1 h-20 rounded-[2.5rem] bg-neutral-900 text-white text-[13px] font-black uppercase tracking-[0.5em] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)] hover:-translate-y-2 active:scale-95 transition-all flex items-center justify-center gap-6 group" onClick={submitBooking} disabled={isSubmitting}>
+                      {isSubmitting ? <Clock size={24} className="animate-spin" /> : <ShieldCheck size={24} strokeWidth={2.5} className="group-hover:scale-125 transition-transform" />}
+                      {isSubmitting ? "TRANSMISSION..." : "CONFIRMER MA SÉANCE"}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {step === 4 && (
+                <motion.div
+                  key="step-4"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="py-32 text-center space-y-16"
+                >
+                  <div className="relative inline-block">
+                     <div className="absolute inset-0 bg-neutral-900 rounded-[3rem] blur-3xl opacity-20 animate-pulse" />
+                     <div className="relative w-32 h-32 bg-neutral-900 rounded-[3.5rem] flex items-center justify-center text-white shadow-2xl mx-auto rotate-3 group">
+                        <Check size={56} strokeWidth={4} className="group-hover:scale-110 transition-transform" />
+                     </div>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <h4 className="text-6xl font-black text-neutral-900 tracking-tighter italic leading-none">C&apos;est Validé.</h4>
+                    <p className="text-xl font-medium text-neutral-400 italic">À bientôt au studio{bookingData.firstName ? `, ${bookingData.firstName}` : ""}.</p>
+                  </div>
+
+                  <button className="h-20 px-20 rounded-full bg-neutral-900 text-white text-[12px] font-black uppercase tracking-[0.4em] shadow-2xl hover:scale-105 active:scale-95 transition-all" onClick={closeModal}>TERMINER</button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
+}
+
+function InputGroup({ label, value, onChange, type = "text" }: { label: string, value: string, onChange: (v: string) => void, type?: string }) {
+   return (
+      <div className="space-y-4 group">
+         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-300 px-6 italic leading-none block">{label}</label>
+         <input 
+            type={type} 
+            value={value} 
+            onChange={(e) => onChange(e.target.value)} 
+            placeholder="Écrivez ici..."
+            className="w-full h-16 px-10 rounded-full bg-neutral-50 border-none text-xl font-black tracking-tighter italic text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-inner" 
+         />
+      </div>
+   );
 }

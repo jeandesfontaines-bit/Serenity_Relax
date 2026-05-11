@@ -1,9 +1,13 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Target, MessageSquare, Info, User, Mail, Store } from 'lucide-react';
+import { 
+  Target, MessageSquare, Info, User, Mail, Store, Shield, 
+  CheckCircle2, Bell, Smartphone, Lock, LogOut, ChevronRight,
+  Zap, Heart, CreditCard, Sparkles, Save, Trash2, ArrowRight
+} from 'lucide-react';
 import { updatePassword, reauthenticateWithCredential, EmailAuthProvider, signOut } from 'firebase/auth';
 import { useAuth, useUser } from '@/firebase';
-import { dashboardInset, dashboardPageContainer, dashboardPanel, dashboardSectionHeader, dashboardTitle } from './dashboardTheme';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SettingsPageProps {
   monthlyGoal: number;
@@ -231,272 +235,304 @@ export default function SettingsPage({
   );
 
   return (
-    <div className="flex-1 flex flex-col bg-[#fafbfc] h-full overflow-hidden text-[#1d292e]">
-      <main className="flex-1 overflow-y-auto">
-        <div className={dashboardPageContainer}>
-          <div className="flex flex-col gap-6">
-              <div className="flex items-center justify-end">
-                <span className={`rounded-[999px] px-3 py-1 text-[11px] font-semibold transition-colors ${
-                  saveState === 'saving'
-                    ? 'bg-[#efeeec] text-[#747872]'
-                    : saveState === 'saved'
-                      ? 'bg-[#e8f2ee] text-[#184f40]'
-                      : 'bg-transparent text-transparent'
-                }`}>
-                  {saveState === 'saving' ? 'Enregistrement…' : saveState === 'saved' ? 'Enregistré automatiquement' : 'Statut'}
-                </span>
-              </div>
-              
-              {/* Desktop / Mobile Tab Navigation */}
-              <div className="sticky top-0 z-10 flex overflow-x-auto gap-2 rounded-[18px] border border-[#d9dee4] bg-white p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-                {TABS.map(t => (
-                  <button
-                    key={t.id}
-                    onClick={() => setActiveTab(t.id)}
-                    className={`flex items-center gap-2 whitespace-nowrap rounded-[12px] px-4 py-2 text-sm font-medium transition-colors ${
-                      activeTab === t.id 
-                        ? 'bg-[#2e5b97] text-white shadow-sm' 
-                        : 'text-[#3f565f] hover:bg-[#f7f4ec] border border-transparent'
-                    }`}
-                  >
-                    <t.icon size={16} strokeWidth={1.8} />
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-
-              {normalizedSearch && matchingTabs.length === 0 && (
-                <div className={`${dashboardPanel} p-8 text-sm text-[#3f565f]`}>
-                  Aucun réglage ne correspond à « {searchQuery.trim()} ».
-                </div>
-              )}
-
-              {/* ── ACCOUNT SETTINGS (from user HTML) ── */}
-              {activeTab === 'account' && matchingTabs.length > 0 && (
-                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                  {/* Personal Information */}
-                  <div className={`${dashboardPanel} p-8`}>
-                    <div className={`${dashboardSectionHeader} mb-8 border-b border-[#d9dee4] pb-4`}>
-                      <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-[#2e5b97]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>person</span>
-                      <h4 className={dashboardTitle}>Personal Information</h4>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                      <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">Full Name</label>
-                        <input className={`w-full px-4 py-3 text-[#1d292e] outline-none transition-colors focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} type="text" value={localFullName} onChange={(e) => setLocalFullName(e.target.value)} />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">Email Address</label>
-                        <input className={`w-full px-4 py-3 text-[#1d292e] outline-none transition-colors focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} type="email" value={localProfileEmail} onChange={(e) => setLocalProfileEmail(e.target.value)} />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">Phone Number</label>
-                        <input className={`w-full px-4 py-3 text-[#1d292e] outline-none transition-colors focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} type="tel" value={localPhone} onChange={(e) => setLocalPhone(e.target.value)} />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Notification Preferences */}
-                  <div className={`${dashboardPanel} p-8`}>
-                    <div className={`${dashboardSectionHeader} mb-8 border-b border-[#d9dee4] pb-4`}>
-                      <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-[#2e5b97]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>notifications_active</span>
-                      <h4 className={dashboardTitle}>Notification Preferences</h4>
-                      </div>
-                    </div>
-                    <div className="space-y-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h5 className="text-sm font-semibold text-[#1d292e]">Email Notifications</h5>
-                          <p className="text-xs text-[#3f565f]">Receive weekly reports and appointment reminders via email.</p>
-                        </div>
-                        <button onClick={() => setLocalNotifyEmail(!localNotifyEmail)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifyEmail ? 'bg-[#2e5b97]' : 'bg-[#d9dee4]'}`}>
-                          <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[3px] transition-transform ${localNotifyEmail ? 'translate-x-[20px]' : 'translate-x-[3px]'}`} />
-                        </button>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h5 className="text-sm font-semibold text-[#1d292e]">Push Notifications</h5>
-                          <p className="text-xs text-[#3f565f]">Get instant updates on client messages and schedule changes.</p>
-                        </div>
-                        <button onClick={() => setLocalNotifyPush(!localNotifyPush)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifyPush ? 'bg-[#2e5b97]' : 'bg-[#d9dee4]'}`}>
-                          <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[3px] transition-transform ${localNotifyPush ? 'translate-x-[20px]' : 'translate-x-[3px]'}`} />
-                        </button>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h5 className="text-sm font-semibold text-[#1d292e]">SMS Reminders</h5>
-                          <p className="text-xs text-[#3f565f]">Emergency alerts and same-day appointment confirmations.</p>
-                        </div>
-                        <button onClick={() => setLocalNotifySms(!localNotifySms)} className={`w-11 h-6 rounded-full relative transition-colors ${localNotifySms ? 'bg-[#2e5b97]' : 'bg-[#d9dee4]'}`}>
-                          <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[3px] transition-transform ${localNotifySms ? 'translate-x-[20px]' : 'translate-x-[3px]'}`} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Security & Connections */}
-                  <div className={`${dashboardPanel} p-8`}>
-                    <div className="flex items-center gap-3 mb-8 border-b border-[#d9dee4] pb-4">
-                      <span className="material-symbols-outlined text-[#2e5b97]" style={{fontVariationSettings:"'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"}}>shield</span>
-                      <h4 className={dashboardTitle}>Security &amp; Connections</h4>
-                    </div>
-                    <div className="space-y-8">
-                      <div>
-                        <h5 className="text-sm font-semibold text-[#1d292e] mb-4">Change Password</h5>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-                          <input value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className={`w-full px-4 py-3 text-sm text-[#1d292e] outline-none transition-colors placeholder:text-[#c4cdd7] focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} placeholder="Current password" type="password" />
-                          <input value={newPassword} onChange={e => setNewPassword(e.target.value)} className={`w-full px-4 py-3 text-sm text-[#1d292e] outline-none transition-colors placeholder:text-[#c4cdd7] focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 ${dashboardInset}`} placeholder="New password" type="password" />
-                        </div>
-                        <button onClick={handleUpdatePassword} className="mt-4 text-xs font-bold text-[#2e5b97] hover:underline uppercase tracking-wider">Update Password</button>
-                      </div>
-                      <div>
-                        <h5 className="text-sm font-semibold text-[#1d292e] mb-4">Linked Accounts</h5>
-                        <div className={`flex items-center justify-between p-4 ${dashboardInset}`}>
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm">
-                              <svg fill="none" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
-                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
-                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path>
-                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
-                              </svg>
-                            </div>
-                            <div>
-                              <span className="text-sm font-medium">Google Account</span>
-                              <p className="text-[11px] text-[#3f565f]">Connected as {user?.email || 'joao.silva@gmail.com'}</p>
-                            </div>
-                          </div>
-                          <button onClick={handleDisconnect} className="text-xs font-semibold text-[#ba1a1a] hover:underline uppercase tracking-widest">Disconnect</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* ── WHATSAPP ── */}
-              {activeTab === 'whatsapp' && matchingTabs.length > 0 && (
-                <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
-                  <div className="mb-8 border-b border-[#d9dee4] pb-4">
-                    <h2 className={dashboardTitle}>WhatsApp Studio</h2>
-                    <p className="text-sm text-[#3f565f] mt-1">Configurez les textes utilisés par les boutons WhatsApp. Les variables sont remplacées automatiquement.</p>
-                  </div>
-                  <div className="space-y-10">
-                    {filteredWhatsappFields.map((item, i) => (
-                      <div key={i} className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-8 items-start">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">{item.label}</label>
-                            <button type="button" onClick={() => item.set(item.preset)}
-                              className="text-[10px] uppercase tracking-wider text-[#2e5b97] hover:underline font-semibold">
-                              Défaut
-                            </button>
-                          </div>
-                          <textarea value={item.val} onChange={e => item.set(e.target.value)} rows={4}
-                            className={`w-full p-4 text-sm text-[#1d292e] focus:ring-2 focus:ring-[#2e5b97]/15 outline-none transition-all resize-none ${dashboardInset}`} />
-                          <p className="text-[10px] text-[#3f565f] leading-relaxed">
-                            Variables : {'{firstName}'}, {'{date}'}, {'{time}'}, {'{service}'}, {'{price}'}
-                          </p>
-                        </div>
-                        {/* Chat bubble preview */}
-                        <div className={`${dashboardInset} relative p-4 shadow-inner`}>
-                          <div className="bg-[#e8f2ee] rounded-lg p-3 shadow-sm relative ml-4">
-                            <p className="text-sm text-[#1d292e] leading-snug break-words">
-                              {item.val.replace(/{firstName}/g,'Jean').replace(/{service}/g,'Massage').replace(/{date}/g,'21/04').replace(/{price}/g,'150').replace(/{time}/g,'14:30')}
-                            </p>
-                            <span className="text-[9px] text-[#3f565f] block text-right mt-1">14:20 ✓✓</span>
-                            {/* Tail */}
-                            <div className="absolute top-0 right-[-6px] w-0 h-0 border-t-[8px] border-t-[#e8f2ee] border-r-[8px] border-r-transparent"></div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    {normalizedSearch && filteredWhatsappFields.length === 0 && (
-                      <div className="p-4 text-sm text-[#3f565f] text-center bg-[#f7f4ec] rounded-xl">
-                        Aucun modèle WhatsApp ne correspond à cette recherche.
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* ── EMAIL ── */}
-              {activeTab === 'email' && matchingTabs.length > 0 && (
-                <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
-                  <div className="flex items-center justify-between mb-8 border-b border-[#d9dee4] pb-4">
-                    <div>
-                      <h2 className={dashboardTitle}>Email Butler</h2>
-                      <p className="text-sm text-[#3f565f] mt-1">Configuration de la communication par email automatisée.</p>
-                    </div>
-                    <button onClick={() => setLocalEmailEnabled(!localEmailEnabled)} className={`w-12 h-6 rounded-full relative transition-colors ${localEmailEnabled ? 'bg-[#2e5b97]' : 'bg-[#d9dee4]'}`}>
-                      <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[3px] transition-transform ${localEmailEnabled ? 'translate-x-[26px]' : 'translate-x-[3px]'}`} />
-                    </button>
-                  </div>
-                  <div className={`space-y-6 transition-all ${localEmailEnabled ? 'opacity-100' : 'opacity-50 pointer-events-none grayscale'}`}>
-                    <div className="space-y-3">
-                      <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">Modèle de corps d'email</label>
-                      <textarea value={localEmail} onChange={e => setLocalEmail(e.target.value)} rows={6}
-                        className={`w-full p-4 text-sm text-[#1d292e] focus:ring-2 focus:ring-[#2e5b97]/15 outline-none transition-all resize-none ${dashboardInset}`} />
-                    </div>
-                    <div className={`flex items-start gap-3 p-4 text-[#3f565f] ${dashboardInset}`}>
-                      <Info size={16} className="mt-0.5 shrink-0" />
-                      <p className="text-xs">L'email inclura automatiquement votre logo et les détails du cabinet configurés dans la section Entité Cabinet.</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* ── CABINET ── */}
-              {activeTab === 'cabinet' && matchingTabs.length > 0 && (
-                <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
-                  <div className="mb-8 border-b border-[#d9dee4] pb-4">
-                    <h2 className={dashboardTitle}>Entité Cabinet</h2>
-                    <p className="text-sm text-[#3f565f] mt-1">Identité légale et publique de votre pratique.</p>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    {filteredCabinetFields.map(f => (
-                      <div key={f.label} className={`space-y-2 ${f.full ? 'md:col-span-2' : ''}`}>
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold">{f.label}</label>
-                        <input value={f.value} onChange={e => f.set(e.target.value)}
-                          className={`w-full px-4 py-3 text-[#1d292e] focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 outline-none transition-colors ${dashboardInset}`} />
-                      </div>
-                    ))}
-                    {normalizedSearch && filteredCabinetFields.length === 0 && (
-                      <div className="md:col-span-2 p-4 text-sm text-[#3f565f] text-center bg-[#f7f4ec] rounded-xl">
-                        Aucun réglage cabinet ne correspond à cette recherche.
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* ── OBJECTIVES ── */}
-              {activeTab === 'objectives' && matchingTabs.length > 0 && (
-                <div className={`${dashboardPanel} animate-in fade-in slide-in-from-bottom-2 duration-300 p-8`}>
-                  <div className="mb-8 border-b border-[#d9dee4] pb-4">
-                    <h2 className={dashboardTitle}>Performance Cible</h2>
-                    <p className="text-sm text-[#3f565f] mt-1">Objectifs et stratégie business.</p>
-                  </div>
-                  <div className="max-w-md">
-                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#3f565f] font-bold block mb-4">Objectif CA Mensuel</label>
-                    <div className="relative">
-                      <input type="number" value={localGoal} onChange={e => setLocalGoal(e.target.value)}
-                        className={`w-full h-16 px-6 text-3xl font-semibold text-[#1d292e] focus:ring-2 focus:ring-[#2e5b97]/15 outline-none transition-all tabular-nums ${dashboardInset}`} />
-                      <span className="absolute right-6 top-1/2 -translate-y-1/2 text-sm text-[#3f565f] font-bold uppercase tracking-widest">CHF</span>
-                    </div>
-                    <p className="text-xs text-[#3f565f] mt-3">
-                      Cet objectif alimente la jauge de progression sur le tableau de bord principal.
-                    </p>
-                  </div>
-                </div>
-              )}
-
+    <div className="flex-1 flex flex-col bg-[#FDFDFB] h-full overflow-hidden text-neutral-900 scrollbar-hide">
+      <main className="flex-1 overflow-y-auto p-12 lg:p-24 scrollbar-hide">
+        <div className="max-w-[1400px] mx-auto space-y-20">
+          
+          {/* Header Status */}
+          <div className="flex items-center justify-between border-b border-neutral-100 pb-12">
+            <div>
+               <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none">PARAMÈTRES SYSTÈME</p>
+               <h1 className="text-6xl font-bold text-neutral-900 tracking-tighter leading-none">Configuration</h1>
             </div>
+            <div className="flex items-center gap-6">
+               <AnimatePresence mode="wait">
+                 {saveState !== 'idle' && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      className={`flex items-center gap-3 px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-sm ${
+                        saveState === 'saving' ? 'bg-neutral-900 text-white animate-pulse' : 'bg-emerald-500 text-white'
+                      }`}
+                    >
+                      {saveState === 'saving' ? <Zap size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
+                      {saveState === 'saving' ? 'Synchronisation...' : 'Modifications enregistrées'}
+                    </motion.div>
+                 )}
+               </AnimatePresence>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-24 items-start">
+            
+            {/* Sidebar Navigation */}
+            <aside className="space-y-12 sticky top-0">
+               <nav className="space-y-4">
+                  {TABS.map(t => {
+                    const Icon = t.icon;
+                    const isActive = activeTab === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        onClick={() => setActiveTab(t.id)}
+                        className={`w-full flex items-center justify-between p-8 rounded-[2.5rem] transition-all group ${
+                          isActive 
+                            ? 'bg-neutral-900 text-white shadow-2xl scale-105 z-10' 
+                            : 'bg-white border border-neutral-100 text-neutral-400 hover:border-neutral-900 hover:text-neutral-900'
+                        }`}
+                      >
+                        <div className="flex items-center gap-6">
+                           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${
+                             isActive ? 'bg-white/10 text-white' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white'
+                           }`}>
+                              <Icon size={20} strokeWidth={2.5} />
+                           </div>
+                           <span className="text-xl font-bold tracking-tighter">{t.label}</span>
+                        </div>
+                        {isActive && <ChevronRight size={18} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />}
+                      </button>
+                    );
+                  })}
+               </nav>
+
+               <div className="bg-neutral-900 rounded-[3rem] p-10 text-white shadow-2xl space-y-6 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none group-hover:rotate-12 transition-transform duration-700">
+                     <Shield size={160} strokeWidth={1} />
+                  </div>
+                  <div className="relative z-10">
+                     <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 mb-2">SÉCURITÉ</h4>
+                     <p className="text-xl font-bold tracking-tighter leading-tight">Accès restreint & Chiffrement bout-en-bout</p>
+                  </div>
+                  <button onClick={handleDisconnect} className="relative z-10 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-red-400 hover:text-white transition-all">
+                     <LogOut size={14} strokeWidth={3} /> Se déconnecter
+                  </button>
+               </div>
+            </aside>
+
+            {/* Content Area */}
+            <div className="space-y-24 min-h-[600px]">
+               <AnimatePresence mode="wait">
+                 <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                 >
+                    {activeTab === 'account' && (
+                       <div className="space-y-16">
+                          <SectionHeader title="Profil Personnel" subtitle="Identité et coordonnées de contact." />
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                             <InputGroup label="Nom Complet" value={localFullName} onChange={setLocalFullName} icon={<User />} />
+                             <InputGroup label="Email Direct" value={localProfileEmail} onChange={setLocalProfileEmail} icon={<Mail />} type="email" />
+                             <InputGroup label="Téléphone" value={localPhone} onChange={setLocalPhone} icon={<Smartphone />} type="tel" />
+                          </div>
+
+                          <SectionHeader title="Notifications" subtitle="Alertes et rapports de performance." />
+                          <div className="grid grid-cols-1 gap-6">
+                             <ToggleItem label="Rapports par Email" desc="Analyses hebdomadaires et bilans." val={localNotifyEmail} set={setLocalNotifyEmail} />
+                             <ToggleItem label="Alertes Push" desc="Notifications instantanées sur mobile." val={localNotifyPush} set={setLocalNotifyPush} />
+                             <ToggleItem label="Canal SMS" desc="Rappels critiques de dernière minute." val={localNotifySms} set={setLocalNotifySms} />
+                          </div>
+
+                          <SectionHeader title="Sécurité du Compte" subtitle="Gestion de vos accès confidentiels." />
+                          <div className="bg-neutral-900 rounded-[3.5rem] p-12 text-white shadow-2xl space-y-10 border border-white/5">
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <InputGroupDark label="Ancien Mot de Passe" value={currentPassword} onChange={setCurrentPassword} type="password" />
+                                <InputGroupDark label="Nouveau Mot de Passe" value={newPassword} onChange={setNewPassword} type="password" />
+                             </div>
+                             <button onClick={handleUpdatePassword} className="h-16 px-10 rounded-full bg-white text-neutral-900 font-bold text-[11px] uppercase tracking-[0.3em] hover:shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+                                <Lock size={16} strokeWidth={3} /> METTRE À JOUR LE MOT DE PASSE
+                             </button>
+                          </div>
+                       </div>
+                    )}
+
+                    {activeTab === 'whatsapp' && (
+                       <div className="space-y-16">
+                          <SectionHeader title="Studio WhatsApp" subtitle="Configuration des messages automatiques." />
+                          <div className="space-y-16">
+                             {filteredWhatsappFields.map((item, i) => (
+                                <div key={i} className="grid grid-cols-1 xl:grid-cols-[1fr_350px] gap-12 items-start">
+                                   <div className="space-y-6">
+                                      <div className="flex items-center justify-between px-4">
+                                         <label className="text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-300">{item.label}</label>
+                                         <button onClick={() => item.set(item.preset)} className="text-[10px] font-bold text-neutral-400 hover:text-neutral-900 transition-colors uppercase tracking-[0.2em]">Réinitialiser</button>
+                                      </div>
+                                      <textarea value={item.val} onChange={e => item.set(e.target.value)} rows={5} className="w-full p-10 rounded-[3rem] bg-white border border-neutral-100 text-lg font-medium text-neutral-900 focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-sm" />
+                                      <div className="flex items-center gap-4 px-4 opacity-30">
+                                         <Info size={14} className="text-neutral-400" />
+                                         <p className="text-[9px] font-bold uppercase tracking-[0.2em]">Variables : {'{firstName}, {date}, {time}, {service}, {price}'}</p>
+                                      </div>
+                                   </div>
+                                   <div className="bg-[#DCF8C6] rounded-[3rem] rounded-tr-none p-8 shadow-xl relative group hover:-translate-y-1 transition-all">
+                                      <p className="text-base font-medium text-neutral-800 leading-relaxed">
+                                         {item.val.replace(/{firstName}/g,'Patient').replace(/{service}/g,'Soin').replace(/{date}/g,'Demain').replace(/{price}/g,'120').replace(/{time}/g,'10:00')}
+                                      </p>
+                                      <div className="flex items-center justify-end gap-2 mt-4 opacity-40">
+                                         <span className="text-[10px] font-bold">10:45</span>
+                                         <CheckCircle2 size={14} strokeWidth={2.5} />
+                                      </div>
+                                      <div className="absolute top-0 right-[-10px] w-0 h-0 border-t-[15px] border-t-[#DCF8C6] border-r-[15px] border-r-transparent"></div>
+                                   </div>
+                                </div>
+                             ))}
+                          </div>
+                       </div>
+                    )}
+
+                    {activeTab === 'email' && (
+                       <div className="space-y-16">
+                          <SectionHeader title="Butler Email" subtitle="Automatisation des communications officielles." />
+                          <div className="bg-white rounded-[3.5rem] p-12 border border-neutral-100 shadow-2xl space-y-12 relative overflow-hidden">
+                             <div className="flex items-center justify-between relative z-10">
+                                <div>
+                                   <h4 className="text-2xl font-bold tracking-tighter text-neutral-900">Module d&apos;Expédition</h4>
+                                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-300 mt-2">ÉTAT DU SERVICE : {localEmailEnabled ? 'ACTIF' : 'INACTIF'}</p>
+                                </div>
+                                <button onClick={() => setLocalEmailEnabled(!localEmailEnabled)} className={`w-16 h-10 rounded-full relative transition-all shadow-inner ${localEmailEnabled ? 'bg-neutral-900' : 'bg-neutral-100'}`}>
+                                   <div className={`w-8 h-8 bg-white rounded-full absolute top-1 shadow-md transition-all ${localEmailEnabled ? 'translate-x-7' : 'translate-x-1'}`} />
+                                </button>
+                             </div>
+                             <div className={`space-y-10 transition-all duration-700 ${localEmailEnabled ? 'opacity-100' : 'opacity-30 blur-md pointer-events-none translate-y-4'}`}>
+                                <div className="space-y-4">
+                                   <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-300 px-4">CORPS DE L&apos;EMAIL TYPE</label>
+                                   <textarea value={localEmail} onChange={e => setLocalEmail(e.target.value)} rows={10} className="w-full p-12 rounded-[3.5rem] bg-neutral-50 border-none text-xl font-medium text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-inner" />
+                                </div>
+                                <div className="flex items-start gap-6 p-8 bg-neutral-900 text-white rounded-[2.5rem] shadow-xl">
+                                   <Sparkles size={24} className="shrink-0 text-white/50" />
+                                   <p className="text-sm font-bold leading-relaxed text-white/60">Le système injectera automatiquement votre charte graphique et vos informations de cabinet lors de chaque envoi.</p>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    )}
+
+                    {activeTab === 'cabinet' && (
+                       <div className="space-y-16">
+                          <SectionHeader title="Identité Cabinet" subtitle="Informations légales et de facturation." />
+                          <div className="bg-white rounded-[4rem] p-12 border border-neutral-100 shadow-2xl space-y-12">
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                {filteredCabinetFields.map(f => (
+                                   <div key={f.label} className={`space-y-4 ${f.full ? 'md:col-span-2' : ''}`}>
+                                      <label className="text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-300 px-4">{f.label}</label>
+                                      {f.full ? (
+                                        <textarea value={f.value} onChange={e => f.set(e.target.value)} rows={4} className="w-full p-10 rounded-[2.5rem] bg-neutral-50 border-none text-xl font-bold tracking-tighter text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-inner" />
+                                      ) : (
+                                        <input value={f.value} onChange={e => f.set(e.target.value)} className="w-full h-16 px-10 rounded-full bg-neutral-50 border-none text-xl font-bold tracking-tighter text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-inner" />
+                                      )}
+                                   </div>
+                                ))}
+                             </div>
+                          </div>
+                       </div>
+                    )}
+
+                    {activeTab === 'objectives' && (
+                       <div className="space-y-16">
+                          <SectionHeader title="Performance & Vision" subtitle="Stratégie et ambitions financières." />
+                          <div className="bg-white rounded-[4rem] p-16 border border-neutral-100 shadow-[0_60px_100px_-30px_rgba(0,0,0,0.1)] text-center relative overflow-hidden group">
+                             <div className="absolute top-0 right-0 p-16 opacity-5 group-hover:scale-110 transition-transform duration-1000">
+                                <Target size={200} strokeWidth={1} />
+                             </div>
+                             <div className="relative z-10 max-w-xl mx-auto space-y-16">
+                                <label className="text-[11px] font-bold uppercase tracking-[0.5em] text-neutral-300 leading-none block">OBJECTIF CHIFFRE D&apos;AFFAIRE MENSUEL</label>
+                                <div className="relative inline-block group/input">
+                                   <input 
+                                      type="number" 
+                                      value={localGoal} 
+                                      onChange={e => setLocalGoal(e.target.value)}
+                                      className="w-full h-32 text-center text-9xl font-bold text-neutral-900 bg-transparent border-none outline-none tabular-nums tracking-tighter group-hover/input:scale-110 transition-transform" 
+                                   />
+                                   <p className="mt-6 text-[14px] font-bold uppercase tracking-[0.5em] text-neutral-900 opacity-40">FRANCS SUISSES / MOIS</p>
+                                   <div className="h-2 w-full bg-neutral-50 rounded-full mt-10 overflow-hidden shadow-inner">
+                                      <motion.div 
+                                        initial={{ width: 0 }}
+                                        animate={{ width: '65%' }}
+                                        className="h-full bg-neutral-900"
+                                      />
+                                   </div>
+                                </div>
+                                <p className="text-base font-bold text-neutral-300 leading-relaxed max-w-sm mx-auto uppercase tracking-widest text-[10px]">
+                                   Ce curseur définit vos KPIs de performance et guide l&apos;évolution stratégique de votre cabinet Serenity.
+                                </p>
+                             </div>
+                          </div>
+                       </div>
+                    )}
+                 </motion.div>
+               </AnimatePresence>
+            </div>
+
+          </div>
         </div>
       </main>
     </div>
   );
+}
+
+function SectionHeader({ title, subtitle }: { title: string, subtitle: string }) {
+   return (
+      <div className="border-l-4 border-neutral-900 pl-8 py-2">
+         <h4 className="text-4xl font-bold tracking-tighter text-neutral-900 leading-none">{title}</h4>
+         <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-neutral-300 mt-3 leading-none">{subtitle}</p>
+      </div>
+   );
+}
+
+function InputGroup({ label, value, onChange, icon, type = 'text' }: { label: string, value: string, onChange: (v: string) => void, icon?: React.ReactNode, type?: string }) {
+   return (
+      <div className="space-y-4 group">
+         <div className="flex items-center gap-3 text-neutral-300 group-focus-within:text-neutral-900 transition-colors">
+            {icon && <div className="shrink-0">{icon}</div>}
+            <label className="text-[10px] font-bold uppercase tracking-[0.3em] leading-none">{label}</label>
+         </div>
+         <input 
+            type={type} 
+            value={value} 
+            onChange={e => onChange(e.target.value)} 
+            className="w-full h-16 px-8 rounded-full bg-white border border-neutral-100 text-lg font-bold tracking-tighter text-neutral-900 focus:bg-white focus:border-neutral-900 focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-sm" 
+         />
+      </div>
+   );
+}
+
+function InputGroupDark({ label, value, onChange, type = 'text' }: { label: string, value: string, onChange: (v: string) => void, type?: string }) {
+   return (
+      <div className="space-y-4 group">
+         <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 px-4 leading-none">{label}</label>
+         <input 
+            type={type} 
+            value={value} 
+            onChange={e => onChange(e.target.value)} 
+            className="w-full h-16 px-8 rounded-full bg-white/5 border border-white/10 text-xl font-bold tracking-tighter text-white placeholder:text-white/20 focus:bg-white/10 focus:border-white transition-all outline-none shadow-inner" 
+         />
+      </div>
+   );
+}
+
+function ToggleItem({ label, desc, val, set }: { label: string, desc: string, val: boolean, set: (v: boolean) => void }) {
+   return (
+      <div className="flex items-center justify-between p-10 bg-white border border-neutral-50 rounded-[3rem] shadow-sm group hover:border-neutral-900 transition-all">
+         <div className="flex items-center gap-8">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${val ? 'bg-neutral-900 text-white shadow-xl' : 'bg-neutral-50 text-neutral-300'}`}>
+               <Bell size={24} strokeWidth={2.5} />
+            </div>
+            <div>
+               <h5 className="text-xl font-bold tracking-tighter text-neutral-900 leading-none">{label}</h5>
+               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-300 mt-3 leading-none">{desc}</p>
+            </div>
+         </div>
+         <button 
+            onClick={() => set(!val)} 
+            className={`w-16 h-10 rounded-full relative transition-all shadow-inner ${val ? 'bg-neutral-900' : 'bg-neutral-100'}`}
+         >
+            <motion.div 
+               animate={{ x: val ? 28 : 4 }}
+               className="w-8 h-8 bg-white rounded-full absolute top-1 shadow-md"
+            />
+         </button>
+      </div>
+   );
 }

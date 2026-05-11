@@ -1,8 +1,11 @@
+'use client';
 import React from 'react';
-import { Ban, ChevronLeft, ChevronRight, Plus, Settings, SlidersHorizontal, Download, Filter } from 'lucide-react';
-import {
-  dashboardShell,
-} from './dashboardTheme';
+import { 
+  Ban, ChevronLeft, ChevronRight, Plus, Settings, SlidersHorizontal, 
+  Download, Filter, LogOut, Search, Calendar, Users, Wallet, 
+  LayoutGrid, Bell, User, ArrowRight
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -55,22 +58,15 @@ interface AppLayoutProps {
     subtitle: string;
     statusLabel?: string;
   };
+  onLogout?: () => void;
 }
 
 const NAV_ITEMS = [
-  { id: 'scheduler', label: 'Agenda', icon: 'calendar_today' },
-  { id: 'clients', label: 'Clients', icon: 'group' },
-  { id: 'accounting', label: 'Finances', icon: 'payments' },
-  { id: 'settings', label: 'Paramètres', icon: 'settings' },
+  { id: 'scheduler', label: 'Agenda', icon: Calendar },
+  { id: 'clients', label: 'Clients', icon: Users },
+  { id: 'accounting', label: 'Finances', icon: Wallet },
+  { id: 'settings', label: 'Paramètres', icon: Settings },
 ];
-
-const filledIcon = {
-  fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24",
-} as const;
-
-const outlinedIcon = {
-  fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24",
-} as const;
 
 function isActive(itemId: string, activePage: string) {
   if (itemId === 'clients' && activePage === 'client-detail') return true;
@@ -89,202 +85,244 @@ export default function AppLayout({
   clientDetailToolbar,
   financeToolbar,
   settingsToolbar,
+  onLogout,
 }: AppLayoutProps) {
-  const searchPlaceholder = 'Rechercher un rendez-vous';
+  const searchPlaceholder = 'Rechercher un patient...';
 
   return (
-    <div className={`h-screen h-dvh overflow-hidden ${dashboardShell}`}>
-      <div className="flex min-h-0 flex-1 flex-col pb-20 md:pb-0">
-        <main className="flex-1 min-h-0 overflow-y-auto">
-          <header className="z-40 shrink-0 border-b border-[color:rgba(217,222,228,0.9)] bg-[color:rgba(255,255,255,0.86)] px-4 py-3 backdrop-blur-[24px] md:px-8">
-            <div className="relative flex items-center justify-between gap-4 md:grid md:grid-cols-[auto_auto_minmax(220px,280px)_minmax(0,1fr)] md:items-center md:gap-4 xl:grid-cols-[auto_auto_minmax(260px,340px)_minmax(0,1fr)] xl:gap-6">
+    <div className="h-screen h-dvh overflow-hidden bg-neutral-50 text-neutral-900 flex flex-col">
+      {/* ── Top Navigation Bar ── */}
+      <header className="z-[100] shrink-0 border-b border-neutral-100 bg-white/80 backdrop-blur-2xl px-6 py-5 md:px-12 flex items-center justify-between">
+        <div className="flex items-center gap-12">
+          {/* Logo */}
+          <button
+            onClick={() => onNavigate('dashboard')}
+            className="flex items-center gap-3 group"
+          >
+            <div className="w-10 h-10 bg-neutral-900 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:rotate-6 transition-transform">
+              <LayoutGrid size={20} strokeWidth={2.5} />
+            </div>
+            <p className="text-2xl font-bold tracking-tight text-neutral-900">
+              SERENITY
+            </p>
+          </button>
+
+          {/* Desktop Nav */}
+          <nav className="hidden items-center gap-1 md:flex bg-neutral-50 p-1.5 rounded-full border border-neutral-100">
+            {NAV_ITEMS.map((item) => {
+              const active = isActive(item.id, activePage);
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onNavigate(item.id)}
+                  className={`h-11 px-6 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-3 ${
+                    active
+                      ? 'bg-neutral-900 text-white shadow-xl scale-105'
+                      : 'text-neutral-400 hover:text-neutral-900 hover:bg-white/50'
+                  }`}
+                >
+                  <Icon size={16} strokeWidth={active ? 3 : 2.5} />
+                  {item.label}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Right Actions Area */}
+        <div className="flex items-center gap-6">
+          {/* Global Search */}
+          <div className="hidden lg:block relative group">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-neutral-300 group-focus-within:text-neutral-900 transition-colors" size={18} strokeWidth={2.5} />
+            <input
+              type="text"
+              value={globalSearch}
+              onChange={(e) => onGlobalSearchChange(e.target.value)}
+              placeholder={searchPlaceholder}
+              className="w-[350px] h-14 pl-14 pr-6 rounded-full bg-white border border-neutral-100 text-sm font-bold tracking-tight placeholder:text-neutral-300 focus:border-neutral-900 outline-none transition-all"
+            />
+          </div>
+
+          <div className="h-10 w-px bg-neutral-100 hidden md:block" />
+
+          {/* Notifications & Profile */}
+          <div className="flex items-center gap-4">
+             <button className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all relative">
+                <Bell size={20} strokeWidth={2.5} />
+                <span className="absolute top-3 right-3 w-2 h-2 bg-neutral-900 rounded-full border-2 border-white" />
+             </button>
+             {onLogout && (
               <button
-                onClick={() => onNavigate('dashboard')}
-                className="hidden shrink-0 items-baseline gap-2 transition-opacity hover:opacity-80 md:flex"
+                onClick={onLogout}
+                className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-red-500 hover:bg-red-50 transition-all"
               >
-                <p className="text-[0.76rem] font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-asphalt)] md:text-[0.88rem]">
-                  SERENITY
-                </p>
+                <LogOut size={20} strokeWidth={2.5} />
               </button>
+            )}
+             <div className="w-12 h-12 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-xl cursor-pointer hover:scale-110 transition-transform">
+                <User size={20} strokeWidth={2.5} />
+             </div>
+          </div>
+        </div>
+      </header>
 
-              <nav className="hidden items-center gap-1.5 md:flex">
-                {NAV_ITEMS.map((item) => {
-                  const active = isActive(item.id, activePage);
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => onNavigate(item.id)}
-                      className={`dashboard-topbar-control ${
-                        active
-                          ? 'dashboard-topbar-control-active'
-                          : 'dashboard-topbar-control-muted'
-                      }`}
-                    >
-                      <span>{item.label}</span>
-                    </button>
-                  );
-                })}
-              </nav>
-
-              <div className="hidden md:block md:relative md:w-full">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[var(--dashboard-blue-grey)]">search</span>
-                <input
-                  type="text"
-                  value={globalSearch}
-                  onChange={(e) => onGlobalSearchChange(e.target.value)}
-                  placeholder={searchPlaceholder}
-                  className="dashboard-topbar-search"
-                />
-              </div>
-
-              {/* Dynamic Content / Toolbar Area */}
-              <div className="flex flex-1 items-center justify-between gap-4 min-w-0 md:justify-end">
-                {activePage === 'scheduler' && schedulerToolbar ? (
-                  <div className="flex min-w-0 flex-1 items-center justify-between gap-3 lg:gap-4">
-                    <div className="flex shrink-0 items-center gap-3 lg:gap-4">
-                      <button onClick={schedulerToolbar.onPrev} className="dashboard-topbar-icon dashboard-topbar-icon-muted" aria-label="Période précédente">
-                        <ChevronLeft size={18} strokeWidth={2} />
+      {/* ── Sub-header / Toolbar ── */}
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={activePage}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="bg-neutral-50 border-b border-neutral-100 px-6 py-4 md:px-12 flex items-center justify-between min-h-[80px]"
+        >
+          {/* Toolbar content based on active page */}
+          <div className="flex-1 flex items-center justify-between gap-8">
+            {activePage === 'scheduler' && schedulerToolbar ? (
+              <>
+                <div className="flex items-center gap-4">
+                   <div className="flex items-center gap-2 bg-neutral-50 p-1.5 rounded-full border border-neutral-100">
+                      <button onClick={schedulerToolbar.onPrev} className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-neutral-400 hover:text-neutral-900 transition-all shadow-sm">
+                        <ChevronLeft size={18} strokeWidth={3} />
                       </button>
-                      <button onClick={schedulerToolbar.onToday} className="dashboard-topbar-control dashboard-topbar-icon-muted dashboard-topbar-today">
+                      <button onClick={schedulerToolbar.onToday} className="h-10 px-6 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-900 hover:bg-white transition-all">
                         AUJOURD&apos;HUI
                       </button>
-                      <button onClick={schedulerToolbar.onNext} className="dashboard-topbar-icon dashboard-topbar-icon-muted" aria-label="Période suivante">
-                        <ChevronRight size={18} strokeWidth={2} />
+                      <button onClick={schedulerToolbar.onNext} className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-neutral-400 hover:text-neutral-900 transition-all shadow-sm">
+                        <ChevronRight size={18} strokeWidth={3} />
                       </button>
+                   </div>
+                   <div className="h-8 w-px bg-neutral-100" />
+                   <div className="flex bg-neutral-50 p-1.5 rounded-full border border-neutral-100">
+                      {(['week', 'month'] as const).map((view) => (
+                        <button
+                          key={view}
+                          onClick={() => schedulerToolbar.onToggleView(view)}
+                          className={`h-10 px-6 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${
+                            schedulerToolbar.view === view
+                              ? 'bg-neutral-900 text-white shadow-lg'
+                              : 'text-neutral-400 hover:text-neutral-900'
+                          }`}
+                        >
+                          {view === 'week' ? 'Semaine' : 'Mois'}
+                        </button>
+                      ))}
                     </div>
+                </div>
 
-                    <div className="flex shrink-0 items-center gap-2">
-                      <div className="dashboard-topbar-switch hidden sm:flex">
-                        {(['week', 'month'] as const).map((view) => (
-                          <button
-                            key={view}
-                            onClick={() => schedulerToolbar.onToggleView(view)}
-                            className={`dashboard-topbar-segment ${
-                              schedulerToolbar.view === view
-                                ? 'dashboard-topbar-segment-active'
-                                : ''
-                            }`}
-                          >
-                            {view === 'week' ? 'Semaine' : 'Mois'}
-                          </button>
-                        ))}
-                      </div>
-
-                    <button
-                      onClick={schedulerToolbar.onToggleAbsenceMode}
-                      className={`dashboard-topbar-icon ${
-                        schedulerToolbar.absenceMode
-                          ? 'border-[#bad5c8] bg-[#e8f2ee] text-[var(--dashboard-bench-green)]'
-                          : 'text-[var(--dashboard-asphalt)]'
-                      }`}
-                      aria-label={schedulerToolbar.absenceMode ? `Valider les fermetures (${schedulerToolbar.absencePendingCount})` : 'Fermer dates et créneaux'}
-                    >
-                      <Ban size={16} />
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={schedulerToolbar.onToggleAbsenceMode}
+                    className={`flex items-center gap-3 h-12 px-6 rounded-full transition-all border ${
+                      schedulerToolbar.absenceMode
+                        ? 'bg-red-500 border-red-500 text-white shadow-xl'
+                        : 'bg-neutral-50 border-neutral-100 text-neutral-400 hover:text-neutral-900'
+                    }`}
+                  >
+                    <Ban size={16} strokeWidth={3} />
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Mode Absence</span>
+                  </button>
+                  <button onClick={schedulerToolbar.onOpenSettings} className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-900 text-white hover:shadow-xl transition-all">
+                    <SlidersHorizontal size={20} strokeWidth={2.5} />
+                  </button>
+                </div>
+              </>
+            ) : activePage === 'clients' && clientsToolbar ? (
+              <>
+                 <div>
+                    <h2 className="text-xl font-bold tracking-tighter text-neutral-900">Répertoire Patients</h2>
+                 </div>
+                 <div className="flex items-center gap-4">
+                    <button onClick={clientsToolbar.onToggleFilters} className="flex items-center gap-3 h-12 px-6 rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all border border-neutral-100">
+                       <Filter size={16} strokeWidth={2.5} />
+                       <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Filtres</span>
                     </button>
-
-                      <button onClick={schedulerToolbar.onOpenSettings} className="dashboard-topbar-icon">
-                        <Settings size={18} strokeWidth={2} />
-                      </button>
-                    </div>
-                  </div>
-                ) : activePage === 'client-detail' && clientDetailToolbar ? (
-                  <div className="flex items-center justify-between flex-1 gap-4 md:flex-none">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={clientDetailToolbar.onBack}
-                        className="dashboard-topbar-icon"
-                      >
-                        <ChevronLeft size={18} />
-                      </button>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button onClick={clientDetailToolbar.onOpenHistory} className="dashboard-topbar-control min-w-[112px]">
-                        Historique
-                      </button>
-                      <button onClick={clientDetailToolbar.onOpenNotes} className="dashboard-topbar-control min-w-[96px]">
-                        Notes
-                      </button>
-                    </div>
-                  </div>
-                ) : activePage === 'clients' && clientsToolbar ? (
-                  <div className="flex items-center justify-between flex-1 gap-4 md:flex-none">
-                    <div className="flex items-center gap-2">
-                      <button onClick={clientsToolbar.onToggleFilters} className="dashboard-topbar-icon">
-                        <SlidersHorizontal size={16} />
-                      </button>
-                      <button
-                        onClick={clientsToolbar.onAddClient}
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--dashboard-bench-green)] text-white transition-all duration-200 hover:bg-[var(--dashboard-asphalt)]"
-                        aria-label="Ajouter un client"
-                      >
-                        <Plus size={16} />
-                      </button>
-                    </div>
-                  </div>
-                ) : activePage === 'accounting' && financeToolbar ? (
-                  <div className="flex items-center justify-between flex-1 gap-4 md:flex-none">
-                    <div className="flex items-center gap-2">
-                      {financeToolbar.showDateRange && (
-                        <div className="hidden xl:flex h-10 items-center gap-2 rounded-full border border-[var(--dashboard-border)] bg-white px-3">
+                    <button onClick={clientsToolbar.onAddClient} className="h-12 px-8 rounded-full bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl hover:-translate-y-1 transition-all flex items-center gap-3">
+                       <Plus size={18} strokeWidth={3} />
+                       NOUVEAU PATIENT
+                    </button>
+                 </div>
+              </>
+            ) : activePage === 'accounting' && financeToolbar ? (
+              <>
+                 <div className="flex items-center gap-8">
+                    <h2 className="text-xl font-bold tracking-tighter text-neutral-900">Analyse Financière</h2>
+                    {financeToolbar.showDateRange && (
+                        <div className="flex h-12 items-center gap-4 rounded-full bg-neutral-50 px-8 border border-neutral-100">
                           <input
                             type="date"
                             value={financeToolbar.dateRange.start}
                             onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, start: e.target.value })}
-                            className="bg-transparent text-[12px] text-[var(--dashboard-rooftop-grey)] outline-none"
+                            className="bg-transparent text-[11px] font-bold uppercase text-neutral-900 outline-none"
                           />
-                          <span className="text-[var(--dashboard-blue-grey)]">→</span>
+                          <ArrowRight size={14} className="text-neutral-300" />
                           <input
                             type="date"
                             value={financeToolbar.dateRange.end}
                             onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, end: e.target.value })}
-                            className="bg-transparent text-[12px] text-[var(--dashboard-rooftop-grey)] outline-none"
+                            className="bg-transparent text-[11px] font-bold uppercase text-neutral-900 outline-none"
                           />
                         </div>
                       )}
-                      <button onClick={financeToolbar.onToggleDateFilter} className="dashboard-topbar-icon">
-                        <Filter size={16} />
-                      </button>
-                      <button onClick={financeToolbar.onExport} className="dashboard-topbar-icon">
-                        <Download size={16} />
-                      </button>
-                    </div>
-                  </div>
-                ) : activePage === 'settings' && settingsToolbar ? (
-                  <div className="flex items-center justify-between flex-1 gap-4 md:flex-none">
-                    <div className="flex items-center gap-3 ml-auto">
-                      {settingsToolbar.statusLabel && (
-                        <span className="rounded-full border border-[#bad5c8] bg-[#e8f2ee] px-3 py-1 text-[10px] font-bold text-[var(--dashboard-bench-green)] uppercase tracking-wider">
-                          {settingsToolbar.statusLabel}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-end flex-1 md:flex-none" />
-                )}
-              </div>
-            </div>
-          </header>
+                 </div>
+                 <div className="flex items-center gap-4">
+                    <button onClick={financeToolbar.onToggleDateFilter} className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all border border-neutral-100">
+                       <Calendar size={20} strokeWidth={2.5} />
+                    </button>
+                    <button onClick={financeToolbar.onExport} className="h-12 px-8 rounded-full bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl hover:-translate-y-1 transition-all flex items-center gap-3">
+                       <Download size={18} strokeWidth={2.5} />
+                       EXPORTER CSV
+                    </button>
+                 </div>
+              </>
+            ) : activePage === 'settings' && settingsToolbar ? (
+              <>
+                 <div>
+                    <h2 className="text-xl font-bold tracking-tighter text-neutral-900">Paramètres Système</h2>
+                 </div>
+                 <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-300">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] mr-2" />
+                    SYSTÈME OPÉRATIONNEL
+                 </div>
+              </>
+            ) : (
+              <div className="flex-1 h-12" />
+            )}
+          </div>
+        </motion.div>
+      </AnimatePresence>
 
-          {children}
-        </main>
-      </div>
+      {/* ── Main Content Scroll Area ── */}
+      <main className="flex-1 min-h-0 overflow-y-auto scrollbar-hide relative">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activePage}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="h-full"
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      </main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-[var(--dashboard-border)] bg-[color:rgba(255,255,255,0.95)] px-3 py-2 backdrop-blur-xl md:hidden">
+      {/* ── Mobile Navigation ── */}
+      <nav className="fixed inset-x-0 bottom-0 z-[100] flex items-center justify-around border-t border-neutral-100 bg-white/90 px-6 py-6 backdrop-blur-3xl md:hidden">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.id, activePage);
+          const Icon = item.icon;
           return (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-[14px] px-1 py-2 text-[11px] transition-all ${
-                active ? 'bg-[#e8f2ee] text-[var(--dashboard-bench-green)]' : 'text-[var(--dashboard-rooftop-grey)]'
+              className={`flex flex-col items-center gap-2 transition-all ${
+                active ? 'text-neutral-900 scale-110' : 'text-neutral-300'
               }`}
             >
-              <span className="material-symbols-outlined" style={active ? filledIcon : outlinedIcon}>
-                {item.icon}
-              </span>
-              <span className="truncate">{item.label}</span>
+              <Icon size={active ? 24 : 20} strokeWidth={active ? 3 : 2.5} />
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em]">{item.label}</span>
             </button>
           );
         })}

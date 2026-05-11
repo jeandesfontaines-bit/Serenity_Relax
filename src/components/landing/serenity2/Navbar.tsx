@@ -39,7 +39,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`absolute inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
           ? "bg-background/85 backdrop-blur-xl border-b border-foreground/8"
           : "bg-transparent"
@@ -47,17 +47,21 @@ export default function Navbar() {
     >
       <div className="mx-auto flex max-w-[1480px] items-center justify-between px-6 py-4 md:px-10 lg:px-14">
         <Link href="/" className="flex items-baseline gap-2">
-          <span className="text-base font-semibold tracking-tight text-foreground">Serenity Relax</span>
-          <span className="text-xs tracking-wide text-foreground/50">— by João</span>
+          <span className="text-base font-semibold tracking-tight text-foreground">
+            SERENITY RELAX THERAPY
+          </span>
+          <span className="signature-font hidden text-sm italic tracking-wide leading-none text-foreground/55 lg:inline">
+            by João
+          </span>
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-7 md:flex">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={isHome ? link.href : `/${link.href}`}
               onClick={handleAnchor(link.href)}
-              className="text-sm font-medium tracking-tight text-foreground/70 hover:text-foreground transition-colors duration-300 editorial-link"
+              className="text-base font-medium tracking-tight text-foreground/70 transition-colors duration-300 hover:text-foreground editorial-link"
             >
               {link.label}
             </a>
@@ -67,13 +71,13 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => openModal(null)}
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-[var(--orange)] px-5 py-2.5 text-sm font-semibold tracking-tight text-white transition-all duration-300 hover:bg-[var(--off-black)]"
+            className="hidden md:inline-flex items-center gap-2 rounded-full bg-[var(--orange)] px-6 py-3 text-base font-semibold tracking-tight text-white transition-all duration-300 hover:bg-[var(--off-black)]"
           >
             Réserver
           </button>
           <Link
             href="/login"
-            className="hidden md:inline-flex rounded-full border border-foreground/15 px-5 py-2.5 text-sm font-medium text-foreground transition-all duration-300 hover:bg-foreground/5"
+            className="hidden md:inline-flex rounded-full border border-foreground/15 px-6 py-3 text-base font-medium text-foreground transition-all duration-300 hover:bg-foreground/5"
           >
             Connexion
           </Link>
@@ -97,7 +101,7 @@ export default function Navbar() {
                 key={link.href}
                 href={isHome ? link.href : `/${link.href}`}
                 onClick={(e) => { handleAnchor(link.href)(e); setOpen(false); }}
-                className="text-sm font-medium tracking-tight text-foreground"
+                className="text-base font-medium tracking-tight text-foreground"
               >
                 {link.label}
               </a>
@@ -107,14 +111,14 @@ export default function Navbar() {
                 setOpen(false);
                 openModal(null);
               }}
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-[var(--orange)] px-6 py-3 text-sm font-semibold tracking-tight text-white"
+              className="mt-2 inline-flex items-center justify-center rounded-full bg-[var(--orange)] px-6 py-3 text-base font-semibold tracking-tight text-white"
             >
               Réserver
             </button>
             <Link
               href="/login"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-full border border-foreground/15 px-6 py-3 text-sm font-medium text-foreground"
+              className="mt-2 inline-flex items-center justify-center rounded-full border border-foreground/15 px-6 py-3 text-base font-medium text-foreground"
             >
               Connexion
             </Link>

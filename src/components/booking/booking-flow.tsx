@@ -27,10 +27,16 @@ import {
   ShieldCheck,
   User,
   X,
+  Sparkles,
+  ArrowRight,
+  Info,
+  Zap,
+  CreditCard
 } from 'lucide-react';
 import { useAuth, useFirestore, useUser } from '../../firebase/provider';
 import { Service } from '../../lib/types';
 import { toast } from '../../hooks/use-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface BookingFlowProps {
   services: Service[];
@@ -286,502 +292,357 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
 
   if (!isOpen) return null;
 
-  if (bookingRef) {
-    return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#2c3e50]/25 p-4 backdrop-blur-xl">
-        <div className="relative w-full max-w-2xl rounded-[32px] bg-white p-10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] md:p-14">
-          <button
-            type="button"
-            onClick={closeBooking}
-            className="absolute right-6 top-6 rounded-full p-3 text-[#6b7280] hover:bg-[#f5f4f1] hover:text-[#2c3e50]"
-          >
-            <X size={18} />
-          </button>
-
-          <div className="flex flex-col items-center text-center">
-            <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-[#edf3ef] text-[#435544]">
-              <CheckCircle2 size={42} strokeWidth={1.6} />
-            </div>
-            <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.35em] text-[#a89078]">
-              Confirmation instantanée
-            </p>
-            <h2 className="mb-5 font-sans text-[34px] font-medium tracking-tight text-[#2c3e50] md:text-[42px]">
-              Rendez-vous confirmé
-            </h2>
-            <p className="max-w-xl text-[15px] leading-relaxed text-[#6b7280]">
-              Votre réservation pour {selectedService?.name} le{' '}
-              {selectedDate && format(selectedDate, 'EEEE d MMMM', { locale: fr })} à {selectedTime}
-              {' '}a bien été enregistrée.
-            </p>
-
-            <div className="mt-10 w-full max-w-md rounded-[24px] border border-[#ece9e4] bg-[#faf8f5] px-6 py-5 text-left">
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#9ca3af]">
-                  Référence
-                </span>
-                <span className="text-sm font-semibold text-[#435544]">{bookingRef}</span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={closeBooking}
-              className="mt-10 rounded-[18px] bg-[#2c3e50] px-8 py-4 text-sm font-semibold text-white hover:bg-[#435544]"
-            >
-              Fermer
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-[#2c3e50]/25 p-4 backdrop-blur-xl md:items-center md:py-6"
-      onClick={closeBooking}
-    >
-      <div
-        className="relative my-auto w-full max-w-[1480px] overflow-hidden rounded-[32px] bg-[#fcfbf8] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)]"
-        onClick={(event) => event.stopPropagation()}
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-neutral-900/60 backdrop-blur-2xl p-4 md:p-10 overflow-hidden">
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={closeBooking}
+      />
+      
+      <motion.div
+        className="relative w-full max-w-[1440px] bg-[#FDFDFB] rounded-[4rem] shadow-2xl flex flex-col max-h-[95vh] overflow-hidden border border-white"
+        initial={{ opacity: 0, scale: 0.9, y: 100 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 100 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <button
-          type="button"
-          onClick={closeBooking}
-          className="absolute right-5 top-5 z-20 rounded-full p-3 text-[#9ca3af] hover:bg-[#f7f5f2] hover:text-[#2c3e50]"
-        >
-          <X size={18} />
-        </button>
-
-        <div className="border-b border-[#efe9df] bg-white/80 px-5 py-4 md:px-8">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.35em] text-[#a89078]">
-                Serenity Relax Genève
-              </span>
-              <div className="flex items-center gap-3">
-                <StepPill index={1} label="Soin" active={stage === 'service'} completed={stage === 'details'} />
-                <StepPill index={2} label="Créneau & coordonnées" active={stage === 'details'} completed={false} />
-              </div>
-            </div>
-
-            {stage === 'details' && !initialServiceId && (
-              <button
-                type="button"
-                onClick={() => setStage('service')}
-                className="inline-flex items-center gap-2 rounded-full border border-[#ece9e4] bg-white px-4 py-2 text-xs font-semibold text-[#6b7280] hover:border-[#d8d0c6] hover:text-[#2c3e50]"
-              >
-                <ArrowLeft size={14} />
-                Changer de soin
-              </button>
-            )}
+        {/* Header */}
+        <header className="px-16 pt-16 pb-12 border-b border-neutral-100 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-10">
+             <div className="w-16 h-16 bg-neutral-900 rounded-[2.25rem] flex items-center justify-center text-white shadow-2xl rotate-3">
+                <Sparkles size={28} strokeWidth={2.5} />
+             </div>
+             <div>
+                <p className="text-[11px] font-black uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none italic">RÉSERVATION OFFICIELLE</p>
+                <h2 className="text-5xl font-black text-neutral-900 tracking-tighter italic leading-none uppercase">Serenity Relax</h2>
+             </div>
           </div>
-        </div>
+          <button 
+            onClick={closeBooking}
+            className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all shadow-inner"
+          >
+            <X size={20} strokeWidth={3} />
+          </button>
+        </header>
 
-        {stage === 'service' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[0.82fr_1.48fr]">
-            <div className="border-b border-[#efe9df] bg-[linear-gradient(180deg,#f8f4ee_0%,#fcfbf8_100%)] px-5 py-6 md:px-8 md:py-8 lg:border-b-0 lg:border-r">
-              <div className="max-w-sm space-y-5">
-                <span className="inline-flex items-center rounded-full bg-[#efe7da] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.28em] text-[#a89078]">
-                  Étape 1
-                </span>
-                <h2 className="font-sans text-[30px] font-medium tracking-tight text-[#2c3e50] md:text-[36px]">
-                  Choisissez votre soin.
-                </h2>
-                <p className="text-[14px] leading-relaxed text-[#6b7280]">
-                  Commencez par sélectionner le rituel qui correspond à votre besoin. Une fois le soin choisi, vous accédez directement au calendrier réel et au formulaire de réservation.
-                </p>
-                <div className="rounded-[24px] border border-[#ece5da] bg-white/80 p-5">
-                  <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.28em] text-[#9ca3af]">
-                    Ce qui suit ensuite
-                  </p>
-                  <div className="space-y-2 text-sm text-[#4b5563]">
-                    <p>1. Sélection du soin</p>
-                    <p>2. Choix de la date et de l’heure</p>
-                    <p>3. Confirmation avec vos coordonnées</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="px-5 py-6 md:px-8 md:py-8">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {services.map((service) => (
-                  <button
-                    key={service.id}
-                    type="button"
-                    onClick={() => handleServiceSelect(service)}
-                    className="group overflow-hidden rounded-[22px] border border-[#ece9e4] bg-white text-left shadow-[0_20px_40px_-30px_rgba(0,0,0,0.18)] hover:border-[#d7c8b6]"
-                  >
-                    <div className="relative h-28 overflow-hidden bg-[#f3efe8] md:h-32">
-                      {service.image ? (
-                        <img src={service.image} alt={service.name} className="h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-[#c3b7a8]">
-                          <CalendarIcon size={34} />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#1d262f]/55 to-transparent" />
-                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                        <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#2c3e50]">
-                          {service.duration}
-                        </span>
-                        <span className="rounded-full bg-[#2c3e50] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-white">
-                          {service.price} CHF
-                        </span>
+        <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
+          {/* Main Area */}
+          <div className="flex-1 overflow-y-auto scrollbar-hide">
+            <AnimatePresence mode="wait">
+              {bookingRef ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-32 flex flex-col items-center text-center space-y-16"
+                >
+                   <div className="relative inline-block">
+                      <div className="absolute inset-0 bg-neutral-900 rounded-[3rem] blur-3xl opacity-20 animate-pulse" />
+                      <div className="relative w-32 h-32 bg-neutral-900 rounded-[3.5rem] flex items-center justify-center text-white shadow-2xl mx-auto rotate-3">
+                         <CheckCircle2 size={56} strokeWidth={2.5} />
                       </div>
-                    </div>
-
-                    <div className="space-y-3 p-4">
-                      <h3 className="line-clamp-2 font-sans text-[17px] font-medium leading-tight text-[#2c3e50]">
-                        {service.name}
-                      </h3>
-                      <p className="line-clamp-2 text-[13px] leading-relaxed text-[#6b7280]">
-                        {service.description}
+                   </div>
+                   
+                   <div className="space-y-6">
+                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 italic">TRANSMISSION RÉUSSIE</p>
+                      <h3 className="text-6xl font-black text-neutral-900 tracking-tighter italic leading-none">Rendez-vous Confirmé.</h3>
+                      <p className="text-xl font-medium text-neutral-400 italic max-w-xl mx-auto leading-relaxed">
+                        Votre rituel pour {selectedService?.name} est validé. Une confirmation détaillée vous attend dans votre boîte mail.
                       </p>
-                      <div className="pt-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#a89078]">
-                        Choisir ce soin
+                   </div>
+
+                   <div className="bg-neutral-50 border border-neutral-100 rounded-[3rem] p-12 w-full max-w-md shadow-inner">
+                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-300 mb-4">RÉFÉRENCE DOSSIER</p>
+                      <p className="text-3xl font-black tracking-tighter text-neutral-900">{bookingRef}</p>
+                   </div>
+
+                   <button 
+                    onClick={closeBooking}
+                    className="h-20 px-20 rounded-full bg-neutral-900 text-white text-[12px] font-black uppercase tracking-[0.4em] shadow-2xl hover:scale-105 active:scale-95 transition-all"
+                   >
+                     RETOURNER AU SITE
+                   </button>
+                </motion.div>
+              ) : stage === 'service' ? (
+                <motion.div
+                  key="service-stage"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="p-16 space-y-16"
+                >
+                  <div className="flex items-center gap-10">
+                     <span className="h-20 w-20 rounded-[2.5rem] bg-neutral-900 flex items-center justify-center text-white text-3xl font-black italic shadow-2xl">01</span>
+                     <h3 className="text-6xl font-black text-neutral-900 tracking-tighter italic leading-none uppercase">Sélection du Soin</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+                    {services.map((service) => (
+                      <button
+                        key={service.id}
+                        onClick={() => handleServiceSelect(service)}
+                        className="group flex flex-col text-left rounded-[3.5rem] border border-neutral-100 p-10 transition-all hover:-translate-y-2 hover:shadow-2xl bg-white relative overflow-hidden"
+                      >
+                         <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none group-hover:scale-150 transition-transform duration-1000">
+                            <Zap size={150} strokeWidth={1} />
+                         </div>
+                         <div className="flex items-center justify-between mb-8">
+                            <span className="px-4 py-1.5 rounded-full bg-neutral-50 border border-neutral-100 text-[9px] font-black uppercase tracking-[0.2em] text-neutral-400">{service.duration}</span>
+                            <span className="text-2xl font-black text-neutral-900 italic tracking-tighter">{service.price} CHF</span>
+                         </div>
+                         <h4 className="text-3xl font-black text-neutral-900 tracking-tighter italic leading-tight mb-4 group-hover:italic transition-all">{service.name}</h4>
+                         <p className="text-sm font-medium text-neutral-400 leading-relaxed italic mb-8 line-clamp-2">{service.description}</p>
+                         <div className="mt-auto pt-6 border-t border-neutral-50 flex items-center justify-between">
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-300 group-hover:text-neutral-900 transition-colors">CHOISIR CE SOIN</span>
+                            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-900 text-white shadow-xl opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0">
+                               <ChevronRight size={20} strokeWidth={3} />
+                            </div>
+                         </div>
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="details-stage"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="p-16 space-y-20"
+                >
+                  {/* Calendar Header */}
+                  <div className="flex items-center justify-between border-b border-neutral-100 pb-12">
+                    <div className="flex items-center gap-10">
+                        <span className="h-20 w-20 rounded-[2.5rem] bg-neutral-900 flex items-center justify-center text-white text-3xl font-black italic shadow-2xl">02</span>
+                        <div>
+                           <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 mb-2 italic">DATE & CRÉNEAU</p>
+                           <h3 className="text-5xl font-black text-neutral-900 tracking-tighter italic leading-none uppercase">{monthLabel}</h3>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-6">
+                       <button 
+                        onClick={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
+                        className="w-16 h-16 flex items-center justify-center rounded-full border border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all"
+                       >
+                         <ChevronLeft size={24} strokeWidth={3} />
+                       </button>
+                       <button 
+                        onClick={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
+                        className="w-16 h-16 flex items-center justify-center rounded-full border border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all"
+                       >
+                         <ChevronRight size={24} strokeWidth={3} />
+                       </button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-20">
+                     {/* Calendar Grid */}
+                     <div className="space-y-12">
+                        <div className="grid grid-cols-7 gap-4">
+                           {['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'].map(d => (
+                              <div key={d} className="text-center">
+                                 <span className="text-[9px] font-black text-neutral-200 uppercase tracking-widest">{d}</span>
+                              </div>
+                           ))}
+                        </div>
+                        <div className="grid grid-cols-7 gap-4">
+                           {calendarDays.map((day) => {
+                             const freeDaySlots = getFreeSlotsForDate(day);
+                             const isPast = isBefore(day, startOfDay(new Date()));
+                             const isCurrentMonthDay = isSameMonth(day, currentMonth);
+                             const isDisabled = !isCurrentMonthDay || isPast || freeDaySlots.length === 0;
+                             const isSelected = Boolean(selectedDate && isSameDay(selectedDate, day));
+
+                             return (
+                               <button
+                                 key={format(day, 'yyyy-MM-dd')}
+                                 type="button"
+                                 disabled={isDisabled}
+                                 onClick={() => handleDateSelect(day)}
+                                 className={`aspect-square flex flex-col items-center justify-center rounded-[2.5rem] border-2 transition-all duration-700 relative group ${
+                                   isDisabled
+                                     ? 'opacity-5 border-transparent cursor-not-allowed'
+                                     : isSelected
+                                       ? 'border-neutral-900 bg-neutral-900 text-white shadow-2xl scale-110 z-10'
+                                       : 'border-neutral-50 text-neutral-900 bg-white hover:border-neutral-900 shadow-sm'
+                                 }`}
+                               >
+                                 <span className="text-2xl font-black tracking-tighter italic leading-none">{format(day, 'd')}</span>
+                               </button>
+                             );
+                           })}
+                        </div>
+                     </div>
+
+                     {/* Slots Selection */}
+                     <div className="space-y-12">
+                        <div className="flex items-center gap-6">
+                           <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-neutral-300 italic whitespace-nowrap">CRÉNEAUX LIBRES</h4>
+                           <div className="h-px w-full bg-neutral-100" />
+                        </div>
+                        {selectedDate ? (
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            {freeSlots.map((slot) => (
+                              <button
+                                key={slot}
+                                onClick={() => handleTimeSelect(slot)}
+                                className={`h-20 rounded-[2rem] text-xl font-black tracking-tighter italic transition-all duration-500 border-2 ${
+                                  selectedTime === slot 
+                                    ? "bg-neutral-900 border-neutral-900 text-white shadow-xl scale-105 z-10" 
+                                    : "bg-white border-neutral-50 text-neutral-900 hover:border-neutral-900 shadow-sm"
+                                }`}
+                              >
+                                {slot}
+                              </button>
+                            ))}
+                            {freeSlots.length === 0 && (
+                               <div className="col-span-full py-16 text-center bg-neutral-50 rounded-[3rem] border-2 border-dashed border-neutral-100">
+                                  <Clock3 size={40} strokeWidth={1} className="text-neutral-200 mx-auto mb-6" />
+                                  <p className="text-[10px] font-black text-neutral-300 uppercase tracking-widest">AUCUN CRÉNEAU DISPONIBLE</p>
+                               </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="py-24 text-center bg-neutral-50 rounded-[3rem] border-2 border-dashed border-neutral-100">
+                             <CalendarIcon size={40} strokeWidth={1} className="text-neutral-200 mx-auto mb-6" />
+                             <p className="text-[10px] font-black text-neutral-300 uppercase tracking-widest px-10">VEUILLEZ SÉLECTIONNER UNE DATE SUR LE CALENDRIER</p>
+                          </div>
+                        )}
+                     </div>
+                  </div>
+
+                  {/* Form Part */}
+                  <div className="pt-20 space-y-20 border-t border-neutral-100">
+                      <div className="flex items-center gap-10">
+                        <span className="h-20 w-20 rounded-[2.5rem] bg-neutral-900 flex items-center justify-center text-white text-3xl font-black italic shadow-2xl">03</span>
+                        <div>
+                           <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 mb-2 italic">IDENTIFICATION</p>
+                           <h3 className="text-5xl font-black text-neutral-900 tracking-tighter italic leading-none uppercase">Vos Coordonnées</h3>
+                        </div>
                       </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <InputGroup label="PRÉNOM" value={formData.firstName} onChange={(v) => updateField('firstName', v)} />
+                        <InputGroup label="NOM" value={formData.lastName} onChange={(v) => updateField('lastName', v)} />
+                        <InputGroup label="COURRIEL" type="email" value={formData.email} onChange={(v) => updateField('email', v)} />
+                        <InputGroup label="TÉLÉPHONE" type="tel" value={formData.phone} onChange={(v) => updateField('phone', v)} />
+                        <div className="md:col-span-2 space-y-4">
+                           <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-300 px-6 italic leading-none block">NOTES PARTICULIÈRES (FACULTATIF)</label>
+                           <textarea 
+                            value={formData.message}
+                            onChange={(e) => updateField('message', e.target.value)}
+                            placeholder="Précisions pour votre rituel..."
+                            className="w-full h-40 p-10 rounded-[3.5rem] bg-neutral-50 border-none text-xl font-black tracking-tighter italic text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-inner"
+                           />
+                        </div>
+                      </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-[1.22fr_0.68fr]">
-            <div className="border-b border-[#f0ece6] px-5 py-6 md:border-b-0 md:border-r md:px-8 md:py-8 lg:px-10">
-              <header className="mb-6 pr-10 md:mb-8">
-                <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.35em] text-[#a89078]">
-                  Étape 2
-                </span>
-                <h2 className="font-sans text-[28px] font-medium tracking-tight text-[#2c3e50] md:text-[34px]">
-                  {selectedService?.name}
-                </h2>
-                {selectedService && (
-                  <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-[#6b7280]">
-                    {selectedService.description}
-                  </p>
-                )}
-              </header>
 
-              <div className="rounded-[24px] border border-[#ece6dd] bg-white p-4 md:p-5">
-                <div className="mb-4 flex items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-lg font-semibold capitalize tracking-tight text-[#2c3e50]">{monthLabel}</h3>
-                    <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#b5aa9a]">
-                      Disponibilités réelles
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
-                      className="rounded-full border border-[#ece9e4] p-2 text-[#6b7280] hover:bg-[#f7f5f2] hover:text-[#2c3e50]"
-                    >
-                      <ChevronLeft size={16} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
-                      className="rounded-full border border-[#ece9e4] p-2 text-[#6b7280] hover:bg-[#f7f5f2] hover:text-[#2c3e50]"
-                    >
-                      <ChevronRight size={16} />
-                    </button>
-                  </div>
+          {/* Sidebar Sidebar Recap */}
+          <aside className="w-full md:w-[450px] border-l border-neutral-100 bg-neutral-50/30 p-16 flex flex-col shrink-0">
+             <div className="space-y-12">
+                <div>
+                   <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 mb-8 italic">VOTRE PANIER</p>
+                   {selectedService ? (
+                      <div className="bg-white rounded-[3.5rem] border border-neutral-100 p-10 shadow-2xl relative overflow-hidden group">
+                         <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none group-hover:scale-110 transition-transform">
+                            <Zap size={100} strokeWidth={1} />
+                         </div>
+                         <h5 className="text-3xl font-black text-neutral-900 tracking-tighter italic leading-none mb-6">{selectedService.name}</h5>
+                         <div className="flex items-center justify-between text-neutral-400">
+                            <div className="flex items-center gap-3">
+                               <Clock3 size={16} strokeWidth={2.5} />
+                               <span className="text-[11px] font-black uppercase tracking-[0.2em]">{selectedService.duration}</span>
+                            </div>
+                            <span className="text-2xl font-black text-neutral-900 italic tracking-tighter">{selectedService.price} CHF</span>
+                         </div>
+                      </div>
+                   ) : (
+                      <div className="bg-white rounded-[3rem] border-2 border-dashed border-neutral-100 p-16 text-center">
+                         <p className="text-[10px] font-black text-neutral-200 uppercase tracking-widest">AUCUN SOIN SÉLECTIONNÉ</p>
+                      </div>
+                   )}
                 </div>
 
-                <div className="mb-2 grid grid-cols-7 gap-2 text-center">
-                  {['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'].map((label, index) => (
-                    <div
-                      key={label}
-                      className={`text-[10px] font-bold uppercase ${
-                        index === 5 ? 'text-[#a89078]' : index === 6 ? 'text-[#d6b6b0]' : 'text-[#d1d5db]'
-                      }`}
-                    >
-                      {label}
-                    </div>
-                  ))}
+                <div className="space-y-6">
+                   <RecapRow icon={<CalendarIcon size={18} />} label="DATE" value={selectedDate ? format(selectedDate, 'EEEE d MMMM', { locale: fr }) : '--'} />
+                   <RecapRow icon={<Clock3 size={18} />} label="HEURE" value={selectedTime || '--'} />
                 </div>
 
-                <div className="grid grid-cols-7 gap-2">
-                  {calendarDays.map((day) => {
-                    const freeDaySlots = getFreeSlotsForDate(day);
-                    const isPast = isBefore(day, startOfDay(new Date()));
-                    const isCurrentMonthDay = isSameMonth(day, currentMonth);
-                    const isDisabled = !isCurrentMonthDay || isPast || freeDaySlots.length === 0;
-                    const isSelected = Boolean(selectedDate && isSameDay(selectedDate, day));
-
-                    return (
-                      <button
-                        key={format(day, 'yyyy-MM-dd')}
-                        type="button"
-                        disabled={isDisabled}
-                        onClick={() => handleDateSelect(day)}
-                        className={`aspect-square rounded-[18px] border px-1 py-2 text-center ${
-                          isDisabled
-                            ? 'cursor-not-allowed border-[#f1efeb] bg-[#faf8f5] opacity-25'
-                            : isSelected
-                              ? 'border-[#2c3e50] bg-[#2c3e50] text-white shadow-[0_10px_20px_-10px_rgba(0,0,0,0.25)]'
-                              : 'border-[#f0ece6] text-[#2c3e50] hover:bg-[#f9f7f4]'
-                        }`}
-                      >
-                        <span className={`block text-[9px] font-bold uppercase ${isSelected ? 'text-white/70' : 'text-[#9ca3af]'}`}>
-                          {format(day, 'EEE', { locale: fr }).replace('.', '')}
-                        </span>
-                        <span className={`mt-1 block text-base font-semibold ${isSelected ? 'text-white' : isCurrentMonthDay ? 'text-[#2c3e50]' : 'text-[#c7c3bd]'}`}>
-                          {format(day, 'd')}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <span className="h-px flex-1 bg-[#ece9e4]" />
-                  <p className="text-xs font-semibold italic text-[#9ca3af]">
-                    {selectedDate
-                      ? format(selectedDate, 'EEEE d MMMM', { locale: fr })
-                      : 'Veuillez sélectionner une date'}
-                  </p>
-                  <span className="h-px flex-1 bg-[#ece9e4]" />
+                <div className="pt-12">
+                   <div className="bg-neutral-900 rounded-[3.5rem] p-12 text-white shadow-2xl relative overflow-hidden">
+                      <div className="absolute inset-0 opacity-5 pointer-events-none bg-[repeating-linear-gradient(45deg,#fff,#fff_1px,transparent_1px,transparent_10px)]" />
+                      <div className="relative z-10 space-y-8">
+                         <div className="flex items-center justify-between border-b border-white/10 pb-6">
+                            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40 italic">TOTAL À RÉGLER</p>
+                            <ShieldCheck size={20} className="text-emerald-400" />
+                         </div>
+                         <div className="flex items-end justify-between">
+                            <p className="text-7xl font-black tracking-tighter italic leading-none">{selectedService?.price || 0}</p>
+                            <span className="text-[11px] font-black uppercase tracking-[0.4em] text-white/30 mb-2">CHF</span>
+                         </div>
+                      </div>
+                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
-                  {(selectedDate ? freeSlots : []).map((slot) => {
-                    const isSelected = selectedTime === slot;
-                    return (
-                      <button
-                        key={slot}
-                        type="button"
-                        onClick={() => handleTimeSelect(slot)}
-                        className={`rounded-[16px] border px-3 py-3 text-[11px] font-bold ${
-                          isSelected
-                            ? 'border-[#a89078] bg-[#a89078] text-white'
-                            : 'border-[#ece9e4] bg-white text-[#2c3e50] hover:border-[#a89078]/40'
-                        }`}
-                      >
-                        {slot}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {selectedDate && freeSlots.length === 0 && (
-                  <div className="rounded-[20px] border border-[#f0ece6] bg-[#faf8f5] px-5 py-6 text-center text-sm text-[#9ca3af]">
-                    Aucun créneau disponible pour cette date.
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="bg-[linear-gradient(180deg,#faf9f7_0%,#f5f1eb_100%)] px-5 py-6 md:px-7 md:py-8">
-              <div className="mb-6">
-                <h3 className="font-sans text-2xl font-medium tracking-tight text-[#2c3e50]">
-                  Vos informations
-                </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-[#7b8088]">
-                  Finalisez votre demande avec vos coordonnées et vérifiez le résumé avant validation.
-                </p>
-              </div>
-
-              <form onSubmit={completeBooking} className="flex h-full flex-col">
-                <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-4">
-                    <Field
-                      icon={User}
-                      value={formData.firstName}
-                      onChange={(value) => updateField('firstName', value)}
-                      placeholder="Prénom"
-                    />
-                    <Field
-                      icon={User}
-                      value={formData.lastName}
-                      onChange={(value) => updateField('lastName', value)}
-                      placeholder="Nom"
-                    />
-                  </div>
-                  <Field
-                    icon={Mail}
-                    type="email"
-                    value={formData.email}
-                    onChange={(value) => updateField('email', value)}
-                    placeholder="Adresse email"
-                  />
-                  <Field
-                    icon={Phone}
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(value) => updateField('phone', value)}
-                    placeholder="Téléphone"
-                  />
-                  <TextAreaField
-                    icon={MessageCircle}
-                    value={formData.message}
-                    onChange={(value) => updateField('message', value)}
-                    placeholder="Message ou précision utile"
-                  />
-                </div>
-
-                <div className="mt-6 rounded-[24px] border border-[#e7dfd4] bg-white px-4 py-5 shadow-[0_15px_35px_-30px_rgba(0,0,0,0.2)]">
-                  <div className="mb-3 flex items-center justify-between">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#9ca3af]">
-                      Votre réservation
-                    </p>
-                    {selectedService && (
-                      <span className="rounded-full bg-[#f2ebe1] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#a89078]">
-                        {selectedService.duration}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="space-y-3">
-                    <SummaryRow label="Soin" value={selectedService?.name || '--'} />
-                    <SummaryRow
-                      label="Date"
-                      value={selectedDate
-                        ? format(selectedDate, 'EEEE d MMMM', { locale: fr })
-                        : '--'}
-                    />
-                    <SummaryRow
-                      label="Heure"
-                      value={selectedTime || '--'}
-                      accent
-                    />
-                    {selectedService && (
-                      <SummaryRow
-                        label="Tarif"
-                        value={`${selectedService.price} CHF`}
-                      />
-                    )}
-                  </div>
-                </div>
-
-                <div className="mt-5">
-                  <button
-                    type="submit"
+                <div className="pt-8">
+                   <button 
                     disabled={!isFormValid || isSubmitting}
-                    className={`w-full rounded-[18px] py-4 text-sm font-bold ${
-                      isFormValid && !isSubmitting
-                        ? 'bg-[#2c3e50] text-white shadow-[0_20px_40px_-20px_rgba(44,62,80,0.35)] hover:bg-[#435544]'
-                        : 'cursor-not-allowed bg-[#d8d9dc] text-white'
-                    }`}
-                  >
-                    {isSubmitting ? 'Confirmation...' : 'Confirmer le rendez-vous'}
-                  </button>
-
-                  <div className="mt-4 flex items-start gap-3 text-[10px] leading-relaxed text-[#9ca3af]">
-                    <ShieldCheck size={14} className="mt-0.5 shrink-0 text-[#a89078]" />
-                    <p>Confirmation instantanée par email après validation.</p>
-                  </div>
+                    onClick={completeBooking}
+                    className="w-full h-24 rounded-[3rem] bg-neutral-900 text-white text-[13px] font-black uppercase tracking-[0.5em] shadow-2xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.4)] hover:-translate-y-2 active:scale-95 transition-all flex items-center justify-center gap-6 group disabled:opacity-10"
+                   >
+                     {isSubmitting ? (
+                        <Clock3 size={24} className="animate-spin" />
+                     ) : (
+                        <CheckCircle2 size={24} strokeWidth={3} className="group-hover:scale-125 transition-transform" />
+                     )}
+                     {isSubmitting ? "TRANSMISSION..." : "VALIDER MA SÉANCE"}
+                   </button>
+                   <div className="flex items-center gap-4 mt-8 px-6 text-neutral-300">
+                      <ShieldCheck size={16} />
+                      <p className="text-[9px] font-black uppercase tracking-[0.2em]">Paiement sécurisé sur place</p>
+                   </div>
                 </div>
-              </form>
-            </div>
-          </div>
-        )}
+             </div>
+          </aside>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function RecapRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
+   return (
+      <div className="flex items-center gap-6 p-8 rounded-[2.5rem] bg-white border border-neutral-100 shadow-sm hover:border-neutral-900 transition-all group">
+         <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-neutral-50 text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white transition-all shadow-inner">
+            {icon}
+         </div>
+         <div className="flex-1 min-w-0">
+            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-neutral-200 mb-1 italic">{label}</p>
+            <p className="text-sm font-black text-neutral-900 tracking-tight italic truncate group-hover:italic uppercase">{value}</p>
+         </div>
       </div>
-    </div>
-  );
+   );
 }
 
-function StepPill({
-  index,
-  label,
-  active,
-  completed,
-}: {
-  index: number;
-  label: string;
-  active: boolean;
-  completed: boolean;
-}) {
-  return (
-    <div
-      className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[10px] font-bold uppercase tracking-[0.24em] ${
-        active
-          ? 'border-[#2c3e50] bg-[#2c3e50] text-white'
-          : completed
-            ? 'border-[#d7c8b6] bg-[#f2ebe1] text-[#8f7a62]'
-            : 'border-[#ece9e4] bg-white text-[#b1b6be]'
-      }`}
-    >
-      <span>{index}</span>
-      <span>{label}</span>
-    </div>
-  );
-}
-
-function Field({
-  icon: Icon,
-  value,
-  onChange,
-  placeholder,
-  type = 'text',
-}: {
-  icon: typeof User;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
-  type?: string;
-}) {
-  return (
-    <label className="flex items-center gap-3 rounded-[16px] border border-[#ece9e4] bg-white px-4 py-4 shadow-sm">
-      <Icon size={16} className="shrink-0 text-[#a89078]" />
-      <input
-        type={type}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder}
-        className="w-full bg-transparent text-sm text-[#2c3e50] placeholder:text-[#b7bcc5] focus:outline-none"
-      />
-    </label>
-  );
-}
-
-function TextAreaField({
-  icon: Icon,
-  value,
-  onChange,
-  placeholder,
-}: {
-  icon: typeof MessageCircle;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
-}) {
-  return (
-    <label className="flex gap-3 rounded-[16px] border border-[#ece9e4] bg-white px-4 py-4 shadow-sm">
-      <Icon size={16} className="mt-1 shrink-0 text-[#a89078]" />
-      <textarea
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder}
-        rows={4}
-        className="w-full resize-none bg-transparent text-sm text-[#2c3e50] placeholder:text-[#b7bcc5] focus:outline-none"
-      />
-    </label>
-  );
-}
-
-function SummaryRow({
-  label,
-  value,
-  accent = false,
-}: {
-  label: string;
-  value: string;
-  accent?: boolean;
-}) {
-  return (
-    <div className="flex items-start justify-between gap-4">
-      <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#9ca3af]">
-        {label}
-      </span>
-      <span className={`text-right text-xs font-bold ${accent ? 'text-[#a89078]' : 'text-[#2c3e50]'}`}>
-        {value}
-      </span>
-    </div>
-  );
+function InputGroup({ label, value, onChange, type = "text" }: { label: string, value: string, onChange: (v: string) => void, type?: string }) {
+   return (
+      <div className="space-y-4 group">
+         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-300 px-6 italic leading-none block">{label}</label>
+         <input 
+            type={type} 
+            value={value} 
+            onChange={(e) => onChange(e.target.value)} 
+            placeholder="Saisir ici..."
+            className="w-full h-16 px-10 rounded-full bg-neutral-50 border-none text-xl font-black tracking-tighter italic text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-inner" 
+         />
+      </div>
+   );
 }

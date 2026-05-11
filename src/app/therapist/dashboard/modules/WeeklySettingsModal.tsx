@@ -1,8 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { X, Plus, Clock } from 'lucide-react';
-import { motion } from 'framer-motion';
-import * as dashboardTheme from './dashboardTheme';
+import { X, Plus, Clock, Copy, Save, Trash2, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface WeeklySettingsModalProps {
   initialSlots: Record<number, string[]>;
@@ -47,125 +46,139 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-6">
+    <div className="fixed inset-0 z-[300] flex items-center justify-center p-6">
       <motion.div
-        className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-neutral-900/60 backdrop-blur-xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         onClick={onClose}
       />
 
       <motion.div
-        className={`${dashboardTheme.dashboardPanel} relative w-full sm:max-w-[34rem] flex flex-col max-h-[90vh] overflow-hidden`}
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full max-w-2xl bg-[#FDFDFB] rounded-[4rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-white"
+        initial={{ opacity: 0, scale: 0.9, y: 100 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 100 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Mobile handle */}
-        <div className="sm:hidden flex justify-center pt-3 pb-2 shrink-0">
-          <div className="w-12 h-1 bg-slate-200" />
-        </div>
-
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[#d9dee4] shrink-0">
+        <div className="flex items-center justify-between px-12 py-10 border-b border-neutral-100">
           <div>
-            <p className={`${dashboardTheme.dashboardEyebrow} mb-1`}>CONFIGURATION</p>
-            <h2 className={`${dashboardTheme.dashboardTitle} text-xl`}>Horaires types</h2>
+            <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none">CONFIGURATION</p>
+            <h2 className="text-4xl font-bold text-neutral-900 tracking-tighter leading-none">Horaires Types</h2>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center hover:bg-[#f7f4ec] text-slate-400 hover:text-slate-900 transition-colors"
+            className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-900 text-white hover:scale-105 transition-all shadow-xl"
           >
-            <X size={18} strokeWidth={1} />
+            <X size={20} strokeWidth={3} />
           </button>
         </div>
 
-        {/* Day tabs — all 7 days including Sunday */}
-        <div className="flex border-b border-[#d9dee4] shrink-0">
+        {/* Day selection */}
+        <div className="flex bg-neutral-50 p-2 border-b border-neutral-100">
           {DAYS.map(day => {
             const count = (slots[day.id] || []).length;
+            const isActive = activeDay === day.id;
             return (
               <button
                 key={day.id}
                 onClick={() => setActiveDay(day.id)}
-                className={`flex-1 py-3 px-1 ${dashboardTheme.dashboardEyebrow} whitespace-nowrap transition-colors flex items-center justify-center gap-1.5 ${
-                  activeDay === day.id
-                    ? 'text-[#2e5b97] border-b-2 border-[#2e5b97] -mb-px'
-                    : 'text-slate-400 hover:text-slate-700'
+                className={`flex-1 py-4 px-2 rounded-full transition-all flex flex-col items-center justify-center gap-1 ${
+                  isActive
+                    ? 'bg-neutral-900 text-white shadow-xl scale-105 z-10'
+                    : 'text-neutral-400 hover:text-neutral-900'
                 }`}
               >
-                {day.label}
-                <span className={`w-5 h-5 flex items-center justify-center rounded-full text-[10px] ${
-                  activeDay === day.id ? 'bg-[#2e5b97] text-white' : 'bg-[#e8f2ee] text-[#2e5b97]'
-                }`}>
-                  {count}
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em]">{day.label}</span>
+                <span className={`text-[10px] font-bold ${isActive ? 'text-white/40' : 'text-neutral-200'}`}>
+                  {count} créneau{count > 1 ? 's' : ''}
                 </span>
               </button>
             );
           })}
         </div>
 
-        <div className="overflow-y-auto px-8 pt-5 pb-3 flex-1">
-          {(slots[activeDay] || []).length > 0 ? (
-            <div className="grid grid-cols-2 gap-3">
-              {slots[activeDay].map(time => (
-                <div
-                  key={time}
-                  className="flex items-center justify-between px-4 py-3 bg-white/70 border border-[#d9dee4] rounded-xl"
-                >
-                  <div className="flex items-center gap-2  text-[13px] text-slate-900 tracking-tighter">
-                    <Clock size={12} strokeWidth={1.5} className="text-slate-400" />
-                    {time}
-                  </div>
-                  <button
-                    onClick={() => handleRemoveSlot(time)}
-                    className="w-7 h-7 border border-[#d9dee4] rounded-full flex items-center justify-center text-slate-400 hover:border-[#2e5b97] hover:text-[#2e5b97] transition-all duration-300"
+        {/* Content */}
+        <div className="overflow-y-auto p-12 flex-1 scrollbar-hide">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeDay}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-8"
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-[12px] font-bold uppercase tracking-[0.3em] text-neutral-900">Disponibilités {DAYS[activeDay].label}</h3>
+                { (slots[activeDay] || []).length > 0 && (
+                   <button 
+                    onClick={handleCopyToWeek}
+                    className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-300 hover:text-neutral-900 transition-colors"
                   >
-                    <X size={11} strokeWidth={1.5} />
+                    <Copy size={14} strokeWidth={2.5} /> Dupliquer semaine
                   </button>
+                )}
+              </div>
+
+              {(slots[activeDay] || []).length > 0 ? (
+                <div className="grid grid-cols-2 gap-6">
+                  {slots[activeDay].map(time => (
+                    <div
+                      key={time}
+                      className="flex items-center justify-between px-8 py-5 bg-white border border-neutral-100 rounded-[2.5rem] shadow-sm hover:border-neutral-900 transition-all group"
+                    >
+                      <div className="flex items-center gap-4 text-xl font-bold text-neutral-900 tracking-tighter">
+                        <Clock size={18} strokeWidth={2.5} className="text-neutral-300 group-hover:text-neutral-900 transition-colors" />
+                        {time}
+                      </div>
+                      <button
+                        onClick={() => handleRemoveSlot(time)}
+                        className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 hover:bg-red-500 hover:text-white transition-all"
+                      >
+                        <Trash2 size={14} strokeWidth={2.5} />
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="py-6 text-center">
-              <Clock size={24} strokeWidth={1} className="text-slate-200 mx-auto mb-3" />
-              <p className={`${dashboardTheme.dashboardEyebrow} text-slate-400`}>Aucun créneau configuré</p>
-            </div>
-          )}
+              ) : (
+                <div className="py-20 text-center bg-neutral-50 rounded-[3rem] border-2 border-dashed border-neutral-100">
+                  <Clock size={48} strokeWidth={1} className="text-neutral-200 mx-auto mb-6" />
+                  <p className="text-[12px] font-bold uppercase tracking-[0.3em] text-neutral-300">Aucun créneau configuré</p>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* Add slot — always visible, outside scroll zone */}
-        <div className="flex gap-2 px-8 py-3 shrink-0">
-          <div className="flex-1 relative">
-            <input
-              type="time"
-              value={newTime}
-              onChange={e => setNewTime(e.target.value)}
-              className="w-full h-10 bg-white/70 border border-[#d9dee4] rounded-xl px-4  text-[13px] text-slate-900 focus:outline-none focus:border-[#2e5b97] focus:ring-2 focus:ring-[#2e5b97]/15 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50"
-            />
+        {/* Add slot and Actions */}
+        <div className="p-12 border-t border-neutral-100 space-y-8 bg-white/50 backdrop-blur-md">
+          <div className="flex items-center gap-6">
+            <div className="flex-1 relative group">
+              <input
+                type="time"
+                value={newTime}
+                onChange={e => setNewTime(e.target.value)}
+                className="w-full h-20 bg-neutral-50 border-2 border-transparent rounded-full px-10 text-2xl font-bold tracking-tighter text-neutral-900 focus:outline-none focus:bg-white focus:border-neutral-900 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+              />
+              <div className="absolute right-10 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-focus-within:opacity-100 transition-opacity">
+                <ArrowRight size={24} strokeWidth={3} className="text-neutral-900" />
+              </div>
+            </div>
+            <button
+              onClick={handleAddSlot}
+              className="h-20 px-12 rounded-full bg-neutral-900 text-white font-bold text-[11px] uppercase tracking-[0.4em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center gap-4"
+            >
+              <Plus size={20} strokeWidth={3} /> Ajouter
+            </button>
           </div>
-          <button
-            onClick={handleAddSlot}
-            className={`${dashboardTheme.dashboardPrimaryButton} flex items-center gap-2 h-10 px-5 shrink-0 text-[11px]`}
-          >
-            <Plus size={13} strokeWidth={1.5} />
-            Ajouter
-          </button>
-        </div>
 
-        {/* Footer — always visible */}
-        <div className="px-8 pb-6 pt-2 border-t border-[#d9dee4] flex flex-col items-center gap-4 shrink-0">
-          <button
-            onClick={handleCopyToWeek}
-            className={`${dashboardTheme.dashboardEyebrow} text-slate-400 hover:text-[#2e5b97] transition-colors`}
-          >
-            Appliquer à toute la semaine
-          </button>
           <button
             onClick={() => onSave(slots)}
-            className={`${dashboardTheme.dashboardPrimaryButton} w-full h-12`}
+            className="w-full h-20 rounded-full bg-neutral-900 text-white font-bold text-[13px] uppercase tracking-[0.5em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-6"
           >
-            Enregistrer
+            <Save size={22} strokeWidth={2.5} /> Enregistrer la structure
           </button>
         </div>
       </motion.div>

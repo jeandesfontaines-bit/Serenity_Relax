@@ -5,7 +5,7 @@ import { signInAnonymously } from 'firebase/auth';
 import { collection, doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { addMinutes, format, isBefore, parseISO, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Check, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, X, ShieldCheck, Info } from 'lucide-react';
 import { useAuth, useFirestore, useUser } from '@/firebase';
 import { toast } from '@/hooks/use-toast';
 import type { Service } from '@/lib/types';
@@ -31,6 +31,7 @@ type BookingData = {
   canton: string;
   country: string;
   note: string;
+  acceptedTerms: boolean;
 };
 
 type AvailabilitySlot = {
@@ -67,6 +68,7 @@ const EMPTY_BOOKING_DATA: BookingData = {
   canton: '',
   country: 'Suisse',
   note: '',
+  acceptedTerms: false,
 };
 
 const PHONE_PREFIXES: Record<BookingData['phonePrefix'], string> = {
@@ -134,8 +136,13 @@ export function LandingBookingModal({
   useEffect(() => {
     if (!isOpen) return;
 
-    setSelectedServiceId(initialServiceId ?? services[0]?.id ?? null);
-    setStep(1);
+    if (initialServiceId) {
+      setSelectedServiceId(initialServiceId);
+      setStep(2);
+    } else {
+      setSelectedServiceId(services[0]?.id ?? null);
+      setStep(1);
+    }
     setWeekOffset(0);
     setBookingRef(null);
     setBookingData(EMPTY_BOOKING_DATA);
@@ -184,17 +191,16 @@ export function LandingBookingModal({
 
   const weekData = useMemo(() => {
     const today = new Date();
-    const currentDay = today.getDay();
-    const mondayOffset = today.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
-    const startOfWeek = new Date(today);
-    startOfWeek.setHours(0, 0, 0, 0);
-    startOfWeek.setDate(mondayOffset + weekOffset * 7);
+    const startFrom = new Date(today);
+    startFrom.setHours(0, 0, 0, 0);
+    startFrom.setDate(today.getDate() + weekOffset * 7);
 
     const days: WeekDay[] = Array.from({ length: 7 }, (_, index) => {
-      const date = new Date(startOfWeek);
-      date.setDate(startOfWeek.getDate() + index);
+      const date = new Date(startFrom);
+      date.setDate(startFrom.getDate() + index);
       const fullDate = format(date, 'yyyy-MM-dd');
-      const slots = getFreeSlotsForDate(fullDate);
+      const isPast = isBefore(date, startOfDay(today));
+      const slots = isPast ? [] : getFreeSlotsForDate(fullDate);
       const totalSlots = (configSlots[date.getDay()] ?? []).length;
       const ratio = totalSlots > 0 ? slots.length / totalSlots : 0;
       const availabilityTone =
@@ -210,14 +216,14 @@ export function LandingBookingModal({
         dayLabel: format(date, 'EEE', { locale: fr }).replace('.', ''),
         dayNumber: format(date, 'd'),
         fullDate,
-        isDisabled: isBefore(date, startOfDay(new Date())) || slots.length === 0,
+        isDisabled: isPast || slots.length === 0,
         slots,
         totalSlots,
         availabilityTone,
       };
     });
 
-    const monthLabel = format(days[3] ? parseISO(days[3].fullDate) : startOfWeek, 'MMMM yyyy', { locale: fr });
+    const monthLabel = format(days[3] ? parseISO(days[3].fullDate) : new Date(), 'MMMM yyyy', { locale: fr });
 
     return { days, monthLabel };
   }, [availableSlots, configSlots, weekOffset]);
@@ -249,18 +255,18 @@ export function LandingBookingModal({
     },
     full: {
       label: 'Complet',
-      className: 'bg-[#fee2e2] text-[#b91c1c]',
+      className: 'bg-foreground/5 text-foreground/40',
     },
   };
 
-  const updateField = (field: keyof BookingData, value: string) => {
+  const updateField = (field: keyof BookingData, value: string | boolean) => {
     setBookingData((current) => ({ ...current, [field]: value }));
   };
 
   const handleServiceChange = (serviceId: string) => {
     setSelectedServiceId(serviceId);
     setBookingData((current) => ({ ...current, date: '', time: '' }));
-    setStep(1);
+    setStep(2);
   };
 
   const handleDateSelect = (fullDate: string) => {
@@ -269,7 +275,7 @@ export function LandingBookingModal({
 
   const handleTimeSelect = (time: string) => {
     setBookingData((current) => ({ ...current, time }));
-    window.setTimeout(() => setStep(2), 140);
+    window.setTimeout(() => setStep(3), 140);
   };
 
   const submitBooking = async (event: React.FormEvent) => {
@@ -293,78 +299,113 @@ export function LandingBookingModal({
         throw new Error('Impossible d’établir une session sécurisée.');
       }
 
-      const appointmentId = `SR-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+      // Generate IDs and tokens
       const magicToken = `${Math.random().toString(36).slice(2, 10).toUpperCase()}${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
-      const startTime = `${bookingData.date}T${bookingData.time}:00`;
-      const durationMatch = selectedService.duration.match(/\d+/);
-      const duration = durationMatch ? Number(durationMatch[0]) : 60;
-      const endTime = addMinutes(new Date(startTime), duration);
       const firstName = bookingData.firstName.trim();
       const lastName = bookingData.lastName.trim();
       const fullName = `${firstName} ${lastName}`.trim();
       const fullPhone = `${PHONE_PREFIXES[bookingData.phonePrefix]} ${bookingData.phone.trim()}`;
       const fullStreet = [bookingData.streetNum.trim(), bookingData.streetName.trim()].filter(Boolean).join(' ');
+      
+      const startTime = `${bookingData.date}T${bookingData.time}:00`;
+      const durationMatch = selectedService.duration.match(/\d+/);
+      const duration = durationMatch ? Number(durationMatch[0]) : 60;
+      const endTimeDate = new Date(new Date(startTime).getTime() + duration * 60000);
+      const endTimeStr = format(endTimeDate, "yyyy-MM-dd'T'HH:mm:ss");
 
-      await Promise.all([
-        setDoc(doc(firestore, 'appointments', appointmentId), {
-          id: appointmentId,
-          clientId: finalUserId,
-          serviceId: selectedService.id,
-          serviceName: selectedService.name,
-          startTime,
-          endTime: format(endTime, "yyyy-MM-dd'T'HH:mm:ss"),
-          status: 'confirmed',
-          clientMessage: bookingData.note.trim(),
+      // 1. Create the appointment
+      const appointmentRef = await addDoc(collection(firestore, 'appointments'), {
+        clientId: finalUserId,
+        clientNameSnapshot: fullName,
+        date: bookingData.date,
+        time: bookingData.time,
+        startTime,
+        endTime: endTimeStr,
+        serviceName: selectedService.name,
+        serviceId: selectedService.id,
+        price: selectedService.price,
+        magicToken,
+        phone: fullPhone,
+        status: 'confirmed',
+        paid: false,
+        clientMessage: bookingData.note.trim(),
+        createdAt: serverTimestamp(),
+      });
+
+      const appointmentId = appointmentRef.id;
+
+      // 2. Create/Update the client
+      await setDoc(
+        doc(firestore, 'clients', finalUserId),
+        {
+          id: finalUserId,
           firstName,
           lastName,
-          clientNameSnapshot: fullName,
-          clientEmail: bookingData.email.trim(),
-          magicToken,
+          email: bookingData.email.trim(),
           phone: fullPhone,
-          createdAt: serverTimestamp(),
-        }),
-        setDoc(
-          doc(firestore, 'clients', finalUserId),
-          {
-            id: finalUserId,
-            firstName,
-            lastName,
-            email: bookingData.email.trim(),
-            phone: fullPhone,
-            therapistNotes: '',
-            loyaltySessionsCompleted: 0,
-            isNextSessionFree: false,
-            addressStreet: fullStreet,
-            addressCity: bookingData.city.trim(),
-            addressPostalCode: '',
-            addressCountry: bookingData.country.trim(),
-            addressCanton: bookingData.canton.trim(),
-            dateOfBirth: '',
+          addressStreet: fullStreet,
+          addressCity: bookingData.city.trim(),
+          addressPostalCode: bookingData.postalCode.trim(),
+          addressCountry: bookingData.country.trim(),
+          addressCanton: bookingData.canton.trim(),
+          magicToken,
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true },
+      );
+
+      // 3. Create the invoice
+      await addDoc(collection(firestore, 'invoices'), {
+        appointmentId,
+        clientId: finalUserId,
+        clientNameSnapshot: fullName,
+        invoiceNumber: `INV-${format(new Date(), 'yyyyMMdd')}-${appointmentId.slice(-4).toUpperCase()}`,
+        date: bookingData.date,
+        issueDate: format(new Date(), 'yyyy-MM-dd'),
+        dueDate: bookingData.date,
+        amount: selectedService.price,
+        totalAmount: selectedService.price,
+        status: 'Pending',
+        serviceName: selectedService.name,
+        createdAt: serverTimestamp()
+      });
+
+      // 4. Update availability
+      await setDoc(doc(firestore, 'availability', appointmentId), {
+        type: 'booked',
+        date: bookingData.date,
+        time: bookingData.time,
+        appointmentId,
+      });
+
+      // 5. Trigger notification (optional, but good practice)
+      try {
+        await fetch('/api/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            appointmentId,
+            clientName: fullName,
+            clientEmail: bookingData.email.trim(),
+            clientPhone: fullPhone,
+            clientAddress: `${fullStreet}, ${bookingData.postalCode.trim()} ${bookingData.city.trim()}`,
+            clientNotes: bookingData.note.trim(),
+            serviceName: selectedService.name,
+            startTime,
+            duration: selectedService.duration,
             magicToken,
-            updatedAt: serverTimestamp(),
-          },
-          { merge: true },
-        ),
-        setDoc(doc(firestore, 'availability', appointmentId), {
-          type: 'booked',
-          date: bookingData.date,
-          time: bookingData.time,
-          appointmentId,
-        }),
-      ]);
+            clientId: finalUserId,
+          }),
+        });
+      } catch (err) {
+        console.error('Failed to send notification:', err);
+      }
 
       setBookingRef(appointmentId);
-      setStep(4);
-      toast({
-        title: 'Rendez-vous confirmé',
-        description: 'Votre réservation a bien été enregistrée.',
-      });
+      setStep(5);
     } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: error?.message ?? 'Une erreur est survenue.',
-      });
+      console.error('Booking error:', error);
+      alert(error?.message ?? 'Une erreur est survenue lors de la réservation.');
     } finally {
       setIsSubmitting(false);
     }
@@ -376,41 +417,51 @@ export function LandingBookingModal({
 
   return (
     <div
-      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/45 px-4 py-5 backdrop-blur-xl"
+      className="fixed inset-0 z-[120] flex items-end justify-center bg-black/45 backdrop-blur-xl px-0 py-0 md:items-center md:px-4 md:py-5"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="grid max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-[2.5rem] border border-foreground/5 bg-background shadow-[0_40px_100px_-20px_rgba(21,32,35,0.2)] lg:grid-cols-[minmax(0,1fr)_22rem]"
+        className="relative flex flex-col w-full max-w-2xl overflow-hidden bg-background shadow-[0_40px_100px_-20px_rgba(21,32,35,0.2)] 
+                   fixed bottom-0 inset-x-0 rounded-t-[2.5rem] h-[75vh] animate-in slide-in-from-bottom duration-500
+                   md:relative md:mx-auto md:rounded-[2.5rem] md:border md:border-foreground/5 md:h-[min(800px,85vh)] md:animate-in md:zoom-in-95"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="landing-booking-title"
       >
-        <section className="max-h-[92vh] overflow-y-auto px-6 py-8 md:px-10 md:py-10">
-          <div className="mb-10 flex items-start justify-between gap-6">
-            <div>
-              <span className="mono-caption text-[var(--sage-deep)] mb-3 block">— Réservation</span>
-              <h2 id="landing-booking-title" className="display-tight text-3xl text-foreground md:text-4xl lg:text-5xl leading-none whitespace-nowrap overflow-hidden text-ellipsis">
-                {shortenServiceName(selectedService.name)}
-              </h2>
-              <div className="mt-4 flex items-center gap-3">
-                <span className="text-sm font-medium text-foreground/50">{selectedService.price} CHF</span>
-                <span className="h-1 w-1 rounded-full bg-foreground/10" />
-                <span className="text-sm font-medium text-foreground/50">{selectedService.duration}</span>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onClose(); }}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground shadow-sm transition-all duration-300 hover:bg-foreground hover:text-background active:scale-95"
-              aria-label="Fermer la réservation"
-            >
-              <X size={20} />
-            </button>
-          </div>
+        {/* Mobile handle */}
+        <div className="flex w-full justify-center pt-3 pb-1 md:hidden">
+          <div className="h-1.5 w-12 rounded-full bg-foreground/10" />
+        </div>
 
-          {/* New refined stepper */}
+        <button
+          type="button"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onClose(); }}
+          className="absolute right-6 top-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-foreground/10 bg-white/80 text-foreground shadow-sm backdrop-blur-md transition-all duration-300 hover:bg-foreground hover:text-background active:scale-95 z-[130]"
+          aria-label="Fermer la réservation"
+        >
+          <X size={20} />
+        </button>
+
+        <section className="h-full overflow-y-auto px-6 py-8 md:px-12 md:py-12">
+          {/* Compact Summary Header */}
+          {selectedService && step > 1 && (
+            <div className="mb-8 flex items-center justify-between rounded-2xl bg-foreground/[0.03] border border-foreground/5 p-5 animate-in fade-in slide-in-from-top-2 duration-500">
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/40">Soin</span>
+                <span className="text-sm font-bold text-foreground">{shortenServiceName(selectedService.name)}</span>
+              </div>
+              {bookingData.date && (
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 text-right">Rendez-vous</span>
+                  <span className="text-sm font-bold text-foreground text-right">{formattedDate} {bookingData.time ? `· ${bookingData.time}` : ''}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Sequential stepper */}
           <div className="mb-12 flex gap-1.5">
             {[1, 2, 3, 4].map((item) => (
               <div
@@ -422,54 +473,64 @@ export function LandingBookingModal({
             ))}
           </div>
 
-          {/* Editorial service selector */}
-          <div className="mb-12">
-            <span className="mono-caption text-[var(--sage-deep)] mb-5 block">— Choisir un autre soin</span>
-            <div className="flex flex-wrap gap-2.5">
-              {services.map((service) => {
-                const isActive = service.id === selectedService.id;
-                return (
+          {step === 1 && (
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="mb-8">
+                <h3 className="display-tight text-4xl text-foreground font-serif italic">
+                  Quel soin souhaitez-vous <br /> réserver aujourd&apos;hui ?
+                </h3>
+              </div>
+              
+              <div className="grid gap-4 sm:grid-cols-2">
+                {services.map((service) => (
                   <button
                     key={service.id}
                     type="button"
                     onClick={() => handleServiceChange(service.id)}
-                    className={`rounded-full px-5 py-2.5 text-xs font-bold tracking-tight uppercase whitespace-nowrap transition-all duration-300 ${
-                      isActive
-                        ? 'bg-foreground text-background shadow-lg shadow-foreground/10'
-                        : 'bg-foreground/5 text-foreground/60 hover:bg-foreground/10 hover:text-foreground'
-                    }`}
+                    className="group relative flex flex-col items-start rounded-[2.5rem] border border-foreground/5 bg-white p-8 text-left transition-all duration-300 hover:border-foreground/20 hover:shadow-2xl hover:shadow-foreground/5 hover:-translate-y-1"
                   >
-                    {shortenServiceName(service.name)}
+                    <span className="text-xl font-bold display-tight text-foreground leading-tight">{shortenServiceName(service.name)}</span>
+                    <div className="mt-4 flex items-center gap-3">
+                      <span className="text-xs font-bold uppercase tracking-widest text-[var(--orange)]">{service.price} CHF</span>
+                      <span className="h-1 w-1 rounded-full bg-foreground/10" />
+                      <span className="text-xs font-medium text-foreground/40">{service.duration}</span>
+                    </div>
+                    <div className="absolute bottom-8 right-8 flex h-10 w-10 items-center justify-center rounded-full bg-foreground/5 text-foreground opacity-0 transition-all group-hover:opacity-100 group-hover:bg-foreground group-hover:text-background">
+                      <ChevronRight size={18} />
+                    </div>
                   </button>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {step === 1 && (
+          {step === 2 && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="flex items-center justify-between gap-4">
-                <span className="mono-caption text-[var(--sage-deep)] uppercase tracking-[0.2em]">
-                  {weekData.monthLabel}
-                </span>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setWeekOffset((value) => value - 1)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground transition-all duration-300 hover:bg-foreground hover:text-background"
-                    aria-label="Semaine précédente"
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setWeekOffset((value) => value + 1)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground transition-all duration-300 hover:bg-foreground hover:text-background"
-                    aria-label="Semaine suivante"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
+              <div className="flex items-center justify-between border-b border-foreground/5 pb-6">
+                <button
+                  type="button"
+                  onClick={() => setWeekOffset((value) => value - 1)}
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground transition-all duration-300 hover:bg-foreground hover:text-background disabled:opacity-10 disabled:cursor-not-allowed"
+                  aria-label="Semaine précédente"
+                  disabled={weekOffset === 0}
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                
+                <div className="text-center">
+                  <h3 className="text-3xl font-medium display-tight italic font-serif text-foreground capitalize">
+                    {weekData.monthLabel}
+                  </h3>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => setWeekOffset((value) => value + 1)}
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground transition-all duration-300 hover:bg-foreground hover:text-background"
+                  aria-label="Semaine suivante"
+                >
+                  <ChevronRight size={20} />
+                </button>
               </div>
 
               <div className="grid grid-cols-7 gap-2.5">
@@ -507,108 +568,119 @@ export function LandingBookingModal({
                 })}
               </div>
 
-              {selectedDay ? (
-                <div className="space-y-4 pt-4 border-t border-foreground/5 animate-in fade-in duration-700">
+              {selectedDay && (
+                <div className="space-y-4 pt-8 border-t border-foreground/5 animate-in fade-in duration-700">
                   <span className="mono-caption text-[var(--sage-deep)] block">
                     — Horaires disponibles le {formattedDate}
                   </span>
-                  <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 md:grid-cols-6">
-                    {selectedDay.slots.map((slot) => {
-                      const isActive = bookingData.time === slot;
+                  
+                  {selectedDay.slots.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
+                      {selectedDay.slots.map((slot) => {
+                        const isActive = bookingData.time === slot;
 
-                      return (
-                        <button
-                          key={slot}
-                          type="button"
-                          onClick={() => handleTimeSelect(slot)}
-                          className={`min-h-12 rounded-2xl border text-xs font-bold tracking-tight transition-all duration-300 ${
-                            isActive
-                              ? 'border-foreground bg-foreground text-background shadow-lg shadow-foreground/10'
-                              : 'border-foreground/5 bg-white text-foreground/60 hover:border-foreground/20 hover:text-foreground'
-                          }`}
-                        >
-                          {slot}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <div className="rounded-[2rem] border border-dashed border-foreground/10 bg-foreground/[0.02] px-6 py-10 text-center">
-                  <p className="text-sm text-foreground/40 italic font-serif">
-                    Choisissez une date pour révéler les créneaux disponibles.
-                  </p>
+                        return (
+                          <button
+                            key={slot}
+                            type="button"
+                            onClick={() => handleTimeSelect(slot)}
+                            className={`min-h-16 rounded-2xl border text-sm font-bold tracking-tight transition-all duration-300 ${
+                              isActive
+                                ? 'border-foreground bg-foreground text-background shadow-lg shadow-foreground/10'
+                                : 'border-foreground/5 bg-white text-foreground/60 hover:border-foreground/20 hover:text-foreground'
+                            }`}
+                          >
+                            {slot}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="rounded-[2rem] border border-dashed border-foreground/10 bg-foreground/[0.02] px-6 py-10 text-center">
+                      <p className="text-sm text-foreground/40 italic font-serif">
+                        Aucun créneau disponible pour cette date.
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
+
+              <div className="pt-4 flex justify-start">
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="text-xs font-bold uppercase tracking-widest text-foreground/40 hover:text-foreground transition-colors"
+                >
+                  ← Changer de soin
+                </button>
+              </div>
             </div>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <form
               className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
               onSubmit={(event) => {
                 event.preventDefault();
-                setStep(3);
+                setStep(4);
               }}
             >
-              <span className="mono-caption text-[var(--sage-deep)] block">— Vos informations</span>
+              <div className="mb-8">
+                <h3 className="display-tight text-4xl text-foreground font-serif italic">
+                  Vos informations
+                </h3>
+              </div>
+
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Prénom</label>
+                <input
+                  className="min-h-16 w-full rounded-full border border-foreground/5 bg-white px-8 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                  value={bookingData.firstName}
+                  onChange={(event) => updateField('firstName', event.target.value)}
+                  placeholder="Prénom"
+                  required
+                />
+                <input
+                  className="min-h-16 w-full rounded-full border border-foreground/5 bg-white px-8 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                  value={bookingData.lastName}
+                  onChange={(event) => updateField('lastName', event.target.value)}
+                  placeholder="Nom"
+                  required
+                />
+                <div className="sm:col-span-2 flex gap-3">
+                  <select
+                    className="min-h-16 rounded-full border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 appearance-none cursor-pointer pr-10"
+                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'org/19/9\' /%3E%3C/svg%3E")' }}
+                    value={bookingData.phonePrefix}
+                    onChange={(event) => updateField('phonePrefix', event.target.value as BookingData['phonePrefix'])}
+                  >
+                    <option value="CH">CH +41</option>
+                    <option value="FR">FR +33</option>
+                    <option value="BE">BE +32</option>
+                  </select>
                   <input
-                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
-                    value={bookingData.firstName}
-                    onChange={(event) => updateField('firstName', event.target.value)}
-                    placeholder="Jean"
+                    className="min-h-16 flex-1 rounded-full border border-foreground/5 bg-white px-8 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    type="tel"
+                    value={bookingData.phone}
+                    onChange={(event) => updateField('phone', event.target.value)}
+                    placeholder="Téléphone"
+                    required
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Nom</label>
-                  <input
-                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
-                    value={bookingData.lastName}
-                    onChange={(event) => updateField('lastName', event.target.value)}
-                    placeholder="Dupont"
-                  />
-                </div>
-                <div className="sm:col-span-2 space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Téléphone</label>
-                  <div className="grid grid-cols-[8rem_minmax(0,1fr)] gap-3">
-                    <select
-                      className="min-h-16 rounded-[1.5rem] border border-foreground/5 bg-white px-5 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20"
-                      value={bookingData.phonePrefix}
-                      onChange={(event) => updateField('phonePrefix', event.target.value as BookingData['phonePrefix'])}
-                    >
-                      <option value="CH">CH +41</option>
-                      <option value="FR">FR +33</option>
-                      <option value="BE">BE +32</option>
-                    </select>
-                    <input
-                      className="min-h-16 rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
-                      type="tel"
-                      value={bookingData.phone}
-                      onChange={(event) => updateField('phone', event.target.value)}
-                      placeholder="079 000 00 00"
-                    />
-                  </div>
-                </div>
-                <div className="sm:col-span-2 space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Email</label>
-                  <input
-                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
-                    type="email"
-                    value={bookingData.email}
-                    onChange={(event) => updateField('email', event.target.value)}
-                    placeholder="jean.dupont@email.com"
-                  />
-                </div>
+                <input
+                  className="sm:col-span-2 min-h-16 w-full rounded-full border border-foreground/5 bg-white px-8 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                  type="email"
+                  value={bookingData.email}
+                  onChange={(event) => updateField('email', event.target.value)}
+                  placeholder="Adresse email"
+                  required
+                />
               </div>
 
               <div className="grid gap-3 sm:grid-cols-[1fr_2fr] pt-4">
                 <button
                   className="min-h-14 rounded-full border border-foreground/10 bg-white px-8 text-xs font-bold uppercase tracking-widest text-foreground transition-all hover:bg-foreground hover:text-background"
                   type="button"
-                  onClick={() => setStep(1)}
+                  onClick={() => setStep(2)}
                 >
                   Retour
                 </button>
@@ -623,74 +695,96 @@ export function LandingBookingModal({
             </form>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <form className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500" onSubmit={submitBooking}>
-              <span className="mono-caption text-[var(--sage-deep)] block">— Adresse et notes</span>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">N°</label>
+              <div className="mb-8">
+                <h3 className="display-tight text-4xl text-foreground font-serif italic">
+                  Dernières précisions
+                </h3>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <input
+                  className="min-h-14 w-full rounded-2xl border border-foreground/5 bg-white px-5 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                  value={bookingData.streetName}
+                  onChange={(event) => updateField('streetName', event.target.value)}
+                  placeholder="Rue"
+                  required
+                />
+                <input
+                  className="min-h-14 w-full rounded-2xl border border-foreground/5 bg-white px-5 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                  value={bookingData.streetNum}
+                  onChange={(event) => updateField('streetNum', event.target.value)}
+                  placeholder="N°"
+                  required
+                />
+                <input
+                  className="min-h-14 w-full rounded-2xl border border-foreground/5 bg-white px-5 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                  value={bookingData.city}
+                  onChange={(event) => updateField('city', event.target.value)}
+                  placeholder="Ville"
+                  required
+                />
+                <div className="flex gap-3">
                   <input
-                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
-                    value={bookingData.streetNum}
-                    onChange={(event) => updateField('streetNum', event.target.value)}
-                    placeholder="12"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Rue</label>
-                  <input
-                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
-                    value={bookingData.streetName}
-                    onChange={(event) => updateField('streetName', event.target.value)}
-                    placeholder="Rue du Simplon"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Ville</label>
-                  <input
-                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
-                    value={bookingData.city}
-                    onChange={(event) => updateField('city', event.target.value)}
-                    placeholder="Genève"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Canton</label>
-                  <input
-                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    className="min-h-14 w-32 rounded-2xl border border-foreground/5 bg-white px-5 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
                     value={bookingData.canton}
                     onChange={(event) => updateField('canton', event.target.value)}
                     placeholder="GE"
+                    required
                   />
-                </div>
-                <div className="sm:col-span-2 space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Pays</label>
                   <input
-                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20"
+                    className="min-h-14 flex-1 rounded-2xl border border-foreground/5 bg-white px-5 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
                     value={bookingData.country}
                     onChange={(event) => updateField('country', event.target.value)}
                     placeholder="Suisse"
-                  />
-                </div>
-                <div className="sm:col-span-2 space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Notes (facultatif)</label>
-                  <textarea
-                    className="min-h-32 w-full rounded-[1.5rem] border border-foreground/5 bg-white p-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02] resize-none"
-                    value={bookingData.note}
-                    onChange={(event) => updateField('note', event.target.value)}
-                    placeholder="Précisions pour le thérapeute..."
+                    required
                   />
                 </div>
               </div>
 
-              <div className="rounded-[2rem] border border-foreground/5 bg-foreground/[0.02] p-6 space-y-3">
-                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest">
-                  <span className="text-foreground/40">Soin sélectionné</span>
-                  <span className="text-foreground">{shortenServiceName(selectedService.name)}</span>
-                </div>
-                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest">
-                  <span className="text-foreground/40">Date et heure</span>
-                  <span className="text-foreground">{formattedDate} · {bookingData.time}</span>
+              <div className="space-y-6">
+                <textarea
+                  className="min-h-24 w-full rounded-2xl border border-foreground/5 bg-white p-5 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02] resize-none"
+                  value={bookingData.note}
+                  onChange={(event) => updateField('note', event.target.value)}
+                  placeholder="Notes ou précisions (facultatif)..."
+                />
+
+                <div className="rounded-[2rem] border border-foreground/5 bg-foreground/[0.02] p-8 space-y-6">
+                  <div className="space-y-4">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--orange)] flex items-center gap-2">
+                      <ShieldCheck size={14} /> Santé & Éthique
+                    </p>
+                    <p className="text-[11px] leading-relaxed text-foreground/50">
+                      Les prestations sont dédiées au bien-être et ne remplacent pas un traitement médical. En réservant, vous confirmez n&apos;avoir aucune contre-indication.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--orange)] flex items-center gap-2">
+                      <Info size={14} /> Annulations
+                    </p>
+                    <p className="text-[11px] leading-relaxed text-foreground/50">
+                      Toute annulation doit être effectuée 24h à l&apos;avance. En cas d&apos;annulation tardive, la séance pourra être facturée.
+                    </p>
+                  </div>
+
+                  <label className="flex cursor-pointer items-start gap-4 pt-4 border-t border-foreground/5 group">
+                    <div className="relative flex h-5 w-5 shrink-0 items-center justify-center">
+                      <input
+                        type="checkbox"
+                        required
+                        checked={bookingData.acceptedTerms}
+                        onChange={(e) => updateField('acceptedTerms', e.target.checked)}
+                        className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-foreground/10 bg-white transition-all checked:bg-[var(--orange)] checked:border-[var(--orange)]"
+                      />
+                      <Check className="absolute h-3.5 w-3.5 text-white opacity-0 transition-opacity peer-checked:opacity-100" strokeWidth={4} />
+                    </div>
+                    <span className="text-[11px] font-medium leading-relaxed text-foreground/60 group-hover:text-foreground transition-colors">
+                      J&apos;ai pris connaissance des conditions et je confirme ma bonne condition physique.
+                    </span>
+                  </label>
                 </div>
               </div>
 
@@ -698,14 +792,14 @@ export function LandingBookingModal({
                 <button
                   className="min-h-14 rounded-full border border-foreground/10 bg-white px-8 text-xs font-bold uppercase tracking-widest text-foreground transition-all hover:bg-foreground hover:text-background"
                   type="button"
-                  onClick={() => setStep(2)}
+                  onClick={() => setStep(3)}
                 >
                   Retour
                 </button>
                 <button
                   className="min-h-14 rounded-full bg-foreground px-8 text-xs font-bold uppercase tracking-widest text-background transition-all hover:brightness-110 disabled:opacity-40"
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !bookingData.acceptedTerms}
                 >
                   {isSubmitting ? 'Confirmation en cours...' : 'Confirmer la réservation'}
                 </button>
@@ -713,7 +807,7 @@ export function LandingBookingModal({
             </form>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
             <div className="flex min-h-[30rem] flex-col items-center justify-center text-center animate-in zoom-in-95 duration-700">
               <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-[var(--orange)] text-white shadow-xl shadow-orange-200">
                 <Check size={40} strokeWidth={3} />
@@ -740,51 +834,6 @@ export function LandingBookingModal({
             </div>
           )}
         </section>
-
-        <aside className="hidden border-l border-foreground/5 bg-foreground/[0.02] lg:flex lg:flex-col">
-          <div className="relative aspect-[4/5] w-full overflow-hidden">
-            {selectedService.image ? (
-              <img
-                src={selectedService.image}
-                alt={selectedService.name}
-                className="h-full w-full object-cover grayscale-[0.2] contrast-[1.1]"
-              />
-            ) : (
-              <div className="h-full w-full bg-[var(--sage-deep)]/20" />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <span className="inline-flex rounded-full bg-[var(--neon)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--off-black)]">
-                {selectedService.duration}
-              </span>
-              <p className="mt-4 display-tight text-2xl text-foreground whitespace-nowrap truncate">
-                {shortenServiceName(selectedService.name)}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-1 flex-col p-8">
-            <span className="mono-caption text-[var(--sage-deep)] mb-6 block">— Résumé</span>
-            <div className="space-y-5 border-t border-foreground/5 pt-6">
-              <div className="flex items-start justify-between gap-4">
-                <span className="text-xs font-semibold uppercase tracking-wider text-foreground/40">Prix</span>
-                <strong className="text-sm font-bold text-foreground">{selectedService.price} CHF</strong>
-              </div>
-              <div className="flex items-start justify-between gap-4">
-                <span className="text-xs font-semibold uppercase tracking-wider text-foreground/40">Date</span>
-                <strong className="text-sm font-bold text-foreground">{formattedDate || '--'}</strong>
-              </div>
-              <div className="flex items-start justify-between gap-4">
-                <span className="text-xs font-semibold uppercase tracking-wider text-foreground/40">Heure</span>
-                <strong className="text-sm font-bold text-foreground">{bookingData.time || '--'}</strong>
-              </div>
-            </div>
-
-            <p className="mt-auto text-xs leading-relaxed text-foreground/40 italic">
-              Confirmation immédiate après validation. Un email récapitulatif vous sera envoyé.
-            </p>
-          </div>
-        </aside>
       </div>
     </div>
   );

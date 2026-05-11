@@ -1,25 +1,40 @@
 "use client";
 import { useState } from "react";
-import { Instagram, Linkedin, Mail, MapPin, Clock, Phone, ArrowUpRight } from "lucide-react";
+import { Instagram, Mail, MapPin, Clock, Phone, ArrowUpRight, Check } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    setEmail("");
+
+    try {
+      await addDoc(collection(db, "newsletter_subscribers"), {
+        email: email.toLowerCase().trim(),
+        createdAt: serverTimestamp(),
+        source: "landing_page_footer"
+      });
+      setIsSubmitted(true);
+      setEmail("");
+    } catch (error) {
+      console.error("Error saving email:", error);
+      setIsSubmitted(true);
+    }
   };
 
   return (
     <footer className="bg-[var(--off-black)] text-background">
       {/* CTA + Newsletter band */}
-      <div className="border-b border-background/10">
+      <div className="border-b border-background/10 bg-[linear-gradient(135deg,rgba(21,56,57,0.96),rgba(39,94,106,0.88))] shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)]">
         <div className="mx-auto max-w-[1480px] px-6 py-16 md:px-10 lg:px-14 md:py-20">
           <div className="grid grid-cols-12 gap-8 lg:gap-12">
             <div className="col-span-12 lg:col-span-7">
               <span className="mono-caption text-[var(--neon)]">— Restons connectés</span>
-              <h3 className="mt-5 display-tight text-4xl text-background md:text-5xl lg:text-6xl">
+              <h3 className="mt-5 display-tight text-4xl text-background md:text-5xl lg:text-6xl leading-[0.95]">
                 Recevez les nouveautés <em className="!text-[var(--neon)]">du cabinet.</em>
               </h3>
               <p className="mt-5 max-w-xl text-base leading-[1.6] text-background/70">
@@ -28,26 +43,37 @@ export default function Footer() {
               </p>
             </div>
             <div className="col-span-12 lg:col-span-5 lg:pt-12">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="votre.email@exemple.ch"
-                  className="flex-1 rounded-full bg-background/5 border border-background/15 px-5 py-3.5 text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-background/40 transition-colors duration-300"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--neon)] px-6 py-3.5 text-sm font-bold tracking-tight text-[var(--off-black)] transition-all duration-300 hover:bg-white"
-                >
-                  S'inscrire
-                  <ArrowUpRight size={15} strokeWidth={2.5} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </button>
-              </form>
-              <p className="mt-3 text-xs tracking-wide text-background/40">
-                En vous inscrivant, vous acceptez notre politique de confidentialité.
-              </p>
+              {isSubmitted ? (
+                <div className="flex items-center gap-4 rounded-full bg-background/5 border border-[var(--neon)]/30 p-4 animate-in fade-in slide-in-from-bottom-2">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--neon)] text-[var(--off-black)]">
+                    <Check size={20} strokeWidth={3} />
+                  </div>
+                  <p className="text-sm font-bold tracking-tight text-[var(--neon)]">Merci ! Vous êtes désormais inscrit.</p>
+                </div>
+              ) : (
+                <>
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="votre.email@exemple.ch"
+                      className="flex-1 rounded-full bg-background/5 border border-background/15 px-5 py-3.5 text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-background/40 transition-colors duration-300"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--neon)] px-6 py-3.5 text-sm font-bold tracking-tight text-[var(--off-black)] transition-all duration-300 hover:bg-white"
+                    >
+                      S'inscrire
+                      <ArrowUpRight size={15} strokeWidth={2.5} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </button>
+                  </form>
+                  <p className="mt-3 text-xs tracking-wide text-background/40">
+                    En vous inscrivant, vous acceptez notre politique de confidentialité.
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -59,20 +85,20 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-12 md:col-span-5">
             <div className="flex items-baseline gap-2">
-              <span className="text-base font-semibold tracking-tight text-background">Serenity Relax</span>
-              <span className="text-sm tracking-wide text-background/60">— by João</span>
+              <span className="text-base font-semibold tracking-tight text-background">SERENITY RELAX THERAPY</span>
+              <span className="text-sm tracking-wide text-background/60">by João</span>
             </div>
-            <p className="mt-5 max-w-md text-lg leading-[1.5] text-background/85 md:text-xl">
-              Massothérapie thérapeutique pensée pour les corps actifs. Genève, depuis 2014.
-            </p>
 
             {/* Social */}
             <div className="mt-8 flex gap-3">
-              <a href="#" aria-label="Instagram" className="rounded-full bg-background/5 p-3 transition-all duration-300 hover:bg-[var(--neon)] hover:text-[var(--off-black)]">
+              <a 
+                href="https://www.instagram.com/serenity.relax.therapy_by_joao" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Instagram" 
+                className="rounded-full bg-background/5 p-3 transition-all duration-300 hover:bg-[var(--neon)] hover:text-[var(--off-black)]"
+              >
                 <Instagram size={16} strokeWidth={1.75} />
-              </a>
-              <a href="#" aria-label="LinkedIn" className="rounded-full bg-background/5 p-3 transition-all duration-300 hover:bg-[var(--neon)] hover:text-[var(--off-black)]">
-                <Linkedin size={16} strokeWidth={1.75} />
               </a>
               <a href="mailto:hello@serenityrelax.ch" aria-label="Email" className="rounded-full bg-background/5 p-3 transition-all duration-300 hover:bg-[var(--neon)] hover:text-[var(--off-black)]">
                 <Mail size={16} strokeWidth={1.75} />
@@ -87,9 +113,9 @@ export default function Footer() {
               <div className="mt-4 flex items-start gap-3">
                 <MapPin size={15} strokeWidth={1.75} className="mt-0.5 flex-shrink-0 text-background/40" />
                 <p className="text-sm leading-[1.6] text-background/85">
-                  Rue du Rhône 12<br />
-                  1204 Genève<br />
-                  Suisse
+                  Chemin de Joinville 26<br />
+                  4ème étage<br />
+                  1216 Cointrin – Genève
                 </p>
               </div>
             </div>
@@ -99,9 +125,9 @@ export default function Footer() {
               <div className="mt-4 flex items-start gap-3">
                 <Clock size={15} strokeWidth={1.75} className="mt-0.5 flex-shrink-0 text-background/40" />
                 <p className="text-sm leading-[1.6] text-background/85">
-                  Lun — Ven<br />
-                  09h00 — 19h00<br />
-                  Sam · 10h00 — 17h00
+                  Lun — Ven · 8h00 — 21h00<br />
+                  Sam — Dim · 9h30 — 21h00<br />
+                  <span className="text-[10px] uppercase tracking-wider text-background/40">Sur rendez-vous</span>
                 </p>
               </div>
             </div>
@@ -131,7 +157,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-8 flex flex-col gap-4 border-t border-background/10 pt-8 md:flex-row md:items-center md:justify-between">
-          <p className="text-xs tracking-wide text-background/40">© 2026 Serenity Relax Therapy · Tous droits réservés</p>
+          <p className="text-xs tracking-wide text-background/40">© 2026 SERENITY RELAX THERAPY by João · Tous droits réservés</p>
           <div className="flex flex-wrap gap-6">
             <a href="#" className="text-xs tracking-wide text-background/40 hover:text-background/80 transition-colors duration-300">Mentions légales</a>
             <a href="#" className="text-xs tracking-wide text-background/40 hover:text-background/80 transition-colors duration-300">Confidentialité</a>
