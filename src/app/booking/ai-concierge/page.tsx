@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
+import { recommendMassageService } from '@/ai/flows/ai-service-recommender';
+import { SERVICES } from '@/components/landing/serenity2/data';
 
 export default function AIConcierge() {
   const router = useRouter();
@@ -31,43 +33,34 @@ export default function AIConcierge() {
     setInput('');
     setIsTyping(true);
 
-    // SIMULATION IA (En attendant la connexion réelle au provider)
-    setTimeout(() => {
+    try {
+      const catalog = SERVICES.map(s => ({
+        name: s.name,
+        description: s.desc,
+        duration: s.duration,
+        price: "120 CHF" // We can hardcode or add to SERVICES if missing
+      }));
+
+      const res = await recommendMassageService({
+        clientDescription: input,
+        serviceCatalog: catalog
+      });
+
+      const matchedService = SERVICES.find(s => s.name === res.recommendedServiceName) || SERVICES[0];
+
+      setMessages(prev => [...prev, { role: 'assistant', text: res.reasoning }]);
+      setRecommendation({
+        id: matchedService.id,
+        title: matchedService.name,
+        description: matchedService.desc,
+        price: "120",
+        color: '#5F27CD'
+      });
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'assistant', text: "Désolé, l'Oracle est momentanément indisponible." }]);
+    } finally {
       setIsTyping(false);
-      const text = input.toLowerCase();
-      
-      let reco = null;
-      let reply = "";
-
-      if (text.includes('stress') || text.includes('fatigue') || text.includes('tendu')) {
-        reco = {
-          title: 'Massage Sensoriel 90 min',
-          description: 'Votre corps a besoin d\'un lâcher-prise total. Le massage sensoriel va dénouer vos tensions profondes et rétablir votre sérénité.',
-          price: 180,
-          color: '#5F27CD'
-        };
-        reply = "Je perçois une accumulation de stress dans votre système. Pour libérer ces tensions, je vous suggère une immersion sensorielle profonde.";
-      } else if (text.includes('énergie') || text.includes('bloqué') || text.includes('motivation')) {
-        reco = {
-          title: 'Rituel Énergétique 60 min',
-          description: 'Une séance focalisée sur la circulation de vos flux vitaux pour retrouver vitalité et clarté d\'esprit.',
-          price: 150,
-          color: '#0ABDE3'
-        };
-        reply = "Votre flux vital semble avoir besoin d'un rééquilibrage. Un rituel énergétique serait idéal pour réactiver votre dynamisme.";
-      } else {
-        reco = {
-          title: 'Immersion Holistique 120 min',
-          description: 'Le voyage ultime. Idéal pour une reconnexion totale corps-esprit.',
-          price: 240,
-          color: '#1DD1A1'
-        };
-        reply = "C'est une belle introspection. Pour une harmonie complète, notre immersion holistique est le choix souverain.";
-      }
-
-      setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
-      setRecommendation(reco);
-    }, 1500);
+    }
   };
 
   return (
@@ -170,7 +163,7 @@ export default function AIConcierge() {
                   </div>
 
                   <button 
-                    onClick={() => router.push('/booking')}
+                    onClick={() => router.push(`/?service=${recommendation.id}`)}
                     className="w-full py-8 btn-luxe flex items-center justify-center gap-4 text-xl shadow-2xl shadow-indigo-200/50 group"
                   >
                     Réserver ce voyage <ArrowRight className="group-hover:translate-x-2 transition-transform" />

@@ -45,6 +45,21 @@
   --ring: 46 91 151;
   --radius: 1.25rem;
 
+  /* Serenity V2 tokens */
+  --neon: #E5FD98;
+  --orange: #F1664D;
+  --teal-deep: #153839;
+  --teal: #275E6A;
+  --periwinkle: #BCACFB;
+  --green: #29CA72;
+  --off-white: #F6F2EA;
+  --off-black: #152023;
+  --clay: #F1664D;
+  --sage: #29CA72;
+  --sage-deep: #153839;
+  --ink: #152023;
+  --rose: #BCACFB;
+
   --topbar-control-height: 2.25rem;
   --topbar-icon-size: 2.25rem;
   --topbar-radius: 9999px;
@@ -110,6 +125,113 @@ body {
   font-size: clamp(3.5rem, 10vw, 8rem);
   line-height: 0.85;
   letter-spacing: -0.02em;
+}
+
+.mono-caption {
+  font-family: var(--font-jakarta), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.display-tight {
+  font-family: var(--font-jakarta), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.display-tight em {
+  font-family: var(--font-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  color: #153839;
+}
+
+.editorial-link {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.editorial-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform-origin: right;
+  transform: scaleX(0);
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-link:hover::after {
+  transform-origin: left;
+  transform: scaleX(1);
+}
+
+.editorial-rise {
+  animation: editorial-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes editorial-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slow-pan {
+  animation: slow-pan 18s ease-in-out infinite;
+}
+
+@keyframes slow-pan {
+  0%,
+  100% {
+    transform: scale(1.05) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.08) translate(-1%, -1%);
+  }
+}
+
+.landing-v2 {
+  --landing-bg: #f6f2ea;
+  --landing-ink: #152023;
+  --landing-teal: #153839;
+  --landing-neon: #e5fd98;
+  --landing-orange: #f1664d;
+  font-family: var(--landing-font-display), var(--font-jakarta), sans-serif;
+}
+
+.landing-v2 .display-tight {
+  font-family: var(--landing-font-display), var(--font-jakarta), sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.landing-v2 .display-tight em {
+  font-family: var(--landing-font-serif), var(--font-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--landing-teal);
+}
+
+.landing-v2 .mono-caption {
+  font-family: var(--landing-font-mono), monospace;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
 }
 
 @layer components {

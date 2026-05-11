@@ -103,6 +103,19 @@ export default function TherapistDashboard() {
   const [showAccountingDateRange, setShowAccountingDateRange] = useState(false);
   const [accountingSelectedCount, setAccountingSelectedCount] = useState(0);
 
+  // Some client-side libraries can emit empty rejected promises in dev.
+  // Ignore only `undefined` reasons to prevent false runtime overlays.
+  useEffect(() => {
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      if (event.reason === undefined) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+    return () => window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+  }, []);
+
   const todayStr = fmt(new Date());
   const todaySessionsCount = appointments.filter(
     (appt) => appt.date === todayStr && appt.status !== 'cancelled',

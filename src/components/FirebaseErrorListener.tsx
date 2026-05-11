@@ -14,9 +14,13 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     // The callback now expects a strongly-typed error, matching the event payload.
-    const handleError = (error: FirestorePermissionError) => {
-      // Set error in state to trigger a re-render.
-      setError(error);
+    const handleError = (nextError: FirestorePermissionError) => {
+      // Guard against malformed payloads from async emitters.
+      if (!(nextError instanceof Error)) {
+        console.error('[FirebaseErrorListener] Invalid error payload:', nextError);
+        return;
+      }
+      setError(nextError);
     };
 
     // The typed emitter will enforce that the callback for 'permission-error'
@@ -29,9 +33,11 @@ export function FirebaseErrorListener() {
     };
   }, []);
 
-  // On re-render, if an error exists in state, throw it.
+  // Avoid crashing the full dashboard for permission events in UI flows.
+  // Keep the app responsive and surface context in the console instead.
   if (error) {
-    throw error;
+    console.error('[FirebaseErrorListener]', error.message || error, error);
+    return null;
   }
 
   // This component renders nothing.

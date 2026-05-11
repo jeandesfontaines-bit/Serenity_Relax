@@ -381,48 +381,51 @@ export function LandingBookingModal({
       role="presentation"
     >
       <div
-        className="grid max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-black/10 bg-[#fcfaf6] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.35)] lg:grid-cols-[minmax(0,1fr)_21rem]"
+        className="grid max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-[2.5rem] border border-foreground/5 bg-background shadow-[0_40px_100px_-20px_rgba(21,32,35,0.2)] lg:grid-cols-[minmax(0,1fr)_22rem]"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="landing-booking-title"
       >
-        <section className="max-h-[92vh] overflow-y-auto px-5 py-5 md:px-8 md:py-7">
-          <div className="mb-6 flex items-start justify-between gap-6">
+        <section className="max-h-[92vh] overflow-y-auto px-6 py-8 md:px-10 md:py-10">
+          <div className="mb-10 flex items-start justify-between gap-6">
             <div>
-              <span className="mb-2 block text-[10px] font-extrabold uppercase tracking-[0.34em] text-[#9d8b75]">
-                Reservation
-              </span>
-              <h2 id="landing-booking-title" className="text-[clamp(1.85rem,4vw,3.2rem)] font-semibold italic tracking-[-0.05em] text-[#151515]">
+              <span className="mono-caption text-[var(--sage-deep)] mb-3 block">— Réservation</span>
+              <h2 id="landing-booking-title" className="display-tight text-3xl text-foreground md:text-4xl lg:text-5xl leading-none whitespace-nowrap overflow-hidden text-ellipsis">
                 {shortenServiceName(selectedService.name)}
               </h2>
-              <p className="mt-2 text-sm text-[#6f675d]">
-                {selectedService.price} CHF · {selectedService.duration}
-              </p>
+              <div className="mt-4 flex items-center gap-3">
+                <span className="text-sm font-medium text-foreground/50">{selectedService.price} CHF</span>
+                <span className="h-1 w-1 rounded-full bg-foreground/10" />
+                <span className="text-sm font-medium text-foreground/50">{selectedService.duration}</span>
+              </div>
             </div>
             <button
               type="button"
-              onClick={onClose}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white/75 text-[#151515] transition hover:border-black/30"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onClose(); }}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground shadow-sm transition-all duration-300 hover:bg-foreground hover:text-background active:scale-95"
               aria-label="Fermer la réservation"
             >
-              <X size={18} />
+              <X size={20} />
             </button>
           </div>
 
-          <div className="mb-6 grid grid-cols-4 gap-2">
+          {/* New refined stepper */}
+          <div className="mb-12 flex gap-1.5">
             {[1, 2, 3, 4].map((item) => (
-              <span
+              <div
                 key={item}
-                className={`h-1 rounded-full transition ${
-                  step >= item ? 'bg-[#151515]' : 'bg-[#e7e0d6]'
+                className={`h-1 flex-1 rounded-full transition-all duration-500 ${
+                  step >= item ? 'bg-[var(--orange)]' : 'bg-foreground/5'
                 }`}
               />
             ))}
           </div>
 
-          <div className="mb-6 overflow-x-auto pb-1">
-            <div className="flex min-w-max gap-2">
+          {/* Editorial service selector */}
+          <div className="mb-12">
+            <span className="mono-caption text-[var(--sage-deep)] mb-5 block">— Choisir un autre soin</span>
+            <div className="flex flex-wrap gap-2.5">
               {services.map((service) => {
                 const isActive = service.id === selectedService.id;
                 return (
@@ -430,10 +433,10 @@ export function LandingBookingModal({
                     key={service.id}
                     type="button"
                     onClick={() => handleServiceChange(service.id)}
-                    className={`rounded-full px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.22em] transition ${
+                    className={`rounded-full px-5 py-2.5 text-xs font-bold tracking-tight uppercase whitespace-nowrap transition-all duration-300 ${
                       isActive
-                        ? 'bg-[#151515] text-white'
-                        : 'bg-white text-[#6f675d] ring-1 ring-black/10 hover:text-[#151515]'
+                        ? 'bg-foreground text-background shadow-lg shadow-foreground/10'
+                        : 'bg-foreground/5 text-foreground/60 hover:bg-foreground/10 hover:text-foreground'
                     }`}
                   >
                     {shortenServiceName(service.name)}
@@ -444,32 +447,32 @@ export function LandingBookingModal({
           </div>
 
           {step === 1 && (
-            <div className="space-y-6">
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="flex items-center justify-between gap-4">
-                <span className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#9d8b75]">
+                <span className="mono-caption text-[var(--sage-deep)] uppercase tracking-[0.2em]">
                   {weekData.monthLabel}
                 </span>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setWeekOffset((value) => value - 1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white text-[#151515] transition hover:border-black/30"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground transition-all duration-300 hover:bg-foreground hover:text-background"
                     aria-label="Semaine précédente"
                   >
-                    <ChevronLeft size={16} />
+                    <ChevronLeft size={18} />
                   </button>
                   <button
                     type="button"
                     onClick={() => setWeekOffset((value) => value + 1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white text-[#151515] transition hover:border-black/30"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground transition-all duration-300 hover:bg-foreground hover:text-background"
                     aria-label="Semaine suivante"
                   >
-                    <ChevronRight size={16} />
+                    <ChevronRight size={18} />
                   </button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-7 gap-2.5">
                 {weekData.days.map((day) => {
                   const isActive = bookingData.date === day.fullDate;
                   const availabilityMeta = AVAILABILITY_META[day.availabilityTone];
@@ -480,27 +483,24 @@ export function LandingBookingModal({
                       type="button"
                       disabled={day.isDisabled}
                       onClick={() => handleDateSelect(day.fullDate)}
-                      className={`flex min-h-[7rem] flex-col items-center justify-center rounded-[1.1rem] border px-1 text-center transition ${
+                      className={`flex min-h-[7.5rem] flex-col items-center justify-center rounded-[1.5rem] border px-1 text-center transition-all duration-500 ${
                         day.isDisabled
-                          ? 'cursor-not-allowed border-transparent bg-[#efebe4] text-[#c3bbb0] opacity-60'
+                          ? 'cursor-not-allowed border-transparent bg-foreground/[0.03] text-foreground/20'
                           : isActive
-                            ? 'border-[#151515] bg-[#151515] text-white'
-                            : 'border-black/5 bg-white text-[#6f675d] hover:border-black/20 hover:text-[#151515]'
+                            ? 'border-foreground bg-foreground text-background shadow-xl shadow-foreground/10 scale-[1.02]'
+                            : 'border-foreground/5 bg-white text-foreground/60 hover:border-foreground/20 hover:text-foreground'
                       }`}
                     >
-                      <span className="text-[10px] font-extrabold uppercase tracking-[0.14em]">
+                      <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">
                         {day.dayLabel}
                       </span>
-                      <span className="mt-1 text-[15px] font-semibold italic">{day.dayNumber}</span>
+                      <span className="mt-1 text-xl font-medium display-tight">{day.dayNumber}</span>
                       <span
-                        className={`mt-2 rounded-full px-2 py-1 text-[9px] font-extrabold uppercase tracking-[0.12em] ${
-                          isActive ? 'bg-white/18 text-white' : availabilityMeta.className
+                        className={`mt-2 rounded-full px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider ${
+                          isActive ? 'bg-background/20 text-background' : availabilityMeta.className
                         }`}
                       >
                         {availabilityMeta.label}
-                      </span>
-                      <span className={`mt-1 text-[10px] font-semibold ${isActive ? 'text-white/78' : 'text-[#9d8b75]'}`}>
-                        {day.slots.length}/{day.totalSlots || day.slots.length} créneaux
                       </span>
                     </button>
                   );
@@ -508,11 +508,11 @@ export function LandingBookingModal({
               </div>
 
               {selectedDay ? (
-                <div className="space-y-3">
-                  <span className="block text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#9d8b75]">
-                    Horaires disponibles
+                <div className="space-y-4 pt-4 border-t border-foreground/5 animate-in fade-in duration-700">
+                  <span className="mono-caption text-[var(--sage-deep)] block">
+                    — Horaires disponibles le {formattedDate}
                   </span>
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+                  <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 md:grid-cols-6">
                     {selectedDay.slots.map((slot) => {
                       const isActive = bookingData.time === slot;
 
@@ -521,10 +521,10 @@ export function LandingBookingModal({
                           key={slot}
                           type="button"
                           onClick={() => handleTimeSelect(slot)}
-                          className={`min-h-12 rounded-[1rem] border text-[12px] font-extrabold tracking-[0.14em] transition ${
+                          className={`min-h-12 rounded-2xl border text-xs font-bold tracking-tight transition-all duration-300 ${
                             isActive
-                              ? 'border-[#151515] bg-[#151515] text-white'
-                              : 'border-transparent bg-[#efebe4] text-[#6f675d] hover:border-black/15 hover:text-[#151515]'
+                              ? 'border-foreground bg-foreground text-background shadow-lg shadow-foreground/10'
+                              : 'border-foreground/5 bg-white text-foreground/60 hover:border-foreground/20 hover:text-foreground'
                           }`}
                         >
                           {slot}
@@ -534,8 +534,10 @@ export function LandingBookingModal({
                   </div>
                 </div>
               ) : (
-                <div className="rounded-[1.4rem] border border-dashed border-black/10 bg-white/60 px-5 py-6 text-sm text-[#8c847a]">
-                  Choisissez un jour disponible pour afficher les horaires réels.
+                <div className="rounded-[2rem] border border-dashed border-foreground/10 bg-foreground/[0.02] px-6 py-10 text-center">
+                  <p className="text-sm text-foreground/40 italic font-serif">
+                    Choisissez une date pour révéler les créneaux disponibles.
+                  </p>
                 </div>
               )}
             </div>
@@ -543,220 +545,243 @@ export function LandingBookingModal({
 
           {step === 2 && (
             <form
-              className="space-y-5"
+              className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
               onSubmit={(event) => {
                 event.preventDefault();
                 setStep(3);
               }}
             >
-              <span className="block text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#9d8b75]">
-                Vos informations
-              </span>
-              <div className="grid gap-2 sm:grid-cols-2">
-                <input
-                  className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25"
-                  value={bookingData.firstName}
-                  onChange={(event) => updateField('firstName', event.target.value)}
-                  placeholder="Prénom"
-                />
-                <input
-                  className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25"
-                  value={bookingData.lastName}
-                  onChange={(event) => updateField('lastName', event.target.value)}
-                  placeholder="Nom"
-                />
-                <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2 sm:col-span-2">
-                  <select
-                    className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25"
-                    value={bookingData.phonePrefix}
-                    onChange={(event) => updateField('phonePrefix', event.target.value as BookingData['phonePrefix'])}
-                  >
-                    <option value="CH">CH +41</option>
-                    <option value="FR">FR +33</option>
-                    <option value="BE">BE +32</option>
-                  </select>
+              <span className="mono-caption text-[var(--sage-deep)] block">— Vos informations</span>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Prénom</label>
                   <input
-                    className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25"
-                    type="tel"
-                    value={bookingData.phone}
-                    onChange={(event) => updateField('phone', event.target.value)}
-                    placeholder="Portable"
+                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    value={bookingData.firstName}
+                    onChange={(event) => updateField('firstName', event.target.value)}
+                    placeholder="Jean"
                   />
                 </div>
-                <input
-                  className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25 sm:col-span-2"
-                  type="email"
-                  value={bookingData.email}
-                  onChange={(event) => updateField('email', event.target.value)}
-                  placeholder="Email"
-                />
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Nom</label>
+                  <input
+                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    value={bookingData.lastName}
+                    onChange={(event) => updateField('lastName', event.target.value)}
+                    placeholder="Dupont"
+                  />
+                </div>
+                <div className="sm:col-span-2 space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Téléphone</label>
+                  <div className="grid grid-cols-[8rem_minmax(0,1fr)] gap-3">
+                    <select
+                      className="min-h-16 rounded-[1.5rem] border border-foreground/5 bg-white px-5 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20"
+                      value={bookingData.phonePrefix}
+                      onChange={(event) => updateField('phonePrefix', event.target.value as BookingData['phonePrefix'])}
+                    >
+                      <option value="CH">CH +41</option>
+                      <option value="FR">FR +33</option>
+                      <option value="BE">BE +32</option>
+                    </select>
+                    <input
+                      className="min-h-16 rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                      type="tel"
+                      value={bookingData.phone}
+                      onChange={(event) => updateField('phone', event.target.value)}
+                      placeholder="079 000 00 00"
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-2 space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Email</label>
+                  <input
+                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    type="email"
+                    value={bookingData.email}
+                    onChange={(event) => updateField('email', event.target.value)}
+                    placeholder="jean.dupont@email.com"
+                  />
+                </div>
               </div>
 
-              <div className="grid gap-2 sm:grid-cols-[1fr_1.8fr]">
+              <div className="grid gap-3 sm:grid-cols-[1fr_2fr] pt-4">
                 <button
-                  className="min-h-12 rounded-full bg-[#ece7de] px-5 text-[11px] font-extrabold uppercase tracking-[0.26em] text-[#6f675d] transition hover:text-[#151515]"
+                  className="min-h-14 rounded-full border border-foreground/10 bg-white px-8 text-xs font-bold uppercase tracking-widest text-foreground transition-all hover:bg-foreground hover:text-background"
                   type="button"
                   onClick={() => setStep(1)}
                 >
                   Retour
                 </button>
                 <button
-                  className="min-h-12 rounded-full bg-[#151515] px-5 text-[11px] font-extrabold uppercase tracking-[0.26em] text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-30"
+                  className="min-h-14 rounded-full bg-[var(--orange)] px-8 text-xs font-bold uppercase tracking-widest text-white transition-all hover:brightness-110 disabled:opacity-30 disabled:grayscale"
                   type="submit"
                   disabled={!canContinueInfo}
                 >
-                  Suivant
+                  Continuer
                 </button>
               </div>
             </form>
           )}
 
           {step === 3 && (
-            <form className="space-y-5" onSubmit={submitBooking}>
-              <span className="block text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#9d8b75]">
-                Adresse et notes
-              </span>
-              <div className="grid gap-2 sm:grid-cols-2">
-                <input
-                  className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25"
-                  value={bookingData.streetNum}
-                  onChange={(event) => updateField('streetNum', event.target.value)}
-                  placeholder="N°"
-                />
-                <input
-                  className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25"
-                  value={bookingData.streetName}
-                  onChange={(event) => updateField('streetName', event.target.value)}
-                  placeholder="Rue"
-                />
-                <input
-                  className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25"
-                  value={bookingData.city}
-                  onChange={(event) => updateField('city', event.target.value)}
-                  placeholder="Ville"
-                />
-                <input
-                  className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25"
-                  value={bookingData.canton}
-                  onChange={(event) => updateField('canton', event.target.value)}
-                  placeholder="Canton"
-                />
-                <input
-                  className="min-h-14 rounded-[1rem] border border-transparent bg-white px-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25 sm:col-span-2"
-                  value={bookingData.country}
-                  onChange={(event) => updateField('country', event.target.value)}
-                  placeholder="Pays"
-                />
-                <textarea
-                  className="min-h-28 rounded-[1rem] border border-transparent bg-white px-4 py-4 text-sm font-semibold text-[#151515] outline-none ring-1 ring-black/5 transition focus:ring-black/25 sm:col-span-2"
-                  value={bookingData.note}
-                  onChange={(event) => updateField('note', event.target.value)}
-                  placeholder="Notes (facultatif)"
-                />
+            <form className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500" onSubmit={submitBooking}>
+              <span className="mono-caption text-[var(--sage-deep)] block">— Adresse et notes</span>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">N°</label>
+                  <input
+                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    value={bookingData.streetNum}
+                    onChange={(event) => updateField('streetNum', event.target.value)}
+                    placeholder="12"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Rue</label>
+                  <input
+                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    value={bookingData.streetName}
+                    onChange={(event) => updateField('streetName', event.target.value)}
+                    placeholder="Rue du Simplon"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Ville</label>
+                  <input
+                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    value={bookingData.city}
+                    onChange={(event) => updateField('city', event.target.value)}
+                    placeholder="Genève"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Canton</label>
+                  <input
+                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02]"
+                    value={bookingData.canton}
+                    onChange={(event) => updateField('canton', event.target.value)}
+                    placeholder="GE"
+                  />
+                </div>
+                <div className="sm:col-span-2 space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Pays</label>
+                  <input
+                    className="min-h-16 w-full rounded-[1.5rem] border border-foreground/5 bg-white px-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20"
+                    value={bookingData.country}
+                    onChange={(event) => updateField('country', event.target.value)}
+                    placeholder="Suisse"
+                  />
+                </div>
+                <div className="sm:col-span-2 space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 ml-4">Notes (facultatif)</label>
+                  <textarea
+                    className="min-h-32 w-full rounded-[1.5rem] border border-foreground/5 bg-white p-6 text-sm font-medium text-foreground outline-none transition-all focus:border-foreground/20 focus:ring-4 focus:ring-foreground/[0.02] resize-none"
+                    value={bookingData.note}
+                    onChange={(event) => updateField('note', event.target.value)}
+                    placeholder="Précisions pour le thérapeute..."
+                  />
+                </div>
               </div>
 
-              <div className="rounded-[1.35rem] border border-black/5 bg-white px-4 py-4">
-                <div className="flex items-center justify-between gap-3 text-[11px] font-extrabold uppercase tracking-[0.22em]">
-                  <span className="text-[#9d8b75]">Soin</span>
-                  <strong className="text-right text-[#151515]">{shortenServiceName(selectedService.name)}</strong>
+              <div className="rounded-[2rem] border border-foreground/5 bg-foreground/[0.02] p-6 space-y-3">
+                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest">
+                  <span className="text-foreground/40">Soin sélectionné</span>
+                  <span className="text-foreground">{shortenServiceName(selectedService.name)}</span>
                 </div>
-                <div className="mt-3 flex items-center justify-between gap-3 text-[11px] font-extrabold uppercase tracking-[0.22em]">
-                  <span className="text-[#9d8b75]">Créneau</span>
-                  <strong className="text-right text-[#151515]">
-                    {formattedDate} · {bookingData.time}
-                  </strong>
+                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest">
+                  <span className="text-foreground/40">Date et heure</span>
+                  <span className="text-foreground">{formattedDate} · {bookingData.time}</span>
                 </div>
               </div>
 
-              <div className="grid gap-2 sm:grid-cols-[1fr_1.8fr]">
+              <div className="grid gap-3 sm:grid-cols-[1fr_2fr]">
                 <button
-                  className="min-h-12 rounded-full bg-[#ece7de] px-5 text-[11px] font-extrabold uppercase tracking-[0.26em] text-[#6f675d] transition hover:text-[#151515]"
+                  className="min-h-14 rounded-full border border-foreground/10 bg-white px-8 text-xs font-bold uppercase tracking-widest text-foreground transition-all hover:bg-foreground hover:text-background"
                   type="button"
                   onClick={() => setStep(2)}
                 >
                   Retour
                 </button>
                 <button
-                  className="min-h-12 rounded-full bg-[#151515] px-5 text-[11px] font-extrabold uppercase tracking-[0.26em] text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-40"
+                  className="min-h-14 rounded-full bg-foreground px-8 text-xs font-bold uppercase tracking-widest text-background transition-all hover:brightness-110 disabled:opacity-40"
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Confirmation...' : 'Confirmer'}
+                  {isSubmitting ? 'Confirmation en cours...' : 'Confirmer la réservation'}
                 </button>
               </div>
             </form>
           )}
 
           {step === 4 && (
-            <div className="flex min-h-[26rem] flex-col items-center justify-center text-center">
-              <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#151515] text-white">
-                <Check size={30} strokeWidth={3} />
+            <div className="flex min-h-[30rem] flex-col items-center justify-center text-center animate-in zoom-in-95 duration-700">
+              <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-[var(--orange)] text-white shadow-xl shadow-orange-200">
+                <Check size={40} strokeWidth={3} />
               </div>
-              <h3 className="text-3xl font-semibold uppercase tracking-[-0.05em] text-[#151515]">
+              <h3 className="display-tight text-4xl text-foreground md:text-5xl">
                 C&apos;est validé.
               </h3>
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-[#6f675d]">
-                À bientôt au studio{bookingData.firstName ? `, ${bookingData.firstName}` : ''}. Votre rendez-vous a bien été enregistré.
+              <p className="mt-6 max-w-sm text-lg leading-relaxed text-foreground/60 italic font-serif">
+                À bientôt au studio{bookingData.firstName ? `, ${bookingData.firstName}` : ''}. Votre voyage vers la sérénité commence ici.
               </p>
               {bookingRef && (
-                <p className="mt-6 text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#9d8b75]">
-                  Référence {bookingRef}
-                </p>
+                <div className="mt-10 rounded-xl bg-foreground/[0.03] px-6 py-3 border border-foreground/5">
+                  <span className="mono-caption text-foreground/40 block mb-1">Numéro de confirmation</span>
+                  <span className="text-sm font-bold tracking-[0.2em] text-foreground">{bookingRef}</span>
+                </div>
               )}
               <button
-                className="mt-8 min-h-12 rounded-full bg-[#151515] px-8 text-[11px] font-extrabold uppercase tracking-[0.26em] text-white transition hover:bg-black"
+                className="mt-12 min-h-14 rounded-full bg-foreground px-10 text-xs font-bold uppercase tracking-widest text-background transition-all hover:scale-105 active:scale-95"
                 type="button"
                 onClick={onClose}
               >
-                Fermer
+                Fermer l&apos;écran
               </button>
             </div>
           )}
         </section>
 
-        <aside className="hidden border-l border-black/5 bg-[#f2ede5] lg:flex lg:flex-col">
+        <aside className="hidden border-l border-foreground/5 bg-foreground/[0.02] lg:flex lg:flex-col">
           <div className="relative aspect-[4/5] w-full overflow-hidden">
             {selectedService.image ? (
               <img
                 src={selectedService.image}
                 alt={selectedService.name}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover grayscale-[0.2] contrast-[1.1]"
               />
             ) : (
-              <div className="h-full w-full bg-[#e7dfd2]" />
+              <div className="h-full w-full bg-[var(--sage-deep)]/20" />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-            <div className="absolute bottom-5 left-5 right-5">
-              <span className="inline-flex rounded-full bg-white/90 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#151515]">
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+            <div className="absolute bottom-6 left-6 right-6">
+              <span className="inline-flex rounded-full bg-[var(--neon)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--off-black)]">
                 {selectedService.duration}
               </span>
-              <p className="mt-3 text-2xl font-semibold italic leading-tight text-white">
+              <p className="mt-4 display-tight text-2xl text-foreground whitespace-nowrap truncate">
                 {shortenServiceName(selectedService.name)}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-1 flex-col p-7">
-            <span className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#9d8b75]">
-              Résumé
-            </span>
-            <div className="mt-4 space-y-4 border-t border-black/5 pt-4">
-              <div className="flex items-start justify-between gap-4 text-[11px] font-extrabold uppercase tracking-[0.22em]">
-                <span className="text-[#9d8b75]">Prix</span>
-                <strong className="text-right text-[#151515]">{selectedService.price} CHF</strong>
+          <div className="flex flex-1 flex-col p-8">
+            <span className="mono-caption text-[var(--sage-deep)] mb-6 block">— Résumé</span>
+            <div className="space-y-5 border-t border-foreground/5 pt-6">
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-xs font-semibold uppercase tracking-wider text-foreground/40">Prix</span>
+                <strong className="text-sm font-bold text-foreground">{selectedService.price} CHF</strong>
               </div>
-              <div className="flex items-start justify-between gap-4 text-[11px] font-extrabold uppercase tracking-[0.22em]">
-                <span className="text-[#9d8b75]">Date</span>
-                <strong className="text-right text-[#151515]">{formattedDate || '--'}</strong>
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-xs font-semibold uppercase tracking-wider text-foreground/40">Date</span>
+                <strong className="text-sm font-bold text-foreground">{formattedDate || '--'}</strong>
               </div>
-              <div className="flex items-start justify-between gap-4 text-[11px] font-extrabold uppercase tracking-[0.22em]">
-                <span className="text-[#9d8b75]">Heure</span>
-                <strong className="text-right text-[#151515]">{bookingData.time || '--'}</strong>
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-xs font-semibold uppercase tracking-wider text-foreground/40">Heure</span>
+                <strong className="text-sm font-bold text-foreground">{bookingData.time || '--'}</strong>
               </div>
             </div>
 
-            <p className="mt-auto text-sm leading-relaxed text-[#6f675d]">
-              Chaque réservation passe par les disponibilités réelles du cabinet et crée directement le rendez-vous confirmé.
+            <p className="mt-auto text-xs leading-relaxed text-foreground/40 italic">
+              Confirmation immédiate après validation. Un email récapitulatif vous sera envoyé.
             </p>
           </div>
         </aside>
