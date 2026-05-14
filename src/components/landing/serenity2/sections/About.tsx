@@ -31,39 +31,106 @@ const BENEFITS = [
 
 export default function About() {
   const panelTrackRef = useRef<HTMLDivElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
   const lastBenefitRef = useRef<HTMLDivElement | null>(null);
-  const [reserveSpace, setReserveSpace] = useState(0);
+  const [panelLayout, setPanelLayout] = useState<{
+    mode: "static" | "fixed" | "bottom";
+    reserveSpace: number;
+    panelHeight: number;
+    left: number;
+    width: number;
+  }>({
+    mode: "static",
+    reserveSpace: 0,
+    panelHeight: 0,
+    left: 0,
+    width: 0,
+  });
 
   useEffect(() => {
+    let frame = 0;
+
     const updateLayout = () => {
+      frame = 0;
+
       if (window.innerWidth < 1024) {
-        setReserveSpace(0);
+        setPanelLayout({
+          mode: "static",
+          reserveSpace: 0,
+          panelHeight: 0,
+          left: 0,
+          width: 0,
+        });
         return;
       }
 
       const track = panelTrackRef.current;
+      const panel = panelRef.current;
       const lastBenefit = lastBenefitRef.current;
-      if (!track || !lastBenefit) return;
+      if (!track || !panel || !lastBenefit) return;
 
-      const trackTop = track.getBoundingClientRect().top + window.scrollY;
+      const topOffset = 112;
+      const scrollY = window.scrollY;
+      const trackRect = track.getBoundingClientRect();
+      const panelRect = panel.getBoundingClientRect();
+      const trackTop = trackRect.top + scrollY;
       const lastTop = lastBenefit.getBoundingClientRect().top + window.scrollY;
+      const reserveSpace = Math.max(0, lastTop - trackTop);
+      const start = trackTop - topOffset;
+      const end = trackTop + reserveSpace - topOffset;
 
-      setReserveSpace(Math.max(0, lastTop - trackTop));
+      let mode: "static" | "fixed" | "bottom" = "static";
+      if (scrollY >= start && scrollY < end) {
+        mode = "fixed";
+      } else if (scrollY >= end) {
+        mode = "bottom";
+      }
+
+      setPanelLayout((prev) => {
+        const next = {
+          mode,
+          reserveSpace,
+          panelHeight: panelRect.height,
+          left: trackRect.left,
+          width: trackRect.width,
+        };
+
+        if (
+          prev.mode === next.mode &&
+          Math.abs(prev.reserveSpace - next.reserveSpace) < 1 &&
+          Math.abs(prev.panelHeight - next.panelHeight) < 1 &&
+          Math.abs(prev.left - next.left) < 1 &&
+          Math.abs(prev.width - next.width) < 1
+        ) {
+          return prev;
+        }
+
+        return next;
+      });
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateLayout);
     };
 
     const observer = new ResizeObserver(() => updateLayout());
 
     if (panelTrackRef.current) observer.observe(panelTrackRef.current);
+    if (panelRef.current) observer.observe(panelRef.current);
     if (lastBenefitRef.current) observer.observe(lastBenefitRef.current);
 
     updateLayout();
-    window.addEventListener("resize", updateLayout);
-    window.addEventListener("load", updateLayout);
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    window.addEventListener("load", requestUpdate);
 
     return () => {
+      if (frame) window.cancelAnimationFrame(frame);
       observer.disconnect();
-      window.removeEventListener("resize", updateLayout);
-      window.removeEventListener("load", updateLayout);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      window.removeEventListener("load", requestUpdate);
     };
   }, []);
 
@@ -77,9 +144,33 @@ export default function About() {
             <div
               ref={panelTrackRef}
               className="lg:w-[32%] lg:flex-none"
-              style={{ paddingBottom: reserveSpace ? `${reserveSpace}px` : undefined }}
+              style={
+                panelLayout.panelHeight
+                  ? { height: panelLayout.panelHeight + panelLayout.reserveSpace }
+                  : undefined
+              }
             >
-              <div className="lg:sticky lg:top-28">
+              <div
+                ref={panelRef}
+                className="lg:will-change-transform"
+                style={
+                  panelLayout.mode === "fixed"
+                    ? {
+                        position: "fixed",
+                        top: 112,
+                        left: panelLayout.left,
+                        width: panelLayout.width,
+                      }
+                    : panelLayout.mode === "bottom"
+                      ? {
+                          position: "absolute",
+                          top: panelLayout.reserveSpace,
+                          left: 0,
+                          width: "100%",
+                        }
+                      : undefined
+                }
+              >
                 <span className="mb-6 block text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--orange)]">
                   — Expertise
                 </span>
@@ -91,19 +182,6 @@ export default function About() {
                   Le massage est bien plus qu&apos;un moment de détente : c&apos;est un soin complet qui favorise
                   l&apos;équilibre naturel de l&apos;organisme.
                 </p>
-
-                <div className="hidden lg:block">
-                  <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-[2.5rem] bg-[var(--sage-deep)]/5">
-                    <img
-                      src="/images/joao-hands.jpg"
-                      alt="L'expertise du geste"
-                      className="h-full w-full object-cover saturate-[0.8] contrast-[1.1] sepia-[0.1]"
-                    />
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/30 italic">
-                    — L&apos;expertise du geste
-                  </span>
-                </div>
               </div>
             </div>
 

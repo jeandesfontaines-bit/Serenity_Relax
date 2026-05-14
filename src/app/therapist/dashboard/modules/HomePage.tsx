@@ -2,17 +2,9 @@ import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Appointment } from '../types';
-import { 
-  ChevronRight, 
-  CreditCard, 
-  CheckCircle2, 
-  Clock, 
-  AlertCircle,
-  FileText,
-  BarChart3,
-  TrendingUp,
-  ArrowRight,
-  Zap
+import {
+  ChevronRight, CreditCard, CheckCircle2, Clock, AlertCircle,
+  FileText, BarChart3, TrendingUp, ArrowRight, Users
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -158,30 +150,30 @@ export default function HomePage({
   const revenueChange = monthlyGoal > 0 ? Math.round((paidThisMonth / monthlyGoal) * 100) : 0;
 
   return (
-    <div className="max-w-[1440px] mx-auto p-8 lg:p-16 space-y-20 bg-neutral-50">
-      
+    <div className="max-w-[1440px] mx-auto p-3 lg:p-5 space-y-10 bg-neutral-100">
+
       {/* ── KPI cards ── */}
-      <section className="grid grid-cols-1 gap-8 sm:grid-cols-4">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-4">
         <MetricCard
-          icon={<CreditCard size={24} strokeWidth={2.5} />}
+          icon={<CreditCard size={12} strokeWidth={3} />}
           label="REVENUS"
           value={`${paidThisMonth.toLocaleString('fr-CH')} CHF`}
           variant="blue"
         />
         <MetricCard
-          icon={<CheckCircle2 size={24} strokeWidth={2.5} />}
+          icon={<CheckCircle2 size={12} strokeWidth={3} />}
           label="SOINS"
           value={completedSessions.toString()}
           variant="yellow"
         />
         <MetricCard
-          icon={<Users size={24} strokeWidth={2.5} />}
+          icon={<Users size={12} strokeWidth={3} />}
           label="PATIENTS"
           value="124"
           variant="orange"
         />
         <MetricCard
-          icon={<AlertCircle size={24} strokeWidth={2.5} />}
+          icon={<AlertCircle size={12} strokeWidth={3} />}
           label="IMPAYÉS"
           value={pendingInvoices.toString()}
           variant="pink"
@@ -189,17 +181,17 @@ export default function HomePage({
       </section>
 
       {/* ── Main content grid ── */}
-      <section className="grid grid-cols-1 gap-24 lg:grid-cols-3">
+      <section className="grid grid-cols-1 gap-12 lg:grid-cols-3">
         {/* Today's agenda */}
-        <div className="space-y-12 lg:col-span-2">
-          <div className="flex items-end justify-between border-b border-neutral-100 pb-8">
+        <div className="space-y-6 lg:col-span-2">
+          <div className="flex items-end justify-between border-b border-neutral-200 pb-4">
             <div>
-              <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">PROGRAMMATION DU JOUR</p>
-              <h4 className="text-4xl font-bold text-neutral-900 tracking-tight leading-none">Agenda</h4>
+              <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-1">PROGRAMMATION DU JOUR</p>
+              <h4 className="text-2xl font-bold text-neutral-900 tracking-tight leading-none">Agenda</h4>
             </div>
             <button
               onClick={() => onNavigate('scheduler')}
-              className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400 hover:text-neutral-900 transition-all group"
+              className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.24em] text-neutral-700 hover:text-neutral-900 transition-all group"
             >
               VOIR TOUT <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -215,14 +207,13 @@ export default function HomePage({
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className={`group flex w-full items-center gap-8 rounded-3xl border border-neutral-100 bg-white p-8 text-left transition-all hover:shadow-xl hover:border-neutral-200 ${
-                      status.muted ? 'opacity-40 hover:opacity-100' : ''
-                    }`}
+                    className={`group flex w-full items-center gap-8 rounded-3xl border border-neutral-200 bg-white p-8 text-left transition-all hover:shadow-xl hover:border-neutral-300 ${status.muted ? 'opacity-50 hover:opacity-100' : ''
+                      }`}
                   >
                     {/* Time */}
-                    <div className="min-w-[80px] text-center border-r border-neutral-100 pr-8">
+                    <div className="min-w-[80px] text-center border-r border-neutral-200 pr-8">
                       <p className="text-2xl font-bold text-neutral-900 tracking-tight leading-none">{hour}</p>
-                      <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-neutral-400">{period}</p>
+                      <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">{period}</p>
                     </div>
 
                     {/* Details */}
@@ -230,7 +221,7 @@ export default function HomePage({
                       <h5 className="truncate text-xl font-bold text-neutral-900 tracking-tight leading-none group-hover:text-blue-600 transition-colors">
                         {appt.clientNameSnapshot || appt.title || 'Client'}
                       </h5>
-                      <p className="mt-2 truncate text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                      <p className="mt-2 truncate text-[13px] font-semibold text-neutral-600 uppercase tracking-[0.14em]">
                         {appt.serviceName || 'Consultation'} · {appt.duration || '60 MIN'}
                       </p>
                     </div>
@@ -240,7 +231,7 @@ export default function HomePage({
                       <span className={`shrink-0 rounded-full px-6 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] shadow-sm ${status.badgeClass}`}>
                         {status.label}
                       </span>
-                      <div className="w-12 h-12 flex items-center justify-center rounded-full text-neutral-100 group-hover:text-neutral-900 group-hover:rotate-45 transition-all">
+                      <div className="w-12 h-12 flex items-center justify-center rounded-full text-neutral-400 group-hover:text-neutral-900 group-hover:rotate-45 transition-all">
                         <ChevronRight size={24} strokeWidth={2.5} />
                       </div>
                     </div>
@@ -248,9 +239,9 @@ export default function HomePage({
                 );
               })
             ) : (
-              <div className="py-32 flex flex-col items-center justify-center bg-neutral-50 rounded-[4rem] border-2 border-dashed border-neutral-100 group hover:border-neutral-200 transition-all">
-                <Clock size={48} strokeWidth={1} className="text-neutral-200 mb-6 group-hover:scale-110 transition-transform" />
-                <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-300">
+              <div className="py-32 flex flex-col items-center justify-center bg-white rounded-[4rem] border-2 border-dashed border-neutral-300 group hover:border-neutral-400 transition-all">
+                <Clock size={48} strokeWidth={1.2} className="text-neutral-400 mb-6 group-hover:scale-110 transition-transform" />
+                <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-neutral-600">
                   {normalizedSearch ? 'AUCUN RÉSULTAT' : 'AUCUNE SÉANCE AUJOURD\'HUI'}
                 </p>
               </div>
@@ -260,15 +251,15 @@ export default function HomePage({
 
         {/* Notes sidebar */}
         <div className="space-y-12">
-          <div className="bg-white border border-neutral-100 rounded-[3.5rem] p-12 shadow-xl space-y-12">
+          <div className="bg-white border border-neutral-200 rounded-[3.5rem] p-12 shadow-xl space-y-12">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">ARCHIVES</p>
+                <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-2">ARCHIVES</p>
                 <h4 className="text-3xl font-bold text-neutral-900 tracking-tight">Notes</h4>
               </div>
               <button
                 onClick={onEditGoal}
-                className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 hover:text-neutral-900 transition-all shadow-inner"
+                className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-600 hover:text-neutral-900 transition-all shadow-inner"
               >
                 <BarChart3 size={20} strokeWidth={2.5} />
               </button>
@@ -280,7 +271,7 @@ export default function HomePage({
                   <button
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className="block w-full rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-left transition-all hover:bg-white hover:shadow-lg group"
+                    className="block w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-6 text-left transition-all hover:bg-white hover:shadow-lg group"
                   >
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-blue-600">
                       {formatDayLabel(appt.date)}
@@ -288,21 +279,21 @@ export default function HomePage({
                     <p className="truncate text-lg font-bold text-neutral-900 transition-all tracking-tight">
                       {appt.clientNameSnapshot || appt.title || 'Client'}
                     </p>
-                    <p className="mt-2 line-clamp-2 text-sm font-medium text-neutral-500 leading-relaxed">
+                    <p className="mt-2 line-clamp-2 text-sm font-medium text-neutral-700 leading-relaxed">
                       &ldquo;{appt.notes?.trim()}&rdquo;
                     </p>
                   </button>
                 ))
               ) : (
-                <div className="py-20 text-center border-2 border-dashed border-neutral-50 rounded-[2.5rem]">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-200">AUCUNE NOTE RÉCENTE</p>
+                <div className="py-20 text-center border-2 border-dashed border-neutral-300 rounded-[2.5rem] bg-neutral-100">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-neutral-600">AUCUNE NOTE RÉCENTE</p>
                 </div>
               )}
             </div>
 
             <button
               onClick={() => onNavigate('clients')}
-              className="w-full h-16 flex items-center justify-center rounded-full border border-neutral-100 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400 hover:text-neutral-900 hover:border-neutral-900 hover:bg-neutral-50 transition-all"
+              className="w-full h-16 flex items-center justify-center rounded-full border border-neutral-200 text-[10px] font-bold uppercase tracking-[0.24em] text-neutral-700 hover:text-neutral-900 hover:border-neutral-900 hover:bg-neutral-100 transition-all"
             >
               RÉPERTOIRE PATIENTS
             </button>
@@ -310,62 +301,6 @@ export default function HomePage({
         </div>
       </section>
 
-      {/* ── Promo banners ── */}
-      <section className="grid grid-cols-1 gap-12 md:grid-cols-2">
-        {/* Photo card */}
-        <div className="group relative h-[450px] overflow-hidden rounded-[4rem] border border-neutral-100 shadow-2xl">
-          <img
-            alt="Salle de thérapie"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
-            src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&q=80&w=2070"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-16">
-            <h4 className="text-5xl font-bold text-white tracking-tight leading-none mb-6">Sérénité Totale</h4>
-            <p className="text-base font-medium text-white/60 max-w-sm leading-relaxed mb-10">Découvrez nos nouveaux protocoles d&apos;accueil pour une expérience patient sublimée dès l&apos;arrivée au cabinet.</p>
-            <button
-              onClick={() => onNavigate('settings')}
-              className="w-fit h-14 flex items-center px-10 rounded-full bg-white text-neutral-900 text-[10px] font-bold uppercase tracking-[0.4em] hover:scale-110 transition-all shadow-2xl"
-            >
-              EXPLORER
-            </button>
-          </div>
-        </div>
-
-        {/* Insight card */}
-        <div className="flex flex-col justify-between rounded-[4rem] bg-neutral-900 p-16 shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-16 opacity-5 group-hover:opacity-10 transition-opacity">
-            <TrendingUp size={240} strokeWidth={1} className="text-white" />
-          </div>
-          <div className="relative z-10">
-            <div className="flex items-center gap-4 mb-8">
-               <Zap size={20} className="text-blue-400 fill-blue-400" />
-               <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-blue-400">
-                INSIGHT PERFORMANCE
-              </span>
-            </div>
-            <h4 className="text-5xl font-bold text-white tracking-tight leading-tight mb-8">
-              Optimisez<br />Votre Temps
-            </h4>
-            <p className="text-base font-medium text-white/40 max-w-xs leading-relaxed">
-              Vos matinées du mardi sont saturées. Pensez à augmenter vos tarifs de 15% sur ces créneaux haute-densité.
-            </p>
-          </div>
-
-          <div className="mt-12 flex items-center gap-8 relative z-10">
-            <div className="flex -space-x-4">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="w-12 h-12 rounded-full border-4 border-neutral-900 bg-neutral-800 overflow-hidden shadow-2xl">
-                  <img src={`https://i.pravatar.cc/100?img=${i+20}`} alt="avatar" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
-                </div>
-              ))}
-              <div className="w-12 h-12 rounded-full border-4 border-neutral-900 bg-white flex items-center justify-center text-[11px] font-bold text-neutral-900 shadow-2xl">
-                +15
-              </div>
-            </div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">LISTE D&apos;ATTENTE ACTIVE</p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
@@ -400,16 +335,15 @@ function MetricCard({
   };
 
   return (
-    <div className={`group rounded-3xl border p-8 transition-all hover:shadow-2xl hover:border-neutral-200 ${variantStyles[variant]}`}>
-      <div className="mb-6 flex items-center justify-between">
-        <div className={`w-14 h-14 flex items-center justify-center rounded-full transition-transform group-hover:scale-110 ${iconCircleStyles[variant]}`}>
+    <div className={`group rounded-2xl border border-neutral-200 p-4 transition-all hover:shadow-xl hover:border-neutral-300 ${variantStyles[variant]}`}>
+      <div className="mb-4 flex items-center justify-between">
+        <div className={`w-9 h-9 flex items-center justify-center rounded-xl transition-transform group-hover:scale-110 ${iconCircleStyles[variant]}`}>
           {icon}
         </div>
-        <ChevronRight size={18} className="text-neutral-200 group-hover:text-neutral-900 transition-colors" />
+        <ChevronRight size={12} className="text-neutral-400 group-hover:text-neutral-900 transition-colors" />
       </div>
-      <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-400">{label}</p>
-      <h3 className="mt-2 text-4xl font-bold tracking-tight text-neutral-900 leading-none">{value}</h3>
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">{label}</p>
+      <h3 className="mt-1 text-xl font-bold tracking-tight text-neutral-900 leading-none">{value}</h3>
     </div>
   );
 }
-

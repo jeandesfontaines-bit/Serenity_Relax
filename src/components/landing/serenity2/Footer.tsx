@@ -30,7 +30,7 @@ export default function Footer() {
     <footer className="bg-[var(--off-black)] text-background">
       {/* CTA + Newsletter band */}
       <div className="border-b border-background/10 bg-[linear-gradient(135deg,rgba(21,56,57,0.96),rgba(39,94,106,0.88))] shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)]">
-        <div className="mx-auto max-w-[1480px] px-6 py-16 md:px-10 lg:px-14 md:py-20">
+        <div className="mx-auto max-w-[1280px] px-6 py-16 md:px-10 lg:px-12 md:py-20">
           <div className="grid grid-cols-12 gap-8 lg:gap-12">
             <div className="col-span-12 lg:col-span-7">
               <span className="mono-caption text-[var(--neon)]">— Restons connectés</span>
@@ -80,13 +80,13 @@ export default function Footer() {
       </div>
 
       {/* Main footer content */}
-      <div className="mx-auto max-w-[1480px] px-6 py-16 md:px-10 lg:px-14 md:py-20">
+      <div className="mx-auto max-w-[1280px] px-6 py-16 md:px-10 lg:px-12 md:py-20">
         <div className="grid grid-cols-12 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="col-span-12 md:col-span-5">
             <div className="flex items-baseline gap-2">
               <span className="text-base font-semibold tracking-tight text-background">SERENITY RELAX THERAPY</span>
-              <span className="text-sm tracking-wide text-background/60">by João</span>
+              <span className="signature-font text-sm italic tracking-wide text-background/60">by João</span>
             </div>
 
             {/* Social */}
@@ -150,8 +150,7 @@ export default function Footer() {
         {/* Navigation links */}
         <div className="mt-16 flex flex-wrap gap-x-8 gap-y-4 border-t border-background/10 pt-8">
           <a href="#sessions" className="text-sm tracking-tight text-background/70 hover:text-background transition-colors duration-300 editorial-link">Sessions</a>
-          <a href="#sanctuary" className="text-sm tracking-tight text-background/70 hover:text-background transition-colors duration-300 editorial-link">Sanctuaire</a>
-          <a href="#journal" className="text-sm tracking-tight text-background/70 hover:text-background transition-colors duration-300 editorial-link">Journal</a>
+          <a href="#sanctuary" className="text-sm tracking-tight text-background/70 hover:text-background transition-colors duration-300 editorial-link">Expertise</a>
           <a href="#atelier" className="text-sm tracking-tight text-background/70 hover:text-background transition-colors duration-300 editorial-link">FAQ</a>
         </div>
 

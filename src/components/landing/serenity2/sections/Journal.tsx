@@ -1,93 +1,91 @@
-import { AFTERCARE, JOURNAL_IMAGE } from "@/components/landing/serenity2/data";
+const RITUALS = [
+  {
+    num: "01",
+    title: "Accueillez vos émotions",
+    desc: "Laissez venir ce qui se présente, sans le brusquer.",
+  },
+  {
+    num: "02",
+    title: "Prenez votre temps",
+    desc: "Relevez-vous lentement et laissez le corps revenir à son rythme.",
+  },
+  {
+    num: "03",
+    title: "Hydratez-vous",
+    desc: "Buvez un verre d’eau pour accompagner la récupération.",
+  },
+  {
+    num: "04",
+    title: "Évitez la douche immédiate",
+    desc: "Attendez un peu avant de vous laver pour prolonger le soin.",
+  },
+  {
+    num: "05",
+    title: "Prolongez la détente",
+    desc: "Gardez encore un moment de calme avant de repartir.",
+  },
+  {
+    num: "06",
+    title: "Planifiez un prochain soin",
+    desc: "Un rythme régulier aide le corps à garder ses bénéfices.",
+  },
+  {
+    num: "07",
+    title: "Choisissez la douceur",
+    desc: "Privilégiez ensuite des activités calmes et légères.",
+  },
+];
 
 export default function Journal() {
   return (
-    <section id="journal" className="relative bg-white py-24 md:py-32">
-      <div className="relative mx-auto max-w-[1480px] px-6 md:px-10 lg:px-14">
-        <header className="mb-16 grid grid-cols-12 items-end gap-8">
-          <div className="col-span-12 lg:col-span-8">
+    <section id="journal" className="relative bg-[var(--off-black)] py-20 text-white md:py-24 lg:py-28">
+      <div className="relative mx-auto max-w-[1400px] px-6 md:px-10 lg:px-12">
+        <div className="grid grid-cols-12 gap-10 lg:gap-14">
+          <div className="col-span-12 lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
             <span className="mb-6 block text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--orange)]">
               — Rituels post-soin
             </span>
-            <h2 className="display-tight text-4xl leading-[0.92] -tracking-[0.02em] md:text-6xl lg:text-7xl">
+            <h2 className="display-tight text-3xl leading-[0.94] -tracking-[0.02em] md:text-5xl lg:text-[4.8rem]">
               Le rituel continue <br />
-              <span className="font-serif italic font-light text-[var(--sage-deep)] opacity-90">
+              <span className="font-serif italic font-light text-white/50">
                 après la séance.
               </span>
             </h2>
-          </div>
-          <div className="col-span-12 lg:col-span-4">
-            <p className="text-base leading-relaxed text-foreground/65 md:text-lg lg:pb-2">
-              Trois moments simples pour prolonger les bénéfices du soin, sans avoir à vous demander quoi faire ensuite.
+            <p className="mt-7 text-[15px] leading-relaxed text-white/60 md:text-base">
+              7 gestes simples pour prolonger l&apos;apaisement après votre séance.
             </p>
-          </div>
-        </header>
-
-        <div className="grid grid-cols-12 gap-12 lg:gap-20">
-          <div className="col-span-12 lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
-            <div className="relative overflow-hidden rounded-[2.5rem] bg-foreground/5 shadow-2xl">
-              <div className="aspect-[4/5]">
-                <img
-                  src={JOURNAL_IMAGE}
-                  alt="Rituel après-séance"
-                  loading="lazy"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <div className="inline-flex rounded-full bg-white/90 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.25em] text-foreground shadow-sm backdrop-blur">
-                  Rituel après-séance
-                </div>
-              </div>
-            </div>
           </div>
 
           <div className="col-span-12 lg:col-span-7 lg:col-start-6">
-            <div className="space-y-6">
-              {AFTERCARE.map((item) => (
+            <div className="mb-8 border-b border-white/10 pb-6">
+              <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-white/35">
+                7 étapes essentielles
+              </p>
+            </div>
+
+            <div className="space-y-0">
+              {RITUALS.map((ritual, index) => (
                 <article
-                  key={item.id}
-                  className="rounded-[2rem] border border-foreground/6 bg-[var(--sage-deep)]/[0.03] p-8 md:p-10"
+                  key={ritual.num}
+                  className={`group py-7 transition-all duration-500 md:py-8 ${
+                    index !== RITUALS.length - 1 ? "border-b border-white/10" : ""
+                  }`}
                 >
-                  <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-                    <div className="max-w-2xl">
-                      <div className="mb-5 flex items-center gap-4">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--orange)]">
-                          Etape {item.id}
-                        </span>
-                        <div className="h-px w-8 bg-foreground/10" />
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40">
-                          {item.time}
-                        </span>
-                      </div>
-
-                      <h3 className="display-tight text-3xl leading-[0.96] text-foreground md:text-4xl">
-                        {item.title}
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-[72px_1fr] md:gap-6">
+                    <div className="flex items-start md:justify-center">
+                      <span className="font-serif text-[1.9rem] italic leading-none text-[var(--orange)]/75 md:text-[2.2rem]">
+                        {ritual.num}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="display-tight text-[1.7rem] text-white transition-transform duration-500 group-hover:translate-x-1 md:text-[1.95rem]">
+                        {ritual.title}
                       </h3>
-
-                      <p className="mt-5 text-base leading-relaxed text-foreground/65 md:text-lg">
-                        {item.desc}
+                      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/62 transition-colors group-hover:text-white/82 md:text-[15px]">
+                        {ritual.desc}
                       </p>
                     </div>
-
-                    <div className="rounded-[1.5rem] bg-white px-5 py-3 text-sm font-bold uppercase tracking-[0.22em] text-foreground/35 shadow-sm">
-                      {item.time}
-                    </div>
                   </div>
-
-                  <div className="mt-8 rounded-[1.75rem] border border-foreground/6 bg-white p-6 md:p-7">
-                    <span className="mb-4 block text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--orange)]">
-                      A faire
-                    </span>
-                    <p className="text-lg leading-snug tracking-tight text-foreground md:text-xl">
-                      {item.advice}
-                    </p>
-                  </div>
-
-                  <p className="mt-5 text-sm italic text-foreground/45">
-                    {item.quote}
-                  </p>
                 </article>
               ))}
             </div>

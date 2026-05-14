@@ -241,22 +241,22 @@ export default function ClientsPage({
     <div className="flex-1 flex flex-col bg-[#FDFDFB] p-10 lg:p-16 space-y-12">
       
       {/* ── Page Header ── */}
-      <div className="flex items-end justify-between border-b border-neutral-100 pb-10">
+      <div className="flex items-end justify-between border-b border-neutral-200 pb-10">
         <div>
-          <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.4em] mb-4">BASE DE DONNÉES PATIENTS</p>
+          <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.28em] mb-4">BASE DE DONNÉES PATIENTS</p>
           <h1 className="text-6xl font-bold text-neutral-900 tracking-tight leading-none">Répertoire</h1>
         </div>
         <div className="flex items-center gap-6">
-          <div className="flex items-center p-1 bg-neutral-50 rounded-full border border-neutral-100">
+          <div className="flex items-center p-1 bg-neutral-100 rounded-full border border-neutral-200 shadow-sm">
             <button 
               onClick={() => setViewMode('list')}
-              className={`p-3 rounded-full transition-all ${viewMode === 'list' ? 'bg-white shadow-sm text-neutral-900' : 'text-neutral-300'}`}
+              className={`p-3 rounded-full transition-all ${viewMode === 'list' ? 'bg-white shadow-sm text-neutral-900' : 'text-neutral-600'}`}
             >
               <List size={18} strokeWidth={2.5} />
             </button>
             <button 
               onClick={() => setViewMode('grid')}
-              className={`p-3 rounded-full transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-neutral-900' : 'text-neutral-300'}`}
+              className={`p-3 rounded-full transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-neutral-900' : 'text-neutral-600'}`}
             >
               <LayoutGrid size={18} strokeWidth={2.5} />
             </button>
@@ -307,9 +307,9 @@ export default function ClientsPage({
       {/* ── Content ── */}
       <main className="flex-1">
         {filtered.length === 0 ? (
-          <div className="py-40 flex flex-col items-center justify-center bg-neutral-50 rounded-[4rem] border-2 border-dashed border-neutral-100 group">
-             <Search size={64} strokeWidth={1} className="text-neutral-200 mb-8 group-hover:scale-110 transition-transform" />
-             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-300">
+          <div className="py-40 flex flex-col items-center justify-center bg-white rounded-[4rem] border-2 border-dashed border-neutral-300 group">
+             <Search size={64} strokeWidth={1.2} className="text-neutral-400 mb-8 group-hover:scale-110 transition-transform" />
+             <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-neutral-600">
                AUCUN RÉSULTAT CORRESPONDANT
              </p>
           </div>
@@ -333,13 +333,13 @@ export default function ClientsPage({
                 <button
                   key={col.id}
                   onClick={() => toggleSort(col.id)}
-                  className={`text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-300 hover:text-neutral-900 transition-all flex items-center gap-2 ${col.align === 'center' ? 'justify-center' : ''}`}
+                  className={`text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600 hover:text-neutral-900 transition-all flex items-center gap-2 ${col.align === 'center' ? 'justify-center' : ''}`}
                 >
                   {col.label}
                   {sortField === col.id && <ArrowUpDown size={10} strokeWidth={3} />}
                 </button>
               ))}
-              <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-300 text-right pr-4">ACTIONS</div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600 text-right pr-4">ACTIONS</div>
             </div>
 
             {/* Table Body */}
@@ -348,10 +348,18 @@ export default function ClientsPage({
                 const summary = summaryByClient.get(client.id);
                 if (!summary) return null;
                 return (
-                  <button
+                  <div
                     key={client.id}
                     onClick={() => onSelectClient(client)}
-                    className={`grid w-full items-center px-10 py-8 rounded-[3rem] border border-neutral-50 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-2xl text-left group ${
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onSelectClient(client);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    className={`grid w-full items-center px-10 py-8 rounded-[3rem] border border-neutral-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-2xl text-left group ${
                       selectedClients.has(client.id) ? 'border-neutral-900 shadow-xl' : ''
                     }`}
                     style={{ gridTemplateColumns: gridTemplate }}
@@ -367,7 +375,7 @@ export default function ClientsPage({
                       <p className="text-xl font-bold text-neutral-900 tracking-tight leading-none truncate transition-all">
                         {summary.fullName}
                       </p>
-                      <p className="mt-2 text-[10px] font-bold text-neutral-400 uppercase tracking-[0.2em] truncate">
+                      <p className="mt-2 text-[11px] font-bold text-neutral-600 uppercase tracking-[0.16em] truncate">
                         {client.email || 'NO EMAIL'}
                       </p>
                     </div>
@@ -383,7 +391,7 @@ export default function ClientsPage({
                     </div>
 
                     <div className="pr-8">
-                      <span className="inline-block px-4 py-1.5 rounded-full bg-neutral-50 border border-neutral-100 text-[10px] font-bold text-neutral-400 uppercase tracking-[0.1em] truncate max-w-full">
+                      <span className="inline-block px-4 py-1.5 rounded-full bg-neutral-100 border border-neutral-200 text-[10px] font-bold text-neutral-700 uppercase tracking-[0.08em] truncate max-w-full">
                         {summary.preferredRitual}
                       </span>
                     </div>
@@ -395,11 +403,11 @@ export default function ClientsPage({
                     </div>
 
                     <div className="flex justify-end gap-3">
-                      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 group-hover:text-neutral-900 group-hover:bg-neutral-100 transition-all">
+                      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-500 group-hover:text-neutral-900 group-hover:bg-neutral-200 transition-all">
                          <ChevronRight size={20} strokeWidth={2.5} />
                       </div>
                     </div>
-                  </button>
+                  </div>
                 );
               })}
             </div>
@@ -433,7 +441,7 @@ function Checkbox({ checked, onChange }: { checked: boolean; onChange: () => voi
       type="button"
       onClick={(e) => { e.stopPropagation(); onChange(); }}
       className={`h-7 w-7 flex items-center justify-center rounded-full border-2 transition-all ${
-        checked ? 'bg-neutral-900 border-neutral-900 text-white' : 'bg-white border-neutral-100 text-transparent hover:border-neutral-300'
+        checked ? 'bg-neutral-900 border-neutral-900 text-white' : 'bg-white border-neutral-200 text-transparent hover:border-neutral-500'
       }`}
     >
       <ShieldCheck size={14} strokeWidth={3} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-50'} />
@@ -458,47 +466,55 @@ function ClientCard({ client, summary, isSelected, onSelect, onToggle }: {
   onToggle: () => void;
 }) {
   return (
-    <button
+    <div
       onClick={() => onSelect(client)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect(client);
+        }
+      }}
+      role="button"
+      tabIndex={0}
       className={`group flex flex-col text-left rounded-[3.5rem] border p-12 transition-all hover:-translate-y-2 hover:shadow-2xl bg-white ${
-        isSelected ? 'border-neutral-900 shadow-2xl ring-2 ring-neutral-900 ring-offset-8' : 'border-neutral-100 shadow-sm'
+        isSelected ? 'border-neutral-900 shadow-2xl ring-2 ring-neutral-900 ring-offset-8' : 'border-neutral-200 shadow-sm'
       }`}
     >
       <div className="flex items-start justify-between mb-10">
-        <div className="w-20 h-20 rounded-[2rem] bg-neutral-50 flex items-center justify-center text-neutral-300 group-hover:scale-110 transition-transform shadow-inner">
+        <div className="w-20 h-20 rounded-[2rem] bg-neutral-100 flex items-center justify-center text-neutral-600 group-hover:scale-110 transition-transform shadow-inner">
           <Users size={32} strokeWidth={1.5} />
         </div>
         <Checkbox checked={isSelected} onChange={onToggle} />
       </div>
 
       <div className="space-y-2 mb-10">
-        <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.4em]">PATIENT</p>
+        <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.24em]">PATIENT</p>
         <h3 className="text-3xl font-bold text-neutral-900 tracking-tight leading-none truncate transition-all">
           {summary.fullName}
         </h3>
-        <p className="text-sm font-medium text-neutral-400 truncate">{client.email || 'Aucun email'}</p>
+        <p className="text-sm font-medium text-neutral-600 truncate">{client.email || 'Aucun email'}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-8 pt-8 border-t border-neutral-50">
+      <div className="grid grid-cols-2 gap-8 pt-8 border-t border-neutral-200">
         <div className="space-y-1">
-          <p className="text-[8px] font-bold text-neutral-300 uppercase tracking-[0.2em]">STATUT</p>
+          <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.16em]">STATUT</p>
           <StatusBadge status={summary.status} />
         </div>
         <div className="space-y-1">
-          <p className="text-[8px] font-bold text-neutral-400 uppercase tracking-[0.3em]">SÉANCES</p>
+          <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.16em]">SÉANCES</p>
           <p className="text-3xl font-bold text-neutral-900 tracking-tight">{summary.sessionsCount}</p>
         </div>
       </div>
 
       <div className="mt-10 flex items-center justify-between group-hover:pl-4 transition-all duration-500">
         <div className="space-y-1">
-          <p className="text-[8px] font-bold text-neutral-400 uppercase tracking-[0.3em]">DERNIER SOIN</p>
+          <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.16em]">DERNIER SOIN</p>
           <p className="text-sm font-bold text-neutral-900 tracking-tight">{summary.lastVisitLabel}</p>
         </div>
         <div className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-900 text-white shadow-xl opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0">
           <ChevronRight size={20} strokeWidth={3} />
         </div>
       </div>
-    </button>
+    </div>
   );
 }

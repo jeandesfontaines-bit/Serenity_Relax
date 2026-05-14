@@ -313,16 +313,16 @@ export default function ComptaPage({
     <div className="max-w-[1440px] mx-auto p-8 lg:p-16 space-y-20 bg-neutral-50 min-h-full">
       
       {/* ── Page Header ── */}
-      <div className="flex items-end justify-between border-b border-neutral-100 pb-10">
+      <div className="flex items-end justify-between border-b border-neutral-200 pb-10">
         <div>
-          <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">ÉTATS FINANCIERS</p>
+          <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-2">ÉTATS FINANCIERS</p>
           <h1 className="text-6xl font-bold text-neutral-900 tracking-tight leading-none">Comptabilité</h1>
         </div>
         <div className="flex items-center gap-6">
           <div className="flex flex-col items-end">
-            <p className="text-[10px] font-bold text-neutral-300 uppercase tracking-[0.2em] mb-1">PÉRIODE</p>
-            <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-neutral-100 text-xs font-bold text-neutral-900 shadow-sm">
-               <Calendar size={14} className="text-neutral-400" />
+            <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.18em] mb-1">PÉRIODE</p>
+            <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-neutral-200 text-xs font-bold text-neutral-900 shadow-sm">
+               <Calendar size={14} className="text-neutral-600" />
                {format(new Date(dateRange.start), 'd MMM')} — {format(new Date(dateRange.end), 'd MMM yyyy')}
             </div>
           </div>
@@ -389,9 +389,9 @@ export default function ComptaPage({
       <section className="grid grid-cols-1 gap-16 lg:grid-cols-3">
         {/* Transaction list */}
         <div className="lg:col-span-2 space-y-12">
-          <div className="flex items-end justify-between border-b border-neutral-100 pb-8">
+          <div className="flex items-end justify-between border-b border-neutral-200 pb-8">
             <div>
-              <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">JOURNAL DES OPÉRATIONS</p>
+              <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-2">JOURNAL DES OPÉRATIONS</p>
               <h4 className="text-4xl font-bold text-neutral-900 tracking-tight leading-none">Transactions</h4>
             </div>
           </div>
@@ -412,7 +412,7 @@ export default function ComptaPage({
               <HeaderBtn label="PATIENT" field="client" current={sortField} onSort={toggleSort} />
               <HeaderBtn label="SOIN" field="serviceName" current={sortField} onSort={toggleSort} />
               <HeaderBtn label="STATUT" field="status" current={sortField} onSort={toggleSort} />
-              <div className="text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-300">PDF</div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">PDF</div>
               <HeaderBtn label="MONTANT" field="price" current={sortField} onSort={toggleSort} align="right" />
             </div>
 
@@ -422,10 +422,18 @@ export default function ComptaPage({
                 const meta = STATUS_META[status];
                 const isSelected = selectedIds.has(appt.id);
                 return (
-                  <button
+                  <div
                     key={appt.id}
                     onClick={() => onSelectAppt(appt)}
-                    className={`grid w-full items-center px-10 py-7 rounded-[2rem] border border-neutral-100 bg-white shadow-sm transition-all hover:shadow-xl text-left group ${
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onSelectAppt(appt);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    className={`grid w-full items-center px-10 py-7 rounded-[2rem] border border-neutral-200 bg-white shadow-sm transition-all hover:shadow-xl text-left group ${
                       isSelected ? 'border-neutral-900 shadow-xl' : ''
                     }`}
                     style={{ gridTemplateColumns: gridTemplate }}
@@ -442,7 +450,7 @@ export default function ComptaPage({
                        {getClientDisplayName(appt)}
                     </div>
 
-                    <div className="truncate pr-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                    <div className="truncate pr-4 text-[11px] font-bold text-neutral-600 uppercase tracking-[0.16em]">
                        {appt.serviceName || 'Session'}
                     </div>
 
@@ -457,7 +465,7 @@ export default function ComptaPage({
                     </div>
 
                     <div className="flex items-center">
-                       <button onClick={(e) => { e.stopPropagation(); handleInvoiceOpen(appt); }} className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 hover:text-neutral-900 hover:bg-neutral-100 transition-all">
+                       <button onClick={(e) => { e.stopPropagation(); handleInvoiceOpen(appt); }} className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 transition-all">
                          <Download size={16} strokeWidth={2.5} />
                        </button>
                     </div>
@@ -465,15 +473,15 @@ export default function ComptaPage({
                     <div className="text-right text-xl font-bold text-neutral-900 tracking-tight">
                        {status === 'cancelled' ? '0 CHF' : formatCurrency(appt.price || 0)}
                     </div>
-                  </button>
+                  </div>
                 );
               })}
             </div>
 
             {filtered.length === 0 && (
-              <div className="py-24 flex flex-col items-center justify-center bg-white rounded-[3rem] border border-dashed border-neutral-100 group">
-                <Search size={48} strokeWidth={1} className="text-neutral-200 mb-6 group-hover:scale-110 transition-transform" />
-                <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-300">AUCUNE TRANSACTION TROUVÉE</p>
+              <div className="py-24 flex flex-col items-center justify-center bg-white rounded-[3rem] border-2 border-dashed border-neutral-300 group">
+                <Search size={48} strokeWidth={1.2} className="text-neutral-400 mb-6 group-hover:scale-110 transition-transform" />
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-neutral-600">AUCUNE TRANSACTION TROUVÉE</p>
               </div>
             )}
           </div>
@@ -482,13 +490,13 @@ export default function ComptaPage({
         {/* Analytics sidebar */}
         <div className="space-y-12">
           {/* Revenue Chart */}
-          <div className="bg-white border border-neutral-100 rounded-[3.5rem] p-12 shadow-xl space-y-12">
+          <div className="bg-white border border-neutral-200 rounded-[3.5rem] p-12 shadow-xl space-y-12">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">TENDANCES</p>
+                <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-2">TENDANCES</p>
                 <h4 className="text-4xl font-bold text-neutral-900 tracking-tight">Revenus</h4>
               </div>
-              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 shadow-inner">
+              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-600 shadow-inner">
                 <BarChart3 size={20} strokeWidth={2.5} />
               </div>
             </div>
@@ -505,19 +513,19 @@ export default function ComptaPage({
                       }}
                     />
                   </div>
-                  <span className="text-[8px] font-bold text-neutral-300 uppercase tracking-[0.1em] group-hover:text-neutral-900 transition-colors">{month.label}</span>
+                  <span className="text-[9px] font-bold text-neutral-600 uppercase tracking-[0.12em] group-hover:text-neutral-900 transition-colors">{month.label}</span>
                 </div>
               ))}
             </div>
             
-            <div className="pt-8 border-t border-neutral-50">
+            <div className="pt-8 border-t border-neutral-200">
                <div className="flex items-center justify-between mb-4">
-                  <p className="text-[10px] font-bold text-neutral-300 uppercase tracking-[0.3em]">TOTAL 6 MOIS</p>
+                  <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.18em]">TOTAL 6 MOIS</p>
                   <p className="text-2xl font-bold text-neutral-900 tracking-tight">
                     {formatCurrency(recentTrend.months.reduce((s, m) => s + m.value, 0))}
                   </p>
                </div>
-               <p className="text-[11px] font-medium text-neutral-400 leading-relaxed">
+               <p className="text-[11px] font-medium text-neutral-700 leading-relaxed">
                  Croissance de <span className="text-emerald-500 font-bold">+14%</span> par rapport au semestre précédent.
                </p>
             </div>
@@ -581,14 +589,14 @@ function MetricCard({
   };
 
   return (
-    <div className="group rounded-[2.5rem] border border-neutral-100 bg-white p-8 transition-all hover:shadow-2xl hover:border-neutral-200">
+    <div className="group rounded-[2.5rem] border border-neutral-200 bg-white p-8 transition-all hover:shadow-2xl hover:border-neutral-300">
       <div className="mb-8 flex items-center justify-between">
         <div className={`w-14 h-14 flex items-center justify-center rounded-full transition-transform group-hover:scale-110 ${iconCircleStyles[variant]}`}>
           {icon}
         </div>
-        <ChevronRight size={18} className="text-neutral-200 group-hover:text-neutral-900 transition-colors" />
+        <ChevronRight size={18} className="text-neutral-400 group-hover:text-neutral-900 transition-colors" />
       </div>
-      <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-400">{label}</p>
+      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-600">{label}</p>
       <h3 className="mt-2 text-4xl font-bold tracking-tight text-neutral-900 leading-none">{value}</h3>
     </div>
   );
@@ -600,7 +608,7 @@ function TableCheckbox({ checked, onChange }: { checked: boolean; onChange: () =
       type="button"
       onClick={(e) => { e.stopPropagation(); onChange(); }}
       className={`h-7 w-7 flex items-center justify-center rounded-full border-2 transition-all ${
-        checked ? 'bg-neutral-900 border-neutral-900 text-white' : 'bg-white border-neutral-100 text-transparent hover:border-neutral-300'
+        checked ? 'bg-neutral-900 border-neutral-900 text-white' : 'bg-white border-neutral-200 text-transparent hover:border-neutral-500'
       }`}
     >
       <ShieldCheck size={14} strokeWidth={3} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-50'} />
@@ -618,11 +626,10 @@ function HeaderBtn({ label, field, current, onSort, align = 'left' }: {
   return (
     <button
       onClick={(e) => { e.stopPropagation(); onSort(field); }}
-      className={`text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-300 hover:text-neutral-900 transition-all flex items-center gap-2 ${align === 'right' ? 'justify-end' : ''}`}
+      className={`text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600 hover:text-neutral-900 transition-all flex items-center gap-2 ${align === 'right' ? 'justify-end' : ''}`}
     >
       {label}
       {current === field && <ArrowRight size={10} strokeWidth={3} className="rotate-90" />}
     </button>
   );
 }
-

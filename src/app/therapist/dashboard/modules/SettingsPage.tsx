@@ -229,46 +229,20 @@ export default function SettingsPage({
     () => whatsappFields.filter((field) => !normalizedSearch || field.label.toLowerCase().includes(normalizedSearch)),
     [normalizedSearch, whatsappFields],
   );
+
   const filteredCabinetFields = useMemo(
     () => cabinetFields.filter((field) => !normalizedSearch || field.label.toLowerCase().includes(normalizedSearch)),
-    [cabinetFields, normalizedSearch],
+    [normalizedSearch, cabinetFields],
   );
 
   return (
     <div className="flex-1 flex flex-col bg-[#FDFDFB] h-full overflow-hidden text-neutral-900 scrollbar-hide">
-      <main className="flex-1 overflow-y-auto p-12 lg:p-24 scrollbar-hide">
-        <div className="max-w-[1400px] mx-auto space-y-20">
-          
-          {/* Header Status */}
-          <div className="flex items-center justify-between border-b border-neutral-100 pb-12">
-            <div>
-               <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none">PARAMÈTRES SYSTÈME</p>
-               <h1 className="text-6xl font-bold text-neutral-900 tracking-tighter leading-none">Configuration</h1>
-            </div>
-            <div className="flex items-center gap-6">
-               <AnimatePresence mode="wait">
-                 {saveState !== 'idle' && (
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      className={`flex items-center gap-3 px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-sm ${
-                        saveState === 'saving' ? 'bg-neutral-900 text-white animate-pulse' : 'bg-emerald-500 text-white'
-                      }`}
-                    >
-                      {saveState === 'saving' ? <Zap size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
-                      {saveState === 'saving' ? 'Synchronisation...' : 'Modifications enregistrées'}
-                    </motion.div>
-                 )}
-               </AnimatePresence>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-24 items-start">
-            
+      <main className="flex-1 overflow-y-auto p-4 scrollbar-hide">
+        <div className="max-w-[800px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6 items-start">
             {/* Sidebar Navigation */}
-            <aside className="space-y-12 sticky top-0">
-               <nav className="space-y-4">
+            <aside className="space-y-3 sticky top-0">
+               <nav className="space-y-1">
                   {TABS.map(t => {
                     const Icon = t.icon;
                     const isActive = activeTab === t.id;
@@ -276,105 +250,132 @@ export default function SettingsPage({
                       <button
                         key={t.id}
                         onClick={() => setActiveTab(t.id)}
-                        className={`w-full flex items-center justify-between p-8 rounded-[2.5rem] transition-all group ${
+                        className={`w-full flex items-center justify-between h-8 px-2.5 rounded-lg transition-all group ${
                           isActive 
-                            ? 'bg-neutral-900 text-white shadow-2xl scale-105 z-10' 
+                            ? 'bg-neutral-900 text-white shadow-sm z-10' 
                             : 'bg-white border border-neutral-100 text-neutral-400 hover:border-neutral-900 hover:text-neutral-900'
                         }`}
                       >
-                        <div className="flex items-center gap-6">
-                           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${
+                        <div className="flex items-center gap-2">
+                           <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${
                              isActive ? 'bg-white/10 text-white' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white'
                            }`}>
-                              <Icon size={20} strokeWidth={2.5} />
+                              <Icon size={11} strokeWidth={2.5} />
                            </div>
-                           <span className="text-xl font-bold tracking-tighter">{t.label}</span>
+                           <span className="text-[9px] font-bold tracking-tight uppercase">{t.label}</span>
                         </div>
-                        {isActive && <ChevronRight size={18} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />}
+                        {isActive && <ChevronRight size={8} strokeWidth={3} />}
                       </button>
                     );
                   })}
                </nav>
 
-               <div className="bg-neutral-900 rounded-[3rem] p-10 text-white shadow-2xl space-y-6 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none group-hover:rotate-12 transition-transform duration-700">
-                     <Shield size={160} strokeWidth={1} />
+               <div className="bg-neutral-900 rounded-xl p-3 text-white shadow-lg space-y-2 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-2 opacity-5 pointer-events-none group-hover:rotate-12 transition-transform duration-700">
+                     <Shield size={40} strokeWidth={1} />
                   </div>
                   <div className="relative z-10">
-                     <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 mb-2">SÉCURITÉ</h4>
-                     <p className="text-xl font-bold tracking-tighter leading-tight">Accès restreint & Chiffrement bout-en-bout</p>
+                     <h4 className="text-[7px] font-bold uppercase tracking-[0.4em] text-white/40 mb-0.5">SÉCURITÉ</h4>
+                     <p className="text-[10px] font-bold tracking-tight leading-tight">Accès cabinet</p>
                   </div>
-                  <button onClick={handleDisconnect} className="relative z-10 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-red-400 hover:text-white transition-all">
-                     <LogOut size={14} strokeWidth={3} /> Se déconnecter
+                  <button onClick={handleDisconnect} className="relative z-10 flex items-center gap-1.5 text-[8px] font-bold uppercase tracking-[0.2em] text-red-400 hover:text-white transition-all">
+                     <LogOut size={10} strokeWidth={3} /> Déconnexion
                   </button>
                </div>
+
+               {/* Saving Indicator */}
+                <AnimatePresence mode="wait">
+                  {saveState !== 'idle' && (
+                     <motion.div
+                       initial={{ opacity: 0, y: 10 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       exit={{ opacity: 0, y: 10 }}
+                       className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-[8px] font-bold uppercase tracking-[0.2em] shadow-lg ${
+                         saveState === 'saving' ? 'bg-neutral-900 text-white' : 'bg-emerald-500 text-white'
+                       }`}
+                     >
+                       {saveState === 'saving' ? <Zap size={10} className="animate-pulse" /> : <CheckCircle2 size={10} />}
+                       {saveState === 'saving' ? 'Synchro...' : 'Enregistré'}
+                     </motion.div>
+                  )}
+                </AnimatePresence>
             </aside>
 
             {/* Content Area */}
-            <div className="space-y-24 min-h-[600px]">
+            <div className="space-y-4 min-h-[500px]">
                <AnimatePresence mode="wait">
                  <motion.div
                     key={activeTab}
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                  >
                     {activeTab === 'account' && (
-                       <div className="space-y-16">
-                          <SectionHeader title="Profil Personnel" subtitle="Identité et coordonnées de contact." />
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                             <InputGroup label="Nom Complet" value={localFullName} onChange={setLocalFullName} icon={<User />} />
-                             <InputGroup label="Email Direct" value={localProfileEmail} onChange={setLocalProfileEmail} icon={<Mail />} type="email" />
-                             <InputGroup label="Téléphone" value={localPhone} onChange={setLocalPhone} icon={<Smartphone />} type="tel" />
+                       <div className="space-y-3">
+                          <SectionHeader title="Compte" subtitle="Accès essentiel" />
+                          <div className="bg-white rounded-xl p-3 border border-neutral-100 shadow-sm">
+                             <InlineEditableField
+                                placeholder="Email"
+                                value={localProfileEmail}
+                                onChange={setLocalProfileEmail}
+                                type="email"
+                             />
                           </div>
 
-                          <SectionHeader title="Notifications" subtitle="Alertes et rapports de performance." />
-                          <div className="grid grid-cols-1 gap-6">
-                             <ToggleItem label="Rapports par Email" desc="Analyses hebdomadaires et bilans." val={localNotifyEmail} set={setLocalNotifyEmail} />
-                             <ToggleItem label="Alertes Push" desc="Notifications instantanées sur mobile." val={localNotifyPush} set={setLocalNotifyPush} />
-                             <ToggleItem label="Canal SMS" desc="Rappels critiques de dernière minute." val={localNotifySms} set={setLocalNotifySms} />
-                          </div>
-
-                          <SectionHeader title="Sécurité du Compte" subtitle="Gestion de vos accès confidentiels." />
-                          <div className="bg-neutral-900 rounded-[3.5rem] p-12 text-white shadow-2xl space-y-10 border border-white/5">
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <InputGroupDark label="Ancien Mot de Passe" value={currentPassword} onChange={setCurrentPassword} type="password" />
-                                <InputGroupDark label="Nouveau Mot de Passe" value={newPassword} onChange={setNewPassword} type="password" />
+                          <div className="bg-neutral-900 rounded-xl p-4 text-white shadow-xl space-y-4 border border-white/5">
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <InlineEditableFieldDark
+                                   placeholder="Mot de passe actuel"
+                                   value={currentPassword}
+                                   onChange={setCurrentPassword}
+                                   type="password"
+                                />
+                                <InlineEditableFieldDark
+                                   placeholder="Nouveau mot de passe"
+                                   value={newPassword}
+                                   onChange={setNewPassword}
+                                   type="password"
+                                />
                              </div>
-                             <button onClick={handleUpdatePassword} className="h-16 px-10 rounded-full bg-white text-neutral-900 font-bold text-[11px] uppercase tracking-[0.3em] hover:shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
-                                <Lock size={16} strokeWidth={3} /> METTRE À JOUR LE MOT DE PASSE
+                             <button onClick={handleUpdatePassword} className="h-8 px-4 rounded-lg bg-white text-neutral-900 font-bold text-[9px] uppercase tracking-[0.2em] hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                                <Lock size={12} strokeWidth={3} /> METTRE À JOUR LE MOT DE PASSE
                              </button>
                           </div>
                        </div>
                     )}
 
                     {activeTab === 'whatsapp' && (
-                       <div className="space-y-16">
-                          <SectionHeader title="Studio WhatsApp" subtitle="Configuration des messages automatiques." />
-                          <div className="space-y-16">
+                       <div className="space-y-3">
+                          <SectionHeader title="Modèles WhatsApp" subtitle="Automatisation des messages patients" />
+                          <div className="space-y-3">
                              {filteredWhatsappFields.map((item, i) => (
-                                <div key={i} className="grid grid-cols-1 xl:grid-cols-[1fr_350px] gap-12 items-start">
-                                   <div className="space-y-6">
-                                      <div className="flex items-center justify-between px-4">
-                                         <label className="text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-300">{item.label}</label>
-                                         <button onClick={() => item.set(item.preset)} className="text-[10px] font-bold text-neutral-400 hover:text-neutral-900 transition-colors uppercase tracking-[0.2em]">Réinitialiser</button>
+                                <div key={i} className="grid grid-cols-1 xl:grid-cols-[1fr_240px] gap-4 items-start">
+                                   <div className="space-y-1.5">
+                                      <div className="flex items-center justify-between px-1">
+                                         <label className="text-[7.5px] font-bold uppercase tracking-[0.2em] text-neutral-400">{item.label}</label>
+                                         <button onClick={() => item.set(item.preset)} className="text-[7px] font-bold text-neutral-400 hover:text-neutral-900 transition-colors uppercase tracking-[0.1em]">Réinitialiser</button>
                                       </div>
-                                      <textarea value={item.val} onChange={e => item.set(e.target.value)} rows={5} className="w-full p-10 rounded-[3rem] bg-white border border-neutral-100 text-lg font-medium text-neutral-900 focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-sm" />
-                                      <div className="flex items-center gap-4 px-4 opacity-30">
-                                         <Info size={14} className="text-neutral-400" />
-                                         <p className="text-[9px] font-bold uppercase tracking-[0.2em]">Variables : {'{firstName}, {date}, {time}, {service}, {price}'}</p>
+                                      <InlineEditableTextarea
+                                        placeholder={item.label}
+                                        value={item.val}
+                                        onChange={item.set}
+                                        rows={3}
+                                      />
+                                      <div className="flex items-center gap-2 px-1 opacity-50">
+                                         <Info size={10} className="text-neutral-400" />
+                                         <p className="text-[7px] font-bold uppercase tracking-[0.1em]">Variables : {'{firstName}, {date}, {time}, {service}, {price}'}</p>
                                       </div>
                                    </div>
-                                   <div className="bg-[#DCF8C6] rounded-[3rem] rounded-tr-none p-8 shadow-xl relative group hover:-translate-y-1 transition-all">
-                                      <p className="text-base font-medium text-neutral-800 leading-relaxed">
-                                         {item.val.replace(/{firstName}/g,'Patient').replace(/{service}/g,'Soin').replace(/{date}/g,'Demain').replace(/{price}/g,'120').replace(/{time}/g,'10:00')}
+                                   <div className="bg-[#DCF8C6] rounded-xl rounded-tr-none p-3 shadow-sm relative group hover:-translate-y-0.5 transition-all">
+                                      <p className="text-[10px] font-medium text-neutral-800 leading-relaxed">
+                                         {item.val.replace(/{firstName}/g,'Patient').replace(/{service}/g,'Soin Holistique').replace(/{date}/g,'Demain').replace(/{price}/g,'120').replace(/{time}/g,'10:00')}
                                       </p>
-                                      <div className="flex items-center justify-end gap-2 mt-4 opacity-40">
-                                         <span className="text-[10px] font-bold">10:45</span>
-                                         <CheckCircle2 size={14} strokeWidth={2.5} />
+                                      <div className="flex items-center justify-end gap-1 mt-1 opacity-50">
+                                         <span className="text-[7px] font-bold">10:45</span>
+                                         <CheckCircle2 size={10} strokeWidth={2.5} />
                                       </div>
-                                      <div className="absolute top-0 right-[-10px] w-0 h-0 border-t-[15px] border-t-[#DCF8C6] border-r-[15px] border-r-transparent"></div>
+                                      <div className="absolute top-0 right-[-5px] w-0 h-0 border-t-[8px] border-t-[#DCF8C6] border-r-[8px] border-r-transparent"></div>
                                    </div>
                                 </div>
                              ))}
@@ -383,26 +384,32 @@ export default function SettingsPage({
                     )}
 
                     {activeTab === 'email' && (
-                       <div className="space-y-16">
-                          <SectionHeader title="Butler Email" subtitle="Automatisation des communications officielles." />
-                          <div className="bg-white rounded-[3.5rem] p-12 border border-neutral-100 shadow-2xl space-y-12 relative overflow-hidden">
+                       <div className="space-y-3">
+                          <SectionHeader title="Service Emailing" subtitle="Communications officielles par courriel" />
+                          <div className="bg-white rounded-xl p-4 border border-neutral-100 shadow-sm space-y-4 relative overflow-hidden">
                              <div className="flex items-center justify-between relative z-10">
                                 <div>
-                                   <h4 className="text-2xl font-bold tracking-tighter text-neutral-900">Module d&apos;Expédition</h4>
-                                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-300 mt-2">ÉTAT DU SERVICE : {localEmailEnabled ? 'ACTIF' : 'INACTIF'}</p>
+                                   <h4 className="text-[9.5px] font-bold tracking-tight text-neutral-900 uppercase">Module d'expédition</h4>
+                                   <p className="text-[7px] font-bold uppercase tracking-[0.2em] text-neutral-300 mt-0.5">STATUT : {localEmailEnabled ? 'ACTIVÉ' : 'DÉSACTIVÉ'}</p>
                                 </div>
-                                <button onClick={() => setLocalEmailEnabled(!localEmailEnabled)} className={`w-16 h-10 rounded-full relative transition-all shadow-inner ${localEmailEnabled ? 'bg-neutral-900' : 'bg-neutral-100'}`}>
-                                   <div className={`w-8 h-8 bg-white rounded-full absolute top-1 shadow-md transition-all ${localEmailEnabled ? 'translate-x-7' : 'translate-x-1'}`} />
+                                <button onClick={() => setLocalEmailEnabled(!localEmailEnabled)} className={`w-8 h-4 rounded-full relative transition-all shadow-inner ${localEmailEnabled ? 'bg-neutral-900' : 'bg-neutral-100'}`}>
+                                   <div className={`w-3 h-3 bg-white rounded-full absolute top-0.5 shadow-md transition-all ${localEmailEnabled ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
                                 </button>
                              </div>
-                             <div className={`space-y-10 transition-all duration-700 ${localEmailEnabled ? 'opacity-100' : 'opacity-30 blur-md pointer-events-none translate-y-4'}`}>
-                                <div className="space-y-4">
-                                   <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-300 px-4">CORPS DE L&apos;EMAIL TYPE</label>
-                                   <textarea value={localEmail} onChange={e => setLocalEmail(e.target.value)} rows={10} className="w-full p-12 rounded-[3.5rem] bg-neutral-50 border-none text-xl font-medium text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-inner" />
+                             <div className={`space-y-3 transition-all duration-700 ${localEmailEnabled ? 'opacity-100' : 'opacity-30 blur-sm pointer-events-none translate-y-2'}`}>
+                                <div className="space-y-1.5">
+                                   <label className="text-[7px] font-bold uppercase tracking-[0.2em] text-neutral-400 px-1">CORPS DU MESSAGE TYPE</label>
+                                   <InlineEditableTextarea
+                                      placeholder="Corps du message type"
+                                      value={localEmail}
+                                      onChange={setLocalEmail}
+                                      rows={4}
+                                      variant="soft"
+                                   />
                                 </div>
-                                <div className="flex items-start gap-6 p-8 bg-neutral-900 text-white rounded-[2.5rem] shadow-xl">
-                                   <Sparkles size={24} className="shrink-0 text-white/50" />
-                                   <p className="text-sm font-bold leading-relaxed text-white/60">Le système injectera automatiquement votre charte graphique et vos informations de cabinet lors de chaque envoi.</p>
+                                <div className="flex items-start gap-2 p-3 bg-neutral-900 text-white rounded-xl shadow-lg">
+                                   <Sparkles size={14} className="shrink-0 text-emerald-400" />
+                                   <p className="text-[9px] font-bold leading-normal text-white/70 uppercase tracking-tight">Le système injectera automatiquement votre charte graphique Serenity.</p>
                                 </div>
                              </div>
                           </div>
@@ -410,17 +417,27 @@ export default function SettingsPage({
                     )}
 
                     {activeTab === 'cabinet' && (
-                       <div className="space-y-16">
-                          <SectionHeader title="Identité Cabinet" subtitle="Informations légales et de facturation." />
-                          <div className="bg-white rounded-[4rem] p-12 border border-neutral-100 shadow-2xl space-y-12">
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                       <div className="space-y-3">
+                          <SectionHeader title="Identité du Cabinet" subtitle="Informations légales et administratives" />
+                          <div className="bg-white rounded-xl p-4 border border-neutral-100 shadow-sm space-y-4">
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 {filteredCabinetFields.map(f => (
-                                   <div key={f.label} className={`space-y-4 ${f.full ? 'md:col-span-2' : ''}`}>
-                                      <label className="text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-300 px-4">{f.label}</label>
+                                   <div key={f.label} className={`space-y-1 ${f.full ? 'md:col-span-2' : ''}`}>
+                                      <label className="text-[7.5px] font-bold uppercase tracking-[0.2em] text-neutral-400 px-1">{f.label}</label>
                                       {f.full ? (
-                                        <textarea value={f.value} onChange={e => f.set(e.target.value)} rows={4} className="w-full p-10 rounded-[2.5rem] bg-neutral-50 border-none text-xl font-bold tracking-tighter text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none resize-none leading-relaxed shadow-inner" />
+                                        <InlineEditableTextarea
+                                          placeholder={f.label}
+                                          value={f.value}
+                                          onChange={f.set}
+                                          rows={2}
+                                          variant="soft"
+                                        />
                                       ) : (
-                                        <input value={f.value} onChange={e => f.set(e.target.value)} className="w-full h-16 px-10 rounded-full bg-neutral-50 border-none text-xl font-bold tracking-tighter text-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-inner" />
+                                        <InlineEditableField
+                                          placeholder={f.label}
+                                          value={f.value}
+                                          onChange={f.set}
+                                        />
                                       )}
                                    </div>
                                 ))}
@@ -430,23 +447,26 @@ export default function SettingsPage({
                     )}
 
                     {activeTab === 'objectives' && (
-                       <div className="space-y-16">
-                          <SectionHeader title="Performance & Vision" subtitle="Stratégie et ambitions financières." />
-                          <div className="bg-white rounded-[4rem] p-16 border border-neutral-100 shadow-[0_60px_100px_-30px_rgba(0,0,0,0.1)] text-center relative overflow-hidden group">
-                             <div className="absolute top-0 right-0 p-16 opacity-5 group-hover:scale-110 transition-transform duration-1000">
-                                <Target size={200} strokeWidth={1} />
+                       <div className="space-y-3">
+                          <SectionHeader title="Performance & Objectifs" subtitle="Ambitions financières mensuelles" />
+                          <div className="bg-white rounded-xl p-6 border border-neutral-100 shadow-sm text-center relative overflow-hidden group">
+                             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform duration-1000">
+                                <Target size={60} strokeWidth={1} />
                              </div>
-                             <div className="relative z-10 max-w-xl mx-auto space-y-16">
-                                <label className="text-[11px] font-bold uppercase tracking-[0.5em] text-neutral-300 leading-none block">OBJECTIF CHIFFRE D&apos;AFFAIRE MENSUEL</label>
+                             <div className="relative z-10 max-w-[260px] mx-auto space-y-2">
+                                <label className="text-[7.5px] font-bold uppercase tracking-[0.4em] text-neutral-400 leading-none block">CHIFFRE D'AFFAIRE MENSUEL CIBLE</label>
                                 <div className="relative inline-block group/input">
-                                   <input 
-                                      type="number" 
-                                      value={localGoal} 
-                                      onChange={e => setLocalGoal(e.target.value)}
-                                      className="w-full h-32 text-center text-9xl font-bold text-neutral-900 bg-transparent border-none outline-none tabular-nums tracking-tighter group-hover/input:scale-110 transition-transform" 
+                                   <InlineEditableField
+                                      placeholder="0"
+                                      value={localGoal}
+                                      onChange={setLocalGoal}
+                                      type="number"
+                                      align="center"
+                                      className="h-10 bg-transparent px-0 text-xl font-black tabular-nums tracking-tighter hover:bg-transparent"
+                                      editingClassName="h-10 rounded-none border-0 border-b border-neutral-900 bg-transparent px-0 text-center text-xl font-black tabular-nums tracking-tighter shadow-none"
                                    />
-                                   <p className="mt-6 text-[14px] font-bold uppercase tracking-[0.5em] text-neutral-900 opacity-40">FRANCS SUISSES / MOIS</p>
-                                   <div className="h-2 w-full bg-neutral-50 rounded-full mt-10 overflow-hidden shadow-inner">
+                                   <p className="mt-0 text-[7px] font-bold uppercase tracking-[0.3em] text-neutral-900 opacity-30">FRANCS SUISSES / MOIS</p>
+                                   <div className="h-1 w-full bg-neutral-50 rounded-full mt-3 overflow-hidden shadow-inner">
                                       <motion.div 
                                         initial={{ width: 0 }}
                                         animate={{ width: '65%' }}
@@ -454,8 +474,8 @@ export default function SettingsPage({
                                       />
                                    </div>
                                 </div>
-                                <p className="text-base font-bold text-neutral-300 leading-relaxed max-w-sm mx-auto uppercase tracking-widest text-[10px]">
-                                   Ce curseur définit vos KPIs de performance et guide l&apos;évolution stratégique de votre cabinet Serenity.
+                                <p className="text-[9px] font-bold text-neutral-400 leading-normal max-w-[180px] mx-auto uppercase tracking-widest">
+                                   Influence vos KPIs affichés sur le tableau de bord.
                                 </p>
                              </div>
                           </div>
@@ -474,39 +494,207 @@ export default function SettingsPage({
 
 function SectionHeader({ title, subtitle }: { title: string, subtitle: string }) {
    return (
-      <div className="border-l-4 border-neutral-900 pl-8 py-2">
-         <h4 className="text-4xl font-bold tracking-tighter text-neutral-900 leading-none">{title}</h4>
-         <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-neutral-300 mt-3 leading-none">{subtitle}</p>
+      <div className="border-l-[1.5px] border-neutral-900 pl-2.5 py-0.5 mb-5">
+         <h4 className="text-[10px] font-black tracking-tight text-neutral-900 leading-none uppercase">{title}</h4>
+         <p className="text-[7.5px] font-bold uppercase tracking-[0.15em] text-neutral-400 mt-1 leading-none">{subtitle}</p>
+      </div>
+   );
+}
+
+function InlineEditableField({
+   placeholder,
+   value,
+   onChange,
+   type = 'text',
+   align = 'left',
+   className = '',
+   editingClassName = '',
+}: {
+   placeholder: string,
+   value: string,
+   onChange: (v: string) => void,
+   type?: string,
+   align?: 'left' | 'center',
+   className?: string,
+   editingClassName?: string,
+}) {
+   const [editing, setEditing] = React.useState(false);
+   const [draft, setDraft] = React.useState(value);
+
+   React.useEffect(() => {
+      setDraft(value);
+   }, [value]);
+
+   const commit = () => {
+      setEditing(false);
+      if (draft !== value) onChange(draft);
+   };
+
+   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') commit();
+      if (e.key === 'Escape') {
+         setDraft(value);
+         setEditing(false);
+      }
+   };
+
+   return editing ? (
+      <input
+         autoFocus
+         type={type}
+         value={draft}
+         onChange={e => setDraft(e.target.value)}
+         onBlur={commit}
+         onKeyDown={handleKey}
+         placeholder={placeholder}
+         className={`w-full h-8 px-3 rounded-full bg-neutral-50 border border-neutral-900 text-[9px] font-bold tracking-tight text-neutral-900 outline-none shadow-sm ${align === 'center' ? 'text-center' : ''} ${editingClassName}`}
+      />
+   ) : (
+      <div
+         onDoubleClick={() => setEditing(true)}
+         className={`flex h-8 cursor-text items-center rounded-full bg-neutral-50 px-3 text-[9px] font-bold tracking-tight text-neutral-900 transition-all hover:bg-neutral-100 ${align === 'center' ? 'justify-center text-center' : ''} ${className}`}
+      >
+         <span className="truncate">
+            {value || <span className="text-neutral-300">{placeholder}</span>}
+         </span>
+      </div>
+   );
+}
+
+function InlineEditableTextarea({
+   placeholder,
+   value,
+   onChange,
+   rows = 3,
+   variant = 'default',
+}: {
+   placeholder: string,
+   value: string,
+   onChange: (v: string) => void,
+   rows?: number,
+   variant?: 'default' | 'soft',
+}) {
+   const [editing, setEditing] = React.useState(false);
+   const [draft, setDraft] = React.useState(value);
+
+   React.useEffect(() => {
+      setDraft(value);
+   }, [value]);
+
+   const commit = () => {
+      setEditing(false);
+      if (draft !== value) onChange(draft);
+   };
+
+   const baseView = variant === 'soft'
+      ? 'bg-neutral-50 shadow-inner'
+      : 'bg-white border border-neutral-100 shadow-sm';
+   const baseEdit = variant === 'soft'
+      ? 'bg-white ring-4 ring-neutral-900/5 shadow-inner'
+      : 'bg-white border border-neutral-900 shadow-sm';
+
+   return editing ? (
+      <textarea
+         autoFocus
+         value={draft}
+         onChange={(e) => setDraft(e.target.value)}
+         onBlur={commit}
+         rows={rows}
+         placeholder={placeholder}
+         className={`w-full rounded-xl p-3 text-[10px] font-medium text-neutral-900 outline-none resize-none leading-relaxed ${baseEdit}`}
+      />
+   ) : (
+      <div
+         onDoubleClick={() => setEditing(true)}
+         className={`min-h-[88px] w-full cursor-text rounded-xl p-3 text-[10px] font-medium text-neutral-900 transition-all hover:-translate-y-0.5 ${baseView}`}
+      >
+         <p className="whitespace-pre-wrap leading-relaxed">
+            {value || <span className="text-neutral-300">{placeholder}</span>}
+         </p>
+      </div>
+   );
+}
+
+function InlineEditableFieldDark({
+   placeholder,
+   value,
+   onChange,
+   type = 'text',
+}: {
+   placeholder: string,
+   value: string,
+   onChange: (v: string) => void,
+   type?: string,
+}) {
+   const [editing, setEditing] = React.useState(false);
+   const [draft, setDraft] = React.useState(value);
+
+   React.useEffect(() => {
+      setDraft(value);
+   }, [value]);
+
+   const commit = () => {
+      setEditing(false);
+      if (draft !== value) onChange(draft);
+   };
+
+   const masked = value ? '•'.repeat(Math.min(Math.max(value.length, 6), 12)) : '';
+
+   return editing ? (
+      <input
+         autoFocus
+         type={type}
+         value={draft}
+         onChange={e => setDraft(e.target.value)}
+         onBlur={commit}
+         onKeyDown={(e) => {
+            if (e.key === 'Enter') commit();
+            if (e.key === 'Escape') {
+               setDraft(value);
+               setEditing(false);
+            }
+         }}
+         placeholder={placeholder}
+         className="w-full h-8 px-3 rounded-full bg-white/10 border border-white text-[9px] font-bold tracking-tight text-white placeholder:text-white/20 outline-none shadow-inner"
+      />
+   ) : (
+      <div
+         onDoubleClick={() => setEditing(true)}
+         className="flex h-8 cursor-text items-center rounded-full bg-white/5 px-3 text-[9px] font-bold tracking-tight text-white transition-all hover:bg-white/10"
+      >
+         <span className="truncate">
+            {masked || <span className="text-white/20">{placeholder}</span>}
+         </span>
       </div>
    );
 }
 
 function InputGroup({ label, value, onChange, icon, type = 'text' }: { label: string, value: string, onChange: (v: string) => void, icon?: React.ReactNode, type?: string }) {
    return (
-      <div className="space-y-4 group">
-         <div className="flex items-center gap-3 text-neutral-300 group-focus-within:text-neutral-900 transition-colors">
-            {icon && <div className="shrink-0">{icon}</div>}
-            <label className="text-[10px] font-bold uppercase tracking-[0.3em] leading-none">{label}</label>
+      <div className="space-y-1.5 group">
+         <div className="flex items-center gap-2 text-neutral-400 group-focus-within:text-neutral-900 transition-colors px-1">
+            {icon && <div className="shrink-0 scale-[0.6] w-4 h-4 flex items-center justify-center">{icon}</div>}
+            <label className="text-[7.5px] font-bold uppercase tracking-[0.2em] leading-none">{label}</label>
          </div>
          <input 
             type={type} 
             value={value} 
             onChange={e => onChange(e.target.value)} 
-            className="w-full h-16 px-8 rounded-full bg-white border border-neutral-100 text-lg font-bold tracking-tighter text-neutral-900 focus:bg-white focus:border-neutral-900 focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-sm" 
+            className="w-full h-8 px-3 rounded-full bg-white border border-neutral-100 text-[9px] font-bold tracking-tight text-neutral-900 focus:bg-white focus:border-neutral-900 focus:ring-4 focus:ring-neutral-900/5 transition-all outline-none shadow-sm" 
          />
       </div>
    );
 }
 
-function InputGroupDark({ label, value, onChange, type = 'text' }: { label: string, value: string, onChange: (v: string) => void, type?: string }) {
+function InputGroupDark({ placeholder, value, onChange, type = 'text' }: { placeholder: string, value: string, onChange: (v: string) => void, type?: string }) {
    return (
-      <div className="space-y-4 group">
-         <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 px-4 leading-none">{label}</label>
+      <div className="group">
          <input 
             type={type} 
             value={value} 
             onChange={e => onChange(e.target.value)} 
-            className="w-full h-16 px-8 rounded-full bg-white/5 border border-white/10 text-xl font-bold tracking-tighter text-white placeholder:text-white/20 focus:bg-white/10 focus:border-white transition-all outline-none shadow-inner" 
+            placeholder={placeholder}
+            className="w-full h-8 px-3 rounded-full bg-white/5 border border-white/10 text-[9px] font-bold tracking-tight text-white placeholder:text-white/20 focus:bg-white/10 focus:border-white transition-all outline-none shadow-inner" 
          />
       </div>
    );
@@ -514,23 +702,23 @@ function InputGroupDark({ label, value, onChange, type = 'text' }: { label: stri
 
 function ToggleItem({ label, desc, val, set }: { label: string, desc: string, val: boolean, set: (v: boolean) => void }) {
    return (
-      <div className="flex items-center justify-between p-10 bg-white border border-neutral-50 rounded-[3rem] shadow-sm group hover:border-neutral-900 transition-all">
-         <div className="flex items-center gap-8">
-            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${val ? 'bg-neutral-900 text-white shadow-xl' : 'bg-neutral-50 text-neutral-300'}`}>
-               <Bell size={24} strokeWidth={2.5} />
+      <div className="flex items-center justify-between p-2 bg-white border border-neutral-100 rounded-xl shadow-sm group hover:border-neutral-900 transition-all">
+         <div className="flex items-center gap-2.5">
+            <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${val ? 'bg-neutral-900 text-white shadow-md' : 'bg-neutral-50 text-neutral-300'}`}>
+               <Bell size={9} strokeWidth={2.5} />
             </div>
             <div>
-               <h5 className="text-xl font-bold tracking-tighter text-neutral-900 leading-none">{label}</h5>
-               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-300 mt-3 leading-none">{desc}</p>
+               <h5 className="text-[8px] font-bold tracking-tight text-neutral-900 leading-none uppercase">{label}</h5>
+               <p className="text-[6.5px] font-bold uppercase tracking-[0.1em] text-neutral-300 mt-1 leading-none">{desc}</p>
             </div>
          </div>
          <button 
             onClick={() => set(!val)} 
-            className={`w-16 h-10 rounded-full relative transition-all shadow-inner ${val ? 'bg-neutral-900' : 'bg-neutral-100'}`}
+            className={`w-7 h-4 rounded-full relative transition-all shadow-inner ${val ? 'bg-neutral-900' : 'bg-neutral-100'}`}
          >
             <motion.div 
-               animate={{ x: val ? 28 : 4 }}
-               className="w-8 h-8 bg-white rounded-full absolute top-1 shadow-md"
+               animate={{ x: val ? 14 : 2 }}
+               className="w-2.5 h-2.5 bg-white rounded-full absolute top-1 shadow-md"
             />
          </button>
       </div>

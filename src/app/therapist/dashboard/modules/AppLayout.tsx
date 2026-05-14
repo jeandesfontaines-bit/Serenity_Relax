@@ -3,7 +3,7 @@ import React from 'react';
 import { 
   Ban, ChevronLeft, ChevronRight, Plus, Settings, SlidersHorizontal, 
   Download, Filter, LogOut, Search, Calendar, Users, Wallet, 
-  LayoutGrid, Bell, User, ArrowRight
+  LayoutGrid, Bell, ArrowRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -65,7 +65,6 @@ const NAV_ITEMS = [
   { id: 'scheduler', label: 'Agenda', icon: Calendar },
   { id: 'clients', label: 'Clients', icon: Users },
   { id: 'accounting', label: 'Finances', icon: Wallet },
-  { id: 'settings', label: 'Paramètres', icon: Settings },
 ];
 
 function isActive(itemId: string, activePage: string) {
@@ -90,25 +89,25 @@ export default function AppLayout({
   const searchPlaceholder = 'Rechercher un patient...';
 
   return (
-    <div className="h-screen h-dvh overflow-hidden bg-neutral-50 text-neutral-900 flex flex-col">
+    <div className="h-screen h-dvh overflow-hidden bg-neutral-100 text-neutral-900 flex flex-col">
       {/* ── Top Navigation Bar ── */}
-      <header className="z-[100] shrink-0 border-b border-neutral-100 bg-white/80 backdrop-blur-2xl px-6 py-5 md:px-12 flex items-center justify-between">
-        <div className="flex items-center gap-12">
+      <header className="z-[100] shrink-0 border-b border-neutral-200 bg-white/95 backdrop-blur-2xl px-6 py-4 md:px-12 flex items-center justify-between shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
+        <div className="flex items-center gap-10">
           {/* Logo */}
           <button
             onClick={() => onNavigate('dashboard')}
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-2.5 group"
           >
-            <div className="w-10 h-10 bg-neutral-900 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:rotate-6 transition-transform">
-              <LayoutGrid size={20} strokeWidth={2.5} />
+            <div className="w-8 h-8 bg-neutral-900 rounded-lg flex items-center justify-center text-white shadow-lg group-hover:rotate-6 transition-transform">
+              <LayoutGrid size={16} strokeWidth={2.5} />
             </div>
-            <p className="text-2xl font-bold tracking-tight text-neutral-900">
+            <p className="text-xl font-bold tracking-tight text-neutral-900">
               SERENITY
             </p>
           </button>
 
           {/* Desktop Nav */}
-          <nav className="hidden items-center gap-1 md:flex bg-neutral-50 p-1.5 rounded-full border border-neutral-100">
+          <nav className="hidden items-center gap-1 md:flex bg-neutral-100 p-1 rounded-full border border-neutral-200 shadow-sm">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.id, activePage);
               const Icon = item.icon;
@@ -116,13 +115,13 @@ export default function AppLayout({
                 <button
                   key={item.id}
                   onClick={() => onNavigate(item.id)}
-                  className={`h-11 px-6 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-3 ${
+                  className={`h-9 px-5 rounded-full text-[10px] font-bold uppercase tracking-[0.22em] transition-all flex items-center gap-2 ${
                     active
-                      ? 'bg-neutral-900 text-white shadow-xl scale-105'
-                      : 'text-neutral-400 hover:text-neutral-900 hover:bg-white/50'
+                      ? 'bg-neutral-900 text-white shadow-xl'
+                      : 'text-neutral-600 hover:text-neutral-900 hover:bg-white'
                   }`}
                 >
-                  <Icon size={16} strokeWidth={active ? 3 : 2.5} />
+                  <Icon size={14} strokeWidth={active ? 3 : 2.5} />
                   {item.label}
                 </button>
               );
@@ -131,38 +130,45 @@ export default function AppLayout({
         </div>
 
         {/* Right Actions Area */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
           {/* Global Search */}
           <div className="hidden lg:block relative group">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-neutral-300 group-focus-within:text-neutral-900 transition-colors" size={18} strokeWidth={2.5} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-neutral-900 transition-colors" size={14} strokeWidth={2.5} />
             <input
               type="text"
               value={globalSearch}
               onChange={(e) => onGlobalSearchChange(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-[350px] h-14 pl-14 pr-6 rounded-full bg-white border border-neutral-100 text-sm font-bold tracking-tight placeholder:text-neutral-300 focus:border-neutral-900 outline-none transition-all"
+              className="w-[320px] h-10 pl-10 pr-4 rounded-full bg-white border border-neutral-200 text-[12px] font-semibold tracking-tight placeholder:text-neutral-400 focus:border-neutral-900 outline-none transition-all shadow-sm"
             />
           </div>
 
-          <div className="h-10 w-px bg-neutral-100 hidden md:block" />
+          <div className="h-10 w-px bg-neutral-200 hidden md:block" />
 
           {/* Notifications & Profile */}
-          <div className="flex items-center gap-4">
-             <button className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all relative">
-                <Bell size={20} strokeWidth={2.5} />
-                <span className="absolute top-3 right-3 w-2 h-2 bg-neutral-900 rounded-full border-2 border-white" />
+          <div className="flex items-center gap-3">
+             <button className="w-10 h-10 flex items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-500 hover:text-neutral-900 transition-all relative shadow-sm">
+                <Bell size={16} strokeWidth={2.5} />
+                <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-neutral-900 rounded-full border border-white" />
              </button>
              {onLogout && (
               <button
                 onClick={onLogout}
-                className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-red-500 hover:bg-red-50 transition-all"
+                className="w-10 h-10 flex items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-500 hover:text-red-500 hover:bg-red-50 transition-all shadow-sm"
               >
-                <LogOut size={20} strokeWidth={2.5} />
+                <LogOut size={16} strokeWidth={2.5} />
               </button>
             )}
-             <div className="w-12 h-12 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-xl cursor-pointer hover:scale-110 transition-transform">
-                <User size={20} strokeWidth={2.5} />
-             </div>
+             <button
+               onClick={() => onNavigate('settings')}
+               className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all ${
+                 activePage === 'settings'
+                   ? 'bg-neutral-900 text-white'
+                   : 'bg-white text-neutral-600 border border-neutral-200 hover:text-neutral-900'
+               }`}
+             >
+                <Settings size={16} strokeWidth={2.5} />
+             </button>
           </div>
         </div>
       </header>
@@ -174,34 +180,34 @@ export default function AppLayout({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="bg-neutral-50 border-b border-neutral-100 px-6 py-4 md:px-12 flex items-center justify-between min-h-[80px]"
+          className="bg-white border-b border-neutral-200 px-6 py-3 md:px-12 flex items-center justify-between min-h-[68px] shadow-[0_8px_24px_rgba(0,0,0,0.025)]"
         >
           {/* Toolbar content based on active page */}
           <div className="flex-1 flex items-center justify-between gap-8">
             {activePage === 'scheduler' && schedulerToolbar ? (
               <>
                 <div className="flex items-center gap-4">
-                   <div className="flex items-center gap-2 bg-neutral-50 p-1.5 rounded-full border border-neutral-100">
-                      <button onClick={schedulerToolbar.onPrev} className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-neutral-400 hover:text-neutral-900 transition-all shadow-sm">
-                        <ChevronLeft size={18} strokeWidth={3} />
+                   <div className="flex items-center gap-2 bg-neutral-100 p-1 rounded-full border border-neutral-200 shadow-sm">
+                      <button onClick={schedulerToolbar.onPrev} className="w-9 h-9 flex items-center justify-center rounded-full bg-white text-neutral-600 hover:text-neutral-900 transition-all shadow-sm">
+                        <ChevronLeft size={14} strokeWidth={3} />
                       </button>
-                      <button onClick={schedulerToolbar.onToday} className="h-10 px-6 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-900 hover:bg-white transition-all">
+                      <button onClick={schedulerToolbar.onToday} className="h-9 px-4 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-900 hover:bg-white transition-all">
                         AUJOURD&apos;HUI
                       </button>
-                      <button onClick={schedulerToolbar.onNext} className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-neutral-400 hover:text-neutral-900 transition-all shadow-sm">
-                        <ChevronRight size={18} strokeWidth={3} />
+                      <button onClick={schedulerToolbar.onNext} className="w-9 h-9 flex items-center justify-center rounded-full bg-white text-neutral-600 hover:text-neutral-900 transition-all shadow-sm">
+                        <ChevronRight size={14} strokeWidth={3} />
                       </button>
                    </div>
-                   <div className="h-8 w-px bg-neutral-100" />
-                   <div className="flex bg-neutral-50 p-1.5 rounded-full border border-neutral-100">
+                   <div className="h-8 w-px bg-neutral-200" />
+                   <div className="flex bg-neutral-100 p-1 rounded-full border border-neutral-200 shadow-sm">
                       {(['week', 'month'] as const).map((view) => (
                         <button
                           key={view}
                           onClick={() => schedulerToolbar.onToggleView(view)}
-                          className={`h-10 px-6 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${
+                          className={`h-9 px-4 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${
                             schedulerToolbar.view === view
                               ? 'bg-neutral-900 text-white shadow-lg'
-                              : 'text-neutral-400 hover:text-neutral-900'
+                              : 'text-neutral-600 hover:text-neutral-900'
                           }`}
                         >
                           {view === 'week' ? 'Semaine' : 'Mois'}
@@ -210,67 +216,67 @@ export default function AppLayout({
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <button
                     onClick={schedulerToolbar.onToggleAbsenceMode}
-                    className={`flex items-center gap-3 h-12 px-6 rounded-full transition-all border ${
+                    className={`flex items-center gap-2 h-10 px-4 rounded-full transition-all border shadow-sm ${
                       schedulerToolbar.absenceMode
                         ? 'bg-red-500 border-red-500 text-white shadow-xl'
-                        : 'bg-neutral-50 border-neutral-100 text-neutral-400 hover:text-neutral-900'
+                        : 'bg-white border-neutral-200 text-neutral-700 hover:text-neutral-900'
                     }`}
                   >
-                    <Ban size={16} strokeWidth={3} />
+                    <Ban size={14} strokeWidth={3} />
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Mode Absence</span>
                   </button>
-                  <button onClick={schedulerToolbar.onOpenSettings} className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-900 text-white hover:shadow-xl transition-all">
-                    <SlidersHorizontal size={20} strokeWidth={2.5} />
+                  <button onClick={schedulerToolbar.onOpenSettings} className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 text-white hover:shadow-xl transition-all">
+                    <SlidersHorizontal size={16} strokeWidth={2.5} />
                   </button>
                 </div>
               </>
             ) : activePage === 'clients' && clientsToolbar ? (
               <>
                  <div>
-                    <h2 className="text-xl font-bold tracking-tighter text-neutral-900">Répertoire Patients</h2>
+                    <h2 className="text-lg font-bold tracking-tighter text-neutral-900">Répertoire Patients</h2>
                  </div>
-                 <div className="flex items-center gap-4">
-                    <button onClick={clientsToolbar.onToggleFilters} className="flex items-center gap-3 h-12 px-6 rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all border border-neutral-100">
-                       <Filter size={16} strokeWidth={2.5} />
+                 <div className="flex items-center gap-3">
+                    <button onClick={clientsToolbar.onToggleFilters} className="flex items-center gap-2 h-10 px-4 rounded-full bg-white text-neutral-700 hover:text-neutral-900 transition-all border border-neutral-200 shadow-sm">
+                       <Filter size={14} strokeWidth={2.5} />
                        <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Filtres</span>
                     </button>
-                    <button onClick={clientsToolbar.onAddClient} className="h-12 px-8 rounded-full bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl hover:-translate-y-1 transition-all flex items-center gap-3">
-                       <Plus size={18} strokeWidth={3} />
+                    <button onClick={clientsToolbar.onAddClient} className="h-10 px-6 rounded-full bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                       <Plus size={16} strokeWidth={3} />
                        NOUVEAU PATIENT
                     </button>
                  </div>
               </>
             ) : activePage === 'accounting' && financeToolbar ? (
               <>
-                 <div className="flex items-center gap-8">
-                    <h2 className="text-xl font-bold tracking-tighter text-neutral-900">Analyse Financière</h2>
+                 <div className="flex items-center gap-6">
+                    <h2 className="text-lg font-bold tracking-tighter text-neutral-900">Analyse Financière</h2>
                     {financeToolbar.showDateRange && (
-                        <div className="flex h-12 items-center gap-4 rounded-full bg-neutral-50 px-8 border border-neutral-100">
+                        <div className="flex h-10 items-center gap-3 rounded-full bg-white px-5 border border-neutral-200 shadow-sm">
                           <input
                             type="date"
                             value={financeToolbar.dateRange.start}
                             onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, start: e.target.value })}
-                            className="bg-transparent text-[11px] font-bold uppercase text-neutral-900 outline-none"
+                            className="bg-transparent text-[11px] font-semibold uppercase text-neutral-900 outline-none"
                           />
-                          <ArrowRight size={14} className="text-neutral-300" />
+                          <ArrowRight size={12} className="text-neutral-500" />
                           <input
                             type="date"
                             value={financeToolbar.dateRange.end}
                             onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, end: e.target.value })}
-                            className="bg-transparent text-[11px] font-bold uppercase text-neutral-900 outline-none"
+                            className="bg-transparent text-[11px] font-semibold uppercase text-neutral-900 outline-none"
                           />
                         </div>
                       )}
                  </div>
-                 <div className="flex items-center gap-4">
-                    <button onClick={financeToolbar.onToggleDateFilter} className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all border border-neutral-100">
-                       <Calendar size={20} strokeWidth={2.5} />
+                 <div className="flex items-center gap-3">
+                    <button onClick={financeToolbar.onToggleDateFilter} className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-neutral-600 hover:text-neutral-900 transition-all border border-neutral-200 shadow-sm">
+                       <Calendar size={16} strokeWidth={2.5} />
                     </button>
-                    <button onClick={financeToolbar.onExport} className="h-12 px-8 rounded-full bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl hover:-translate-y-1 transition-all flex items-center gap-3">
-                       <Download size={18} strokeWidth={2.5} />
+                    <button onClick={financeToolbar.onExport} className="h-10 px-6 rounded-full bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                       <Download size={16} strokeWidth={2.5} />
                        EXPORTER CSV
                     </button>
                  </div>
@@ -278,10 +284,10 @@ export default function AppLayout({
             ) : activePage === 'settings' && settingsToolbar ? (
               <>
                  <div>
-                    <h2 className="text-xl font-bold tracking-tighter text-neutral-900">Paramètres Système</h2>
+                    <h2 className="text-lg font-bold tracking-tighter text-neutral-900">Paramètres Système</h2>
                  </div>
-                 <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-300">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] mr-2" />
+                 <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.28em] text-neutral-500">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] mr-2" />
                     SYSTÈME OPÉRATIONNEL
                  </div>
               </>

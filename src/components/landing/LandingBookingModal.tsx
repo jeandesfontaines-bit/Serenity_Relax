@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { signInAnonymously } from 'firebase/auth';
-import { collection, doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { addMinutes, format, isBefore, parseISO, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Check, ChevronLeft, ChevronRight, X, ShieldCheck, Info } from 'lucide-react';
@@ -28,6 +28,7 @@ type BookingData = {
   streetNum: string;
   streetName: string;
   city: string;
+  postalCode: string;
   canton: string;
   country: string;
   note: string;
@@ -65,6 +66,7 @@ const EMPTY_BOOKING_DATA: BookingData = {
   streetNum: '',
   streetName: '',
   city: '',
+  postalCode: '',
   canton: '',
   country: 'Suisse',
   note: '',

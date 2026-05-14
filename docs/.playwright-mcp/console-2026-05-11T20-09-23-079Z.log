@@ -1,0 +1,56 @@
+[   10613ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[   11096ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   11512ms] [LOG] [Fast Refresh] done in 517ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  134273ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  136294ms] [ERROR] ./src/components/landing/serenity2/sections/About.tsx:77:13
+Ecmascript file had an error
+  75 |       const panelRect = panel.getBoundingClientRect();
+  76 |       const trackTop = trackRect.top + scrollY;
+> 77 |       const trackTop = track.getBoundingClientRect().top + window.scrollY;
+     |             ^^^^^^^^
+  78 |       const lastTop = lastBenefit.getBoundingClientRect().top + window.scrollY;
+  79 |       const reserveSpace = Math.max(0, lastTop - trackTop);
+  80 |       const start = trackTop - topOffset;
+
+the name `trackTop` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./src/components/landing/serenity2/sections/About.tsx [Client Component Browser]
+    ./src/components/landing/serenity2/Home.tsx [Client Component Browser]
+    ./src/components/landing/serenity2/Home.tsx [Server Component]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/landing/serenity2/sections/About.tsx [Client Component SSR]
+    ./src/components/landing/serenity2/Home.tsx [Client Component SSR]
+    ./src/components/landing/serenity2/Home.tsx [Server Component]
+    ./src/app/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  136402ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  156486ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  157145ms] [ERROR] ./src/components/landing/serenity2/sections/About.tsx:77:13
+Ecmascript file had an error
+  75 |       const panelRect = panel.getBoundingClientRect();
+  76 |       const trackTop = trackRect.top + scrollY;
+> 77 |       const trackTop = track.getBoundingClientRect().top + window.scrollY;
+     |             ^^^^^^^^
+  78 |       const lastTop = lastBenefit.getBoundingClientRect().top + window.scrollY;
+  79 |       const reserveSpace = Math.max(0, lastTop - trackTop);
+  80 |       const start = trackTop - topOffset;
+
+the name `trackTop` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./src/components/landing/serenity2/sections/About.tsx [Client Component Browser]
+    ./src/components/landing/serenity2/Home.tsx [Client Component Browser]
+    ./src/components/landing/serenity2/Home.tsx [Server Component]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/landing/serenity2/sections/About.tsx [Client Component SSR]
+    ./src/components/landing/serenity2/Home.tsx [Client Component SSR]
+    ./src/components/landing/serenity2/Home.tsx [Server Component]
+    ./src/app/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  158784ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  158785ms] [LOG] [Fast Refresh] done in 151ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

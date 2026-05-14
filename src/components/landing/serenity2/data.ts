@@ -84,27 +84,33 @@ export const SERVICES = [
 export const IMPACTS = [
   {
     num: "01",
-    title: "Restorative Reset",
-    fr: "Rééquilibrage Neurologique",
-    desc: "Régulation du cortisol, libération d'ocytocine. Le système nerveux retrouve son rythme parasympathique en quelques minutes.",
+    title: "Soulagement des douleurs",
+    desc: "Dénoue les tensions et calme la douleur.",
   },
   {
     num: "02",
-    title: "Myofascial Ease",
-    fr: "Relâchement Myofascial",
-    desc: "Dissolution des nœuds, restauration de l'élasticité tissulaire. Les fascias retrouvent glissement et amplitude.",
+    title: "Souplesse et mobilité",
+    desc: "Redonne de l'aisance au mouvement.",
   },
   {
     num: "03",
-    title: "Circulatory Flow",
-    fr: "Flux Circulatoire",
-    desc: "Optimisation de la microcirculation sanguine et lymphatique. Oxygène, nutriments et déchets cellulaires recommencent à voyager.",
+    title: "Circulation et vitalité",
+    desc: "Relance la circulation et la récupération.",
   },
   {
     num: "04",
-    title: "Deep Regeneration",
-    fr: "Régénération Profonde",
-    desc: "Soutien immunitaire, sommeil réparateur, mémoire corporelle apaisée. Le repos devient productif.",
+    title: "Beauté et peau",
+    desc: "Réveille l'éclat et la texture de la peau.",
+  },
+  {
+    num: "05",
+    title: "Respiration et énergie",
+    desc: "Apaise le souffle et relance l'énergie.",
+  },
+  {
+    num: "06",
+    title: "Bien-être émotionnel",
+    desc: "Réduit le stress et installe un calme durable.",
   },
 ];
 

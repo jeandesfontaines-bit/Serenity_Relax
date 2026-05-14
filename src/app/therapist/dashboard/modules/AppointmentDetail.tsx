@@ -254,11 +254,10 @@ export default function AppointmentDetail({
                   <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-white bg-neutral-900 px-5 py-2.5 rounded-full shadow-lg">ARCHIVÉ</span>
                 </div>
                 
-                <textarea 
+                <InlineEditableTextarea
                   value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
+                  onChange={setNotes}
                   placeholder="Écrivez vos observations ici..."
-                  className="w-full min-h-[350px] bg-neutral-50 rounded-[2.5rem] p-10 text-lg font-medium text-neutral-900 placeholder:text-neutral-200 border-none focus:ring-4 focus:ring-neutral-100 transition-all outline-none resize-none relative z-10 leading-relaxed shadow-inner"
                 />
                 
                 <button 
@@ -399,3 +398,44 @@ function EditableField({
   );
 }
 
+function InlineEditableTextarea({
+  value,
+  onChange,
+  placeholder,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}) {
+  const [editing, setEditing] = React.useState(false);
+  const [draft, setDraft] = React.useState(value);
+
+  React.useEffect(() => {
+    setDraft(value);
+  }, [value]);
+
+  const commit = () => {
+    setEditing(false);
+    if (draft !== value) onChange(draft);
+  };
+
+  return editing ? (
+    <textarea
+      autoFocus
+      value={draft}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={commit}
+      placeholder={placeholder}
+      className="w-full min-h-[350px] bg-neutral-50 rounded-[2.5rem] p-10 text-lg font-medium text-neutral-900 placeholder:text-neutral-200 border-none focus:ring-4 focus:ring-neutral-100 transition-all outline-none resize-none relative z-10 leading-relaxed shadow-inner"
+    />
+  ) : (
+    <div
+      onDoubleClick={() => setEditing(true)}
+      className="w-full min-h-[350px] cursor-text bg-neutral-50 rounded-[2.5rem] p-10 text-lg font-medium text-neutral-900 transition-all hover:bg-neutral-100/80 relative z-10 leading-relaxed shadow-inner"
+    >
+      <p className="whitespace-pre-wrap">
+        {value || <span className="text-neutral-200">{placeholder}</span>}
+      </p>
+    </div>
+  );
+}

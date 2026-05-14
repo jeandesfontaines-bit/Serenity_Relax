@@ -6,9 +6,6 @@ import Footer from "./Footer";
 import Hero from "./sections/Hero";
 import Sessions from "./sections/Sessions";
 import Sanctuary from "./sections/Sanctuary";
-import Journal from "./sections/Journal";
-import About from "./sections/About";
-import Advice from "./sections/Advice";
 import Atelier from "./sections/Atelier";
 import BookingFunnel from "@/components/BookingFunnel";
 import AIConciergeOverlay from "./AIConciergeOverlay";
@@ -49,20 +46,20 @@ export default function Home() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-background" />}>
       <BookingQueryHandler />
-      <div className="landing-v2 min-h-screen bg-background text-foreground">
+      <div className="landing-v2 min-h-screen bg-[linear-gradient(180deg,#fbf8f2_0%,#f3eadf_100%)] text-foreground">
       <Navbar />
       <main>
         <Hero />
-        <div className="mx-auto max-w-[1480px] px-6 md:px-10 lg:px-14">
-          <div className="hairline" />
+        <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
+          <div className="h-px bg-[#d9c8b4]" />
         </div>
-        <About />
-        <Sessions />
         <Sanctuary />
-        <Advice />
-        <Journal />
-        <div className="mx-auto max-w-[1480px] px-6 md:px-10 lg:px-14">
-          <div className="hairline" />
+        <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
+          <div className="h-px bg-[#dfcfbb]" />
+        </div>
+        <Sessions />
+        <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
+          <div className="h-px bg-[#dfcfbb]" />
         </div>
         <Atelier />
       </main>
