@@ -7,6 +7,7 @@ import { useUser, useAuth, useFirestore } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { usePathname, useRouter } from 'next/navigation';
+import LoginModal from '@/components/auth/LoginModal';
 
 export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
   const { user } = useUser();
@@ -15,6 +16,7 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [sessionClientId, setSessionClientId] = useState<string | null>(null);
@@ -123,6 +125,16 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
         </nav>
 
         <div className="flex items-center gap-10">
+          <button
+            type="button"
+            onClick={() => setIsLoginOpen(true)}
+            className={`hidden sm:block font-sans uppercase tracking-[0.4em] text-[10px] transition-colors ${
+              isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/50 hover:text-white'
+            }`}
+          >
+            Connexion
+          </button>
+
           {effectiveUser ? (
             <div className="flex items-center gap-6 group">
               {effectiveUser.type === 'client' && (
@@ -155,16 +167,7 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
                 </div>
               </div>
             </div>
-          ) : (
-            <Link 
-              href="/login" 
-              className={`hidden sm:block font-sans uppercase tracking-[0.4em] text-[10px] transition-colors ${
-                isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/50 hover:text-white'
-              }`}
-            >
-              Accès
-            </Link>
-          )}
+          ) : null}
 
           <button 
             onClick={onBookingClick}
@@ -225,15 +228,17 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
             
             <div className="mt-auto pt-20 flex flex-col gap-10">
               <div className="flex flex-col gap-4">
-                {!effectiveUser ? (
-                  <Link 
-                    href="/login" 
-                    onClick={() => setIsMenuOpen(false)} 
-                    className="font-sans uppercase tracking-[0.5em] text-[11px] text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Espace Praticien
-                  </Link>
-                ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsLoginOpen(true);
+                  }}
+                  className="text-left font-sans uppercase tracking-[0.5em] text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Connexion
+                </button>
+                {effectiveUser ? (
                   <div className="flex items-center gap-4 py-4 border-t border-border">
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                        {effectiveUser.photo ? (
@@ -247,7 +252,7 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
                       <button onClick={handleSignOut} className="font-sans uppercase tracking-[0.3em] text-[9px] text-primary text-left hover:underline transition-colors">Se déconnecter</button>
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
               
               <button 
@@ -259,7 +264,8 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
               </button>
             </div>
           </div>
-        )}
+      )}
+      <LoginModal open={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </header>
   );
 }

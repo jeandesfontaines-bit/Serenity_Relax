@@ -1,0 +1,247 @@
+[     642ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[   44069ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   44311ms] [LOG] [Fast Refresh] done in 343ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  112009ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  112212ms] [LOG] [Fast Refresh] done in 293ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  131744ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  133386ms] [LOG] [Fast Refresh] done in 1726ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  195616ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  196078ms] [LOG] [Fast Refresh] done in 540ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  220199ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  220613ms] [LOG] [Fast Refresh] done in 409ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  235852ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  236072ms] [LOG] [Fast Refresh] done in 319ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  272709ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  272886ms] [LOG] [Fast Refresh] done in 278ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  307139ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  307749ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:414:113
+Parsing ecmascript source code failed
+  412 |                     {visibleColumnIds.has('firstName') && (
+  413 |                       <div className="min-w-0 pr-8">
+> 414 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  415 |                           {client.firstName || '—'}
+  416 |                         </p>
+  417 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  307863ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  325068ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  326388ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:414:113
+Parsing ecmascript source code failed
+  412 |                     {visibleColumnIds.has('firstName') && (
+  413 |                       <div className="min-w-0 pr-8">
+> 414 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  415 |                           {client.firstName || '—'}
+  416 |                         </p>
+  417 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  469291ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  470324ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  470390ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  514513ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  515336ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  526040ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  526797ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  548215ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  548603ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  555939ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  556234ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  589672ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  589822ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  607865ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  608086ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  622494ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  622635ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359

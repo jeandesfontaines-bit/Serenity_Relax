@@ -1,0 +1,9 @@
+[     969ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    1211ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    1254ms] [LOG] [Fast Refresh] done in 145ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[    8581ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    8811ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    8831ms] [LOG] [Fast Refresh] done in 122ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   31144ms] [ERROR] Cross-Origin-Opener-Policy policy would block the window.close call. @ http://localhost:9002/_next/static/chunks/node_modules_%40firebase_auth_dist_esm2017_b45f2044._.js:10038
+[   31144ms] [ERROR] Cross-Origin-Opener-Policy policy would block the window.close call. @ http://localhost:9002/_next/static/chunks/node_modules_%40firebase_auth_dist_esm2017_b45f2044._.js:10038
+[   36240ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537

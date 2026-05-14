@@ -3,20 +3,29 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { FAQ } from "@/components/landing/serenity2/data";
+import { LandingVariant } from "../types";
 
-export default function Atelier() {
+export default function Atelier({ variant = "default" }: { variant?: LandingVariant }) {
   const [openIndex, setOpenIndex] = useState(0);
+  const useConciergeDesign = variant === "default" || variant === "concierge";
 
   return (
     <section
       id="atelier"
-      className="relative py-20 text-[var(--off-black)] md:py-24 lg:py-28"
+      className={[
+        "relative py-20 md:py-24 lg:py-28",
+        variant === "immersive" ? "overflow-hidden" : "",
+      ].join(" ")}
     >
-      <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
+      {variant === "immersive" ? (
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_76%_24%,rgba(21,56,57,0.09),transparent_20%),radial-gradient(circle_at_12%_80%,rgba(241,102,77,0.08),transparent_18%)]" />
+      ) : null}
+
+      <div className="relative mx-auto max-w-[1360px] px-6 md:px-10 lg:px-12">
         <div className="grid grid-cols-12 gap-10 lg:gap-14">
-          <div className="col-span-12 lg:col-span-7">
-            <div className="mb-8 border-b border-[#d9c8b4] pb-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#6f6459]">
+          <div className={`col-span-12 ${variant === "editorial" ? "lg:col-span-8" : "lg:col-span-8"}`}>
+            <div className="mb-8 border-b border-[var(--landing-tint)] pb-6">
+              <p className="landing-type-eyebrow text-[var(--landing-warm-faint)]">
                 FAQ Serenity
               </p>
             </div>
@@ -29,41 +38,45 @@ export default function Atelier() {
                 return (
                   <article
                     key={item.q}
-                    className="border-b border-[#d9c8b4] py-6 md:py-7"
+                    className={[
+                      "border-b border-[var(--landing-tint)] py-5 md:py-6",
+                      isOpen ? "bg-transparent" : "",
+                    ].join(" ")}
                   >
                     <button
                       type="button"
                       onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                      className="group grid w-full grid-cols-[56px_1fr_36px] items-start gap-4 text-left md:grid-cols-[72px_1fr_44px] md:gap-6"
+                      className="group grid w-full grid-cols-[48px_1fr_36px] items-start gap-3 text-left md:grid-cols-[60px_1fr_40px] md:gap-5"
                       aria-expanded={isOpen}
                     >
-                      <span className="font-serif text-[1.85rem] italic leading-none text-[var(--orange)]/82 md:text-[2.2rem]">
+                      <span className="landing-display-italic text-[1.45rem] leading-none text-[var(--orange)]/82 transition-colors duration-300 group-hover:text-[var(--orange)] md:text-[1.7rem]">
                         {number}
                       </span>
-                      <span>
-                        <span className="block text-[1.35rem] leading-[1.04] tracking-tight text-[var(--off-black)] transition-colors duration-300 group-hover:text-[#8d5a34] md:text-[1.65rem]">
+                      <div>
+                        <h3 className="landing-type-h5 landing-text-high display-tight transition-colors duration-300 group-hover:text-[var(--landing-warm-hover-soft)]">
                           {item.q}
-                        </span>
-                      </span>
-                      <span className="flex justify-end pt-1">
-                        <span
-                          className={`flex h-9 w-9 items-center justify-center rounded-full border border-[#d9c8b4] bg-white/60 text-[#6f6459] transition-all duration-300 ${
-                            isOpen
-                              ? "rotate-45 border-[var(--orange)]/30 bg-[var(--orange)]/10 text-[var(--orange)]"
-                              : "group-hover:border-[#cdb79f] group-hover:bg-white/80"
-                          }`}
-                        >
-                          <Plus size={16} strokeWidth={1.8} />
-                        </span>
+                        </h3>
+                      </div>
+                      <span
+                        className={[
+                          "landing-text-body mt-1 inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--landing-tint)] transition-all duration-300 md:h-9 md:w-9",
+                          isOpen
+                            ? "rotate-45 border-[var(--orange)]/28 text-[var(--orange)]"
+                            : "group-hover:border-[var(--orange)]/40 group-hover:text-[var(--orange)]",
+                        ].join(" ")}
+                      >
+                        <Plus size={15} strokeWidth={2.2} />
                       </span>
                     </button>
 
                     {isOpen ? (
-                      <div className="grid grid-cols-1 gap-4 pt-5 md:grid-cols-[72px_1fr] md:gap-6">
+                      <div className="grid grid-cols-1 gap-3 pt-4 md:grid-cols-[60px_1fr] md:gap-5">
                         <div />
-                        <p className="max-w-2xl text-sm leading-relaxed text-[#6f6459] md:text-[15px]">
-                          {item.a}
-                        </p>
+                        <div className="border-t border-[var(--landing-tint-soft)] pt-4">
+                          <p className="landing-type-body-s landing-text-body max-w-[44ch]">
+                            {item.a}
+                          </p>
+                        </div>
                       </div>
                     ) : null}
                   </article>
@@ -72,25 +85,31 @@ export default function Atelier() {
             </div>
           </div>
 
-          <div className="col-span-12 lg:col-span-4 lg:col-start-9">
-            <span className="mb-6 block text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--orange)]">
+          <div className={`col-span-12 ${variant === "editorial" ? "lg:col-span-3 lg:col-start-10" : "lg:col-span-3 lg:col-start-10"}`}>
+            <span className="landing-type-eyebrow mb-6 block text-[var(--orange)]">
               — Questions fréquentes
             </span>
-            <h2 className="display-tight text-3xl leading-[0.94] -tracking-[0.02em] md:text-5xl lg:text-[4.8rem]">
-              Tout ce qu&apos;il faut savoir
+            <h2 className="landing-type-h3 landing-text-high display-tight">
+              {variant === "concierge" ? "Ce qu'il faut savoir" : "Tout ce qu'il faut savoir"}
               <br />
-              <span className="font-serif italic font-light text-[#8b8176]">
-                avant la séance.
+              <span className="landing-display-italic landing-text-muted">
+                {variant === "immersive" ? "avant de décrocher." : "avant la séance."}
               </span>
             </h2>
-            <p className="mt-7 max-w-md text-[15px] leading-relaxed text-[#6f6459] md:text-base">
-              Quelques repères simples pour arriver sereinement au cabinet, comprendre le déroulé du soin et savoir à quoi vous attendre.
+            <p className="landing-type-body-s landing-text-body mt-6 max-w-[21rem]">
+              {variant === "editorial"
+                ? "Dans cette version, la colonne d'accompagnement agit presque comme une note d'éditeur, plus étroite, plus tendue, plus présente dans la composition."
+                : variant === "concierge"
+                  ? "Les réponses restent identiques, mais la structure assume davantage son rôle de réassurance pratique avant la prise de rendez-vous."
+                  : variant === "immersive"
+                    ? "Quelques repères simples pour arriver sereinement au cabinet, comprendre le déroulé du soin et savoir à quoi vous attendre."
+                    : "Quelques repères simples pour arriver sereinement au cabinet, comprendre le déroulé du soin et savoir à quoi vous attendre."}
             </p>
-            <div className="mt-8 max-w-sm border-t border-[#d9c8b4] pt-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--orange)]">
+            <div className="mt-7 max-w-[21rem] border-t border-[var(--landing-tint)] pt-5">
+              <p className="landing-type-micro text-[var(--orange)]">
                 Besoin d&apos;un échange direct ?
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-[#6f6459] md:text-[15px]">
+              <p className="landing-type-body-s landing-text-body mt-3">
                 Si votre question concerne un besoin précis, le plus simple reste d&apos;écrire avant de réserver.
               </p>
             </div>

@@ -48,7 +48,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center p-6">
       <motion.div
-        className="absolute inset-0 bg-neutral-900/60 backdrop-blur-xl"
+        className="absolute inset-0 backdrop-blur-xl" style={{ background: "hsl(var(--primary) / 0.6)" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -56,28 +56,28 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
       />
 
       <motion.div
-        className="relative w-full max-w-2xl bg-[#FDFDFB] rounded-[4rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-white"
+        className="relative w-full max-w-2xl rounded-[4rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border" style={{ background: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}
         initial={{ opacity: 0, scale: 0.9, y: 100 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 100 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-12 py-10 border-b border-neutral-100">
+        <div className="flex items-center justify-between px-12 py-10 border-b" style={{ borderColor: "hsl(var(--border))" }}>
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none">CONFIGURATION</p>
-            <h2 className="text-4xl font-bold text-neutral-900 tracking-tighter leading-none">Horaires Types</h2>
+            <p className="text-[10px] font-bold uppercase tracking-[0.5em] mb-2 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>CONFIGURATION</p>
+            <h2 className="text-4xl font-bold tracking-tighter leading-none" style={{ color: "hsl(var(--foreground))" }}>Horaires Types</h2>
           </div>
           <button
             onClick={onClose}
-            className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-900 text-white hover:scale-105 transition-all shadow-xl"
+            className="w-14 h-14 flex items-center justify-center rounded-full text-white hover:scale-105 transition-all shadow-xl" style={{ background: "hsl(var(--primary))" }}
           >
             <X size={20} strokeWidth={3} />
           </button>
         </div>
 
         {/* Day selection */}
-        <div className="flex bg-neutral-50 p-2 border-b border-neutral-100">
+        <div className="flex p-2 border-b" style={{ background: "hsl(var(--secondary))", borderColor: "hsl(var(--border))" }}>
           {DAYS.map(day => {
             const count = (slots[day.id] || []).length;
             const isActive = activeDay === day.id;
@@ -87,8 +87,8 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 onClick={() => setActiveDay(day.id)}
                 className={`flex-1 py-4 px-2 rounded-full transition-all flex flex-col items-center justify-center gap-1 ${
                   isActive
-                    ? 'bg-neutral-900 text-white shadow-xl scale-105 z-10'
-                    : 'text-neutral-400 hover:text-neutral-900'
+                    ? 'text-white shadow-xl scale-105 z-10'
+                    : ''
                 }`}
               >
                 <span className="text-[11px] font-bold uppercase tracking-[0.2em]">{day.label}</span>
@@ -111,11 +111,11 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               className="space-y-8"
             >
               <div className="flex items-center justify-between">
-                <h3 className="text-[12px] font-bold uppercase tracking-[0.3em] text-neutral-900">Disponibilités {DAYS[activeDay].label}</h3>
+                <h3 className="text-[12px] font-bold uppercase tracking-[0.3em]" style={{ color: "hsl(var(--foreground))" }}>Disponibilités {DAYS[activeDay].label}</h3>
                 { (slots[activeDay] || []).length > 0 && (
                    <button 
                     onClick={handleCopyToWeek}
-                    className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-300 hover:text-neutral-900 transition-colors"
+                    className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors" style={{ color: "hsl(var(--muted-foreground))" }}
                   >
                     <Copy size={14} strokeWidth={2.5} /> Dupliquer semaine
                   </button>
@@ -127,15 +127,15 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                   {slots[activeDay].map(time => (
                     <div
                       key={time}
-                      className="flex items-center justify-between px-8 py-5 bg-white border border-neutral-100 rounded-[2.5rem] shadow-sm hover:border-neutral-900 transition-all group"
+                      className="flex items-center justify-between px-8 py-5 rounded-[2.5rem] shadow-sm transition-all group border" style={{ background: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}
                     >
-                      <div className="flex items-center gap-4 text-xl font-bold text-neutral-900 tracking-tighter">
-                        <Clock size={18} strokeWidth={2.5} className="text-neutral-300 group-hover:text-neutral-900 transition-colors" />
+                      <div className="flex items-center gap-4 text-xl font-bold tracking-tighter" style={{ color: "hsl(var(--foreground))" }}>
+                        <Clock size={18} strokeWidth={2.5} className="transition-colors" style={{ color: "hsl(var(--muted-foreground))" }} />
                         {time}
                       </div>
                       <button
                         onClick={() => handleRemoveSlot(time)}
-                        className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-300 hover:bg-red-500 hover:text-white transition-all"
+                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-500 hover:text-white transition-all" style={{ background: "hsl(var(--secondary))", color: "hsl(var(--muted-foreground))" }}
                       >
                         <Trash2 size={14} strokeWidth={2.5} />
                       </button>
@@ -143,9 +143,9 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                   ))}
                 </div>
               ) : (
-                <div className="py-20 text-center bg-neutral-50 rounded-[3rem] border-2 border-dashed border-neutral-100">
-                  <Clock size={48} strokeWidth={1} className="text-neutral-200 mx-auto mb-6" />
-                  <p className="text-[12px] font-bold uppercase tracking-[0.3em] text-neutral-300">Aucun créneau configuré</p>
+                <div className="py-20 text-center rounded-[3rem] border-2 border-dashed" style={{ background: "hsl(var(--secondary))", borderColor: "hsl(var(--border))" }}>
+                  <Clock size={48} strokeWidth={1} className="mx-auto mb-6" style={{ color: "hsl(var(--border))" }} />
+                  <p className="text-[12px] font-bold uppercase tracking-[0.3em]" style={{ color: "hsl(var(--muted-foreground))" }}>Aucun créneau configuré</p>
                 </div>
               )}
             </motion.div>
@@ -160,15 +160,15 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                 type="time"
                 value={newTime}
                 onChange={e => setNewTime(e.target.value)}
-                className="w-full h-20 bg-neutral-50 border-2 border-transparent rounded-full px-10 text-2xl font-bold tracking-tighter text-neutral-900 focus:outline-none focus:bg-white focus:border-neutral-900 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                className="w-full h-20 border-2 border-transparent rounded-full px-10 text-2xl font-bold tracking-tighter focus:outline-none focus:ring-2 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer" style={{ background: "hsl(var(--secondary))", color: "hsl(var(--foreground))" }}
               />
               <div className="absolute right-10 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-focus-within:opacity-100 transition-opacity">
-                <ArrowRight size={24} strokeWidth={3} className="text-neutral-900" />
+                <ArrowRight size={24} strokeWidth={3} style={{ color: "hsl(var(--foreground))" }} />
               </div>
             </div>
             <button
               onClick={handleAddSlot}
-              className="h-20 px-12 rounded-full bg-neutral-900 text-white font-bold text-[11px] uppercase tracking-[0.4em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center gap-4"
+              className="h-20 px-12 rounded-full text-white font-bold text-[11px] uppercase tracking-[0.4em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center gap-4" style={{ background: "hsl(var(--primary))" }}
             >
               <Plus size={20} strokeWidth={3} /> Ajouter
             </button>
@@ -176,7 +176,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
 
           <button
             onClick={() => onSave(slots)}
-            className="w-full h-20 rounded-full bg-neutral-900 text-white font-bold text-[13px] uppercase tracking-[0.5em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-6"
+            className="w-full h-20 rounded-full text-white font-bold text-[13px] uppercase tracking-[0.5em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-6" style={{ background: "hsl(var(--primary))" }}
           >
             <Save size={22} strokeWidth={2.5} /> Enregistrer la structure
           </button>

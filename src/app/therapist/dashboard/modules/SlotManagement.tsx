@@ -22,7 +22,7 @@ export default function SlotManagement({
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center p-6">
       <motion.div
-        className="absolute inset-0 bg-neutral-900/60 backdrop-blur-xl"
+        className="absolute inset-0 backdrop-blur-xl" style={{ background: "hsl(var(--primary) / 0.6)" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -30,7 +30,7 @@ export default function SlotManagement({
       />
 
       <motion.div
-        className="relative w-full max-w-md bg-[#FDFDFB] rounded-[4rem] shadow-2xl overflow-hidden flex flex-col border border-white"
+        className="relative w-full max-w-md rounded-[4rem] shadow-2xl overflow-hidden flex flex-col border" style={{ background: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}
         initial={{ opacity: 0, scale: 0.9, y: 100 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 100 }}
@@ -38,19 +38,19 @@ export default function SlotManagement({
       >
         {/* Header */}
         <div className="px-12 pt-12 pb-8 flex flex-col items-center text-center space-y-6">
-           <div className="w-20 h-20 bg-neutral-900 rounded-[2rem] flex items-center justify-center text-white shadow-2xl rotate-3">
+           <div className="w-20 h-20 rounded-[2rem] flex items-center justify-center text-white shadow-2xl rotate-3" style={{ background: "hsl(var(--primary))" }}>
               <Clock size={32} strokeWidth={2.5} />
            </div>
            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-300 mb-2 leading-none">GESTION DU CRÉNEAU</p>
-              <h2 className="text-4xl font-bold text-neutral-900 tracking-tighter leading-none">{time}</h2>
-              <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-neutral-400 mt-4 leading-none">
+              <p className="text-[10px] font-bold uppercase tracking-[0.5em] mb-2 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>GESTION DU CRÉNEAU</p>
+              <h2 className="text-4xl font-bold tracking-tighter leading-none" style={{ color: "hsl(var(--foreground))" }}>{time}</h2>
+              <p className="text-[12px] font-bold uppercase tracking-[0.2em] mt-4 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>
                  {format(d, 'EEEE d MMMM yyyy', { locale: fr })}
               </p>
            </div>
            <button
             onClick={onClose}
-            className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-full bg-neutral-50 text-neutral-400 hover:text-neutral-900 transition-all"
+            className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-full transition-all" style={{ background: "hsl(var(--secondary))", color: "hsl(var(--muted-foreground))" }}
           >
             <X size={20} strokeWidth={3} />
           </button>
@@ -62,7 +62,7 @@ export default function SlotManagement({
           {!isBlocked ? (
             <button
               onClick={onBook}
-              className="w-full flex items-center justify-between p-8 rounded-[3rem] bg-neutral-900 text-white shadow-2xl group hover:-translate-y-1 transition-all"
+              className="w-full flex items-center justify-between p-8 rounded-[3rem] text-white shadow-2xl group hover:-translate-y-1 transition-all" style={{ background: "hsl(var(--primary))" }}
             >
               <div className="flex items-center gap-6">
                 <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
@@ -76,8 +76,8 @@ export default function SlotManagement({
               <ArrowRight size={20} strokeWidth={3} className="group-hover:translate-x-2 transition-transform" />
             </button>
           ) : (
-            <div className="w-full flex items-center gap-6 p-8 rounded-[3rem] bg-neutral-50 border border-neutral-100 text-neutral-300 grayscale opacity-50 cursor-not-allowed">
-              <div className="w-14 h-14 rounded-2xl bg-white border border-neutral-100 flex items-center justify-center shrink-0 shadow-inner">
+            <div className="w-full flex items-center gap-6 p-8 rounded-[3rem] border grayscale opacity-50 cursor-not-allowed" style={{ background: "hsl(var(--secondary))", borderColor: "hsl(var(--border))", color: "hsl(var(--muted-foreground))" }}>
+              <div className="w-14 h-14 rounded-2xl border flex items-center justify-center shrink-0 shadow-inner" style={{ background: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}>
                 <Lock size={24} strokeWidth={2.5} />
               </div>
               <div className="text-left">
@@ -92,13 +92,13 @@ export default function SlotManagement({
             onClick={onToggleBlock}
             className={`w-full flex items-center justify-between p-8 rounded-[3rem] border-2 transition-all group ${
               isBlocked
-                ? 'bg-emerald-50 border-emerald-100 text-emerald-600'
-                : 'bg-white border-neutral-50 text-neutral-900 hover:border-neutral-900'
+                ? 'bg-emerald-500 text-white border-transparent'
+                : 'bg-transparent text-inherit border'
             }`}
           >
             <div className="flex items-center gap-6">
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner transition-all ${
-                isBlocked ? 'bg-white text-emerald-500' : 'bg-neutral-50 text-neutral-300 group-hover:bg-neutral-900 group-hover:text-white'
+                isBlocked ? 'bg-white/20 text-white' : ''
               }`}>
                 {isBlocked
                   ? <CheckCircle2 size={24} strokeWidth={2.5} />
@@ -108,7 +108,7 @@ export default function SlotManagement({
                 <p className="text-xl font-bold tracking-tighter leading-none">
                   {isBlocked ? 'Libérer' : 'Bloquer'}
                 </p>
-                <p className={`text-[10px] font-bold uppercase tracking-[0.2em] mt-2 ${isBlocked ? 'text-emerald-400' : 'text-neutral-300'}`}>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] mt-2" style={{ color: isBlocked ? 'white/60' : 'hsl(var(--muted-foreground))' }}>
                   {isBlocked ? 'Rendre disponible' : 'Désactiver le créneau'}
                 </p>
               </div>
@@ -117,9 +117,9 @@ export default function SlotManagement({
         </div>
 
         <div className="px-10 pb-10">
-          <div className="flex items-center justify-center gap-4 py-6 border-t border-neutral-100">
-            <ShieldCheck size={16} strokeWidth={2.5} className="text-neutral-300" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-300">Sécurisé · 60 minutes</span>
+          <div className="flex items-center justify-center gap-4 py-6 border-t" style={{ borderColor: "hsl(var(--border))" }}>
+            <ShieldCheck size={16} strokeWidth={2.5} style={{ color: "hsl(var(--muted-foreground))" }} />
+            <span className="text-[11px] font-bold uppercase tracking-[0.3em]" style={{ color: "hsl(var(--muted-foreground))" }}>Sécurisé · 60 minutes</span>
           </div>
         </div>
       </motion.div>

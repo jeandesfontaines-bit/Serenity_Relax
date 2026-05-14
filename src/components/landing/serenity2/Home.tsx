@@ -5,12 +5,13 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Hero from "./sections/Hero";
 import Sessions from "./sections/Sessions";
-import Sanctuary from "./sections/Sanctuary";
+import About from "./sections/About";
 import Atelier from "./sections/Atelier";
 import BookingFunnel from "@/components/BookingFunnel";
 import AIConciergeOverlay from "./AIConciergeOverlay";
 import { useBooking } from "@/context/BookingContext";
 import { SERVICES } from "./data";
+import { LandingVariant } from "./types";
 
 function BookingQueryHandler() {
   const searchParams = useSearchParams();
@@ -30,7 +31,14 @@ function BookingQueryHandler() {
   return null;
 }
 
-export default function Home() {
+const VARIANT_LABELS: Record<LandingVariant, string> = {
+  default: "Signature",
+  immersive: "Immersive",
+  editorial: "Editorial",
+  concierge: "Concierge",
+};
+
+export default function Home({ variant = "default" }: { variant?: LandingVariant }) {
   const [aiOpen, setAiOpen] = useState(false);
   const [showAiHint, setShowAiHint] = useState(false);
 
@@ -44,26 +52,39 @@ export default function Home() {
   }, []);
 
   return (
-    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+    <Suspense fallback={<div className="landing-v2 min-h-screen bg-[var(--off-white)]" />}>
       <BookingQueryHandler />
-      <div className="landing-v2 min-h-screen bg-[linear-gradient(180deg,#fbf8f2_0%,#f3eadf_100%)] text-foreground">
+      <div
+        className="landing-v2 landing-text-high min-h-screen"
+        data-variant={variant}
+        style={{ background: "var(--landing-page-bg)" }}
+      >
       <Navbar />
       <main>
-        <Hero />
-        <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
-          <div className="h-px bg-[#d9c8b4]" />
+        <Hero variant={variant} />
+        {variant !== "default" ? (
+          <div className="mx-auto max-w-[1360px] px-6 md:px-10 lg:px-12">
+            <div className="flex justify-end pb-2">
+              <span className="landing-border-soft landing-bg-surface-soft landing-text-faint landing-type-micro rounded-full border px-3 py-1 backdrop-blur-sm">
+                Variant · {VARIANT_LABELS[variant]}
+              </span>
+            </div>
+          </div>
+        ) : null}
+        <div className="mx-auto max-w-[1360px] px-6 md:px-10 lg:px-12">
+          <div className="h-px" style={{ background: "var(--landing-divider)" }} />
         </div>
-        <Sanctuary />
-        <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
-          <div className="h-px bg-[#dfcfbb]" />
+        <About />
+        <div className="mx-auto max-w-[1360px] px-6 md:px-10 lg:px-12">
+          <div className="h-px" style={{ background: "var(--landing-divider)" }} />
         </div>
-        <Sessions />
-        <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
-          <div className="h-px bg-[#dfcfbb]" />
+        <Sessions variant={variant} />
+        <div className="mx-auto max-w-[1360px] px-6 md:px-10 lg:px-12">
+          <div className="h-px" style={{ background: "var(--landing-divider)" }} />
         </div>
-        <Atelier />
+        <Atelier variant={variant} />
       </main>
-      <Footer />
+      <Footer variant={variant} />
       <BookingFunnel />
       <AIConciergeOverlay open={aiOpen} onClose={() => setAiOpen(false)} />
 

@@ -59,7 +59,7 @@ export const SERVICES: Service[] = [
   },
   { 
     id: '2', 
-    name: 'Draineur Lymphatique - Séance ciblée 60 min', 
+    name: 'Draineur Lymphatique - 60 min', 
     description: 'Technique de pompage douce pour revitaliser, détoxifier l\'organisme et relancer la circulation.', 
     duration: '60 min', 
     price: 110,
@@ -67,7 +67,7 @@ export const SERVICES: Service[] = [
   },
   { 
     id: '3', 
-    name: 'Aromathérapie - Séance ciblée 60 min', 
+    name: 'Aromathérapie - 60 min', 
     description: 'Massage intégrant des huiles essentielles personnalisées pour une harmonie parfaite du corps et de l\'esprit.', 
     duration: '60 min', 
     price: 110,
@@ -75,7 +75,7 @@ export const SERVICES: Service[] = [
   },
   { 
     id: '4', 
-    name: 'Réflexologie Plantaire Séance ciblée - 30 min', 
+    name: 'Réflexologie Plantaire - 30 min', 
     description: 'Technique ciblée basée sur la stimulation des points réflexes pour rééquilibrer l\'énergie des organes internes.', 
     duration: '30 min', 
     price: 60,
@@ -83,7 +83,7 @@ export const SERVICES: Service[] = [
   },
   { 
     id: '5', 
-    name: 'Sportif / Deep Tissue - Séance ciblée 60 min', 
+    name: 'Sportif / Deep Tissue - 60 min', 
     description: 'Conçu pour les sportifs ou personnes actives, aide à dénouer les blocages et optimiser la récupération.', 
     duration: '60 min', 
     price: 110,
@@ -91,7 +91,7 @@ export const SERVICES: Service[] = [
   },
   { 
     id: '6', 
-    name: 'Thérapeutique - Séance ciblée 60 min', 
+    name: 'Thérapeutique - 60 min', 
     description: 'Soin ciblé (technique suédoise) pour soulager les tensions musculaires, améliorer la mobilité et apaiser le système nerveux.', 
     duration: '60 min', 
     price: 110,

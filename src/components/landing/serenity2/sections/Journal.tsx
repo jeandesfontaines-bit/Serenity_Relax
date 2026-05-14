@@ -42,23 +42,23 @@ export default function Journal() {
       <div className="relative mx-auto max-w-[1400px] px-6 md:px-10 lg:px-12">
         <div className="grid grid-cols-12 gap-10 lg:gap-14">
           <div className="col-span-12 lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
-            <span className="mb-6 block text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--orange)]">
+            <span className="landing-type-eyebrow mb-6 block text-[var(--orange)]">
               — Rituels post-soin
             </span>
-            <h2 className="display-tight text-3xl leading-[0.94] -tracking-[0.02em] md:text-5xl lg:text-[4.8rem]">
+            <h2 className="landing-type-h2 landing-text-inverse display-tight">
               Le rituel continue <br />
-              <span className="font-serif italic font-light text-white/50">
+              <span className="landing-display-italic text-white/50">
                 après la séance.
               </span>
             </h2>
-            <p className="mt-7 text-[15px] leading-relaxed text-white/60 md:text-base">
+            <p className="landing-type-body landing-text-inverse-soft mt-7">
               7 gestes simples pour prolonger l&apos;apaisement après votre séance.
             </p>
           </div>
 
           <div className="col-span-12 lg:col-span-7 lg:col-start-6">
             <div className="mb-8 border-b border-white/10 pb-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-white/35">
+              <p className="landing-type-micro text-white/35">
                 7 étapes essentielles
               </p>
             </div>
@@ -73,15 +73,15 @@ export default function Journal() {
                 >
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-[72px_1fr] md:gap-6">
                     <div className="flex items-start md:justify-center">
-                      <span className="font-serif text-[1.9rem] italic leading-none text-[var(--orange)]/75 md:text-[2.2rem]">
+                      <span className="landing-ordinal text-[1.9rem] leading-none text-[var(--orange)]/75 md:text-[2.2rem]">
                         {ritual.num}
                       </span>
                     </div>
                     <div>
-                      <h3 className="display-tight text-[1.7rem] text-white transition-transform duration-500 group-hover:translate-x-1 md:text-[1.95rem]">
+                      <h3 className="landing-type-h4 landing-text-inverse display-tight transition-transform duration-500 group-hover:translate-x-1">
                         {ritual.title}
                       </h3>
-                      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/62 transition-colors group-hover:text-white/82 md:text-[15px]">
+                      <p className="landing-type-body-s mt-2 max-w-2xl text-white/62 transition-colors group-hover:text-white/82">
                         {ritual.desc}
                       </p>
                     </div>

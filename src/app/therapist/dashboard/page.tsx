@@ -58,6 +58,7 @@ export default function TherapistDashboard() {
   // Navigation
   const [tab, setTab] = useState<string>('dashboard');
   const [view, setView] = useState<'month' | 'week'>('week');
+  const [clientsViewMode, setClientsViewMode] = useState<'list' | 'grid'>('list');
   const [cur, setCur] = useState(new Date());
   const [globalSearch, setGlobalSearch] = useState('');
 
@@ -106,6 +107,7 @@ export default function TherapistDashboard() {
   });
   const [showAccountingDateRange, setShowAccountingDateRange] = useState(false);
   const [accountingSelectedCount, setAccountingSelectedCount] = useState(0);
+  const [showAccountingFilters, setShowAccountingFilters] = useState(false);
 
   // Some client-side libraries can emit empty rejected promises in dev.
   // Ignore only `undefined` reasons to prevent false runtime overlays.
@@ -344,7 +346,6 @@ export default function TherapistDashboard() {
             clients={clients}
             appointments={appointments}
             onSelectClient={setSelectedClient}
-            onNewClient={(name: string | undefined) => setBookingData({ date: fmt(new Date()), time: '09:00', initialSearch: name })}
             onMergeClients={handleMergeClients}
             onDeleteClients={handleDeleteClients}
             searchQuery={globalSearch}
@@ -352,6 +353,7 @@ export default function TherapistDashboard() {
             showFilterPanel={showClientFilters}
             onShowFilterPanelChange={setShowClientFilters}
             onVisibleCountChange={setClientsVisibleCount}
+            viewMode={clientsViewMode}
           />
         );
       case 'accounting':
@@ -366,6 +368,8 @@ export default function TherapistDashboard() {
             onSearchQueryChange={setGlobalSearch}
             dateRange={accountingDateRange}
             onSelectedCountChange={setAccountingSelectedCount}
+            showFilterPanel={showAccountingFilters}
+            onShowFilterPanelChange={setShowAccountingFilters}
           />
         );
       case 'settings':
@@ -663,7 +667,8 @@ export default function TherapistDashboard() {
           title: 'Répertoire clients',
           subtitle: `${clients.length} profil${clients.length > 1 ? 's' : ''}, ${clientsVisibleCount} visible${clientsVisibleCount > 1 ? 's' : ''}`,
           onToggleFilters: () => setShowClientFilters((prev) => !prev),
-          onAddClient: () => setBookingData({ date: fmt(new Date()), time: '09:00', initialSearch: globalSearch.trim() || undefined }),
+          viewMode: clientsViewMode,
+          onViewModeChange: setClientsViewMode,
         } : undefined}
         clientDetailToolbar={tab === 'clients' && selectedClient ? {
           eyebrow: 'Dossier client',
@@ -683,6 +688,7 @@ export default function TherapistDashboard() {
           dateRange: accountingDateRange,
           onDateRangeChange: setAccountingDateRange,
           onToggleDateFilter: () => setShowAccountingDateRange(p => !p),
+          onToggleFilters: () => setShowAccountingFilters(p => !p),
           onExport: () => window.dispatchEvent(new CustomEvent('trigger-finance-export')),
           selectedCount: accountingSelectedCount,
         } : undefined}

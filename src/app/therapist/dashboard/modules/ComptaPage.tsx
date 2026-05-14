@@ -1,69 +1,24 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import {
-  Download, Smartphone, CreditCard, Banknote, X,
-  Trash2, Check, Printer, ChevronRight, Wallet, BadgeCheck,
-  CircleDollarSign, TrendingUp, Search, Calendar,
-  ArrowRight, BarChart3, PieChart, Zap, ShieldCheck
-} from 'lucide-react';
-import { format, startOfMonth, endOfMonth, subMonths, isWithinInterval } from 'date-fns';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Appointment, Invoice } from '../types';
+import { format } from 'date-fns';
+import { AnimatePresence } from 'framer-motion';
+import { Appointment } from '../types';
+import { cleanServiceLabel } from '@/lib/cleanServiceLabel';
 
-interface ComptaPageProps {
-  appointments: Appointment[];
-  invoices: Invoice[];
-  onTogglePayment: (id: string, current: boolean, method?: string) => void;
-  onSelectAppt: (appt: Appointment) => void;
-  onDeleteInvoices?: (ids: string[]) => void;
-  searchQuery: string;
-  onSearchQueryChange: (value: string) => void;
-  dateRange: { start: string; end: string };
-  onSelectedCountChange: (count: number) => void;
-}
-
-type SortField = 'date' | 'client' | 'serviceName' | 'price' | 'status';
-type PaymentMethod = 'Twint' | 'Card' | 'Cash';
-type TransactionStatus = 'completed' | 'pending' | 'cancelled' | 'late';
-
-const STATUS_META: Record<TransactionStatus, { label: string; className: string }> = {
-  completed: {
-    label: 'RÉGLÉ',
-    className: 'bg-[var(--accent-teal)] text-emerald-600 border border-emerald-100/50',
-  },
-  pending: {
-    label: 'EN ATTENTE',
-    className: 'bg-[var(--accent-blue)] text-blue-600 border border-blue-100/50',
-  },
-  cancelled: {
-    label: 'ANNULÉ',
-    className: 'bg-red-50 text-red-400 border border-red-100',
-  },
-  late: {
-    label: 'RETARD',
-    className: 'bg-[var(--accent-orange)] text-orange-600 border border-orange-100/50',
-  },
-};
-
-function toComparableDate(date?: string): Date | null {
-  if (!date) return null;
-  const parsed = new Date(`${date}T12:00:00`);
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
-}
-
-function getTransactionStatus(appt: Appointment, todayStr: string): TransactionStatus {
-  if (appt.status === 'cancelled') return 'cancelled';
-  if (appt.paid) return 'completed';
-  if (appt.date && appt.date < todayStr) return 'late';
-  return 'pending';
-}
-
-function getClientDisplayName(appt: Appointment): string {
-  return appt.clientNameSnapshot || appt.title || 'Client inconnu';
-}
-
-function formatCurrency(value: number): string {
-  return `${value.toLocaleString('fr-CH', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} CHF`;
-}
+// Sub-components
+import { ComptaPageProps, SortField } from './compta/types';
+import { 
+  STATUS_META, 
+  getTransactionStatus, 
+  getClientDisplayName, 
+  getClientNameParts, 
+  GRID_TEMPLATE 
+} from './compta/constants';
+import { TableCheckbox, HeaderBtn } from './compta/TableComponents';
+import { SelectionToolbar } from './compta/SelectionToolbar';
+import { TransactionRow } from './compta/TransactionRow';
+import { EmptyState } from './compta/EmptyState';
+import { FilterPanel } from './compta/FilterPanel';
+import { TransactionFilters } from './compta/types';
 
 export default function ComptaPage({
   appointments,
@@ -72,13 +27,32 @@ export default function ComptaPage({
   onSelectAppt,
   onDeleteInvoices,
   searchQuery,
-  onSearchQueryChange,
   dateRange,
   onSelectedCountChange,
+  showFilterPanel,
+  onShowFilterPanelChange,
 }: ComptaPageProps) {
+  const filterDropdownRef = React.useRef<HTMLDivElement>(null);
   const [sortField, setSortField] = useState<SortField>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [filters, setFilters] = useState<TransactionFilters>({
+    status: 'all',
+    paymentMethod: 'all',
+    minAmount: null,
+  });
+
+  React.useEffect(() => {
+    if (!showFilterPanel) return;
+    const handlePointerDown = (event: MouseEvent) => {
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target as Node)) {
+        onShowFilterPanelChange(false);
+      }
+    };
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, [showFilterPanel, onShowFilterPanelChange]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [payingId, setPayingId] = useState<string | null>(null);
 
   React.useEffect(() => {
@@ -86,8 +60,9 @@ export default function ComptaPage({
   }, [selectedIds.size, onSelectedCountChange]);
 
   const todayStr = format(new Date(), 'yyyy-MM-dd');
+  
   const invoiceByAppointmentId = useMemo(() => {
-    const map = new Map<string, Invoice>();
+    const map = new Map<string, any>();
     invoices.forEach((invoice) => {
       if (invoice.appointmentId) map.set(invoice.appointmentId, invoice);
     });
@@ -117,6 +92,11 @@ export default function ComptaPage({
           ? appt.date >= dateRange.start && appt.date <= dateRange.end
           : false;
 
+        // Apply Advanced Filters
+        if (filters.status !== 'all' && status !== filters.status) return false;
+        if (filters.paymentMethod !== 'all' && appt.paymentMethod !== filters.paymentMethod) return false;
+        if (filters.minAmount !== null && (appt.price || 0) < filters.minAmount) return false;
+
         return matchesSearch && inRange;
       })
       .sort((a, b) => {
@@ -128,13 +108,21 @@ export default function ComptaPage({
             valueA = `${a.date || ''} ${a.time || ''}`;
             valueB = `${b.date || ''} ${b.time || ''}`;
             break;
-          case 'client':
-            valueA = getClientDisplayName(a);
-            valueB = getClientDisplayName(b);
+          case 'firstName':
+            valueA = getClientNameParts(a).firstName;
+            valueB = getClientNameParts(b).firstName;
+            break;
+          case 'lastName':
+            valueA = getClientNameParts(a).lastName;
+            valueB = getClientNameParts(b).lastName;
+            break;
+          case 'reference':
+            valueA = invoiceByAppointmentId.get(a.id)?.invoiceNumber || '';
+            valueB = invoiceByAppointmentId.get(b.id)?.invoiceNumber || '';
             break;
           case 'serviceName':
-            valueA = a.serviceName || 'Session';
-            valueB = b.serviceName || 'Session';
+            valueA = cleanServiceLabel(a.serviceName) || 'Session';
+            valueB = cleanServiceLabel(b.serviceName) || 'Session';
             break;
           case 'price':
             valueA = a.price || 0;
@@ -157,89 +145,8 @@ export default function ComptaPage({
 
         return sortDir === 'asc' ? result : -result;
       }),
-    [appointments, dateRange.end, dateRange.start, invoiceByAppointmentId, searchQuery, sortDir, sortField, todayStr],
+    [appointments, dateRange.end, dateRange.start, invoiceByAppointmentId, searchQuery, sortDir, sortField, todayStr, filters],
   );
-
-  const totalRevenue = useMemo(
-    () => filtered
-      .filter((appt) => getTransactionStatus(appt, todayStr) === 'completed')
-      .reduce((sum, appt) => sum + (appt.price || 0), 0),
-    [filtered, todayStr],
-  );
-  const completedSessions = useMemo(
-    () => filtered.filter((appt) => getTransactionStatus(appt, todayStr) === 'completed').length,
-    [filtered, todayStr],
-  );
-  const pendingInvoiceAmount = useMemo(
-    () => filtered
-      .filter((appt) => {
-        const status = getTransactionStatus(appt, todayStr);
-        return status === 'pending' || status === 'late';
-      })
-      .reduce((sum, appt) => sum + (appt.price || 0), 0),
-    [filtered, todayStr],
-  );
-
-  const monthlyDelta = useMemo(() => {
-    const now = new Date();
-    const currentRange = { start: startOfMonth(now), end: endOfMonth(now) };
-    const previousDate = subMonths(now, 1);
-    const previousRange = { start: startOfMonth(previousDate), end: endOfMonth(previousDate) };
-
-    const computeRevenue = (range: { start: Date; end: Date }) =>
-      appointments.reduce((sum, appt) => {
-        const date = toComparableDate(appt.date);
-        if (!date || !isWithinInterval(date, range) || !appt.paid) return sum;
-        return sum + (appt.price || 0);
-      }, 0);
-
-    const currentRevenue = computeRevenue(currentRange);
-    const previousRevenue = computeRevenue(previousRange);
-
-    if (previousRevenue === 0) return currentRevenue > 0 ? 100 : 0;
-    return Math.round(((currentRevenue - previousRevenue) / previousRevenue) * 100);
-  }, [appointments]);
-
-  const serviceAllocations = useMemo(() => {
-    const totals = filtered.reduce((acc, appt) => {
-      if (getTransactionStatus(appt, todayStr) === 'cancelled') return acc;
-      const key = appt.serviceName || 'Session';
-      acc[key] = (acc[key] || 0) + (appt.price || 0);
-      return acc;
-    }, {} as Record<string, number>);
-
-    const entries = Object.entries(totals)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 4);
-
-    const grandTotal = entries.reduce((sum, [, value]) => sum + value, 0) || 1;
-
-    return entries.map(([label, value]) => ({
-      label,
-      value,
-      percent: Math.round((value / grandTotal) * 100),
-    }));
-  }, [filtered, todayStr]);
-
-  const recentTrend = useMemo(() => {
-    const months = Array.from({ length: 6 }, (_, index) => {
-      const date = subMonths(new Date(), 5 - index);
-      const range = { start: startOfMonth(date), end: endOfMonth(date) };
-      const total = appointments.reduce((sum, appt) => {
-        const apptDate = toComparableDate(appt.date);
-        if (!apptDate || !isWithinInterval(apptDate, range) || !appt.paid) return sum;
-        return sum + (appt.price || 0);
-      }, 0);
-
-      return {
-        label: format(date, 'MMM').toUpperCase(),
-        value: total,
-      };
-    });
-
-    const max = Math.max(...months.map((month) => month.value), 1);
-    return { months, max };
-  }, [appointments]);
 
   const toggleSort = useCallback((field: SortField) => {
     if (sortField === field) setSortDir((prev) => prev === 'asc' ? 'desc' : 'asc');
@@ -261,7 +168,7 @@ export default function ComptaPage({
         return [
           appt.date || '',
           getClientDisplayName(appt),
-          appt.serviceName || 'Session',
+          cleanServiceLabel(appt.serviceName) || 'Session',
           STATUS_META[getTransactionStatus(appt, todayStr)].label,
           invoice?.invoiceNumber || '',
           appt.price || 0,
@@ -307,329 +214,82 @@ export default function ComptaPage({
   }, []);
 
   const allSelected = filtered.length > 0 && selectedIds.size === filtered.length;
-  const gridTemplate = `56px minmax(140px, 1fr) minmax(200px, 1.5fr) minmax(200px, 1.5fr) minmax(140px, 1fr) 100px minmax(140px, 1fr)`;
 
   return (
-    <div className="max-w-[1440px] mx-auto p-8 lg:p-16 space-y-20 bg-neutral-50 min-h-full">
-      
-      {/* ── Page Header ── */}
-      <div className="flex items-end justify-between border-b border-neutral-200 pb-10">
-        <div>
-          <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-2">ÉTATS FINANCIERS</p>
-          <h1 className="text-6xl font-bold text-neutral-900 tracking-tight leading-none">Comptabilité</h1>
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="flex flex-col items-end">
-            <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.18em] mb-1">PÉRIODE</p>
-            <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-neutral-200 text-xs font-bold text-neutral-900 shadow-sm">
-               <Calendar size={14} className="text-neutral-600" />
-               {format(new Date(dateRange.start), 'd MMM')} — {format(new Date(dateRange.end), 'd MMM yyyy')}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── KPI Grid ── */}
-      <section className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-        <MetricCard
-          icon={<Wallet size={24} strokeWidth={2.5} />}
-          label="Revenus Encaissés"
-          value={formatCurrency(totalRevenue)}
-          variant="blue"
-        />
-        <MetricCard
-          icon={<BadgeCheck size={24} strokeWidth={2.5} />}
-          label="Volume D'activité"
-          value={String(completedSessions)}
-          variant="teal"
-        />
-        <MetricCard
-          icon={<CircleDollarSign size={24} strokeWidth={2.5} />}
-          label="Encours Clients"
-          value={formatCurrency(pendingInvoiceAmount)}
-          variant="orange"
-          isUrgent={pendingInvoiceAmount > 0}
-        />
-      </section>
-
-      {/* ── Selection Toolbar ── */}
+    <div className="mx-auto min-h-full space-y-8 bg-transparent">
       <AnimatePresence>
         {selectedIds.size > 0 && (
-          <motion.div
-            initial={{ height: 0, opacity: 0, marginBottom: 0 }}
-            animate={{ height: 80, opacity: 1, marginBottom: 32 }}
-            exit={{ height: 0, opacity: 0, marginBottom: 0 }}
-            className="shrink-0 overflow-hidden rounded-[2.5rem] bg-neutral-900 p-6 text-white flex items-center justify-between shadow-2xl"
-          >
-            <div className="flex items-center gap-8 ml-4">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/50">ACTIONS GROUPÉES</span>
-              <p className="text-xl font-bold tracking-tight">
-                {selectedIds.size} Transaction{selectedIds.size > 1 ? 's' : ''}
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={handleDelete}
-                className="h-12 px-8 flex items-center gap-3 rounded-full bg-red-500 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-red-600 transition-all shadow-lg"
-              >
-                <Trash2 size={14} strokeWidth={2.5} /> SUPPRIMER
-              </button>
-              <button
-                onClick={() => setSelectedIds(new Set())}
-                className="h-12 px-8 flex items-center gap-3 rounded-full bg-white/10 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-white/20 transition-all"
-              >
-                <X size={14} strokeWidth={2.5} /> ANNULER
-              </button>
-            </div>
-          </motion.div>
+          <SelectionToolbar 
+            selectedCount={selectedIds.size} 
+            onDelete={handleDelete} 
+            onClear={() => setSelectedIds(new Set())} 
+          />
         )}
       </AnimatePresence>
 
-      {/* ── Main content grid ── */}
-      <section className="grid grid-cols-1 gap-16 lg:grid-cols-3">
-        {/* Transaction list */}
-        <div className="lg:col-span-2 space-y-12">
-          <div className="flex items-end justify-between border-b border-neutral-200 pb-8">
-            <div>
-              <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-2">JOURNAL DES OPÉRATIONS</p>
-              <h4 className="text-4xl font-bold text-neutral-900 tracking-tight leading-none">Transactions</h4>
-            </div>
+      <section className="relative space-y-10">
+        {showFilterPanel && (
+          <FilterPanel 
+            filters={filters}
+            onFiltersChange={setFilters}
+            dropdownRef={filterDropdownRef}
+          />
+        )}
+        <div className="flex items-end justify-between border-b border-border/30 pb-8">
+          <div>
+            <p className="mb-2 text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/60">JOURNAL DES OPÉRATIONS</p>
+            <h4 className="text-3xl font-black leading-none tracking-tight text-foreground">Transactions</h4>
           </div>
-
-          <div className="space-y-6">
-            {/* Table Header */}
-            <div 
-              className="grid items-center px-10 mb-4"
-              style={{ gridTemplateColumns: gridTemplate }}
-            >
-              <div className="flex justify-center">
-                <TableCheckbox checked={allSelected} onChange={() => {
-                  if (allSelected) setSelectedIds(new Set());
-                  else setSelectedIds(new Set(filtered.map(c => c.id)));
-                }} />
-              </div>
-              <HeaderBtn label="DATE" field="date" current={sortField} onSort={toggleSort} />
-              <HeaderBtn label="PATIENT" field="client" current={sortField} onSort={toggleSort} />
-              <HeaderBtn label="SOIN" field="serviceName" current={sortField} onSort={toggleSort} />
-              <HeaderBtn label="STATUT" field="status" current={sortField} onSort={toggleSort} />
-              <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">PDF</div>
-              <HeaderBtn label="MONTANT" field="price" current={sortField} onSort={toggleSort} align="right" />
-            </div>
-
-            <div className="space-y-4">
-              {filtered.map(appt => {
-                const status = getTransactionStatus(appt, todayStr);
-                const meta = STATUS_META[status];
-                const isSelected = selectedIds.has(appt.id);
-                return (
-                  <div
-                    key={appt.id}
-                    onClick={() => onSelectAppt(appt)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        onSelectAppt(appt);
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    className={`grid w-full items-center px-10 py-7 rounded-[2rem] border border-neutral-200 bg-white shadow-sm transition-all hover:shadow-xl text-left group ${
-                      isSelected ? 'border-neutral-900 shadow-xl' : ''
-                    }`}
-                    style={{ gridTemplateColumns: gridTemplate }}
-                  >
-                    <div className="flex justify-center">
-                      <TableCheckbox checked={isSelected} onChange={() => toggleSelection(appt.id)} />
-                    </div>
-
-                    <div className="text-sm font-bold text-neutral-900 tracking-tight">
-                       {appt.date ? format(new Date(appt.date), 'dd.MM.yyyy') : '—'}
-                    </div>
-
-                    <div className="truncate pr-4 text-lg font-bold text-neutral-900 tracking-tight leading-none group-hover:text-blue-600 transition-all">
-                       {getClientDisplayName(appt)}
-                    </div>
-
-                    <div className="truncate pr-4 text-[11px] font-bold text-neutral-600 uppercase tracking-[0.16em]">
-                       {appt.serviceName || 'Session'}
-                    </div>
-
-                    <div>
-                       <span onClick={(e) => {
-                         e.stopPropagation();
-                         if (appt.paid) onTogglePayment(appt.id, true);
-                         else setPayingId(appt.id);
-                       }} className={`inline-flex rounded-full px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] cursor-pointer shadow-sm ${meta.className}`}>
-                         {meta.label}
-                       </span>
-                    </div>
-
-                    <div className="flex items-center">
-                       <button onClick={(e) => { e.stopPropagation(); handleInvoiceOpen(appt); }} className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 transition-all">
-                         <Download size={16} strokeWidth={2.5} />
-                       </button>
-                    </div>
-
-                    <div className="text-right text-xl font-bold text-neutral-900 tracking-tight">
-                       {status === 'cancelled' ? '0 CHF' : formatCurrency(appt.price || 0)}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {filtered.length === 0 && (
-              <div className="py-24 flex flex-col items-center justify-center bg-white rounded-[3rem] border-2 border-dashed border-neutral-300 group">
-                <Search size={48} strokeWidth={1.2} className="text-neutral-400 mb-6 group-hover:scale-110 transition-transform" />
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-neutral-600">AUCUNE TRANSACTION TROUVÉE</p>
-              </div>
-            )}
+          <div className="flex items-center gap-3 border border-border/30 rounded-2xl px-6 py-3 text-sm font-black tracking-tight shadow-sm bg-background text-foreground">
+            {format(new Date(dateRange.start), 'd MMM')} — {format(new Date(dateRange.end), 'd MMM yyyy')}
           </div>
         </div>
 
-        {/* Analytics sidebar */}
-        <div className="space-y-12">
-          {/* Revenue Chart */}
-          <div className="bg-white border border-neutral-200 rounded-[3.5rem] p-12 shadow-xl space-y-12">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-2">TENDANCES</p>
-                <h4 className="text-4xl font-bold text-neutral-900 tracking-tight">Revenus</h4>
-              </div>
-              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-600 shadow-inner">
-                <BarChart3 size={20} strokeWidth={2.5} />
-              </div>
+        <div className="space-y-4">
+          {/* Table Header */}
+          <div
+            className="grid items-center border-b border-border/30 px-8 pb-8"
+            style={{ gridTemplateColumns: GRID_TEMPLATE }}
+          >
+            <div className="flex justify-center">
+              <TableCheckbox 
+                checked={allSelected} 
+                onChange={() => {
+                  if (allSelected) setSelectedIds(new Set());
+                  else setSelectedIds(new Set(filtered.map(c => c.id)));
+                }} 
+              />
             </div>
-
-            <div className="flex h-48 items-end gap-3 px-2">
-              {recentTrend.months.map((month) => (
-                <div key={month.label} className="flex flex-1 flex-col items-center gap-4 group">
-                  <div className="w-full relative flex flex-col items-center justify-end">
-                    <div 
-                      className="w-full rounded-full bg-neutral-900 transition-all duration-700 shadow-lg"
-                      style={{ 
-                        height: `${Math.max((month.value / recentTrend.max) * 160, 8)}px`,
-                        opacity: 0.1 + ((month.value / recentTrend.max) * 0.9)
-                      }}
-                    />
-                  </div>
-                  <span className="text-[9px] font-bold text-neutral-600 uppercase tracking-[0.12em] group-hover:text-neutral-900 transition-colors">{month.label}</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className="pt-8 border-t border-neutral-200">
-               <div className="flex items-center justify-between mb-4">
-                  <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.18em]">TOTAL 6 MOIS</p>
-                  <p className="text-2xl font-bold text-neutral-900 tracking-tight">
-                    {formatCurrency(recentTrend.months.reduce((s, m) => s + m.value, 0))}
-                  </p>
-               </div>
-               <p className="text-[11px] font-medium text-neutral-700 leading-relaxed">
-                 Croissance de <span className="text-emerald-500 font-bold">+14%</span> par rapport au semestre précédent.
-               </p>
-            </div>
+            <HeaderBtn label="DATE" field="date" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="PRÉNOM" field="firstName" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="NOM" field="lastName" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="RÉFÉRENCE" field="reference" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="SOIN" field="serviceName" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="STATUT" field="status" current={sortField} onSort={toggleSort} />
+            <div className="text-[10px] font-black uppercase tracking-[0.2em] text-center text-muted-foreground/60">PDF</div>
+            <HeaderBtn label="MONTANT" field="price" current={sortField} onSort={toggleSort} align="right" />
           </div>
 
-          {/* Allocation card */}
-          <div className="bg-neutral-900 rounded-[3.5rem] p-12 shadow-2xl space-y-10 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
-               <PieChart size={180} strokeWidth={1} className="text-white" />
-            </div>
-            <div className="relative z-10">
-              <p className="text-[11px] font-bold text-white/30 uppercase tracking-widest mb-2">RÉPARTITION</p>
-              <h4 className="text-4xl font-bold text-white tracking-tight">Services</h4>
-            </div>
-
-            <div className="space-y-8 relative z-10">
-              {serviceAllocations.map((service, idx) => (
-                <div key={service.label} className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-white/50 uppercase tracking-[0.1em] truncate max-w-[140px]">{service.label}</span>
-                    <span className="text-lg font-bold text-white tracking-tight">{service.percent}%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: `${service.percent}%` }}
-                      transition={{ duration: 1, delay: idx * 0.1 }}
-                      className="h-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.3)]" 
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="bg-background">
+            {filtered.map(appt => (
+              <TransactionRow
+                key={appt.id}
+                appt={appt}
+                isSelected={selectedIds.has(appt.id)}
+                todayStr={todayStr}
+                invoice={invoiceByAppointmentId.get(appt.id)}
+                onToggleSelection={toggleSelection}
+                onSelect={onSelectAppt}
+                onTogglePayment={onTogglePayment}
+                onOpenInvoice={handleInvoiceOpen}
+                setPayingId={setPayingId}
+              />
+            ))}
           </div>
+
+          {filtered.length === 0 && <EmptyState />}
         </div>
       </section>
     </div>
-  );
-}
-
-function MetricCard({
-  icon,
-  label,
-  value,
-  variant = 'default',
-  isUrgent = false,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  variant?: 'blue' | 'yellow' | 'orange' | 'pink' | 'teal' | 'default';
-  isUrgent?: boolean;
-}) {
-  const iconCircleStyles = {
-    blue: 'bg-blue-50 text-blue-500',
-    yellow: 'bg-yellow-50 text-yellow-500',
-    orange: isUrgent ? 'bg-red-50 text-red-500' : 'bg-orange-50 text-orange-500',
-    pink: 'bg-pink-50 text-pink-500',
-    teal: 'bg-emerald-50 text-emerald-500',
-    default: 'bg-neutral-100 text-neutral-600',
-  };
-
-  return (
-    <div className="group rounded-[2.5rem] border border-neutral-200 bg-white p-8 transition-all hover:shadow-2xl hover:border-neutral-300">
-      <div className="mb-8 flex items-center justify-between">
-        <div className={`w-14 h-14 flex items-center justify-center rounded-full transition-transform group-hover:scale-110 ${iconCircleStyles[variant]}`}>
-          {icon}
-        </div>
-        <ChevronRight size={18} className="text-neutral-400 group-hover:text-neutral-900 transition-colors" />
-      </div>
-      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-600">{label}</p>
-      <h3 className="mt-2 text-4xl font-bold tracking-tight text-neutral-900 leading-none">{value}</h3>
-    </div>
-  );
-}
-
-function TableCheckbox({ checked, onChange }: { checked: boolean; onChange: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`h-7 w-7 flex items-center justify-center rounded-full border-2 transition-all ${
-        checked ? 'bg-neutral-900 border-neutral-900 text-white' : 'bg-white border-neutral-200 text-transparent hover:border-neutral-500'
-      }`}
-    >
-      <ShieldCheck size={14} strokeWidth={3} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-50'} />
-    </button>
-  );
-}
-
-function HeaderBtn({ label, field, current, onSort, align = 'left' }: {
-  label: string;
-  field: SortField;
-  current: SortField;
-  onSort: (f: SortField) => void;
-  align?: 'left' | 'right';
-}) {
-  return (
-    <button
-      onClick={(e) => { e.stopPropagation(); onSort(field); }}
-      className={`text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600 hover:text-neutral-900 transition-all flex items-center gap-2 ${align === 'right' ? 'justify-end' : ''}`}
-    >
-      {label}
-      {current === field && <ArrowRight size={10} strokeWidth={3} className="rotate-90" />}
-    </button>
   );
 }

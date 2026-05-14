@@ -94,48 +94,51 @@ export default function InvoicesPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-b from-[#F8F5F0] to-white pt-32 pb-24 px-6 md:px-12">
+      <div className="min-h-screen pt-32 pb-24 px-6 md:px-12" style={{ background: 'hsl(var(--background))' }}>
         <div className="max-w-7xl mx-auto space-y-12">
           
           {/* ── HEADER IMPACT LUXE ── */}
-          <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 bg-white/40 backdrop-blur-3xl p-12 rounded-xl border border-white shadow-2xl shadow-emerald-100/10 relative overflow-hidden">
+          <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 p-12 rounded-2xl border shadow-sm relative overflow-hidden"
+                  style={{ background: 'hsl(var(--card))', borderColor: 'hsl(var(--border))' }}>
             <div className="space-y-4 relative z-10">
               <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-[#059669] text-white flex items-center justify-center shadow-lg"><FileText size={20} /></div>
-                  <p className="text-[0.6rem] font-bold uppercase tracking-[0.4em] text-[#059669]">Gestion Administrative</p>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
+                       style={{ background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' }}><FileText size={20} /></div>
+                  <p className="text-[0.6rem] font-bold uppercase tracking-[0.4em]" style={{ color: 'hsl(var(--primary))' }}>Gestion Administrative</p>
               </div>
-              <h1 className="title-luxe text-2xl md:text-3xl leading-none">Invoices <br/><span className="font-sans opacity-40">Archive.</span></h1>
+              <h1 className="title-luxe text-2xl md:text-3xl leading-none" style={{ color: 'hsl(var(--foreground))' }}>Invoices <br/><span className="font-sans opacity-40">Archive.</span></h1>
             </div>
 
             <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4 relative z-10">
               <div className="relative group flex-1 md:min-w-[320px]">
-                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#059669] transition-colors" size={18} />
+                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 transition-colors" size={18} style={{ color: 'hsl(var(--muted-foreground))' }} />
                   <input 
                     type="text" 
                     placeholder="Rechercher une facture..." 
                     value={search}
                     onChange={e => setSearch(e.target.value)}
-                    className="w-full h-16 bg-white/60 border border-white rounded-full pl-16 pr-8 text-lg  focus:outline-none focus:ring-8 focus:ring-emerald-50 transition-all shadow-sm"
+                    className="w-full h-16 rounded-full pl-16 pr-8 text-lg focus:outline-none transition-all shadow-sm border"
+                    style={{ background: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--foreground))' }}
                   />
               </div>
             </div>
           </header>
 
           {/* ── INVOICE LEDGER ── */}
-          <div className="dash-card p-6 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden border border-white/80">
+          <div className="p-6 rounded-2xl border shadow-sm overflow-hidden" style={{ background: 'hsl(var(--card))', borderColor: 'hsl(var(--border))' }}>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gray-50/50">
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Identifiant</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Destinataire</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Émission</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Montant</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">Statut</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-gray-400 text-right">Actions</th>
+                  <tr className="border-b" style={{ borderColor: 'hsl(var(--border))' }}>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Identifiant</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Destinataire</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Émission</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Montant</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Statut</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-right" style={{ color: 'hsl(var(--muted-foreground))' }}>Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y" style={{ borderColor: 'hsl(var(--border))' }}>
                   {filteredInvoices.map((inv, i) => (
                     <motion.tr 
                       key={inv.id} 
@@ -144,14 +147,14 @@ export default function InvoicesPage() {
                       transition={{ delay: i * 0.05 }}
                       className="group hover:bg-[#F8F5F0]/50 transition-colors"
                     >
-                      <td className="px-6 py-8 font-bold text-[#222F3E] text-sm">{inv.id}</td>
-                      <td className="px-6 py-8 font-sans font-bold text-lg">{inv.client}</td>
-                      <td className="px-6 py-8 text-sm text-gray-400 font-medium">{inv.date}</td>
+                    <td className="px-6 py-8 font-bold text-sm" style={{ color: 'hsl(var(--foreground))' }}>{inv.id}</td>
+                      <td className="px-6 py-8 font-sans font-bold text-lg" style={{ color: 'hsl(var(--foreground))' }}>{inv.client}</td>
+                      <td className="px-6 py-8 text-sm font-medium" style={{ color: 'hsl(var(--muted-foreground))' }}>{inv.date}</td>
                       <td className="px-6 py-8">
-                        <span className="text-2xl font-light text-[#222F3E]">{inv.amount} <small className="text-[10px] opacity-30 font-bold">CHF</small></span>
+                        <span className="text-2xl font-light" style={{ color: 'hsl(var(--foreground))' }}>{inv.amount} <small className="text-[10px] opacity-30 font-bold">CHF</small></span>
                       </td>
                       <td className="px-6 py-8">
-                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[0.6rem] font-bold uppercase tracking-widest ${inv.status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-600'}`}>
+                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[0.6rem] font-bold uppercase tracking-widest ${inv.status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'}`}>
                           {inv.status === 'paid' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
                           {inv.status === 'paid' ? 'Réglé' : 'En Attente'}
                         </div>
@@ -159,17 +162,25 @@ export default function InvoicesPage() {
                       <td className="px-6 py-8 text-right space-x-3">
                         <button 
                           onClick={() => generatePDF(inv)}
-                          className="p-3 text-gray-300 hover:text-[#059669] hover:bg-white rounded-xl transition-all shadow-sm"
+                          className="p-3 rounded-xl transition-all shadow-sm border"
+                          style={{ background: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--muted-foreground))' }}
+                          onMouseEnter={e => { e.currentTarget.style.color = 'hsl(var(--primary))'; e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.3)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.color = 'hsl(var(--muted-foreground))'; e.currentTarget.style.borderColor = 'hsl(var(--border))'; }}
                         >
                           <Download size={20} />
                         </button>
                         <button 
                           onClick={() => resendEmail(inv)}
-                          className="p-3 text-gray-300 hover:text-[#059669] hover:bg-white rounded-xl transition-all shadow-sm"
+                          className="p-3 rounded-xl transition-all shadow-sm border"
+                          style={{ background: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--muted-foreground))' }}
+                          onMouseEnter={e => { e.currentTarget.style.color = 'hsl(var(--primary))'; e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.3)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.color = 'hsl(var(--muted-foreground))'; e.currentTarget.style.borderColor = 'hsl(var(--border))'; }}
                         >
                           <Send size={20} />
                         </button>
-                        <button className="p-3 text-gray-300 hover:text-[#059669] transition-colors">
+                        <button className="p-3 transition-colors" style={{ color: 'hsl(var(--muted-foreground))' }}
+                                onMouseEnter={e => e.currentTarget.style.color = 'hsl(var(--primary))'}
+                                onMouseLeave={e => e.currentTarget.style.color = 'hsl(var(--muted-foreground))'}>
                           <ChevronRight size={20} />
                         </button>
                       </td>

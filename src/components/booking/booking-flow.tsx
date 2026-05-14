@@ -414,27 +414,27 @@ export function BookingFlow({ services, initialServiceId, isOpen, onClose }: Boo
                   className="p-16 space-y-20"
                 >
                   {/* Calendar Header */}
-                  <div className="flex items-center justify-between border-b border-neutral-100 pb-12">
+                  <div className="flex flex-col gap-8 border-b border-neutral-100 pb-12 xl:flex-row xl:items-center xl:justify-between">
                     <div className="flex items-center gap-10">
                         <span className="h-20 w-20 rounded-[2.5rem] bg-neutral-900 flex items-center justify-center text-white text-3xl font-black italic shadow-2xl">02</span>
                         <div>
                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-300 mb-2 italic">DATE & CRÉNEAU</p>
-                           <h3 className="text-5xl font-black text-neutral-900 tracking-tighter italic leading-none uppercase">{monthLabel}</h3>
+                           <div className="flex items-center gap-4">
+                             <button 
+                              onClick={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
+                              className="flex h-14 w-14 items-center justify-center rounded-full border border-neutral-100 text-neutral-300 transition-all hover:text-neutral-900"
+                             >
+                               <ChevronLeft size={22} strokeWidth={3} />
+                             </button>
+                             <h3 className="text-5xl font-black text-neutral-900 tracking-tighter italic leading-none uppercase">{monthLabel}</h3>
+                             <button 
+                              onClick={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
+                              className="flex h-14 w-14 items-center justify-center rounded-full border border-neutral-100 text-neutral-300 transition-all hover:text-neutral-900"
+                             >
+                               <ChevronRight size={22} strokeWidth={3} />
+                             </button>
+                           </div>
                         </div>
-                    </div>
-                    <div className="flex items-center gap-6">
-                       <button 
-                        onClick={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
-                        className="w-16 h-16 flex items-center justify-center rounded-full border border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all"
-                       >
-                         <ChevronLeft size={24} strokeWidth={3} />
-                       </button>
-                       <button 
-                        onClick={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
-                        className="w-16 h-16 flex items-center justify-center rounded-full border border-neutral-100 text-neutral-300 hover:text-neutral-900 transition-all"
-                       >
-                         <ChevronRight size={24} strokeWidth={3} />
-                       </button>
                     </div>
                   </div>
 

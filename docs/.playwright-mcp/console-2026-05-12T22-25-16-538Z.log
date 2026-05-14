@@ -1,0 +1,46 @@
+[    4848ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    5308ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    5623ms] [LOG] [Fast Refresh] done in 416ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   47715ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   47757ms] [LOG] [Fast Refresh] done in 144ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   54341ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   54437ms] [LOG] [Fast Refresh] done in 208ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  175384ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  177383ms] [LOG] [Fast Refresh] done in 1686ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  202111ms] [ERROR] WebSocket connection to 'ws://localhost:9002/_next/webpack-hmr' failed:  @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5696
+[ 4735366ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&gsessionid=kvNhOzbxTi0LoLIwhnfrvgWUbNI76zm7CDuiCLJrI0pldLmxkNIGOw&SID=p8_EiOazsFKwHCn2s8lggA&RID=71905&TYPE=terminate&zx=8fwwfds9r993:0
+[ 7673550ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:9002/therapist/dashboard?_rsc=vusbg:0
+[ 7673554ms] [ERROR] Failed to fetch RSC payload for http://localhost:9002/therapist/dashboard. Falling back to browser navigation. TypeError: Failed to fetch
+    at createFetch (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:2091:33)
+    at fetchServerResponse (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:2014:27)
+    at http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:3473:106
+    at Object.task (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:3201:38)
+    at PromiseQueue.processNext (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:3252:186)
+    at PromiseQueue.enqueue (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:3216:76)
+    at createLazyPrefetchEntry (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:3473:49)
+    at getOrCreatePrefetchCacheEntry (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:3420:12)
+    at navigateReducer (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:8266:82)
+    at clientReducer (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:9222:61)
+    at Object.action (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:9434:55)
+    at runAction (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:9344:38)
+    at dispatchAction (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:9398:9)
+    at Object.dispatch (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:9432:40)
+    at http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:1409:29
+    at startTransition (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:4904:31)
+    at dispatch (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:1408:13)
+    at dispatchAppRouterAction (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:1392:5)
+    at dispatchNavigateAction (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:9486:49)
+    at http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:9539:13
+    at exports.startTransition (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_5150ccfd._.js:1662:31)
+    at Object.push (http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:9537:36)
+    at navigateToDashboard (http://localhost:9002/_next/static/chunks/src_eb56df1a._.js:44:20)
+    at onClick (http://localhost:9002/_next/static/chunks/src_eb56df1a._.js:255:33)
+    at executeDispatch (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:8965:13)
+    at runWithFiberInDEV (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:886:74)
+    at processDispatchQueue (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:8991:41)
+    at http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:9286:13
+    at batchedUpdates$1 (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:2211:44)
+    at dispatchEventForPluginEventSystem (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:9067:9)
+    at dispatchEvent (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:11224:37)
+    at dispatchDiscreteEvent (http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:11206:64) @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 7673669ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:9002/__nextjs_original-stack-frames:0

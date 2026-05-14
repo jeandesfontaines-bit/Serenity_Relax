@@ -20,8 +20,13 @@ export default function TherapistLayout({
   }, [user, router]);
 
   if (!user) return (
-    <div className="h-screen flex items-center justify-center bg-[#F8F5F0]">
-       <div className="w-16 h-16 border-4 border-[#059669]/20 border-t-[#059669] rounded-full animate-spin" />
+    <div className="h-screen flex items-center justify-center" style={{ background: 'hsl(var(--background))' }}>
+       <div className="w-16 h-16 border-4 rounded-full animate-spin" 
+            style={{ 
+              borderColor: 'hsl(var(--primary) / 0.2)', 
+              borderTopColor: 'hsl(var(--primary))' 
+            }} 
+       />
     </div>
   );
 

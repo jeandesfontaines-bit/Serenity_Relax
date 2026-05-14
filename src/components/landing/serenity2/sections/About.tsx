@@ -1,217 +1,128 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
 const BENEFITS = [
   {
+    num: "01",
     title: "Soulagement des douleurs",
     desc: "Apaise les tensions musculaires, réduit les raideurs et atténue les douleurs dorsales, cervicales ou articulaires.",
   },
   {
+    num: "02",
     title: "Souplesse et mobilité",
     desc: "Assouplit les muscles, améliore la posture et prévient les inconforts chroniques.",
   },
   {
+    num: "03",
     title: "Circulation et vitalité",
     desc: "Stimule la circulation sanguine et lymphatique, favorise l'élimination des toxines et accélère la récupération.",
   },
   {
+    num: "04",
     title: "Beauté et peau",
     desc: "Adoucit et revitalise la peau, tout en améliorant son aspect grâce aux mouvements de pétrissage.",
   },
   {
+    num: "05",
     title: "Respiration et énergie",
     desc: "Apaise le mental, approfondit la respiration et redonne énergie et équilibre.",
   },
   {
+    num: "06",
     title: "Bien-être émotionnel",
     desc: "Réduit le stress, favorise la relaxation profonde et procure une sensation durable d'harmonie.",
   },
 ];
 
 export default function About() {
-  const panelTrackRef = useRef<HTMLDivElement | null>(null);
-  const panelRef = useRef<HTMLDivElement | null>(null);
-  const lastBenefitRef = useRef<HTMLDivElement | null>(null);
-  const [panelLayout, setPanelLayout] = useState<{
-    mode: "static" | "fixed" | "bottom";
-    reserveSpace: number;
-    panelHeight: number;
-    left: number;
-    width: number;
-  }>({
-    mode: "static",
-    reserveSpace: 0,
-    panelHeight: 0,
-    left: 0,
-    width: 0,
-  });
-
-  useEffect(() => {
-    let frame = 0;
-
-    const updateLayout = () => {
-      frame = 0;
-
-      if (window.innerWidth < 1024) {
-        setPanelLayout({
-          mode: "static",
-          reserveSpace: 0,
-          panelHeight: 0,
-          left: 0,
-          width: 0,
-        });
-        return;
-      }
-
-      const track = panelTrackRef.current;
-      const panel = panelRef.current;
-      const lastBenefit = lastBenefitRef.current;
-      if (!track || !panel || !lastBenefit) return;
-
-      const topOffset = 112;
-      const scrollY = window.scrollY;
-      const trackRect = track.getBoundingClientRect();
-      const panelRect = panel.getBoundingClientRect();
-      const trackTop = trackRect.top + scrollY;
-      const lastTop = lastBenefit.getBoundingClientRect().top + window.scrollY;
-      const reserveSpace = Math.max(0, lastTop - trackTop);
-      const start = trackTop - topOffset;
-      const end = trackTop + reserveSpace - topOffset;
-
-      let mode: "static" | "fixed" | "bottom" = "static";
-      if (scrollY >= start && scrollY < end) {
-        mode = "fixed";
-      } else if (scrollY >= end) {
-        mode = "bottom";
-      }
-
-      setPanelLayout((prev) => {
-        const next = {
-          mode,
-          reserveSpace,
-          panelHeight: panelRect.height,
-          left: trackRect.left,
-          width: trackRect.width,
-        };
-
-        if (
-          prev.mode === next.mode &&
-          Math.abs(prev.reserveSpace - next.reserveSpace) < 1 &&
-          Math.abs(prev.panelHeight - next.panelHeight) < 1 &&
-          Math.abs(prev.left - next.left) < 1 &&
-          Math.abs(prev.width - next.width) < 1
-        ) {
-          return prev;
-        }
-
-        return next;
-      });
-    };
-
-    const requestUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(updateLayout);
-    };
-
-    const observer = new ResizeObserver(() => updateLayout());
-
-    if (panelTrackRef.current) observer.observe(panelTrackRef.current);
-    if (panelRef.current) observer.observe(panelRef.current);
-    if (lastBenefitRef.current) observer.observe(lastBenefitRef.current);
-
-    updateLayout();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    window.addEventListener("load", requestUpdate);
-
-    return () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      observer.disconnect();
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      window.removeEventListener("load", requestUpdate);
-    };
-  }, []);
-
   return (
-    <section id="expertise" className="relative border-t border-foreground/5 bg-background py-24 md:py-32">
-      <div className="mx-auto max-w-[1480px] px-6 md:px-10 lg:px-14">
-        {/* Section: Expertise & Benefits (Magazine Layout) */}
-        <div className="relative">
-          <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-24">
-            {/* Intro Column */}
-            <div
-              ref={panelTrackRef}
-              className="lg:w-[32%] lg:flex-none"
-              style={
-                panelLayout.panelHeight
-                  ? { height: panelLayout.panelHeight + panelLayout.reserveSpace }
-                  : undefined
-              }
-            >
-              <div
-                ref={panelRef}
-                className="lg:will-change-transform"
-                style={
-                  panelLayout.mode === "fixed"
-                    ? {
-                        position: "fixed",
-                        top: 112,
-                        left: panelLayout.left,
-                        width: panelLayout.width,
-                      }
-                    : panelLayout.mode === "bottom"
-                      ? {
-                          position: "absolute",
-                          top: panelLayout.reserveSpace,
-                          left: 0,
-                          width: "100%",
-                        }
-                      : undefined
-                }
-              >
-                <span className="mb-6 block text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--orange)]">
-                  — Expertise
-                </span>
-                <h2 className="display-tight mb-8 text-4xl leading-[0.95] text-foreground md:text-5xl lg:text-6xl">
-                  Les bienfaits <br />
-                  <span className="font-serif italic font-light opacity-40">sur votre corps.</span>
-                </h2>
-                <p className="mb-12 max-w-xl text-base leading-relaxed text-foreground/65 md:text-lg">
-                  Le massage est bien plus qu&apos;un moment de détente : c&apos;est un soin complet qui favorise
-                  l&apos;équilibre naturel de l&apos;organisme.
-                </p>
-              </div>
-            </div>
-
-            {/* List Column */}
-            <div className="lg:flex-1">
-              <div className="grid grid-cols-1 gap-y-14 lg:gap-y-16">
-                {BENEFITS.map((benefit, idx) => (
-                  <div
-                    key={idx}
-                    ref={idx === BENEFITS.length - 1 ? lastBenefitRef : undefined}
-                    className="group flex items-start gap-8 md:gap-12"
-                  >
-                    <span className="shrink-0 pt-2 text-2xl font-serif italic text-foreground/10 transition-colors duration-500 group-hover:text-[var(--orange)] md:text-3xl">
-                      0{idx + 1}.
-                    </span>
-                    <div className="space-y-4">
-                      <h4 className="display-tight text-2xl text-foreground transition-transform duration-500 group-hover:translate-x-2 md:text-3xl">
-                        {benefit.title}
-                      </h4>
-                      <p className="text-base leading-relaxed text-foreground/55 transition-colors group-hover:text-foreground/70 md:text-lg">
-                        {benefit.desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+    <section id="sanctuary" className="relative py-20 md:py-24 lg:py-28">
+      <div className="relative mx-auto max-w-[1360px] px-6 md:px-10 lg:px-12">
+        <header className="grid grid-cols-12 gap-8 border-b border-[var(--landing-tint)] pb-8 md:pb-10 lg:items-end">
+          <div className="col-span-12 lg:col-span-7">
+            <span className="landing-type-eyebrow mb-5 block text-[var(--orange)]">
+              — Expertise
+            </span>
+            <h2 className="landing-type-h2 landing-text-high display-tight">
+              Les bienfaits
+              <br />
+              <span className="landing-display-italic landing-text-muted">
+                sur votre corps.
+              </span>
+            </h2>
           </div>
-        </div>
+          <div className="col-span-12 lg:col-span-4 lg:col-start-9">
+            <p className="landing-type-body landing-text-body max-w-sm">
+              Le massage thérapeutique agit sur les tensions, la mobilité, la circulation
+              et l&apos;apaisement global.
+            </p>
+          </div>
+        </header>
 
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-12">
+          {BENEFITS.map((benefit, index) => {
+            const isFeature = index === 0;
+            const cardClassName = isFeature
+              ? "xl:col-span-5"
+              : index === 1
+                ? "xl:col-span-3"
+                : index === 2
+                  ? "xl:col-span-4"
+                  : "xl:col-span-4";
+
+            return (
+              <article
+                key={benefit.num}
+                className={[
+                  "landing-surface-card transition-transform duration-500 hover:-translate-y-1",
+                  cardClassName,
+                  isFeature
+                    ? "flex min-h-[23rem] flex-col px-7 pb-7 pt-7 md:col-span-2 md:px-8 md:pb-8 md:pt-8"
+                    : "flex min-h-[16.5rem] flex-col px-6 pb-6 pt-6",
+                ].join(" ")}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <span className="landing-type-caption text-[var(--landing-warm-muted)]">
+                    {isFeature ? "Bénéfice prioritaire" : "Bénéfice ciblé"}
+                  </span>
+                  <span className="landing-ordinal text-[1.15rem] leading-none text-[var(--orange)]">
+                    {benefit.num}
+                  </span>
+                </div>
+
+                <div className={isFeature ? "mt-auto max-w-[32rem]" : "mt-auto"}>
+                  <h3
+                    className={[
+                      "landing-type-h4 landing-text-high display-tight",
+                      isFeature ? "mt-8 max-w-[12ch]" : "mt-8 max-w-[15ch]",
+                    ].join(" ")}
+                  >
+                    {benefit.title}
+                  </h3>
+                  <p
+                    className={[
+                      "landing-type-body-s landing-text-body",
+                      isFeature ? "mt-4 max-w-[37ch]" : "mt-3 max-w-[31ch]",
+                    ].join(" ")}
+                  >
+                    {benefit.desc}
+                  </p>
+                </div>
+
+                {!isFeature ? (
+                  <div className="mt-6 h-px w-12 bg-[var(--landing-tint)]" />
+                ) : (
+                  <div className="mt-8 h-px w-16 bg-[var(--landing-tint)]" />
+                )}
+
+                <div className="mt-4">
+                  <p className="landing-type-caption text-[var(--landing-warm-muted)]">
+                    {isFeature ? "Base du rituel thérapeutique" : "Effet complémentaire"}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import { Appointment } from '../types';
-import {
-  ChevronRight, CreditCard, CheckCircle2, Clock, AlertCircle,
-  FileText, BarChart3, TrendingUp, ArrowRight, Users
-} from 'lucide-react';
+import { MetricSection } from './home/MetricSection';
+import { TodayAgenda } from './home/TodayAgenda';
+import { RecentNotes } from './home/RecentNotes';
 
 interface HomePageProps {
   appointments: Appointment[];
@@ -16,91 +14,19 @@ interface HomePageProps {
   searchQuery: string;
 }
 
-/** Returns badge + accent colors per appointment status — monochrome editorial style */
-function appointmentStatus(appt: Appointment, todayStr: string) {
-  if (appt.status === 'cancelled') {
-    return {
-      label: 'ANNULÉ',
-      badgeClass: 'bg-red-50 text-red-400 border border-red-100',
-      dotClass: 'bg-red-200',
-      muted: true,
-    };
-  }
-
-  if (appt.paid) {
-    return {
-      label: 'RÉGLÉ',
-      badgeClass: 'bg-[var(--accent-teal)] text-emerald-600 border border-emerald-100/50',
-      dotClass: 'bg-emerald-500',
-      muted: false,
-    };
-  }
-
-  if (appt.date && appt.date < todayStr) {
-    return {
-      label: 'EN RETARD',
-      badgeClass: 'bg-[var(--accent-orange)] text-orange-600 border border-orange-100/50',
-      dotClass: 'bg-orange-500',
-      muted: false,
-    };
-  }
-
-  return {
-    label: 'À VENIR',
-    badgeClass: 'bg-[var(--accent-blue)] text-blue-600 border border-blue-100/50',
-    dotClass: 'bg-blue-500',
-    muted: false,
-  };
-}
-
-function displayTime(time?: string) {
-  if (!time) return { hour: '--:--', period: '' };
-  const [hStr, mStr] = time.split(':');
-  const hours = Number(hStr);
-  const minutes = mStr || '00';
-  const period = hours >= 12 ? 'PM' : 'AM';
-  const displayHour = ((hours + 11) % 12) + 1;
-  return {
-    hour: `${String(displayHour).padStart(2, '0')}:${minutes}`,
-    period,
-  };
-}
-
-function formatDayLabel(dateStr?: string) {
-  if (!dateStr) return 'Récemment';
-  const date = new Date(`${dateStr}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return 'Récemment';
-  return format(date, 'MMM d').toUpperCase();
-}
-
 function normalizeSearchQuery(value?: string) {
   return (value || '').trim().toLowerCase();
 }
 
 function appointmentMatchesSearch(appt: Appointment, query: string) {
   if (!query) return true;
-  const haystack = [
-    appt.clientNameSnapshot,
-    appt.title,
-    appt.serviceName,
-    appt.notes,
-    appt.date,
-    appt.time,
-    appt.status,
-  ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
+  const haystack = [appt.clientNameSnapshot, appt.title, appt.serviceName, appt.notes, appt.date, appt.time, appt.status]
+    .filter(Boolean).join(' ').toLowerCase();
   return haystack.includes(query);
 }
 
 export default function HomePage({
-  appointments,
-  monthlyGoal,
-  onSelectAppt,
-  onNavigate,
-  onEditGoal,
-  searchQuery,
+  appointments, monthlyGoal, onSelectAppt, onNavigate, onEditGoal, searchQuery,
 }: HomePageProps) {
   const now = new Date();
   const todayStr = format(now, 'yyyy-MM-dd');
@@ -108,242 +34,53 @@ export default function HomePage({
   const normalizedSearch = normalizeSearchQuery(searchQuery);
 
   const todayAppts = useMemo(
-    () =>
-      appointments
-        .filter((appt) => appt.date === todayStr && appointmentMatchesSearch(appt, normalizedSearch))
-        .sort((a, b) => (a.time || '').localeCompare(b.time || '')),
+    () => appointments
+      .filter((appt) => appt.date === todayStr && appointmentMatchesSearch(appt, normalizedSearch))
+      .sort((a, b) => (a.time || '').localeCompare(b.time || '')),
     [appointments, normalizedSearch, todayStr],
   );
 
   const paidThisMonth = useMemo(
-    () =>
-      appointments
-        .filter((appt) => appt.paid && appt.date?.startsWith(currentMonth))
-        .reduce((sum, appt) => sum + (appt.price || appt.totalAmount || 0), 0),
+    () => appointments.filter((appt) => appt.paid && appt.date?.startsWith(currentMonth))
+      .reduce((sum, appt) => sum + (appt.price || appt.totalAmount || 0), 0),
     [appointments, currentMonth],
   );
 
-  const completedSessions = useMemo(
-    () => appointments.filter((appt) => appt.paid).length,
-    [appointments],
-  );
-
-  const pendingInvoices = useMemo(
-    () => appointments.filter((appt) => !appt.paid && appt.status !== 'cancelled').length,
-    [appointments],
-  );
-
-  const urgentInvoices = useMemo(
-    () => appointments.filter((appt) => !appt.paid && appt.date && appt.date < todayStr && appt.status !== 'cancelled').length,
-    [appointments, todayStr],
-  );
+  const completedSessions = useMemo(() => appointments.filter((appt) => appt.paid).length, [appointments]);
+  const pendingInvoices = useMemo(() => appointments.filter((appt) => !appt.paid && appt.status !== 'cancelled').length, [appointments]);
 
   const progressNotes = useMemo(
-    () =>
-      appointments
-        .filter((appt) => appt.notes && appt.notes.trim() && appointmentMatchesSearch(appt, normalizedSearch))
-        .sort((a, b) => `${b.date || ''}${b.time || ''}`.localeCompare(`${a.date || ''}${a.time || ''}`))
-        .slice(0, 2),
+    () => appointments
+      .filter((appt) => appt.notes && appt.notes.trim() && appointmentMatchesSearch(appt, normalizedSearch))
+      .sort((a, b) => `${b.date || ''}${b.time || ''}`.localeCompare(`${a.date || ''}${a.time || ''}`))
+      .slice(0, 2),
     [appointments, normalizedSearch],
   );
 
-  const revenueChange = monthlyGoal > 0 ? Math.round((paidThisMonth / monthlyGoal) * 100) : 0;
-
   return (
-    <div className="max-w-[1440px] mx-auto p-3 lg:p-5 space-y-10 bg-neutral-100">
+    <div className="mx-auto space-y-8 text-foreground">
+      <MetricSection 
+        paidThisMonth={paidThisMonth}
+        completedSessions={completedSessions}
+        pendingInvoices={pendingInvoices}
+      />
 
-      {/* ── KPI cards ── */}
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-        <MetricCard
-          icon={<CreditCard size={12} strokeWidth={3} />}
-          label="REVENUS"
-          value={`${paidThisMonth.toLocaleString('fr-CH')} CHF`}
-          variant="blue"
+      <section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <TodayAgenda 
+          todayAppts={todayAppts}
+          todayStr={todayStr}
+          onSelectAppt={onSelectAppt}
+          onNavigate={onNavigate}
+          normalizedSearch={normalizedSearch}
         />
-        <MetricCard
-          icon={<CheckCircle2 size={12} strokeWidth={3} />}
-          label="SOINS"
-          value={completedSessions.toString()}
-          variant="yellow"
-        />
-        <MetricCard
-          icon={<Users size={12} strokeWidth={3} />}
-          label="PATIENTS"
-          value="124"
-          variant="orange"
-        />
-        <MetricCard
-          icon={<AlertCircle size={12} strokeWidth={3} />}
-          label="IMPAYÉS"
-          value={pendingInvoices.toString()}
-          variant="pink"
+
+        <RecentNotes 
+          progressNotes={progressNotes}
+          onSelectAppt={onSelectAppt}
+          onNavigate={onNavigate}
+          onEditGoal={onEditGoal}
         />
       </section>
-
-      {/* ── Main content grid ── */}
-      <section className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-        {/* Today's agenda */}
-        <div className="space-y-6 lg:col-span-2">
-          <div className="flex items-end justify-between border-b border-neutral-200 pb-4">
-            <div>
-              <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-1">PROGRAMMATION DU JOUR</p>
-              <h4 className="text-2xl font-bold text-neutral-900 tracking-tight leading-none">Agenda</h4>
-            </div>
-            <button
-              onClick={() => onNavigate('scheduler')}
-              className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.24em] text-neutral-700 hover:text-neutral-900 transition-all group"
-            >
-              VOIR TOUT <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-
-          <div className="space-y-6">
-            {todayAppts.length > 0 ? (
-              todayAppts.slice(0, 5).map((appt) => {
-                const status = appointmentStatus(appt, todayStr);
-                const { hour, period } = displayTime(appt.time);
-
-                return (
-                  <button
-                    key={appt.id}
-                    onClick={() => onSelectAppt(appt)}
-                    className={`group flex w-full items-center gap-8 rounded-3xl border border-neutral-200 bg-white p-8 text-left transition-all hover:shadow-xl hover:border-neutral-300 ${status.muted ? 'opacity-50 hover:opacity-100' : ''
-                      }`}
-                  >
-                    {/* Time */}
-                    <div className="min-w-[80px] text-center border-r border-neutral-200 pr-8">
-                      <p className="text-2xl font-bold text-neutral-900 tracking-tight leading-none">{hour}</p>
-                      <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">{period}</p>
-                    </div>
-
-                    {/* Details */}
-                    <div className="min-w-0 flex-1">
-                      <h5 className="truncate text-xl font-bold text-neutral-900 tracking-tight leading-none group-hover:text-blue-600 transition-colors">
-                        {appt.clientNameSnapshot || appt.title || 'Client'}
-                      </h5>
-                      <p className="mt-2 truncate text-[13px] font-semibold text-neutral-600 uppercase tracking-[0.14em]">
-                        {appt.serviceName || 'Consultation'} · {appt.duration || '60 MIN'}
-                      </p>
-                    </div>
-
-                    {/* Badge */}
-                    <div className="flex items-center gap-6">
-                      <span className={`shrink-0 rounded-full px-6 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] shadow-sm ${status.badgeClass}`}>
-                        {status.label}
-                      </span>
-                      <div className="w-12 h-12 flex items-center justify-center rounded-full text-neutral-400 group-hover:text-neutral-900 group-hover:rotate-45 transition-all">
-                        <ChevronRight size={24} strokeWidth={2.5} />
-                      </div>
-                    </div>
-                  </button>
-                );
-              })
-            ) : (
-              <div className="py-32 flex flex-col items-center justify-center bg-white rounded-[4rem] border-2 border-dashed border-neutral-300 group hover:border-neutral-400 transition-all">
-                <Clock size={48} strokeWidth={1.2} className="text-neutral-400 mb-6 group-hover:scale-110 transition-transform" />
-                <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-neutral-600">
-                  {normalizedSearch ? 'AUCUN RÉSULTAT' : 'AUCUNE SÉANCE AUJOURD\'HUI'}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Notes sidebar */}
-        <div className="space-y-12">
-          <div className="bg-white border border-neutral-200 rounded-[3.5rem] p-12 shadow-xl space-y-12">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.24em] mb-2">ARCHIVES</p>
-                <h4 className="text-3xl font-bold text-neutral-900 tracking-tight">Notes</h4>
-              </div>
-              <button
-                onClick={onEditGoal}
-                className="w-14 h-14 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-600 hover:text-neutral-900 transition-all shadow-inner"
-              >
-                <BarChart3 size={20} strokeWidth={2.5} />
-              </button>
-            </div>
-
-            <div className="space-y-6">
-              {progressNotes.length > 0 ? (
-                progressNotes.map((appt) => (
-                  <button
-                    key={appt.id}
-                    onClick={() => onSelectAppt(appt)}
-                    className="block w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-6 text-left transition-all hover:bg-white hover:shadow-lg group"
-                  >
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-blue-600">
-                      {formatDayLabel(appt.date)}
-                    </p>
-                    <p className="truncate text-lg font-bold text-neutral-900 transition-all tracking-tight">
-                      {appt.clientNameSnapshot || appt.title || 'Client'}
-                    </p>
-                    <p className="mt-2 line-clamp-2 text-sm font-medium text-neutral-700 leading-relaxed">
-                      &ldquo;{appt.notes?.trim()}&rdquo;
-                    </p>
-                  </button>
-                ))
-              ) : (
-                <div className="py-20 text-center border-2 border-dashed border-neutral-300 rounded-[2.5rem] bg-neutral-100">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-neutral-600">AUCUNE NOTE RÉCENTE</p>
-                </div>
-              )}
-            </div>
-
-            <button
-              onClick={() => onNavigate('clients')}
-              className="w-full h-16 flex items-center justify-center rounded-full border border-neutral-200 text-[10px] font-bold uppercase tracking-[0.24em] text-neutral-700 hover:text-neutral-900 hover:border-neutral-900 hover:bg-neutral-100 transition-all"
-            >
-              RÉPERTOIRE PATIENTS
-            </button>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  );
-}
-
-function MetricCard({
-  icon,
-  label,
-  value,
-  variant = 'default',
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  variant?: 'blue' | 'yellow' | 'orange' | 'pink' | 'teal' | 'default';
-}) {
-  const variantStyles = {
-    blue: 'bg-white border-neutral-100 text-neutral-900',
-    yellow: 'bg-white border-neutral-100 text-neutral-900',
-    orange: 'bg-white border-neutral-100 text-neutral-900',
-    pink: 'bg-white border-neutral-100 text-neutral-900',
-    teal: 'bg-white border-neutral-100 text-neutral-900',
-    default: 'bg-white border-neutral-100 text-neutral-900',
-  };
-
-  const iconCircleStyles = {
-    blue: 'bg-blue-50 text-blue-500',
-    yellow: 'bg-yellow-50 text-yellow-500',
-    orange: 'bg-orange-50 text-orange-500',
-    pink: 'bg-pink-50 text-pink-500',
-    teal: 'bg-emerald-50 text-emerald-500',
-    default: 'bg-neutral-100 text-neutral-600',
-  };
-
-  return (
-    <div className={`group rounded-2xl border border-neutral-200 p-4 transition-all hover:shadow-xl hover:border-neutral-300 ${variantStyles[variant]}`}>
-      <div className="mb-4 flex items-center justify-between">
-        <div className={`w-9 h-9 flex items-center justify-center rounded-xl transition-transform group-hover:scale-110 ${iconCircleStyles[variant]}`}>
-          {icon}
-        </div>
-        <ChevronRight size={12} className="text-neutral-400 group-hover:text-neutral-900 transition-colors" />
-      </div>
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">{label}</p>
-      <h3 className="mt-1 text-xl font-bold tracking-tight text-neutral-900 leading-none">{value}</h3>
     </div>
   );
 }

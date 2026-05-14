@@ -1,0 +1,263 @@
+[     576ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[   99279ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   99528ms] [LOG] [Fast Refresh] done in 353ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  105694ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  106833ms] [LOG] [Fast Refresh] done in 1087ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  107107ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  107443ms] [LOG] [Fast Refresh] done in 437ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  127499ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  128116ms] [LOG] [Fast Refresh] done in 476ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  131614ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  132026ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:6:1
+Module not found: Can't resolve './sections/Hero'
+  4 | import Navbar from "./Navbar";
+  5 | import Footer from "./Footer";
+> 6 | import Hero from "./sections/Hero";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import Sessions from "./sections/Sessions";
+  8 | import Sanctuary from "./sections/Sanctuary";
+  9 | import Atelier from "./sections/Atelier";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  132060ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  180095ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:6:1
+Module not found: Can't resolve './sections/Hero'
+  4 | import Navbar from "./Navbar";
+  5 | import Footer from "./Footer";
+> 6 | import Hero from "./sections/Hero";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import Sessions from "./sections/Sessions";
+  8 | import Sanctuary from "./sections/Sanctuary";
+  9 | import Atelier from "./sections/Atelier";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  180113ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  180211ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:6:1
+Module not found: Can't resolve './sections/Hero'
+  4 | import Navbar from "./Navbar";
+  5 | import Footer from "./Footer";
+> 6 | import Hero from "./sections/Hero";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import Sessions from "./sections/Sessions";
+  8 | import Sanctuary from "./sections/Sanctuary";
+  9 | import Atelier from "./sections/Atelier";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  180223ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  180702ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:6:1
+Module not found: Can't resolve './sections/Hero'
+  4 | import Navbar from "./Navbar";
+  5 | import Footer from "./Footer";
+> 6 | import Hero from "./sections/Hero";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import Sessions from "./sections/Sessions";
+  8 | import Sanctuary from "./sections/Sanctuary";
+  9 | import Atelier from "./sections/Atelier";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  180747ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  180813ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:6:1
+Module not found: Can't resolve './sections/Hero'
+  4 | import Navbar from "./Navbar";
+  5 | import Footer from "./Footer";
+> 6 | import Hero from "./sections/Hero";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import Sessions from "./sections/Sessions";
+  8 | import Sanctuary from "./sections/Sanctuary";
+  9 | import Atelier from "./sections/Atelier";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  180919ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  180949ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:6:1
+Module not found: Can't resolve './sections/Hero'
+  4 | import Navbar from "./Navbar";
+  5 | import Footer from "./Footer";
+> 6 | import Hero from "./sections/Hero";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import Sessions from "./sections/Sessions";
+  8 | import Sanctuary from "./sections/Sanctuary";
+  9 | import Atelier from "./sections/Atelier";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  181371ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:6:1
+Module not found: Can't resolve './sections/Hero'
+  4 | import Navbar from "./Navbar";
+  5 | import Footer from "./Footer";
+> 6 | import Hero from "./sections/Hero";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import Sessions from "./sections/Sessions";
+  8 | import Sanctuary from "./sections/Sanctuary";
+  9 | import Atelier from "./sections/Atelier";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  181425ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  197927ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  198577ms] [LOG] [Fast Refresh] done in 731ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  198879ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  199049ms] [LOG] [Fast Refresh] done in 271ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  202488ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  202744ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:8:1
+Module not found: Can't resolve './sections/Sanctuary'
+   6 | import Hero from "./sections/Hero";
+   7 | import Sessions from "./sections/Sessions";
+>  8 | import Sanctuary from "./sections/Sanctuary";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   9 | import Atelier from "./sections/Atelier";
+  10 | import BookingFunnel from "@/components/BookingFunnel";
+  11 | import AIConciergeOverlay from "./AIConciergeOverlay";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  202748ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  232109ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  232493ms] [LOG] [Fast Refresh] done in 463ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  236897ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  237206ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:7:1
+Module not found: Can't resolve './sections/Sessions'
+   5 | import Footer from "./Footer";
+   6 | import Hero from "./sections/Hero";
+>  7 | import Sessions from "./sections/Sessions";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import Sanctuary from "./sections/Sanctuary";
+   9 | import Atelier from "./sections/Atelier";
+  10 | import BookingFunnel from "@/components/BookingFunnel";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  237230ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  274118ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  275160ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:7:1
+Module not found: Can't resolve './sections/Sessions'
+   5 | import Footer from "./Footer";
+   6 | import Hero from "./sections/Hero";
+>  7 | import Sessions from "./sections/Sessions";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import Sanctuary from "./sections/Sanctuary";
+   9 | import Atelier from "./sections/Atelier";
+  10 | import BookingFunnel from "@/components/BookingFunnel";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  275503ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  275503ms] [LOG] [Fast Refresh] done in 2ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  278747ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  279365ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:9:1
+Module not found: Can't resolve './sections/Atelier'
+   7 | import Sessions from "./sections/Sessions";
+   8 | import Sanctuary from "./sections/Sanctuary";
+>  9 | import Atelier from "./sections/Atelier";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import BookingFunnel from "@/components/BookingFunnel";
+  11 | import AIConciergeOverlay from "./AIConciergeOverlay";
+  12 | import { useBooking } from "@/context/BookingContext";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  279377ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  312751ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:9:1
+Module not found: Can't resolve './sections/Atelier'
+   7 | import Sessions from "./sections/Sessions";
+   8 | import Sanctuary from "./sections/Sanctuary";
+>  9 | import Atelier from "./sections/Atelier";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import BookingFunnel from "@/components/BookingFunnel";
+  11 | import AIConciergeOverlay from "./AIConciergeOverlay";
+  12 | import { useBooking } from "@/context/BookingContext";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  312785ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  312874ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:9:1
+Module not found: Can't resolve './sections/Atelier'
+   7 | import Sessions from "./sections/Sessions";
+   8 | import Sanctuary from "./sections/Sanctuary";
+>  9 | import Atelier from "./sections/Atelier";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import BookingFunnel from "@/components/BookingFunnel";
+  11 | import AIConciergeOverlay from "./AIConciergeOverlay";
+  12 | import { useBooking } from "@/context/BookingContext";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  312947ms] [ERROR] ./src/components/landing/serenity2/Home.tsx:9:1
+Module not found: Can't resolve './sections/Atelier'
+   7 | import Sessions from "./sections/Sessions";
+   8 | import Sanctuary from "./sections/Sanctuary";
+>  9 | import Atelier from "./sections/Atelier";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import BookingFunnel from "@/components/BookingFunnel";
+  11 | import AIConciergeOverlay from "./AIConciergeOverlay";
+  12 | import { useBooking } from "@/context/BookingContext";
+
+Import trace:
+  Server Component:
+    ./src/components/landing/serenity2/Home.tsx
+    ./src/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  312999ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  313554ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  314179ms] [LOG] [Fast Refresh] done in 710ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  326608ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  327024ms] [LOG] [Fast Refresh] done in 518ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  336746ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  337323ms] [LOG] [Fast Refresh] done in 676ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

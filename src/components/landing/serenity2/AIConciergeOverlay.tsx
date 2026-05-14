@@ -73,31 +73,31 @@ export default function AIConciergeOverlay({ open, onClose }: { open: boolean; o
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.98 }}
           transition={{ duration: 0.2 }}
-          className="fixed bottom-28 right-8 z-[120] flex h-[min(72vh,620px)] w-[min(92vw,390px)] flex-col overflow-hidden rounded-[24px] border border-[#153839]/35 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.28)]"
+          className="fixed bottom-28 right-8 z-[120] flex h-[min(72vh,620px)] w-[min(92vw,390px)] flex-col overflow-hidden rounded-[24px] border border-[#153839]/22 bg-white/96 shadow-[0_24px_60px_rgba(15,23,42,0.22)] backdrop-blur-xl"
         >
-          <div className="flex items-center justify-between border-b border-[#153839]/15 bg-[linear-gradient(135deg,#153839,#275E6A)] px-4 py-3 text-white">
+          <div className="flex items-center justify-between border-b border-[#153839]/12 bg-[linear-gradient(135deg,#153839,#275E6A)] px-4 py-3 text-white">
             <div className="flex items-center gap-3">
-              <div className="rounded-xl bg-white/15 p-2 text-[var(--neon)]"><Sparkles size={14} /></div>
+              <div className="rounded-xl bg-white/12 p-2 text-[var(--neon)]"><Sparkles size={14} /></div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">IA Concierge</p>
+                <p className="landing-type-micro text-white/70">IA Concierge</p>
                 <p className="text-sm font-semibold text-white">Assistant bien-être</p>
               </div>
             </div>
             <button onClick={onClose} className="rounded-full border border-white/25 p-2 text-white hover:bg-white/10"><X size={16} /></button>
           </div>
 
-          <div className="flex min-h-0 flex-1 flex-col bg-[#F8FAFB]">
+          <div className="flex min-h-0 flex-1 flex-col bg-[var(--landing-panel)]">
             <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.role === "assistant" ? "justify-start" : "justify-end"}`}>
-                  <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${m.role === "assistant" ? "bg-[var(--teal-deep)] text-white shadow-sm" : "bg-white text-foreground border border-[#153839]/15 shadow-sm"}`}>
+                  <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${m.role === "assistant" ? "bg-[var(--teal-deep)] text-white shadow-[0_10px_24px_rgba(21,56,57,0.12)]" : "bg-white landing-text-high border border-[#153839]/10 shadow-[0_10px_24px_rgba(21,32,35,0.04)]"}`}>
                     {m.text}
                   </div>
                 </div>
               ))}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="inline-flex items-center gap-2 rounded-2xl border border-[#153839]/15 bg-white px-3.5 py-2.5 text-[13px] text-foreground/60">
+                  <div className="landing-text-body inline-flex items-center gap-2 rounded-2xl border border-[#153839]/10 bg-white px-3.5 py-2.5 text-[13px] shadow-[0_10px_24px_rgba(21,32,35,0.04)]">
                     <Loader2 size={13} className="animate-spin" /> Réflexion...
                   </div>
                 </div>
@@ -105,30 +105,30 @@ export default function AIConciergeOverlay({ open, onClose }: { open: boolean; o
             </div>
 
             {selected ? (
-              <div className="border-t border-[#153839]/15 bg-white px-4 py-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-600">Soin recommandé</p>
+              <div className="border-t border-[#153839]/10 bg-white px-4 py-3">
+                <p className="landing-type-micro text-emerald-600">Soin recommandé</p>
                 <p className="mt-1 text-sm font-semibold">{selected.name}</p>
                 <button
                   onClick={() => {
                     openModal(selected);
                     onClose();
                   }}
-                  className="mt-2 w-full rounded-full bg-[var(--teal-deep)] px-4 py-2.5 text-xs font-semibold text-white hover:bg-[var(--orange)]"
+                  className="mt-2 w-full rounded-full bg-[var(--teal-deep)] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_12px_26px_rgba(21,56,57,0.16)] transition-colors duration-300 hover:bg-[var(--orange)]"
                 >
                   Réserver ce soin
                 </button>
               </div>
             ) : null}
 
-            <div className="flex items-center gap-2 border-t border-[#153839]/15 bg-white p-3">
+            <div className="flex items-center gap-2 border-t border-[#153839]/10 bg-white p-3">
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && send()}
                 placeholder="Ex: stress, nuque tendue..."
-                className="flex-1 rounded-full border border-[#153839]/20 bg-[#FDFEFE] px-4 py-2.5 text-[13px] outline-none focus:border-[#153839]/45"
+                className="flex-1 rounded-full border border-[#153839]/14 bg-[var(--landing-panel-input)] px-4 py-2.5 text-[13px] outline-none transition-colors duration-300 focus:border-[#153839]/35"
               />
-              <button onClick={send} className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--orange)] text-white hover:bg-[var(--teal-deep)]">
+              <button onClick={send} className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--orange)] text-white shadow-[0_10px_22px_rgba(241,102,77,0.18)] transition-colors duration-300 hover:bg-[var(--teal-deep)]">
                 <Send size={14} />
               </button>
             </div>

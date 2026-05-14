@@ -1,0 +1,160 @@
+[     498ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[     510ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[     666ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[     731ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    5057ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    5629ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[    5645ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[    5863ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    6110ms] [ERROR] ./src/app/therapist/dashboard/modules/ClientsPage.tsx:417:113
+Parsing ecmascript source code failed
+  415 |                     {visibleColumnIds.has('firstName') && (
+  416 |                       <div className="min-w-0 pr-8">
+> 417 |                         <p className="truncate text-sm font-medium " style={{ color: 'hsl(var(--foreground))' }}">
+      |                                                                                                                 ^^
+  418 |                           {client.firstName || '—'}
+  419 |                         </p>
+  420 |                       </div>
+
+Unterminated string constant
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[   60015ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   61550ms] [LOG] [Fast Refresh] done in 1591ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   61652ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   61730ms] [LOG] [Fast Refresh] done in 180ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   61972ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   62087ms] [LOG] [Fast Refresh] done in 216ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   63138ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   63147ms] [LOG] [Fast Refresh] done in 111ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   63249ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   65312ms] [LOG] [Fast Refresh] done in 2164ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   65664ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   66028ms] [LOG] [Fast Refresh] done in 464ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   69078ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   69172ms] [LOG] [Fast Refresh] done in 195ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  150227ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  150303ms] [LOG] [Fast Refresh] done in 182ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  153579ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  154254ms] [LOG] [Fast Refresh] done in 776ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  219975ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  220229ms] [LOG] [Fast Refresh] done in 349ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  237704ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  242945ms] [LOG] [Fast Refresh] done in 4858ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  243491ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  243743ms] [LOG] [Fast Refresh] done in 361ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  253109ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  253846ms] [LOG] [Fast Refresh] done in 837ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  254956ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[  256821ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  256913ms] [LOG] [Fast Refresh] done in 194ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  257018ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  257134ms] [LOG] [Fast Refresh] done in 218ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  394079ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  395394ms] [LOG] [Fast Refresh] done in 1409ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  402103ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  402509ms] [LOG] [Fast Refresh] done in 482ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  412842ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  413240ms] [LOG] [Fast Refresh] done in 460ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  431786ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  432033ms] [LOG] [Fast Refresh] done in 326ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  446847ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  447004ms] [LOG] [Fast Refresh] done in 244ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  463406ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  463605ms] [LOG] [Fast Refresh] done in 273ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  480903ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  481092ms] [LOG] [Fast Refresh] done in 276ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  505039ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  505285ms] [LOG] [Fast Refresh] done in 308ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  510828ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  513592ms] [LOG] [Fast Refresh] done in 2866ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  513777ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  513788ms] [LOG] [Fast Refresh] done in 112ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  523415ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  525518ms] [LOG] [Fast Refresh] done in 2205ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  529885ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  529918ms] [LOG] [Fast Refresh] done in 134ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  539744ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  539761ms] [LOG] [Fast Refresh] done in 119ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  540593ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  540627ms] [LOG] [Fast Refresh] done in 136ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  586928ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  587861ms] [LOG] [Fast Refresh] done in 1028ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  599749ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  599932ms] [LOG] [Fast Refresh] done in 286ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  614859ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  614988ms] [LOG] [Fast Refresh] done in 231ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  661498ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  662661ms] [LOG] [Fast Refresh] done in 1264ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

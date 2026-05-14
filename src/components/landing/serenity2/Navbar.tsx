@@ -3,16 +3,18 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useBooking } from "@/context/BookingContext";
+import LoginModal from "@/components/auth/LoginModal";
 
 const NAV_LINKS = [
   { label: "Sessions", href: "#sessions" },
-  { label: "Sanctuaire", href: "#sanctuary" },
+  { label: "Bienfaits", href: "#sanctuary" },
   { label: "FAQ", href: "#atelier" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const isHome = pathname === "/";
@@ -40,16 +42,16 @@ export default function Navbar() {
     <nav
       className={`absolute inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "border-b border-[#d9c8b4] bg-[#fbf7f0]/88 backdrop-blur-xl"
-          : "bg-transparent"
+          ? "landing-border-soft border-b bg-white/95 backdrop-blur-xl shadow-[0_10px_30px_rgba(21,32,35,0.06)]"
+          : "bg-white/92 backdrop-blur-md"
       }`}
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-10 lg:px-12">
-        <Link href="/" className="flex items-baseline gap-2">
-          <span className="text-[15px] font-semibold tracking-tight text-foreground">
+      <div className="mx-auto flex max-w-[1360px] items-center justify-between px-6 py-3.5 md:px-10 lg:px-12">
+        <Link href="/" className="flex items-baseline gap-2.5">
+          <span className="landing-type-h5 landing-text-high text-[15px] tracking-[0.03em] md:text-[16px] lg:text-[17px]">
             SERENITY RELAX THERAPY
           </span>
-          <span className="signature-font hidden text-sm italic tracking-wide leading-none text-foreground/55 lg:inline">
+          <span className="signature-font landing-text-soft hidden text-[1.55rem] leading-none lg:inline">
             by João
           </span>
         </Link>
@@ -60,7 +62,7 @@ export default function Navbar() {
               key={link.href}
               href={isHome ? link.href : `/${link.href}`}
               onClick={handleAnchor(link.href)}
-              className="text-[15px] font-medium tracking-tight text-foreground/64 transition-colors duration-300 hover:text-foreground editorial-link"
+              className="landing-text-soft editorial-link text-[14px] font-medium tracking-tight transition-colors duration-300 hover:text-[var(--off-black)]"
             >
               {link.label}
             </a>
@@ -70,37 +72,38 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => openModal(null)}
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-[var(--orange)] px-6 py-3 text-[15px] font-semibold tracking-tight text-white transition-all duration-300 hover:bg-[var(--teal-deep)]"
+            className="hidden md:inline-flex items-center gap-2 rounded-full bg-[var(--orange)] px-5 py-2.5 text-[13px] font-semibold tracking-tight text-white shadow-[0_12px_26px_rgba(241,102,77,0.18)] transition-all duration-300 hover:translate-y-[-1px] hover:bg-[var(--teal-deep)]"
           >
             Réserver
           </button>
-          <Link
-            href="/login"
-            className="hidden md:inline-flex rounded-full border border-[#d9c8b4] px-6 py-3 text-[15px] font-medium text-foreground transition-all duration-300 hover:bg-white/60"
+          <button
+            onClick={() => setLoginOpen(true)}
+            className="landing-border-tint landing-text-high hidden md:inline-flex rounded-full border bg-white/55 px-5 py-2.5 text-[13px] font-medium transition-all duration-300 hover:bg-white/82"
+            type="button"
           >
             Connexion
-          </Link>
+          </button>
           <button
             className="md:hidden flex flex-col gap-1.5"
             onClick={() => setOpen(!open)}
             aria-label="Menu"
           >
-            <span className={`block h-px w-6 bg-foreground transition-transform ${open ? "translate-y-2 rotate-45" : ""}`} />
-            <span className={`block h-px w-6 bg-foreground transition-opacity ${open ? "opacity-0" : ""}`} />
-            <span className={`block h-px w-6 bg-foreground transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+            <span className={`landing-bg-inverse block h-px w-6 transition-transform ${open ? "translate-y-2 rotate-45" : ""}`} />
+            <span className={`landing-bg-inverse block h-px w-6 transition-opacity ${open ? "opacity-0" : ""}`} />
+            <span className={`landing-bg-inverse block h-px w-6 transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`} />
           </button>
         </div>
       </div>
 
       {open && (
-        <div className="border-t border-[#d9c8b4] bg-[#fbf7f0]/96 backdrop-blur-xl md:hidden">
+        <div className="landing-border-soft border-t bg-white/98 backdrop-blur-xl md:hidden">
           <div className="flex flex-col gap-5 px-6 py-7">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={isHome ? link.href : `/${link.href}`}
                 onClick={(e) => { handleAnchor(link.href)(e); setOpen(false); }}
-                className="text-base font-medium tracking-tight text-foreground"
+                className="landing-text-high text-base font-medium tracking-tight"
               >
                 {link.label}
               </a>
@@ -110,20 +113,24 @@ export default function Navbar() {
                 setOpen(false);
                 openModal(null);
               }}
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-[var(--orange)] px-6 py-3 text-base font-semibold tracking-tight text-white"
+              className="mt-2 inline-flex items-center justify-center rounded-full bg-[var(--orange)] px-6 py-3 text-base font-semibold tracking-tight text-white shadow-[0_12px_26px_rgba(241,102,77,0.18)]"
             >
               Réserver
             </button>
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-full border border-foreground/15 px-6 py-3 text-base font-medium text-foreground"
+            <button
+              onClick={() => {
+                setOpen(false);
+                setLoginOpen(true);
+              }}
+              type="button"
+              className="landing-border-soft landing-text-high mt-2 inline-flex items-center justify-center rounded-full border px-6 py-3 text-base font-medium"
             >
               Connexion
-            </Link>
+            </button>
           </div>
         </div>
       )}
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </nav>
   );
 }

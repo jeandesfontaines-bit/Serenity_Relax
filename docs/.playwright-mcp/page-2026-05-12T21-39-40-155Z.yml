@@ -1,0 +1,80 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e395]:
+    - banner [ref=e396]:
+      - generic [ref=e397]:
+        - button "SERENITY" [ref=e398] [cursor=pointer]:
+          - paragraph [ref=e399]: SERENITY
+        - navigation [ref=e400]:
+          - button "Agenda" [ref=e401] [cursor=pointer]:
+            - img [ref=e402]
+            - text: Agenda
+          - button "Clients" [ref=e404] [cursor=pointer]:
+            - img [ref=e405]
+            - text: Clients
+          - button "Finances" [ref=e410] [cursor=pointer]:
+            - img [ref=e411]
+            - text: Finances
+      - generic [ref=e414]:
+        - generic [ref=e415]:
+          - img [ref=e416]
+          - textbox "Rechercher un patient..." [ref=e419]
+        - generic [ref=e421]:
+          - button [ref=e422] [cursor=pointer]:
+            - img [ref=e423]
+          - button [ref=e427] [cursor=pointer]:
+            - img [ref=e428]
+          - button [ref=e431] [cursor=pointer]:
+            - img [ref=e432]
+    - main [ref=e438]:
+      - generic [ref=e440]:
+        - generic [ref=e441]:
+          - generic [ref=e442]:
+            - generic [ref=e443]:
+              - img [ref=e445]
+              - img [ref=e447]
+            - paragraph [ref=e449]: REVENUS
+            - heading "0 CHF" [level=3] [ref=e450]
+          - generic [ref=e451]:
+            - generic [ref=e452]:
+              - img [ref=e454]
+              - img [ref=e457]
+            - paragraph [ref=e459]: SOINS
+            - heading "0" [level=3] [ref=e460]
+          - generic [ref=e461]:
+            - generic [ref=e462]:
+              - img [ref=e464]
+              - img [ref=e469]
+            - paragraph [ref=e471]: PATIENTS
+            - heading "124" [level=3] [ref=e472]
+          - generic [ref=e473]:
+            - generic [ref=e474]:
+              - img [ref=e476]
+              - img [ref=e478]
+            - paragraph [ref=e480]: IMPAYÉS
+            - heading "3" [level=3] [ref=e481]
+        - generic [ref=e482]:
+          - generic [ref=e483]:
+            - generic [ref=e484]:
+              - generic [ref=e485]:
+                - paragraph [ref=e486]: PROGRAMMATION DU JOUR
+                - heading "Agenda" [level=4] [ref=e487]
+              - button "VOIR TOUT" [ref=e488] [cursor=pointer]:
+                - text: VOIR TOUT
+                - img [ref=e489]
+            - generic [ref=e492]:
+              - img [ref=e493]
+              - paragraph [ref=e496]: AUCUNE SÉANCE AUJOURD'HUI
+          - generic [ref=e498]:
+            - generic [ref=e499]:
+              - generic [ref=e500]:
+                - paragraph [ref=e501]: ARCHIVES
+                - heading "Notes" [level=4] [ref=e502]
+              - button [ref=e503] [cursor=pointer]:
+                - img [ref=e504]
+            - paragraph [ref=e508]: AUCUNE NOTE RÉCENTE
+            - button "RÉPERTOIRE PATIENTS" [ref=e509] [cursor=pointer]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e387] [cursor=pointer]:
+    - img [ref=e388]
+  - alert [ref=e381]

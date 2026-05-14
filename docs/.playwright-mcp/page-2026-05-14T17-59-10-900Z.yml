@@ -1,0 +1,360 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY by João" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+          - generic [ref=e7]: by João
+        - generic [ref=e8]:
+          - link "Sessions" [ref=e9] [cursor=pointer]:
+            - /url: "#sessions"
+          - link "Bienfaits" [ref=e10] [cursor=pointer]:
+            - /url: "#sanctuary"
+          - link "FAQ" [ref=e11] [cursor=pointer]:
+            - /url: "#atelier"
+        - generic [ref=e12]:
+          - button "Réserver" [ref=e13] [cursor=pointer]
+          - button "Connexion" [active] [ref=e14] [cursor=pointer]
+    - main [ref=e15]:
+      - generic [ref=e17]:
+        - generic [ref=e19]:
+          - generic: JOÃO
+          - img "L'expertise du geste par João" [ref=e21]
+        - generic [ref=e23]:
+          - generic [ref=e28]: Massothérapie thérapeutique · Genève
+          - heading "Le soin juste, pour votre corps." [level=1] [ref=e29]:
+            - text: Le soin juste,
+            - text: pour votre corps.
+          - generic [ref=e30]:
+            - paragraph [ref=e31]: Des massages thérapeutiques pensés pour soulager les tensions, relancer la récupération et ramener le corps vers un équilibre durable.
+            - paragraph [ref=e32]: Chaque séance est ajustée à votre état du moment, avec une approche précise, calme et entièrement sur-mesure.
+          - generic [ref=e33]:
+            - button "Réserver un soin" [ref=e34] [cursor=pointer]:
+              - generic [ref=e35]: Réserver un soin
+              - img [ref=e37]
+            - link "Découvrir les soins →" [ref=e40] [cursor=pointer]:
+              - /url: "#sessions"
+              - text: Découvrir les soins
+              - generic [ref=e41]: →
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e44]: Genève
+              - generic [ref=e45]: Cabinet à Cointrin
+            - generic [ref=e46]:
+              - generic [ref=e47]: "8"
+              - generic [ref=e48]: Soins ciblés
+            - generic [ref=e49]:
+              - generic [ref=e50]: 100%
+              - generic [ref=e51]: Adapté à votre corps
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - generic [ref=e58]: — Expertise
+            - heading "Les bienfaits sur votre corps." [level=2] [ref=e59]:
+              - text: Les bienfaits
+              - text: sur votre corps.
+          - paragraph [ref=e61]: Le massage thérapeutique agit sur les tensions, la mobilité, la circulation et l'apaisement global.
+        - generic [ref=e62]:
+          - article [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: Bénéfice prioritaire
+              - generic [ref=e66]: "01"
+            - generic [ref=e67]:
+              - heading "Soulagement des douleurs" [level=3] [ref=e68]
+              - paragraph [ref=e69]: Apaise les tensions musculaires, réduit les raideurs et atténue les douleurs dorsales, cervicales ou articulaires.
+            - paragraph [ref=e72]: Base du rituel thérapeutique
+          - article [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]: Bénéfice ciblé
+              - generic [ref=e76]: "02"
+            - generic [ref=e77]:
+              - heading "Souplesse et mobilité" [level=3] [ref=e78]
+              - paragraph [ref=e79]: Assouplit les muscles, améliore la posture et prévient les inconforts chroniques.
+            - paragraph [ref=e82]: Effet complémentaire
+          - article [ref=e83]:
+            - generic [ref=e84]:
+              - generic [ref=e85]: Bénéfice ciblé
+              - generic [ref=e86]: "03"
+            - generic [ref=e87]:
+              - heading "Circulation et vitalité" [level=3] [ref=e88]
+              - paragraph [ref=e89]: Stimule la circulation sanguine et lymphatique, favorise l'élimination des toxines et accélère la récupération.
+            - paragraph [ref=e92]: Effet complémentaire
+          - article [ref=e93]:
+            - generic [ref=e94]:
+              - generic [ref=e95]: Bénéfice ciblé
+              - generic [ref=e96]: "04"
+            - generic [ref=e97]:
+              - heading "Beauté et peau" [level=3] [ref=e98]
+              - paragraph [ref=e99]: Adoucit et revitalise la peau, tout en améliorant son aspect grâce aux mouvements de pétrissage.
+            - paragraph [ref=e102]: Effet complémentaire
+          - article [ref=e103]:
+            - generic [ref=e104]:
+              - generic [ref=e105]: Bénéfice ciblé
+              - generic [ref=e106]: "05"
+            - generic [ref=e107]:
+              - heading "Respiration et énergie" [level=3] [ref=e108]
+              - paragraph [ref=e109]: Apaise le mental, approfondit la respiration et redonne énergie et équilibre.
+            - paragraph [ref=e112]: Effet complémentaire
+          - article [ref=e113]:
+            - generic [ref=e114]:
+              - generic [ref=e115]: Bénéfice ciblé
+              - generic [ref=e116]: "06"
+            - generic [ref=e117]:
+              - heading "Bien-être émotionnel" [level=3] [ref=e118]
+              - paragraph [ref=e119]: Réduit le stress, favorise la relaxation profonde et procure une sensation durable d'harmonie.
+            - paragraph [ref=e122]: Effet complémentaire
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - generic [ref=e129]: — La collection
+            - heading "Huit soins, une intention." [level=2] [ref=e130]:
+              - text: Huit soins,
+              - text: une intention.
+          - paragraph [ref=e132]: "Chaque soin est calibré : durée, intensité, intention. Découvrez la collection et choisissez le rituel qui correspond à votre besoin du moment."
+        - generic [ref=e133]:
+          - article [ref=e134]:
+            - button "Bambous ● Signature N° 01 1 heure Bambous Bâtons de bambou tièdes pour sculpter les fascias et libérer les tensions profondes. Réserver" [ref=e135] [cursor=pointer]:
+              - generic [ref=e136]:
+                - img "Bambous" [ref=e137]
+                - generic [ref=e139]:
+                  - generic [ref=e140]: ●
+                  - text: Signature
+              - generic [ref=e141]:
+                - generic [ref=e142]:
+                  - generic [ref=e143]: N° 01
+                  - generic [ref=e145]: 1 heure
+                - heading "Bambous" [level=3] [ref=e146]
+                - paragraph [ref=e147]: Bâtons de bambou tièdes pour sculpter les fascias et libérer les tensions profondes.
+                - generic [ref=e149]:
+                  - generic [ref=e150]: Réserver
+                  - img [ref=e151]
+          - article [ref=e154]:
+            - button "Drainage Lymphatique ● Drainant N° 02 1 heure Drainage Pompages lents pour drainer, alléger et relancer la circulation des fluides. Réserver" [ref=e155] [cursor=pointer]:
+              - generic [ref=e156]:
+                - img "Drainage Lymphatique" [ref=e157]
+                - generic [ref=e159]:
+                  - generic [ref=e160]: ●
+                  - text: Drainant
+              - generic [ref=e161]:
+                - generic [ref=e162]:
+                  - generic [ref=e163]: N° 02
+                  - generic [ref=e165]: 1 heure
+                - heading "Drainage" [level=3] [ref=e166]
+                - paragraph [ref=e167]: Pompages lents pour drainer, alléger et relancer la circulation des fluides.
+                - generic [ref=e169]:
+                  - generic [ref=e170]: Réserver
+                  - img [ref=e171]
+          - article [ref=e174]:
+            - button "Aromathérapie ● Sensoriel N° 03 1 heure Aromathérapie Synergie d'huiles essentielles personnalisées pour accorder corps et système nerveux. Réserver" [ref=e175] [cursor=pointer]:
+              - generic [ref=e176]:
+                - img "Aromathérapie" [ref=e177]
+                - generic [ref=e179]:
+                  - generic [ref=e180]: ●
+                  - text: Sensoriel
+              - generic [ref=e181]:
+                - generic [ref=e182]:
+                  - generic [ref=e183]: N° 03
+                  - generic [ref=e185]: 1 heure
+                - heading "Aromathérapie" [level=3] [ref=e186]
+                - paragraph [ref=e187]: Synergie d'huiles essentielles personnalisées pour accorder corps et système nerveux.
+                - generic [ref=e189]:
+                  - generic [ref=e190]: Réserver
+                  - img [ref=e191]
+          - article [ref=e194]:
+            - button "Réflexologie ● Ciblé N° 04 30 minutes Réflexologie Travail ciblé sur les points plantaires pour rééquilibrer l'énergie des organes. Réserver" [ref=e195] [cursor=pointer]:
+              - generic [ref=e196]:
+                - img "Réflexologie" [ref=e197]
+                - generic [ref=e199]:
+                  - generic [ref=e200]: ●
+                  - text: Ciblé
+              - generic [ref=e201]:
+                - generic [ref=e202]:
+                  - generic [ref=e203]: N° 04
+                  - generic [ref=e205]: 30 minutes
+                - heading "Réflexologie" [level=3] [ref=e206]
+                - paragraph [ref=e207]: Travail ciblé sur les points plantaires pour rééquilibrer l'énergie des organes.
+                - generic [ref=e209]:
+                  - generic [ref=e210]: Réserver
+                  - img [ref=e211]
+          - article [ref=e214]:
+            - button "Deep Tissue ● Intense N° 05 1 heure Deep Tissue Pression soutenue pour dénouer les couches profondes et accélérer la récupération. Réserver" [ref=e215] [cursor=pointer]:
+              - generic [ref=e216]:
+                - img "Deep Tissue" [ref=e217]
+                - generic [ref=e219]:
+                  - generic [ref=e220]: ●
+                  - text: Intense
+              - generic [ref=e221]:
+                - generic [ref=e222]:
+                  - generic [ref=e223]: N° 05
+                  - generic [ref=e225]: 1 heure
+                - heading "Deep Tissue" [level=3] [ref=e226]
+                - paragraph [ref=e227]: Pression soutenue pour dénouer les couches profondes et accélérer la récupération.
+                - generic [ref=e229]:
+                  - generic [ref=e230]: Réserver
+                  - img [ref=e231]
+          - article [ref=e234]:
+            - button "Thérapeutique ● Thérapie N° 06 1 heure Thérapeutique Soin sur-mesure pour soulager les tensions chroniques et restaurer la mobilité. Réserver" [ref=e235] [cursor=pointer]:
+              - generic [ref=e236]:
+                - img "Thérapeutique" [ref=e237]
+                - generic [ref=e239]:
+                  - generic [ref=e240]: ●
+                  - text: Thérapie
+              - generic [ref=e241]:
+                - generic [ref=e242]:
+                  - generic [ref=e243]: N° 06
+                  - generic [ref=e245]: 1 heure
+                - heading "Thérapeutique" [level=3] [ref=e246]
+                - paragraph [ref=e247]: Soin sur-mesure pour soulager les tensions chroniques et restaurer la mobilité.
+                - generic [ref=e249]:
+                  - generic [ref=e250]: Réserver
+                  - img [ref=e251]
+          - article [ref=e254]:
+            - button "Deep Relax ● Relax N° 07 1 heure Deep Relax Mouvements lents et enveloppants pour conduire le système nerveux au lâcher-prise. Réserver" [ref=e255] [cursor=pointer]:
+              - generic [ref=e256]:
+                - img "Deep Relax" [ref=e257]
+                - generic [ref=e259]:
+                  - generic [ref=e260]: ●
+                  - text: Relax
+              - generic [ref=e261]:
+                - generic [ref=e262]:
+                  - generic [ref=e263]: N° 07
+                  - generic [ref=e265]: 1 heure
+                - heading "Deep Relax" [level=3] [ref=e266]
+                - paragraph [ref=e267]: Mouvements lents et enveloppants pour conduire le système nerveux au lâcher-prise.
+                - generic [ref=e269]:
+                  - generic [ref=e270]: Réserver
+                  - img [ref=e271]
+          - article [ref=e274]:
+            - button "Thaï aux Huiles ● Énergie N° 08 1 heure Thaï Huiles Pressions et étirements fluides pour relancer l'énergie vitale, version huiles chaudes. Réserver" [ref=e275] [cursor=pointer]:
+              - generic [ref=e276]:
+                - img "Thaï aux Huiles" [ref=e277]
+                - generic [ref=e279]:
+                  - generic [ref=e280]: ●
+                  - text: Énergie
+              - generic [ref=e281]:
+                - generic [ref=e282]:
+                  - generic [ref=e283]: N° 08
+                  - generic [ref=e285]: 1 heure
+                - heading "Thaï Huiles" [level=3] [ref=e286]
+                - paragraph [ref=e287]: Pressions et étirements fluides pour relancer l'énergie vitale, version huiles chaudes.
+                - generic [ref=e289]:
+                  - generic [ref=e290]: Réserver
+                  - img [ref=e291]
+      - generic [ref=e298]:
+        - generic [ref=e299]:
+          - paragraph [ref=e301]: FAQ Serenity
+          - generic [ref=e302]:
+            - article [ref=e303]:
+              - button "01 Comment se préparer à une séance ?" [expanded] [ref=e304] [cursor=pointer]:
+                - generic [ref=e305]: "01"
+                - heading "Comment se préparer à une séance ?" [level=3] [ref=e307]
+                - img [ref=e309]
+              - paragraph [ref=e315]: Arrivez 10 minutes en avance pour respirer. Évitez un repas lourd dans l'heure précédente. Portez ce qui vous met à l'aise — vous recevrez peignoir et linge à votre arrivée.
+            - article [ref=e316]:
+              - button "02 Quelle est la politique d'annulation ?" [ref=e317] [cursor=pointer]:
+                - generic [ref=e318]: "02"
+                - heading "Quelle est la politique d'annulation ?" [level=3] [ref=e320]
+                - img [ref=e322]
+            - article [ref=e323]:
+              - button "03 Proposez-vous des soins à domicile ?" [ref=e324] [cursor=pointer]:
+                - generic [ref=e325]: "03"
+                - heading "Proposez-vous des soins à domicile ?" [level=3] [ref=e327]
+                - img [ref=e329]
+            - article [ref=e330]:
+              - button "04 Combien de temps avant de ressentir les effets ?" [ref=e331] [cursor=pointer]:
+                - generic [ref=e332]: "04"
+                - heading "Combien de temps avant de ressentir les effets ?" [level=3] [ref=e334]
+                - img [ref=e336]
+            - article [ref=e337]:
+              - button "05 Acceptez-vous les paiements par carte ?" [ref=e338] [cursor=pointer]:
+                - generic [ref=e339]: "05"
+                - heading "Acceptez-vous les paiements par carte ?" [level=3] [ref=e341]
+                - img [ref=e343]
+        - generic [ref=e344]:
+          - generic [ref=e345]: — Questions fréquentes
+          - heading "Tout ce qu'il faut savoir avant la séance." [level=2] [ref=e346]:
+            - text: Tout ce qu'il faut savoir
+            - text: avant la séance.
+          - paragraph [ref=e347]: Quelques repères simples pour arriver sereinement au cabinet, comprendre le déroulé du soin et savoir à quoi vous attendre.
+          - generic [ref=e348]:
+            - paragraph [ref=e349]: Besoin d'un échange direct ?
+            - paragraph [ref=e350]: Si votre question concerne un besoin précis, le plus simple reste d'écrire avant de réserver.
+    - contentinfo [ref=e351]:
+      - generic [ref=e354]:
+        - generic [ref=e355]:
+          - text: — Restons connectés
+          - heading "Recevez les nouveautés du cabinet." [level=3] [ref=e356]:
+            - text: Recevez les nouveautés
+            - emphasis [ref=e357]: du cabinet.
+        - generic [ref=e359]:
+          - paragraph [ref=e360]: Newsletter du cabinet
+          - generic [ref=e362]:
+            - textbox "votre.email@exemple.ch" [ref=e363]
+            - generic [ref=e364]:
+              - button "S'inscrire" [ref=e365] [cursor=pointer]:
+                - text: S'inscrire
+                - img [ref=e366]
+              - paragraph [ref=e369]: En vous inscrivant, vous acceptez notre politique de confidentialité.
+      - generic [ref=e370]:
+        - generic [ref=e371]:
+          - generic [ref=e372]:
+            - generic [ref=e373]:
+              - generic [ref=e374]: SRT
+              - generic [ref=e375]: by João
+            - generic [ref=e376]:
+              - link "Instagram" [ref=e377] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenity.relax.therapy_by_joao
+                - img [ref=e378]
+              - link "Email" [ref=e381] [cursor=pointer]:
+                - /url: mailto:hello@serenityrelax.ch
+                - img [ref=e382]
+          - generic [ref=e385]:
+            - generic [ref=e386]:
+              - paragraph [ref=e387]: Cabinet
+              - paragraph [ref=e388]:
+                - text: Chemin de Joinville 26
+                - text: 4ème étage
+                - text: 1216 Cointrin – Genève
+            - generic [ref=e389]:
+              - paragraph [ref=e390]: Horaires
+              - paragraph [ref=e391]:
+                - text: Lun — Ven · 8h00 — 21h00
+                - text: Sam — Dim · 9h30 — 21h00
+                - text: Sur rendez-vous
+            - generic [ref=e392]:
+              - paragraph [ref=e393]: Contact
+              - generic [ref=e394]:
+                - paragraph [ref=e395]: +41 22 000 00 00
+                - link "hello@serenityrelax.ch" [ref=e396] [cursor=pointer]:
+                  - /url: mailto:hello@serenityrelax.ch
+        - generic [ref=e397]:
+          - paragraph [ref=e398]: © 2026 SERENITY RELAX THERAPY by João · Tous droits réservés
+          - generic [ref=e399]:
+            - link "Mentions légales" [ref=e400] [cursor=pointer]:
+              - /url: "#"
+            - link "Confidentialité" [ref=e401] [cursor=pointer]:
+              - /url: "#"
+            - link "CGV" [ref=e402] [cursor=pointer]:
+              - /url: "#"
+    - button "IA Concierge" [ref=e403] [cursor=pointer]:
+      - generic [ref=e408]: IA Concierge
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e415] [cursor=pointer]:
+    - img [ref=e416]
+  - alert [ref=e409]
+  - generic [ref=e421]:
+    - button "Fermer la connexion" [ref=e422] [cursor=pointer]:
+      - img [ref=e423]
+    - generic [ref=e426]:
+      - generic [ref=e427]:
+        - heading "Connexion" [level=2] [ref=e428]
+        - paragraph [ref=e431]: Serenity Relax Therapy
+      - generic [ref=e432]:
+        - paragraph [ref=e433]: Session active
+        - paragraph [ref=e434]: Connecté avec jean.desfontaines@gmail.com
+        - paragraph [ref=e435]: Vous pouvez ouvrir votre espace directement, ou vous déconnecter pour utiliser un autre compte.
+      - generic [ref=e436]:
+        - button "Ouvrir mon espace" [ref=e437] [cursor=pointer]
+        - button "Utiliser un autre compte" [ref=e438] [cursor=pointer]

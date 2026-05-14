@@ -1,0 +1,1642 @@
+[    6474ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    6908ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[    6921ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[    7020ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    7219ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[   46565ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   47013ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[   56865ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   57083ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[   67736ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   73232ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[   85357ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   86659ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[   90440ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   90614ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[   93684ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   93860ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[   98356ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   98525ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  104625ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  104945ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  264383ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[  264644ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/favicon.ico:0
+[  264664ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  264664ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  264672ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  264715ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  264717ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/favicon.ico?favicon.7ed73651.ico:0
+[  264817ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  265160ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  276876ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  278583ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  294721ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  295566ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  305584ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  305687ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  305711ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  305892ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[  305976ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/favicon.ico:0
+[  305989ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  305993ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  306029ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  306079ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  306100ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/favicon.ico?favicon.7ed73651.ico:0
+[  306131ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  312060ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  312227ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  316180ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  316436ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  328120ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  328203ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  330117ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  330284ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  344899ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  344990ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  348343ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  348672ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  350273ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  350660ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  352351ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  353039ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  368466ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  368924ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  394782ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  395313ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  402656ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  402714ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  418130ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  418827ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  431782ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  431843ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  440307ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  440658ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  461259ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  461353ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  463726ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  463937ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  471858ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  472120ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  472634ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  472640ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  472808ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  475959ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  478779ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[  479065ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  479072ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[  479100ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/favicon.ico:0
+[  479120ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  479222ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  479242ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/favicon.ico?favicon.7ed73651.ico:0
+[  479257ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  481753ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  481923ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  487743ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  488086ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  498594ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  502469ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  511173ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  512309ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  525568ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  527060ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  533558ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  534148ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  542188ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  542684ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  558022ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  559616ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  567263ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  567389ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  579463ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  579671ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  597909ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  600058ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  621037ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  621390ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  633244ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  633497ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  640419ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  640552ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  648097ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  648399ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  692720ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  694052ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  725012ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  725770ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  752738ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  753340ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  779056ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  780397ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  792325ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  793571ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  795574ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  796262ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  848859ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  849057ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  864983ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  865160ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  886425ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  886600ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  904584ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  904740ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  953189ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  953343ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  963440ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  963633ms] [ERROR] ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx:462:5
+Parsing ecmascript source code failed
+  460 | }
+  461 | p>
+> 462 |     </div>
+      |     ^
+  463 |   );
+  464 | }
+  465 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/AppointmentDetail.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[  984055ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  984618ms] [LOG] [Fast Refresh] done in 588ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  984830ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  984833ms] [LOG] [Fast Refresh] done in 104ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  985019ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  988908ms] [LOG] [Fast Refresh] done in 3992ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1023075ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1023269ms] [LOG] [Fast Refresh] done in 300ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1034812ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1034929ms] [LOG] [Fast Refresh] done in 219ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1069256ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1069348ms] [LOG] [Fast Refresh] done in 192ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1079334ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1080360ms] [LOG] [Fast Refresh] done in 1126ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1086529ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1086699ms] [LOG] [Fast Refresh] done in 272ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1097619ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1097790ms] [LOG] [Fast Refresh] done in 271ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1103903ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1104059ms] [LOG] [Fast Refresh] done in 256ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1111528ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1111697ms] [LOG] [Fast Refresh] done in 270ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1119111ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1119522ms] [LOG] [Fast Refresh] done in 505ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1127461ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 1127878ms] [LOG] [Fast Refresh] done in 519ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 1145840ms] [WARNING] [GSI_LOGGER]: Your client application uses one of the Google One Tap prompt UI status methods that may stop functioning when FedCM becomes mandatory. Refer to the migration guide to update your code accordingly and opt-in to FedCM to test your changes. Learn more: https://developers.google.com/identity/gsi/web/guides/fedcm-migration?s=dc#display_moment and https://developers.google.com/identity/gsi/web/guides/fedcm-migration?s=dc#skipped_moment @ https://accounts.google.com/gsi/client:84
