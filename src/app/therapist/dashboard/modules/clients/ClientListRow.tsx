@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, MoreHorizontal } from 'lucide-react';
 import { Client } from '../../types';
 import { ClientSummary } from './constants';
 import Checkbox from './Checkbox';
@@ -26,11 +26,10 @@ export default function ClientListRow({
   return (
     <div
       onClick={() => onSelect(client)}
-      className="grid w-full items-center border-b px-8 py-8 text-left transition-all duration-700 group last:border-b-0 cursor-pointer border-border/30 hover:bg-slate-50/80 active:scale-[0.995]"
-      style={{
-        gridTemplateColumns: gridTemplate,
-        background: isSelected ? 'hsl(var(--primary)/0.05)' : 'transparent'
-      }}
+      className={`grid w-full items-center border-b px-4 py-3 text-left transition-all duration-200 group last:border-b-0 cursor-pointer border-border hover:bg-accent/50 active:scale-[0.998] ${
+        isSelected ? 'bg-primary/5' : ''
+      }`}
+      style={{ gridTemplateColumns: gridTemplate }}
     >
       <div className="flex justify-center" onClick={(e) => e.stopPropagation()}>
         <Checkbox 
@@ -38,53 +37,63 @@ export default function ClientListRow({
           onChange={() => onToggleSelection(client.id)} 
         />
       </div>
-      {visibleColumnIds.has('firstName') && (
-        <div className="min-w-0 pr-8 text-sm font-black tracking-tight text-foreground">
-          {client.firstName || '—'}
+
+      {visibleColumnIds.has('patient') && (
+        <div className="flex min-w-0 items-center gap-3 pr-4">
+          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+            {(client.firstName?.[0] || '') + (client.lastName?.[0] || '')}
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="truncate text-sm font-semibold text-foreground">
+              {client.firstName} {client.lastName}
+            </span>
+            <span className="truncate text-[10px] text-muted-foreground uppercase tracking-wider">
+              {client.city || '—'}
+            </span>
+          </div>
         </div>
       )}
-      {visibleColumnIds.has('lastName') && (
-        <div className="min-w-0 pr-8 text-sm font-black tracking-tight text-foreground">
-          {client.lastName || '—'}
+
+      {visibleColumnIds.has('status') && (
+        <div className="flex items-center">
+          {summary.sessionsCount < 2 ? (
+            <div className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-600">
+              Nouveau
+            </div>
+          ) : (
+            <div className="rounded-full bg-primary/5 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary/60">
+              Actif
+            </div>
+          )}
         </div>
       )}
-      {visibleColumnIds.has('email') && (
-        <div className="min-w-0 pr-8 text-[13px] font-medium text-muted-foreground/80">
-          {client.email || '—'}
-        </div>
-      )}
-      {visibleColumnIds.has('phone') && (
-        <div className="min-w-0 pr-8 text-[13px] font-medium text-muted-foreground/80">
-          {client.phone || '—'}
-        </div>
-      )}
-      {visibleColumnIds.has('zip') && (
-        <div className="text-[13px] font-medium text-muted-foreground/80">
-          {client.zip || '—'}
-        </div>
-      )}
-      {visibleColumnIds.has('city') && (
-        <div className="min-w-0 pr-8 text-[13px] font-medium text-muted-foreground/80">
-          {client.city || '—'}
-        </div>
-      )}
+
       {visibleColumnIds.has('lastVisit') && (
-        <div className="text-[13px] font-bold tracking-tight text-muted-foreground">
+        <div className="text-sm font-medium text-muted-foreground">
           {summary.lastVisitLabel}
         </div>
       )}
-      {visibleColumnIds.has('preferredRitual') && (
-        <div className="pr-8 text-[13px] font-medium text-muted-foreground/80">
-          {summary.preferredRitual}
-        </div>
-      )}
+
       {visibleColumnIds.has('sessions') && (
-        <div className="flex justify-center text-lg font-black tracking-tight text-foreground tabular-nums">
+        <div className="flex justify-center text-sm font-bold text-foreground tabular-nums">
           {summary.sessionsCount}
         </div>
       )}
-      <div className="flex justify-end text-muted-foreground opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-1">
-        <ChevronRight size={18} strokeWidth={1.25} />
+
+      {visibleColumnIds.has('email') && (
+        <div className="min-w-0 pr-4 text-sm text-muted-foreground truncate">
+          {client.email || '—'}
+        </div>
+      )}
+
+      {visibleColumnIds.has('phone') && (
+        <div className="min-w-0 pr-4 text-sm text-muted-foreground">
+          {client.phone || '—'}
+        </div>
+      )}
+
+      <div className="flex justify-end pr-4 text-muted-foreground/30 transition-colors group-hover:text-muted-foreground">
+        <MoreHorizontal size={16} />
       </div>
     </div>
   );

@@ -1,15 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download, FileText, Calendar, ArrowLeft, Sparkle, Loader2 } from 'lucide-react';
+import { Download, Calendar, ArrowLeft, Sparkle, Loader2 } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import { useFirestore, useUser } from '@/firebase';
 import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
 import { buildInvoicePdf } from '@/lib/pdf-utils';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 
 export default function ClientInvoicesPage() {
   const router = useRouter();
@@ -28,23 +26,28 @@ export default function ClientInvoicesPage() {
   useEffect(() => {
     if (isUserLoading) return;
     if (!firestore || !effectiveClientId) {
-      if (!isUserLoading) setLoading(false);
+      setLoading(false);
       return;
     }
-    
+
     const q = query(
-      collection(firestore, 'invoices'), 
+      collection(firestore, 'invoices'),
       where('clientId', '==', effectiveClientId),
-      orderBy('createdAt', 'desc')
+      orderBy('createdAt', 'desc'),
     );
 
-    const unsub = onSnapshot(q, (snap) => {
-      setInvoices(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-      setLoading(false);
-    }, (err) => {
-      console.error("Invoices fetch error:", err);
-      setLoading(false);
-    });
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        setInvoices(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        setLoading(false);
+      },
+      (err) => {
+        console.error('Invoices fetch error:', err);
+        setLoading(false);
+      },
+    );
+
     return unsub;
   }, [effectiveClientId, firestore, isUserLoading]);
 
@@ -52,100 +55,103 @@ export default function ClientInvoicesPage() {
     buildInvoicePdf({
       invoiceNumber: inv.invoiceNumber || inv.id.slice(0, 8).toUpperCase(),
       clientName: inv.clientNameSnapshot || user?.displayName || 'Patient',
-      date: inv.date || format(new Date(), 'dd/MM/yyyy'),
-      serviceName: inv.service || (inv.items && inv.items[0]?.description) || 'Soin holistique',
-      amount: Number(inv.amount || 0)
+      date: inv.date || new Date().toLocaleDateString('fr-CH'),
+      serviceName: inv.service || inv.items?.[0]?.description || 'Soin holistique',
+      amount: Number(inv.amount || 0),
     });
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-24">
+    <div className="landing-v2 min-h-screen pb-24" style={{ background: 'var(--landing-page-bg)' }}>
       <Navbar />
-      
-      <main className="mx-auto max-w-7xl px-6 pt-32 lg:px-8 lg:pt-40">
-        <div className="max-w-5xl mx-auto space-y-12">
-          
-          <button 
-            onClick={() => router.push('/client/dashboard')} 
-            className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all group"
+
+      <main className="mx-auto max-w-[1280px] px-6 pt-28 md:px-10 lg:px-12 lg:pt-36">
+        <div className="mx-auto max-w-5xl space-y-8">
+          <button
+            onClick={() => router.push('/client/dashboard')}
+            className="landing-type-caption inline-flex items-center gap-3 text-[var(--landing-muted)] transition-colors hover:text-[var(--teal-deep)]"
           >
-            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" /> 
-            Retour au Dashboard
+            <ArrowLeft size={16} className="transition-transform hover:-translate-x-0.5" />
+            Retour au dashboard
           </button>
 
-          <header className="space-y-6">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/5 border border-primary/10">
-              <Sparkle className="w-4 h-4 text-primary" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">Espace Justificatifs</span>
+          <header className="space-y-4">
+            <div className="landing-pill landing-pill-soft landing-type-caption inline-flex gap-3 border text-[var(--landing-warm)]">
+              <Sparkle className="h-4 w-4 text-[var(--orange)]" />
+              <span>Espace justificatifs</span>
             </div>
-            <h1 className="text-5xl font-serif leading-tight text-foreground md:text-8xl">
-              Mes <span className="italic opacity-40 font-serif">Sessions.</span>
+            <h1 className="landing-type-h1 landing-text-high display-tight max-w-[11ch]">
+              Mes
+              <br />
+              <span className="landing-display-italic text-[var(--landing-muted)]">sessions</span>
             </h1>
-            <p className="text-xl text-muted-foreground font-sans max-w-xl leading-relaxed">
+            <p className="landing-type-body landing-text-body max-w-2xl">
               Retrouvez l&apos;historique complet de vos soins et téléchargez vos justificatifs de remboursement en un clic.
             </p>
           </header>
 
           {loading ? (
-            <div className="h-96 flex flex-col items-center justify-center gap-6">
-               <Loader2 className="w-12 h-12 text-primary animate-spin" />
-               <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground/60">Synchronisation du Sanctuaire...</p>
+            <div className="landing-surface-card flex h-80 flex-col items-center justify-center gap-5 rounded-[2rem] p-10">
+              <Loader2 className="h-10 w-10 animate-spin text-[var(--teal-deep)]" />
+              <p className="landing-type-caption landing-text-muted">Synchronisation des justificatifs</p>
+            </div>
+          ) : invoices.length === 0 ? (
+            <div className="landing-surface-card rounded-[2rem] border-dashed px-8 py-10 text-center md:px-12 md:py-12">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.3rem] bg-[var(--landing-tint-fill)] text-[var(--landing-muted)]">
+                <Calendar size={30} />
+              </div>
+              <h2 className="landing-type-h4 landing-text-high mt-6">Aucune prestation enregistrée</h2>
+              <p className="landing-type-body-s landing-text-body mx-auto mt-3 max-w-md">
+                Dès votre premier soin, vos justificatifs apparaîtront ici avec téléchargement immédiat.
+              </p>
+              <button
+                onClick={() => router.push('/client/book')}
+                className="landing-type-micro mt-6 inline-flex rounded-full bg-[var(--teal-deep)] px-8 py-4 text-white transition-all hover:scale-[1.01] hover:bg-[var(--orange)]"
+              >
+                Réserver mon premier soin
+              </button>
             </div>
           ) : (
-            <div className="space-y-6">
-              {invoices.length === 0 ? (
-                <div className="glass-premium p-20 text-center space-y-6 border-dashed bg-muted/10">
-                   <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto text-muted-foreground/40">
-                     <Calendar size={40} />
-                   </div>
-                   <p className="text-xl font-serif italic text-muted-foreground">Aucune prestation n&apos;a encore été enregistrée.</p>
-                   <button 
-                     onClick={() => router.push('/client/book')}
-                     className="premium-button button-fill rounded-full"
-                   >
-                     Réserver mon premier soin
-                   </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-6">
-                  {invoices.map((inv, i) => (
-                    <motion.div 
-                      key={inv.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="glass-premium p-8 md:p-10 flex flex-col md:row justify-between items-center gap-10 group hover:border-primary/30 transition-all"
-                    >
-                      <div className="flex flex-col md:flex-row items-center gap-10 w-full md:w-auto text-center md:text-left">
-                         <div className="space-y-1">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Date</p>
-                            <p className="text-2xl font-serif text-foreground">{inv.date}</p>
-                         </div>
-                         <div className="hidden md:block w-px h-12 bg-border/50" />
-                         <div className="space-y-1">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Soin Reçu</p>
-                            <p className="text-2xl font-serif text-foreground">{inv.service || (inv.items && inv.items[0]?.description) || 'Soin Holistique'}</p>
-                         </div>
+            <div className="space-y-5">
+              {invoices.map((inv, index) => (
+                <motion.div
+                  key={inv.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="landing-surface-card rounded-[2rem] p-6 md:p-8"
+                >
+                  <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                    <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-3">
+                      <div className="space-y-2">
+                        <p className="landing-type-caption landing-text-muted">Date</p>
+                        <p className="landing-type-h5 landing-text-high">{inv.date || 'Date à confirmer'}</p>
                       </div>
+                      <div className="space-y-2">
+                        <p className="landing-type-caption landing-text-muted">Soin reçu</p>
+                        <p className="landing-type-h5 landing-text-high">
+                          {inv.service || inv.items?.[0]?.description || 'Soin holistique'}
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="landing-type-caption landing-text-muted">Investissement</p>
+                        <p className="landing-type-h4 landing-text-high">
+                          {inv.amount || 0}
+                          <span className="landing-type-caption ml-2 text-[var(--landing-muted)]">CHF</span>
+                        </p>
+                      </div>
+                    </div>
 
-                      <div className="flex items-center gap-10 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-border/50 pt-8 md:pt-0">
-                         <div className="text-left md:text-right space-y-1">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Investissement</p>
-                            <p className="text-4xl font-light text-foreground">{inv.amount} <small className="text-xs font-bold opacity-30 tracking-tight">CHF</small></p>
-                         </div>
-                         
-                         <button 
-                           onClick={() => handleDownload(inv)}
-                           className="w-16 h-16 rounded-2xl bg-secondary text-white flex items-center justify-center hover:bg-primary transition-all shadow-xl hover:scale-105 active:scale-95 group-hover:shadow-primary/20"
-                           title="Télécharger le justificatif"
-                         >
-                           <Download size={24} />
-                         </button>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
+                    <button
+                      onClick={() => handleDownload(inv)}
+                      className="inline-flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[var(--teal-deep)] text-white transition-all hover:scale-[1.03] hover:bg-[var(--orange)]"
+                      title="Télécharger le justificatif"
+                    >
+                      <Download size={20} />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           )}
         </div>

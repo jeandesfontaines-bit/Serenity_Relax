@@ -1,0 +1,8 @@
+[    1713ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    2322ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    2427ms] [LOG] [Fast Refresh] done in 207ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[    2469ms] [ERROR] Invoices fetch error: FirebaseError: The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/serenity-relax-joao/firestore/indexes?create_composite=ClRwcm9qZWN0cy9zZXJlbml0eS1yZWxheC1qb2FvL2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9pbnZvaWNlcy9pbmRleGVzL18QARoMCghjbGllbnRJZBABGg0KCWNyZWF0ZWRBdBACGgwKCF9fbmFtZV9fEAI @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[    2816ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    2835ms] [LOG] [Fast Refresh] done in 120ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[   43833ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   44032ms] [LOG] [Fast Refresh] done in 301ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

@@ -46,7 +46,7 @@ export default function DayColumn({
   );
 
   return (
-    <div className="border-r border-border relative">
+    <div className={`border-r border-border relative ${!isOpen ? 'closed-day-stripes' : ''}`}>
       <GridLines />
       
       {/* Available slot markers */}

@@ -1,0 +1,124 @@
+- generic [ref=e1]:
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e382]:
+        - button "S Serenity" [ref=e384] [cursor=pointer]:
+          - generic [ref=e386]: S
+          - generic [ref=e387]: Serenity
+        - navigation [ref=e388]:
+          - button "Dashboard" [ref=e389] [cursor=pointer]:
+            - img [ref=e390]
+            - generic [ref=e393]: Dashboard
+          - button "Agenda" [ref=e394] [cursor=pointer]:
+            - img [ref=e395]
+            - generic [ref=e397]: Agenda
+          - button "Clients" [ref=e398] [cursor=pointer]:
+            - img [ref=e399]
+            - generic [ref=e404]: Clients
+          - button "Finances" [ref=e405] [cursor=pointer]:
+            - img [ref=e406]
+            - generic [ref=e409]: Finances
+        - generic [ref=e410]:
+          - button "Paramètres" [ref=e411] [cursor=pointer]:
+            - img [ref=e412]
+            - generic [ref=e415]: Paramètres
+          - button "Déconnexion" [ref=e416] [cursor=pointer]:
+            - img [ref=e417]
+            - generic [ref=e420]: Déconnexion
+    - generic [ref=e46]:
+      - banner [ref=e47]:
+        - generic [ref=e49]:
+          - heading "4 – 10 mai 2026" [level=2] [ref=e421]
+          - paragraph [ref=e176]: Agenda Thérapeute
+        - generic [ref=e53]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e54]
+        - generic [ref=e178]:
+          - generic [ref=e179]:
+            - button [active] [ref=e180] [cursor=pointer]:
+              - img [ref=e181]
+            - button [ref=e183] [cursor=pointer]:
+              - img [ref=e184]
+            - button "Aujourd'hui" [ref=e186] [cursor=pointer]
+          - generic [ref=e187]:
+            - button "Semaine" [ref=e188] [cursor=pointer]
+            - button "Mois" [ref=e189] [cursor=pointer]
+          - button "Absences" [ref=e190] [cursor=pointer]:
+            - img [ref=e191]
+            - text: Absences
+      - main [ref=e55]:
+        - generic [ref=e198]:
+          - generic [ref=e199]:
+            - generic [ref=e201]: UTC+1
+            - generic [ref=e202]:
+              - paragraph [ref=e203]: Lun
+              - generic [ref=e205]: "4"
+            - generic [ref=e206]:
+              - paragraph [ref=e207]: Mar
+              - generic [ref=e209]: "5"
+            - generic [ref=e210]:
+              - paragraph [ref=e211]: Mer
+              - generic [ref=e213]: "6"
+            - generic [ref=e214]:
+              - paragraph [ref=e215]: Jeu
+              - generic [ref=e217]: "7"
+            - generic [ref=e218]:
+              - paragraph [ref=e219]: Ven
+              - generic [ref=e221]: "8"
+            - generic [ref=e222]:
+              - paragraph [ref=e223]: Sam
+              - generic [ref=e225]: "9"
+            - generic [ref=e226]:
+              - paragraph [ref=e227]: Dim
+              - generic [ref=e229]: "10"
+          - generic [ref=e230]:
+            - generic [ref=e231]:
+              - generic [ref=e232]:
+                - generic [ref=e233]: 08:00
+                - generic [ref=e234]: 09:00
+                - generic [ref=e235]: 10:00
+                - generic [ref=e236]: 11:00
+                - generic [ref=e237]: 12:00
+                - generic [ref=e238]: 13:00
+                - generic [ref=e239]: 14:00
+                - generic [ref=e240]: 15:00
+                - generic [ref=e241]: 16:00
+                - generic [ref=e242]: 17:00
+                - generic [ref=e243]: 18:00
+                - generic [ref=e244]: 19:00
+              - generic [ref=e245]:
+                - button [ref=e422] [cursor=pointer]:
+                  - img [ref=e424]
+                - button [ref=e425] [cursor=pointer]:
+                  - img [ref=e427]
+                - button [ref=e428] [cursor=pointer]:
+                  - img [ref=e430]
+              - generic [ref=e293]:
+                - button [ref=e309] [cursor=pointer]:
+                  - img [ref=e311]
+                - button [ref=e312] [cursor=pointer]:
+                  - img [ref=e314]
+                - button "j j Draineur Lymphatique 60 min":
+                  - generic [ref=e431] [cursor=pointer]:
+                    - paragraph [ref=e433]: j j
+                    - paragraph [ref=e435]: Draineur Lymphatique 60 min
+              - generic [ref=e315]:
+                - button [ref=e328] [cursor=pointer]:
+                  - img [ref=e330]
+                - button [ref=e331] [cursor=pointer]:
+                  - img [ref=e333]
+                - button [ref=e334] [cursor=pointer]:
+                  - img [ref=e336]
+              - generic [ref=e337]:
+                - button [ref=e350] [cursor=pointer]:
+                  - img [ref=e352]
+                - button [ref=e353] [cursor=pointer]:
+                  - img [ref=e355]
+                - button [ref=e356] [cursor=pointer]:
+                  - img [ref=e358]
+            - status [ref=e381]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e132] [cursor=pointer]:
+    - img [ref=e133]
+  - alert [ref=e4]

@@ -80,7 +80,7 @@ export default function AppointmentDetail({
 
   const dateObj = current.date ? parseISO(current.date) : new Date();
   const dayNum = format(dateObj, 'd');
-  const monthStr = format(dateObj, 'MMM', { locale: fr }).toUpperCase();
+  const monthStr = format(dateObj, 'MMM', { locale: fr });
   const fullDateLabel = format(dateObj, 'EEEE d MMMM yyyy', { locale: fr });
 
   return (
@@ -94,7 +94,7 @@ export default function AppointmentDetail({
       />
 
       <motion.div
-        className="relative w-full max-w-6xl rounded-[4rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col max-h-[90vh] border bg-background border-border/30"
+        className="relative w-full max-w-5xl rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col max-h-[90vh] border bg-background border-border/30"
         initial={{ opacity: 0, scale: 0.9, y: 100 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 100 }}
@@ -103,15 +103,15 @@ export default function AppointmentDetail({
         <AppointmentHeader
           onClose={onClose}
           onCancel={handleCancelAppt}
-          eyebrow="DOSSIER DE SÉANCE"
-          title="Observations Cliniques"
+          eyebrow="Dossier de séance"
+          title="Observations cliniques"
         />
 
-        <div className="flex-1 overflow-y-auto scrollbar-hide p-16">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_450px] gap-20">
+        <div className="flex-1 overflow-y-auto scrollbar-hide p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10">
             
             {/* LEFT COLUMN */}
-            <div className="space-y-16">
+            <div className="space-y-8">
               <AppointmentClientCard
                 current={current}
                 dayNum={dayNum}
@@ -142,9 +142,9 @@ export default function AppointmentDetail({
               </div>
 
               {/* Structured Metadata */}
-              <div className="space-y-10">
-                <div className="flex items-center gap-6">
-                  <h4 className="dashboard-eyebrow">CARACTÉRISTIQUES DE SÉANCE</h4>
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <h4 className="dashboard-eyebrow">Caractéristiques de séance</h4>
                   <div className="h-px flex-1 bg-border/30" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -159,7 +159,7 @@ export default function AppointmentDetail({
                           value={String(current.price || '')} 
                           onChange={(val) => updateDoc(doc(firestore!, 'appointments', appt.id), { price: Number(val) })} 
                         />
-                        <span className="font-black text-muted-foreground">CHF</span>
+                        <span className="font-bold text-muted-foreground">CHF</span>
                       </div>
                     } 
                   />
@@ -170,59 +170,59 @@ export default function AppointmentDetail({
             </div>
 
             {/* RIGHT COLUMN */}
-            <div className="space-y-16">
+            <div className="space-y-8">
               {/* Executive Summary */}
               <div className="grid grid-cols-1 gap-6">
-                 <div className="rounded-3xl p-10 shadow-xl flex items-center justify-between group transition-all duration-700 border bg-background border-border/30">
+                  <div className="rounded-[2rem] p-6 shadow-lg flex items-center justify-between group transition-all duration-700 border bg-background border-border/30">
                     <div>
-                      <p className="dashboard-eyebrow mb-2">SÉANCES TOTALES</p>
-                      <p className="text-4xl font-black tracking-tight leading-none text-foreground">{sessionCount}</p>
+                      <p className="dashboard-eyebrow mb-1 text-muted-foreground">Séances totales</p>
+                      <p className="text-2xl font-bold tracking-tight leading-none text-foreground">{sessionCount}</p>
                     </div>
-                    <div className="w-16 h-16 flex items-center justify-center rounded-2xl transition-all bg-secondary text-muted-foreground">
-                       <BarChart size={24} strokeWidth={2.5} />
+                    <div className="w-12 h-12 flex items-center justify-center rounded-xl transition-all bg-secondary text-muted-foreground">
+                       <BarChart size={20} strokeWidth={2.5} />
                     </div>
-                 </div>
+                  </div>
 
-                 <div className={`rounded-3xl p-10 shadow-xl flex items-center justify-between transition-all duration-700 border ${
+                  <div className={`rounded-[2rem] p-6 shadow-lg flex items-center justify-between transition-all duration-700 border ${
                    totalDue > 0 ? "bg-primary text-primary-foreground border-transparent" : "bg-background text-foreground border-border/30"
                  }`}>
                     <div>
-                      <p className={`dashboard-eyebrow mb-2 ${totalDue > 0 ? 'text-primary-foreground/50' : ''}`}>SOLDE À RÉGLER</p>
-                      <p className="text-4xl font-black tracking-tight leading-none">{totalDue} CHF</p>
+                      <p className={`dashboard-eyebrow mb-1 ${totalDue > 0 ? 'text-primary-foreground/50' : 'text-muted-foreground'}`}>Solde à régler</p>
+                      <p className="text-2xl font-bold tracking-tight leading-none">{totalDue} CHF</p>
                     </div>
-                    <div className={`w-16 h-16 flex items-center justify-center rounded-2xl transition-all ${
+                    <div className={`w-12 h-12 flex items-center justify-center rounded-xl transition-all ${
                       totalDue > 0 ? "bg-primary-foreground/10 text-primary-foreground" : "bg-secondary text-muted-foreground"
-                    }`}>
-                       <CreditCard size={24} strokeWidth={2.5} />
+                     }`}>
+                       <CreditCard size={20} strokeWidth={2.5} />
                     </div>
-                 </div>
+                  </div>
 
-                 <div className="rounded-3xl p-10 shadow-xl flex items-center justify-between group transition-all duration-700 border bg-background border-border/30">
+                  <div className="rounded-[2rem] p-6 shadow-lg flex items-center justify-between group transition-all duration-700 border bg-background border-border/30">
                     <div>
-                      <p className="dashboard-eyebrow mb-2 text-muted-foreground">DERNIÈRE VISITE</p>
-                      <p className="text-4xl font-black tracking-tight leading-none text-foreground">
-                        {lastVisit?.date ? format(parseISO(lastVisit.date), 'dd MMM', { locale: fr }).toUpperCase() : 'AUCUNE'}
+                      <p className="dashboard-eyebrow mb-1 text-muted-foreground">Dernière visite</p>
+                      <p className="text-2xl font-bold tracking-tight leading-none text-foreground">
+                        {lastVisit?.date ? format(parseISO(lastVisit.date), 'dd MMM', { locale: fr }) : 'aucune'}
                       </p>
                     </div>
-                    <div className="w-16 h-16 flex items-center justify-center rounded-2xl transition-all bg-secondary text-muted-foreground">
-                       <Calendar size={24} strokeWidth={2.5} />
+                    <div className="w-12 h-12 flex items-center justify-center rounded-xl transition-all bg-secondary text-muted-foreground">
+                       <Calendar size={20} strokeWidth={2.5} />
                     </div>
-                 </div>
+                  </div>
               </div>
 
               {/* Notes Section */}
-              <div className="rounded-3xl p-12 shadow-2xl space-y-10 relative overflow-hidden border bg-background border-border/30">
-                <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
-                   <FileText size={180} strokeWidth={1} className="text-foreground/5" />
+              <div className="rounded-[2rem] p-8 shadow-xl space-y-6 relative overflow-hidden border bg-background border-border/30">
+                <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+                   <FileText size={140} strokeWidth={1} className="text-foreground/5" />
                 </div>
                 <div className="relative z-10 flex items-center justify-between">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg bg-primary text-primary-foreground">
-                       <Edit3 size={18} strokeWidth={2.5} />
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg bg-primary text-primary-foreground">
+                       <Edit3 size={16} strokeWidth={2.5} />
                     </div>
-                    <h4 className="text-[14px] font-black uppercase tracking-[0.1em] text-foreground">Journal Clinique</h4>
+                    <h4 className="text-[13px] font-bold tracking-[0.05em] text-foreground">Journal clinique</h4>
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em] px-5 py-2.5 rounded-full shadow-lg bg-primary text-primary-foreground">ARCHIVÉ</span>
+                  <span className="text-[9px] font-bold tracking-[0.1em] px-4 py-2 rounded-full shadow-lg bg-primary text-primary-foreground">Archivé</span>
                 </div>
                 
                 <InlineEditableTextarea
@@ -234,20 +234,20 @@ export default function AppointmentDetail({
                 <button 
                   onClick={handleSaveNotes}
                   disabled={isSavingNotes}
-                  className={`w-full flex items-center justify-center gap-6 h-20 rounded-full font-black text-[12px] uppercase tracking-[0.2em] transition-all duration-700 relative z-10 ${
+                  className={`w-full flex items-center justify-center gap-4 h-14 rounded-full font-bold text-[12px] tracking-[0.1em] transition-all duration-700 relative z-10 ${
                     saveSuccess 
-                      ? 'shadow-xl scale-95 bg-primary text-primary-foreground' 
-                      : 'hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:scale-95 shadow-2xl bg-primary text-primary-foreground'
+                      ? 'shadow-md scale-95 bg-primary text-primary-foreground' 
+                      : 'hover:shadow-lg hover:-translate-y-0.5 active:scale-95 shadow-xl bg-primary text-primary-foreground'
                   }`}
                 >
                   {isSavingNotes ? (
-                    <Clock size={20} className="animate-spin" />
+                    <Clock size={18} className="animate-spin" />
                   ) : saveSuccess ? (
-                    <Check size={20} strokeWidth={3} />
+                    <Check size={18} strokeWidth={3} />
                   ) : (
-                    <Save size={20} strokeWidth={2.5} />
+                    <Save size={18} strokeWidth={2.5} />
                   )}
-                  {saveSuccess ? 'DOSSIER ARCHIVÉ' : 'SAUVEGARDER'}
+                  {saveSuccess ? 'Dossier archivé' : 'Sauvegarder'}
                 </button>
               </div>
             </div>

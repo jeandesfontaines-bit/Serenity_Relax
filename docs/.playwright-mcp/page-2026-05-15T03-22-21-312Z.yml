@@ -1,0 +1,55 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - link "SERENITY by João" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]: SERENITY
+          - generic [ref=e10]: by João
+        - navigation [ref=e11]:
+          - link "Studio" [ref=e12] [cursor=pointer]:
+            - /url: /#hero
+          - link "Soins" [ref=e13] [cursor=pointer]:
+            - /url: /#services
+          - link "Philosophie" [ref=e14] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e15] [cursor=pointer]:
+            - /url: /#faq
+        - generic [ref=e16]:
+          - button "Connexion" [ref=e17] [cursor=pointer]
+          - generic [ref=e20] [cursor=pointer]:
+            - generic [ref=e21]: Jean
+            - button "Sortie" [ref=e22]
+          - button "Réserver" [ref=e24] [cursor=pointer]
+    - main [ref=e25]:
+      - generic [ref=e26]:
+        - button "Retour au dashboard" [ref=e27] [cursor=pointer]:
+          - img [ref=e28]
+          - text: Retour au dashboard
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - img [ref=e32]
+            - generic [ref=e34]: Espace justificatifs
+          - heading "Mes sessions" [level=1] [ref=e35]:
+            - text: Mes
+            - text: sessions
+          - paragraph [ref=e36]: Retrouvez l'historique complet de vos soins et téléchargez vos justificatifs de remboursement en un clic.
+        - generic [ref=e37]:
+          - img [ref=e51]
+          - heading "Aucune prestation enregistrée" [level=2] [ref=e53]
+          - paragraph [ref=e54]: Dès votre premier soin, vos justificatifs apparaîtront ici avec téléchargement immédiat.
+          - button "Réserver mon premier soin" [ref=e55] [cursor=pointer]
+  - region "Notifications (F8)":
+    - list
+  - generic [ref=e45] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e46]:
+      - img [ref=e47]
+    - generic [ref=e56]:
+      - button "Open issues overlay" [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]: "0"
+          - generic [ref=e60]: "1"
+        - generic [ref=e61]: Issue
+      - button "Collapse issues badge" [ref=e62]:
+        - img [ref=e63]
+  - alert [ref=e4]

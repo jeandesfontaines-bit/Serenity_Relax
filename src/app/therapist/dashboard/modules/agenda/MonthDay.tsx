@@ -19,6 +19,7 @@ interface MonthDayProps {
   pendingDates: Set<string>;
   togglePending: (d: string) => void;
   onToggleView: (v: 'month' | 'week') => void;
+  onSelectAppt: (appt: Appointment) => void;
 }
 
 export default function MonthDay({
@@ -32,6 +33,7 @@ export default function MonthDay({
   pendingDates,
   togglePending,
   onToggleView,
+  onSelectAppt,
 }: MonthDayProps) {
   const dStr = fmt(day);
   const isOpen = isDayOpen(dStr);
@@ -58,73 +60,80 @@ export default function MonthDay({
         if (!inMonth) return;
         absenceMode ? togglePending(dStr) : onToggleView('week');
       }}
-      className={`relative flex min-h-0 flex-col border-r border-b border-border/20 p-6 transition-all duration-700 group ${
-        !inMonth ? 'opacity-5 cursor-default bg-slate-50/50' : 'cursor-pointer hover:bg-slate-50/80'
-      } ${isToday && inMonth ? 'bg-primary/[0.02]' : 'bg-background'} ${
-        isPend ? 'ring-2 ring-primary/10 bg-primary shadow-2xl z-10' : ''
+      className={`relative flex flex-col h-full p-2 transition-all duration-200 group ${
+        !inMonth ? 'bg-muted/40 opacity-40' : isOpen ? 'bg-background cursor-pointer hover:bg-accent/50' : 'cursor-pointer hover:bg-accent/50'
+      } ${isPend ? 'ring-2 ring-primary/20 bg-primary/5 z-10' : ''} ${
+        inMonth && !isOpen ? 'closed-day-stripes' : ''
       }`}
     >
-      {isToday && inMonth && (
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-primary/20" />
-      )}
-
-      <div className="flex items-baseline justify-between mb-4">
-        <span className={`text-[10px] font-black uppercase tracking-[0.3em] transition-colors duration-700 ${
-          isPend ? 'text-white/40' : inMonth ? 'text-muted-foreground/30' : 'text-border'
+      <div className="flex items-center justify-between mb-1.5">
+        <div className={`flex items-center justify-center transition-all ${
+          isToday && inMonth 
+            ? 'w-9 h-9 rounded-full bg-blue-600 text-white shadow-md shadow-blue-200 scale-110' 
+            : 'w-7 h-7'
         }`}>
-          {format(day, 'MMM', { locale: fr }).toUpperCase()}
-        </span>
-        <span className={`text-3xl font-black tracking-tighter tabular-nums transition-all duration-700 lg:text-4xl ${
-          isPend ? 'text-white' : isToday && inMonth ? 'text-primary' : inMonth ? 'text-foreground' : 'opacity-10'
-        }`}>
-          {day.getDate()}
-        </span>
+          <span className={`text-[17px] font-black tabular-nums tracking-tighter ${
+            isToday && inMonth ? 'text-white' : 
+            inMonth ? 'text-slate-900' : 'text-slate-300'
+          }`}>
+            {day.getDate()}
+          </span>
+        </div>
+        
+        {day.getDate() === 1 && inMonth && (
+          <span className="text-[11px] font-black uppercase tracking-[0.1em] text-blue-600">
+            {format(day, 'MMM', { locale: fr })}
+          </span>
+        )}
       </div>
 
-      <div className="flex-1 space-y-4">
-        {inMonth && isOpen && !isPend && (
-          <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-2 group-hover:translate-y-0">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500/60">
-              {freeSlots.length} LIBRES
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {freeSlots.slice(0, 1).map(t => (
-                <span key={t} className="text-[11px] font-bold tabular-nums text-muted-foreground bg-slate-100 px-2 py-1 rounded-lg">
-                  {t}
-                </span>
-              ))}
-              {freeSlots.length > 1 && (
-                <span className="text-[11px] font-black self-center text-muted-foreground/20 tabular-nums">+{freeSlots.length - 1}</span>
-              )}
-            </div>
-          </div>
-        )}
-
+      <div className="flex-1 flex flex-col gap-1 overflow-hidden">
         {dayAppointments.length > 0 && !isPend && (
-          <div className={`mt-auto space-y-2.5 ${dayAppointments.length > 1 ? 'pt-2' : ''}`}>
-            {dayAppointments.slice(0, 2).map((appt: Appointment) => (
-              <div key={appt.id} className="flex items-center gap-3 group/appt">
-                <div className={`w-2 h-2 rounded-full shadow-sm transition-transform duration-700 group-hover/appt:scale-125 ${getAppointmentTone(appt).dot}`} />
-                <p className="truncate text-[11px] font-bold tracking-tight text-foreground/50 group-hover:text-foreground transition-colors duration-700">
-                  {appt.clientNameSnapshot || appt.title}
-                </p>
+          <div className="space-y-1">
+            {dayAppointments.slice(0, 3).map((appt: Appointment) => (
+              <div 
+                key={appt.id}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onSelectAppt(appt);
+                }}
+                className={`px-2 py-1 rounded-md shadow-sm ${getAppointmentTone(appt).bg} transition-transform hover:scale-[1.02]`}
+              >
+                <div className="flex items-center gap-1.5 overflow-hidden">
+                  <span className="text-[9px] font-black tabular-nums text-white/90 shrink-0">
+                    {appt.time}
+                  </span>
+                  <p className="truncate text-[10px] font-bold tracking-tight text-white">
+                    {appt.clientNameSnapshot || appt.title}
+                  </p>
+                </div>
               </div>
             ))}
-            {dayAppointments.length > 2 && (
-              <p className="text-[10px] font-black text-muted-foreground/20 uppercase tracking-[0.2em] pl-5">
-                + {dayAppointments.length - 2} AUTRES
-              </p>
+            {dayAppointments.length > 3 && (
+              <div className="flex items-center gap-1 pl-2">
+                <div className="w-1 h-1 rounded-full bg-slate-300" />
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                  + {dayAppointments.length - 3} autres
+                </p>
+              </div>
             )}
           </div>
         )}
+
+        {inMonth && isOpen && !isPend && dayAppointments.length === 0 && (
+          <div className="mt-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="flex items-center gap-1 text-emerald-500/60 pl-1">
+              <div className="w-1 h-1 rounded-full bg-current" />
+              <p className="text-[9px] font-bold uppercase tracking-widest">
+                {freeSlots.length} dispo
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
-      {!inMonth && (
-        <div className="absolute inset-0 pointer-events-none opacity-[0.01] bg-[repeating-linear-gradient(45deg,hsl(var(--foreground)),hsl(var(--foreground))_1px,transparent_1px,transparent_10px)]" />
-      )}
-      
-      {isToday && inMonth && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_hsl(var(--primary)/0.4)]" />
+      {isPend && (
+        <div className="absolute inset-0 bg-primary/10 border-2 border-primary pointer-events-none" />
       )}
     </div>
   );

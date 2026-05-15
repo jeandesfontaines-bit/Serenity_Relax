@@ -1,0 +1,231 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY by João" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+          - generic [ref=e7]: by João
+        - generic [ref=e8]:
+          - link "Sessions" [ref=e9] [cursor=pointer]:
+            - /url: /#sessions
+          - link "Bienfaits" [ref=e10] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e11] [cursor=pointer]:
+            - /url: /#atelier
+        - generic [ref=e12]:
+          - link "Réserver" [ref=e13] [cursor=pointer]:
+            - /url: /booking
+          - link "Connexion" [ref=e14] [cursor=pointer]:
+            - /url: /login
+    - generic [ref=e15]:
+      - navigation [ref=e16]:
+        - button "Retour" [active] [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+          - text: Retour
+      - main [ref=e25]:
+        - generic [ref=e342]:
+          - generic [ref=e343]:
+            - generic [ref=e344]:
+              - generic [ref=e345]:
+                - img [ref=e346]
+                - text: Étape 2 sur 3
+              - generic [ref=e348]:
+                - heading "Quand souhaitez-vous venir ?" [level=2] [ref=e349]
+                - paragraph [ref=e350]: Sélectionnez une date puis un créneau. Le clic sur l’heure vous emmène directement à l’étape suivante.
+            - generic [ref=e351]:
+              - generic [ref=e352]:
+                - heading "mai 2026" [level=3] [ref=e353]
+                - generic [ref=e354]:
+                  - button "Mois précédent" [disabled] [ref=e355]:
+                    - img [ref=e356]
+                  - button "Mois suivant" [ref=e358] [cursor=pointer]:
+                    - img [ref=e359]
+              - generic [ref=e361]:
+                - generic [ref=e362]:
+                  - generic [ref=e363]: LUN
+                  - generic [ref=e364]: MAR
+                  - generic [ref=e365]: MER
+                  - generic [ref=e366]: JEU
+                  - generic [ref=e367]: VEN
+                  - generic [ref=e368]: SAM
+                  - generic [ref=e369]: DIM
+                - generic [ref=e370]:
+                  - button "lun 27 avr." [disabled] [ref=e371]:
+                    - generic [ref=e372]: lun
+                    - generic [ref=e373]: "27"
+                    - generic [ref=e374]: avr.
+                  - button "mar 28 avr." [disabled] [ref=e375]:
+                    - generic [ref=e376]: mar
+                    - generic [ref=e377]: "28"
+                    - generic [ref=e378]: avr.
+                  - button "mer 29 avr." [disabled] [ref=e379]:
+                    - generic [ref=e380]: mer
+                    - generic [ref=e381]: "29"
+                    - generic [ref=e382]: avr.
+                  - button "jeu 30 avr." [disabled] [ref=e383]:
+                    - generic [ref=e384]: jeu
+                    - generic [ref=e385]: "30"
+                    - generic [ref=e386]: avr.
+                  - button "ven 1 mai" [disabled] [ref=e387]:
+                    - generic [ref=e388]: ven
+                    - generic [ref=e389]: "1"
+                    - generic [ref=e390]: mai
+                  - button "sam 2 mai" [disabled] [ref=e391]:
+                    - generic [ref=e392]: sam
+                    - generic [ref=e393]: "2"
+                    - generic [ref=e394]: mai
+                  - button "dim 3 mai" [disabled] [ref=e395]:
+                    - generic [ref=e396]: dim
+                    - generic [ref=e397]: "3"
+                    - generic [ref=e398]: mai
+                  - button "lun 4 mai" [disabled] [ref=e399]:
+                    - generic [ref=e400]: lun
+                    - generic [ref=e401]: "4"
+                    - generic [ref=e402]: mai
+                  - button "mar 5 mai" [disabled] [ref=e403]:
+                    - generic [ref=e404]: mar
+                    - generic [ref=e405]: "5"
+                    - generic [ref=e406]: mai
+                  - button "mer 6 mai" [disabled] [ref=e407]:
+                    - generic [ref=e408]: mer
+                    - generic [ref=e409]: "6"
+                    - generic [ref=e410]: mai
+                  - button "jeu 7 mai" [disabled] [ref=e411]:
+                    - generic [ref=e412]: jeu
+                    - generic [ref=e413]: "7"
+                    - generic [ref=e414]: mai
+                  - button "ven 8 mai" [disabled] [ref=e415]:
+                    - generic [ref=e416]: ven
+                    - generic [ref=e417]: "8"
+                    - generic [ref=e418]: mai
+                  - button "sam 9 mai" [disabled] [ref=e419]:
+                    - generic [ref=e420]: sam
+                    - generic [ref=e421]: "9"
+                    - generic [ref=e422]: mai
+                  - button "dim 10 mai" [disabled] [ref=e423]:
+                    - generic [ref=e424]: dim
+                    - generic [ref=e425]: "10"
+                    - generic [ref=e426]: mai
+                  - button "lun 11 mai" [disabled] [ref=e427]:
+                    - generic [ref=e428]: lun
+                    - generic [ref=e429]: "11"
+                    - generic [ref=e430]: mai
+                  - button "mar 12 mai" [disabled] [ref=e431]:
+                    - generic [ref=e432]: mar
+                    - generic [ref=e433]: "12"
+                    - generic [ref=e434]: mai
+                  - button "mer 13 mai" [disabled] [ref=e435]:
+                    - generic [ref=e436]: mer
+                    - generic [ref=e437]: "13"
+                    - generic [ref=e438]: mai
+                  - button "jeu 14 mai" [disabled] [ref=e439]:
+                    - generic [ref=e440]: jeu
+                    - generic [ref=e441]: "14"
+                    - generic [ref=e442]: mai
+                  - button "ven 15 mai" [disabled] [ref=e443]:
+                    - generic [ref=e444]: ven
+                    - generic [ref=e445]: "15"
+                    - generic [ref=e446]: mai
+                  - button "sam 16 mai" [disabled] [ref=e447]:
+                    - generic [ref=e448]: sam
+                    - generic [ref=e449]: "16"
+                    - generic [ref=e450]: mai
+                  - button "dim 17 mai" [ref=e451] [cursor=pointer]:
+                    - generic [ref=e452]: dim
+                    - generic [ref=e453]: "17"
+                    - generic [ref=e454]: mai
+                  - button "lun 18 mai" [ref=e455] [cursor=pointer]:
+                    - generic [ref=e456]: lun
+                    - generic [ref=e457]: "18"
+                    - generic [ref=e458]: mai
+                  - button "mar 19 mai" [ref=e459] [cursor=pointer]:
+                    - generic [ref=e460]: mar
+                    - generic [ref=e461]: "19"
+                    - generic [ref=e462]: mai
+                  - button "mer 20 mai" [ref=e463] [cursor=pointer]:
+                    - generic [ref=e464]: mer
+                    - generic [ref=e465]: "20"
+                    - generic [ref=e466]: mai
+                  - button "jeu 21 mai" [ref=e467] [cursor=pointer]:
+                    - generic [ref=e468]: jeu
+                    - generic [ref=e469]: "21"
+                    - generic [ref=e470]: mai
+                  - button "ven 22 mai" [ref=e471] [cursor=pointer]:
+                    - generic [ref=e472]: ven
+                    - generic [ref=e473]: "22"
+                    - generic [ref=e474]: mai
+                  - button "sam 23 mai" [ref=e475] [cursor=pointer]:
+                    - generic [ref=e476]: sam
+                    - generic [ref=e477]: "23"
+                    - generic [ref=e478]: mai
+                  - button "dim 24 mai" [ref=e480] [cursor=pointer]:
+                    - generic [ref=e481]: dim
+                    - generic [ref=e482]: "24"
+                    - generic [ref=e483]: mai
+                  - button "lun 25 mai" [ref=e484] [cursor=pointer]:
+                    - generic [ref=e485]: lun
+                    - generic [ref=e486]: "25"
+                    - generic [ref=e487]: mai
+                  - button "mar 26 mai" [ref=e488] [cursor=pointer]:
+                    - generic [ref=e489]: mar
+                    - generic [ref=e490]: "26"
+                    - generic [ref=e491]: mai
+                  - button "mer 27 mai" [ref=e492] [cursor=pointer]:
+                    - generic [ref=e493]: mer
+                    - generic [ref=e494]: "27"
+                    - generic [ref=e495]: mai
+                  - button "jeu 28 mai" [ref=e496] [cursor=pointer]:
+                    - generic [ref=e497]: jeu
+                    - generic [ref=e498]: "28"
+                    - generic [ref=e499]: mai
+                  - button "ven 29 mai" [ref=e500] [cursor=pointer]:
+                    - generic [ref=e501]: ven
+                    - generic [ref=e502]: "29"
+                    - generic [ref=e503]: mai
+                  - button "sam 30 mai" [ref=e504] [cursor=pointer]:
+                    - generic [ref=e505]: sam
+                    - generic [ref=e506]: "30"
+                    - generic [ref=e507]: mai
+                  - button "dim 31 mai" [ref=e508] [cursor=pointer]:
+                    - generic [ref=e509]: dim
+                    - generic [ref=e510]: "31"
+                    - generic [ref=e511]: mai
+              - generic [ref=e512]:
+                - generic [ref=e513]:
+                  - img [ref=e514]
+                  - heading "samedi 23 mai" [level=3] [ref=e517]
+                - generic [ref=e518]:
+                  - button "09:00" [ref=e519] [cursor=pointer]
+                  - button "10:00" [ref=e520] [cursor=pointer]
+                  - button "12:30" [ref=e521] [cursor=pointer]
+          - complementary [ref=e522]:
+            - heading "Résumé du soin" [level=3] [ref=e523]
+            - generic [ref=e524]:
+              - generic [ref=e525]:
+                - img "Drainage" [ref=e526]
+                - generic [ref=e527]: Drainant
+              - heading "Drainage" [level=3] [ref=e528]
+              - paragraph [ref=e529]: Pompages lents pour drainer, alléger et relancer la circulation des fluides.
+              - generic [ref=e530]:
+                - generic [ref=e531]:
+                  - generic [ref=e532]:
+                    - img [ref=e533]
+                    - generic [ref=e535]: Date
+                  - generic [ref=e536]: 23 mai 2026
+                - generic [ref=e537]:
+                  - generic [ref=e538]:
+                    - img [ref=e539]
+                    - generic [ref=e542]: Heure
+                  - generic [ref=e543]: 10:00
+                - generic [ref=e545]:
+                  - generic [ref=e546]:
+                    - img [ref=e547]
+                    - generic [ref=e550]: Prix
+                  - generic [ref=e551]: 110 CHF
+              - paragraph [ref=e552]: Vous ne serez pas débité à cette étape.
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e240] [cursor=pointer]:
+    - img [ref=e241]
+  - alert [ref=e244]

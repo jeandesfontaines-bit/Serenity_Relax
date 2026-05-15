@@ -7,7 +7,7 @@ export default function GridLines() {
       {HOURS.map(h => (
         <div
           key={h}
-          className="absolute left-0 right-0 border-t border-border/20"
+          className="absolute left-0 right-0 border-t border-border/50"
           style={{ top: (h - START_HOUR) * HOUR_H }}
         />
       ))}

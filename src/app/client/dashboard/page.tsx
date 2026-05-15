@@ -268,23 +268,23 @@ export default function ClientDashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="landing-v2 flex min-h-screen items-center justify-center bg-[var(--off-white)]">
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--teal-deep)]" />
       </div>
     );
   }
 
   if (!effectiveClientId) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background px-6 text-center">
-        <div className="max-w-md glass-premium p-10">
-          <h1 className="font-serif text-3xl font-light text-foreground">Espace client</h1>
-          <p className="mt-4 text-sm text-muted-foreground">
+      <div className="landing-v2 flex min-h-screen items-center justify-center bg-[var(--landing-page-bg)] px-6 text-center">
+        <div className="landing-surface-card max-w-md rounded-[2rem] p-10">
+          <h1 className="landing-type-h3 landing-text-high display-tight">Espace client</h1>
+          <p className="landing-type-body-s landing-text-body mt-4">
             Connectez-vous pour retrouver vos rendez-vous et vos factures.
           </p>
           <Link
             href="/login"
-            className="mt-8 premium-button button-fill rounded-full"
+            className="landing-type-micro mt-8 inline-flex rounded-full bg-[var(--teal-deep)] px-8 py-4 text-white transition-all hover:scale-[1.01] hover:bg-[var(--orange)]"
           >
             Se connecter
           </Link>
@@ -294,34 +294,36 @@ export default function ClientDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-24 md:pb-0">
+    <div className="landing-v2 min-h-screen pb-24 md:pb-0" style={{ background: 'var(--landing-page-bg)' }}>
       <Navbar />
 
-      <main className="mx-auto max-w-7xl px-6 pt-32 pb-10 lg:px-8 lg:py-40">
+      <main className="mx-auto max-w-[1360px] px-6 pb-10 pt-28 md:px-10 lg:px-12 lg:pb-16 lg:pt-36">
         <section className="space-y-6">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 mb-2">
-            <Sparkle className="w-4 h-4 text-primary" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">Tableau de bord</span>
+          <div className="landing-pill landing-pill-soft landing-type-caption inline-flex border text-[var(--landing-warm)] shadow-[0_10px_24px_rgba(48,31,16,0.08)]">
+            <Sparkle className="h-4 w-4 text-[var(--orange)]" />
+            <span>Tableau de bord</span>
           </div>
-          <h1 className="text-5xl font-serif leading-tight text-foreground md:text-7xl">
-            Bon retour, <span className="text-primary italic">{firstName}</span>
+          <h1 className="landing-type-h1 landing-text-high display-tight max-w-[11ch]">
+            Bon retour,
+            <br />
+            <span className="landing-display-italic text-[var(--landing-muted)]">{firstName}</span>
           </h1>
-          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground font-sans">
+          <p className="landing-type-body landing-text-body max-w-2xl">
             Votre parcours de rééquilibrage continue ici. Prenez un instant et retrouvez vos prochains soins.
           </p>
         </section>
 
-        <div className="mt-20 grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Main Card: Next Appointment */}
-          <section className="relative overflow-hidden glass-premium p-8 lg:p-12 lg:col-span-8 group">
-            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/5 transition-transform duration-1000 group-hover:scale-150" />
+          <section className="landing-surface-card relative overflow-hidden rounded-[2rem] p-6 lg:col-span-8 lg:p-10 group">
+            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[rgba(21,56,57,0.05)] transition-transform duration-1000 group-hover:scale-150" />
             
             <div className="relative z-10">
-              <div className="mb-12 flex items-center justify-between gap-4">
-                <h2 className="font-serif text-3xl font-normal text-foreground">
+              <div className="mb-8 flex items-center justify-between gap-4">
+                <h2 className="landing-type-h3 landing-text-high display-tight">
                   Prochain soin
                 </h2>
-                <span className="rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">
+                <span className="landing-type-caption rounded-full border border-[var(--landing-tint)] bg-[var(--landing-tint-fill)] px-4 py-1.5 text-[var(--landing-warm)]">
                   {nextAppointment ? 'Confirmé' : 'À planifier'}
                 </span>
               </div>
@@ -330,33 +332,33 @@ export default function ClientDashboardPage() {
                 <div className="flex flex-col gap-12 lg:flex-row lg:items-start">
                   <div className="flex-1 space-y-10">
                     <div className="space-y-2">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground/60">
+                      <p className="landing-type-micro text-[var(--landing-warm-muted)]">
                         Type de soin
                       </p>
-                      <p className="text-4xl font-serif text-foreground">{getServiceName(nextAppointment)}</p>
+                      <p className="landing-type-h2 landing-text-high display-tight">{getServiceName(nextAppointment)}</p>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                       <div className="space-y-2">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground/60">
+                        <p className="landing-type-micro text-[var(--landing-warm-muted)]">
                           Durée
                         </p>
                         <div className="flex items-center gap-3">
-                           <div className="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center">
-                             <History className="w-4 h-4 text-primary" />
+                           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--landing-tint-fill)] text-[var(--orange)]">
+                             <History className="h-4 w-4" />
                            </div>
-                           <p className="text-lg font-sans text-foreground">{getServiceDuration(nextAppointment)}</p>
+                           <p className="landing-type-body landing-text-high">{getServiceDuration(nextAppointment)}</p>
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground/60">
+                        <p className="landing-type-micro text-[var(--landing-warm-muted)]">
                           Date et heure
                         </p>
                         <div className="flex items-center gap-3">
-                           <div className="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center">
-                             <CalendarDays className="w-4 h-4 text-primary" />
+                           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--landing-tint-fill)] text-[var(--orange)]">
+                             <CalendarDays className="h-4 w-4" />
                            </div>
-                           <p className="text-lg font-sans text-foreground">
+                           <p className="landing-type-body landing-text-high">
                              {formatDateTime(getAppointmentDate(nextAppointment) || new Date())}
                            </p>
                         </div>
@@ -374,34 +376,34 @@ export default function ClientDashboardPage() {
                   </div>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-dashed border-border p-12 text-center bg-muted/30">
-                  <p className="text-xl font-serif text-foreground">Aucun soin à venir pour le moment.</p>
-                  <p className="mt-3 text-sm text-muted-foreground">Offrez-vous un moment de détente profonde.</p>
-                  <Link href="/#services" className="mt-8 inline-flex premium-button button-fill rounded-full">
+                <div className="rounded-[1.6rem] border border-dashed border-[var(--landing-tint)] bg-[var(--landing-tint-fill)] p-8 text-center md:p-10">
+                  <p className="landing-type-h4 landing-text-high display-tight">Aucun soin à venir pour le moment.</p>
+                  <p className="landing-type-body-s landing-text-body mt-3">Offrez-vous un moment de détente profonde.</p>
+                  <Link href="/#services" className="landing-type-micro mt-6 inline-flex rounded-full bg-[var(--teal-deep)] px-8 py-4 text-white transition-all hover:bg-[var(--orange)]">
                      Réserver un soin
                   </Link>
                 </div>
               )}
 
               {nextAppointment && (
-                <div className="mt-16 flex flex-wrap gap-6 pt-10 border-t border-border/50">
+                <div className="mt-12 flex flex-wrap gap-4 border-t border-[var(--landing-tint)] pt-8">
                   <button
                     onClick={() => router.push('/client/book')}
-                    className="premium-button button-fill rounded-full py-4 text-[11px]"
+                    className="landing-type-micro rounded-full bg-[var(--teal-deep)] px-8 py-4 text-white transition-all hover:bg-[var(--orange)]"
                   >
                     Reprogrammer
                   </button>
                   <button
                     onClick={handleCancelNextAppointment}
                     disabled={!nextAppointment || isCancelling}
-                    className="premium-button button-outline rounded-full py-4 text-[11px] disabled:opacity-40"
+                    className="landing-type-micro rounded-full border border-[var(--landing-tint)] bg-white px-8 py-4 text-[var(--landing-warm)] transition-all hover:border-[var(--orange)] hover:text-[var(--off-black)] disabled:opacity-40"
                   >
                     {isCancelling ? 'Annulation...' : 'Annuler'}
                   </button>
                   <button
                     onClick={() => handleDownloadInvoice(nextAppointment ? invoiceByAppointmentId.get(nextAppointment.id) : null, nextAppointment)}
                     disabled={!nextAppointment}
-                    className="flex items-center gap-3 px-8 py-4 text-[11px] font-bold uppercase tracking-[0.4em] text-secondary hover:text-primary transition-colors disabled:opacity-40"
+                    className="landing-type-micro flex items-center gap-3 px-4 py-4 text-[var(--landing-warm)] transition-colors hover:text-[var(--orange)] disabled:opacity-40"
                   >
                     <Download className="h-4 w-4" />
                     Facture PDF
@@ -413,8 +415,8 @@ export default function ClientDashboardPage() {
 
           {/* Side section: Recent History */}
           <aside className="lg:col-span-4 space-y-8">
-            <div className="glass-premium p-8 h-full flex flex-col">
-              <h2 className="mb-10 font-serif text-2xl text-foreground">
+            <div className="landing-surface-card flex h-full flex-col rounded-[2rem] p-6 md:p-8">
+              <h2 className="landing-type-h4 landing-text-high display-tight mb-8">
                 Derniers soins
               </h2>
 
@@ -425,17 +427,17 @@ export default function ClientDashboardPage() {
                   return (
                     <div key={appointment.id} className="group cursor-default">
                       <div className="flex items-start gap-5">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/5 text-primary border border-primary/10 transition-colors group-hover:bg-primary group-hover:text-white">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[var(--landing-tint)] bg-[var(--landing-tint-fill)] text-[var(--orange)] transition-colors group-hover:bg-[var(--teal-deep)] group-hover:text-white">
                           <Sparkle size={18} strokeWidth={1.5} />
                         </div>
                         <div className="flex-1 space-y-1">
-                          <p className="font-sans font-medium text-[15px] text-foreground">{getServiceName(appointment)}</p>
-                          <p className="text-xs text-muted-foreground uppercase tracking-widest">
+                          <p className="landing-type-body landing-text-high">{getServiceName(appointment)}</p>
+                          <p className="landing-type-caption text-[var(--landing-warm-muted)]">
                             {appointmentDate ? formatLongDate(appointmentDate) : '...'}
                           </p>
                           <button
                             onClick={() => handleDownloadInvoice(invoice, appointment)}
-                            className="mt-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.3em] text-primary hover:opacity-70 transition-all opacity-0 group-hover:opacity-100"
+                            className="landing-type-micro mt-3 flex items-center gap-2 text-[var(--orange)] opacity-0 transition-all group-hover:opacity-100 hover:opacity-70"
                           >
                             <Download className="h-3 w-3" />
                             Facture
@@ -447,7 +449,7 @@ export default function ClientDashboardPage() {
                 })}
 
                 {pastAppointments.length === 0 && (
-                  <div className="rounded-xl bg-muted/40 p-8 text-center text-sm text-muted-foreground italic font-sans">
+                  <div className="landing-type-body-s landing-text-body rounded-[1.5rem] bg-[var(--landing-tint-fill)] p-6 text-center italic">
                     Votre historique apparaîtra ici après votre première séance.
                   </div>
                 )}
@@ -456,7 +458,7 @@ export default function ClientDashboardPage() {
               {pastAppointments.length > 0 && (
                 <Link
                   href="/client/invoices"
-                  className="mt-10 flex items-center justify-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground hover:text-primary transition-colors py-4 border-t border-border/50"
+                  className="landing-type-micro mt-10 flex items-center justify-center gap-3 border-t border-[var(--landing-tint)] py-4 text-[var(--landing-warm-muted)] transition-colors hover:text-[var(--orange)]"
                 >
                   Historique complet
                   <ArrowRight className="h-4 w-4" />
@@ -467,52 +469,52 @@ export default function ClientDashboardPage() {
         </div>
 
         {/* Recent Invoices Table */}
-        <section className="mt-20">
-          <div className="mb-10 flex items-center justify-between gap-4">
-            <h2 className="font-serif text-3xl text-foreground">
+        <section className="mt-16">
+          <div className="mb-8 flex items-center justify-between gap-4">
+            <h2 className="landing-type-h3 landing-text-high display-tight">
               Factures récentes
             </h2>
-            <Link href="/client/invoices" className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary hover:underline">
+            <Link href="/client/invoices" className="landing-type-micro text-[var(--orange)] hover:underline">
               Tout voir
             </Link>
           </div>
 
-          <div className="glass-premium overflow-hidden">
+          <div className="landing-surface-card overflow-hidden rounded-[2rem]">
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="p-8 text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground/60">Date</th>
-                    <th className="p-8 text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground/60">Référence</th>
-                    <th className="p-8 text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground/60">Désignation</th>
-                    <th className="p-8 text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground/60">Montant</th>
-                    <th className="p-8 text-right text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground/60">Action</th>
+                  <tr className="border-b border-[var(--landing-tint)] text-left">
+                    <th className="landing-type-micro p-6 text-[var(--landing-warm-muted)]">Date</th>
+                    <th className="landing-type-micro p-6 text-[var(--landing-warm-muted)]">Référence</th>
+                    <th className="landing-type-micro p-6 text-[var(--landing-warm-muted)]">Désignation</th>
+                    <th className="landing-type-micro p-6 text-[var(--landing-warm-muted)]">Montant</th>
+                    <th className="landing-type-micro p-6 text-right text-[var(--landing-warm-muted)]">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border/50 text-sm">
+                <tbody className="divide-y divide-[var(--landing-tint)] text-sm">
                   {invoices.slice(0, 5).map((invoice) => {
                     const matchingAppointment = invoice.appointmentId
                       ? appointments.find((appointment) => appointment.id === invoice.appointmentId) || null
                       : null;
                     const amount = Number(invoice.amount ?? invoice.totalAmount ?? (matchingAppointment ? getAppointmentAmount(matchingAppointment) : 0));
                     return (
-                      <tr key={invoice.id} className="transition-colors hover:bg-primary/[0.02]">
-                        <td className="p-8 text-foreground font-sans">
+                      <tr key={invoice.id} className="transition-colors hover:bg-[var(--landing-tint-fill)]">
+                        <td className="landing-type-body-s landing-text-high p-6">
                           {formatLongDate(getInvoiceDate(invoice) || new Date())}
                         </td>
-                        <td className="p-8 text-muted-foreground font-mono text-[11px] uppercase tracking-wider">{invoice.invoiceNumber || invoice.id.slice(0, 8)}</td>
-                        <td className="p-8 text-foreground">
+                        <td className="landing-type-body-s p-6 font-mono uppercase tracking-wider text-[var(--landing-warm-muted)]">{invoice.invoiceNumber || invoice.id.slice(0, 8)}</td>
+                        <td className="p-6 landing-text-high">
                           <div className="flex flex-col gap-1">
-                            <span className="font-medium font-sans">
+                            <span className="landing-type-body font-medium">
                               {invoice.serviceName || invoice.items?.[0]?.description || (matchingAppointment ? getServiceName(matchingAppointment) : 'Soin holistique')}
                             </span>
                           </div>
                         </td>
-                        <td className="p-8 font-sans font-bold text-foreground">{formatCurrency(amount)}</td>
-                        <td className="p-8 text-right">
+                        <td className="landing-type-body p-6 font-semibold text-[var(--off-black)]">{formatCurrency(amount)}</td>
+                        <td className="p-6 text-right">
                           <button
                             onClick={() => handleDownloadInvoice(invoice, matchingAppointment)}
-                            className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest text-primary transition-all hover:bg-primary hover:text-white hover:border-primary"
+                            className="landing-type-micro inline-flex items-center gap-2 rounded-full border border-[var(--landing-tint)] bg-white px-6 py-2.5 text-[var(--orange)] transition-all hover:border-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
                           >
                             <Download className="h-4 w-4" />
                             PDF
@@ -524,7 +526,7 @@ export default function ClientDashboardPage() {
 
                   {invoices.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="p-20 text-center text-sm text-muted-foreground italic">
+                      <td colSpan={5} className="landing-type-body-s landing-text-body p-12 text-center italic">
                         Aucune facture disponible pour le moment.
                       </td>
                     </tr>

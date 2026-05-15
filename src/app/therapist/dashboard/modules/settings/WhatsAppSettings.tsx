@@ -20,10 +20,10 @@ export function WhatsAppSettings({ fields }: WhatsAppSettingsProps) {
           <div key={i} className="grid grid-cols-1 xl:grid-cols-[1fr_240px] gap-4 items-start">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between px-1">
-                <label className="text-[7.5px] font-bold uppercase tracking-[0.2em]" style={{ color: 'hsl(var(--muted-foreground))' }}>{item.label}</label>
+                <label className="text-[7.5px] font-bold tracking-[0.05em]" style={{ color: 'hsl(var(--muted-foreground))' }}>{item.label}</label>
                 <button 
                   onClick={() => item.set(item.preset)} 
-                  className="text-[7px] font-bold transition-colors uppercase tracking-[0.1em]" 
+                  className="text-[7px] font-bold transition-colors tracking-[0.05em]" 
                   style={{ color: 'hsl(var(--muted-foreground))' }}
                 >
                   Réinitialiser
@@ -37,7 +37,7 @@ export function WhatsAppSettings({ fields }: WhatsAppSettingsProps) {
               />
               <div className="flex items-center gap-2 px-1 opacity-50">
                 <Info size={10} style={{ color: 'hsl(var(--muted-foreground))' }} />
-                <p className="text-[7px] font-bold uppercase tracking-[0.1em]">Variables : {'{firstName}, {date}, {time}, {service}, {price}'}</p>
+                <p className="text-[7px] font-bold tracking-[0.05em]">Variables : {'{firstName}, {date}, {time}, {service}, {price}'}</p>
               </div>
             </div>
             <div className="rounded-xl rounded-tr-none p-3 shadow-sm relative group hover:-translate-y-0.5 transition-all" style={{ background: 'hsl(var(--secondary))' }}>

@@ -1,0 +1,72 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY by João" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+          - generic [ref=e7]: by João
+        - generic [ref=e8]:
+          - link "Sessions" [ref=e9] [cursor=pointer]:
+            - /url: /#sessions
+          - link "Bienfaits" [ref=e10] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e11] [cursor=pointer]:
+            - /url: /#atelier
+        - generic [ref=e12]:
+          - link "Réserver" [ref=e13] [cursor=pointer]:
+            - /url: /booking
+          - link "Connexion" [ref=e14] [cursor=pointer]:
+            - /url: /login
+    - generic [ref=e15]:
+      - navigation [ref=e16]:
+        - button "Retour" [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+          - text: Retour
+      - main [ref=e25]:
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - paragraph [ref=e183]: Dernière étape
+            - heading "Coordonnées" [level=2] [ref=e184]
+          - generic [ref=e185]:
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - paragraph [ref=e188]: Soin
+                - paragraph [ref=e189]: Thérapeutique
+              - generic [ref=e190]:
+                - paragraph [ref=e191]: Date
+                - paragraph [ref=e192]: 17 mai
+              - generic [ref=e193]:
+                - paragraph [ref=e194]: Heure
+                - paragraph [ref=e195]: 12:30
+              - generic [ref=e196]:
+                - paragraph [ref=e197]: Tarif
+                - paragraph [ref=e198]: 120 CHF
+            - generic [ref=e199]:
+              - generic [ref=e200]:
+                - combobox [ref=e201]:
+                  - option "+41" [selected]
+                  - option "+33"
+                  - option "+32"
+                - textbox "TÉLÉPHONE" [ref=e202]
+              - generic [ref=e203]:
+                - textbox "PRÉNOM" [ref=e204]
+                - textbox "NOM" [ref=e205]
+              - textbox "EMAIL" [ref=e206]
+              - generic [ref=e207]:
+                - textbox "RUE" [ref=e208]
+                - textbox "N°" [ref=e209]
+              - generic [ref=e210]:
+                - textbox "CODE POSTAL" [ref=e211]
+                - textbox "VILLE" [ref=e212]: Genève
+              - generic [ref=e213]:
+                - checkbox "Confirmation contre-indications médicales et conditions de réservation." [ref=e214]
+                - generic [ref=e215] [cursor=pointer]: Confirmation contre-indications médicales et conditions de réservation.
+              - button "Confirmer le rendez-vous" [disabled] [ref=e216]
+              - link "Déjà client ? Se connecter" [ref=e218] [cursor=pointer]:
+                - /url: /login
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e177] [cursor=pointer]:
+    - img [ref=e178]
+  - alert [ref=e160]

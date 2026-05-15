@@ -1,6 +1,5 @@
+import Link from "next/link";
 import { ArrowDownRight } from "lucide-react";
-
-import { useBooking } from "@/context/BookingContext";
 import { LandingVariant } from "../types";
 
 const VARIANT_COPY: Record<
@@ -63,25 +62,19 @@ const METRICS = [
 ];
 
 export default function Hero({ variant = "default" }: { variant?: LandingVariant }) {
-  const { openModal } = useBooking();
   const copy = VARIANT_COPY[variant];
   const useImmersiveBackdrop = variant === "default" || variant === "immersive";
 
   const layoutClassName =
     variant === "immersive"
-      ? "lg:grid-cols-12 lg:gap-10"
+      ? "lg:grid-cols-12 lg:gap-14"
       : variant === "editorial"
         ? "lg:grid-cols-12 lg:gap-16"
         : variant === "concierge"
           ? "lg:grid-cols-12 lg:gap-12"
           : "lg:grid-cols-12 lg:gap-14";
 
-  const sectionClassName =
-    variant === "immersive"
-      ? "pt-20 pb-14 md:pt-28 md:pb-18 lg:pt-30"
-      : variant === "editorial"
-        ? "pt-24 pb-18 md:pt-32 md:pb-20 lg:pt-36"
-        : "pt-24 pb-16 md:pt-30 md:pb-20 lg:pt-32";
+  const sectionClassName = "min-h-[calc(84vh-72px)] flex items-start pt-10 pb-24 md:pt-14 md:pb-28 lg:pt-16 lg:pb-32";
 
   const imageColumnClassName =
     variant === "immersive"
@@ -109,7 +102,7 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
 
       <div className={`relative mx-auto grid max-w-[1360px] grid-cols-12 items-center gap-10 px-6 md:px-10 lg:px-12 ${layoutClassName}`}>
         <div className={`${imageColumnClassName} ${variant === "concierge" ? "lg:order-2" : ""}`}>
-          <div className={`relative mx-auto ${variant === "editorial" ? "max-w-[320px]" : "max-w-[420px] lg:max-w-[410px]"}`}>
+          <div className={`relative mx-auto ${variant === "editorial" ? "max-w-[280px]" : "max-w-[360px] lg:max-w-[340px]"}`}>
             {variant !== "concierge" ? (
               <div className="absolute -top-12 -left-12 pointer-events-none hidden select-none opacity-[0.03] lg:block">
                 <span className="display-tight text-[9rem] leading-none font-bold">JOÃO</span>
@@ -120,8 +113,8 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
               className={[
                 "landing-bg-subtle-strong relative z-10 overflow-hidden border",
                 variant === "editorial"
-                  ? "aspect-[2.6/4] rounded-[2.8rem] border-[var(--landing-tint)]/75 shadow-[0_28px_55px_rgba(48,31,16,0.1)]"
-                  : "aspect-[3/4] rounded-[2.2rem] border-[var(--landing-tint)]/65 shadow-[0_22px_48px_rgba(48,31,16,0.12)]",
+                  ? "aspect-[2.6/4] rounded-[2.8rem] border-[rgba(216,215,210,0.75)] shadow-[0_28px_55px_rgba(48,31,16,0.1)]"
+                  : "aspect-[3/4] rounded-[2.2rem] border-[rgba(216,215,210,0.65)] shadow-[0_22px_48px_rgba(48,31,16,0.12)]",
                 variant === "immersive"
                   ? "before:absolute before:inset-x-[12%] before:bottom-0 before:top-auto before:h-20 before:rounded-full before:bg-[rgba(21,56,57,0.14)] before:blur-3xl"
                   : "",
@@ -166,7 +159,7 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
         <div className={`${textColumnClassName} editorial-rise ${variant === "concierge" ? "lg:order-1" : ""}`}>
           <div
             className={[
-              "mb-7 inline-flex items-center gap-3 rounded-full border px-4 py-2 transition-colors",
+              "mb-10 inline-flex items-center gap-3 rounded-full border px-4 py-2 transition-colors",
               variant === "immersive"
                 ? "border-[rgba(21,56,57,0.16)] bg-[rgba(255,255,255,0.68)] shadow-[0_18px_40px_rgba(21,56,57,0.08)] hover:bg-white/82"
                 : "border-[var(--landing-tint)] bg-white/55 hover:bg-white/75",
@@ -191,7 +184,7 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
               </p>
             </div>
           ) : (
-            <h1 className="landing-type-hero landing-text-high display-tight mb-8">
+            <h1 className="landing-type-hero landing-text-high display-tight mb-12">
               {copy.titleTop}
               <br />
               <span className="landing-display-italic opacity-90">{copy.titleBottom}</span>
@@ -200,7 +193,7 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
 
           <div
             className={[
-              "mb-10 max-w-xl space-y-5",
+              "mb-14 max-w-xl space-y-6",
               variant === "immersive"
                 ? "rounded-[2rem] border border-[rgba(21,56,57,0.12)] bg-white/55 p-6 shadow-[0_24px_44px_rgba(21,56,57,0.07)] backdrop-blur-sm"
                 : "",
@@ -211,8 +204,8 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
           </div>
 
           <div className="flex flex-wrap items-center gap-5">
-            <button
-              onClick={() => openModal(null)}
+            <Link
+              href="/booking"
               className={[
                 "landing-text-inverse group relative inline-flex h-12 items-center gap-3 rounded-full px-8 transition-all duration-500 hover:scale-105 active:scale-95",
                 variant === "editorial"
@@ -224,7 +217,7 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
               <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 transition-transform duration-500 group-hover:rotate-45">
                 <ArrowDownRight size={14} strokeWidth={3} className="landing-text-inverse" />
               </div>
-            </button>
+            </Link>
             <a
               href="#sessions"
               className="landing-text-faint landing-type-micro group transition-colors duration-300 hover:text-[var(--off-black)]"
@@ -235,7 +228,7 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
 
           <div
             className={[
-              "mt-12 pt-7",
+              "mt-12 pt-10",
               variant === "concierge"
                 ? "grid gap-3 border-t border-[var(--landing-tint)] md:grid-cols-3"
                 : "flex gap-7 border-t border-[var(--landing-tint)] md:gap-10",

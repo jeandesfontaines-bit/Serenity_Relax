@@ -1,0 +1,83 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY by João" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+          - generic [ref=e7]: by João
+        - generic [ref=e8]:
+          - link "Sessions" [ref=e9] [cursor=pointer]:
+            - /url: /#sessions
+          - link "Bienfaits" [ref=e10] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e11] [cursor=pointer]:
+            - /url: /#atelier
+        - generic [ref=e12]:
+          - link "Réserver" [ref=e13] [cursor=pointer]:
+            - /url: /booking
+          - link "Connexion" [ref=e14] [cursor=pointer]:
+            - /url: /login
+    - main [ref=e15]:
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: — Connexion
+          - heading "Un accès propre, dans une vraie page." [level=1] [ref=e20]:
+            - text: Un accès propre,
+            - text: dans une vraie page.
+          - paragraph [ref=e21]: L'accès client et thérapeute a été sorti de la modale pour retrouver une lecture claire, une vraie hiérarchie et une colonne de formulaire qui respire.
+          - generic [ref=e22]:
+            - generic [ref=e23]:
+              - paragraph [ref=e24]: Clients
+              - paragraph [ref=e25]: Recevez votre lien de connexion après réservation et retrouvez vos rendez-vous dans votre espace.
+            - generic [ref=e26]:
+              - paragraph [ref=e27]: Thérapeute
+              - paragraph [ref=e28]: Connexion directe avec e-mail et mot de passe pour accéder au tableau de bord praticien.
+          - link "Réserver un soin →" [ref=e29] [cursor=pointer]:
+            - /url: /booking
+        - img [ref=e32]
+    - contentinfo [ref=e34]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - heading "Newsletter" [level=3] [ref=e39]
+          - paragraph [ref=e40]: Conseils bien-être & actualités.
+        - generic [ref=e41]:
+          - textbox "Votre adresse e-mail" [ref=e42]
+          - button "S'inscrire →" [ref=e43] [cursor=pointer]
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]: SRT by João
+            - generic [ref=e49]: Sérénité & Équilibre
+          - generic [ref=e50]:
+            - generic [ref=e51]: Contact
+            - generic [ref=e52]:
+              - link "+41 22 000 00 00" [ref=e53] [cursor=pointer]:
+                - /url: tel:+41220000000
+              - link "hello@serenityrelax.ch" [ref=e54] [cursor=pointer]:
+                - /url: mailto:hello@serenityrelax.ch
+          - generic [ref=e55]:
+            - generic [ref=e56]: Le Cabinet
+            - link "Chemin de Joinville 26 1216 Cointrin, Genève" [ref=e57] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=Chemin+de+Joinville+26+1216+Cointrin+Genève
+              - text: Chemin de Joinville 26
+              - text: 1216 Cointrin, Genève
+          - generic [ref=e58]:
+            - generic [ref=e59]: Horaires
+            - generic [ref=e60]:
+              - generic [ref=e61]:
+                - generic [ref=e62]: Lun — Ven
+                - generic [ref=e63]: 08:00 — 21:00
+              - generic [ref=e64]:
+                - generic [ref=e65]: Sam — Dim
+                - generic [ref=e66]: 09:30 — 21:00
+        - generic [ref=e67]:
+          - generic [ref=e68]: © 2024 SERENITY RELAX THERAPY.
+          - generic [ref=e69]:
+            - link "Confidentialité" [ref=e70] [cursor=pointer]:
+              - /url: "#"
+            - link "Mentions Légales" [ref=e71] [cursor=pointer]:
+              - /url: "#"
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=e72]

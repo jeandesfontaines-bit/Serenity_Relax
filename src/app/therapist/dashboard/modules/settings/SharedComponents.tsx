@@ -5,8 +5,8 @@ import { Bell } from 'lucide-react';
 export function SectionHeader({ title, subtitle }: { title: string, subtitle: string }) {
    return (
       <div className="border-l-[2px] pl-2.5 py-0.5 mb-4" style={{ borderColor: 'hsl(var(--primary))' }}>
-         <h4 className="text-[10px] font-black tracking-tight leading-none uppercase" style={{ color: 'hsl(var(--foreground))' }}>{title}</h4>
-         <p className="text-[7.5px] font-bold uppercase tracking-[0.15em] mt-1 leading-none" style={{ color: 'hsl(var(--muted-foreground))' }}>{subtitle}</p>
+         <h4 className="text-[10px] font-bold tracking-[0.05em] leading-none" style={{ color: 'hsl(var(--foreground))' }}>{title}</h4>
+         <p className="text-[7.5px] font-bold tracking-[0.05em] mt-1 leading-none" style={{ color: 'hsl(var(--muted-foreground))' }}>{subtitle}</p>
       </div>
    );
 }
@@ -190,7 +190,7 @@ export function InputGroup({ label, value, onChange, icon, type = 'text' }: { la
       <div className="space-y-1.5 group">
          <div className="flex items-center gap-2 transition-colors px-1" style={{ color: 'hsl(var(--muted-foreground))' }}>
             {icon && <div className="shrink-0 scale-[0.6] w-4 h-4 flex items-center justify-center">{icon}</div>}
-            <label className="text-[7.5px] font-bold uppercase tracking-[0.2em] leading-none">{label}</label>
+            <label className="text-[7.5px] font-bold tracking-[0.05em] leading-none">{label}</label>
          </div>
          <input 
             type={type} 
@@ -210,8 +210,8 @@ export function ToggleItem({ label, desc, val, set }: { label: string, desc: str
                <Bell size={9} strokeWidth={2.5} />
             </div>
             <div>
-               <h5 className="text-[8px] font-bold tracking-tight leading-none uppercase" style={{ color: "hsl(var(--foreground))" }}>{label}</h5>
-               <p className="text-[6.5px] font-bold uppercase tracking-[0.1em] mt-1 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>{desc}</p>
+               <h5 className="text-[8px] font-bold tracking-[0.05em] leading-none" style={{ color: "hsl(var(--foreground))" }}>{label}</h5>
+               <p className="text-[6.5px] font-bold tracking-[0.05em] mt-1 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>{desc}</p>
             </div>
          </div>
          <button 

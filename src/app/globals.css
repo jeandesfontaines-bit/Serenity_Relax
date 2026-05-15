@@ -5,40 +5,57 @@
 @tailwind utilities;
 
 :root {
-  /* Core Colors - Modern & Vibrant */
-  --background: 210 20% 98%; /* #F8FAFC */
-  --foreground: 222.2 84% 4.9%; /* Slate 950 */
+  /* Core Colors — Reference Premium SaaS Tokens */
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
   
-  --primary: 222.2 47.4% 11.2%; /* Slate 900 */
+  --primary: 221 83% 53%;
   --primary-foreground: 210 40% 98%;
   
-  --secondary: 210 20% 96%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
   
-  --muted: 210 20% 96%;
-  --muted-foreground: 215.4 16.3% 46.9%; /* Slate 500 */
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
   
-  --accent: 210 20% 96%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222 47% 11%;
   
-  --destructive: 0 84.2% 60.2%;
+  --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
   
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 47.4% 11.2%;
-  
-  --radius: 1rem;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 221 83% 53%;
 
-  /* Dashboard Specific Tokens - Vibrant & Editorial */
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  
+  --radius: 0.75rem;
+
+  /* Sidebar Variables */
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5% 26%;
+  --sidebar-primary: 221 83% 53%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 5% 96%;
+  --sidebar-accent-foreground: 240 6% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 221 83% 53%;
+
+  /* Shadow Tokens */
+  --shadow-card: 0 1px 3px 0 rgba(0,0,0,.04), 0 1px 2px -1px rgba(0,0,0,.04);
+  --shadow-hover: 0 10px 15px -3px rgba(0,0,0,.06), 0 4px 6px -4px rgba(0,0,0,.06);
 
   /* Typography */
-  --font-body: var(--font-manrope), sans-serif;
-  --font-display: var(--font-sora), sans-serif;
+  --font-body: var(--font-montserrat), 'Montserrat', sans-serif;
+  --font-display: var(--font-montserrat), 'Montserrat', sans-serif;
   --font-signature: 'Allura', cursive;
 
   /* Layout */
-  --topbar-control-height: 48px;
+  --topbar-control-height: 44px;
   --topbar-icon-size: 20px;
 }
 
@@ -65,13 +82,12 @@
     @apply border-border;
   }
   html {
-    background-color: #fbf8f2;
+    background-color: hsl(var(--background));
     overscroll-behavior-y: none;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
-    background-color: #fbf8f2;
     overscroll-behavior-y: none;
   }
 }
@@ -208,9 +224,9 @@
   --landing-warm-faint: #6f6459;
   --landing-warm-hover: #9f5d2a;
   --landing-warm-hover-soft: #8f5a30;
-  --landing-tint: #d9c8b4;
-  --landing-tint-soft: #e4d6c7;
-  --landing-tint-fill: #f3eadf;
+  --landing-tint: #d8d7d2;
+  --landing-tint-soft: #e7e5df;
+  --landing-tint-fill: #f5f3ee;
   --landing-cta-hover: #f4ffb0;
   --landing-panel: #f8faf9;
   --landing-panel-input: #fdfefe;
@@ -403,6 +419,36 @@
   @apply text-landing-inverse-faint;
 }
 
+.landing-v2 .landing-text-inverse-muted {
+  color: rgba(251, 248, 242, 0.4);
+}
+
+.landing-v2 .landing-border-inverse-soft {
+  border-color: rgba(251, 248, 242, 0.2);
+}
+
+.landing-v2 .landing-border-inverse-strong {
+  border-color: rgba(251, 248, 242, 0.8);
+}
+
+.landing-v2 .landing-placeholder-inverse-soft::placeholder {
+  color: rgba(251, 248, 242, 0.4);
+}
+
+.landing-v2 .landing-input-inverse {
+  color: rgba(251, 248, 242, 1);
+  border-color: rgba(251, 248, 242, 0.2);
+}
+
+.landing-v2 .landing-input-inverse:focus {
+  border-color: rgba(251, 248, 242, 0.8);
+  outline: none;
+}
+
+.landing-v2 .landing-input-inverse::placeholder {
+  color: rgba(251, 248, 242, 0.4);
+}
+
 .landing-v2 .landing-bg-surface {
   @apply bg-landing-surface;
 }
@@ -467,6 +513,14 @@
   font-style: italic;
   font-weight: 500;
   letter-spacing: -0.02em;
+}
+
+.landing-v2 .landing-section {
+  @apply relative py-16 md:py-20 lg:py-24;
+}
+
+.landing-v2 .landing-section-header {
+  @apply mb-12 md:mb-14 lg:mb-16;
 }
 
 .landing-booking-modal {
@@ -600,117 +654,111 @@
 
 @layer components {
   .dashboard-panel {
-    @apply rounded-[2.5rem] border border-border bg-background shadow-sm transition-premium;
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.04);
+    @apply rounded-xl border border-border bg-card transition-all duration-300;
+    box-shadow: var(--shadow-card);
   }
 
   .dashboard-panel:hover {
-    box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-hover);
   }
 
   .dashboard-panel-soft {
-    @apply rounded-[2rem] border border-border/50 bg-secondary/30;
+    @apply rounded-lg border border-border/50 bg-secondary/30;
   }
 
   .dashboard-inset {
-    @apply rounded-[1.5rem] border border-border/50 bg-secondary/50;
+    @apply rounded-lg border border-border/50 bg-secondary/50;
   }
 
   .dashboard-toolbar-input {
-    @apply w-full h-12 rounded-full border border-border bg-background pl-10 pr-4 outline-none transition-premium;
+    @apply w-full h-10 rounded-lg border border-border bg-background pl-10 pr-4 outline-none transition-all duration-200;
     color: hsl(var(--foreground));
     font-size: 14px;
     font-weight: 500;
   }
 
   .dashboard-toolbar-input::placeholder {
-    @apply text-muted-foreground/50;
+    @apply text-muted-foreground/60;
   }
 
   .dashboard-toolbar-input:focus {
-    @apply border-primary ring-4 ring-primary/10;
+    @apply border-primary ring-2 ring-primary/10;
   }
 
   .dashboard-toolbar-button {
-    @apply inline-flex items-center justify-center gap-2 h-12 rounded-full border border-border bg-background px-6 transition-premium;
+    @apply inline-flex items-center justify-center gap-2 h-10 rounded-lg border border-border bg-background px-5 transition-all duration-200;
     color: hsl(var(--foreground));
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
   }
 
   .dashboard-toolbar-button:hover {
-    @apply bg-secondary border-border shadow-sm -translate-y-0.5;
+    @apply bg-accent border-border shadow-sm;
   }
 
   .dashboard-icon-button {
-    @apply inline-flex items-center justify-center w-12 h-12 rounded-full border border-border bg-background transition-premium;
+    @apply inline-flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-background transition-all duration-200;
     color: hsl(var(--muted-foreground));
   }
 
   .dashboard-icon-button:hover {
-    @apply border-primary text-primary bg-primary/5 shadow-sm;
+    @apply border-primary text-primary bg-primary/5;
   }
 
   .dashboard-title {
-    @apply text-xl font-bold text-foreground tracking-tight leading-tight;
+    @apply text-lg font-semibold text-foreground tracking-tight leading-tight;
   }
 
   .dashboard-title-lg {
-    @apply text-3xl font-extrabold text-foreground tracking-tighter leading-none;
+    @apply text-2xl font-bold text-foreground tracking-tight leading-tight;
   }
 
   @media (min-width: 768px) {
     .dashboard-title-lg {
-      @apply text-5xl;
+      @apply text-3xl;
     }
   }
 
   .dashboard-eyebrow {
-    @apply block text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60;
+    @apply block text-xs font-medium text-muted-foreground tracking-[0.05em];
   }
 
   .dashboard-muted-text {
-    @apply text-sm font-medium text-muted-foreground leading-relaxed;
+    @apply text-sm font-normal text-muted-foreground leading-relaxed;
   }
 
   .dashboard-primary-button {
-    @apply inline-flex items-center justify-center h-14 rounded-full px-10 bg-primary text-primary-foreground transition-premium active:scale-95;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    box-shadow: 0 10px 25px -5px hsl(var(--primary) / 0.3);
+    @apply inline-flex items-center justify-center h-10 rounded-lg px-6 bg-primary text-primary-foreground transition-all duration-200 active:scale-[0.98];
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 1px 3px 0 hsl(var(--primary) / 0.3);
   }
 
   .dashboard-primary-button:hover {
-    @apply -translate-y-0.5;
-    box-shadow: 0 15px 35px -8px hsl(var(--primary) / 0.4);
+    filter: brightness(1.08);
+    box-shadow: 0 4px 12px -2px hsl(var(--primary) / 0.35);
   }
 
   .dashboard-secondary-button {
-    @apply inline-flex items-center justify-center h-14 rounded-full border border-border px-10 bg-background text-foreground transition-premium;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
+    @apply inline-flex items-center justify-center h-10 rounded-lg border border-border px-6 bg-background text-foreground transition-all duration-200;
+    font-size: 14px;
+    font-weight: 600;
   }
 
   .dashboard-secondary-button:hover {
-    @apply bg-secondary border-border shadow-sm -translate-y-0.5;
+    @apply bg-accent border-border;
   }
 
   .dashboard-chip {
-    @apply rounded-full px-4 py-1.5 uppercase text-[10px] font-bold tracking-widest bg-secondary text-muted-foreground;
+    @apply rounded-md px-3 py-1 text-xs font-medium bg-secondary text-muted-foreground;
   }
 
   .dashboard-topbar-control {
-    @apply inline-flex items-center justify-center rounded-full border border-border px-6 transition-premium bg-background;
+    @apply inline-flex items-center justify-center rounded-lg border border-border px-4 transition-all duration-200 bg-background;
     height: var(--topbar-control-height);
     color: hsl(var(--foreground));
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .dashboard-topbar-control:hover {
@@ -718,7 +766,7 @@
   }
 
   .dashboard-topbar-control-muted {
-    @apply border-transparent bg-transparent text-muted-foreground hover:bg-secondary;
+    @apply border-transparent bg-transparent text-muted-foreground hover:bg-accent;
   }
 
   .dashboard-topbar-control-active {
@@ -726,11 +774,11 @@
   }
 
   .dashboard-topbar-control-active:hover {
-    @apply border-primary/30 bg-primary/20;
+    @apply border-primary/30 bg-primary/15;
   }
 
   .dashboard-topbar-icon {
-    @apply inline-flex items-center justify-center rounded-full border border-border transition-premium bg-background;
+    @apply inline-flex items-center justify-center rounded-lg border border-border transition-all duration-200 bg-background;
     width: var(--topbar-icon-size);
     height: var(--topbar-icon-size);
     color: hsl(var(--muted-foreground));
@@ -741,45 +789,55 @@
   }
 
   .dashboard-topbar-icon-muted {
-    @apply border-transparent bg-transparent text-muted-foreground/40;
+    @apply border-transparent bg-transparent text-muted-foreground/50;
   }
 
   .dashboard-topbar-today {
-    @apply min-w-[200px] uppercase tracking-[0.1em] font-bold text-muted-foreground/80;
+    @apply min-w-[200px] font-medium text-muted-foreground;
   }
 
   .dashboard-topbar-search {
-    @apply w-full rounded-full border border-border pl-10 pr-4 outline-none transition-premium bg-background;
-    height: var(--topbar-control-height);
+    @apply w-full h-10 rounded-lg border border-border pl-10 pr-4 outline-none transition-all duration-200 bg-background;
     color: hsl(var(--foreground));
     font-size: 14px;
     font-weight: 500;
   }
 
+  .closed-day-stripes {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 12px,
+      hsl(var(--muted-foreground) / 0.15) 12px,
+      hsl(var(--muted-foreground) / 0.15) 24px
+    );
+    background-color: hsl(var(--muted) / 0.5);
+  }
+
   .dashboard-topbar-search:focus {
-    @apply border-primary ring-4 ring-primary/10;
+    @apply border-primary ring-2 ring-primary/10;
   }
 
   .dashboard-topbar-switch {
-    @apply inline-flex items-center rounded-full border border-border p-1 bg-secondary/50;
+    @apply inline-flex items-center rounded-lg border border-border p-1 bg-muted;
     height: var(--topbar-control-height);
   }
 
   .dashboard-topbar-segment {
-    @apply inline-flex items-center justify-center rounded-full px-6 transition-premium;
+    @apply inline-flex items-center justify-center rounded-md px-4 transition-all duration-200;
     height: calc(var(--topbar-control-height) - 10px);
-    min-width: 100px;
+    min-width: 80px;
     color: hsl(var(--muted-foreground));
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .dashboard-topbar-segment:hover {
-    @apply text-foreground bg-white/50;
+    @apply text-foreground bg-background/60;
   }
 
   .dashboard-topbar-segment-active {
-    @apply bg-white text-primary shadow-sm;
+    @apply bg-background text-primary shadow-sm;
   }
 }
 

@@ -12,10 +12,7 @@ export default function Sanctuary({ variant = "default" }: { variant?: LandingVa
   return (
     <section
       id="sanctuary"
-      className={[
-        "relative overflow-hidden py-20 text-[var(--off-black)] md:py-24 lg:py-28",
-        variant === "immersive" ? "md:py-28 lg:py-32" : "",
-      ].join(" ")}
+      className="relative overflow-hidden py-20 md:py-32 text-[var(--off-black)]"
     >
       <div
         className={[
@@ -58,12 +55,12 @@ export default function Sanctuary({ variant = "default" }: { variant?: LandingVa
           </div>
         </header>
 
-        <div className={`mt-10 grid grid-cols-1 gap-x-12 gap-y-8 ${gridClassName}`}>
+        <div className={`mt-12 grid grid-cols-1 gap-x-12 gap-y-8 ${gridClassName}`}>
           {IMPACTS.map((impact, index) => (
             <article
               key={impact.num}
               className={[
-                "pt-5",
+                "pt-10",
                 variant === "editorial"
                   ? index === 0
                     ? "border-t border-[#d9c8b4] md:col-span-2 md:grid md:grid-cols-[1fr_1fr] md:gap-8"

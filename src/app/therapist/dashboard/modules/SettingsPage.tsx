@@ -215,7 +215,7 @@ export default function SettingsPage({
                            }`}>
                               <Icon size={12} strokeWidth={2.5} />
                            </div>
-                           <span className="text-[10px] font-bold tracking-[0.1em] uppercase">{t.label}</span>
+                           <span className="text-[10px] font-bold tracking-[0.05em]">{t.label}</span>
                         </div>
                         {isActive && <ChevronRight size={10} strokeWidth={3} className="opacity-50" />}
                       </button>
@@ -228,10 +228,10 @@ export default function SettingsPage({
                      <Shield size={60} strokeWidth={1} />
                   </div>
                   <div className="relative z-10">
-                     <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/50 mb-1">SÉCURITÉ</p>
+                     <p className="text-[9px] font-bold tracking-[0.15em] text-white/50 mb-1">Sécurité</p>
                      <h4 className="text-[13px] font-bold tracking-tight leading-tight">Accès cabinet</h4>
                   </div>
-                  <button onClick={handleDisconnect} className="relative z-10 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all hover:translate-x-1" style={{ color: 'hsl(var(--destructive-foreground))' }}>
+                  <button onClick={handleDisconnect} className="relative z-10 flex items-center gap-2 text-[10px] font-bold tracking-[0.05em] transition-all hover:translate-x-1" style={{ color: 'hsl(var(--destructive-foreground))' }}>
                      <LogOut size={12} strokeWidth={3} /> Déconnexion
                   </button>
                </div>
@@ -242,7 +242,7 @@ export default function SettingsPage({
                        initial={{ opacity: 0, y: 10 }}
                        animate={{ opacity: 1, y: 0 }}
                        exit={{ opacity: 0, y: 10 }}
-                        className={`flex items-center gap-2 px-4 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg border border-white/10 text-primary-foreground ${
+                        className={`flex items-center gap-2 px-4 py-3 rounded-2xl text-[10px] font-bold tracking-[0.05em] shadow-lg border border-white/10 text-primary-foreground ${
                           saveState === 'saving' ? 'bg-primary' : 'bg-emerald-500'
                         }`}
                       >

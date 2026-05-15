@@ -101,7 +101,7 @@ export default function BookingModal({
             {date && (
               <div className="flex items-center gap-2.5 text-primary">
                 <Calendar size={13} strokeWidth={2.5} />
-                <span className="text-[11px] font-bold uppercase tracking-[0.25em]">{date}</span>
+                <span className="text-[11px] font-bold tracking-[0.05em]">{date}</span>
               </div>
             )}
             {date && time && (
@@ -110,7 +110,7 @@ export default function BookingModal({
             {time && (
               <div className="flex items-center gap-2.5 text-primary">
                 <Clock size={13} strokeWidth={2.5} />
-                <span className="text-[11px] font-bold uppercase tracking-[0.25em]">{time}</span>
+                <span className="text-[11px] font-bold tracking-[0.05em]">{time}</span>
               </div>
             )}
           </div>

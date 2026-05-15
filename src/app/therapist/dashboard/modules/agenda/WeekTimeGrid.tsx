@@ -75,7 +75,7 @@ export default function WeekTimeGrid({
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
           <div
             className="grid relative"
-            style={{ gridTemplateColumns: '100px repeat(7, 1fr)', height: gridHeight }}
+            style={{ gridTemplateColumns: '72px repeat(7, 1fr)', height: gridHeight }}
           >
             <TimeLabels />
 

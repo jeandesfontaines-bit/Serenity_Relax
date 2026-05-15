@@ -42,9 +42,9 @@ export default function SlotManagement({
               <Clock size={32} strokeWidth={2.5} />
            </div>
            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.5em] mb-2 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>GESTION DU CRÉNEAU</p>
+              <p className="text-[10px] font-medium tracking-[0.1em] mb-2 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>Gestion du créneau</p>
               <h2 className="text-4xl font-bold tracking-tighter leading-none" style={{ color: "hsl(var(--foreground))" }}>{time}</h2>
-              <p className="text-[12px] font-bold uppercase tracking-[0.2em] mt-4 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>
+              <p className="text-[12px] font-medium tracking-[0.05em] mt-4 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>
                  {format(d, 'EEEE d MMMM yyyy', { locale: fr })}
               </p>
            </div>
@@ -70,7 +70,7 @@ export default function SlotManagement({
                 </div>
                 <div className="text-left">
                   <p className="text-xl font-bold tracking-tighter leading-none">Réserver</p>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mt-2">Nouvelle séance</p>
+                  <p className="text-[10px] font-medium tracking-[0.05em] text-white/40 mt-2">Nouvelle séance</p>
                 </div>
               </div>
               <ArrowRight size={20} strokeWidth={3} className="group-hover:translate-x-2 transition-transform" />
@@ -82,7 +82,7 @@ export default function SlotManagement({
               </div>
               <div className="text-left">
                 <p className="text-xl font-bold tracking-tighter leading-none">Indisponible</p>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] mt-2">Créneau bloqué</p>
+                <p className="text-[10px] font-medium tracking-[0.05em] mt-2">Créneau bloqué</p>
               </div>
             </div>
           )}
@@ -108,7 +108,7 @@ export default function SlotManagement({
                 <p className="text-xl font-bold tracking-tighter leading-none">
                   {isBlocked ? 'Libérer' : 'Bloquer'}
                 </p>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] mt-2" style={{ color: isBlocked ? 'white/60' : 'hsl(var(--muted-foreground))' }}>
+                <p className="text-[10px] font-medium tracking-[0.05em] mt-2" style={{ color: isBlocked ? 'white/60' : 'hsl(var(--muted-foreground))' }}>
                   {isBlocked ? 'Rendre disponible' : 'Désactiver le créneau'}
                 </p>
               </div>
@@ -119,7 +119,7 @@ export default function SlotManagement({
         <div className="px-10 pb-10">
           <div className="flex items-center justify-center gap-4 py-6 border-t" style={{ borderColor: "hsl(var(--border))" }}>
             <ShieldCheck size={16} strokeWidth={2.5} style={{ color: "hsl(var(--muted-foreground))" }} />
-            <span className="text-[11px] font-bold uppercase tracking-[0.3em]" style={{ color: "hsl(var(--muted-foreground))" }}>Sécurisé · 60 minutes</span>
+            <span className="text-[11px] font-medium tracking-[0.1em]" style={{ color: "hsl(var(--muted-foreground))" }}>Sécurisé · 60 minutes</span>
           </div>
         </div>
       </motion.div>

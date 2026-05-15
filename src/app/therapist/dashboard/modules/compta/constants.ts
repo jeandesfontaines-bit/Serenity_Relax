@@ -4,19 +4,19 @@ import { Appointment } from '../../types';
 
 export const STATUS_META: Record<TransactionStatus, { label: string; className: string }> = {
   completed: {
-    label: 'RÉGLÉ',
+    label: 'Réglé',
     className: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
   },
   pending: {
-    label: 'EN ATTENTE',
+    label: 'En attente',
     className: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
   },
   cancelled: {
-    label: 'ANNULÉ',
+    label: 'Annulé',
     className: 'bg-destructive/10 text-destructive border-destructive/20',
   },
   late: {
-    label: 'RETARD',
+    label: 'Retard',
     className: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
   },
 };

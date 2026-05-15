@@ -1,0 +1,88 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - button "S Serenity" [ref=e6] [cursor=pointer]:
+          - generic [ref=e8]: S
+          - generic [ref=e9]: Serenity
+        - navigation [ref=e10]:
+          - button "Dashboard" [ref=e11] [cursor=pointer]:
+            - img [ref=e12]
+            - generic [ref=e15]: Dashboard
+          - button "Agenda" [ref=e16] [cursor=pointer]:
+            - img [ref=e17]
+            - generic [ref=e19]: Agenda
+          - button "Clients" [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - generic [ref=e26]: Clients
+          - button "Finances" [ref=e27] [cursor=pointer]:
+            - img [ref=e28]
+            - generic [ref=e31]: Finances
+        - generic [ref=e32]:
+          - button "Paramètres" [ref=e33] [cursor=pointer]:
+            - img [ref=e34]
+            - generic [ref=e37]: Paramètres
+          - button "Déconnexion" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - generic [ref=e42]: Déconnexion
+    - generic [ref=e43]:
+      - banner [ref=e44]:
+        - generic [ref=e46]:
+          - heading "Home Dashboard" [level=2] [ref=e47]
+          - paragraph [ref=e48]: Welcome back, João. Today is Friday, May 15th.
+        - generic [ref=e50]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e51]
+      - main [ref=e52]:
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - img [ref=e59]
+                - img [ref=e61]
+              - paragraph [ref=e63]: Revenus du mois
+              - heading "0 CHF" [level=3] [ref=e64]
+            - generic [ref=e65]:
+              - generic [ref=e66]:
+                - img [ref=e68]
+                - img [ref=e71]
+              - paragraph [ref=e73]: Soins effectués
+              - heading "0" [level=3] [ref=e74]
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - img [ref=e78]
+                - img [ref=e83]
+              - paragraph [ref=e85]: Patients actifs
+              - heading "124" [level=3] [ref=e86]
+            - generic [ref=e87]:
+              - generic [ref=e88]:
+                - img [ref=e90]
+                - img [ref=e92]
+              - paragraph [ref=e94]: Factures en attente
+              - heading "0" [level=3] [ref=e95]
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - generic [ref=e99]:
+                  - paragraph [ref=e100]: Programmation du jour
+                  - heading "Agenda" [level=4] [ref=e101]
+                - button "Voir tout" [ref=e102] [cursor=pointer]:
+                  - text: Voir tout
+                  - img [ref=e103]
+              - generic [ref=e106]:
+                - img [ref=e107]
+                - paragraph [ref=e110]: Aucune séance aujourd'hui
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - generic [ref=e114]:
+                  - paragraph [ref=e115]: Archives
+                  - heading "Notes" [level=4] [ref=e116]
+                - button [ref=e117] [cursor=pointer]:
+                  - img [ref=e118]
+              - paragraph [ref=e122]: Aucune note récente
+              - button "Répertoire patients" [ref=e123] [cursor=pointer]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e129] [cursor=pointer]:
+    - img [ref=e130]
+  - alert [ref=e133]

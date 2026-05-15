@@ -58,8 +58,8 @@ export default function RescheduleModal({
                 <CalendarClock size={28} strokeWidth={2.5} />
              </div>
              <div>
-                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] mb-2 text-muted-foreground/60">
-                   <span>GESTION SÉANCE</span>
+                <div className="flex items-center gap-3 text-[10px] font-bold tracking-[0.05em] mb-2 text-muted-foreground/60">
+                   <span>Gestion séance</span>
                    <span className="opacity-40">/</span>
                    <span className="text-foreground">{appt.clientNameSnapshot}</span>
                 </div>
@@ -68,14 +68,14 @@ export default function RescheduleModal({
           </div>
           
           <div className="flex items-center gap-4">
-             <button onClick={() => onResendConfirmation?.(appt)} className="h-12 px-6 rounded-full border border-border/30 text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-3 text-muted-foreground hover:border-primary hover:text-primary">
-                <Mail size={16} strokeWidth={2.5} /> CONFIRMATION
+             <button onClick={() => onResendConfirmation?.(appt)} className="h-12 px-6 rounded-full border border-border/30 text-[10px] font-bold tracking-[0.05em] transition-all flex items-center gap-3 text-muted-foreground hover:border-primary hover:text-primary">
+                <Mail size={16} strokeWidth={2.5} /> Confirmation
              </button>
              <button 
                 onClick={() => { onCancelAppt?.(appt.id); onClose(); }} 
-                className="h-12 px-6 rounded-full border border-destructive/20 text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-3 group text-destructive bg-transparent hover:bg-destructive hover:text-destructive-foreground"
+                className="h-12 px-6 rounded-full border border-destructive/20 text-[10px] font-bold tracking-[0.05em] transition-all flex items-center gap-3 group text-destructive bg-transparent hover:bg-destructive hover:text-destructive-foreground"
              >
-                <Trash2 size={16} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" /> ANNULER RDV
+                <Trash2 size={16} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" /> Annuler rdv
              </button>
              <div className="w-px h-10 mx-2 bg-border/30" />
              <button onClick={onClose} className="w-14 h-14 flex items-center justify-center rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80">
@@ -100,7 +100,7 @@ export default function RescheduleModal({
                     </div>
                     <div>
                        <p className="text-2xl font-black tracking-tighter text-foreground">{appt.clientNameSnapshot}</p>
-                       <p className="text-[10px] font-bold uppercase tracking-[0.4em] mt-2 text-muted-foreground/60">DOSSIER ACTIF</p>
+                       <p className="text-[10px] font-bold tracking-[0.05em] mt-2 text-muted-foreground/60">Dossier actif</p>
                     </div>
                  </div>
 
@@ -112,8 +112,8 @@ export default function RescheduleModal({
                  </div>
 
                  <div className="pt-6 border-t border-border/30">
-                    <button className="w-full h-14 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 transition-all duration-700 group bg-secondary text-muted-foreground hover:bg-secondary/80">
-                       <FileText size={16} strokeWidth={2.5} /> VOIR FACTURE
+                    <button className="w-full h-14 rounded-full text-[10px] font-bold tracking-[0.05em] flex items-center justify-center gap-3 transition-all duration-700 group bg-secondary text-muted-foreground hover:bg-secondary/80">
+                       <FileText size={16} strokeWidth={2.5} /> Voir facture
                     </button>
                  </div>
               </div>
@@ -121,7 +121,7 @@ export default function RescheduleModal({
               <div className="rounded-3xl p-10 border border-amber-500/30 bg-amber-500/10 flex items-start gap-6">
                  <AlertTriangle size={24} className="shrink-0 mt-1 text-amber-500" />
                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] mb-2 text-amber-500">ATTENTION</p>
+                    <p className="text-[10px] font-bold tracking-[0.05em] mb-2 text-amber-500">Attention</p>
                     <p className="text-sm font-medium leading-relaxed text-amber-500">Toute modification enverra une notification automatique au patient.</p>
                  </div>
               </div>
@@ -131,8 +131,8 @@ export default function RescheduleModal({
            <div className="space-y-16">
               <div className="flex items-center justify-between border-b border-border/30 pb-8">
                  <h3 className="text-4xl font-black tracking-tighter text-foreground">Nouvel Horaire</h3>
-                 <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
-                    <span className="w-2 h-2 rounded-full bg-blue-500" /> DISPONIBILITÉS EN TEMPS RÉEL
+                 <div className="flex items-center gap-4 text-[10px] font-bold tracking-[0.05em] text-muted-foreground/60">
+                    <span className="w-2 h-2 rounded-full bg-blue-500" /> Disponibilités en temps réel
                  </div>
               </div>
 
@@ -144,7 +144,7 @@ export default function RescheduleModal({
                        <CalendarClock size={24} strokeWidth={2.5} />
                     </div>
                     <div>
-                       <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 mb-2">PROGRAMMATION INITIALE</p>
+                       <p className="text-[10px] font-bold tracking-[0.05em] text-white/40 mb-2">Programmation initiale</p>
                        <p className="text-2xl font-black tracking-tighter">{appt.date} à {appt.time}</p>
                     </div>
                  </div>
@@ -153,7 +153,7 @@ export default function RescheduleModal({
 
               {/* Date Scroller */}
               <div className="space-y-6">
-                 <p className="text-[11px] font-bold uppercase tracking-[0.4em] px-6 text-muted-foreground/60">SÉLECTION DE LA DATE</p>
+                 <p className="text-[11px] font-bold tracking-[0.05em] px-6 text-muted-foreground/60">Sélection de la date</p>
                  <div className="flex items-center gap-4">
                     <button className="w-12 h-12 flex items-center justify-center rounded-full border border-border/30 transition-all text-muted-foreground hover:bg-secondary">
                        <ChevronLeft size={20} strokeWidth={3} />
@@ -171,7 +171,7 @@ export default function RescheduleModal({
                                  : 'border-border/30 bg-transparent hover:border-primary/50 text-foreground'
                              }`}
                            >
-                             <span className={`text-[10px] font-bold uppercase tracking-[0.2em] mb-2 ${active ? 'text-primary-foreground/60' : 'text-muted-foreground/60'}`}>
+                             <span className={`text-[10px] font-bold tracking-[0.05em] mb-2 ${active ? 'text-primary-foreground/60' : 'text-muted-foreground/60'}`}>
                                {format(d, 'EEE', { locale: fr })}
                              </span>
                              <span className="text-3xl font-black tracking-tighter leading-none">{format(d, 'd')}</span>
@@ -187,7 +187,7 @@ export default function RescheduleModal({
 
               {/* Time Grid */}
               <div className="space-y-6">
-                 <p className="text-[11px] font-bold uppercase tracking-[0.4em] px-6 text-muted-foreground/60">CRÉNEAUX DISPONIBLES</p>
+                 <p className="text-[11px] font-bold tracking-[0.05em] px-6 text-muted-foreground/60">Créneaux disponibles</p>
                  <div className="grid grid-cols-4 gap-4">
                     {AVAILABLE_TIMES.map(t => {
                       const disabled = DISABLED_TIMES.includes(t);
@@ -212,7 +212,7 @@ export default function RescheduleModal({
 
               {/* Note */}
               <div className="space-y-4">
-                 <label className="text-[11px] font-bold uppercase tracking-[0.4em] px-6 text-muted-foreground/60">NOTE AU PATIENT (OPTIONNEL)</label>
+                 <label className="text-[11px] font-bold tracking-[0.05em] px-6 text-muted-foreground/60">Note au patient (optionnel)</label>
                  <textarea
                    value={note}
                    onChange={(e) => setNote(e.target.value)}
@@ -225,10 +225,10 @@ export default function RescheduleModal({
               <div className="pt-8">
                  <button
                    onClick={() => onConfirm(format(selectedDate, 'yyyy-MM-dd'), selectedTime, note)}
-                   className="w-full h-24 rounded-[3rem] text-primary-foreground text-[13px] font-bold uppercase tracking-[0.5em] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)] hover:-translate-y-2 active:scale-95 transition-all duration-700 flex items-center justify-center gap-6 group bg-primary"
+                   className="w-full h-24 rounded-[3rem] text-primary-foreground text-[13px] font-bold tracking-[0.05em] shadow-[0_40px_80px_-20_rgba(0,0,0,0.4)] hover:-translate-y-2 active:scale-95 transition-all duration-700 flex items-center justify-center gap-6 group bg-primary"
                  >
                    <Save size={24} strokeWidth={2.5} className="group-hover:scale-125 transition-transform duration-700" />
-                   VALIDER LA REPROGRAMMATION
+                   Valider la reprogrammation
                  </button>
               </div>
            </div>
@@ -245,7 +245,7 @@ function InfoRow({ icon: Icon, label, value }: { icon: any, label: string, value
             <Icon size={18} strokeWidth={2.5} />
          </div>
          <div>
-            <p className="text-[9px] font-bold uppercase tracking-[0.3em] mb-1 text-muted-foreground/60">{label}</p>
+            <p className="text-[9px] font-bold tracking-[0.05em] mb-1 text-muted-foreground/60">{label}</p>
             <p className="text-base font-black tracking-tighter text-foreground">{value}</p>
          </div>
       </div>

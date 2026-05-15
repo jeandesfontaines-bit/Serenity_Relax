@@ -12,32 +12,28 @@ export function SelectionToolbar({ selectedCount, onDelete, onClear }: Selection
   return (
     <motion.div
       initial={{ height: 0, opacity: 0, marginBottom: 0 }}
-      animate={{ height: 80, opacity: 1, marginBottom: 32 }}
+      animate={{ height: 56, opacity: 1, marginBottom: 16 }}
       exit={{ height: 0, opacity: 0, marginBottom: 0 }}
-      className="shrink-0 overflow-hidden rounded-[2.5rem] p-6 flex items-center justify-between shadow-2xl" 
-      style={{ background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' }}
+      className="shrink-0 overflow-hidden rounded-xl px-5 flex items-center justify-between shadow-md bg-primary text-primary-foreground"
     >
-      <div className="flex items-center gap-8 ml-4">
-        <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-60">ACTIONS GROUPÉES</span>
-        <p className="text-xl font-bold tracking-tight">
+      <div className="flex items-center gap-4">
+        <span className="text-xs font-medium tracking-[0.05em] text-primary-foreground/70">Actions groupées</span>
+        <p className="text-sm font-bold">
           {selectedCount} Transaction{selectedCount > 1 ? 's' : ''}
         </p>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <button
           onClick={onDelete}
-          className="h-12 px-8 flex items-center gap-3 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] transition-all shadow-lg"
-          style={{ background: 'hsl(var(--destructive))', color: 'hsl(var(--destructive-foreground))' }}
-          onMouseEnter={e => e.currentTarget.style.filter = 'brightness(1.1)'}
-          onMouseLeave={e => e.currentTarget.style.filter = 'none'}
+          className="h-8 px-4 flex items-center gap-2 rounded-lg text-xs font-medium tracking-[0.05em] transition-all bg-destructive text-destructive-foreground hover:brightness-110 active:scale-95"
         >
-          <Trash2 size={14} strokeWidth={2.5} /> SUPPRIMER
+          <Trash2 size={14} strokeWidth={1.5} /> Supprimer
         </button>
         <button
           onClick={onClear}
-          className="h-12 px-8 flex items-center gap-3 rounded-full bg-white/10 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-white/20 transition-all"
+          className="h-8 px-4 flex items-center gap-2 rounded-lg bg-white/10 text-xs font-medium tracking-[0.05em] hover:bg-white/20 transition-all active:scale-95"
         >
-          <X size={14} strokeWidth={2.5} /> ANNULER
+          <X size={14} strokeWidth={1.5} /> Annuler
         </button>
       </div>
     </motion.div>

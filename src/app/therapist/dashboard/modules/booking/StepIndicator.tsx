@@ -25,7 +25,7 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
               {i + 1}
             </div>
             <span
-              className={`text-[11px] font-bold uppercase tracking-[0.15em] transition-all duration-300 ${
+              className={`text-[11px] font-bold tracking-[0.05em] transition-all duration-300 ${
                 currentStep === s.id ? 'text-foreground' : 'text-muted-foreground'
               }`}
             >

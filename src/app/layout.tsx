@@ -1,20 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { Manrope, Sora } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { BookingProvider } from '@/context/BookingContext';
 
-const manrope = Manrope({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-manrope',
-  weight: ['400', '500', '600', '700', '800'],
-});
-
-const sora = Sora({
-  subsets: ['latin'],
-  variable: '--font-sora',
-  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-montserrat',
+  weight: ['400', '500', '600', '700', '800', '900'],
 });
 
 export const metadata: Metadata = {
@@ -43,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${manrope.variable} ${sora.variable}`}>
+    <html lang="fr" className={`${montserrat.variable}`}>
       <body className="antialiased">
         <FirebaseClientProvider>
           <BookingProvider>

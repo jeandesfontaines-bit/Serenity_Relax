@@ -1,35 +1,13 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Hero from "./sections/Hero";
 import Sessions from "./sections/Sessions";
 import About from "./sections/About";
 import Atelier from "./sections/Atelier";
-import BookingFunnel from "@/components/BookingFunnel";
 import AIConciergeOverlay from "./AIConciergeOverlay";
-import { useBooking } from "@/context/BookingContext";
-import { SERVICES } from "./data";
 import { LandingVariant } from "./types";
-
-function BookingQueryHandler() {
-  const searchParams = useSearchParams();
-  const { openModal, isModalOpen } = useBooking();
-
-  useEffect(() => {
-    const serviceId = searchParams.get("service");
-    if (serviceId && !isModalOpen) {
-      const service = SERVICES.find((s) => s.id === serviceId);
-      if (service) {
-        openModal(service);
-        // Clear param without reload if possible, or just leave it
-      }
-    }
-  }, [searchParams, openModal, isModalOpen]);
-
-  return null;
-}
 
 const VARIANT_LABELS: Record<LandingVariant, string> = {
   default: "Signature",
@@ -52,13 +30,11 @@ export default function Home({ variant = "default" }: { variant?: LandingVariant
   }, []);
 
   return (
-    <Suspense fallback={<div className="landing-v2 min-h-screen bg-[var(--off-white)]" />}>
-      <BookingQueryHandler />
-      <div
-        className="landing-v2 landing-text-high min-h-screen"
-        data-variant={variant}
-        style={{ background: "var(--landing-page-bg)" }}
-      >
+    <div
+      className="landing-v2 landing-text-high min-h-screen"
+      data-variant={variant}
+      style={{ background: "var(--landing-page-bg)" }}
+    >
       <Navbar />
       <main>
         <Hero variant={variant} />
@@ -85,14 +61,13 @@ export default function Home({ variant = "default" }: { variant?: LandingVariant
         <Atelier variant={variant} />
       </main>
       <Footer variant={variant} />
-      <BookingFunnel />
       <AIConciergeOverlay open={aiOpen} onClose={() => setAiOpen(false)} />
 
       {/* Floating AI Concierge Button */}
       {showAiHint && !aiOpen && (
-        <div className="fixed bottom-28 right-8 z-50 max-w-[280px] rounded-2xl border border-[var(--teal-deep)]/20 bg-white/95 p-4 text-[13px] leading-relaxed text-[var(--off-black)] shadow-xl backdrop-blur-sm">
+        <div className="fixed bottom-24 right-4 z-50 hidden max-w-[280px] rounded-2xl border border-[rgba(21,56,57,0.14)] bg-white/95 p-4 text-[13px] leading-relaxed text-[var(--off-black)] shadow-xl backdrop-blur-sm md:right-8 md:block">
           <p className="font-semibold">Besoin d&apos;être guidé ?</p>
-          <p className="mt-1 text-[var(--teal-deep)]/80">
+          <p className="mt-1 text-[rgba(21,56,57,0.8)]">
             Cliquez sur le chatbot, décrivez votre état en quelques mots et je vous recommande le soin idéal.
           </p>
         </div>
@@ -102,7 +77,7 @@ export default function Home({ variant = "default" }: { variant?: LandingVariant
           setShowAiHint(false);
           setAiOpen(true);
         }}
-        className="fixed bottom-8 right-8 z-50 flex items-center gap-3 rounded-full bg-[var(--periwinkle)] px-5 py-4 text-[var(--off-black)] shadow-2xl transition-all duration-500 hover:scale-105 hover:bg-[var(--teal-deep)] hover:text-[var(--neon)] group"
+        className="group fixed bottom-8 right-8 z-50 hidden items-center gap-3 rounded-full bg-[var(--periwinkle)] px-5 py-4 text-[var(--off-black)] shadow-2xl transition-all duration-500 hover:scale-105 hover:bg-[var(--teal-deep)] hover:text-[var(--neon)] md:flex"
       >
         <div className="flex -space-x-1">
           <span className="relative flex h-3 w-3">
@@ -113,6 +88,5 @@ export default function Home({ variant = "default" }: { variant?: LandingVariant
         <span className="text-sm font-bold tracking-tight">IA Concierge</span>
       </button>
     </div>
-    </Suspense>
   );
 }

@@ -17,24 +17,22 @@ export function RecentNotes({
   onEditGoal,
 }: RecentNotesProps) {
   return (
-    <div className="space-y-6">
-      <div
-        className="rounded-3xl border p-8 shadow-sm space-y-8 bg-background border-border"
-      >
+    <div className="space-y-4">
+      <div className="rounded-xl border border-border bg-card p-6 space-y-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] mb-1.5 text-muted-foreground">ARCHIVES</p>
-            <h4 className="text-2xl font-bold tracking-tight text-foreground">Notes</h4>
+            <p className="text-xs font-medium tracking-[0.05em] text-muted-foreground mb-0.5">Archives</p>
+            <h4 className="text-lg font-semibold tracking-tight text-foreground">Notes</h4>
           </div>
           <button
             onClick={onEditGoal}
-            className="w-11 h-11 flex items-center justify-center rounded-full border transition-all bg-secondary border-border text-muted-foreground hover:text-foreground hover:border-primary"
+            className="w-9 h-9 flex items-center justify-center rounded-lg border border-border transition-colors bg-background text-muted-foreground hover:text-foreground hover:bg-accent"
           >
-            <BarChart3 size={18} strokeWidth={2.5} />
+            <BarChart3 size={16} strokeWidth={2} />
           </button>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {progressNotes.length > 0 ? (
             progressNotes.map((appt) => (
               <NoteCard 
@@ -44,17 +42,17 @@ export function RecentNotes({
               />
             ))
           ) : (
-            <div className="py-16 text-center border-2 border-dashed rounded-2xl border-border">
-              <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-muted-foreground">AUCUNE NOTE RÉCENTE</p>
+            <div className="py-12 text-center border border-dashed rounded-lg border-border">
+              <p className="text-xs font-medium tracking-[0.05em] text-muted-foreground">Aucune note récente</p>
             </div>
           )}
         </div>
 
         <button
           onClick={() => onNavigate('clients')}
-          className="w-full h-12 flex items-center justify-center rounded-xl border text-[10px] font-bold uppercase tracking-[0.2em] transition-all border-border text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary"
+          className="w-full h-9 flex items-center justify-center rounded-lg border border-border text-xs font-medium tracking-[0.05em] transition-all duration-200 text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary"
         >
-          RÉPERTOIRE PATIENTS
+          Répertoire patients
         </button>
       </div>
     </div>

@@ -37,7 +37,7 @@ export default function CabinetSettings({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {filteredFields.map(f => (
             <div key={f.label} className={`space-y-1 ${f.full ? 'md:col-span-2' : ''}`}>
-              <label className="text-[7.5px] font-bold uppercase tracking-[0.2em] px-1" style={{ color: 'hsl(var(--muted-foreground))' }}>{f.label}</label>
+              <label className="text-[7.5px] font-bold tracking-[0.05em] px-1" style={{ color: 'hsl(var(--muted-foreground))' }}>{f.label}</label>
               {f.full ? (
                 <InlineEditableTextarea
                   placeholder={f.label}

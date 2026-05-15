@@ -104,7 +104,7 @@ export default function InvoicesPage() {
               <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
                        style={{ background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' }}><FileText size={20} /></div>
-                  <p className="text-[0.6rem] font-bold uppercase tracking-[0.4em]" style={{ color: 'hsl(var(--primary))' }}>Gestion Administrative</p>
+                  <p className="text-[0.6rem] font-bold tracking-[0.05em]" style={{ color: 'hsl(var(--primary))' }}>Gestion administrative</p>
               </div>
               <h1 className="title-luxe text-2xl md:text-3xl leading-none" style={{ color: 'hsl(var(--foreground))' }}>Invoices <br/><span className="font-sans opacity-40">Archive.</span></h1>
             </div>
@@ -130,12 +130,12 @@ export default function InvoicesPage() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b" style={{ borderColor: 'hsl(var(--border))' }}>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Identifiant</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Destinataire</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Émission</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Montant</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--muted-foreground))' }}>Statut</th>
-                    <th className="px-6 py-6 text-[0.65rem] font-bold uppercase tracking-widest text-right" style={{ color: 'hsl(var(--muted-foreground))' }}>Actions</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold tracking-[0.05em]" style={{ color: 'hsl(var(--muted-foreground))' }}>Identifiant</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold tracking-[0.05em]" style={{ color: 'hsl(var(--muted-foreground))' }}>Destinataire</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold tracking-[0.05em]" style={{ color: 'hsl(var(--muted-foreground))' }}>Émission</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold tracking-[0.05em]" style={{ color: 'hsl(var(--muted-foreground))' }}>Montant</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold tracking-[0.05em]" style={{ color: 'hsl(var(--muted-foreground))' }}>Statut</th>
+                    <th className="px-6 py-6 text-[0.65rem] font-bold tracking-[0.05em] text-right" style={{ color: 'hsl(var(--muted-foreground))' }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y" style={{ borderColor: 'hsl(var(--border))' }}>
@@ -154,7 +154,7 @@ export default function InvoicesPage() {
                         <span className="text-2xl font-light" style={{ color: 'hsl(var(--foreground))' }}>{inv.amount} <small className="text-[10px] opacity-30 font-bold">CHF</small></span>
                       </td>
                       <td className="px-6 py-8">
-                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[0.6rem] font-bold uppercase tracking-widest ${inv.status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'}`}>
+                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[0.6rem] font-bold tracking-[0.05em] ${inv.status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'}`}>
                           {inv.status === 'paid' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
                           {inv.status === 'paid' ? 'Réglé' : 'En Attente'}
                         </div>

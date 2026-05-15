@@ -16,6 +16,7 @@ interface MonthViewProps {
   pendingDates: Set<string>;
   togglePending: (d: string) => void;
   onToggleView: (v: 'month' | 'week') => void;
+  onSelectAppt: (appt: Appointment) => void;
 }
 
 export default function MonthView({
@@ -28,6 +29,7 @@ export default function MonthView({
   pendingDates,
   togglePending,
   onToggleView,
+  onSelectAppt,
 }: MonthViewProps) {
   const days = useMemo(() => eachDayOfInterval({
     start: startOfWeek(startOfMonth(cur), { weekStartsOn: 1 }),
@@ -36,18 +38,21 @@ export default function MonthView({
   const rowCount = Math.ceil(days.length / 7);
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-background">
-      <div className="grid grid-cols-7 border-b border-border/20 shrink-0 bg-slate-50/50">
+    <div className="flex-1 flex flex-col overflow-auto bg-background border-t border-border">
+      <div className="grid grid-cols-7 border-b border-border shrink-0 bg-background">
         {DAYS_LABELS.map(d => (
-          <div key={d} className="border-r border-border/20 py-6 text-center">
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground/30">{d}</span>
+          <div key={d} className="border-r border-border py-3 text-center last:border-r-0">
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">{d}</span>
           </div>
         ))}
       </div>
 
       <div
-        className="grid flex-1 grid-cols-7 overflow-hidden bg-background"
-        style={{ gridTemplateRows: `repeat(${rowCount}, minmax(0, 1fr))` }}
+        className="flex-1 grid grid-cols-7 overflow-hidden bg-border"
+        style={{ 
+          gap: '1px',
+          gridTemplateRows: `repeat(${rowCount}, 1fr)`
+        }}
       >
         {days.map((day, i) => (
           <MonthDay
@@ -62,6 +67,7 @@ export default function MonthView({
             pendingDates={pendingDates}
             togglePending={togglePending}
             onToggleView={onToggleView}
+            onSelectAppt={onSelectAppt}
           />
         ))}
       </div>

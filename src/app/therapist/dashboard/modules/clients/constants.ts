@@ -28,15 +28,12 @@ export interface ClientFilters {
 }
 
 export const ALL_COLUMNS: ColDef[] = [
-  { id: 'firstName', label: 'PRÉNOM', minWidth: '160px', flex: '1.1fr' },
-  { id: 'lastName', label: 'NOM', minWidth: '180px', flex: '1.2fr' },
-  { id: 'email', label: 'EMAIL', minWidth: '240px', flex: '1.7fr' },
-  { id: 'phone', label: 'TÉLÉPHONE', minWidth: '170px', flex: '1.1fr' },
-  { id: 'zip', label: 'CODE POSTAL', minWidth: '120px', flex: '0.8fr' },
-  { id: 'city', label: 'VILLE', minWidth: '160px', flex: '1fr' },
-  { id: 'lastVisit', label: 'DERNIER SOIN', minWidth: '140px', flex: '1fr' },
-  { id: 'preferredRitual', label: 'RITUEL FAVORI', minWidth: '220px', flex: '1.8fr' },
-  { id: 'sessions', label: 'TOTAL', minWidth: '100px', flex: '0.8fr', align: 'center' },
+  { id: 'patient', label: 'Patient', minWidth: '220px', flex: '2fr' },
+  { id: 'status', label: 'Statut', minWidth: '100px', flex: '0.8fr', align: 'start' },
+  { id: 'lastVisit', label: 'Dernier soin', minWidth: '140px', flex: '1.2fr' },
+  { id: 'sessions', label: 'Séances', minWidth: '80px', flex: '0.7fr', align: 'center' },
+  { id: 'email', label: 'Email', minWidth: '220px', flex: '1.5fr' },
+  { id: 'phone', label: 'Téléphone', minWidth: '150px', flex: '1fr' },
 ];
 
 export function parseAppointmentDate(date?: string): Date | null {

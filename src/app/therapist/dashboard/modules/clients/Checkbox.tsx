@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 interface CheckboxProps {
   checked: boolean;
@@ -11,13 +11,13 @@ export default function Checkbox({ checked, onChange }: CheckboxProps) {
     <button
       type="button"
       onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className="flex h-7 w-7 items-center justify-center rounded-md border-2 transition-all"
-      style={checked
-        ? { background: 'hsl(var(--primary))', borderColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' }
-        : { background: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', color: 'transparent' }
-      }
+      className={`flex h-5 w-5 items-center justify-center rounded border transition-all ${
+        checked 
+          ? 'bg-primary border-primary text-primary-foreground' 
+          : 'bg-background border-border text-transparent hover:border-muted-foreground'
+      }`}
     >
-      <ShieldCheck size={14} strokeWidth={3} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-50'} />
+      <Check size={12} strokeWidth={3} className={`transition-all ${checked ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} />
     </button>
   );
 }

@@ -58,10 +58,10 @@ export function AccountSettings({ email, setEmail }: AccountSettingsProps) {
         </div>
         <button 
           onClick={handleUpdatePassword} 
-          className="h-8 px-4 rounded-lg font-bold text-[9px] uppercase tracking-[0.2em] hover:shadow-lg transition-all flex items-center justify-center gap-2" 
+          className="h-8 px-4 rounded-lg font-bold text-[9px] tracking-[0.05em] hover:shadow-lg transition-all flex items-center justify-center gap-2" 
           style={{ background: 'hsl(var(--background))', color: 'hsl(var(--foreground))' }}
         >
-          <Lock size={12} strokeWidth={3} /> METTRE À JOUR LE MOT DE PASSE
+          <Lock size={12} strokeWidth={3} /> Mettre à jour le mot de passe
         </button>
       </div>
     </div>

@@ -1,0 +1,98 @@
+- generic [ref=e1]:
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e136]:
+        - button "S Serenity" [ref=e138] [cursor=pointer]:
+          - generic [ref=e140]: S
+          - generic [ref=e141]: Serenity
+        - navigation [ref=e142]:
+          - button "Dashboard" [ref=e143] [cursor=pointer]:
+            - img [ref=e144]
+            - generic [ref=e147]: Dashboard
+          - button "Agenda" [ref=e148] [cursor=pointer]:
+            - img [ref=e149]
+            - generic [ref=e151]: Agenda
+          - button "Clients" [ref=e152] [cursor=pointer]:
+            - img [ref=e153]
+            - generic [ref=e158]: Clients
+          - button "Finances" [ref=e159] [cursor=pointer]:
+            - img [ref=e160]
+            - generic [ref=e163]: Finances
+        - generic [ref=e164]:
+          - button "Paramètres" [ref=e165] [cursor=pointer]:
+            - img [ref=e166]
+            - generic [ref=e169]: Paramètres
+          - button "Déconnexion" [ref=e170] [cursor=pointer]:
+            - img [ref=e171]
+            - generic [ref=e174]: Déconnexion
+    - generic [ref=e46]:
+      - banner [ref=e47]:
+        - heading "Finances" [level=2] [ref=e175]
+        - generic [ref=e53]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e54]
+        - generic [ref=e177]:
+          - button [ref=e178] [cursor=pointer]:
+            - img [ref=e179]
+          - button [ref=e181] [cursor=pointer]:
+            - img [ref=e182]
+          - button "Exporter" [ref=e184] [cursor=pointer]:
+            - img [ref=e185]
+            - text: Exporter
+      - main [ref=e55]:
+        - generic [ref=e191]:
+          - generic [ref=e192]:
+            - button [ref=e194] [cursor=pointer]:
+              - img [ref=e195]
+            - button "Date" [ref=e197] [cursor=pointer]:
+              - text: Date
+              - img [ref=e198]
+            - button "Prénom" [ref=e201] [cursor=pointer]
+            - button "Nom" [ref=e202] [cursor=pointer]
+            - button "Référence" [ref=e203] [cursor=pointer]
+            - button "Soin" [ref=e204] [cursor=pointer]
+            - button "Statut" [ref=e205] [cursor=pointer]
+            - generic [ref=e206]: PDF
+            - button "Montant" [ref=e207] [cursor=pointer]
+          - generic [ref=e208]:
+            - generic [active] [ref=e209]:
+              - button [ref=e211] [cursor=pointer]:
+                - img [ref=e212]
+              - generic [ref=e214]: 07 May 2026
+              - generic [ref=e216]: j
+              - generic [ref=e218]: j
+              - generic [ref=e219]: INV-20260501-MTYS
+              - generic [ref=e220]: Draineur Lymphatique 60 min
+              - generic [ref=e222] [cursor=pointer]: Retard
+              - button [ref=e224] [cursor=pointer]:
+                - img [ref=e225]
+              - generic [ref=e228]: 110 CHF
+            - generic [ref=e229]:
+              - button [ref=e231] [cursor=pointer]:
+                - img [ref=e232]
+              - generic [ref=e234]: 06 May 2026
+              - generic [ref=e236]: Jean
+              - generic [ref=e238]: j
+              - generic [ref=e239]: INV-20260506-NFTP
+              - generic [ref=e240]: Réflexologie Plantaire - 30 min
+              - generic [ref=e242] [cursor=pointer]: Retard
+              - button [ref=e244] [cursor=pointer]:
+                - img [ref=e245]
+              - generic [ref=e248]: 60 CHF
+            - generic [ref=e249]:
+              - button [ref=e251] [cursor=pointer]:
+                - img [ref=e252]
+              - generic [ref=e254]: 06 May 2026
+              - generic [ref=e256]: Jean
+              - generic [ref=e258]: j
+              - generic [ref=e259]: INV-20260506-EJWR
+              - generic [ref=e260]: Réflexologie Plantaire - 30 min
+              - generic [ref=e262] [cursor=pointer]: Retard
+              - button [ref=e264] [cursor=pointer]:
+                - img [ref=e265]
+              - generic [ref=e268]: 60 CHF
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e132] [cursor=pointer]:
+    - img [ref=e133]
+  - alert [ref=e4]

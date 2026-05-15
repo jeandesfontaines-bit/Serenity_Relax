@@ -47,35 +47,11 @@ export default function ClientDetail({
 
   return (
     <div className="flex-1 bg-transparent text-foreground">
-      <main className="mx-auto space-y-16">
+      <main className="mx-auto space-y-10">
         
-        {/* ── Page Header ── */}
-        <div className="flex items-end justify-between border-b border-border pb-12">
-          <div className="flex items-center gap-10">
-            <button 
-              onClick={onClose} 
-              className="w-16 h-16 flex items-center justify-center rounded-full border border-border shadow-sm hover:scale-110 transition-all group bg-background"
-            >
-              <ArrowLeft className="group-hover:-translate-x-1 transition-transform text-muted-foreground" size={24} strokeWidth={2.5} />
-            </button>
-            <div>
-              <p className="dashboard-eyebrow mb-2">DOSSIER PATIENT</p>
-              <h1 className="text-7xl font-bold tracking-tighter leading-none">
-                {fullName}
-              </h1>
-            </div>
-          </div>
-          <div className="flex items-center gap-6">
-              <button 
-                onClick={() => onScheduleClient(client)}
-                className="h-16 px-10 rounded-full text-[11px] font-bold uppercase tracking-[0.28em] hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center gap-4 bg-primary text-primary-foreground"
-              >
-                <Plus size={18} strokeWidth={3} /> NOUVELLE SÉANCE
-              </button>
-          </div>
-        </div>
+        {/* Header removed — handled by AppLayout global header */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[450px_1fr] gap-24 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-start pt-4">
           <ClientProfileSidebar 
             client={client}
             editData={editData}

@@ -38,7 +38,7 @@ const ADVICES = [
 
 export default function Advice() {
   return (
-    <section id="advice" className="relative py-24 md:py-32 bg-[var(--sage-deep)]/5">
+    <section id="advice" className="relative py-20 md:py-32 bg-[var(--sage-deep)]/5">
       <div className="mx-auto max-w-[1480px] px-6 md:px-10 lg:px-14">
         <header className="mb-16 max-w-3xl">
           <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--sage-deep)] mb-6 block">— Rituels post-soin</span>

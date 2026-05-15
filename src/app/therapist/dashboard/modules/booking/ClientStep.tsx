@@ -107,7 +107,7 @@ export function ClientStep({
       {filteredClients.length > 0 && (
         <button
           onClick={onSelectNew}
-          className="w-full flex items-center justify-center gap-3 py-5 border-t border-border/30 transition-all duration-700 text-[11px] font-bold uppercase tracking-[0.3em] text-muted-foreground/80 hover:text-primary"
+          className="w-full flex items-center justify-center gap-3 py-5 border-t border-border/30 transition-all duration-700 text-[11px] font-bold tracking-[0.05em] text-muted-foreground/80 hover:text-primary"
         >
           <UserPlus size={14} strokeWidth={2.5} />
           Créer un nouveau profil

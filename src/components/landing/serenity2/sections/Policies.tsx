@@ -2,7 +2,7 @@ import { ShieldCheck, Info, MapPin, Clock } from "lucide-react";
 
 export default function Policies() {
   return (
-    <section id="policies" className="relative py-24 md:py-32 lg:py-40 bg-white border-t border-foreground/5">
+    <section id="policies" className="relative py-20 md:py-32 bg-white border-t border-foreground/5">
       <div className="mx-auto max-w-[1480px] px-6 md:px-10 lg:px-14">
         <div className="grid grid-cols-12 gap-12 lg:gap-24">
           

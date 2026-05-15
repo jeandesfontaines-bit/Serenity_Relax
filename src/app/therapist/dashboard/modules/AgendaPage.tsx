@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Appointment } from '../types';
 import { motion } from 'framer-motion';
-import AgendaSidebar from './agenda/AgendaSidebar';
 import WeekTimeGrid from './agenda/WeekTimeGrid';
 import MonthView from './agenda/MonthView';
 
@@ -27,6 +26,7 @@ interface AgendaPageProps {
   onOpenWeeklySettings?: () => void;
   onMoveAppt?: (id: string, date: string, time: string) => void;
   onSelectDate?: (date: Date) => void;
+  onSelectApptFromMonth?: (appt: Appointment) => void;
   searchQuery?: string;
   pendingDates?: Set<string>;
   togglePending?: (date: string) => void;
@@ -49,7 +49,7 @@ export default function AgendaPage({
   onSelectAppt, onOpenSlot, appointments,
   configSlots, isDayOpen, isSlotBlocked, toggleSlot, onToggleDay,
   blockMode, setBlockMode, absenceMode, setAbsenceMode,
-  onOpenWeeklySettings, onMoveAppt, searchQuery, pendingDates, togglePending, onClearAbsenceMode,
+  onOpenWeeklySettings, onMoveAppt, onSelectApptFromMonth, searchQuery, pendingDates, togglePending, onClearAbsenceMode,
 }: AgendaPageProps) {
   const safeSetAbsenceMode = setAbsenceMode ?? (() => {});
   const safeOnClearAbsenceMode = onClearAbsenceMode ?? (() => {});
@@ -107,14 +107,6 @@ export default function AgendaPage({
     >
       {/* ── CONTENT ── */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <AgendaSidebar
-          currentDate={cur}
-          onDateChange={() => {}} // Could be wired to onPeriod if needed
-          view={view}
-          onViewChange={onToggleView}
-          appointments={filteredAppointments}
-        />
 
         {/* Main calendar area */}
         <div className="flex-1 flex flex-col overflow-hidden">
@@ -144,6 +136,7 @@ export default function AgendaPage({
                 pendingDates={activePendingDates}
                 togglePending={handleTogglePending}
                 onToggleView={onToggleView}
+                onSelectAppt={onSelectApptFromMonth || onSelectAppt}
               />
           }
         </div>

@@ -26,12 +26,12 @@ export default function ClientLayout({
   }, [isUserLoading, router, sessionClientId, sessionReady, user]);
 
   if (isUserLoading || !sessionReady) return (
-    <div className="h-screen flex items-center justify-center bg-background">
-       <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+    <div className="landing-v2 flex h-screen items-center justify-center bg-[var(--landing-page-bg)]">
+       <div className="h-16 w-16 animate-spin rounded-full border-4 border-[rgba(21,56,57,0.16)] border-t-[var(--teal-deep)]" />
     </div>
   );
 
   if (!user && !sessionClientId) return null;
 
-  return <div className="min-h-screen bg-background">{children}</div>;
+  return <div className="landing-v2 min-h-screen" style={{ background: 'var(--landing-page-bg)' }}>{children}</div>;
 }

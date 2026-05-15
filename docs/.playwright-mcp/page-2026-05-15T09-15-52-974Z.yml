@@ -1,0 +1,139 @@
+- generic [ref=e1]:
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e437]:
+        - button "S Serenity" [ref=e439] [cursor=pointer]:
+          - generic [ref=e441]: S
+          - generic [ref=e442]: Serenity
+        - navigation [ref=e443]:
+          - button "Dashboard" [ref=e444] [cursor=pointer]:
+            - img [ref=e445]
+            - generic [ref=e448]: Dashboard
+          - button "Agenda" [ref=e449] [cursor=pointer]:
+            - img [ref=e450]
+            - generic [ref=e452]: Agenda
+          - button "Clients" [ref=e453] [cursor=pointer]:
+            - img [ref=e454]
+            - generic [ref=e459]: Clients
+          - button "Finances" [ref=e460] [cursor=pointer]:
+            - img [ref=e461]
+            - generic [ref=e464]: Finances
+        - generic [ref=e465]:
+          - button "Paramètres" [ref=e466] [cursor=pointer]:
+            - img [ref=e467]
+            - generic [ref=e470]: Paramètres
+          - button "Déconnexion" [ref=e471] [cursor=pointer]:
+            - img [ref=e472]
+            - generic [ref=e475]: Déconnexion
+    - generic [ref=e46]:
+      - banner [ref=e47]:
+        - generic [ref=e476]:
+          - button [ref=e477] [cursor=pointer]:
+            - img [ref=e478]
+          - generic [ref=e480]:
+            - heading "j j" [level=2] [ref=e481]
+            - paragraph [ref=e482]: Dossier de séance
+        - generic [ref=e53]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e54]
+      - main [ref=e55]:
+        - generic [ref=e485]:
+          - button "Annuler le rdv" [ref=e487] [cursor=pointer]:
+            - img [ref=e488]
+            - text: Annuler le rdv
+          - generic [ref=e491]:
+            - generic [ref=e492]:
+              - generic [ref=e493]:
+                - generic [ref=e494]:
+                  - generic [ref=e495]: "7"
+                  - generic [ref=e496]: mai
+                - generic [ref=e497]:
+                  - heading "j j" [level=3] [ref=e498]
+                  - generic [ref=e499]:
+                    - paragraph [ref=e501]: jeudi 7 mai 2026
+                    - generic [ref=e502]:
+                      - img [ref=e503]
+                      - paragraph [ref=e506]: 09:00 — --:--
+                - generic [ref=e507]: À régler
+              - generic [ref=e508]:
+                - button "WhatsApp Rappel client" [ref=e509] [cursor=pointer]:
+                  - img [ref=e511]
+                  - paragraph [ref=e513]: WhatsApp
+                  - paragraph [ref=e514]: Rappel client
+                - button "Confirmer Validation séance" [ref=e515] [cursor=pointer]:
+                  - img [ref=e517]
+                  - paragraph [ref=e519]: Confirmer
+                  - paragraph [ref=e520]: Validation séance
+                - button "Facture PDF Ouvrir document" [active] [ref=e521] [cursor=pointer]:
+                  - img [ref=e523]
+                  - paragraph [ref=e526]: Facture PDF
+                  - paragraph [ref=e527]: Ouvrir document
+                - button "Marquer réglée Cash, TWINT ou card" [ref=e528] [cursor=pointer]:
+                  - img [ref=e530]
+                  - paragraph [ref=e533]: Marquer réglée
+                  - paragraph [ref=e534]: Cash, TWINT ou card
+              - generic [ref=e535]:
+                - heading "Caractéristiques de séance" [level=4] [ref=e537]
+                - generic [ref=e539]:
+                  - generic [ref=e540]:
+                    - img [ref=e542]
+                    - generic [ref=e544]:
+                      - paragraph [ref=e545]: Type de soin
+                      - generic [ref=e547]:
+                        - generic [ref=e548]: Draineur Lymphatique 60 min
+                        - img [ref=e549]
+                  - generic [ref=e551]:
+                    - img [ref=e553]
+                    - generic [ref=e555]:
+                      - paragraph [ref=e556]: Honoraires
+                      - generic [ref=e558]:
+                        - generic [ref=e559]:
+                          - generic [ref=e560]: "110"
+                          - img [ref=e561]
+                        - generic [ref=e563]: CHF
+                  - generic [ref=e564]:
+                    - img [ref=e566]
+                    - generic [ref=e568]:
+                      - paragraph [ref=e569]: Mobile
+                      - generic [ref=e571]:
+                        - generic [ref=e572]: Téléphone
+                        - img [ref=e573]
+                  - generic [ref=e575]:
+                    - img [ref=e577]
+                    - generic [ref=e580]:
+                      - paragraph [ref=e581]: Courriel
+                      - generic [ref=e583]:
+                        - generic [ref=e584]: Email
+                        - img [ref=e585]
+            - generic [ref=e587]:
+              - generic [ref=e588]:
+                - generic [ref=e590]:
+                  - generic [ref=e591]:
+                    - paragraph [ref=e592]: Séances totales
+                    - paragraph [ref=e593]: "3"
+                  - img [ref=e595]
+                - generic [ref=e597]:
+                  - generic [ref=e598]:
+                    - paragraph [ref=e599]: Solde à régler
+                    - paragraph [ref=e600]: 230 CHF
+                  - img [ref=e602]
+                - generic [ref=e605]:
+                  - generic [ref=e606]:
+                    - paragraph [ref=e607]: Dernière visite
+                    - paragraph [ref=e608]: 06 mai
+                  - img [ref=e610]
+              - generic [ref=e612]:
+                - generic [ref=e613]:
+                  - generic [ref=e614]:
+                    - img [ref=e616]
+                    - heading "Journal clinique" [level=4] [ref=e618]
+                  - generic [ref=e619]: Archivé
+                - paragraph [ref=e621]: Écrivez vos observations ici...
+                - button "Sauvegarder" [ref=e622] [cursor=pointer]:
+                  - img [ref=e623]
+                  - text: Sauvegarder
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e132] [cursor=pointer]:
+    - img [ref=e133]
+  - alert [ref=e4]

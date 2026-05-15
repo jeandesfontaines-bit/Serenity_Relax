@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Send, Sparkles, X } from "lucide-react";
 import { recommendMassageService } from "@/ai/flows/ai-service-recommender";
 import { SERVICES } from "./data";
-import { useBooking } from "@/context/BookingContext";
 
 export default function AIConciergeOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { openModal } = useBooking();
+  const router = useRouter();
   const [messages, setMessages] = useState<{ role: "assistant" | "user"; text: string }[]>([
     {
       role: "assistant",
@@ -73,7 +73,7 @@ export default function AIConciergeOverlay({ open, onClose }: { open: boolean; o
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.98 }}
           transition={{ duration: 0.2 }}
-          className="fixed bottom-28 right-8 z-[120] flex h-[min(72vh,620px)] w-[min(92vw,390px)] flex-col overflow-hidden rounded-[24px] border border-[#153839]/22 bg-white/96 shadow-[0_24px_60px_rgba(15,23,42,0.22)] backdrop-blur-xl"
+          className="fixed bottom-24 right-6 z-[120] flex h-[min(62vh,520px)] w-[min(90vw,350px)] flex-col overflow-hidden rounded-[24px] border border-[#153839]/14 bg-white/96 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl md:bottom-28 md:right-8 md:h-[min(60vh,500px)] md:w-[min(88vw,340px)]"
         >
           <div className="flex items-center justify-between border-b border-[#153839]/12 bg-[linear-gradient(135deg,#153839,#275E6A)] px-4 py-3 text-white">
             <div className="flex items-center gap-3">
@@ -110,8 +110,8 @@ export default function AIConciergeOverlay({ open, onClose }: { open: boolean; o
                 <p className="mt-1 text-sm font-semibold">{selected.name}</p>
                 <button
                   onClick={() => {
-                    openModal(selected);
                     onClose();
+                    router.push(`/booking?service=${selected.id}`);
                   }}
                   className="mt-2 w-full rounded-full bg-[var(--teal-deep)] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_12px_26px_rgba(21,56,57,0.16)] transition-colors duration-300 hover:bg-[var(--orange)]"
                 >

@@ -45,6 +45,8 @@ export function parseDuration(d?: string): number {
 
 export type AppointmentTone = {
   surface: string;
+  bg: string;
+  text: string;
   border: string;
   title: string;
   meta: string;
@@ -53,37 +55,47 @@ export type AppointmentTone = {
 
 export const APPOINTMENT_TONES: Record<'default' | 'paid' | 'cancelled' | 'pending' | 'confirmed', AppointmentTone> = {
   default: {
-    surface: '',
-    border: 'border-[hsl(var(--border))]',
-    title: '',
-    meta: '',
-    dot: '',
+    surface: 'bg-slate-50',
+    bg: 'bg-slate-500',
+    text: 'text-slate-700',
+    border: 'border-slate-200',
+    title: 'text-slate-900',
+    meta: 'text-slate-500',
+    dot: 'bg-slate-400',
   },
   confirmed: {
-    surface: 'bg-blue-500/10',
-    border: 'border-blue-200/50',
-    title: 'text-blue-950',
+    surface: 'bg-blue-50',
+    bg: 'bg-blue-600',
+    text: 'text-blue-700',
+    border: 'border-blue-200',
+    title: 'text-blue-900',
     meta: 'text-blue-600',
     dot: 'bg-blue-500',
   },
   paid: {
-    surface: 'bg-emerald-500/10',
-    border: 'border-emerald-200/50',
-    title: 'text-emerald-950',
+    surface: 'bg-emerald-50',
+    bg: 'bg-emerald-600',
+    text: 'text-emerald-700',
+    border: 'border-emerald-200',
+    title: 'text-emerald-900',
     meta: 'text-emerald-600',
     dot: 'bg-emerald-500',
   },
   cancelled: {
-    surface: 'bg-red-500/10',
-    border: 'border-red-100',
-    title: 'text-red-950',
+    surface: 'bg-red-50',
+    bg: 'bg-red-600',
+    text: 'text-red-700',
+    border: 'border-red-200',
+    title: 'text-red-900',
     meta: 'text-red-600',
     dot: 'bg-red-500',
   },
   pending: {
-    surface: 'bg-amber-500/10',
-    border: 'border-amber-200/50',
-    title: 'text-amber-950',
+    surface: 'bg-amber-50',
+    bg: 'bg-amber-600',
+    text: 'text-amber-700',
+    border: 'border-amber-200',
+    title: 'text-amber-900',
     meta: 'text-amber-600',
     dot: 'bg-amber-500',
   },

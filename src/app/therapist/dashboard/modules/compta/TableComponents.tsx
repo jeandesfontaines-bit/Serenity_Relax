@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, ArrowRight } from 'lucide-react';
+import { Check, ArrowUpDown } from 'lucide-react';
 import { SortField } from './types';
 
 export function TableCheckbox({ checked, onChange }: { checked: boolean; onChange: () => void }) {
@@ -7,11 +7,11 @@ export function TableCheckbox({ checked, onChange }: { checked: boolean; onChang
     <button
       type="button"
       onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`h-6 w-6 flex items-center justify-center rounded-lg border-2 transition-all duration-300 ${
-        checked ? 'bg-primary border-primary text-primary-foreground' : 'bg-transparent border-border/50 text-transparent'
+      className={`h-5 w-5 flex items-center justify-center rounded border transition-all ${
+        checked ? 'bg-primary border-primary text-primary-foreground' : 'bg-background border-border text-transparent hover:border-muted-foreground'
       }`}
     >
-      <ShieldCheck size={12} strokeWidth={2.5} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-50'} />
+      <Check size={12} strokeWidth={3} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-75'} />
     </button>
   );
 }
@@ -28,11 +28,10 @@ export function HeaderBtn({ label, field, current, onSort, align = 'left' }: Hea
   return (
     <button
       onClick={(e) => { e.stopPropagation(); onSort(field); }}
-      className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 flex items-center gap-2 text-muted-foreground/60 hover:text-foreground ${align === 'right' ? 'justify-end w-full' : ''}`}
+      className={`text-xs font-medium tracking-[0.05em] transition-colors flex items-center gap-1.5 text-muted-foreground hover:text-foreground ${align === 'right' ? 'justify-end w-full' : ''}`}
     >
       {label}
-      {current === field && <ArrowRight size={10} strokeWidth={2.5} className="rotate-90" />}
+      {current === field && <ArrowUpDown size={10} strokeWidth={2} />}
     </button>
-
   );
 }

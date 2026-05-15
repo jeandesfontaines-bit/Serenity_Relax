@@ -15,7 +15,7 @@ export interface ComptaPageProps {
   appointments: Appointment[];
   invoices: Invoice[];
   onTogglePayment: (id: string, current: boolean, method?: string) => void;
-  onSelectAppt: (appt: Appointment) => void;
+  onSelectAppt?: (appt: Appointment) => void;
   onDeleteInvoices?: (ids: string[]) => void;
   searchQuery: string;
   onSearchQueryChange: (value: string) => void;

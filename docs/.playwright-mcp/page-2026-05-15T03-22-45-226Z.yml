@@ -1,0 +1,67 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - link "SERENITY by João" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]: SERENITY
+          - generic [ref=e10]: by João
+        - navigation [ref=e11]:
+          - link "Studio" [ref=e12] [cursor=pointer]:
+            - /url: /#hero
+          - link "Soins" [ref=e13] [cursor=pointer]:
+            - /url: /#services
+          - link "Philosophie" [ref=e14] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e15] [cursor=pointer]:
+            - /url: /#faq
+        - generic [ref=e16]:
+          - button "Connexion" [ref=e17] [cursor=pointer]
+          - generic [ref=e20] [cursor=pointer]:
+            - generic [ref=e21]: Jean
+            - button "Sortie" [ref=e22]
+          - button "Réserver" [ref=e24] [cursor=pointer]
+    - main [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - img [ref=e28]
+          - generic [ref=e30]: Tableau de bord
+        - heading "Bon retour, Jean" [level=1] [ref=e31]:
+          - text: Bon retour,
+          - text: Jean
+        - paragraph [ref=e32]: Votre parcours de rééquilibrage continue ici. Prenez un instant et retrouvez vos prochains soins.
+      - generic [ref=e33]:
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - heading "Prochain soin" [level=2] [ref=e38]
+            - generic [ref=e39]: À planifier
+          - generic [ref=e40]:
+            - paragraph [ref=e41]: Aucun soin à venir pour le moment.
+            - paragraph [ref=e42]: Offrez-vous un moment de détente profonde.
+            - link "Réserver un soin" [ref=e43] [cursor=pointer]:
+              - /url: /#services
+        - complementary [ref=e44]:
+          - generic [ref=e45]:
+            - heading "Derniers soins" [level=2] [ref=e46]
+            - generic [ref=e48]: Votre historique apparaîtra ici après votre première séance.
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - heading "Factures récentes" [level=2] [ref=e51]
+          - link "Tout voir" [ref=e52] [cursor=pointer]:
+            - /url: /client/invoices
+        - table [ref=e55]:
+          - rowgroup [ref=e56]:
+            - row "Date Référence Désignation Montant Action" [ref=e57]:
+              - columnheader "Date" [ref=e58]
+              - columnheader "Référence" [ref=e59]
+              - columnheader "Désignation" [ref=e60]
+              - columnheader "Montant" [ref=e61]
+              - columnheader "Action" [ref=e62]
+          - rowgroup [ref=e63]:
+            - row "Aucune facture disponible pour le moment." [ref=e64]:
+              - cell "Aucune facture disponible pour le moment." [ref=e65]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e71] [cursor=pointer]:
+    - img [ref=e72]
+  - alert [ref=e4]

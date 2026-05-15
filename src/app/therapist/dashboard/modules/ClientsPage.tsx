@@ -43,7 +43,7 @@ export default function ClientsPage({
   viewMode,
 }: ClientsPageProps) {
   const [selectedClients, setSelectedClients] = useState<Set<string>>(new Set());
-  const [sortField, setSortField] = useState<string>('name');
+  const [sortField, setSortField] = useState<string>('patient');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
   const filterDropdownRef = useRef<HTMLDivElement | null>(null);
   const [visibleColumnIds, setVisibleColumnIds] = useState<Set<string>>(
@@ -108,6 +108,10 @@ export default function ClientsPage({
         let valueB: string | number = '';
 
         switch (sortField) {
+          case 'patient': 
+            valueA = `${a.lastName || ''} ${a.firstName || ''}`.trim(); 
+            valueB = `${b.lastName || ''} ${b.firstName || ''}`.trim(); 
+            break;
           case 'firstName': valueA = a.firstName || ''; valueB = b.firstName || ''; break;
           case 'lastName': valueA = a.lastName || ''; valueB = b.lastName || ''; break;
           case 'email': valueA = a.email || ''; valueB = b.email || ''; break;
@@ -200,7 +204,7 @@ export default function ClientsPage({
   const allSelected = filtered.length > 0 && selectedClients.size === filtered.length;
 
   return (
-    <div className="flex flex-1 flex-col bg-transparent p-10 lg:p-16 space-y-10">
+    <div className="flex flex-1 flex-col bg-transparent space-y-6">
       <AnimatePresence>
         {selectedClients.size > 0 && (
           <SelectionToolbar 
@@ -225,21 +229,23 @@ export default function ClientsPage({
         {filtered.length === 0 ? (
           <EmptyState />
         ) : viewMode === 'list' ? (
-          <div className="space-y-4">
-            <ClientTableHeader
-              visibleColumns={visibleColumns}
-              sortField={sortField}
-              sortDir={sortDir}
-              allSelected={allSelected}
-              onToggleSelectAll={() => {
-                if (allSelected) setSelectedClients(new Set());
-                else setSelectedClients(new Set(filtered.map(c => c.id)));
-              }}
-              onToggleSort={toggleSort}
-              gridTemplate={gridTemplate}
-            />
+          <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-sm">
+            <div className="pt-4">
+              <ClientTableHeader
+                visibleColumns={visibleColumns}
+                sortField={sortField}
+                sortDir={sortDir}
+                allSelected={allSelected}
+                onToggleSelectAll={() => {
+                  if (allSelected) setSelectedClients(new Set());
+                  else setSelectedClients(new Set(filtered.map(c => c.id)));
+                }}
+                onToggleSort={toggleSort}
+                gridTemplate={gridTemplate}
+              />
+            </div>
 
-            <div className="bg-[hsl(var(--background))]">
+            <div className="divide-y divide-border/50">
               {filtered.map(client => {
                 const summary = summaryByClient.get(client.id);
                 if (!summary) return null;
@@ -259,7 +265,7 @@ export default function ClientsPage({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filtered.map(client => {
               const summary = summaryByClient.get(client.id);
               if (!summary) return null;

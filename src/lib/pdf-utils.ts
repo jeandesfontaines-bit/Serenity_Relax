@@ -13,6 +13,11 @@ interface InvoiceData {
  */
 export function buildInvoicePdf(invoice: InvoiceData) {
   try {
+    const safeAmount = Number.isFinite(invoice.amount) ? invoice.amount : 0;
+    const safeReference = String(invoice.invoiceNumber || 'INV');
+    const safeClient = String(invoice.clientName || 'Client');
+    const safeDate = String(invoice.date || new Date().toISOString().slice(0, 10));
+    const safeService = String(invoice.serviceName || 'Soin thérapeutique');
     const doc = new jsPDF();
     
     // --- Header / Branding ---
@@ -30,7 +35,7 @@ export function buildInvoicePdf(invoice: InvoiceData) {
     // --- Invoice Info ---
     doc.setFontSize(12);
     doc.setTextColor(26, 28, 27); // Foreground
-    doc.text(`Référence : ${invoice.invoiceNumber}`, 140, 30);
+    doc.text(`Référence : ${safeReference}`, 140, 30);
 
     // --- Divider ---
     doc.setDrawColor(233, 232, 230); // Border
@@ -40,8 +45,8 @@ export function buildInvoicePdf(invoice: InvoiceData) {
     doc.setFont('helvetica', 'bold');
     doc.text('PATIENT / CLIENT', 20, 70);
     doc.setFont('helvetica', 'normal');
-    doc.text(invoice.clientName, 20, 78);
-    doc.text(`Date de session : ${invoice.date}`, 20, 84);
+    doc.text(safeClient, 20, 78);
+    doc.text(`Date de session : ${safeDate}`, 20, 84);
 
     // --- Table Background ---
     doc.setFillColor(244, 243, 241); // Muted Background
@@ -54,14 +59,14 @@ export function buildInvoicePdf(invoice: InvoiceData) {
 
     // --- Table Content ---
     doc.setFont('helvetica', 'normal');
-    doc.text(invoice.serviceName, 30, 125);
-    doc.text(`${invoice.amount.toFixed(2)}`, 155, 125);
+    doc.text(safeService, 30, 125);
+    doc.text(`${safeAmount.toFixed(2)}`, 155, 125);
 
     // --- Footer / Total ---
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(67, 85, 68);
-    doc.text(`TOTAL RÉGLÉ : ${invoice.amount.toFixed(2)} CHF`, 20, 170);
+    doc.text(`TOTAL RÉGLÉ : ${safeAmount.toFixed(2)} CHF`, 20, 170);
 
     doc.setFontSize(10);
     doc.setTextColor(116, 120, 114);
@@ -69,7 +74,7 @@ export function buildInvoicePdf(invoice: InvoiceData) {
     doc.text('Document généré numériquement le ' + new Date().toLocaleDateString('fr-FR'), 20, 191);
 
     // --- Save ---
-    doc.save(`Serenity-Relax-Therapy-Facture-${invoice.invoiceNumber}.pdf`);
+    doc.save(`Serenity-Relax-Therapy-Facture-${safeReference}.pdf`);
   } catch (err) {
     console.error("PDF Generation Fail:", err);
   }

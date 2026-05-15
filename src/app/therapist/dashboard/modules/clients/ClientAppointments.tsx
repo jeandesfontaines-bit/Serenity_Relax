@@ -15,17 +15,17 @@ export function ClientAppointments({
   onSelectAppt,
 }: ClientAppointmentsProps) {
   return (
-    <div className="space-y-32">
+    <div className="space-y-12">
       {/* Prochains Rendez-vous */}
-      <section className="space-y-12">
-        <div className="flex items-center justify-between border-b border-border pb-8">
+      <section className="space-y-6">
+        <div className="flex items-center justify-between border-b border-border pb-4">
           <div>
-            <h3 className="text-5xl font-bold tracking-tighter leading-none text-foreground">Prochaines Séances</h3>
-            <p className="dashboard-eyebrow mt-4">PLANIFICATION ACTIVE</p>
+            <h3 className="text-2xl font-bold tracking-tight text-foreground">Prochaines Séances</h3>
+            <p className="dashboard-eyebrow mt-1">Planification active</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {confirmedAppts.length > 0 ? (
             confirmedAppts.map((appt, i) => (
               <ConfirmedAppointmentCard 
@@ -36,30 +36,30 @@ export function ClientAppointments({
               />
             ))
           ) : (
-            <div className="col-span-full py-32 flex flex-col items-center justify-center rounded-[4rem] border-2 border-dashed border-border group bg-secondary">
-              <Calendar size={64} strokeWidth={1.25} className="mb-8 group-hover:scale-110 transition-transform duration-700 text-muted-foreground" />
-              <p className="font-bold text-[12px] uppercase tracking-[0.32em] text-muted-foreground">Aucune planification en cours</p>
+            <div className="col-span-full py-16 flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-border group bg-secondary/30">
+              <Calendar size={32} strokeWidth={1.5} className="mb-4 group-hover:scale-110 transition-transform duration-700 text-muted-foreground/40" />
+              <p className="font-bold text-[11px] uppercase tracking-widest text-muted-foreground/60">Aucune planification en cours</p>
             </div>
           )}
         </div>
       </section>
 
       {/* Historique Chronologique */}
-      <section className="space-y-12">
-        <div className="flex items-center justify-between border-b border-border pb-8">
+      <section className="space-y-6">
+        <div className="flex items-center justify-between border-b border-border pb-4">
           <div>
-            <h3 className="text-5xl font-bold tracking-tighter leading-none text-foreground">Historique Complet</h3>
-            <p className="dashboard-eyebrow mt-4">CHRONOLOGIE DES SOINS</p>
+            <h3 className="text-2xl font-bold tracking-tight text-foreground">Historique Complet</h3>
+            <p className="dashboard-eyebrow mt-1">Chronologie des soins</p>
           </div>
         </div>
-        <div className="space-y-6">
+        <div className="space-y-3">
           {completedAppts.length > 0 ? (
             completedAppts.map((appt) => (
               <AppointmentHistoryRow key={appt.id} appt={appt} onClick={() => onSelectAppt(appt)} />
             ))
           ) : (
-            <div className="py-20 px-12 rounded-[3rem] border border-border bg-secondary">
-              <p className="font-bold text-xl tracking-tighter text-foreground">Nouveau patient sans historique enregistré.</p>
+            <div className="py-12 px-8 rounded-3xl border border-border bg-secondary/30">
+              <p className="font-bold text-lg tracking-tight text-foreground/70">Nouveau patient sans historique enregistré.</p>
             </div>
           )}
         </div>

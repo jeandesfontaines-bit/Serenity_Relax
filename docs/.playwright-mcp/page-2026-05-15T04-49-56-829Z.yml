@@ -1,0 +1,169 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY by João" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+          - generic [ref=e7]: by João
+        - generic [ref=e8]:
+          - link "Sessions" [ref=e9] [cursor=pointer]:
+            - /url: /#sessions
+          - link "Bienfaits" [ref=e10] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e11] [cursor=pointer]:
+            - /url: /#atelier
+        - generic [ref=e12]:
+          - link "Réserver" [ref=e13] [cursor=pointer]:
+            - /url: /booking
+          - link "Connexion" [ref=e14] [cursor=pointer]:
+            - /url: /login
+    - generic [ref=e15]:
+      - navigation [ref=e16]:
+        - button "Retour" [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+          - text: Retour
+      - main [ref=e25]:
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - paragraph [ref=e109]: Étape 02
+            - heading "Disponibilités" [level=2] [ref=e110]
+            - paragraph [ref=e111]: Aromathérapie · 1 heure · 110 CHF
+          - generic [ref=e112]:
+            - generic [ref=e113]:
+              - img [ref=e114]
+              - generic [ref=e116]: Date du rendez-vous
+            - generic [ref=e118]:
+              - button "ven 15 mai" [disabled] [ref=e119]:
+                - generic [ref=e120]: ven
+                - generic [ref=e121]: "15"
+                - generic [ref=e122]: mai
+              - button "sam 16 mai" [disabled] [ref=e123]:
+                - generic [ref=e124]: sam
+                - generic [ref=e125]: "16"
+                - generic [ref=e126]: mai
+              - button "dim 17 mai" [ref=e127] [cursor=pointer]:
+                - generic [ref=e128]: dim
+                - generic [ref=e129]: "17"
+                - generic [ref=e130]: mai
+              - button "lun 18 mai" [ref=e131] [cursor=pointer]:
+                - generic [ref=e132]: lun
+                - generic [ref=e133]: "18"
+                - generic [ref=e134]: mai
+              - button "mar 19 mai" [ref=e135] [cursor=pointer]:
+                - generic [ref=e136]: mar
+                - generic [ref=e137]: "19"
+                - generic [ref=e138]: mai
+              - button "mer 20 mai" [ref=e139] [cursor=pointer]:
+                - generic [ref=e140]: mer
+                - generic [ref=e141]: "20"
+                - generic [ref=e142]: mai
+              - button "jeu 21 mai" [ref=e143] [cursor=pointer]:
+                - generic [ref=e144]: jeu
+                - generic [ref=e145]: "21"
+                - generic [ref=e146]: mai
+              - button "ven 22 mai" [ref=e147] [cursor=pointer]:
+                - generic [ref=e148]: ven
+                - generic [ref=e149]: "22"
+                - generic [ref=e150]: mai
+              - button "sam 23 mai" [ref=e151] [cursor=pointer]:
+                - generic [ref=e152]: sam
+                - generic [ref=e153]: "23"
+                - generic [ref=e154]: mai
+              - button "dim 24 mai" [ref=e155] [cursor=pointer]:
+                - generic [ref=e156]: dim
+                - generic [ref=e157]: "24"
+                - generic [ref=e158]: mai
+              - button "lun 25 mai" [ref=e159] [cursor=pointer]:
+                - generic [ref=e160]: lun
+                - generic [ref=e161]: "25"
+                - generic [ref=e162]: mai
+              - button "mar 26 mai" [ref=e163] [cursor=pointer]:
+                - generic [ref=e164]: mar
+                - generic [ref=e165]: "26"
+                - generic [ref=e166]: mai
+              - button "mer 27 mai" [ref=e167] [cursor=pointer]:
+                - generic [ref=e168]: mer
+                - generic [ref=e169]: "27"
+                - generic [ref=e170]: mai
+              - button "jeu 28 mai" [ref=e171] [cursor=pointer]:
+                - generic [ref=e172]: jeu
+                - generic [ref=e173]: "28"
+                - generic [ref=e174]: mai
+              - button "ven 29 mai" [active] [ref=e175] [cursor=pointer]:
+                - generic [ref=e176]: ven
+                - generic [ref=e177]: "29"
+                - generic [ref=e178]: mai
+              - button "sam 30 mai" [ref=e179] [cursor=pointer]:
+                - generic [ref=e180]: sam
+                - generic [ref=e181]: "30"
+                - generic [ref=e182]: mai
+              - button "dim 31 mai" [ref=e183] [cursor=pointer]:
+                - generic [ref=e184]: dim
+                - generic [ref=e185]: "31"
+                - generic [ref=e186]: mai
+              - button "lun 1 juin" [ref=e187] [cursor=pointer]:
+                - generic [ref=e188]: lun
+                - generic [ref=e189]: "1"
+                - generic [ref=e190]: juin
+              - button "mar 2 juin" [ref=e191] [cursor=pointer]:
+                - generic [ref=e192]: mar
+                - generic [ref=e193]: "2"
+                - generic [ref=e194]: juin
+              - button "mer 3 juin" [ref=e195] [cursor=pointer]:
+                - generic [ref=e196]: mer
+                - generic [ref=e197]: "3"
+                - generic [ref=e198]: juin
+              - button "jeu 4 juin" [ref=e199] [cursor=pointer]:
+                - generic [ref=e200]: jeu
+                - generic [ref=e201]: "4"
+                - generic [ref=e202]: juin
+              - button "ven 5 juin" [ref=e203] [cursor=pointer]:
+                - generic [ref=e204]: ven
+                - generic [ref=e205]: "5"
+                - generic [ref=e206]: juin
+              - button "sam 6 juin" [ref=e207] [cursor=pointer]:
+                - generic [ref=e208]: sam
+                - generic [ref=e209]: "6"
+                - generic [ref=e210]: juin
+              - button "dim 7 juin" [ref=e211] [cursor=pointer]:
+                - generic [ref=e212]: dim
+                - generic [ref=e213]: "7"
+                - generic [ref=e214]: juin
+              - button "lun 8 juin" [ref=e215] [cursor=pointer]:
+                - generic [ref=e216]: lun
+                - generic [ref=e217]: "8"
+                - generic [ref=e218]: juin
+              - button "mar 9 juin" [ref=e219] [cursor=pointer]:
+                - generic [ref=e220]: mar
+                - generic [ref=e221]: "9"
+                - generic [ref=e222]: juin
+              - button "mer 10 juin" [ref=e223] [cursor=pointer]:
+                - generic [ref=e224]: mer
+                - generic [ref=e225]: "10"
+                - generic [ref=e226]: juin
+              - button "jeu 11 juin" [ref=e227] [cursor=pointer]:
+                - generic [ref=e228]: jeu
+                - generic [ref=e229]: "11"
+                - generic [ref=e230]: juin
+              - button "ven 12 juin" [ref=e231] [cursor=pointer]:
+                - generic [ref=e232]: ven
+                - generic [ref=e233]: "12"
+                - generic [ref=e234]: juin
+              - button "sam 13 juin" [ref=e235] [cursor=pointer]:
+                - generic [ref=e236]: sam
+                - generic [ref=e237]: "13"
+                - generic [ref=e238]: juin
+            - generic [ref=e241]:
+              - generic [ref=e242]:
+                - img [ref=e243]
+                - generic [ref=e246]: Créneaux disponibles
+              - generic [ref=e247]:
+                - button "09:00" [ref=e248] [cursor=pointer]
+                - button "10:00" [ref=e249] [cursor=pointer]
+                - button "12:30" [ref=e250] [cursor=pointer]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e103] [cursor=pointer]:
+    - img [ref=e104]
+  - alert [ref=e97]

@@ -10,11 +10,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-jakarta)', 'Inter', 'sans-serif'],
+        sans: ['var(--font-montserrat)', 'Montserrat', 'Inter', 'sans-serif'],
         serif: ['"Noto Serif"', 'serif'],
-        display: ['var(--font-jakarta)', 'Inter', 'sans-serif'],
-        headline: ['var(--font-jakarta)', 'Inter', 'sans-serif'],
-        label: ['var(--font-jakarta)', 'Inter', 'sans-serif'],
+        display: ['var(--font-montserrat)', 'Montserrat', 'sans-serif'],
+        headline: ['var(--font-montserrat)', 'Montserrat', 'sans-serif'],
+        label: ['var(--font-montserrat)', 'Montserrat', 'sans-serif'],
         'landing-display': ['var(--font-display)', 'sans-serif'],
         'landing-body': ['var(--font-body)', 'sans-serif'],
         cursive: ['"Meow Script"', 'cursive'],
@@ -32,16 +32,16 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: '#6366F1',
-          foreground: '#ffffff',
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: '#A3E635',
-          foreground: '#1F2937',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         accent: {
-          DEFAULT: '#EEF2FF',
-          foreground: '#4338CA',
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',

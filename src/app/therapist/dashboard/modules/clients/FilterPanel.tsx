@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, UserCheck, UserMinus, Filter, List } from 'lucide-react';
+import { Check, UserCheck, Filter, List } from 'lucide-react';
 import { ALL_COLUMNS, ClientFilters } from './constants';
 
 interface FilterPanelProps {
@@ -20,23 +20,23 @@ export default function FilterPanel({
   return (
     <div
       ref={dropdownRef}
-      className="absolute right-0 top-0 z-20 w-[320px] rounded-[3rem] border p-8 shadow-2xl bg-background border-border/50"
+      className="absolute right-0 top-0 z-20 w-[300px] rounded-xl border p-5 shadow-lg bg-card border-border"
     >
-      <div className="space-y-10">
+      <div className="space-y-6">
         {/* Status Section */}
         <section>
-          <p className="px-2 pb-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 flex items-center gap-2">
-            <UserCheck size={12} strokeWidth={2} /> Statut patient
+          <p className="pb-3 text-xs font-medium text-muted-foreground flex items-center gap-2">
+            <UserCheck size={14} strokeWidth={1.5} /> Statut patient
           </p>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-1.5">
             {(['all', 'active', 'inactive'] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => onFiltersChange({ ...filters, status: s })}
-                className={`px-3 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 border ${
+                className={`px-3 py-2 rounded-lg text-xs font-medium transition-all border ${
                   filters.status === s 
-                    ? 'bg-primary text-primary-foreground border-transparent shadow-[0_8px_16px_-6px_hsl(var(--primary)/0.4)] scale-105' 
-                    : 'bg-transparent text-muted-foreground/80 border-border/50 hover:bg-slate-50/80 hover:text-foreground'
+                    ? 'bg-primary text-primary-foreground border-primary' 
+                    : 'bg-transparent text-muted-foreground border-border hover:bg-accent hover:text-foreground'
                 }`}
               >
                 {s === 'all' ? 'Tous' : s === 'active' ? 'Actifs' : 'Inactifs'}
@@ -47,10 +47,10 @@ export default function FilterPanel({
 
         {/* Sessions Section */}
         <section>
-          <p className="px-2 pb-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 flex items-center gap-2">
-            <Filter size={12} strokeWidth={2} /> Minimum de séances
+          <p className="pb-3 text-xs font-medium text-muted-foreground flex items-center gap-2">
+            <Filter size={14} strokeWidth={1.5} /> Minimum de séances
           </p>
-          <div className="flex items-center gap-4 px-2">
+          <div className="flex items-center gap-3">
             <input 
               type="range" 
               min="0" 
@@ -59,16 +59,16 @@ export default function FilterPanel({
               onChange={(e) => onFiltersChange({ ...filters, minSessions: parseInt(e.target.value) || null })}
               className="flex-1 accent-primary"
             />
-            <span className="text-sm font-black text-foreground w-6 tabular-nums">{filters.minSessions || 0}+</span>
+            <span className="text-sm font-bold text-foreground w-6 tabular-nums">{filters.minSessions || 0}+</span>
           </div>
         </section>
 
         {/* Columns Section */}
         <section>
-          <p className="px-2 pb-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 flex items-center gap-2">
-            <List size={12} strokeWidth={2} /> Colonnes affichées
+          <p className="pb-3 text-xs font-medium text-muted-foreground flex items-center gap-2">
+            <List size={14} strokeWidth={1.5} /> Colonnes affichées
           </p>
-          <div className="max-h-[240px] overflow-y-auto scrollbar-hide space-y-1 pr-2">
+          <div className="max-h-[200px] overflow-y-auto space-y-0.5">
             {ALL_COLUMNS.map((column) => {
               const active = visibleColumnIds.has(column.id);
               return (
@@ -76,16 +76,16 @@ export default function FilterPanel({
                   key={column.id}
                   type="button"
                   onClick={() => onToggleColumn(column.id)}
-                  className="flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-left transition-all duration-300 hover:bg-slate-50/80 group"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left transition-colors hover:bg-accent group"
                 >
                   <span
-                    className={`flex h-5 w-5 items-center justify-center rounded-lg border transition-all duration-300 ${
-                      active ? 'bg-primary border-transparent text-primary-foreground' : 'border-border/50 text-transparent group-hover:border-border'
+                    className={`flex h-4 w-4 items-center justify-center rounded border transition-colors ${
+                      active ? 'bg-primary border-primary text-primary-foreground' : 'border-border text-transparent group-hover:border-muted-foreground'
                     }`}
                   >
-                    <ShieldCheck size={11} strokeWidth={3} />
+                    <Check size={10} strokeWidth={3} />
                   </span>
-                  <span className={`text-[11px] font-bold uppercase tracking-[0.14em] transition-transform duration-300 group-hover:translate-x-1 ${active ? 'text-foreground' : 'text-muted-foreground/80'}`}>
+                  <span className={`text-xs font-medium ${active ? 'text-foreground' : 'text-muted-foreground'}`}>
                     {column.label}
                   </span>
                 </button>
@@ -94,10 +94,10 @@ export default function FilterPanel({
           </div>
         </section>
 
-        <div className="pt-2">
+        <div className="border-t border-border pt-3">
           <button 
             onClick={() => onFiltersChange({ status: 'all', minSessions: null, lastVisitWithinDays: null })}
-            className="w-full py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 hover:text-foreground hover:bg-slate-50/50 transition-colors"
+            className="w-full py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
           >
             Réinitialiser les filtres
           </button>

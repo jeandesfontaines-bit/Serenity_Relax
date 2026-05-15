@@ -1,5 +1,5 @@
 import React from 'react';
-import { Store } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
 interface SidebarRevenueProps {
   revenue: number;
@@ -7,15 +7,15 @@ interface SidebarRevenueProps {
 
 export default function SidebarRevenue({ revenue }: SidebarRevenueProps) {
   return (
-    <div className="p-8 border-t border-[hsl(var(--border))] bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--primary)/0.8)] rounded-tr-[3rem] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] relative overflow-hidden group">
-      <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none group-hover:rotate-12 transition-transform duration-700">
-        <Store size={40} className="text-white" strokeWidth={1} />
+    <div className="p-5 border-t border-border bg-primary text-primary-foreground">
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-xs font-medium tracking-[0.05em] text-primary-foreground/60">
+          Revenus estimés
+        </p>
+        <TrendingUp size={14} className="text-primary-foreground/40" strokeWidth={1.5} />
       </div>
-      <h3 className="text-[9px] font-bold text-white/40 uppercase tracking-[0.5em] mb-4 relative z-10">
-        REVENUS ESTIMÉS
-      </h3>
-      <p className="text-4xl font-black tracking-tighter text-white relative z-10 flex items-baseline gap-2">
-        {revenue.toLocaleString()} <span className="text-[11px] font-bold text-white/40 uppercase tracking-widest">CHF</span>
+      <p className="text-2xl font-bold tracking-tight flex items-baseline gap-1.5">
+        {revenue.toLocaleString()} <span className="text-xs font-medium tracking-[0.05em] text-primary-foreground/50">CHF</span>
       </p>
     </div>
   );

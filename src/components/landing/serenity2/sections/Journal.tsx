@@ -38,7 +38,7 @@ const RITUALS = [
 
 export default function Journal() {
   return (
-    <section id="journal" className="relative bg-[var(--off-black)] py-20 text-white md:py-24 lg:py-28">
+    <section id="journal" className="relative bg-[var(--off-black)] py-20 md:py-32 text-white">
       <div className="relative mx-auto max-w-[1400px] px-6 md:px-10 lg:px-12">
         <div className="grid grid-cols-12 gap-10 lg:gap-14">
           <div className="col-span-12 lg:col-span-4 lg:sticky lg:top-28 lg:self-start">

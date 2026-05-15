@@ -9,25 +9,25 @@ interface UpcomingAppointmentsProps {
 
 export default function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps) {
   return (
-    <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide">
-      <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] text-[hsl(var(--muted-foreground)/0.6)]">
-        Prochains Patients
-      </h3>
+    <div className="flex-1 overflow-y-auto p-5 space-y-4 scrollbar-hide">
+      <p className="text-xs font-medium tracking-[0.05em] text-muted-foreground">
+        Prochains patients
+      </p>
       
       {appointments.length > 0 ? (
-        <div className="space-y-8">
+        <div className="space-y-3">
           {appointments.slice(0, 10).map(a => (
             <div key={a.id} className="group cursor-pointer">
-              <div className="flex items-start gap-5">
-                <span className="text-[10px] font-bold w-12 shrink-0 text-[hsl(var(--muted-foreground)/0.4)] pt-1 tabular-nums">
+              <div className="flex items-start gap-3">
+                <span className="text-xs font-medium tracking-[0.05em] w-10 shrink-0 text-muted-foreground/60 pt-0.5 tabular-nums">
                   {a.time}
                 </span>
                 <div className="min-w-0">
-                  <p className="text-[13px] font-bold truncate tracking-tight text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-all duration-300">
+                  <p className="text-sm font-semibold truncate text-foreground group-hover:text-primary transition-colors">
                     {a.clientNameSnapshot || a.title}
                   </p>
-                  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground)/0.4)] mt-1.5 transition-all duration-300 group-hover:text-[hsl(var(--muted-foreground)/0.7)]">
-                    {cleanServiceLabel(a.serviceName) || cleanServiceLabel(a.title) || 'SÉANCE'}
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {cleanServiceLabel(a.serviceName) || cleanServiceLabel(a.title) || 'Séance'}
                   </p>
                 </div>
               </div>
@@ -35,12 +35,12 @@ export default function UpcomingAppointments({ appointments }: UpcomingAppointme
           ))}
         </div>
       ) : (
-        <div className="py-16 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-[hsl(var(--muted)/0.5)] flex items-center justify-center mx-auto mb-6">
-            <Clock size={20} className="text-[hsl(var(--muted-foreground)/0.3)]" strokeWidth={1.5} />
+        <div className="py-12 text-center">
+          <div className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center mx-auto mb-3">
+            <Clock size={18} className="text-muted-foreground/40" strokeWidth={1.5} />
           </div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground)/0.4)]">
-            Calendrier Vide
+          <p className="text-xs font-medium tracking-[0.05em] text-muted-foreground">
+            Calendrier vide
           </p>
         </div>
       )}

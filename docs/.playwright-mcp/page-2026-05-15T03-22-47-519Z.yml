@@ -1,0 +1,72 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e14]:
+    - banner [ref=e15]:
+      - generic [ref=e16]:
+        - link "SERENITY by João" [ref=e17] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e18]: SERENITY
+          - generic [ref=e19]: by João
+        - generic [ref=e20]:
+          - generic [ref=e23] [cursor=pointer]:
+            - generic [ref=e24]: Jean
+            - button "Sortie" [ref=e25]
+          - button "Réserver" [ref=e27] [cursor=pointer]
+          - button [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+    - main [ref=e30]:
+      - generic [ref=e31]:
+        - button "Retour au dashboard" [ref=e32] [cursor=pointer]:
+          - img [ref=e33]
+          - text: Retour au dashboard
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - generic [ref=e38]: A
+              - button [ref=e39] [cursor=pointer]:
+                - img [ref=e40]
+            - generic [ref=e43]:
+              - generic [ref=e46]: Profil vérifié
+              - heading "Ami" [level=1] [ref=e47]: Ami
+          - button "Éditer" [ref=e48] [cursor=pointer]:
+            - img [ref=e49]
+            - generic [ref=e52]: Éditer
+        - generic [ref=e53]:
+          - button "Identité" [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - generic [ref=e58]: Identité
+          - button "Préférences" [ref=e59] [cursor=pointer]:
+            - img [ref=e60]
+            - generic [ref=e62]: Préférences
+          - button "Sécurité" [ref=e63] [cursor=pointer]:
+            - img [ref=e64]
+            - generic [ref=e66]: Sécurité
+        - generic [ref=e68]:
+          - generic [ref=e69]:
+            - text: Prénom
+            - generic [ref=e70]:
+              - img [ref=e71]
+              - textbox [disabled] [ref=e74]
+          - generic [ref=e75]:
+            - text: Nom
+            - textbox [disabled] [ref=e76]
+          - generic [ref=e77]:
+            - text: Email
+            - generic [ref=e78]:
+              - img [ref=e79]
+              - textbox [disabled] [ref=e82]
+          - generic [ref=e83]:
+            - text: Téléphone
+            - generic [ref=e84]:
+              - img [ref=e85]
+              - textbox [disabled] [ref=e87]
+          - generic [ref=e88]:
+            - text: Ville
+            - textbox [disabled] [ref=e89]: Genève
+          - generic [ref=e90]:
+            - text: Notes & zones sensibles
+            - textbox "Allergies, huiles préférées, zones de tension..." [disabled] [ref=e91]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e10] [cursor=pointer]:
+    - img [ref=e11]
+  - alert [ref=e4]

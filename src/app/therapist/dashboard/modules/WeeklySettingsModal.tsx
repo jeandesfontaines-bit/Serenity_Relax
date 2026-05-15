@@ -65,7 +65,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
         {/* Header */}
         <div className="flex items-center justify-between px-12 py-10 border-b" style={{ borderColor: "hsl(var(--border))" }}>
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.5em] mb-2 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>CONFIGURATION</p>
+            <p className="text-[10px] font-medium tracking-[0.1em] mb-2 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>Configuration</p>
             <h2 className="text-4xl font-bold tracking-tighter leading-none" style={{ color: "hsl(var(--foreground))" }}>Horaires Types</h2>
           </div>
           <button
@@ -91,7 +91,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
                     : ''
                 }`}
               >
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em]">{day.label}</span>
+                <span className="text-[11px] font-medium tracking-[0.05em]">{day.label}</span>
                 <span className={`text-[10px] font-bold ${isActive ? 'text-white/40' : 'text-neutral-200'}`}>
                   {count} créneau{count > 1 ? 's' : ''}
                 </span>
@@ -111,11 +111,11 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               className="space-y-8"
             >
               <div className="flex items-center justify-between">
-                <h3 className="text-[12px] font-bold uppercase tracking-[0.3em]" style={{ color: "hsl(var(--foreground))" }}>Disponibilités {DAYS[activeDay].label}</h3>
+                <h3 className="text-[12px] font-medium tracking-[0.1em]" style={{ color: "hsl(var(--foreground))" }}>Disponibilités {DAYS[activeDay].label}</h3>
                 { (slots[activeDay] || []).length > 0 && (
                    <button 
                     onClick={handleCopyToWeek}
-                    className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors" style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="flex items-center gap-2 text-[10px] font-medium tracking-[0.05em] transition-colors" style={{ color: "hsl(var(--muted-foreground))" }}
                   >
                     <Copy size={14} strokeWidth={2.5} /> Dupliquer semaine
                   </button>
@@ -145,7 +145,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
               ) : (
                 <div className="py-20 text-center rounded-[3rem] border-2 border-dashed" style={{ background: "hsl(var(--secondary))", borderColor: "hsl(var(--border))" }}>
                   <Clock size={48} strokeWidth={1} className="mx-auto mb-6" style={{ color: "hsl(var(--border))" }} />
-                  <p className="text-[12px] font-bold uppercase tracking-[0.3em]" style={{ color: "hsl(var(--muted-foreground))" }}>Aucun créneau configuré</p>
+                  <p className="text-[12px] font-medium tracking-[0.1em]" style={{ color: "hsl(var(--muted-foreground))" }}>Aucun créneau configuré</p>
                 </div>
               )}
             </motion.div>
@@ -168,7 +168,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
             </div>
             <button
               onClick={handleAddSlot}
-              className="h-20 px-12 rounded-full text-white font-bold text-[11px] uppercase tracking-[0.4em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center gap-4" style={{ background: "hsl(var(--primary))" }}
+              className="h-20 px-12 rounded-full text-white font-bold text-[11px] tracking-[0.1em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center gap-4" style={{ background: "hsl(var(--primary))" }}
             >
               <Plus size={20} strokeWidth={3} /> Ajouter
             </button>
@@ -176,7 +176,7 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
 
           <button
             onClick={() => onSave(slots)}
-            className="w-full h-20 rounded-full text-white font-bold text-[13px] uppercase tracking-[0.5em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-6" style={{ background: "hsl(var(--primary))" }}
+            className="w-full h-20 rounded-full text-white font-bold text-[13px] tracking-[0.15em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-6" style={{ background: "hsl(var(--primary))" }}
           >
             <Save size={22} strokeWidth={2.5} /> Enregistrer la structure
           </button>

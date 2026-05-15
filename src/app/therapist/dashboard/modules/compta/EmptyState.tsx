@@ -3,9 +3,9 @@ import { Search } from 'lucide-react';
 
 export function EmptyState() {
   return (
-    <div className="py-24 flex flex-col items-center justify-center rounded-3xl border-2 border-dashed" style={{ borderColor: 'hsl(var(--border))' }}>
-      <Search size={40} strokeWidth={1.2} className="mb-5" style={{ color: 'hsl(var(--muted-foreground))' }} />
-      <p className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: 'hsl(var(--muted-foreground))' }}>AUCUNE TRANSACTION TROUVÉE</p>
+    <div className="py-20 flex flex-col items-center justify-center rounded-xl border border-dashed border-border">
+      <Search size={32} strokeWidth={1.2} className="mb-3 text-muted-foreground/40" />
+      <p className="text-sm font-medium text-muted-foreground">Aucune transaction trouvée</p>
     </div>
   );
 }

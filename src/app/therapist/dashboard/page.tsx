@@ -20,7 +20,7 @@ import ClientsPage from './modules/ClientsPage';
 import ComptaPage from './modules/ComptaPage';
 import ClientDetail from './modules/ClientDetail';
 import SettingsPage from './modules/SettingsPage';
-import AppointmentDetail from './modules/AppointmentDetail';
+import AppointmentRecordPage from './modules/AppointmentRecordPage';
 import BookingModal from './modules/BookingModal';
 import WeeklySettingsModal from './modules/WeeklySettingsModal';
 
@@ -95,6 +95,7 @@ export default function TherapistDashboard() {
   const [absenceMode, setAbsenceMode] = useState(false);
   const [selectedAppt, setSelectedAppt] = useState<Appointment | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [lastMainTab, setLastMainTab] = useState<string>('dashboard');
   const [bookingData, setBookingData] = useState<{ date: string; time: string; initialSearch?: string } | null>(null);
   const [weeklySettingsOpen, setWeeklySettingsOpen] = useState(false);
   const [pendingAbsenceDates, setPendingAbsenceDates] = useState<Set<string>>(new Set());
@@ -127,8 +128,8 @@ export default function TherapistDashboard() {
     (appt) => appt.date === todayStr && appt.status !== 'cancelled',
   ).length;
   const dashboardSummary = {
-    title: 'Welcome back, João',
-    subtitle: `Today is ${format(new Date(), 'EEEE, MMMM do')}. You have ${todaySessionsCount} session${todaySessionsCount > 1 ? 's' : ''} remaining for the day.`,
+    title: 'Home Dashboard',
+    subtitle: `Welcome back, João. Today is ${format(new Date(), 'EEEE, MMMM do')}.`,
   };
   const schedulerTitle = useMemo(() => {
     if (view === 'week') {
@@ -291,6 +292,17 @@ export default function TherapistDashboard() {
     }
   };
 
+  const openAppointmentRecord = useCallback((appt: Appointment) => {
+    setLastMainTab((prev) => (tab === 'appointment-detail' ? prev : tab));
+    setSelectedAppt(appt);
+    setTab('appointment-detail');
+  }, [tab]);
+
+  const closeAppointmentRecord = useCallback(() => {
+    setSelectedAppt(null);
+    setTab(lastMainTab || 'dashboard');
+  }, [lastMainTab]);
+
   // --- Render ---
   const renderContent = () => {
     switch (tab) {
@@ -299,7 +311,7 @@ export default function TherapistDashboard() {
           <HomePage
             appointments={appointments}
             monthlyGoal={monthlyGoal}
-            onSelectAppt={setSelectedAppt}
+            onSelectAppt={openAppointmentRecord}
             onNavigate={setTab}
             onEditGoal={handleUpdateGoal}
             searchQuery={globalSearch}
@@ -311,7 +323,8 @@ export default function TherapistDashboard() {
             view={view}
             cur={cur}
             onToggleView={setView}
-            onSelectAppt={setSelectedAppt}
+            onSelectAppt={openAppointmentRecord}
+            onSelectApptFromMonth={openAppointmentRecord}
             onOpenSlot={(date, time) => setBookingData({ date, time })}
             appointments={appointments}
             configSlots={configSlots}
@@ -333,7 +346,7 @@ export default function TherapistDashboard() {
             client={selectedClient}
             onClose={() => setSelectedClient(null)}
             appointments={appointments}
-            onSelectAppt={setSelectedAppt}
+            onSelectAppt={openAppointmentRecord}
             onUpdateClient={handleUpdateClient}
             onScheduleClient={(selected) => setBookingData({
               date: fmt(new Date()),
@@ -362,7 +375,6 @@ export default function TherapistDashboard() {
             appointments={appointments}
             invoices={invoices}
             onTogglePayment={handleTogglePayment}
-            onSelectAppt={setSelectedAppt}
             onDeleteInvoices={handleDeleteAppointments}
             searchQuery={globalSearch}
             onSearchQueryChange={setGlobalSearch}
@@ -372,6 +384,17 @@ export default function TherapistDashboard() {
             onShowFilterPanelChange={setShowAccountingFilters}
           />
         );
+      case 'appointment-detail':
+        return selectedAppt ? (
+          <AppointmentRecordPage
+            appt={selectedAppt}
+            appointments={appointments}
+            invoices={invoices}
+            onBack={closeAppointmentRecord}
+            onSendWhatsApp={handleSendWhatsApp}
+            onTogglePayment={handleTogglePayment}
+          />
+        ) : null;
       case 'settings':
         return (
           <SettingsPage
@@ -632,6 +655,9 @@ export default function TherapistDashboard() {
   const handleNavigate = useCallback((page: string) => {
     setTab(page);
     setSelectedClient(null);
+    if (page !== 'appointment-detail') {
+      setSelectedAppt(null);
+    }
   }, []);
 
   const handleLogout = useCallback(async () => {
@@ -674,12 +700,16 @@ export default function TherapistDashboard() {
           eyebrow: 'Dossier client',
           title: `${selectedClient.firstName || ''} ${selectedClient.lastName || ''}`.trim() || 'Client',
           onBack: () => setSelectedClient(null),
-          onOpenHistory: () => document.getElementById('client-history')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
-          onOpenNotes: () => {
-            const notesEl = document.getElementById('client-notes');
-            notesEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            if (notesEl instanceof HTMLTextAreaElement) notesEl.focus();
-          },
+          onSchedule: () => setBookingData({
+            date: format(new Date(), 'yyyy-MM-dd'),
+            time: '09:00',
+            initialSearch: `${selectedClient.firstName || ''} ${selectedClient.lastName || ''}`.trim() || undefined,
+          }),
+        } : undefined}
+        appointmentDetailToolbar={tab === 'appointment-detail' && selectedAppt ? {
+          eyebrow: 'Dossier de séance',
+          title: selectedAppt.clientNameSnapshot || 'Séance',
+          onBack: closeAppointmentRecord,
         } : undefined}
         financeToolbar={tab === 'accounting' ? {
           title: 'Finances',
@@ -699,24 +729,6 @@ export default function TherapistDashboard() {
         onLogout={handleLogout}
       >
       {renderContent()}
-
-      {/* Legacy Modals Integration (Pending Full Modularization) */}
-      {selectedAppt && (
-        <AppointmentDetail
-          appt={selectedAppt}
-          onClose={() => setSelectedAppt(null)}
-          appointments={appointments}
-          onSendWhatsApp={handleSendWhatsApp}
-          onGoToClient={(clientId) => {
-            const c = clients.find(c => c.id === clientId);
-            if (c) {
-              setSelectedClient(c);
-              setTab('clients');
-              setSelectedAppt(null); // Close the detail modal
-            }
-          }}
-        />
-      )}
       {bookingData && (
         <BookingModal
           date={bookingData.date}

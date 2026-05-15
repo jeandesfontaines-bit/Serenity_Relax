@@ -42,6 +42,8 @@ export function DraggableAppointmentBlock({
     data: { appt },
     disabled
   });
+  const pointerStartRef = React.useRef<{ x: number; y: number } | null>(null);
+  const hasMovedRef = React.useRef(false);
 
   const style = transform ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
@@ -49,7 +51,38 @@ export function DraggableAppointmentBlock({
   } : undefined;
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      onPointerDown={(event) => {
+        pointerStartRef.current = { x: event.clientX, y: event.clientY };
+        hasMovedRef.current = false;
+        listeners?.onPointerDown?.(event);
+      }}
+      onPointerMove={(event) => {
+        if (!pointerStartRef.current) return;
+        const distanceX = Math.abs(event.clientX - pointerStartRef.current.x);
+        const distanceY = Math.abs(event.clientY - pointerStartRef.current.y);
+        if (distanceX > 6 || distanceY > 6) {
+          hasMovedRef.current = true;
+        }
+      }}
+      onPointerUp={() => {
+        if (!disabled && !hasMovedRef.current) {
+          onSelect(appt);
+        }
+        pointerStartRef.current = null;
+        hasMovedRef.current = false;
+      }}
+      onKeyDown={(event) => {
+        if ((event.key === 'Enter' || event.key === ' ') && !disabled) {
+          event.preventDefault();
+          onSelect(appt);
+        }
+      }}
+    >
       <AppointmentBlock
         appt={appt}
         top={top}

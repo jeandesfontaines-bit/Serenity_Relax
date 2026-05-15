@@ -13,7 +13,7 @@ export default function Atelier({ variant = "default" }: { variant?: LandingVari
     <section
       id="atelier"
       className={[
-        "relative py-20 md:py-24 lg:py-28",
+        "landing-section",
         variant === "immersive" ? "overflow-hidden" : "",
       ].join(" ")}
     >
@@ -24,7 +24,7 @@ export default function Atelier({ variant = "default" }: { variant?: LandingVari
       <div className="relative mx-auto max-w-[1360px] px-6 md:px-10 lg:px-12">
         <div className="grid grid-cols-12 gap-10 lg:gap-14">
           <div className={`col-span-12 ${variant === "editorial" ? "lg:col-span-8" : "lg:col-span-8"}`}>
-            <div className="mb-8 border-b border-[var(--landing-tint)] pb-6">
+            <div className="landing-section-header border-b border-[var(--landing-tint)] pb-8">
               <p className="landing-type-eyebrow text-[var(--landing-warm-faint)]">
                 FAQ Serenity
               </p>
@@ -89,14 +89,14 @@ export default function Atelier({ variant = "default" }: { variant?: LandingVari
             <span className="landing-type-eyebrow mb-6 block text-[var(--orange)]">
               — Questions fréquentes
             </span>
-            <h2 className="landing-type-h3 landing-text-high display-tight">
+            <h2 className="landing-type-h2 landing-text-high display-tight">
               {variant === "concierge" ? "Ce qu'il faut savoir" : "Tout ce qu'il faut savoir"}
               <br />
               <span className="landing-display-italic landing-text-muted">
                 {variant === "immersive" ? "avant de décrocher." : "avant la séance."}
               </span>
             </h2>
-            <p className="landing-type-body-s landing-text-body mt-6 max-w-[21rem]">
+            <p className="landing-type-body landing-text-body mt-8 max-w-[21rem]">
               {variant === "editorial"
                 ? "Dans cette version, la colonne d'accompagnement agit presque comme une note d'éditeur, plus étroite, plus tendue, plus présente dans la composition."
                 : variant === "concierge"
@@ -105,11 +105,11 @@ export default function Atelier({ variant = "default" }: { variant?: LandingVari
                     ? "Quelques repères simples pour arriver sereinement au cabinet, comprendre le déroulé du soin et savoir à quoi vous attendre."
                     : "Quelques repères simples pour arriver sereinement au cabinet, comprendre le déroulé du soin et savoir à quoi vous attendre."}
             </p>
-            <div className="mt-7 max-w-[21rem] border-t border-[var(--landing-tint)] pt-5">
+            <div className="mt-12 max-w-[21rem] border-t border-[var(--landing-tint)] pt-10">
               <p className="landing-type-micro text-[var(--orange)]">
                 Besoin d&apos;un échange direct ?
               </p>
-              <p className="landing-type-body-s landing-text-body mt-3">
+              <p className="landing-type-body landing-text-body mt-4">
                 Si votre question concerne un besoin précis, le plus simple reste d&apos;écrire avant de réserver.
               </p>
             </div>

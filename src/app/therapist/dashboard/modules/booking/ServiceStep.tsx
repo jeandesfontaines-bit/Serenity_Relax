@@ -47,7 +47,7 @@ export function ServiceStep({
         </div>
         <button
           onClick={onBack}
-          className="h-9 px-5 rounded-full border border-border text-[11px] font-bold uppercase tracking-[0.15em] transition-all duration-200 text-muted-foreground hover:border-primary hover:text-primary"
+          className="h-9 px-5 rounded-full border border-border text-[11px] font-bold tracking-[0.05em] transition-all duration-200 text-muted-foreground hover:border-primary hover:text-primary"
         >
           Modifier
         </button>
@@ -82,8 +82,8 @@ export function ServiceStep({
                   {displayName}
                 </p>
                 <div className="flex items-center justify-between mt-3">
-                  <p className={`text-[11px] font-bold uppercase tracking-[0.15em] ${isSelected ? 'text-primary-foreground/60' : 'text-muted-foreground/60'}`}>
-                    {s.duration || '60 MIN'}
+                  <p className={`text-[11px] font-bold tracking-[0.05em] ${isSelected ? 'text-primary-foreground/60' : 'text-muted-foreground/60'}`}>
+                    {s.duration || '60 min'}
                   </p>
                   {isSelected && (
                     <CheckCircle2 size={16} strokeWidth={2.5} className="text-primary-foreground" />
@@ -100,7 +100,7 @@ export function ServiceStep({
         onClick={onConfirm}
         whileHover={{ y: -3 }}
         whileTap={{ scale: 0.97 }}
-        className="w-full h-16 rounded-3xl text-[12px] font-bold uppercase tracking-[0.25em] flex items-center justify-center gap-3 group transition-all duration-700 bg-primary text-primary-foreground shadow-[0_12px_32px_-8px_hsl(var(--primary)/0.4)]"
+        className="w-full h-16 rounded-3xl text-[12px] font-bold tracking-[0.05em] flex items-center justify-center gap-3 group transition-all duration-700 bg-primary text-primary-foreground shadow-[0_12px_32px_-8px_hsl(var(--primary)/0.4)]"
       >
         <ShieldCheck size={20} strokeWidth={2.5} className="transition-transform duration-300 group-hover:scale-110" />
         {isCreatingNew ? 'Finaliser et créer le profil' : 'Confirmer la réservation'}

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { User, Edit, Save, Camera, Heart, Calendar, Shield, Settings, Phone, Mail, MapPin, Sparkle, CheckCircle2, Loader2, ArrowLeft } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { User, Edit, Camera, Heart, Shield, Phone, Mail, Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { useUser, useFirestore } from '@/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -13,12 +13,9 @@ export default function ClientProfil() {
   const { user, isUserLoading: userLoading } = useUser();
   const firestore = useFirestore();
   const [sessionClientId, setSessionClientId] = useState<string | null>(null);
-
   const [activeTab, setActiveTab] = useState<'info' | 'preferences' | 'security'>('info');
   const [isEditing, setIsEditing] = useState(false);
   const [updating, setUpdating] = useState(false);
-
-  // Profil state
   const [profile, setProfile] = useState({
     firstName: '',
     lastName: '',
@@ -38,9 +35,9 @@ export default function ClientProfil() {
     async function fetchProfile() {
       if (!effectiveClientId || !firestore) return;
       try {
-        const d = await getDoc(doc(firestore, 'clients', effectiveClientId));
-        if (d.exists()) {
-          const data = d.data();
+        const profileDoc = await getDoc(doc(firestore, 'clients', effectiveClientId));
+        if (profileDoc.exists()) {
+          const data = profileDoc.data();
           setProfile({
             firstName: data.firstName || '',
             lastName: data.lastName || '',
@@ -51,11 +48,12 @@ export default function ClientProfil() {
           });
         }
       } catch (err) {
-        console.error("Fetch profile error:", err);
+        console.error('Fetch profile error:', err);
       }
     }
+
     if (!userLoading && effectiveClientId) fetchProfile();
-  }, [effectiveClientId, user, userLoading, firestore]);
+  }, [effectiveClientId, firestore, user, userLoading]);
 
   const handleSave = async () => {
     if (!effectiveClientId || !firestore) return;
@@ -66,11 +64,11 @@ export default function ClientProfil() {
         lastName: profile.lastName,
         phone: profile.phone,
         city: profile.city,
-        notes: profile.notes
+        notes: profile.notes,
       });
       setIsEditing(false);
     } catch (err) {
-      console.error("Update error:", err);
+      console.error('Update error:', err);
     } finally {
       setUpdating(false);
     }
@@ -78,23 +76,23 @@ export default function ClientProfil() {
 
   if (userLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="landing-v2 flex min-h-screen items-center justify-center bg-[var(--off-white)]">
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--teal-deep)]" />
       </div>
     );
   }
 
   if (!effectiveClientId) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background px-6 text-center">
-        <div className="max-w-md glass-premium p-10">
-          <h1 className="font-serif text-3xl font-light text-foreground">Mon Profil</h1>
-          <p className="mt-4 text-sm text-muted-foreground">
+      <div className="landing-v2 flex min-h-screen items-center justify-center bg-[var(--landing-page-bg)] px-6 text-center">
+        <div className="landing-surface-card max-w-md rounded-[2rem] p-10">
+          <h1 className="landing-type-h3 landing-text-high display-tight">Mon profil</h1>
+          <p className="landing-type-body-s landing-text-body mt-4">
             Connectez-vous pour gérer vos informations personnelles.
           </p>
           <button
             onClick={() => router.push('/login')}
-            className="mt-8 premium-button button-fill rounded-full"
+            className="landing-type-micro mt-8 inline-flex rounded-full bg-[var(--teal-deep)] px-8 py-4 text-white transition-all hover:scale-[1.01] hover:bg-[var(--orange)]"
           >
             Se connecter
           </button>
@@ -103,182 +101,200 @@ export default function ClientProfil() {
     );
   }
 
+  const tabs = [
+    { id: 'info', label: 'Identité', icon: User },
+    { id: 'preferences', label: 'Préférences', icon: Heart },
+    { id: 'security', label: 'Sécurité', icon: Shield },
+  ] as const;
+
+  const fieldClass =
+    'landing-type-body w-full rounded-[1.35rem] border border-[var(--landing-tint)] bg-[var(--landing-panel-input)] px-5 py-4 text-[var(--landing-ink)] outline-none transition-all focus:border-[var(--teal-deep)] disabled:cursor-not-allowed disabled:opacity-60';
+
   return (
-    <div className="min-h-screen bg-background text-foreground pb-24">
+    <div className="landing-v2 min-h-screen pb-24" style={{ background: 'var(--landing-page-bg)' }}>
       <Navbar />
-      
-      <main className="mx-auto max-w-7xl px-6 pt-32 lg:px-8 lg:pt-40">
-        <div className="max-w-5xl mx-auto space-y-12">
-          
-          <button 
-            onClick={() => router.push('/client/dashboard')} 
-            className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all group"
+
+      <main className="mx-auto max-w-[1280px] px-6 pt-28 md:px-10 lg:px-12 lg:pt-36">
+        <div className="mx-auto max-w-5xl space-y-8">
+          <button
+            onClick={() => router.push('/client/dashboard')}
+            className="landing-type-caption inline-flex items-center gap-3 text-[var(--landing-muted)] transition-colors hover:text-[var(--teal-deep)]"
           >
-            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" /> 
-            Retour au Dashboard
+            <ArrowLeft size={16} />
+            Retour au dashboard
           </button>
 
-          {/* PROFILE HEADER */}
-          <header className="flex flex-col md:flex-row justify-between items-center gap-10">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="relative group">
-                <div className="w-32 h-32 bg-primary/5 rounded-[2.5rem] flex items-center justify-center text-5xl font-serif text-primary border border-primary/10 transition-all duration-700 group-hover:rounded-2xl group-hover:bg-primary group-hover:text-white">
-                  {profile.firstName?.[0] || profile.lastName?.[0] || '👤'}
+          <header className="landing-surface-card flex flex-col gap-6 rounded-[2rem] p-6 md:flex-row md:items-center md:justify-between md:p-8">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center">
+              <div className="relative">
+                <div className="flex h-24 w-24 items-center justify-center rounded-[1.7rem] bg-[var(--landing-tint-fill)] text-[2rem] text-[var(--teal-deep)]">
+                  {profile.firstName?.[0] || profile.lastName?.[0] || 'A'}
                 </div>
-                <button className="absolute -bottom-2 -right-2 bg-background p-3 rounded-xl shadow-lg border border-border hover:text-primary transition-colors">
-                  <Camera size={18} />
+                <button className="absolute -bottom-2 -right-2 flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--landing-tint)] bg-[var(--off-white)] text-[var(--landing-muted)] transition-colors hover:text-[var(--teal-deep)]">
+                  <Camera size={16} />
                 </button>
               </div>
-              
-              <div className="text-center md:text-left space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/5 border border-emerald-500/10 text-[10px] font-bold uppercase tracking-widest text-emerald-600">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Profil Vérifié
+
+              <div className="space-y-3 text-center md:text-left">
+                <div className="landing-pill landing-pill-soft landing-type-caption inline-flex gap-2 border text-[var(--landing-warm)]">
+                  <div className="h-2 w-2 rounded-full bg-[var(--orange)]" />
+                  <span>Profil vérifié</span>
                 </div>
-                <h1 className="text-5xl lg:text-7xl font-serif leading-none">
-                  {profile.firstName || 'Ami'} <span className="italic opacity-40">{profile.lastName}</span>
+                <h1 className="landing-type-h2 landing-text-high display-tight">
+                  {profile.firstName || 'Ami'}{' '}
+                  <span className="landing-display-italic text-[var(--landing-muted)]">{profile.lastName}</span>
                 </h1>
               </div>
             </div>
 
             <button
-              onClick={() => isEditing ? handleSave() : setIsEditing(true)}
+              onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
               disabled={updating}
-              className={`premium-button rounded-full px-10 py-5 ${isEditing ? 'button-fill' : 'button-outline'}`}
+              className="landing-type-micro inline-flex items-center justify-center gap-3 rounded-full bg-[var(--teal-deep)] px-8 py-4 text-white transition-all hover:scale-[1.01] hover:bg-[var(--orange)] disabled:opacity-70"
             >
               {updating ? (
-                <Loader2 size={20} className="animate-spin" />
+                <Loader2 size={18} className="animate-spin" />
+              ) : isEditing ? (
+                <CheckCircle2 size={18} />
               ) : (
-                isEditing ? <CheckCircle2 size={20} /> : <Edit size={20} />
+                <Edit size={18} />
               )}
-              <span className="text-[10px] font-bold uppercase tracking-widest ml-2">
-                {updating ? 'Sauvegarde...' : isEditing ? 'Valider' : 'Éditer'}
-              </span>
+              <span>{updating ? 'Sauvegarde...' : isEditing ? 'Valider' : 'Éditer'}</span>
             </button>
           </header>
 
-          {/* TABS */}
-          <div className="flex bg-muted/20 p-1.5 rounded-full border border-border/50 overflow-x-auto scrollbar-hide">
-            {[
-              { id: 'info', label: 'Identité', icon: User },
-              { id: 'preferences', label: 'Préférences', icon: Heart },
-              { id: 'security', label: 'Sécurité', icon: Shield },
-            ].map((t) => (
+          <div className="landing-surface-card flex gap-2 overflow-x-auto rounded-full p-2">
+            {tabs.map((tab) => (
               <button
-                key={t.id}
-                onClick={() => setActiveTab(t.id as any)}
-                className={`flex-1 flex items-center justify-center gap-3 px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${
-                  activeTab === t.id 
-                    ? 'bg-background text-primary shadow-sm' 
-                    : 'text-muted-foreground hover:text-foreground'
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`landing-type-caption inline-flex flex-1 items-center justify-center gap-3 rounded-full px-5 py-3.5 transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-[var(--teal-deep)] text-white'
+                    : 'text-[var(--landing-muted)] hover:bg-[var(--landing-tint-fill)] hover:text-[var(--teal-deep)]'
                 }`}
               >
-                <t.icon size={16} className={activeTab === t.id ? 'text-primary' : 'text-muted-foreground/40'} />
-                <span className="hidden sm:inline">{t.label}</span>
+                <tab.icon size={16} />
+                <span>{tab.label}</span>
               </button>
             ))}
           </div>
 
-          {/* CONTENT */}
-          <motion.div 
+          <motion.section
             key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-premium p-10 lg:p-16"
+            className="landing-surface-card rounded-[2rem] p-6 md:p-8"
           >
             {activeTab === 'info' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div className="space-y-8">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary opacity-60">Prénom</label>
-                    <div className="relative">
-                       <User size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-                       <input
-                        type="text"
-                        value={profile.firstName}
-                        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-                        disabled={!isEditing}
-                        className="w-full h-16 bg-muted/10 border border-border/50 rounded-2xl pl-14 pr-6 text-lg font-serif text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary opacity-60">Nom</label>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className="space-y-3">
+                  <label className="landing-type-caption text-[var(--landing-warm)]">Prénom</label>
+                  <div className="relative">
+                    <User size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--landing-muted)]" />
                     <input
                       type="text"
-                      value={profile.lastName}
-                      onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                      value={profile.firstName}
+                      onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
                       disabled={!isEditing}
-                      className="w-full h-16 bg-muted/10 border border-border/50 rounded-2xl px-6 text-lg font-serif text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
+                      className={`${fieldClass} pl-12`}
                     />
                   </div>
                 </div>
 
-                <div className="space-y-8">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary opacity-60">Email</label>
-                    <div className="relative">
-                       <Mail size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground/20" />
-                       <input type="email" value={profile.email} disabled className="w-full h-16 bg-muted/5 border border-border/20 rounded-2xl pl-14 pr-6 text-lg text-muted-foreground/40 cursor-not-allowed" />
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary opacity-60">Téléphone</label>
-                    <div className="relative">
-                       <Phone size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-                       <input
-                        type="tel"
-                        value={profile.phone}
-                        onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                        disabled={!isEditing}
-                        className="w-full h-16 bg-muted/10 border border-border/50 rounded-2xl pl-14 pr-6 text-lg font-serif text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
-                      />
-                    </div>
+                <div className="space-y-3">
+                  <label className="landing-type-caption text-[var(--landing-warm)]">Nom</label>
+                  <input
+                    type="text"
+                    value={profile.lastName}
+                    onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                    disabled={!isEditing}
+                    className={fieldClass}
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="landing-type-caption text-[var(--landing-warm)]">Email</label>
+                  <div className="relative">
+                    <Mail size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--landing-muted)]" />
+                    <input type="email" value={profile.email} disabled className={`${fieldClass} pl-12`} />
                   </div>
                 </div>
 
-                <div className="md:col-span-2 space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary opacity-60">Notes & Zones sensibles</label>
+                <div className="space-y-3">
+                  <label className="landing-type-caption text-[var(--landing-warm)]">Téléphone</label>
+                  <div className="relative">
+                    <Phone size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--landing-muted)]" />
+                    <input
+                      type="tel"
+                      value={profile.phone}
+                      onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                      disabled={!isEditing}
+                      className={`${fieldClass} pl-12`}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="landing-type-caption text-[var(--landing-warm)]">Ville</label>
+                  <input
+                    type="text"
+                    value={profile.city}
+                    onChange={(e) => setProfile({ ...profile, city: e.target.value })}
+                    disabled={!isEditing}
+                    className={fieldClass}
+                  />
+                </div>
+
+                <div className="space-y-3 md:col-span-2">
+                  <label className="landing-type-caption text-[var(--landing-warm)]">Notes & zones sensibles</label>
                   <textarea
                     value={profile.notes}
                     onChange={(e) => setProfile({ ...profile, notes: e.target.value })}
                     disabled={!isEditing}
                     rows={4}
-                    className="w-full bg-muted/10 border border-border/50 rounded-3xl p-6 text-lg font-serif italic text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
-                    placeholder="Ex: Allergies, huiles préférées, zones de tension..."
+                    placeholder="Allergies, huiles préférées, zones de tension..."
+                    className={`${fieldClass} resize-none rounded-[1.6rem]`}
                   />
                 </div>
               </div>
             )}
 
             {activeTab === 'preferences' && (
-              <div className="py-12 text-center space-y-8">
-                <div className="w-20 h-20 bg-primary/5 rounded-3xl mx-auto flex items-center justify-center text-primary">
-                    <Heart size={40} strokeWidth={1.5} />
+              <div className="space-y-6 py-2 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.3rem] bg-[var(--landing-tint-fill)] text-[var(--orange)]">
+                  <Heart size={34} />
                 </div>
                 <div className="space-y-3">
-                   <h3 className="text-3xl font-serif text-foreground">Votre Rituel</h3>
-                   <p className="text-muted-foreground max-w-sm mx-auto font-sans leading-relaxed">Ces détails nous aident à personnaliser votre accueil avant votre arrivée.</p>
+                  <h2 className="landing-type-h4 landing-text-high">Votre rituel</h2>
+                  <p className="landing-type-body-s landing-text-body mx-auto max-w-md">
+                    Ces repères nous aident à personnaliser votre accueil avant votre arrivée.
+                  </p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                   {['Massage Signature', 'Huile neutre', 'Ambiance zen', 'Pression moyenne'].map(p => (
-                     <div key={p} className="p-6 bg-muted/5 border border-border/30 rounded-2xl text-[10px] font-bold uppercase tracking-widest text-primary/70">{p}</div>
-                   ))}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {['Massage Signature', 'Huile neutre', 'Ambiance zen', 'Pression moyenne'].map((item) => (
+                    <div
+                      key={item}
+                      className="landing-surface-card rounded-[1.4rem] bg-[var(--landing-tint-fill)] px-5 py-5 text-center"
+                    >
+                      <p className="landing-type-caption text-[var(--landing-warm)]">{item}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
 
             {activeTab === 'security' && (
-              <div className="max-w-md mx-auto space-y-4">
-                <button className="w-full py-5 px-8 border border-border/50 rounded-2xl text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all">
-                   Réinitialiser le mot de passe
+              <div className="mx-auto max-w-md space-y-4">
+                <button className="landing-type-caption w-full rounded-[1.4rem] border border-[var(--landing-tint)] bg-[var(--off-white)] px-6 py-5 text-[var(--landing-warm)] transition-colors hover:border-[var(--teal-deep)] hover:text-[var(--teal-deep)]">
+                  Réinitialiser le mot de passe
                 </button>
-                <button className="w-full py-5 px-8 border border-red-500/10 text-red-500/60 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/5 hover:text-red-500 transition-all">
-                   Supprimer mon compte
+                <button className="landing-type-caption w-full rounded-[1.4rem] border border-[rgba(241,102,77,0.22)] bg-[rgba(241,102,77,0.05)] px-6 py-5 text-[var(--orange)] transition-colors hover:bg-[rgba(241,102,77,0.1)]">
+                  Supprimer mon compte
                 </button>
               </div>
             )}
-          </motion.div>
+          </motion.section>
         </div>
       </main>
     </div>

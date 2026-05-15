@@ -18,10 +18,10 @@ export default function WeekHeader({
   togglePending,
 }: WeekHeaderProps) {
   return (
-    <div className="grid shrink-0 border-b border-border/50 bg-background" style={{ gridTemplateColumns: '100px repeat(7, 1fr)' }}>
-      <div className="border-r border-border/30 bg-slate-50/50 flex items-center justify-center">
-        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground/30 -rotate-90">
-          GMT+1
+    <div className="grid shrink-0 border-b border-border bg-background" style={{ gridTemplateColumns: '72px repeat(7, 1fr)' }}>
+      <div className="border-r border-border flex items-center justify-center bg-muted/20">
+        <span className="text-[11px] font-bold tracking-[0.1em] text-muted-foreground/40 uppercase">
+          UTC+1
         </span>
       </div>
       {days.map((d, i) => {
@@ -33,29 +33,27 @@ export default function WeekHeader({
           <div
             key={i}
             onClick={() => absenceMode && togglePending(dStr)}
-            className={`py-10 text-center border-r border-border/30 transition-all duration-700 relative group ${
+            className={`py-4 text-center border-r border-border transition-all duration-300 relative ${
               absenceMode ? 'cursor-pointer hover:bg-destructive/5' : ''
-            } ${isPending ? 'bg-destructive text-white shadow-2xl z-10' : ''}`}
+            } ${isPending ? 'bg-destructive text-white shadow-inner' : ''}`}
           >
-            <p className={`text-[10px] font-black uppercase tracking-[0.25em] mb-4 transition-colors ${
-              isToday && !isPending ? 'text-primary' : 'text-muted-foreground/40'
+            <p className={`text-[11px] font-black uppercase tracking-[0.2em] mb-2 transition-colors ${
+              isToday && !isPending ? 'text-blue-600' : isPending ? 'text-white/60' : 'text-slate-400'
             }`}>
               {DAYS_LABELS[i]}
             </p>
-            <p className={`text-4xl font-black leading-none tracking-tighter transition-all duration-700 ${
+            <div className={`inline-flex items-center justify-center w-9 h-9 rounded-full transition-all ${
               isToday && !isPending
-                ? 'text-foreground scale-110'
-                : isOpen ? (isPending ? 'text-white' : 'text-foreground') : 'text-muted-foreground/10'
+                ? 'bg-blue-600 text-white shadow-md shadow-blue-100'
+                : isOpen ? (isPending ? 'text-white' : 'text-slate-900') : 'text-slate-200'
             }`}>
-              {d.getDate()}
-            </p>
-            
-            {isToday && !isPending && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_15px_hsl(var(--primary)/0.6)]" />
-            )}
+              <span className="text-xl font-black tabular-nums tracking-tight">
+                {d.getDate()}
+              </span>
+            </div>
             
             {!isOpen && !isPending && (
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,hsl(var(--muted-foreground)/0.02)_10px,hsl(var(--muted-foreground)/0.02)_11px)] pointer-events-none" />
+              <div className="absolute inset-0 closed-day-stripes pointer-events-none opacity-60" />
             )}
           </div>
         );

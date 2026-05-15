@@ -1,0 +1,177 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY by João" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+          - generic [ref=e7]: by João
+        - generic [ref=e8]:
+          - link "Sessions" [ref=e9] [cursor=pointer]:
+            - /url: /#sessions
+          - link "Bienfaits" [ref=e10] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e11] [cursor=pointer]:
+            - /url: /#atelier
+        - generic [ref=e12]:
+          - link "Réserver" [ref=e13] [cursor=pointer]:
+            - /url: /booking
+          - link "Connexion" [ref=e14] [cursor=pointer]:
+            - /url: /login
+    - main [ref=e15]:
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: — Réservation
+          - heading "Réserver sans friction, dans une vraie page." [level=1] [ref=e20]:
+            - text: Réserver sans friction,
+            - text: dans une vraie page.
+          - paragraph [ref=e21]: Sélectionnez le soin, choisissez un créneau, puis confirmez vos informations dans un parcours clair. Plus de texte perdu au milieu d'une modale, plus de blanc inutile.
+        - generic [ref=e22]:
+          - paragraph [ref=e23]: Informations
+          - generic [ref=e24]:
+            - generic [ref=e25]:
+              - paragraph [ref=e26]: Cabinet
+              - paragraph [ref=e27]: Chemin de Joinville 26, Cointrin
+            - generic [ref=e28]:
+              - paragraph [ref=e29]: Durée moyenne
+              - paragraph [ref=e30]: 30 à 60 minutes selon le soin
+            - link "Déjà client ? Accéder à mon espace →" [ref=e31] [cursor=pointer]:
+              - /url: /login
+      - generic [ref=e33]:
+        - complementary [ref=e34]:
+          - generic [ref=e35]:
+            - generic [ref=e36]:
+              - img [ref=e38]
+              - generic [ref=e40]:
+                - generic [ref=e41]:
+                  - img [ref=e42]
+                  - generic [ref=e44]: Rituel
+                - paragraph [ref=e45]: Thérapeutique
+            - generic [ref=e46]:
+              - generic [ref=e47]: "2"
+              - generic [ref=e48]:
+                - generic [ref=e49]:
+                  - img [ref=e50]
+                  - generic [ref=e52]: Agenda
+                - paragraph [ref=e53]: —
+            - generic [ref=e54]:
+              - generic [ref=e55]: "3"
+              - generic [ref=e56]:
+                - generic [ref=e57]:
+                  - img [ref=e58]
+                  - generic [ref=e61]: Contact
+                - paragraph [ref=e62]: —
+            - generic [ref=e63]:
+              - generic [ref=e64]: "4"
+              - generic [ref=e65]:
+                - generic [ref=e66]:
+                  - img [ref=e67]
+                  - generic [ref=e69]: Finalisation
+                - paragraph [ref=e70]: —
+        - generic [ref=e72]:
+          - button "Changer de soin" [ref=e73] [cursor=pointer]:
+            - img [ref=e74]
+            - text: Changer de soin
+          - generic [ref=e76]:
+            - generic [ref=e77]:
+              - heading "Choisissez le moment, pas une popup." [level=2] [ref=e78]:
+                - text: Choisissez le moment,
+                - text: pas une popup.
+              - generic [ref=e79]:
+                - generic [ref=e80]:
+                  - generic [ref=e81]: mai 2026
+                  - generic [ref=e82]:
+                    - button [disabled] [ref=e83]:
+                      - img [ref=e84]
+                    - button [ref=e86] [cursor=pointer]:
+                      - img [ref=e87]
+                - generic [ref=e89]:
+                  - generic [ref=e90]: L
+                  - generic [ref=e91]: M
+                  - generic [ref=e92]: M
+                  - generic [ref=e93]: J
+                  - generic [ref=e94]: V
+                  - generic [ref=e95]: S
+                  - generic [ref=e96]: D
+                  - button "27" [disabled] [ref=e97]
+                  - button "28" [disabled] [ref=e98]
+                  - button "29" [disabled] [ref=e99]
+                  - button "30" [disabled] [ref=e100]
+                  - button "1" [disabled] [ref=e101]
+                  - button "2" [disabled] [ref=e102]
+                  - button "3" [disabled] [ref=e103]
+                  - button "4" [disabled] [ref=e104]
+                  - button "5" [disabled] [ref=e105]
+                  - button "6" [disabled] [ref=e106]
+                  - button "7" [disabled] [ref=e107]
+                  - button "8" [disabled] [ref=e108]
+                  - button "9" [disabled] [ref=e109]
+                  - button "10" [disabled] [ref=e110]
+                  - button "11" [disabled] [ref=e111]
+                  - button "12" [disabled] [ref=e112]
+                  - button "13" [disabled] [ref=e113]
+                  - button "14" [disabled] [ref=e114]
+                  - button "15" [ref=e115] [cursor=pointer]
+                  - button "16" [ref=e116] [cursor=pointer]
+                  - button "17" [disabled] [ref=e117]
+                  - button "18" [ref=e118] [cursor=pointer]
+                  - button "19" [ref=e119] [cursor=pointer]
+                  - button "20" [ref=e120] [cursor=pointer]
+                  - button "21" [ref=e121] [cursor=pointer]
+                  - button "22" [ref=e122] [cursor=pointer]
+                  - button "23" [ref=e123] [cursor=pointer]
+                  - button "24" [disabled] [ref=e124]
+                  - button "25" [ref=e125] [cursor=pointer]
+                  - button "26" [ref=e126] [cursor=pointer]
+                  - button "27" [ref=e127] [cursor=pointer]
+                  - button "28" [ref=e128] [cursor=pointer]
+                  - button "29" [ref=e129] [cursor=pointer]
+                  - button "30" [ref=e130] [cursor=pointer]
+                  - button "31" [disabled] [ref=e131]
+            - generic [ref=e132]:
+              - paragraph [ref=e133]: Créneaux disponibles
+              - paragraph [ref=e134]: Choisissez d'abord une date dans le calendrier.
+    - contentinfo [ref=e135]:
+      - generic [ref=e138]:
+        - generic [ref=e139]:
+          - heading "Newsletter" [level=3] [ref=e140]
+          - paragraph [ref=e141]: Conseils bien-être & actualités.
+        - generic [ref=e142]:
+          - textbox "Votre adresse e-mail" [ref=e143]
+          - button "S'inscrire →" [ref=e144] [cursor=pointer]
+      - generic [ref=e146]:
+        - generic [ref=e147]:
+          - generic [ref=e148]:
+            - generic [ref=e149]: SRT by João
+            - generic [ref=e150]: Sérénité & Équilibre
+          - generic [ref=e151]:
+            - generic [ref=e152]: Contact
+            - generic [ref=e153]:
+              - link "+41 22 000 00 00" [ref=e154] [cursor=pointer]:
+                - /url: tel:+41220000000
+              - link "hello@serenityrelax.ch" [ref=e155] [cursor=pointer]:
+                - /url: mailto:hello@serenityrelax.ch
+          - generic [ref=e156]:
+            - generic [ref=e157]: Le Cabinet
+            - link "Chemin de Joinville 26 1216 Cointrin, Genève" [ref=e158] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=Chemin+de+Joinville+26+1216+Cointrin+Genève
+              - text: Chemin de Joinville 26
+              - text: 1216 Cointrin, Genève
+          - generic [ref=e159]:
+            - generic [ref=e160]: Horaires
+            - generic [ref=e161]:
+              - generic [ref=e162]:
+                - generic [ref=e163]: Lun — Ven
+                - generic [ref=e164]: 08:00 — 21:00
+              - generic [ref=e165]:
+                - generic [ref=e166]: Sam — Dim
+                - generic [ref=e167]: 09:30 — 21:00
+        - generic [ref=e168]:
+          - generic [ref=e169]: © 2024 SERENITY RELAX THERAPY.
+          - generic [ref=e170]:
+            - link "Confidentialité" [ref=e171] [cursor=pointer]:
+              - /url: "#"
+            - link "Mentions Légales" [ref=e172] [cursor=pointer]:
+              - /url: "#"
+  - region "Notifications (F8)":
+    - list

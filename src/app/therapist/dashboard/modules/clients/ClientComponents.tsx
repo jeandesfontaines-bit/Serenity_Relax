@@ -7,13 +7,13 @@ import { cleanServiceLabel } from '@/lib/cleanServiceLabel';
 
 export function ClientSidebarRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-8 group">
-      <div className="w-16 h-16 flex items-center justify-center rounded-2xl transition-all shadow-inner bg-secondary text-muted-foreground">
+    <div className="flex items-center gap-3 group">
+      <div className="w-10 h-10 flex items-center justify-center rounded-xl transition-all shadow-inner bg-secondary text-muted-foreground shrink-0">
         {icon}
       </div>
-      <div className="flex-1">
-        <p className="dashboard-eyebrow mb-2">{label}</p>
-        <div className="text-lg font-bold tracking-tighter leading-none text-foreground">{value}</div>
+      <div className="flex-1 min-w-0">
+        <p className="dashboard-eyebrow mb-0.5">{label}</p>
+        <div className="text-sm font-bold tracking-tight leading-none text-foreground truncate">{value}</div>
       </div>
     </div>
   );
@@ -25,40 +25,40 @@ export function ConfirmedAppointmentCard({ appt, variant, onClick }: { appt: App
   return (
     <button 
       onClick={onClick}
-      className={`rounded-[4rem] p-12 text-left transition-all hover:-translate-y-2 hover:shadow-2xl active:scale-[0.98] group relative overflow-hidden border ${
+      className={`rounded-2xl p-6 text-left transition-all hover:-translate-y-1 hover:shadow-xl active:scale-[0.98] group relative overflow-hidden border ${
         isDark 
-          ? "bg-primary text-white border-transparent shadow-[0_40px_80px_-20px_rgba(0,0,0,0.3)]" 
+          ? "bg-primary text-white border-transparent shadow-lg shadow-primary/20" 
           : "bg-background text-foreground border-border"
       }`}
     >
-      <div className="flex items-center justify-between mb-20">
-        <div className={`flex items-center gap-4 text-[12px] font-bold uppercase tracking-[0.24em] ${
-          isDark ? 'text-white/50' : 'text-muted-foreground'
+      <div className="flex items-center justify-between mb-8">
+        <div className={`flex items-center gap-3 text-[10px] font-bold tracking-[0.05em] ${
+          isDark ? 'text-white/60' : 'text-muted-foreground'
         }`}>
-          <Clock size={18} strokeWidth={2.5} />
+          <Clock size={14} strokeWidth={2.5} />
           <span>{appt.time || '10:00'} — {appt.endTime || '11:00'}</span>
         </div>
-        <div className={`w-14 h-14 flex items-center justify-center rounded-full transition-all group-hover:scale-110 ${
+        <div className={`w-8 h-8 flex items-center justify-center rounded-full transition-all group-hover:scale-110 ${
           isDark ? 'bg-white/10 text-white' : 'bg-secondary text-muted-foreground'
         }`}>
-          <ArrowRight size={24} strokeWidth={3} />
+          <ArrowRight size={16} strokeWidth={3} />
         </div>
       </div>
       
-      <h4 className="text-4xl font-bold tracking-tighter leading-none mb-10">
+      <h4 className="text-xl font-bold tracking-tight leading-none mb-4">
         {cleanServiceLabel(appt.serviceName) || 'Soin Holistique'}
       </h4>
       
-      <div className="flex items-center gap-6">
-        <span className={`text-[9px] font-bold uppercase tracking-[0.3em] px-8 py-3 rounded-full ${
+      <div className="flex items-center gap-4">
+        <span className={`text-[8px] font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-md ${
           isDark ? "bg-white text-primary" : "bg-primary text-primary-foreground"
         }`}>
-          CONFIRMÉ
+          Confirmé
         </span>
-        <span className={`font-bold text-[12px] tracking-widest ${
+        <span className={`font-bold text-[10px] tracking-[0.05em] ${
           isDark ? 'text-white/40' : 'text-muted-foreground'
         }`}>
-           {appt.duration || '60 MIN'}
+           {appt.duration || '60 min'}
         </span>
       </div>
     </button>
@@ -68,42 +68,42 @@ export function ConfirmedAppointmentCard({ appt, variant, onClick }: { appt: App
 export function AppointmentHistoryRow({ appt, onClick }: { appt: Appointment, onClick: () => void }) {
   const dateObj = appt.date ? parseISO(appt.date) : new Date();
   const day = format(dateObj, 'd');
-  const month = format(dateObj, 'MMM', { locale: fr }).toUpperCase();
+  const month = format(dateObj, 'MMM', { locale: fr });
 
   return (
     <button 
       onClick={onClick}
-      className="w-full rounded-[3rem] p-10 flex items-center gap-12 transition-all group shadow-sm hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] hover:-translate-y-1 relative overflow-hidden border bg-background border-border"
+      className="w-full rounded-2xl p-4 flex items-center gap-6 transition-all group shadow-sm hover:shadow-md hover:-translate-y-0.5 relative overflow-hidden border bg-background border-border"
     >
-      <div className="flex flex-col items-center justify-center w-24 h-24 border-r border-border pr-12 transition-colors">
-        <span className="text-4xl font-bold leading-none tracking-tighter text-foreground">{day}</span>
-        <span className="dashboard-eyebrow mt-3">{month}</span>
+      <div className="flex flex-col items-center justify-center w-12 border-r border-border pr-6 transition-colors">
+        <span className="text-xl font-bold leading-none tracking-tight text-foreground">{day}</span>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mt-1">{month}</span>
       </div>
-      <div className="flex-1 text-left">
-        <h4 className="text-3xl font-bold tracking-tighter leading-none transition-all">
+      <div className="flex-1 text-left min-w-0">
+        <h4 className="text-sm font-bold tracking-tight leading-none transition-all truncate">
           {cleanServiceLabel(appt.serviceName) || 'Soin Signature'}
         </h4>
-        <div className="flex items-center gap-6 mt-4">
-          <div className="flex items-center gap-3">
-             <Clock size={14} strokeWidth={2.5} className="text-muted-foreground" />
-             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+        <div className="flex items-center gap-4 mt-2">
+          <div className="flex items-center gap-2">
+             <Clock size={12} strokeWidth={2.5} className="text-muted-foreground" />
+             <p className="text-[10px] font-bold tracking-tight text-muted-foreground">
                {appt.time || '09:00'} - {appt.endTime || '10:00'}
              </p>
           </div>
-          <div className="w-1.5 h-1.5 rounded-full bg-border" />
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-             {appt.duration || '45 MIN'}
+          <div className="w-1 h-1 rounded-full bg-border" />
+          <p className="text-[10px] font-bold tracking-tight text-muted-foreground">
+             {appt.duration || '45 min'}
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-10">
-        <div className={`px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-sm transition-all border ${
+      <div className="flex items-center gap-4">
+        <div className={`px-3 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider shadow-sm transition-all border ${
           appt.paid ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-secondary border-border text-muted-foreground'
         }`}>
-          {appt.paid ? 'PAYÉ' : 'EN ATTENTE'}
+          {appt.paid ? 'Payé' : 'En attente'}
         </div>
-        <div className="w-14 h-14 flex items-center justify-center rounded-full group-hover:scale-110 transition-all text-muted-foreground">
-          <ArrowRight size={28} strokeWidth={3} />
+        <div className="w-8 h-8 flex items-center justify-center rounded-full group-hover:scale-110 transition-all text-muted-foreground">
+          <ArrowRight size={18} strokeWidth={3} />
         </div>
       </div>
     </button>

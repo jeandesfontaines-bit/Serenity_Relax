@@ -18,14 +18,20 @@ export default function InvoicePage() {
   const [sent, setSent] = useState(false);
 
   const invoiceAmount = Number(invoice?.totalAmount ?? invoice?.amount ?? 0);
+  const invoiceReference = invoice?.invoiceNumber || `INV-${id}`;
+  const clientName = invoice?.clientNameSnapshot || 'Client';
+  const issueDate = invoice?.issueDate || invoice?.date || new Date().toISOString().slice(0, 10);
+  const sessionDate = invoice?.date || invoice?.issueDate || new Date().toISOString().slice(0, 10);
+  const serviceName = invoice?.serviceName || invoice?.items?.[0]?.description || 'Soin thérapeutique';
+  const clientFolder = invoice?.clientId ? String(invoice.clientId).slice(0, 8).toUpperCase() : 'N/A';
 
   const handleDownloadPdf = () => {
     if (!invoice) return;
     buildInvoicePdf({
-      invoiceNumber: invoice.invoiceNumber || `INV-${id}`,
-      clientName: invoice.clientNameSnapshot || 'Client',
-      date: invoice.date || invoice.issueDate || new Date().toISOString().slice(0, 10),
-      serviceName: invoice.serviceName || invoice.items?.[0]?.description || 'Soin thérapeutique',
+      invoiceNumber: invoiceReference,
+      clientName,
+      date: sessionDate,
+      serviceName,
       amount: invoiceAmount,
     });
   };
@@ -121,20 +127,20 @@ export default function InvoicePage() {
 
         {/* Invoice Body */}
         {/* Invoice Body */}
-        <div className="bg-card shadow-[0_60px_100px_-20px_rgba(0,0,0,0.05)] min-h-[297mm] flex flex-col print:shadow-none print:w-full print:h-auto border border-border/50 p-20 md:p-32 print:p-0">
+        <div className="bg-card shadow-sm min-h-[297mm] flex flex-col print:shadow-none print:w-full print:h-auto border border-border p-8 md:p-16 print:p-0">
           
           {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-32">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-16">
             <div>
-              <h1 className="text-7xl font-light text-foreground tracking-tighter mb-6">Facture</h1>
+              <h1 className="text-3xl font-light text-foreground tracking-tight mb-4">Facture</h1>
               <div className="flex items-center gap-6">
                 <span className="font-display uppercase tracking-[0.4em] text-[10px] text-muted-foreground/30">Référence</span>
-                <p className="text-sm font-display font-bold tracking-widest text-foreground">#{invoice.invoiceNumber}</p>
+                <p className="text-sm font-display font-bold tracking-widest text-foreground">#{invoiceReference}</p>
               </div>
             </div>
             <div className="md:text-right flex flex-col md:items-end">
-              <span className="block text-3xl text-foreground mb-2">Serenity Relax</span>
-              <span className="block font-display uppercase tracking-[0.4em] text-[9px] text-muted-foreground mb-8 leading-none">Architecture of Presence</span>
+              <span className="block text-xl font-medium text-foreground mb-1">Serenity Relax</span>
+              <span className="block font-display uppercase tracking-[0.3em] text-[9px] text-muted-foreground mb-4 leading-none">Architecture of Presence</span>
               <div className="font-display uppercase tracking-[0.2em] text-[10px] text-muted-foreground space-y-2">
                 <p>Route d'Exemple 123</p>
                 <p>1000 Lausanne, Suisse</p>
@@ -144,21 +150,21 @@ export default function InvoicePage() {
           </div>
 
           {/* Details Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 mb-32 py-16 border-y border-border/10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16 py-8 border-y border-border">
             <div>
-              <span className="font-display uppercase tracking-[0.4em] text-[9px] text-muted-foreground/30 block mb-6">Destinataire</span>
-              <p className="text-3xl font-light text-foreground mb-4">{invoice.clientNameSnapshot}</p>
+              <span className="font-display uppercase tracking-[0.3em] text-[9px] text-muted-foreground block mb-4">Destinataire</span>
+              <p className="text-xl font-medium text-foreground mb-2">{clientName}</p>
               <div className="font-display uppercase tracking-[0.2em] text-[10px] text-muted-foreground space-y-2">
-                <p>Dossier No. {invoice.clientId?.slice(0, 8).toUpperCase()}</p>
+                <p>Dossier No. {clientFolder}</p>
                 <p className="text-muted-foreground/30">Méthode Thérapeutique : Soins Holistiques</p>
               </div>
             </div>
             <div className="md:text-right flex flex-col md:items-end">
-              <span className="font-display uppercase tracking-[0.4em] text-[9px] text-muted-foreground/30 block mb-6">Temporalité</span>
+              <span className="font-display uppercase tracking-[0.3em] text-[9px] text-muted-foreground block mb-4">Temporalité</span>
               <div className="space-y-4 w-full md:w-auto">
                 <div className="flex justify-between md:justify-end items-center gap-12">
                   <span className="font-display uppercase tracking-[0.3em] text-[10px] text-muted-foreground">Émission</span>
-                  <p className="text-sm font-bold tracking-widest text-foreground">{invoice.issueDate}</p>
+                  <p className="text-sm font-bold tracking-widest text-foreground">{issueDate}</p>
                 </div>
                 <div className="flex justify-between md:justify-end items-center gap-12">
                   <span className="font-display uppercase tracking-[0.3em] text-[10px] text-muted-foreground">Échéance</span>
@@ -172,30 +178,30 @@ export default function InvoicePage() {
           <div className="flex-1 overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-foreground">
-                  <th className="py-10 font-display uppercase tracking-[0.4em] text-[10px] text-foreground">Prestation de soin</th>
-                  <th className="py-10 text-right font-display uppercase tracking-[0.4em] text-[10px] text-foreground">Unités</th>
-                  <th className="py-10 text-right font-display uppercase tracking-[0.4em] text-[10px] text-foreground">Honoraires</th>
+                <tr className="border-b border-border">
+                  <th className="py-4 font-display uppercase tracking-[0.2em] text-[10px] text-muted-foreground">Prestation de soin</th>
+                  <th className="py-4 text-right font-display uppercase tracking-[0.2em] text-[10px] text-muted-foreground">Unités</th>
+                  <th className="py-4 text-right font-display uppercase tracking-[0.2em] text-[10px] text-muted-foreground">Honoraires</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/10">
+              <tbody className="divide-y divide-border">
                 {(invoice.items || []).length > 0 ? (invoice.items.map((item: any, idx: number) => (
                   <tr key={idx} className="group">
-                    <td className="py-12">
-                      <p className="text-2xl font-light text-foreground mb-2">{item.description}</p>
-                      <p className="font-display uppercase tracking-[0.3em] text-[9px] text-muted-foreground/30">Code Tarifa 590 : 1001</p>
+                    <td className="py-6">
+                      <p className="text-sm font-medium text-foreground mb-1">{item.description}</p>
+                      <p className="font-display uppercase tracking-[0.2em] text-[9px] text-muted-foreground">Code Tarifa 590 : 1001</p>
                     </td>
-                    <td className="py-12 text-right font-display text-[11px] text-muted-foreground">1</td>
-                    <td className="py-12 text-right text-2xl text-foreground">{item.amount.toFixed(2)} <span className="text-xs opacity-20 ml-1">CHF</span></td>
+                    <td className="py-6 text-right font-display text-[11px] text-muted-foreground">1</td>
+                    <td className="py-6 text-right text-base font-medium text-foreground">{Number(item.amount || 0).toFixed(2)} <span className="text-[10px] text-muted-foreground ml-1">CHF</span></td>
                   </tr>
                 ))) : (
                   <tr className="group">
-                    <td className="py-12">
-                      <p className="text-2xl font-light text-foreground mb-2">{invoice.serviceName || "Soin Holistique"}</p>
-                      <p className="font-display uppercase tracking-[0.3em] text-[9px] text-muted-foreground/30">Code Tarifa 590 : 1001</p>
+                    <td className="py-6">
+                      <p className="text-sm font-medium text-foreground mb-1">{serviceName}</p>
+                      <p className="font-display uppercase tracking-[0.2em] text-[9px] text-muted-foreground">Code Tarifa 590 : 1001</p>
                     </td>
-                    <td className="py-12 text-right font-display text-[11px] text-muted-foreground">1</td>
-                    <td className="py-12 text-right text-2xl text-foreground">{invoiceAmount.toFixed(2)} <span className="text-xs opacity-20 ml-1">CHF</span></td>
+                    <td className="py-6 text-right font-display text-[11px] text-muted-foreground">1</td>
+                    <td className="py-6 text-right text-base font-medium text-foreground">{invoiceAmount.toFixed(2)} <span className="text-[10px] text-muted-foreground ml-1">CHF</span></td>
                   </tr>
                 )}
               </tbody>
@@ -203,28 +209,28 @@ export default function InvoicePage() {
           </div>
 
           {/* Footer / Total */}
-          <div className="mt-32 pt-20 border-t-2 border-foreground grid grid-cols-1 md:grid-cols-2 items-end gap-16 md:gap-0">
+          <div className="mt-16 pt-8 border-t border-border grid grid-cols-1 md:grid-cols-2 items-end gap-8 md:gap-0">
             <div className="max-w-xs">
-              <span className="font-display uppercase tracking-[0.4em] text-[9px] text-muted-foreground/30 block mb-6">Informations</span>
-              <p className="font-display uppercase tracking-[0.2em] text-[10px] text-muted-foreground leading-relaxed italic">
+              <span className="font-display uppercase tracking-[0.2em] text-[9px] text-muted-foreground block mb-2">Informations</span>
+              <p className="text-[10px] text-muted-foreground leading-relaxed italic">
                 Paiement par virement bancaire ou QR-code. 
-                Veuillez mentionner la référence <span className="text-foreground font-bold">#{invoice.invoiceNumber}</span> lors de votre transaction.
+                Veuillez mentionner la référence <span className="text-foreground font-bold">#{invoiceReference}</span> lors de votre transaction.
               </p>
             </div>
             <div className="md:text-right flex flex-col md:items-end">
-              <span className="font-display uppercase tracking-[0.4em] text-[9px] text-muted-foreground/30 block mb-4">Total dû</span>
+              <span className="font-display uppercase tracking-[0.3em] text-[9px] text-muted-foreground block mb-2">Total dû</span>
               <div className="flex flex-col md:items-end">
-                <p className="text-8xl font-light text-foreground tracking-tighter leading-none">
+                <p className="text-4xl font-semibold text-foreground tracking-tight leading-none">
                   {invoiceAmount.toFixed(2)}
                 </p>
-                <span className="text-xl text-muted-foreground/30 mt-4 uppercase tracking-[0.2em]">Francs Suisses</span>
+                <span className="text-xs text-muted-foreground mt-2 uppercase tracking-[0.1em]">Francs Suisses</span>
               </div>
             </div>
           </div>
 
           {/* Footer Sign (Print Only) */}
-          <div className="hidden print:block mt-32 pt-16 border-t border-border/10 text-center">
-            <p className="font-display uppercase tracking-[0.5em] text-[9px] text-muted-foreground/30">
+          <div className="hidden print:block mt-16 pt-8 border-t border-border text-center">
+            <p className="font-display uppercase tracking-[0.2em] text-[9px] text-muted-foreground">
               Généré par Serenity Relax Digital Ecosystem — Lausanne
             </p>
           </div>

@@ -24,7 +24,7 @@ export default function ClientTableHeader({
 }: ClientTableHeaderProps) {
   return (
     <div 
-      className="grid items-center border-b px-8 pb-8 border-border/30"
+      className="grid items-center border-b px-4 pb-3 border-border"
       style={{ gridTemplateColumns: gridTemplate }}
     >
       <div className="flex justify-center">
@@ -37,13 +37,15 @@ export default function ClientTableHeader({
         <button
           key={col.id}
           onClick={() => onToggleSort(col.id)}
-          className={`text-[10px] font-black uppercase tracking-[0.25em] transition-all flex items-center gap-2 text-muted-foreground/60 hover:text-foreground ${col.align === 'center' ? 'justify-center' : ''}`}
+          className={`text-[10px] font-bold uppercase tracking-[0.15em] transition-colors flex items-center gap-1.5 text-muted-foreground/80 hover:text-foreground ${col.align === 'center' ? 'justify-center' : ''}`}
         >
           {col.label}
-          {sortField === col.id && <ArrowUpDown size={10} strokeWidth={3} />}
+          {sortField === col.id && <ArrowUpDown size={10} strokeWidth={2} className="text-primary" />}
         </button>
       ))}
-      <div className="text-right text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/60">DÉTAILS</div>
+      <div className="flex justify-end pr-4 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/80">
+        Actions
+      </div>
     </div>
   );
 }

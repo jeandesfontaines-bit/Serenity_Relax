@@ -15,36 +15,35 @@ export default function AppointmentBlock({
   appt, top, height, onSelect, className = '',
 }: AppointmentBlockProps) {
   const tone = getAppointmentTone(appt);
-  const serviceLabel = cleanServiceLabel(appt.serviceName) || cleanServiceLabel(appt.title) || 'SÉANCE';
+  const serviceLabel = cleanServiceLabel(appt.serviceName) || cleanServiceLabel(appt.title) || 'Séance';
 
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onSelect(appt); }}
-      className={`absolute left-3 right-3 z-[3] rounded-3xl p-6 cursor-pointer border transition-all duration-700 overflow-hidden group shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:scale-[1.01] active:scale-95 ${tone.surface} ${tone.border} ${className}`}
-      style={{ top: top + 10, height: Math.max(height - 20, 60) }}
+      className={`absolute left-2 right-2 z-[3] rounded-lg p-3 cursor-pointer border transition-all duration-200 overflow-hidden group hover:shadow-md hover:scale-[1.01] active:scale-[0.99] ${tone.surface} ${tone.border} ${className}`}
+      style={{ top: top + 4, height: Math.max(height - 8, 40) }}
     >
-      <div className="flex items-start justify-between gap-6 relative z-10">
-        <p className={`text-[13px] font-bold tracking-tight leading-tight transition-all duration-500 ${tone.title}`}>
+      <div className="flex items-start justify-between gap-2 relative z-10">
+        <p className={`text-xs font-semibold leading-tight truncate ${tone.title}`}>
           {appt.clientNameSnapshot || appt.title}
         </p>
-        <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 shadow-sm transition-transform duration-500 group-hover:scale-150 ${tone.dot}`} />
+        <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${tone.dot}`} />
       </div>
       
-      {height >= 120 && (
-        <p className={`text-[9px] font-bold uppercase tracking-[0.2em] mt-3 truncate transition-colors duration-500 ${tone.meta}`}>
+      {height >= 100 && (
+        <p className={`text-[10px] font-medium tracking-[0.05em] mt-1.5 truncate ${tone.meta}`}>
           {serviceLabel}
         </p>
       )}
       
-      {height >= 160 && (
-        <div className="mt-auto pt-4 flex items-center border-t border-black/[0.03]">
-          <span className={`text-[9px] font-bold uppercase tracking-[0.3em] tabular-nums ${tone.meta}`}>{appt.time}</span>
+      {height >= 140 && (
+        <div className="mt-auto pt-2 flex items-center border-t border-black/[0.04]">
+          <span className={`text-[10px] font-medium tracking-[0.05em] tabular-nums ${tone.meta}`}>{appt.time}</span>
         </div>
       )}
       
-      {/* Decorative accent */}
-      <div className={`absolute left-0 top-0 h-full w-[4px] ${tone.dot} opacity-20 transition-all duration-700 group-hover:w-[6px]`} />
-      <div className={`absolute -right-4 -bottom-4 w-24 h-24 rounded-full ${tone.dot} opacity-[0.03] blur-2xl transition-all duration-700 group-hover:scale-150`} />
+      {/* Left accent bar */}
+      <div className={`absolute left-0 top-0 h-full w-[3px] rounded-l-lg ${tone.dot} opacity-40`} />
     </div>
   );
 }

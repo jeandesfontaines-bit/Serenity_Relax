@@ -52,8 +52,14 @@ export default function ComptaPage({
     document.addEventListener('mousedown', handlePointerDown);
     return () => document.removeEventListener('mousedown', handlePointerDown);
   }, [showFilterPanel, onShowFilterPanelChange]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [payingId, setPayingId] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!payingId) return;
+    const handlePointerDown = () => setPayingId(null);
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, [payingId]);
 
   React.useEffect(() => {
     onSelectedCountChange(selectedIds.size);
@@ -202,7 +208,7 @@ export default function ComptaPage({
 
   const handleInvoiceOpen = useCallback((appt: Appointment) => {
     const invoice = invoiceByAppointmentId.get(appt.id);
-    window.open(`/therapist/invoice/${invoice?.id || appt.id}`, '_blank');
+    window.location.assign(`/therapist/invoice/${invoice?.id || appt.id}`);
   }, [invoiceByAppointmentId]);
 
   const toggleSelection = useCallback((id: string) => {
@@ -216,7 +222,7 @@ export default function ComptaPage({
   const allSelected = filtered.length > 0 && selectedIds.size === filtered.length;
 
   return (
-    <div className="mx-auto min-h-full space-y-8 bg-transparent">
+    <div className="mx-auto min-h-full space-y-6 bg-transparent">
       <AnimatePresence>
         {selectedIds.size > 0 && (
           <SelectionToolbar 
@@ -227,7 +233,7 @@ export default function ComptaPage({
         )}
       </AnimatePresence>
 
-      <section className="relative space-y-10">
+      <section className="relative space-y-6">
         {showFilterPanel && (
           <FilterPanel 
             filters={filters}
@@ -235,20 +241,12 @@ export default function ComptaPage({
             dropdownRef={filterDropdownRef}
           />
         )}
-        <div className="flex items-end justify-between border-b border-border/30 pb-8">
-          <div>
-            <p className="mb-2 text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/60">JOURNAL DES OPÉRATIONS</p>
-            <h4 className="text-3xl font-black leading-none tracking-tight text-foreground">Transactions</h4>
-          </div>
-          <div className="flex items-center gap-3 border border-border/30 rounded-2xl px-6 py-3 text-sm font-black tracking-tight shadow-sm bg-background text-foreground">
-            {format(new Date(dateRange.start), 'd MMM')} — {format(new Date(dateRange.end), 'd MMM yyyy')}
-          </div>
-        </div>
+        {/* Header removed — handled by AppLayout global header */}
 
         <div className="space-y-4">
           {/* Table Header */}
           <div
-            className="grid items-center border-b border-border/30 px-8 pb-8"
+            className="grid items-center border-b border-border px-4 pb-3"
             style={{ gridTemplateColumns: GRID_TEMPLATE }}
           >
             <div className="flex justify-center">
@@ -260,14 +258,14 @@ export default function ComptaPage({
                 }} 
               />
             </div>
-            <HeaderBtn label="DATE" field="date" current={sortField} onSort={toggleSort} />
-            <HeaderBtn label="PRÉNOM" field="firstName" current={sortField} onSort={toggleSort} />
-            <HeaderBtn label="NOM" field="lastName" current={sortField} onSort={toggleSort} />
-            <HeaderBtn label="RÉFÉRENCE" field="reference" current={sortField} onSort={toggleSort} />
-            <HeaderBtn label="SOIN" field="serviceName" current={sortField} onSort={toggleSort} />
-            <HeaderBtn label="STATUT" field="status" current={sortField} onSort={toggleSort} />
-            <div className="text-[10px] font-black uppercase tracking-[0.2em] text-center text-muted-foreground/60">PDF</div>
-            <HeaderBtn label="MONTANT" field="price" current={sortField} onSort={toggleSort} align="right" />
+            <HeaderBtn label="Date" field="date" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="Prénom" field="firstName" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="Nom" field="lastName" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="Référence" field="reference" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="Soin" field="serviceName" current={sortField} onSort={toggleSort} />
+            <HeaderBtn label="Statut" field="status" current={sortField} onSort={toggleSort} />
+            <div className="text-xs font-medium tracking-[0.05em] text-center text-muted-foreground">PDF</div>
+            <HeaderBtn label="Montant" field="price" current={sortField} onSort={toggleSort} align="right" />
           </div>
 
           <div className="bg-background">
@@ -283,6 +281,11 @@ export default function ComptaPage({
                 onTogglePayment={onTogglePayment}
                 onOpenInvoice={handleInvoiceOpen}
                 setPayingId={setPayingId}
+                isPaying={payingId === appt.id}
+                onChoosePaymentMethod={(id, method) => {
+                  void onTogglePayment(id, false, method);
+                  setPayingId(null);
+                }}
               />
             ))}
           </div>

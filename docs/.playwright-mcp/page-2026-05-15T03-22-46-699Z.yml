@@ -1,0 +1,44 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e14]:
+    - banner [ref=e15]:
+      - generic [ref=e16]:
+        - link "SERENITY by João" [ref=e17] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e18]: SERENITY
+          - generic [ref=e19]: by João
+        - navigation [ref=e20]:
+          - link "Studio" [ref=e21] [cursor=pointer]:
+            - /url: /#hero
+          - link "Soins" [ref=e22] [cursor=pointer]:
+            - /url: /#services
+          - link "Philosophie" [ref=e23] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e24] [cursor=pointer]:
+            - /url: /#faq
+        - generic [ref=e25]:
+          - button "Connexion" [ref=e26] [cursor=pointer]
+          - generic [ref=e29] [cursor=pointer]:
+            - generic [ref=e30]: Jean
+            - button "Sortie" [ref=e31]
+          - button "Réserver" [ref=e33] [cursor=pointer]
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - button "Retour au dashboard" [ref=e36] [cursor=pointer]:
+          - img [ref=e37]
+          - text: Retour au dashboard
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - img [ref=e41]
+            - generic [ref=e43]: Espace justificatifs
+          - heading "Mes sessions" [level=1] [ref=e44]:
+            - text: Mes
+            - text: sessions
+          - paragraph [ref=e45]: Retrouvez l'historique complet de vos soins et téléchargez vos justificatifs de remboursement en un clic.
+        - generic [ref=e46]:
+          - img [ref=e47]
+          - paragraph [ref=e49]: Synchronisation des justificatifs
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e9] [cursor=pointer]:
+    - img [ref=e10]
+  - alert [ref=e13]
