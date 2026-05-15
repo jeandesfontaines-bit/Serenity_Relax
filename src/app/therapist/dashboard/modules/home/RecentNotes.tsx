@@ -8,6 +8,9 @@ interface RecentNotesProps {
   onSelectAppt: (appt: Appointment) => void;
   onNavigate: (tab: string) => void;
   onEditGoal: () => void;
+  monthlyGoal: number;
+  paidThisMonth: number;
+  monthlyProgress: number;
 }
 
 export function RecentNotes({
@@ -15,18 +18,20 @@ export function RecentNotes({
   onSelectAppt,
   onNavigate,
   onEditGoal,
+  monthlyGoal,
+  paidThisMonth,
+  monthlyProgress,
 }: RecentNotesProps) {
   return (
-    <div className="space-y-4">
-      <div className="rounded-xl border border-border bg-card p-6 space-y-5">
+    <div className="space-y-6">
+      <div className="rounded-[28px] border border-[#e2e9f3] bg-white p-6 shadow-[0_10px_30px_rgba(23,43,77,0.04)] space-y-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium tracking-[0.05em] text-muted-foreground mb-0.5">Archives</p>
-            <h4 className="text-lg font-semibold tracking-tight text-foreground">Notes</h4>
+            <h4 className="text-[1.05rem] font-semibold tracking-tight text-slate-900">Notes récentes</h4>
           </div>
           <button
             onClick={onEditGoal}
-            className="w-9 h-9 flex items-center justify-center rounded-lg border border-border transition-colors bg-background text-muted-foreground hover:text-foreground hover:bg-accent"
+            className="flex h-9 w-9 items-center justify-center rounded-2xl border border-[#dbe4f0] bg-[#f8fbff] text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
           >
             <BarChart3 size={16} strokeWidth={2} />
           </button>
@@ -42,17 +47,33 @@ export function RecentNotes({
               />
             ))
           ) : (
-            <div className="py-12 text-center border border-dashed rounded-lg border-border">
-              <p className="text-xs font-medium tracking-[0.05em] text-muted-foreground">Aucune note récente</p>
+            <div className="rounded-2xl border border-dashed border-[#dbe4f0] bg-[#f8fbff] py-12 text-center">
+              <p className="text-sm font-medium text-slate-500">Aucune note récente.</p>
             </div>
           )}
         </div>
 
         <button
           onClick={() => onNavigate('clients')}
-          className="w-full h-9 flex items-center justify-center rounded-lg border border-border text-xs font-medium tracking-[0.05em] transition-all duration-200 text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary"
+          className="flex h-9 w-full items-center justify-center rounded-2xl border border-[#dbe4f0] bg-[#f8fbff] text-sm font-medium text-slate-700 transition-all duration-200 hover:bg-slate-100"
         >
           Répertoire patients
+        </button>
+      </div>
+
+      <div className="rounded-[28px] bg-primary p-6 text-primary-foreground shadow-[0_18px_40px_rgba(37,99,235,0.26)]">
+        <h4 className="text-[1.05rem] font-semibold tracking-tight">Objectif mensuel</h4>
+        <p className="mt-2 text-sm text-primary-foreground/80">
+          {paidThisMonth.toLocaleString('fr-CH')} CHF sur {monthlyGoal.toLocaleString('fr-CH')} CHF.
+        </p>
+        <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-white/20">
+          <div className="h-full rounded-full bg-white" style={{ width: `${monthlyProgress}%` }} />
+        </div>
+        <button
+          onClick={onEditGoal}
+          className="mt-5 flex h-10 w-full items-center justify-center rounded-2xl bg-white text-sm font-medium text-primary transition-colors hover:bg-white/90"
+        >
+          Ajuster l'objectif
         </button>
       </div>
     </div>

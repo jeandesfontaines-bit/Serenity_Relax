@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   Ban, ChevronLeft, ChevronRight, Settings,
   Download, Filter, LogOut, Search, Calendar, Users, Wallet,
-  Bell, ArrowRight, LayoutGrid, List, Menu, Home, Plus
+  Bell, ArrowRight, LayoutGrid, List, Menu, Home, Plus, Goal
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -15,6 +15,11 @@ interface AppLayoutProps {
   globalSearch: string;
   onGlobalSearchChange: (value: string) => void;
   dashboardSummary?: { title: string; subtitle: string };
+  dashboardToolbar?: {
+    dateLabel: string;
+    goalLabel: string;
+    onGoalClick: () => void;
+  };
   schedulerToolbar?: {
     eyebrow: string; title: string; view: 'month' | 'week';
     onPrev: () => void; onNext: () => void; onToday: () => void;
@@ -62,7 +67,7 @@ function isActive(itemId: string, activePage: string) {
 
 export default function AppLayout({
   children, activePage, onNavigate, globalSearch, onGlobalSearchChange,
-  dashboardSummary, schedulerToolbar, clientsToolbar, clientDetailToolbar,
+  dashboardSummary, dashboardToolbar, schedulerToolbar, clientsToolbar, clientDetailToolbar,
   appointmentDetailToolbar, financeToolbar, settingsToolbar, onLogout,
 }: AppLayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -138,15 +143,15 @@ export default function AppLayout({
   );
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-[#eff4fb]">
       {/* Sidebar */}
-      <aside className="hidden md:flex w-[260px] shrink-0 border-r border-sidebar-border flex-col" style={{ background: 'hsl(var(--sidebar-background))' }}>
+      <aside className="hidden md:flex w-[254px] shrink-0 border-r border-[#dbe4f0] bg-white flex-col">
         <NavContent />
       </aside>
 
       <div className="flex flex-col flex-1 min-w-0">
         {/* Header */}
-        <header className="h-16 shrink-0 flex items-center justify-between px-6 border-b border-border bg-white sticky top-0 z-40 shadow-sm">
+        <header className="h-16 shrink-0 flex items-center justify-between px-7 border-b border-[#dbe4f0] bg-white sticky top-0 z-40">
           {/* Left: Menu & Title */}
           <div className="flex items-center gap-4 min-w-[240px]">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -163,8 +168,8 @@ export default function AppLayout({
             <div className="flex flex-col">
               {activePage === 'dashboard' && dashboardSummary && (
                 <>
-                  <h2 className="text-sm font-bold text-foreground leading-tight tracking-tight uppercase tracking-[0.05em]">{dashboardSummary.title}</h2>
-                  <p className="text-[10px] text-muted-foreground/80 tracking-wide font-medium">{dashboardSummary.subtitle}</p>
+                  <h2 className="text-[15px] font-semibold text-slate-900 leading-tight tracking-tight">{dashboardSummary.title}</h2>
+                  <p className="text-xs text-slate-500 tracking-normal font-medium">{dashboardSummary.subtitle}</p>
                 </>
               )}
               {activePage === 'scheduler' && schedulerToolbar && (
@@ -225,20 +230,35 @@ export default function AppLayout({
             </div>
           </div>
           
-          <div className="flex-1 flex justify-center px-4">
+          <div className="flex-1 flex justify-center px-6">
             <div className="relative group w-full max-w-md hidden md:block">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground/60 transition-colors group-focus-within:text-primary" size={14} strokeWidth={2} />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 transition-colors group-focus-within:text-primary" size={14} strokeWidth={2} />
               <input
                 type="text" value={globalSearch}
                 onChange={(e) => onGlobalSearchChange(e.target.value)}
                 placeholder="Rechercher un patient, un rdv, un soin..."
-                className="h-9 w-full rounded-full border border-border/50 bg-muted/40 pl-10 pr-4 text-[13px] font-medium outline-none transition-all duration-300 focus:bg-background focus:border-primary/50 focus:ring-4 focus:ring-primary/5 placeholder:text-muted-foreground/40 shadow-sm group-hover:bg-muted/60"
+                className="h-10 w-full rounded-2xl border border-[#e1e8f2] bg-[#f4f7fb] pl-10 pr-4 text-[13px] font-medium text-slate-700 outline-none transition-all duration-300 focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/5 placeholder:text-slate-400"
               />
             </div>
           </div>
 
           {/* Right: Actions */}
           <div className="flex items-center gap-3 min-w-[240px] justify-end">
+            {activePage === 'dashboard' && dashboardToolbar && (
+              <div className="hidden lg:flex items-center gap-3">
+                <div className="flex h-8 items-center gap-2 rounded-xl border border-[#dbe4f0] bg-white px-3 text-xs font-medium text-slate-600">
+                  <Calendar size={14} strokeWidth={1.8} />
+                  <span>{dashboardToolbar.dateLabel}</span>
+                </div>
+                <button
+                  onClick={dashboardToolbar.onGoalClick}
+                  className="flex h-8 items-center gap-2 rounded-xl bg-primary px-3 text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:brightness-105"
+                >
+                  <Goal size={14} strokeWidth={1.8} />
+                  <span>{dashboardToolbar.goalLabel}</span>
+                </button>
+              </div>
+            )}
             {activePage === 'scheduler' && schedulerToolbar && (
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1">
@@ -331,7 +351,7 @@ export default function AppLayout({
 
 
         {/* Main Content */}
-        <main className={`flex-1 overflow-hidden ${activePage === 'scheduler' ? 'p-0' : activePage === 'appointment-detail' ? 'p-0' : 'p-6'}`} style={{ background: 'hsl(var(--background))' }}>
+        <main className={`flex-1 overflow-hidden ${activePage === 'scheduler' ? 'p-0' : activePage === 'appointment-detail' ? 'p-0' : 'p-8'}`} style={{ background: '#eff4fb' }}>
           <AnimatePresence mode="wait">
             <motion.div 
               key={activePage} 
@@ -339,7 +359,7 @@ export default function AppLayout({
               animate={{ opacity: 1, y: 0 }} 
               exit={{ opacity: 0, y: -6 }} 
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }} 
-              className={`h-full ${activePage === 'scheduler' || activePage === 'appointment-detail' ? 'w-full' : 'max-w-[1400px] mx-auto'}`}
+              className={`h-full ${activePage === 'scheduler' || activePage === 'appointment-detail' ? 'w-full' : 'max-w-[1360px] mx-auto'}`}
             >
               {children}
             </motion.div>

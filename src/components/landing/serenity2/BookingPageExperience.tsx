@@ -101,8 +101,6 @@ const PHONE_PREFIXES: Record<BookingData["phonePrefix"], string> = {
   BE: "+32",
 };
 
-const WEEKDAY_LABELS = ["LUN", "MAR", "MER", "JEU", "VEN", "SAM", "DIM"];
-
 function BookingSummaryCard({
   service,
   bookingData,
@@ -127,47 +125,48 @@ function BookingSummaryCard({
     : "À définir";
 
   return (
-    <div className="rounded-[2.5rem] border border-white bg-white p-7 shadow-[0_2px_20px_rgba(0,0,0,0.03)] sm:p-8 lg:p-6">
-      <div className="relative mb-8 aspect-[4/3] overflow-hidden rounded-[1.6rem] bg-[var(--landing-tint-fill)] lg:mb-5 lg:aspect-[16/10]">
-        {service.image ? (
-          <img src={service.image} alt={service.name} className="h-full w-full object-cover" />
-        ) : null}
-        {(service.displayTag || service.tag) ? (
-          <div className="absolute left-4 top-4 rounded-[0.85rem] bg-white/90 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--off-black)] shadow-sm backdrop-blur-sm">
-            {service.displayTag || service.tag}
+    <div className="rounded-[1.75rem] border border-white bg-white p-5 shadow-[0_2px_16px_rgba(0,0,0,0.03)]">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="space-y-2">
+          {(service.displayTag || service.tag) ? (
+            <div className="landing-type-caption inline-flex rounded-full bg-[var(--landing-tint-fill)] px-3 py-1 font-bold uppercase tracking-[0.18em] text-[var(--landing-warm-muted)]">
+              {service.displayTag || service.tag}
+            </div>
+          ) : null}
+          <h3 className="landing-type-h3 text-[var(--off-black)]">{service.name}</h3>
+        </div>
+        <div className="text-right">
+          <div className="landing-type-h5 text-[var(--off-black)]">{service.price} CHF</div>
+          <div className="landing-type-caption mt-1 font-bold uppercase tracking-[0.14em] text-[var(--landing-muted)]">
+            {service.displayDuration || service.duration}
           </div>
-        ) : null}
+        </div>
       </div>
 
-      <h3 className="landing-type-h3 text-[var(--off-black)]">{service.name}</h3>
-      <p className="landing-type-body-s mt-3 leading-relaxed text-[var(--landing-body)] lg:mt-2">
+      <p className="landing-type-body-s leading-relaxed text-[var(--landing-body)]">
         {service.description}
       </p>
 
-      <div className="mt-8 space-y-5 rounded-[1.75rem] border border-[var(--landing-tint-soft)] bg-[var(--landing-tint-fill)] p-6 lg:mt-5 lg:space-y-4 lg:p-4">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 text-sm font-medium text-[var(--landing-muted)]">
-            <CalendarIcon size={18} />
+      <div className="mt-5 border-t border-[var(--landing-tint-soft)] pt-4">
+        <div className="flex items-center justify-between gap-4 py-2">
+          <div className="landing-type-body-s flex items-center gap-3 font-medium text-[var(--landing-muted)]">
+            <CalendarIcon size={16} />
             <span>Date</span>
           </div>
-          <div className="text-sm font-bold text-[var(--off-black)]">{formattedDate}</div>
+          <div className="landing-type-body-s font-bold text-[var(--off-black)]">{formattedDate}</div>
         </div>
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 text-sm font-medium text-[var(--landing-muted)]">
-            <Clock size={18} />
+        <div className="flex items-center justify-between gap-4 py-2">
+          <div className="landing-type-body-s flex items-center gap-3 font-medium text-[var(--landing-muted)]">
+            <Clock size={16} />
             <span>Heure</span>
           </div>
-          <div className="text-sm font-bold text-[var(--off-black)]">
+          <div className="landing-type-body-s font-bold text-[var(--off-black)]">
             {bookingData.time || "Choisir un créneau"}
           </div>
         </div>
-        <div className="h-px w-full bg-[var(--landing-tint)]" />
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 text-sm font-medium text-[var(--landing-muted)]">
-            <Banknote size={18} />
-            <span>Prix</span>
-          </div>
-          <div className="landing-type-h5 text-[var(--off-black)]">{service.price} CHF</div>
+        <div className="mt-2 flex items-center gap-3 border-t border-[var(--landing-tint-soft)] pt-4">
+          <Banknote size={16} className="text-[var(--landing-muted)]" />
+          <span className="landing-type-body-s font-medium text-[var(--landing-muted)]">Paiement sur place</span>
         </div>
       </div>
 
@@ -176,14 +175,14 @@ function BookingSummaryCard({
           type="submit"
           form={actionForm}
           disabled={actionDisabled}
-          className="landing-type-body mt-8 flex w-full items-center justify-center gap-2 rounded-[1.5rem] bg-[var(--teal-deep)] px-6 py-5 font-semibold text-white shadow-[0_8px_30px_rgba(21,56,57,0.22)] transition-colors hover:bg-[#2b3a32] disabled:cursor-not-allowed disabled:opacity-40 lg:mt-5 lg:py-3.5"
+          className="landing-type-body mt-5 flex h-14 w-full items-center justify-center gap-2 rounded-[1rem] bg-[var(--teal-deep)] px-5 text-white transition-colors hover:bg-[#2b3a32] disabled:cursor-not-allowed disabled:opacity-40"
         >
           {actionLoading ? "Confirmation..." : actionLabel}
         </button>
       ) : null}
 
       {footerText ? (
-        <p className="mt-5 text-center text-xs text-[var(--landing-muted)] lg:mt-3">{footerText}</p>
+        <p className="landing-type-caption mt-4 text-center text-[var(--landing-muted)]">{footerText}</p>
       ) : null}
     </div>
   );
@@ -328,6 +327,11 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
     });
   }, [availableDateSet, bookingData.date, bookingWindowStart, visibleMonth]);
 
+  const visibleAvailableDays = useMemo(
+    () => calendarDays.filter((day) => day.isCurrentMonth && day.isAvailable),
+    [calendarDays],
+  );
+
   const canSubmit = Boolean(
     selectedService &&
       bookingData.date &&
@@ -347,11 +351,10 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
     setBookingData((current) => ({ ...current, [field]: value }));
   };
 
-  const labelClassName = "landing-type-body-s pl-2 font-semibold text-[var(--off-black)]";
   const fieldShellClassName =
-    "rounded-[1.25rem] border border-[var(--landing-tint)] bg-[var(--landing-tint-fill)] transition-colors focus-within:border-[var(--teal-deep)]";
+    "rounded-[1rem] border border-[var(--landing-tint)] bg-white transition-colors focus-within:border-[var(--teal-deep)]";
   const inputClassName =
-    "landing-type-body h-[58px] w-full bg-transparent px-5 text-[var(--off-black)] outline-none placeholder:text-[var(--landing-muted)]";
+    "landing-type-body h-14 w-full bg-transparent px-4 text-[var(--off-black)] outline-none placeholder:text-[var(--landing-muted)]";
 
   useEffect(() => {
     if (!bookingData.date) return;
@@ -579,7 +582,7 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                     {services.map((service) => (
                       <button
                         key={service.id}
@@ -590,23 +593,28 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
                           updateField("time", "");
                           setStep(2);
                         }}
-                        className={`group overflow-hidden rounded-[2rem] border bg-white text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(48,31,16,0.12)] ${
+                        className={`group rounded-[1.85rem] border bg-white p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(48,31,16,0.1)] ${
                           selectedService?.id === service.id
                             ? "border-[var(--teal-deep)] shadow-[0_22px_50px_rgba(21,56,57,0.14)]"
                             : "border-[var(--landing-tint)] hover:border-[var(--teal-deep)]"
                         }`}
                       >
-                        {service.image ? (
-                          <div className="aspect-[4/3] overflow-hidden">
-                            <img src={service.image} alt={service.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
-                          </div>
-                        ) : null}
-                        <div className="space-y-4 px-6 py-6">
+                        <div className="space-y-4">
                           <div className="flex items-start justify-between gap-4">
-                            <h3 className="landing-type-h5 max-w-[12ch]">{service.name}</h3>
+                            <div className="space-y-2">
+                              {(service.displayTag || service.tag) ? (
+                                <span className="landing-type-caption inline-flex rounded-full bg-[var(--landing-tint-fill)] px-2.5 py-1 font-bold uppercase tracking-[0.16em] text-[var(--landing-warm-muted)]">
+                                  {service.displayTag || service.tag}
+                                </span>
+                              ) : null}
+                              <h3 className="landing-type-h5 max-w-[14ch]">{service.name}</h3>
+                            </div>
                             <span className="landing-type-caption shrink-0 text-[var(--landing-warm-muted)]">
                               {service.price} CHF
                             </span>
+                          </div>
+                          <div className="landing-type-caption font-bold uppercase tracking-[0.14em] text-[var(--landing-muted)]">
+                            {service.displayDuration || service.duration}
                           </div>
                           <p className="landing-type-body-s text-[var(--landing-body)]">
                             {service.description}
@@ -624,103 +632,92 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="mx-auto max-w-[1280px] lg:[zoom:0.64] xl:[zoom:0.75] 2xl:[zoom:0.86]"
+                  className="mx-auto max-w-[1160px]"
                 >
-                  <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-10">
-                    <section className="space-y-8 lg:space-y-5">
-                      <div className="space-y-4 lg:space-y-2">
-                        <div className="inline-flex items-center gap-2 rounded-full bg-[color-mix(in_srgb,var(--orange)_15%,transparent)] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--orange)]">
+                  <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-10">
+                    <section className="min-w-0 flex-1 space-y-6">
+                      <div className="space-y-3">
+                        <div className="landing-type-caption inline-flex items-center gap-2 rounded-full bg-[color-mix(in_srgb,var(--orange)_15%,transparent)] px-4 py-2 font-bold uppercase tracking-[0.12em] text-[var(--orange)]">
                           <CalendarDays size={14} />
                           Étape 2 sur 3
                         </div>
-                        <div className="space-y-4 lg:space-y-2">
-                          <h2 className="landing-type-h2 display-tight text-[var(--landing-display-dark)] lg:text-[3.15rem] lg:leading-[0.98]">
+                        <div className="space-y-2">
+                          <h2 className="landing-type-h3 display-tight text-[var(--landing-display-dark)]">
                             Quand souhaitez-vous venir ?
                           </h2>
+                          <p className="landing-type-body-s landing-text-body max-w-xl">
+                            Choisissez une date, puis une heure.
+                          </p>
                         </div>
                       </div>
 
-                      <div className="rounded-[2.5rem] border border-white bg-white p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] sm:p-8 lg:p-6">
+                      <div className="rounded-[1.75rem] border border-white bg-white p-5 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)]">
                         <div className="flex items-center justify-between gap-4">
-                          <h3 className="landing-type-h3 capitalize text-[var(--off-black)]">
+                          <h3 className="landing-type-h5 capitalize text-[var(--off-black)]">
                             {format(visibleMonth, "LLLL yyyy", { locale: fr })}
                           </h3>
-                          <div className="flex gap-3">
+                          <div className="flex gap-2">
                             <button
                               type="button"
                               aria-label="Mois précédent"
                               disabled={startOfMonth(visibleMonth).getTime() <= startOfMonth(bookingWindowStart).getTime()}
                               onClick={() => setVisibleMonth((current) => subMonths(current, 1))}
-                              className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[var(--landing-tint-fill)] text-[var(--off-black)] transition-colors hover:bg-[var(--landing-tint)] disabled:cursor-not-allowed disabled:opacity-40"
+                              className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--landing-tint)] bg-white text-[var(--off-black)] transition-colors hover:bg-[var(--landing-tint-fill)] disabled:cursor-not-allowed disabled:opacity-40"
                             >
-                              <ChevronLeft size={18} />
+                              <ChevronLeft size={16} />
                             </button>
                             <button
                               type="button"
                               aria-label="Mois suivant"
                               disabled={startOfMonth(visibleMonth).getTime() >= lastAvailableMonth.getTime()}
                               onClick={() => setVisibleMonth((current) => addMonths(current, 1))}
-                              className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[var(--landing-tint-fill)] text-[var(--off-black)] transition-colors hover:bg-[var(--landing-tint)] disabled:cursor-not-allowed disabled:opacity-40"
+                              className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--landing-tint)] bg-white text-[var(--off-black)] transition-colors hover:bg-[var(--landing-tint-fill)] disabled:cursor-not-allowed disabled:opacity-40"
                             >
-                              <ChevronRight size={18} />
+                              <ChevronRight size={16} />
                             </button>
                           </div>
                         </div>
 
-                        <div className="mt-10 border-b border-[var(--landing-tint-soft)] pb-10 lg:mt-6 lg:pb-6">
-                          <div className="mb-6 grid grid-cols-7 gap-2 text-center lg:mb-4">
-                            {WEEKDAY_LABELS.map((label) => (
-                              <div
-                                key={label}
-                                className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--landing-muted)]"
-                              >
-                                {label}
+                        <div className="mt-5 border-b border-[var(--landing-tint-soft)] pb-5">
+                          {visibleAvailableDays.length > 0 ? (
+                            <div className="-mx-1 overflow-x-auto pb-1">
+                              <div className="flex min-w-max gap-2 px-1">
+                                {visibleAvailableDays.map((day) => (
+                                  <button
+                                    key={day.dateStr}
+                                    type="button"
+                                    onClick={() => {
+                                      updateField("date", day.dateStr);
+                                      updateField("time", "");
+                                    }}
+                                    className={`flex w-[86px] shrink-0 flex-col rounded-[1rem] border px-3 py-3 text-left transition-all ${
+                                      day.isSelected
+                                        ? "border-[var(--teal-deep)] bg-[var(--teal-deep)] text-white"
+                                        : "border-[var(--landing-tint)] bg-white text-[var(--off-black)] hover:border-[var(--teal-deep)]"
+                                    }`}
+                                  >
+                                    <span className={`landing-type-caption ${day.isSelected ? "text-white/72" : "text-[var(--landing-muted)]"}`}>
+                                      {format(day.date, "EEE", { locale: fr }).replace(".", "")}
+                                    </span>
+                                    <span className="landing-type-h4 mt-1 leading-none">{day.dayNumber}</span>
+                                    <span className={`landing-type-caption mt-1 ${day.isSelected ? "text-white/72" : "text-[var(--landing-warm-muted)]"}`}>
+                                      {format(day.date, "MMM", { locale: fr })}
+                                    </span>
+                                  </button>
+                                ))}
                               </div>
-                            ))}
-                          </div>
-
-                          <div className="grid grid-cols-7 gap-x-2 gap-y-3 sm:gap-x-3 sm:gap-y-4 lg:gap-x-2 lg:gap-y-2">
-                            {calendarDays.map((day) => {
-                              const disabled = !day.isCurrentMonth || day.isPast || !day.isAvailable;
-                              return (
-                                <button
-                                  key={day.dateStr}
-                                  type="button"
-                                  disabled={disabled}
-                                  onClick={() => {
-                                    updateField("date", day.dateStr);
-                                    updateField("time", "");
-                                  }}
-                                  className={`relative flex aspect-square min-h-[4.5rem] flex-col items-center justify-center rounded-[1.25rem] border text-center transition-all sm:min-h-[5.25rem] lg:min-h-[3.55rem] ${
-                                    day.isSelected
-                                      ? "border-[var(--teal-deep)] bg-[var(--teal-deep)] text-white shadow-[0_8px_20px_-8px_rgba(31,41,36,0.5)]"
-                                      : disabled
-                                        ? "cursor-not-allowed border-transparent bg-transparent text-[color-mix(in_srgb,var(--landing-muted)_28%,transparent)]"
-                                        : "border-[var(--landing-tint)] bg-white text-[var(--off-black)] hover:bg-[var(--landing-tint-fill)]"
-                                  }`}
-                                >
-                                  <span className="text-[10px] font-bold uppercase tracking-[0.08em] opacity-70 lg:text-[8px]">
-                                    {format(day.date, "EEE", { locale: fr }).replace(".", "")}
-                                  </span>
-                                  <span className="mt-1 text-xl font-semibold leading-none sm:text-[2rem] lg:mt-0.5 lg:text-[1.45rem]">
-                                    {day.dayNumber}
-                                  </span>
-                                  <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.08em] opacity-60 lg:mt-0 lg:text-[8px]">
-                                    {format(day.date, "MMM", { locale: fr })}
-                                  </span>
-                                  {day.isSelected ? (
-                                    <span className="absolute bottom-2 h-1.5 w-1.5 rounded-full bg-[var(--orange)]" />
-                                  ) : null}
-                                </button>
-                              );
-                            })}
-                          </div>
+                            </div>
+                          ) : (
+                            <p className="landing-type-body-s text-[var(--landing-muted)]">
+                              Aucun jour disponible sur ce mois.
+                            </p>
+                          )}
                         </div>
 
-                        <div className="pt-8 lg:pt-5">
-                          <div className="mb-6 flex items-center gap-3 lg:mb-4">
-                            <Clock size={24} className="text-[var(--orange)]" />
-                            <h3 className="landing-type-h4 text-[var(--off-black)]">
+                        <div className="pt-5">
+                          <div className="mb-3 flex items-center gap-2">
+                            <Clock size={16} className="text-[var(--orange)]" />
+                            <h3 className="landing-type-body text-[var(--off-black)]">
                               {bookingData.date
                                 ? format(parseISO(bookingData.date), "EEEE d MMMM", { locale: fr })
                                 : "Créneaux disponibles"}
@@ -729,7 +726,7 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
 
                           {bookingData.date ? (
                             selectedSlots.length > 0 ? (
-                              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:gap-2.5">
+                              <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
                                 {selectedSlots.map((time) => {
                                   const isSelected = bookingData.time === time;
                                   return (
@@ -740,10 +737,10 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
                                         updateField("time", time);
                                         window.setTimeout(() => setStep(3), 120);
                                       }}
-                                      className={`landing-type-body rounded-[1.25rem] border px-6 py-5 font-semibold transition-colors lg:px-4 lg:py-3 ${
+                                      className={`landing-type-body rounded-[1rem] border px-4 py-3 transition-colors ${
                                         isSelected
-                                          ? "border-[var(--teal-deep)] bg-[var(--teal-deep)] text-white shadow-[0_8px_20px_-8px_rgba(31,41,36,0.4)]"
-                                          : "border-[var(--landing-tint)] bg-white text-[var(--off-black)] hover:border-[color-mix(in_srgb,var(--teal-deep)_40%,transparent)]"
+                                          ? "border-[var(--teal-deep)] bg-[var(--teal-deep)] text-white"
+                                          : "border-[var(--landing-tint)] bg-white text-[var(--off-black)] hover:border-[var(--teal-deep)]"
                                       }`}
                                     >
                                       {time}
@@ -765,8 +762,7 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
                       </div>
                     </section>
 
-                    <aside className="lg:sticky lg:top-24">
-                      <h3 className="landing-type-h4 mb-4 text-[var(--off-black)]">Résumé du soin</h3>
+                    <aside className="w-full shrink-0 md:sticky md:top-24 md:w-[320px]">
                       <BookingSummaryCard
                         service={selectedService}
                         bookingData={bookingData}
@@ -783,21 +779,21 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="mx-auto max-w-[1280px] lg:[zoom:0.64] xl:[zoom:0.75] 2xl:[zoom:0.86]"
+                  className="mx-auto max-w-[1160px]"
                 >
-                  <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-10">
-                    <section className="space-y-8 lg:space-y-5">
-                      <div className="space-y-4 lg:space-y-2">
-                        <div className="inline-flex items-center gap-2 rounded-full bg-[color-mix(in_srgb,var(--orange)_15%,transparent)] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--orange)]">
+                  <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-10">
+                    <section className="min-w-0 flex-1 space-y-6">
+                      <div className="space-y-3">
+                        <div className="landing-type-caption inline-flex items-center gap-2 rounded-full bg-[color-mix(in_srgb,var(--orange)_15%,transparent)] px-4 py-2 font-bold uppercase tracking-[0.12em] text-[var(--orange)]">
                           <User size={14} />
                           Étape 3 sur 3
                         </div>
-                        <div className="space-y-4 lg:space-y-2">
-                          <h2 className="landing-type-h2 display-tight text-[var(--landing-display-dark)] lg:text-[3.15rem] lg:leading-[0.98]">
+                        <div className="space-y-2">
+                          <h2 className="landing-type-h3 display-tight text-[var(--landing-display-dark)]">
                             Vos coordonnées
                           </h2>
-                          <p className="landing-type-body landing-text-body max-w-2xl">
-                            Renseignez vos informations pour finaliser la réservation. Le paiement s’effectuera sur place.
+                          <p className="landing-type-body-s landing-text-body max-w-xl">
+                            Paiement sur place.
                           </p>
                         </div>
                       </div>
@@ -808,192 +804,165 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
                           e.preventDefault();
                           void handleConfirm();
                         }}
-                        className="space-y-8 rounded-[2.5rem] border border-white bg-white p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] sm:p-8 lg:space-y-4 lg:p-6"
+                        className="space-y-4 rounded-[1.75rem] border border-white bg-white p-5 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] sm:p-6"
                       >
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-4">
-                          <div className="space-y-2 lg:space-y-1.5">
-                            <label htmlFor="booking-first-name" className={labelClassName}>
-                              Prénom
-                            </label>
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <div>
                             <div className={fieldShellClassName}>
                               <input
                                 id="booking-first-name"
                                 value={bookingData.firstName}
                                 onChange={(e) => updateField("firstName", e.target.value)}
                                 className={inputClassName}
-                                placeholder="Jean"
+                                placeholder="Prénom"
                                 autoComplete="given-name"
                               />
                             </div>
                           </div>
-                          <div className="space-y-2 lg:space-y-1.5">
-                            <label htmlFor="booking-last-name" className={labelClassName}>
-                              Nom
-                            </label>
+                          <div>
                             <div className={fieldShellClassName}>
                               <input
                                 id="booking-last-name"
                                 value={bookingData.lastName}
                                 onChange={(e) => updateField("lastName", e.target.value)}
                                 className={inputClassName}
-                                placeholder="Dupont"
+                                placeholder="Nom"
                                 autoComplete="family-name"
                               />
                             </div>
                           </div>
                         </div>
 
-                        <div className="space-y-2 lg:space-y-1.5">
-                          <label htmlFor="booking-email" className={labelClassName}>
-                            Adresse e-mail
-                          </label>
-                          <div className={`${fieldShellClassName} flex items-center gap-3 px-5`}>
+                        <div>
+                          <div className={`${fieldShellClassName} flex items-center gap-3 px-4`}>
                             <Mail size={18} className="text-[var(--landing-muted)]" />
                             <input
                               id="booking-email"
                               value={bookingData.email}
                               onChange={(e) => updateField("email", e.target.value)}
-                              className="landing-type-body h-[58px] w-full bg-transparent text-[var(--off-black)] outline-none placeholder:text-[var(--landing-muted)]"
-                              placeholder="jean.dupont@exemple.com"
+                              className="landing-type-body h-14 w-full bg-transparent text-[var(--off-black)] outline-none placeholder:text-[var(--landing-muted)]"
+                              placeholder="Adresse e-mail"
                               autoComplete="email"
                             />
                           </div>
                         </div>
 
-                        <div className="space-y-2 lg:space-y-1.5">
-                          <label htmlFor="booking-phone" className={labelClassName}>
-                            Numéro de téléphone
-                          </label>
+                        <div>
                           <div className={`${fieldShellClassName} flex items-center overflow-hidden`}>
                             <select
                               aria-label="Indicatif pays"
                               value={bookingData.phonePrefix}
                               onChange={(e) => updateField("phonePrefix", e.target.value)}
-                              className="landing-type-body h-[58px] shrink-0 border-r border-[var(--landing-tint)] bg-transparent pl-5 pr-9 text-[var(--off-black)] outline-none"
+                              className="landing-type-body h-14 shrink-0 border-r border-[var(--landing-tint)] bg-transparent pl-4 pr-8 text-[var(--off-black)] outline-none"
                             >
                               <option value="CH">+41</option>
                               <option value="FR">+33</option>
                               <option value="BE">+32</option>
                             </select>
-                            <div className="flex min-w-0 flex-1 items-center gap-3 px-5">
+                            <div className="flex min-w-0 flex-1 items-center gap-3 px-4">
                               <Phone size={18} className="text-[var(--landing-muted)]" />
                               <input
                                 id="booking-phone"
                                 value={bookingData.phone}
                                 onChange={(e) => updateField("phone", e.target.value)}
-                                className="landing-type-body h-[58px] w-full min-w-0 bg-transparent text-[var(--off-black)] outline-none placeholder:text-[var(--landing-muted)]"
-                                placeholder="79 123 45 67"
+                                className="landing-type-body h-14 w-full min-w-0 bg-transparent text-[var(--off-black)] outline-none placeholder:text-[var(--landing-muted)]"
+                                placeholder="Numéro de téléphone"
                                 autoComplete="tel"
                               />
                             </div>
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_120px] lg:gap-4">
-                          <div className="space-y-2 lg:space-y-1.5">
-                            <label htmlFor="booking-street" className={labelClassName}>
-                              Rue
-                            </label>
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1fr)_120px]">
+                          <div>
                             <div className={fieldShellClassName}>
                               <input
                                 id="booking-street"
                                 value={bookingData.streetName}
                                 onChange={(e) => updateField("streetName", e.target.value)}
                                 className={inputClassName}
-                                placeholder="Chemin de Joinville"
+                                placeholder="Rue"
                                 autoComplete="street-address"
                               />
                             </div>
                           </div>
-                          <div className="space-y-2 lg:space-y-1.5">
-                            <label htmlFor="booking-street-num" className={labelClassName}>
-                              N°
-                            </label>
+                          <div>
                             <div className={fieldShellClassName}>
                               <input
                                 id="booking-street-num"
                                 value={bookingData.streetNum}
                                 onChange={(e) => updateField("streetNum", e.target.value)}
                                 className={inputClassName}
-                                placeholder="26"
+                                placeholder="N°"
                               />
                             </div>
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-[180px_minmax(0,1fr)] lg:gap-4">
-                          <div className="space-y-2 lg:space-y-1.5">
-                            <label htmlFor="booking-postal-code" className={labelClassName}>
-                              Code postal
-                            </label>
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-[180px_minmax(0,1fr)]">
+                          <div>
                             <div className={fieldShellClassName}>
                               <input
                                 id="booking-postal-code"
                                 value={bookingData.postalCode}
                                 onChange={(e) => updateField("postalCode", e.target.value)}
                                 className={inputClassName}
-                                placeholder="1216"
+                                placeholder="Code postal"
                                 autoComplete="postal-code"
                               />
                             </div>
                           </div>
-                          <div className="space-y-2 lg:space-y-1.5">
-                            <label htmlFor="booking-city" className={labelClassName}>
-                              Ville
-                            </label>
+                          <div>
                             <div className={fieldShellClassName}>
                               <input
                                 id="booking-city"
                                 value={bookingData.city}
                                 onChange={(e) => updateField("city", e.target.value)}
                                 className={inputClassName}
-                                placeholder="Genève"
+                                placeholder="Ville"
                                 autoComplete="address-level2"
                               />
                             </div>
                           </div>
                         </div>
 
-                        <div className="space-y-2 lg:space-y-1.5">
-                          <label htmlFor="booking-notes" className={labelClassName}>
-                            Notes ou demandes particulières
-                          </label>
+                        <div>
                           <div className={fieldShellClassName}>
                             <textarea
                               id="booking-notes"
                               value={bookingData.notes}
                               onChange={(e) => updateField("notes", e.target.value)}
-                              className="landing-type-body min-h-[120px] w-full resize-none bg-transparent px-5 py-4 text-[var(--off-black)] outline-none placeholder:text-[var(--landing-muted)] lg:min-h-[82px] lg:py-3"
-                              placeholder="Sensibilités, blessures, préférences ou éléments à me signaler."
+                              className="landing-type-body min-h-[120px] w-full resize-none bg-transparent px-4 py-4 text-[var(--off-black)] outline-none placeholder:text-[var(--landing-muted)]"
+                              placeholder="Notes ou demandes particulières"
                             />
                           </div>
                         </div>
 
-                        <div className="space-y-4 border-t border-[var(--landing-tint-soft)] pt-8 lg:space-y-3 lg:pt-4">
-                          <label className="group flex cursor-pointer items-start gap-4">
+                        <div className="space-y-3 border-t border-[var(--landing-tint-soft)] pt-4">
+                          <label className="group flex cursor-pointer items-start gap-3">
                             <input
                               type="checkbox"
                               checked={bookingData.acceptedTerms}
                               onChange={(e) => updateField("acceptedTerms", e.target.checked)}
                               className="peer sr-only"
                             />
-                            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px] border-2 border-[var(--landing-tint)] bg-white text-white transition-colors peer-checked:border-[var(--teal-deep)] peer-checked:bg-[var(--teal-deep)]">
-                              <Check size={14} />
+                            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border-2 border-[var(--landing-tint)] bg-white text-white transition-colors peer-checked:border-[var(--teal-deep)] peer-checked:bg-[var(--teal-deep)]">
+                              <Check size={12} />
                             </span>
                             <span className="landing-type-body-s leading-relaxed text-[var(--landing-body)]">
                               J’accepte les conditions de réservation, les contre-indications médicales et la politique de confidentialité.
                             </span>
                           </label>
 
-                          <label className="group flex cursor-pointer items-start gap-4">
+                          <label className="group flex cursor-pointer items-start gap-3">
                             <input
                               type="checkbox"
                               checked={bookingData.wantsNewsletter}
                               onChange={(e) => updateField("wantsNewsletter", e.target.checked)}
                               className="peer sr-only"
                             />
-                            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px] border-2 border-[var(--landing-tint)] bg-white text-white transition-colors peer-checked:border-[var(--teal-deep)] peer-checked:bg-[var(--teal-deep)]">
-                              <Check size={14} />
+                            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border-2 border-[var(--landing-tint)] bg-white text-white transition-colors peer-checked:border-[var(--teal-deep)] peer-checked:bg-[var(--teal-deep)]">
+                              <Check size={12} />
                             </span>
                             <span className="landing-type-body-s leading-relaxed text-[var(--landing-body)]">
                               Je souhaite recevoir des conseils bien-être et des ouvertures de créneaux, au maximum une fois par mois.
@@ -1012,8 +981,7 @@ export default function BookingPageExperience({ initialServiceId }: { initialSer
                       </div>
                     </section>
 
-                    <aside className="lg:sticky lg:top-24">
-                      <h3 className="landing-type-h4 mb-4 text-[var(--off-black)]">Résumé du soin</h3>
+                    <aside className="w-full shrink-0 md:sticky md:top-24 md:w-[320px]">
                       <BookingSummaryCard
                         service={selectedService}
                         bookingData={bookingData}

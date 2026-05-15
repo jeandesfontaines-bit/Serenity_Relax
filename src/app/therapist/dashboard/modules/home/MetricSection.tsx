@@ -5,12 +5,14 @@ import { MetricCard } from './HomeComponents';
 interface MetricSectionProps {
   paidThisMonth: number;
   completedSessions: number;
+  clientsCount: number;
   pendingInvoices: number;
 }
 
 export function MetricSection({
   paidThisMonth,
   completedSessions,
+  clientsCount,
   pendingInvoices,
 }: MetricSectionProps) {
   return (
@@ -30,8 +32,8 @@ export function MetricSection({
       <MetricCard 
         icon={<Users size={18} strokeWidth={1.5} />} 
         label="Patients actifs" 
-        value="124" 
-        variant="orange" 
+        value={clientsCount.toString()} 
+        variant="blueSoft" 
       />
       <MetricCard 
         icon={<AlertCircle size={18} strokeWidth={1.5} />} 

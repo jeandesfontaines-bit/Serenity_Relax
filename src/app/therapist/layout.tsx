@@ -8,7 +8,6 @@ export default function TherapistLayout({
   children,
 }: {
   children: React.ReactNode;
-  XS
 }) {
   const { user, isUserLoading } = useUser();
   const router = useRouter();

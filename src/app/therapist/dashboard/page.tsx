@@ -128,8 +128,8 @@ export default function TherapistDashboard() {
     (appt) => appt.date === todayStr && appt.status !== 'cancelled',
   ).length;
   const dashboardSummary = {
-    title: 'Home Dashboard',
-    subtitle: `Welcome back, João. Today is ${format(new Date(), 'EEEE, MMMM do')}.`,
+    title: 'Tableau de bord',
+    subtitle: `Bienvenue dans votre espace de gestion Serenity.`,
   };
   const schedulerTitle = useMemo(() => {
     if (view === 'week') {
@@ -311,6 +311,7 @@ export default function TherapistDashboard() {
           <HomePage
             appointments={appointments}
             monthlyGoal={monthlyGoal}
+            clientsCount={clients.length}
             onSelectAppt={openAppointmentRecord}
             onNavigate={setTab}
             onEditGoal={handleUpdateGoal}
@@ -676,6 +677,11 @@ export default function TherapistDashboard() {
         globalSearch={globalSearch}
         onGlobalSearchChange={setGlobalSearch}
         dashboardSummary={dashboardSummary}
+        dashboardToolbar={tab === 'dashboard' ? {
+          dateLabel: format(new Date(), 'EEEE d MMM', { locale: fr }),
+          goalLabel: `Objectif: ${monthlyGoal.toLocaleString('fr-CH')} CHF`,
+          onGoalClick: handleUpdateGoal,
+        } : undefined}
         schedulerToolbar={tab === 'scheduler' ? {
           eyebrow: '',
           title: schedulerTitle,

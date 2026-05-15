@@ -1,0 +1,99 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY by João" [ref=e247] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+          - generic [ref=e248]: by João
+        - generic [ref=e7]:
+          - link "Sessions" [ref=e8] [cursor=pointer]:
+            - /url: /#sessions
+          - link "Bienfaits" [ref=e9] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e10] [cursor=pointer]:
+            - /url: /#atelier
+        - generic [ref=e11]:
+          - link "Réserver" [ref=e12] [cursor=pointer]:
+            - /url: /booking
+          - link "Connexion" [ref=e13] [cursor=pointer]:
+            - /url: /login
+    - generic [ref=e14]:
+      - navigation [ref=e15]:
+        - button "Retour" [ref=e17] [cursor=pointer]:
+          - img [ref=e18]
+          - text: Retour
+      - main [ref=e24]:
+        - generic [ref=e250]:
+          - generic [ref=e251]:
+            - generic [ref=e252]:
+              - generic [ref=e253]:
+                - img [ref=e254]
+                - text: Étape 3 sur 3
+              - generic [ref=e257]:
+                - heading "Vos coordonnées" [level=2] [ref=e258]
+                - paragraph [ref=e259]: Paiement sur place.
+            - generic [ref=e260]:
+              - generic [ref=e261]:
+                - textbox "Prénom" [ref=e264]
+                - textbox "Nom" [ref=e267]
+              - generic [ref=e269]:
+                - img [ref=e270]
+                - textbox "Adresse e-mail" [ref=e273]
+              - generic [ref=e275]:
+                - combobox "Indicatif pays" [ref=e276]:
+                  - option "+41" [selected]
+                  - option "+33"
+                  - option "+32"
+                - generic [ref=e277]:
+                  - img [ref=e278]
+                  - textbox "Numéro de téléphone" [ref=e280]
+              - generic [ref=e281]:
+                - textbox "Rue" [ref=e284]
+                - textbox "N°" [ref=e287]
+              - generic [ref=e288]:
+                - textbox "Code postal" [ref=e291]
+                - textbox "Ville" [ref=e294]: Genève
+              - textbox "Notes ou demandes particulières" [ref=e297]
+              - generic [ref=e298]:
+                - generic [ref=e299] [cursor=pointer]:
+                  - checkbox "J’accepte les conditions de réservation, les contre-indications médicales et la politique de confidentialité." [ref=e300]
+                  - img [ref=e302]
+                  - generic [ref=e304]: J’accepte les conditions de réservation, les contre-indications médicales et la politique de confidentialité.
+                - generic [ref=e305] [cursor=pointer]:
+                  - checkbox "Je souhaite recevoir des conseils bien-être et des ouvertures de créneaux, au maximum une fois par mois." [ref=e306]
+                  - img [ref=e308]
+                  - generic [ref=e310]: Je souhaite recevoir des conseils bien-être et des ouvertures de créneaux, au maximum une fois par mois.
+            - link "Déjà client ? Se connecter" [ref=e312] [cursor=pointer]:
+              - /url: /login
+          - complementary [ref=e313]:
+            - generic [ref=e314]:
+              - generic [ref=e315]:
+                - generic [ref=e316]:
+                  - generic [ref=e317]: Sensoriel
+                  - heading "Aromathérapie" [level=3] [ref=e318]
+                - generic [ref=e319]:
+                  - generic [ref=e320]: 110 CHF
+                  - generic [ref=e321]: 1 heure
+              - paragraph [ref=e322]: Synergie d'huiles essentielles personnalisées pour accorder corps et système nerveux.
+              - generic [ref=e323]:
+                - generic [ref=e324]:
+                  - generic [ref=e325]:
+                    - img [ref=e326]
+                    - generic [ref=e328]: Date
+                  - generic [ref=e329]: 18 mai 2026
+                - generic [ref=e330]:
+                  - generic [ref=e331]:
+                    - img [ref=e332]
+                    - generic [ref=e335]: Heure
+                  - generic [ref=e336]: 10:00
+                - generic [ref=e337]:
+                  - img [ref=e338]
+                  - generic [ref=e341]: Paiement sur place
+              - button "Confirmer la réservation" [disabled] [ref=e342]
+              - paragraph [ref=e343]: Le paiement s’effectuera sur place.
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e238] [cursor=pointer]:
+    - img [ref=e239]
+  - alert [ref=e104]

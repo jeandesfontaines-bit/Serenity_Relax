@@ -84,4 +84,3 @@ export function getClientSummary(client: Client, clientAppts: Appointment[]): Cl
     preferredRitual,
   };
 }
-222E2222EXYASYXX

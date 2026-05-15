@@ -8,6 +8,7 @@ import { RecentNotes } from './home/RecentNotes';
 interface HomePageProps {
   appointments: Appointment[];
   monthlyGoal: number;
+  clientsCount: number;
   onSelectAppt: (appt: Appointment) => void;
   onNavigate: (tab: string) => void;
   onEditGoal: () => void;
@@ -26,7 +27,7 @@ function appointmentMatchesSearch(appt: Appointment, query: string) {
 }
 
 export default function HomePage({
-  appointments, monthlyGoal, onSelectAppt, onNavigate, onEditGoal, searchQuery,
+  appointments, monthlyGoal, clientsCount, onSelectAppt, onNavigate, onEditGoal, searchQuery,
 }: HomePageProps) {
   const now = new Date();
   const todayStr = format(now, 'yyyy-MM-dd');
@@ -48,6 +49,10 @@ export default function HomePage({
 
   const completedSessions = useMemo(() => appointments.filter((appt) => appt.paid).length, [appointments]);
   const pendingInvoices = useMemo(() => appointments.filter((appt) => !appt.paid && appt.status !== 'cancelled').length, [appointments]);
+  const monthlyProgress = useMemo(() => {
+    if (!monthlyGoal) return 0;
+    return Math.max(0, Math.min(100, Math.round((paidThisMonth / monthlyGoal) * 100)));
+  }, [monthlyGoal, paidThisMonth]);
 
   const progressNotes = useMemo(
     () => appointments
@@ -62,10 +67,11 @@ export default function HomePage({
       <MetricSection 
         paidThisMonth={paidThisMonth}
         completedSessions={completedSessions}
+        clientsCount={clientsCount}
         pendingInvoices={pendingInvoices}
       />
 
-      <section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <section className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,1fr)]">
         <TodayAgenda 
           todayAppts={todayAppts}
           todayStr={todayStr}
@@ -79,6 +85,9 @@ export default function HomePage({
           onSelectAppt={onSelectAppt}
           onNavigate={onNavigate}
           onEditGoal={onEditGoal}
+          monthlyGoal={monthlyGoal}
+          paidThisMonth={paidThisMonth}
+          monthlyProgress={monthlyProgress}
         />
       </section>
     </div>

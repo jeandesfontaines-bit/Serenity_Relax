@@ -1,0 +1,149 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+        - generic [ref=e7]:
+          - link "Sessions" [ref=e8] [cursor=pointer]:
+            - /url: /#sessions
+          - link "Bienfaits" [ref=e9] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e10] [cursor=pointer]:
+            - /url: /#atelier
+        - generic [ref=e11]:
+          - link "Réserver" [ref=e12] [cursor=pointer]:
+            - /url: /booking
+          - link "Connexion" [ref=e13] [cursor=pointer]:
+            - /url: /login
+    - generic [ref=e14]:
+      - navigation [ref=e15]:
+        - button "Retour" [ref=e17] [cursor=pointer]:
+          - img [ref=e18]
+          - text: Retour
+      - main [ref=e24]:
+        - generic [ref=e106]:
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - img [ref=e110]
+                - text: Étape 2 sur 3
+              - generic [ref=e112]:
+                - heading "Quand souhaitez-vous venir ?" [level=2] [ref=e113]
+                - paragraph [ref=e114]: Choisissez une date, puis une heure.
+            - generic [ref=e115]:
+              - generic [ref=e116]:
+                - heading "mai 2026" [level=3] [ref=e117]
+                - generic [ref=e118]:
+                  - button "Mois précédent" [disabled] [ref=e119]:
+                    - img [ref=e120]
+                  - button "Mois suivant" [ref=e122] [cursor=pointer]:
+                    - img [ref=e123]
+              - generic [ref=e127]:
+                - button "ven 15 mai" [ref=e128] [cursor=pointer]:
+                  - generic [ref=e129]: ven
+                  - generic [ref=e130]: "15"
+                  - generic [ref=e131]: mai
+                - button "sam 16 mai" [ref=e132] [cursor=pointer]:
+                  - generic [ref=e133]: sam
+                  - generic [ref=e134]: "16"
+                  - generic [ref=e135]: mai
+                - button "dim 17 mai" [ref=e136] [cursor=pointer]:
+                  - generic [ref=e137]: dim
+                  - generic [ref=e138]: "17"
+                  - generic [ref=e139]: mai
+                - button "lun 18 mai" [active] [ref=e140] [cursor=pointer]:
+                  - generic [ref=e141]: lun
+                  - generic [ref=e142]: "18"
+                  - generic [ref=e143]: mai
+                - button "mar 19 mai" [ref=e144] [cursor=pointer]:
+                  - generic [ref=e145]: mar
+                  - generic [ref=e146]: "19"
+                  - generic [ref=e147]: mai
+                - button "mer 20 mai" [ref=e148] [cursor=pointer]:
+                  - generic [ref=e149]: mer
+                  - generic [ref=e150]: "20"
+                  - generic [ref=e151]: mai
+                - button "jeu 21 mai" [ref=e152] [cursor=pointer]:
+                  - generic [ref=e153]: jeu
+                  - generic [ref=e154]: "21"
+                  - generic [ref=e155]: mai
+                - button "ven 22 mai" [ref=e156] [cursor=pointer]:
+                  - generic [ref=e157]: ven
+                  - generic [ref=e158]: "22"
+                  - generic [ref=e159]: mai
+                - button "sam 23 mai" [ref=e160] [cursor=pointer]:
+                  - generic [ref=e161]: sam
+                  - generic [ref=e162]: "23"
+                  - generic [ref=e163]: mai
+                - button "dim 24 mai" [ref=e164] [cursor=pointer]:
+                  - generic [ref=e165]: dim
+                  - generic [ref=e166]: "24"
+                  - generic [ref=e167]: mai
+                - button "lun 25 mai" [ref=e168] [cursor=pointer]:
+                  - generic [ref=e169]: lun
+                  - generic [ref=e170]: "25"
+                  - generic [ref=e171]: mai
+                - button "mar 26 mai" [ref=e172] [cursor=pointer]:
+                  - generic [ref=e173]: mar
+                  - generic [ref=e174]: "26"
+                  - generic [ref=e175]: mai
+                - button "mer 27 mai" [ref=e176] [cursor=pointer]:
+                  - generic [ref=e177]: mer
+                  - generic [ref=e178]: "27"
+                  - generic [ref=e179]: mai
+                - button "jeu 28 mai" [ref=e180] [cursor=pointer]:
+                  - generic [ref=e181]: jeu
+                  - generic [ref=e182]: "28"
+                  - generic [ref=e183]: mai
+                - button "ven 29 mai" [ref=e184] [cursor=pointer]:
+                  - generic [ref=e185]: ven
+                  - generic [ref=e186]: "29"
+                  - generic [ref=e187]: mai
+                - button "sam 30 mai" [ref=e188] [cursor=pointer]:
+                  - generic [ref=e189]: sam
+                  - generic [ref=e190]: "30"
+                  - generic [ref=e191]: mai
+                - button "dim 31 mai" [ref=e192] [cursor=pointer]:
+                  - generic [ref=e193]: dim
+                  - generic [ref=e194]: "31"
+                  - generic [ref=e195]: mai
+              - generic [ref=e196]:
+                - generic [ref=e197]:
+                  - img [ref=e198]
+                  - heading "lundi 18 mai" [level=3] [ref=e242]
+                - generic [ref=e243]:
+                  - button "09:00" [ref=e244] [cursor=pointer]
+                  - button "10:00" [ref=e245] [cursor=pointer]
+                  - button "12:30" [ref=e246] [cursor=pointer]
+          - complementary [ref=e203]:
+            - generic [ref=e204]:
+              - generic [ref=e205]:
+                - generic [ref=e206]:
+                  - generic [ref=e207]: Sensoriel
+                  - heading "Aromathérapie" [level=3] [ref=e208]
+                - generic [ref=e209]:
+                  - generic [ref=e210]: 110 CHF
+                  - generic [ref=e211]: 1 heure
+              - paragraph [ref=e212]: Synergie d'huiles essentielles personnalisées pour accorder corps et système nerveux.
+              - generic [ref=e213]:
+                - generic [ref=e214]:
+                  - generic [ref=e215]:
+                    - img [ref=e216]
+                    - generic [ref=e218]: Date
+                  - generic [ref=e219]: 18 mai 2026
+                - generic [ref=e220]:
+                  - generic [ref=e221]:
+                    - img [ref=e222]
+                    - generic [ref=e225]: Heure
+                  - generic [ref=e226]: Choisir un créneau
+                - generic [ref=e227]:
+                  - img [ref=e228]
+                  - generic [ref=e231]: Paiement sur place
+              - paragraph [ref=e232]: Vous ne serez pas débité à cette étape.
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e238] [cursor=pointer]:
+    - img [ref=e239]
+  - alert [ref=e104]

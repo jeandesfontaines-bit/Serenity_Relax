@@ -1,0 +1,106 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "SERENITY RELAX THERAPY" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: SERENITY RELAX THERAPY
+        - generic [ref=e7]:
+          - link "Sessions" [ref=e8] [cursor=pointer]:
+            - /url: /#sessions
+          - link "Bienfaits" [ref=e9] [cursor=pointer]:
+            - /url: /#about
+          - link "FAQ" [ref=e10] [cursor=pointer]:
+            - /url: /#atelier
+        - generic [ref=e11]:
+          - link "Réserver" [ref=e12] [cursor=pointer]:
+            - /url: /booking
+          - link "Connexion" [ref=e13] [cursor=pointer]:
+            - /url: /login
+    - generic [ref=e14]:
+      - navigation [ref=e15]:
+        - button "Retour" [ref=e17] [cursor=pointer]:
+          - img [ref=e18]
+          - text: Retour
+      - main [ref=e24]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - paragraph [ref=e28]: Étape 01
+            - heading "Choisir un soin" [level=2] [ref=e29]
+            - paragraph [ref=e30]: Une sélection directe, sans détour. Choisissez le soin puis passez immédiatement aux créneaux.
+          - generic [ref=e31]:
+            - button "Signature Bambous 120 CHF 1 heure Bâtons de bambou tièdes pour sculpter les fascias et libérer les tensions profondes." [ref=e32] [cursor=pointer]:
+              - generic [ref=e33]:
+                - generic [ref=e34]:
+                  - generic [ref=e35]:
+                    - generic [ref=e36]: Signature
+                    - heading "Bambous" [level=3] [ref=e37]
+                  - generic [ref=e38]: 120 CHF
+                - generic [ref=e39]: 1 heure
+                - paragraph [ref=e40]: Bâtons de bambou tièdes pour sculpter les fascias et libérer les tensions profondes.
+            - button "Drainant Drainage 110 CHF 1 heure Pompages lents pour drainer, alléger et relancer la circulation des fluides." [ref=e41] [cursor=pointer]:
+              - generic [ref=e42]:
+                - generic [ref=e43]:
+                  - generic [ref=e44]:
+                    - generic [ref=e45]: Drainant
+                    - heading "Drainage" [level=3] [ref=e46]
+                  - generic [ref=e47]: 110 CHF
+                - generic [ref=e48]: 1 heure
+                - paragraph [ref=e49]: Pompages lents pour drainer, alléger et relancer la circulation des fluides.
+            - button "Sensoriel Aromathérapie 110 CHF 1 heure Synergie d'huiles essentielles personnalisées pour accorder corps et système nerveux." [ref=e50] [cursor=pointer]:
+              - generic [ref=e51]:
+                - generic [ref=e52]:
+                  - generic [ref=e53]:
+                    - generic [ref=e54]: Sensoriel
+                    - heading "Aromathérapie" [level=3] [ref=e55]
+                  - generic [ref=e56]: 110 CHF
+                - generic [ref=e57]: 1 heure
+                - paragraph [ref=e58]: Synergie d'huiles essentielles personnalisées pour accorder corps et système nerveux.
+            - button "Ciblé Réflexologie 65 CHF 30 minutes Travail ciblé sur les points plantaires pour rééquilibrer l'énergie des organes." [ref=e59] [cursor=pointer]:
+              - generic [ref=e60]:
+                - generic [ref=e61]:
+                  - generic [ref=e62]:
+                    - generic [ref=e63]: Ciblé
+                    - heading "Réflexologie" [level=3] [ref=e64]
+                  - generic [ref=e65]: 65 CHF
+                - generic [ref=e66]: 30 minutes
+                - paragraph [ref=e67]: Travail ciblé sur les points plantaires pour rééquilibrer l'énergie des organes.
+            - button "Intense Deep Tissue 130 CHF 1 heure Pression soutenue pour dénouer les couches profondes et accélérer la récupération." [ref=e68] [cursor=pointer]:
+              - generic [ref=e69]:
+                - generic [ref=e70]:
+                  - generic [ref=e71]:
+                    - generic [ref=e72]: Intense
+                    - heading "Deep Tissue" [level=3] [ref=e73]
+                  - generic [ref=e74]: 130 CHF
+                - generic [ref=e75]: 1 heure
+                - paragraph [ref=e76]: Pression soutenue pour dénouer les couches profondes et accélérer la récupération.
+            - button "Thérapie Thérapeutique 120 CHF 1 heure Soin sur-mesure pour soulager les tensions chroniques et restaurer la mobilité." [ref=e77] [cursor=pointer]:
+              - generic [ref=e78]:
+                - generic [ref=e79]:
+                  - generic [ref=e80]:
+                    - generic [ref=e81]: Thérapie
+                    - heading "Thérapeutique" [level=3] [ref=e82]
+                  - generic [ref=e83]: 120 CHF
+                - generic [ref=e84]: 1 heure
+                - paragraph [ref=e85]: Soin sur-mesure pour soulager les tensions chroniques et restaurer la mobilité.
+            - button "Relax Deep Relax 110 CHF 1 heure Mouvements lents et enveloppants pour conduire le système nerveux au lâcher-prise." [ref=e86] [cursor=pointer]:
+              - generic [ref=e87]:
+                - generic [ref=e88]:
+                  - generic [ref=e89]:
+                    - generic [ref=e90]: Relax
+                    - heading "Deep Relax" [level=3] [ref=e91]
+                  - generic [ref=e92]: 110 CHF
+                - generic [ref=e93]: 1 heure
+                - paragraph [ref=e94]: Mouvements lents et enveloppants pour conduire le système nerveux au lâcher-prise.
+            - button "Énergie Thaï Huiles 125 CHF 1 heure Pressions et étirements fluides pour relancer l'énergie vitale, version huiles chaudes." [ref=e95] [cursor=pointer]:
+              - generic [ref=e96]:
+                - generic [ref=e97]:
+                  - generic [ref=e98]:
+                    - generic [ref=e99]: Énergie
+                    - heading "Thaï Huiles" [level=3] [ref=e100]
+                  - generic [ref=e101]: 125 CHF
+                - generic [ref=e102]: 1 heure
+                - paragraph [ref=e103]: Pressions et étirements fluides pour relancer l'énergie vitale, version huiles chaudes.
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=e104]

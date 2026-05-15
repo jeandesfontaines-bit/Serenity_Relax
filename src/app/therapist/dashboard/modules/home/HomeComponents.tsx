@@ -57,7 +57,7 @@ export function MetricCard({
   icon: React.ReactNode;
   label: string;
   value: string;
-  variant?: 'blue' | 'yellow' | 'orange' | 'pink' | 'teal' | 'default';
+  variant?: 'blue' | 'yellow' | 'orange' | 'pink' | 'teal' | 'blueSoft' | 'default';
 }) {
   const iconStyles: Record<string, string> = {
     blue: "bg-blue-100 text-blue-600",
@@ -65,19 +65,20 @@ export function MetricCard({
     yellow: "bg-amber-100 text-amber-600",
     orange: "bg-orange-100 text-orange-600",
     pink: "bg-pink-100 text-pink-600",
-    default: "bg-muted text-muted-foreground",
+    blueSoft: "bg-sky-100 text-sky-600",
+    default: "bg-slate-100 text-slate-500",
   };
 
   return (
-    <div className="group rounded-xl border border-border bg-card p-6 transition-all duration-200 hover:shadow-md">
+    <div className="group rounded-3xl border border-[#e2e9f3] bg-white p-6 shadow-[0_10px_30px_rgba(23,43,77,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_36px_rgba(23,43,77,0.08)]">
       <div className="mb-4 flex items-center justify-between">
-        <div className={`w-10 h-10 flex items-center justify-center rounded-lg ${iconStyles[variant]}`}>
+        <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${iconStyles[variant]}`}>
           {icon}
         </div>
-        <ChevronRight size={14} className="opacity-0 group-hover:opacity-60 transition-opacity text-muted-foreground" />
+        <ChevronRight size={14} className="text-slate-300 opacity-0 transition-opacity group-hover:opacity-70" />
       </div>
-      <p className="text-xs font-medium tracking-[0.05em] text-muted-foreground mb-1">{label}</p>
-      <h3 className="text-2xl font-bold tracking-tight leading-none tabular-nums text-foreground">{value}</h3>
+      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">{label}</p>
+      <h3 className="text-[2rem] font-bold tracking-tight leading-none tabular-nums text-slate-900">{value}</h3>
     </div>
   );
 }
@@ -89,19 +90,19 @@ export function AgendaAppointmentRow({ appt, todayStr, onClick }: { appt: Appoin
   return (
     <button
       onClick={onClick}
-      className={`group flex w-full items-center gap-6 rounded-xl border border-border bg-card p-5 text-left transition-all duration-200 hover:shadow-md active:scale-[0.995] ${status.muted ? 'opacity-60 hover:opacity-100' : ''}`}
+      className={`group flex w-full items-center gap-6 rounded-2xl border border-[#e2e9f3] bg-white p-5 text-left transition-all duration-200 hover:shadow-sm active:scale-[0.995] ${status.muted ? 'opacity-60 hover:opacity-100' : ''}`}
     >
       {/* Time */}
-      <div className="min-w-[60px] text-center border-r border-border pr-6">
-        <p className="text-lg font-bold tracking-tight leading-none tabular-nums text-foreground">{hour}</p>
-        <p className="mt-1 text-[10px] font-medium tracking-[0.05em] text-muted-foreground">{period}</p>
+      <div className="min-w-[60px] border-r border-[#edf2f7] pr-6 text-center">
+        <p className="text-lg font-bold tracking-tight leading-none tabular-nums text-slate-900">{hour}</p>
+        <p className="mt-1 text-[10px] font-semibold tracking-[0.08em] text-slate-400">{period}</p>
       </div>
       {/* Details */}
       <div className="min-w-0 flex-1">
-        <h5 className="truncate text-sm font-semibold tracking-tight leading-none text-foreground">
+        <h5 className="truncate text-sm font-semibold tracking-tight leading-none text-slate-900">
           {appt.clientNameSnapshot || appt.title || 'Client'}
         </h5>
-        <p className="mt-1.5 truncate text-xs tracking-[0.05em] text-muted-foreground">
+        <p className="mt-1.5 truncate text-xs tracking-[0.04em] text-slate-500">
           {cleanServiceLabel(appt.serviceName) || 'Consultation'} · {appt.duration || '60 min'}
         </p>
       </div>
@@ -112,7 +113,7 @@ export function AgendaAppointmentRow({ appt, todayStr, onClick }: { appt: Appoin
         >
           {status.label}
         </span>
-        <ChevronRight size={16} strokeWidth={1.5} className="text-muted-foreground opacity-0 group-hover:opacity-60 transition-opacity" />
+        <ChevronRight size={16} strokeWidth={1.5} className="text-slate-300 opacity-0 transition-opacity group-hover:opacity-60" />
       </div>
     </button>
   );
@@ -122,11 +123,11 @@ export function NoteCard({ appt, onClick }: { appt: Appointment, onClick: () => 
   return (
     <button
       onClick={onClick}
-      className="block w-full rounded-xl border border-border p-5 text-left transition-all duration-200 hover:shadow-md group active:scale-[0.99] bg-muted/30"
+      className="block w-full rounded-2xl border border-[#e2e9f3] bg-white p-5 text-left transition-all duration-200 hover:shadow-sm group active:scale-[0.99]"
     >
-      <p className="mb-1.5 text-[11px] font-medium tracking-[0.05em] text-primary">{formatDayLabel(appt.date)}</p>
-      <h6 className="truncate text-sm font-semibold tracking-tight text-foreground">{appt.clientNameSnapshot || appt.title || 'Client'}</h6>
-      <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed tracking-[0.05em] text-muted-foreground italic">
+      <p className="mb-1.5 text-[11px] font-semibold tracking-[0.05em] text-primary">{formatDayLabel(appt.date)}</p>
+      <h6 className="truncate text-sm font-semibold tracking-tight text-slate-900">{appt.clientNameSnapshot || appt.title || 'Client'}</h6>
+      <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed tracking-[0.03em] text-slate-500 italic">
         &ldquo;{appt.notes?.trim()}&rdquo;
       </p>
     </button>

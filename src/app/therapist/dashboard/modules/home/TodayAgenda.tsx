@@ -19,23 +19,25 @@ export function TodayAgenda({
   normalizedSearch,
 }: TodayAgendaProps) {
   return (
-    <div className="space-y-4 lg:col-span-2">
-      <div className="flex items-end justify-between pb-3 border-b border-border">
+    <div className="rounded-[28px] border border-[#e2e9f3] bg-white p-6 shadow-[0_10px_30px_rgba(23,43,77,0.04)] xl:min-h-[380px]">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-medium text-muted-foreground mb-0.5">
-            Programmation du jour
+          <h4 className="text-[1.05rem] font-semibold tracking-tight text-slate-900">Agenda du jour</h4>
+          <p className="mt-1 text-sm text-slate-500">
+            {todayAppts.length > 0
+              ? `${todayAppts.length} rendez-vous aujourd'hui.`
+              : "Vous n'avez aucun rendez-vous aujourd'hui."}
           </p>
-          <h4 className="text-lg font-semibold tracking-tight leading-none text-foreground">Agenda</h4>
         </div>
         <button
           onClick={() => onNavigate('scheduler')}
-          className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-primary transition-colors group"
+          className="flex items-center gap-1.5 text-sm font-medium text-slate-500 transition-colors hover:text-slate-900 group"
         >
-          Voir tout <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+          Voir tout <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
 
-      <div className="space-y-2">
+      <div className="mt-6 space-y-3">
         {todayAppts.length > 0 ? (
           todayAppts.slice(0, 5).map((appt) => (
             <AgendaAppointmentRow 
@@ -46,9 +48,9 @@ export function TodayAgenda({
             />
           ))
         ) : (
-          <div className="py-16 flex flex-col items-center justify-center rounded-xl border border-dashed border-border">
-            <Clock size={32} strokeWidth={1.2} className="mb-3 text-muted-foreground/50" />
-            <p className="text-xs font-medium text-muted-foreground">
+          <div className="flex min-h-[250px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#dbe4f0] bg-[#f8fbff]">
+            <Clock size={34} strokeWidth={1.2} className="mb-3 text-slate-300" />
+            <p className="text-sm font-medium text-slate-500">
               {normalizedSearch ? 'Aucun résultat' : "Aucune séance aujourd'hui"}
             </p>
           </div>
