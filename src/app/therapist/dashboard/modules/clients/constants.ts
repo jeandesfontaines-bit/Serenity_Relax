@@ -54,11 +54,11 @@ export function getClientSummary(client: Client, clientAppts: Appointment[]): Cl
     acc[appt.serviceName] = (acc[appt.serviceName] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-  
+
   const preferredRitual = cleanServiceLabel(
     (Object.entries(ritualCounts) as [string, number][]).sort((a, b) => b[1] - a[1])[0]?.[0],
   ) || 'Aucun soin';
-  
+
   const sessionsCount = clientAppts.length;
   const fullName = `${client.firstName || ''} ${client.lastName || ''}`.trim();
   const lastVisitLabel = lastVisitDate ? format(lastVisitDate, 'd MMM yyyy') : '—';
@@ -84,3 +84,4 @@ export function getClientSummary(client: Client, clientAppts: Appointment[]): Cl
     preferredRitual,
   };
 }
+222E2222EXYASYXX

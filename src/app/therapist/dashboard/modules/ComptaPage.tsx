@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { format } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { Appointment } from '../types';
 import { cleanServiceLabel } from '@/lib/cleanServiceLabel';
 
@@ -32,6 +33,7 @@ export default function ComptaPage({
   showFilterPanel,
   onShowFilterPanelChange,
 }: ComptaPageProps) {
+  const router = useRouter();
   const filterDropdownRef = React.useRef<HTMLDivElement>(null);
   const [sortField, setSortField] = useState<SortField>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
@@ -208,8 +210,8 @@ export default function ComptaPage({
 
   const handleInvoiceOpen = useCallback((appt: Appointment) => {
     const invoice = invoiceByAppointmentId.get(appt.id);
-    window.location.assign(`/therapist/invoice/${invoice?.id || appt.id}`);
-  }, [invoiceByAppointmentId]);
+    router.push(`/therapist/invoice/${invoice?.id || appt.id}`);
+  }, [invoiceByAppointmentId, router]);
 
   const toggleSelection = useCallback((id: string) => {
     setSelectedIds((prev) => {

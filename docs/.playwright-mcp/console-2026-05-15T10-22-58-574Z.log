@@ -1,0 +1,313 @@
+[     968ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[    1403ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    1782ms] [LOG] [Fast Refresh] done in 481ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[    2033ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[    2081ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[    2083ms] [LOG] [Fast Refresh] done in 228ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  595385ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[  595796ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  595990ms] [WARNING] Detected `scroll-behavior: smooth` on the `<html>` element. In a future version, Next.js will no longer automatically disable smooth scrolling during route transitions. To prepare for this change, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:968
+[  596035ms] [LOG] [Fast Refresh] done in 340ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  763006ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  765182ms] [LOG] [Fast Refresh] done in 1944ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 2227884ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 2228785ms] [LOG] [Fast Refresh] done in 1004ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[ 2465828ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[ 2467078ms] [ERROR] ./src/app/therapist/dashboard/modules/clients/constants.ts:87:9
+Parsing ecmascript source code failed
+  85 |   };
+  86 | }
+> 87 | 222E2222EXYASYXX
+     |         ^
+
+Identifier cannot follow number
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component Browser]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component SSR]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_b0daae9a._.js:2359
+[ 2467181ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js:16058
+[ 5361001ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_PUBLIC_RESET @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=l834J8AnzJCA2gKjeqUhvO1HA92pp8b3tXC5IFu_oflRqXwXqzYfPg&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=H-h5Dgs9PHEjDXHuRLNoVA&AID=0&CI=0&TYPE=xmlhttp&zx=6xrwygw62m4g&t=1:0
+[ 5361271ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=l834J8AnzJCA2gKjeqUhvO1HA92pp8b3tXC5IFu_oflRqXwXqzYfPg&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=H-h5Dgs9PHEjDXHuRLNoVA&AID=44&CI=0&TYPE=xmlhttp&zx=s0auyhpfe4eu&t=1:0
+[ 5361294ms] [WARNING] [2026-05-15T11:52:19.864Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a058c transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[ 5796085ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_PUBLIC_RESET @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=RP5E2qbiMt5dVJ2VPJvnWlcLTnUITCqOqW1iN_6D1n5Qhbo5qiZJlQ&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=NDEluOQfqD6k6Mm4KHBFsw&AID=0&CI=0&TYPE=xmlhttp&zx=rzc323fchili&t=1:0
+[ 5796182ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=RP5E2qbiMt5dVJ2VPJvnWlcLTnUITCqOqW1iN_6D1n5Qhbo5qiZJlQ&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=NDEluOQfqD6k6Mm4KHBFsw&AID=34&CI=0&TYPE=xmlhttp&zx=rnd8k7uv5csd&t=1:0
+[ 5796184ms] [WARNING] [2026-05-15T11:59:34.757Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a058d transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[ 6019491ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_TOO_MANY_RTOS @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=JUHN0qgLp7uJMYVzEYBUXb_M2KKSgJj2qi0YOmUBxG5pruguctcQUQ&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=crplrrJGJRFpBi8VL8yi7g&AID=36&CI=0&TYPE=xmlhttp&zx=cmz0ylqqxecq&t=1:0
+[ 6019651ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=JUHN0qgLp7uJMYVzEYBUXb_M2KKSgJj2qi0YOmUBxG5pruguctcQUQ&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=crplrrJGJRFpBi8VL8yi7g&AID=37&CI=0&TYPE=xmlhttp&zx=6zhuyy7h8dih&t=1:0
+[ 6019666ms] [WARNING] [2026-05-15T12:03:18.240Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a058e transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[ 6199033ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_TOO_MANY_RTOS @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=_rB-u2VgP9_VgVjzAepaFjwI8d8HKqa_g88gjm8UxojyUKeBsn3J1Q&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=Cjqlsunaiz6R3172nbAi7A&AID=0&CI=0&TYPE=xmlhttp&zx=86sooe4pir0k&t=1:0
+[ 6199130ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=_rB-u2VgP9_VgVjzAepaFjwI8d8HKqa_g88gjm8UxojyUKeBsn3J1Q&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=Cjqlsunaiz6R3172nbAi7A&AID=32&CI=0&TYPE=xmlhttp&zx=qaxa7xvmornt&t=1:0
+[ 6199132ms] [WARNING] [2026-05-15T12:06:17.705Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a058f transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[ 6430778ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_TOO_MANY_RTOS @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=cy44clNKYC34bsmbR_XHOEsF-0ru9aMOcqb4hagQPREAexLAWTVkOA&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=fLbTD5O3ZdYFWMym21ondQ&AID=0&CI=0&TYPE=xmlhttp&zx=lo4c07tc8mtk&t=1:0
+[ 6432121ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=cy44clNKYC34bsmbR_XHOEsF-0ru9aMOcqb4hagQPREAexLAWTVkOA&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=fLbTD5O3ZdYFWMym21ondQ&AID=24&CI=0&TYPE=xmlhttp&zx=zai9khcb0t99&t=1:0
+[ 6432124ms] [WARNING] [2026-05-15T12:10:10.697Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0590 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[ 7271900ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_PUBLIC_RESET @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=I3e8aSmtw1K8pMi1gwK6VAayL5pqcW32x1W7-b55u0QkpkM5rTOIoA&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=JQrt36ku9DmsKff42lzzxQ&AID=0&CI=0&TYPE=xmlhttp&zx=dh8o0sm6regz&t=1:0
+[ 7272007ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=I3e8aSmtw1K8pMi1gwK6VAayL5pqcW32x1W7-b55u0QkpkM5rTOIoA&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=JQrt36ku9DmsKff42lzzxQ&AID=35&CI=0&TYPE=xmlhttp&zx=j21ye8hb94s8&t=1:0
+[ 7272012ms] [WARNING] [2026-05-15T12:24:10.585Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0591 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[ 7749162ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_PUBLIC_RESET @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=QWNK0BvtiidJlNhFAG2DQdfZahf5bNQ0P7dl0DdPD2bPb4MvuSeRQA&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=rgzNvp9wcJlwYOa8DXnqOA&AID=0&CI=0&TYPE=xmlhttp&zx=ehcutxatujg4&t=1:0
+[ 7749282ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=QWNK0BvtiidJlNhFAG2DQdfZahf5bNQ0P7dl0DdPD2bPb4MvuSeRQA&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=rgzNvp9wcJlwYOa8DXnqOA&AID=34&CI=0&TYPE=xmlhttp&zx=srpbttccu2xq&t=1:0
+[ 7749291ms] [WARNING] [2026-05-15T12:32:07.864Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0592 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[ 8866980ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_PUBLIC_RESET @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=RAKJZnFo4t0H8_agTbSrRSWWBRW7qlAcLgzHgGK5n_2WlZ8xhwYseg&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=m42tTxgOK_WqhSvE09ZV3Q&AID=0&CI=0&TYPE=xmlhttp&zx=u49gnxkzhq2s&t=1:0
+[ 8867156ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=RAKJZnFo4t0H8_agTbSrRSWWBRW7qlAcLgzHgGK5n_2WlZ8xhwYseg&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=m42tTxgOK_WqhSvE09ZV3Q&AID=34&CI=0&TYPE=xmlhttp&zx=o69mtjvyv76x&t=1:0
+[ 8867159ms] [WARNING] [2026-05-15T12:50:45.732Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0593 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[ 9074401ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_TOO_MANY_RTOS @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=js4t-MqVElkyUUqahf2mSVTXqLL2LrWhV9lOk46qLzHmZyrAcKj_Qw&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=_dTE1c75rKrBkOjrYLaxIA&AID=0&CI=0&TYPE=xmlhttp&zx=pfyc6k7o01sy&t=1:0
+[ 9074499ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=js4t-MqVElkyUUqahf2mSVTXqLL2LrWhV9lOk46qLzHmZyrAcKj_Qw&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=_dTE1c75rKrBkOjrYLaxIA&AID=33&CI=0&TYPE=xmlhttp&zx=r2yeqtignwbl&t=1:0
+[ 9074501ms] [WARNING] [2026-05-15T12:54:13.074Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0594 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[10116706ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR.QUIC_PUBLIC_RESET @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=fdhYna6dQ49yPxkbypgrU2qRSq8Pit3aPgHClTjo6oAc5F6gUpd8Mg&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=9ymnhdzuwfnPUd2FEbP4bw&AID=0&CI=0&TYPE=xmlhttp&zx=9w7tooya5ppn&t=1:0
+[10116911ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=fdhYna6dQ49yPxkbypgrU2qRSq8Pit3aPgHClTjo6oAc5F6gUpd8Mg&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=9ymnhdzuwfnPUd2FEbP4bw&AID=36&CI=0&TYPE=xmlhttp&zx=1sinilvhb46u&t=1:0
+[10116927ms] [WARNING] [2026-05-15T13:11:35.499Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0595 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[10629363ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=63956&CVER=22&X-HTTP-Session-Id=gsessionid&zx=lbplg53n22qa&t=1:0
+[10629375ms] [WARNING] [2026-05-15T13:20:07.943Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0597 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[10629394ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&gsessionid=Y4VlnJIBaWHm7diRye1r9d0hY2b_BdziQs-n29QJOMHM4rZkaT80mw&SID=P7xVm3D3juI4Z3jIpAzj9Q&RID=61572&TYPE=terminate&zx=crj0sn1orqh4:0
+[10629451ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=jkrpbtdak4t5:0
+[10629474ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=35320&CVER=22&X-HTTP-Session-Id=gsessionid&zx=avyrrjjgaxff&t=1:0
+[10629474ms] [WARNING] [2026-05-15T13:20:08.047Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0598 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[10629522ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=lka38qveptnx:0
+[10630182ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=28344&CVER=22&X-HTTP-Session-Id=gsessionid&zx=ijtiteyfd771&t=1:0
+[10630184ms] [WARNING] [2026-05-15T13:20:08.757Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a0599 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[10630193ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=ol4hspfdebxp:0
+[10632053ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=1564&CVER=22&X-HTTP-Session-Id=gsessionid&zx=buorgfe12ezk&t=1:0
+[10632058ms] [WARNING] [2026-05-15T13:20:10.630Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a059a transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[10632082ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=9z7dzik71fln:0
+[10633685ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=77897&CVER=22&X-HTTP-Session-Id=gsessionid&zx=nln2lyxiwyvm&t=1:0
+[10633686ms] [WARNING] [2026-05-15T13:20:12.259Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a059b transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[10633696ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=r09eehb2an18:0
+[10636708ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=3459&CVER=22&X-HTTP-Session-Id=gsessionid&zx=vnc5a97hy0wj&t=1:0
+[10636709ms] [WARNING] [2026-05-15T13:20:15.282Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a059c transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[10636715ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=3wtg2mc8ssg0:0
+[11572043ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=73443&CVER=22&X-HTTP-Session-Id=gsessionid&zx=t3zqatwt1d5z&t=1:0
+[11572053ms] [WARNING] [2026-05-15T13:35:50.624Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a059e transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11572066ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&gsessionid=tzQ9Y-4BnRwTSnhocp-jlMSxISTav-c5lOGKKswamNAQRMlYGJ8g-g&SID=RLpZ9J2tZHwbgfErs1QoMQ&RID=28015&TYPE=terminate&zx=l6wcbmug8bj3:0
+[11572095ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=3vzos6npbupk:0
+[11572099ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=92339&CVER=22&X-HTTP-Session-Id=gsessionid&zx=e1kvjd3y5bf&t=1:0
+[11572099ms] [WARNING] [2026-05-15T13:35:50.672Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a059f transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11572127ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=mupz2g1rywl:0
+[11572733ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=20449&CVER=22&X-HTTP-Session-Id=gsessionid&zx=m21xtwsu45ei&t=1:0
+[11572734ms] [WARNING] [2026-05-15T13:35:51.307Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a0 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11572752ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=o7zr2t742s04:0
+[11573850ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=74128&CVER=22&X-HTTP-Session-Id=gsessionid&zx=y4luvckstuky&t=1:0
+[11573851ms] [WARNING] [2026-05-15T13:35:52.424Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a1 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11573854ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=282f9flb0xsn:0
+[11576662ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=78744&CVER=22&X-HTTP-Session-Id=gsessionid&zx=oyyhkf187ltc&t=1:0
+[11576663ms] [WARNING] [2026-05-15T13:35:55.236Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a2 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11576677ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=exr9ofngbl1y:0
+[11584373ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&gsessionid=_4Ln4v4g5PnaSdzHIVs1RCjV9L8AfJIxtIA6OcKaSAgto7F1WSUR4Q&SID=r-NDmRqP6rAfd-DqP46Mew&RID=46417&TYPE=terminate&zx=lp8fr8f36cwa:0
+[11584391ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=92908&CVER=22&X-HTTP-Session-Id=gsessionid&zx=bak8yk2kql6f&t=1:0
+[11584400ms] [WARNING] [2026-05-15T13:36:02.970Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a4 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11584618ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=vomp73pvb1wk:0
+[11584619ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=96420&CVER=22&X-HTTP-Session-Id=gsessionid&zx=r1ghf8k88iw2&t=1:0
+[11584619ms] [WARNING] [2026-05-15T13:36:03.193Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a5 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11584622ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=pbz0dugojfba:0
+[11585367ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=92325&CVER=22&X-HTTP-Session-Id=gsessionid&zx=wvx9x1k87c7l&t=1:0
+[11585368ms] [WARNING] [2026-05-15T13:36:03.941Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a6 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11585374ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=yn6x9clw5mo2:0
+[11586237ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=2774&CVER=22&X-HTTP-Session-Id=gsessionid&zx=hutzyqzh5de6&t=1:0
+[11586238ms] [WARNING] [2026-05-15T13:36:04.811Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a7 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11586243ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=cssvjuona466:0
+[11588885ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=34946&CVER=22&X-HTTP-Session-Id=gsessionid&zx=fng98isbzcyo&t=1:0
+[11588886ms] [WARNING] [2026-05-15T13:36:07.459Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a8 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11588892ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=jbl95sph9bfw:0
+[11590716ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=30114&CVER=22&X-HTTP-Session-Id=gsessionid&zx=qs0arjypx6a7&t=1:0
+[11590716ms] [WARNING] [2026-05-15T13:36:09.290Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05a9 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11590722ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=biiiiuas9fdz:0
+[11891210ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=67110&CVER=22&X-HTTP-Session-Id=gsessionid&zx=h97hh5vkf319&t=1:0
+[11891210ms] [WARNING] [2026-05-15T13:41:09.784Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05ab transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11891211ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&gsessionid=-QKE2wPRiVgJL7m1yzomvEOYhzlD23MYURpwflGXA2Vqq9DV7H8pUA&SID=pGrZccCKv0M0hH8kgYwFxQ&RID=22879&TYPE=terminate&zx=79uw584o3k9:0
+[11891267ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=dfpoopizdz83:0
+[11891269ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=52926&CVER=22&X-HTTP-Session-Id=gsessionid&zx=46e99py7bwl7&t=1:0
+[11891269ms] [WARNING] [2026-05-15T13:41:09.843Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05ac transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11891286ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=6y4x8clpsmej:0
+[11891832ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=11195&CVER=22&X-HTTP-Session-Id=gsessionid&zx=6yym32jvm1fp&t=1:0
+[11891833ms] [WARNING] [2026-05-15T13:41:10.407Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05ad transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11891839ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=2zibn3f4aulv:0
+[11894017ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=12277&CVER=22&X-HTTP-Session-Id=gsessionid&zx=aqxgdou7it21&t=1:0
+[11894019ms] [WARNING] [2026-05-15T13:41:12.592Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05ae transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11894029ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=1cckhlejzmzn:0
+[11896043ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=22277&CVER=22&X-HTTP-Session-Id=gsessionid&zx=3l65xqr77ql5&t=1:0
+[11896044ms] [WARNING] [2026-05-15T13:41:14.617Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05af transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11896049ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=cl52oxhfiu1o:0
+[11933524ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&gsessionid=EKTZgbTNPHY833LyvP8zK7dIhtXUC-_zIbyZFkE6BXUk8DodswfvtQ&SID=ttQ2_n0lYh6LWTvnq0yYjQ&RID=13412&TYPE=terminate&zx=wjlvgv5o5nbj:0
+[11933562ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=30468&CVER=22&X-HTTP-Session-Id=gsessionid&zx=bx8j2wi4pm0a&t=1:0
+[11933577ms] [WARNING] [2026-05-15T13:41:52.144Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b1 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11933607ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=ae8ijwd7719k:0
+[11933608ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=57472&CVER=22&X-HTTP-Session-Id=gsessionid&zx=m7r4bkwibb58&t=1:0
+[11933608ms] [WARNING] [2026-05-15T13:41:52.182Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b2 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11933640ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=f7mzm74ca5kx:0
+[11934105ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=5075&CVER=22&X-HTTP-Session-Id=gsessionid&zx=gydrapakjl5f&t=1:0
+[11934106ms] [WARNING] [2026-05-15T13:41:52.679Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b3 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11934111ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=sur32qnqyiy8:0
+[11935637ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=22008&CVER=22&X-HTTP-Session-Id=gsessionid&zx=ulfj5yqzozf2&t=1:0
+[11935637ms] [WARNING] [2026-05-15T13:41:54.210Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b4 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11935639ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=tx5fc2copvfs:0
+[11937877ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=82921&CVER=22&X-HTTP-Session-Id=gsessionid&zx=levz9gaf2119&t=1:0
+[11937877ms] [WARNING] [2026-05-15T13:41:56.451Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b5 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11937883ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=4re6xsdkmu0c:0
+[11941698ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=74316&CVER=22&X-HTTP-Session-Id=gsessionid&zx=wz1966ph0y92&t=1:0
+[11941698ms] [WARNING] [2026-05-15T13:42:00.272Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b6 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11941702ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=98arhskadpl3:0
+[11949112ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=29551&CVER=22&X-HTTP-Session-Id=gsessionid&zx=cwwdfsuewl6u&t=1:0
+[11949113ms] [WARNING] [2026-05-15T13:42:07.686Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b7 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11949120ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=e6grtcu7n5ck:0
+[11953469ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=81405&CVER=22&X-HTTP-Session-Id=gsessionid&zx=9gupa0c4a9ew&t=1:0
+[11953470ms] [WARNING] [2026-05-15T13:42:12.043Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b8 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11953476ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=r1y2uxn1xrxh:0
+[11966361ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=82352&CVER=22&X-HTTP-Session-Id=gsessionid&zx=6484woez47km&t=1:0
+[11966362ms] [WARNING] [2026-05-15T13:42:24.935Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05b9 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11966365ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=t329bpo1uwxt:0
+[11978281ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=14261&CVER=22&X-HTTP-Session-Id=gsessionid&zx=b4ncklatwwyk&t=1:0
+[11978282ms] [WARNING] [2026-05-15T13:42:36.855Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05ba transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11978287ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=c1f59t5ddb7v:0
+[11999325ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=56687&CVER=22&X-HTTP-Session-Id=gsessionid&zx=77kkxzgombbo&t=1:0
+[11999326ms] [WARNING] [2026-05-15T13:42:57.900Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05bb transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[11999332ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=9gbfeholm4t8:0
+[12025809ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=76116&CVER=22&X-HTTP-Session-Id=gsessionid&zx=2nzilfwdgox&t=1:0
+[12025810ms] [WARNING] [2026-05-15T13:43:24.383Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05bc transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[12025814ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=9v8d9d5iumq4:0
+[12054851ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=70502&CVER=22&X-HTTP-Session-Id=gsessionid&zx=tkhyatklqhgo&t=1:0
+[12054852ms] [WARNING] [2026-05-15T13:43:53.425Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05bd transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[12054859ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=tp586073os3k:0
+[12114399ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=43211&CVER=22&X-HTTP-Session-Id=gsessionid&zx=bgwjbyn76sc1&t=1:0
+[12114400ms] [WARNING] [2026-05-15T13:44:52.973Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05be transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[12114406ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=8gh6e7xzsoga:0
+[12176059ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=43532&CVER=22&X-HTTP-Session-Id=gsessionid&zx=4ibdmw9s7652&t=1:0
+[12176061ms] [WARNING] [2026-05-15T13:45:54.635Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05bf transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[12176068ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=cqp10ye7ltzn:0
+[12245221ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=34908&CVER=22&X-HTTP-Session-Id=gsessionid&zx=fkqam52j0tq6&t=1:0
+[12245229ms] [WARNING] [2026-05-15T13:47:03.801Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05c0 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[12245249ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=xs5aamgt46t3:0
+[12295225ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=81180&CVER=22&X-HTTP-Session-Id=gsessionid&zx=r1gm3ah3rhmp&t=1:0
+[12295226ms] [WARNING] [2026-05-15T13:47:53.799Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05c1 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[12295233ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=puj9jhv2r0z3:0
+[12341267ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=59747&CVER=22&X-HTTP-Session-Id=gsessionid&zx=endc5o9l6l0b&t=1:0
+[12341268ms] [WARNING] [2026-05-15T13:48:39.842Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05c2 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[12341275ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=2oyn3n8emuys:0
+[12423029ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=63289&CVER=22&X-HTTP-Session-Id=gsessionid&zx=kl774gmqg5mj&t=1:0
+[12423030ms] [WARNING] [2026-05-15T13:50:01.604Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x4f5a05c3 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[12423036ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://www.google.com/images/cleardot.gif?zx=o1mmoii3qdgi:0
+[12469160ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12526890ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12531648ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12561660ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12601837ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12621671ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12671079ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12741682ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12755846ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12806206ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12864314ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12938277ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[12981702ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[13008047ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[13049536ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[13112424ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[13197188ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[13273069ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[13319795ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://securetoken.googleapis.com/v1/token?key=AIzaSyDVKma95UOoUSajrzCmV7vLHPAt2Q5tK7c:0
+[13391842ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/therapist/dashboard:0
+[13392734ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_react-dom_4411d9bd._.js:15305
+[13393080ms] Error: ./src/app/therapist/dashboard/modules/clients/constants.ts:87:9
+Parsing ecmascript source code failed
+  85 |   };
+  86 | }
+> 87 | 222E2222EXYASYXX
+     |         ^
+
+Identifier cannot follow number
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component Browser]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component SSR]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/app/therapist/dashboard/modules/clients/constants.ts:87:9)
+    at Object.getCompilationErrors (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/hot-reloader-turbopack.js:775:59)
+    at DevBundlerService.getCompilationError (file:///Users/jean/Downloads/project/node_modules/next/dist/server/lib/dev-bundler-service.js:39:55)
+    at DevServer.getCompilationError (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:720:42)
+    at DevServer.findPageComponents (file:///Users/jean/Downloads/project/node_modules/next/dist/server/dev/next-dev-server.js:690:43)
+    at async DevServer.renderErrorToResponseImpl (file:///Users/jean/Downloads/project/node_modules/next/dist/server/base-server.js:1687:26)
+[13393042ms] [LOG] [HMR] connected @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2207
+[13393231ms] [ERROR] ./src/app/therapist/dashboard/modules/clients/constants.ts:87:9
+Parsing ecmascript source code failed
+  85 |   };
+  86 | }
+> 87 | 222E2222EXYASYXX
+     |         ^
+
+Identifier cannot follow number
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component Browser]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component SSR]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_5b402162._.js:1747
+[13393231ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2495
+[13393300ms] [LOG] {file: Object} @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_5277ebc8.js:16058
+[13394300ms] [ERROR] ./src/app/therapist/dashboard/modules/clients/constants.ts:87:9
+Parsing ecmascript source code failed
+  85 |   };
+  86 | }
+> 87 | 222E2222EXYASYXX
+     |         ^
+
+Identifier cannot follow number
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component Browser]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component SSR]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_5b402162._.js:1747
+[13394394ms] [ERROR] ./src/app/therapist/dashboard/modules/clients/constants.ts:87:9
+Parsing ecmascript source code failed
+  85 |   };
+  86 | }
+> 87 | 222E2222EXYASYXX
+     |         ^
+
+Identifier cannot follow number
+
+Import traces:
+  Client Component Browser:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component Browser]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Client Component Browser]
+    ./src/app/therapist/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/therapist/dashboard/modules/clients/constants.ts [Client Component SSR]
+    ./src/app/therapist/dashboard/modules/ClientsPage.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Client Component SSR]
+    ./src/app/therapist/dashboard/page.tsx [Server Component] @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_5b402162._.js:1747
+[13394458ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_d0aa886c._.js:2495
+[13394465ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9002/favicon.ico:0

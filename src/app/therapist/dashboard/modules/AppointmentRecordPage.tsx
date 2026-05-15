@@ -18,6 +18,7 @@ import {
 import { format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 import { useFirestore } from '@/firebase';
 import { cleanServiceLabel } from '@/lib/cleanServiceLabel';
 import { Appointment, Invoice } from '../types';
@@ -56,6 +57,7 @@ export default function AppointmentRecordPage({
   onSendWhatsApp,
 }: AppointmentRecordPageProps) {
   const firestore = useFirestore();
+  const router = useRouter();
   const current = appointments.find((item) => item.id === appt.id) || appt;
 
   const [notes, setNotes] = useState(current.notes || '');
@@ -165,7 +167,7 @@ export default function AppointmentRecordPage({
                 sub="Validation séance"
               />
               <ActionBtn
-                onClick={() => window.location.assign(`/therapist/invoice/${linkedInvoice?.id || current.id}`)}
+                onClick={() => router.push(`/therapist/invoice/${linkedInvoice?.id || current.id}`)}
                 icon={<FileText size={20} strokeWidth={2.5} />}
                 label="Facture PDF"
                 sub="Ouvrir document"
