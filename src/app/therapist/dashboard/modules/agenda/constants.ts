@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { Appointment } from '../../types';
 
 /* ── CONSTANTS ── */
-export const HOUR_H = 80;          // pixels per hour row
+export const HOUR_H = 72;          // pixels per hour row
 export const START_HOUR = 8;
 export const END_HOUR = 20;
 export const DEFAULT_DURATION = 90; // minutes
@@ -55,49 +55,49 @@ export type AppointmentTone = {
 
 export const APPOINTMENT_TONES: Record<'default' | 'paid' | 'cancelled' | 'pending' | 'confirmed', AppointmentTone> = {
   default: {
-    surface: 'bg-slate-50',
-    bg: 'bg-slate-500',
-    text: 'text-slate-700',
-    border: 'border-slate-200',
-    title: 'text-slate-900',
-    meta: 'text-slate-500',
-    dot: 'bg-slate-400',
+    surface: 'bg-[#eef2ff]',
+    bg: 'bg-[#7c86f8]',
+    text: 'text-[#4952c6]',
+    border: 'border-[#d8defc]',
+    title: 'text-[#1f2454]',
+    meta: 'text-[#5861bf]',
+    dot: 'bg-[#7c86f8]',
   },
   confirmed: {
-    surface: 'bg-blue-50',
-    bg: 'bg-blue-600',
-    text: 'text-blue-700',
-    border: 'border-blue-200',
-    title: 'text-blue-900',
-    meta: 'text-blue-600',
-    dot: 'bg-blue-500',
+    surface: 'bg-[#edf4ff]',
+    bg: 'bg-[#4c7ff7]',
+    text: 'text-[#2551c9]',
+    border: 'border-[#d4e2ff]',
+    title: 'text-[#1e3f97]',
+    meta: 'text-[#4670d8]',
+    dot: 'bg-[#4c7ff7]',
   },
   paid: {
-    surface: 'bg-emerald-50',
-    bg: 'bg-emerald-600',
-    text: 'text-emerald-700',
-    border: 'border-emerald-200',
-    title: 'text-emerald-900',
-    meta: 'text-emerald-600',
-    dot: 'bg-emerald-500',
+    surface: 'bg-[#ecfbf3]',
+    bg: 'bg-[#2fb67a]',
+    text: 'text-[#15724a]',
+    border: 'border-[#c9efd9]',
+    title: 'text-[#115c3d]',
+    meta: 'text-[#23835a]',
+    dot: 'bg-[#2fb67a]',
   },
   cancelled: {
-    surface: 'bg-red-50',
-    bg: 'bg-red-600',
-    text: 'text-red-700',
-    border: 'border-red-200',
-    title: 'text-red-900',
-    meta: 'text-red-600',
-    dot: 'bg-red-500',
+    surface: 'bg-[#fff1f1]',
+    bg: 'bg-[#ef6b6b]',
+    text: 'text-[#bb4747]',
+    border: 'border-[#ffd7d7]',
+    title: 'text-[#993434]',
+    meta: 'text-[#cf5858]',
+    dot: 'bg-[#ef6b6b]',
   },
   pending: {
-    surface: 'bg-amber-50',
-    bg: 'bg-amber-600',
-    text: 'text-amber-700',
-    border: 'border-amber-200',
-    title: 'text-amber-900',
-    meta: 'text-amber-600',
-    dot: 'bg-amber-500',
+    surface: 'bg-[#fff7eb]',
+    bg: 'bg-[#f4ae4e]',
+    text: 'text-[#b87312]',
+    border: 'border-[#f9ddae]',
+    title: 'text-[#935d10]',
+    meta: 'text-[#c18323]',
+    dot: 'bg-[#f4ae4e]',
   },
 };
 

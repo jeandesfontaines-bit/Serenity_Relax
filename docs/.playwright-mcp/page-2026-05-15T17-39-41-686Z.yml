@@ -1,0 +1,98 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - button "S Serenity" [ref=e6] [cursor=pointer]:
+          - generic [ref=e8]: S
+          - generic [ref=e9]: Serenity
+        - navigation [ref=e10]:
+          - button "Dashboard" [ref=e11] [cursor=pointer]:
+            - img [ref=e12]
+            - generic [ref=e15]: Dashboard
+          - button "Agenda" [ref=e16] [cursor=pointer]:
+            - img [ref=e17]
+            - generic [ref=e19]: Agenda
+          - button "Clients" [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - generic [ref=e26]: Clients
+          - button "Finances" [ref=e27] [cursor=pointer]:
+            - img [ref=e28]
+            - generic [ref=e31]: Finances
+        - generic [ref=e32]:
+          - button "Paramètres" [ref=e33] [cursor=pointer]:
+            - img [ref=e34]
+            - generic [ref=e37]: Paramètres
+          - button "Déconnexion" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - generic [ref=e42]: Déconnexion
+    - generic [ref=e43]:
+      - banner [ref=e44]:
+        - generic [ref=e46]:
+          - heading "Tableau de bord" [level=2] [ref=e47]
+          - paragraph [ref=e48]: Bienvenue dans votre espace de gestion Serenity.
+        - generic [ref=e50]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - img [ref=e55]
+            - generic [ref=e57]: vendredi 15 mai
+          - 'button "Objectif: 12 000 CHF" [ref=e58] [cursor=pointer]':
+            - img [ref=e59]
+            - generic [ref=e63]: "Objectif: 12 000 CHF"
+      - main [ref=e64]:
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - generic [ref=e69]:
+                - img [ref=e71]
+                - img [ref=e73]
+              - paragraph [ref=e75]: Revenus du mois
+              - heading "0 CHF" [level=3] [ref=e76]
+            - generic [ref=e77]:
+              - generic [ref=e78]:
+                - img [ref=e80]
+                - img [ref=e83]
+              - paragraph [ref=e85]: Soins effectués
+              - heading "0" [level=3] [ref=e86]
+            - generic [ref=e87]:
+              - generic [ref=e88]:
+                - img [ref=e90]
+                - img [ref=e95]
+              - paragraph [ref=e97]: Patients actifs
+              - heading "1" [level=3] [ref=e98]
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - img [ref=e102]
+                - img [ref=e104]
+              - paragraph [ref=e106]: Factures en attente
+              - heading "3" [level=3] [ref=e107]
+          - generic [ref=e108]:
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]:
+                  - heading "Agenda du jour" [level=4] [ref=e112]
+                  - paragraph [ref=e113]: Vous n'avez aucun rendez-vous aujourd'hui.
+                - button "Voir tout" [ref=e114] [cursor=pointer]:
+                  - text: Voir tout
+                  - img [ref=e115]
+              - generic [ref=e118]:
+                - img [ref=e119]
+                - paragraph [ref=e122]: Aucune séance aujourd'hui
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - heading "Notes récentes" [level=4] [ref=e127]
+                  - button [ref=e128] [cursor=pointer]:
+                    - img [ref=e129]
+                - paragraph [ref=e133]: Aucune note récente.
+                - button "Répertoire patients" [ref=e134] [cursor=pointer]
+              - generic [ref=e135]:
+                - heading "Objectif mensuel" [level=4] [ref=e136]
+                - paragraph [ref=e137]: 0 CHF sur 12 000 CHF.
+                - button "Ajuster l'objectif" [ref=e139] [cursor=pointer]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e145] [cursor=pointer]:
+    - img [ref=e146]
+  - alert [ref=e149]

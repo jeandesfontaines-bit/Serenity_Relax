@@ -1,0 +1,88 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e252]:
+      - complementary [ref=e253]:
+        - generic [ref=e339]:
+          - link "S SERENITY" [ref=e341] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e343]: S
+            - generic [ref=e344]: SERENITY
+          - navigation [ref=e345]:
+            - link "Agenda" [ref=e346] [cursor=pointer]:
+              - /url: /agenda
+              - img [ref=e347]
+              - generic [ref=e349]: Agenda
+            - link "Clients" [ref=e350] [cursor=pointer]:
+              - /url: /clients
+              - img [ref=e351]
+              - generic [ref=e356]: Clients
+            - link "Finances" [ref=e357] [cursor=pointer]:
+              - /url: /finances
+              - img [ref=e358]
+              - generic [ref=e361]: Finances
+            - link "Paramètres" [ref=e362] [cursor=pointer]:
+              - /url: /settings
+              - img [ref=e363]
+              - generic [ref=e366]: Paramètres
+        - button [ref=e283] [cursor=pointer]:
+          - img
+      - generic [ref=e284]:
+        - banner [ref=e285]:
+          - generic [ref=e287]:
+            - img [ref=e288]
+            - textbox "Rechercher..." [ref=e291]
+          - generic [ref=e292]:
+            - button [ref=e293] [cursor=pointer]:
+              - img
+            - button "DR" [ref=e295] [cursor=pointer]:
+              - generic [ref=e297]: DR
+        - main [ref=e298]:
+          - generic [ref=e299]:
+            - generic [ref=e300]:
+              - generic [ref=e301]:
+                - heading "Répertoire Patients" [level=1] [ref=e302]
+                - paragraph [ref=e303]: 1 patients trouvés.
+              - generic [ref=e304]:
+                - generic [ref=e305]:
+                  - button [ref=e306] [cursor=pointer]:
+                    - img
+                  - button [ref=e307] [cursor=pointer]:
+                    - img
+                - button "Nouveau Patient" [ref=e308] [cursor=pointer]:
+                  - img
+                  - text: Nouveau Patient
+            - generic [ref=e309]:
+              - generic [ref=e310]:
+                - img [ref=e311]
+                - textbox "Rechercher par nom, email..." [ref=e314]
+              - generic [ref=e315]:
+                - button "Filtres" [ref=e316] [cursor=pointer]:
+                  - img
+                  - text: Filtres
+                - button "Trier" [ref=e317] [cursor=pointer]:
+                  - img
+                  - text: Trier
+            - generic [ref=e320] [cursor=pointer]:
+              - img [ref=e322]
+              - generic [ref=e324]:
+                - generic [ref=e325]: jP
+                - generic [ref=e326]:
+                  - heading "jean Patient" [level=3] [ref=e327]
+                  - generic [ref=e328]: NOUVEAU
+                - generic [ref=e329]:
+                  - generic [ref=e330]:
+                    - generic [ref=e331]: Dernier soin
+                    - generic [ref=e332]: 12/05/2026
+                  - generic [ref=e333]:
+                    - generic [ref=e334]: Séances
+                    - generic [ref=e335]: "1"
+                - generic [ref=e336]:
+                  - button [ref=e337]:
+                    - img
+                  - button [ref=e338]:
+                    - img
+    - region "Notifications alt+T"
+  - generic [ref=e132] [cursor=pointer]:
+    - generic [ref=e133]: Made by
+    - img [ref=e134]
+    - img [ref=e136]

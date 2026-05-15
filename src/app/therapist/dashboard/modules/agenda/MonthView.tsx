@@ -38,17 +38,17 @@ export default function MonthView({
   const rowCount = Math.ceil(days.length / 7);
 
   return (
-    <div className="flex-1 flex flex-col overflow-auto bg-background border-t border-border">
-      <div className="grid grid-cols-7 border-b border-border shrink-0 bg-background">
+    <div className="flex flex-1 flex-col overflow-auto bg-white">
+      <div className="grid shrink-0 grid-cols-7 border-b border-[#edf2f7] bg-white">
         {DAYS_LABELS.map(d => (
-          <div key={d} className="border-r border-border py-3 text-center last:border-r-0">
-            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">{d}</span>
+          <div key={d} className="border-r border-[#edf2f7] py-3 text-center last:border-r-0">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{d}</span>
           </div>
         ))}
       </div>
 
       <div
-        className="flex-1 grid grid-cols-7 overflow-hidden bg-border"
+        className="grid flex-1 grid-cols-7 overflow-hidden bg-[#edf2f7]"
         style={{ 
           gap: '1px',
           gridTemplateRows: `repeat(${rowCount}, 1fr)`

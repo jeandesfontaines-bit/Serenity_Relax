@@ -1,0 +1,106 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - link "S SERENITY" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]: S
+          - generic [ref=e10]: SERENITY
+        - navigation [ref=e11]:
+          - link "Agenda" [ref=e12] [cursor=pointer]:
+            - /url: /agenda
+            - img [ref=e13]
+            - generic [ref=e15]: Agenda
+          - link "Clients" [ref=e16] [cursor=pointer]:
+            - /url: /clients
+            - img [ref=e17]
+            - generic [ref=e22]: Clients
+          - link "Finances" [ref=e23] [cursor=pointer]:
+            - /url: /finances
+            - img [ref=e24]
+            - generic [ref=e27]: Finances
+          - link "Paramètres" [ref=e28] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e29]
+            - generic [ref=e32]: Paramètres
+      - button [ref=e34] [cursor=pointer]:
+        - img
+    - generic [ref=e35]:
+      - banner [ref=e36]:
+        - generic [ref=e38]:
+          - img [ref=e39]
+          - textbox "Rechercher..." [ref=e42]
+        - generic [ref=e43]:
+          - button [ref=e44] [cursor=pointer]:
+            - img
+          - button "DR" [ref=e46] [cursor=pointer]:
+            - generic [ref=e48]: DR
+      - main [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - generic [ref=e52]:
+              - heading "Agenda" [level=1] [ref=e53]
+              - generic [ref=e55]: mai 2026
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - button "Semaine" [ref=e58] [cursor=pointer]
+                - button "Mois" [ref=e59] [cursor=pointer]
+              - generic [ref=e60]:
+                - button [ref=e61] [cursor=pointer]:
+                  - img
+                - button "Aujourd'hui" [ref=e62] [cursor=pointer]
+                - button [ref=e63] [cursor=pointer]:
+                  - img
+              - button [ref=e64] [cursor=pointer]:
+                - img
+              - button "Réserver" [ref=e65] [cursor=pointer]:
+                - img
+                - text: Réserver
+              - button [ref=e66] [cursor=pointer]:
+                - img
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - img [ref=e72]
+              - generic [ref=e75]:
+                - generic [ref=e76]: lun.
+                - generic [ref=e77]: "11"
+              - generic [ref=e78]:
+                - generic [ref=e79]: mar.
+                - generic [ref=e80]: "12"
+              - generic [ref=e81]:
+                - generic [ref=e82]: mer.
+                - generic [ref=e83]: "13"
+              - generic [ref=e84]:
+                - generic [ref=e85]: jeu.
+                - generic [ref=e86]: "14"
+              - generic [ref=e87]:
+                - generic [ref=e88]: ven.
+                - generic [ref=e89]: "15"
+              - generic [ref=e90]:
+                - generic [ref=e91]: sam.
+                - generic [ref=e92]: "16"
+              - generic [ref=e93]:
+                - generic [ref=e94]: dim.
+                - generic [ref=e95]: "17"
+            - generic [ref=e96]:
+              - generic [ref=e98]: 8:00
+              - generic [ref=e106]:
+                - generic [ref=e107]: 9:00
+                - generic [ref=e110] [cursor=pointer]:
+                  - generic [ref=e111]:
+                    - generic [ref=e112]: jean Patient
+                    - generic [ref=e113]: 09:00
+                  - generic [ref=e114]: Massage Classique
+                  - generic [ref=e116]: 120€
+              - generic [ref=e123]: 10:00
+              - generic [ref=e132]: 11:00
+              - generic [ref=e141]: 12:00
+              - generic [ref=e150]: 13:00
+              - generic [ref=e159]: 14:00
+              - generic [ref=e168]: 15:00
+              - generic [ref=e177]: 16:00
+              - generic [ref=e186]: 17:00
+              - generic [ref=e195]: 18:00
+              - generic [ref=e204]: 19:00
+              - generic [ref=e213]: 20:00
+  - region "Notifications alt+T"

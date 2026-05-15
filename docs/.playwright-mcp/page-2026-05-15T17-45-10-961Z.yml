@@ -1,0 +1,86 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e152]:
+        - button "S Serenity" [ref=e154] [cursor=pointer]:
+          - generic [ref=e156]: S
+          - generic [ref=e157]: Serenity
+        - navigation [ref=e158]:
+          - button "Dashboard" [ref=e159] [cursor=pointer]:
+            - img [ref=e160]
+            - generic [ref=e163]: Dashboard
+          - button "Agenda" [ref=e164] [cursor=pointer]:
+            - img [ref=e165]
+            - generic [ref=e167]: Agenda
+          - button "Clients" [ref=e168] [cursor=pointer]:
+            - img [ref=e169]
+            - generic [ref=e174]: Clients
+          - button "Finances" [ref=e175] [cursor=pointer]:
+            - img [ref=e176]
+            - generic [ref=e179]: Finances
+        - generic [ref=e180]:
+          - button "Paramètres" [ref=e181] [cursor=pointer]:
+            - img [ref=e182]
+            - generic [ref=e185]: Paramètres
+          - button "Déconnexion" [ref=e186] [cursor=pointer]:
+            - img [ref=e187]
+            - generic [ref=e190]: Déconnexion
+    - generic [ref=e46]:
+      - banner [ref=e47]:
+        - generic [ref=e49]:
+          - heading "Répertoire Patients" [level=2] [ref=e191]
+          - paragraph [ref=e192]: 1 profil, 1 visible
+        - generic [ref=e53]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e54]
+        - generic [ref=e193]:
+          - generic [ref=e194]:
+            - button [ref=e195] [cursor=pointer]:
+              - img [ref=e196]
+            - button [ref=e197] [cursor=pointer]:
+              - img [ref=e198]
+          - button "Filtres" [ref=e203] [cursor=pointer]:
+            - img [ref=e204]
+            - text: Filtres
+      - main [ref=e67]:
+        - main [ref=e208]:
+          - generic [ref=e209]:
+            - heading "Répertoire Patients" [level=1] [ref=e210]
+            - paragraph [ref=e211]: 1 patient trouvés.
+          - generic [ref=e213]:
+            - textbox "Rechercher par nom, email..." [ref=e214]
+            - generic [ref=e215]:
+              - button "Filtres" [ref=e216] [cursor=pointer]
+              - button "Trier" [ref=e217] [cursor=pointer]
+          - generic [ref=e218]:
+            - generic [ref=e220]:
+              - button [ref=e222] [cursor=pointer]:
+                - img [ref=e223]
+              - button "Patient" [ref=e225] [cursor=pointer]:
+                - text: Patient
+                - img [ref=e226]
+              - button "Statut" [ref=e229] [cursor=pointer]
+              - button "Dernier soin" [ref=e230] [cursor=pointer]
+              - button "Séances" [ref=e231] [cursor=pointer]
+              - button "Email" [ref=e232] [cursor=pointer]
+              - button "Téléphone" [ref=e233] [cursor=pointer]
+              - generic [ref=e234]: Actions
+            - generic [ref=e236] [cursor=pointer]:
+              - button [ref=e238]:
+                - img [ref=e239]
+              - generic [ref=e241]:
+                - generic [ref=e242]: Jj
+                - generic [ref=e243]:
+                  - generic [ref=e244]: Jean j
+                  - generic [ref=e245]: Geneve
+              - generic [ref=e247]: Actif
+              - generic [ref=e248]: 7 May 2026
+              - generic [ref=e249]: "3"
+              - generic [ref=e250]: Jean.desfontaines@me.com
+              - generic [ref=e251]: "0782427166"
+              - img [ref=e253]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e148] [cursor=pointer]:
+    - img [ref=e149]
+  - alert [ref=e4]

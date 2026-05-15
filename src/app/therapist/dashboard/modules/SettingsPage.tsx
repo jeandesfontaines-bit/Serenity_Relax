@@ -190,11 +190,16 @@ export default function SettingsPage({
   return (
     <div className="flex-1 bg-transparent">
       <main className="mx-auto">
-        <div className="max-w-[1000px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-16 items-start">
+        <div className="mx-auto max-w-[1120px] space-y-6">
+          <section className="space-y-1">
+            <h1 className="text-[2.1rem] font-semibold tracking-tight text-slate-900">Paramètres</h1>
+            <p className="text-sm text-slate-500">Configuration du compte, du cabinet et des communications.</p>
+          </section>
+
+          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[260px_1fr]">
             {/* Sidebar Navigation */}
             <aside className="space-y-8 sticky top-0">
-               <nav className="space-y-1.5">
+               <nav className="space-y-2 rounded-[28px] border border-[#e2e9f3] bg-white p-4 shadow-[0_10px_30px_rgba(23,43,77,0.04)]">
                   {TABS.map(t => {
                     const Icon = t.icon;
                     const isActive = activeTab === t.id;
@@ -205,9 +210,9 @@ export default function SettingsPage({
                         className={`w-full flex items-center justify-between h-10 px-4 rounded-xl transition-all duration-300 group ${
                           isActive 
                             ? 'shadow-sm ring-1 ring-black/5 z-10' 
-                            : 'border'
+                            : 'border border-[#e7edf5]'
                         }`}
-                        style={isActive ? { background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' } : { background: 'hsl(var(--background))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--muted-foreground))' }}
+                        style={isActive ? { background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' } : { background: '#f8fbff', color: '#64748b' }}
                       >
                         <div className="flex items-center gap-3">
                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${
@@ -223,7 +228,7 @@ export default function SettingsPage({
                   })}
                </nav>
 
-               <div className="rounded-2xl p-5 text-white shadow-lg space-y-3 relative overflow-hidden group transition-transform duration-500 hover:scale-[1.02]" style={{ background: 'hsl(var(--primary))' }}>
+               <div className="rounded-[28px] p-5 text-white shadow-lg space-y-3 relative overflow-hidden group transition-transform duration-500 hover:scale-[1.02]" style={{ background: 'hsl(var(--primary))' }}>
                   <div className="absolute -top-4 -right-4 p-2 opacity-10 pointer-events-none group-hover:rotate-12 transition-transform duration-700">
                      <Shield size={60} strokeWidth={1} />
                   </div>
@@ -254,7 +259,7 @@ export default function SettingsPage({
             </aside>
 
             {/* Content Area */}
-            <div className="space-y-6 min-h-[600px]">
+            <div className="min-h-[600px] rounded-[28px] border border-[#e2e9f3] bg-white p-6 shadow-[0_10px_30px_rgba(23,43,77,0.04)]">
                <AnimatePresence mode="wait">
                  <motion.div
                     key={activeTab}

@@ -1,0 +1,162 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e257]:
+        - button "S Serenity" [ref=e259] [cursor=pointer]:
+          - generic [ref=e261]: S
+          - generic [ref=e262]: Serenity
+        - navigation [ref=e263]:
+          - button "Dashboard" [ref=e264] [cursor=pointer]:
+            - img [ref=e265]
+            - generic [ref=e268]: Dashboard
+          - button "Agenda" [ref=e269] [cursor=pointer]:
+            - img [ref=e270]
+            - generic [ref=e272]: Agenda
+          - button "Clients" [ref=e273] [cursor=pointer]:
+            - img [ref=e274]
+            - generic [ref=e279]: Clients
+          - button "Finances" [ref=e280] [cursor=pointer]:
+            - img [ref=e281]
+            - generic [ref=e284]: Finances
+        - generic [ref=e285]:
+          - button "Paramètres" [ref=e286] [cursor=pointer]:
+            - img [ref=e287]
+            - generic [ref=e290]: Paramètres
+          - button "Déconnexion" [ref=e291] [cursor=pointer]:
+            - img [ref=e292]
+            - generic [ref=e295]: Déconnexion
+    - generic [ref=e46]:
+      - banner [ref=e47]:
+        - generic [ref=e296]:
+          - button [ref=e297] [cursor=pointer]:
+            - img [ref=e298]
+          - generic [ref=e300]:
+            - heading "Jean j" [level=2] [ref=e301]
+            - paragraph [ref=e302]: Dossier client
+        - generic [ref=e53]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e54]
+        - button "Nouvelle séance" [ref=e304] [cursor=pointer]:
+          - img [ref=e305]
+          - text: Nouvelle séance
+      - main [ref=e67]:
+        - main [ref=e308]:
+          - generic [ref=e309]:
+            - heading "Jean j" [level=1] [ref=e310]
+            - paragraph [ref=e311]: Dossier patient et historique des séances.
+          - generic [ref=e312]:
+            - complementary [ref=e313]:
+              - generic [ref=e314]:
+                - generic [ref=e315]:
+                  - generic [ref=e316]:
+                    - generic [ref=e317]: JJ
+                    - img [ref=e319]
+                  - generic [ref=e322]:
+                    - generic [ref=e323]:
+                      - generic [ref=e324]:
+                        - generic [ref=e325]: Jean
+                        - img [ref=e326]
+                      - generic [ref=e328]:
+                        - generic [ref=e329]: j
+                        - img [ref=e330]
+                    - generic [ref=e333]:
+                      - generic [ref=e334]: Jean.desfontaines@me.com
+                      - img [ref=e335]
+                - generic [ref=e337]:
+                  - generic [ref=e338]:
+                    - img [ref=e340]
+                    - generic [ref=e342]:
+                      - paragraph [ref=e343]: Contact
+                      - generic [ref=e345]:
+                        - generic [ref=e346]: "0782427166"
+                        - img [ref=e347]
+                  - generic [ref=e349]:
+                    - img [ref=e351]
+                    - generic [ref=e354]:
+                      - paragraph [ref=e355]: Adresse
+                      - generic [ref=e357]:
+                        - generic [ref=e358]:
+                          - generic [ref=e359]: Rue
+                          - img [ref=e360]
+                        - generic [ref=e362]:
+                          - generic [ref=e363]: Geneve
+                          - img [ref=e364]
+                  - generic [ref=e366]:
+                    - img [ref=e368]
+                    - generic [ref=e371]:
+                      - paragraph [ref=e372]: Assurance
+                      - generic [ref=e374]:
+                        - generic [ref=e375]: Assurance
+                        - img [ref=e376]
+                - button "Archives financières" [ref=e379] [cursor=pointer]:
+                  - img [ref=e380]
+                  - text: Archives financières
+              - generic [ref=e383]:
+                - generic [ref=e384]:
+                  - paragraph [ref=e385]: Total
+                  - paragraph [ref=e386]: "3"
+                  - paragraph [ref=e387]: Séances
+                - generic [ref=e388]:
+                  - paragraph [ref=e389]: Ouvertes
+                  - paragraph [ref=e390]: "3"
+                  - paragraph [ref=e391]: Factures
+            - generic [ref=e392]:
+              - generic [ref=e393]:
+                - generic [ref=e395]:
+                  - heading "Prochaines Séances" [level=3] [ref=e396]
+                  - paragraph [ref=e397]: Planification active
+                - generic [ref=e399]:
+                  - img [ref=e400]
+                  - paragraph [ref=e402]: Aucune planification en cours
+              - generic [ref=e403]:
+                - generic [ref=e405]:
+                  - heading "Historique Complet" [level=3] [ref=e406]
+                  - paragraph [ref=e407]: Chronologie des soins
+                - generic [ref=e408]:
+                  - button "7 mai Draineur Lymphatique 60 min 09:00 - 10:00 45 min En attente" [ref=e409] [cursor=pointer]:
+                    - generic [ref=e410]:
+                      - generic [ref=e411]: "7"
+                      - generic [ref=e412]: mai
+                    - generic [ref=e413]:
+                      - heading "Draineur Lymphatique 60 min" [level=4] [ref=e414]
+                      - generic [ref=e415]:
+                        - generic [ref=e416]:
+                          - img [ref=e417]
+                          - paragraph [ref=e420]: 09:00 - 10:00
+                        - paragraph [ref=e422]: 45 min
+                    - generic [ref=e423]:
+                      - generic [ref=e424]: En attente
+                      - img [ref=e426]
+                  - button "6 mai Réflexologie Plantaire - 30 min 12:30 - 10:00 45 min En attente" [ref=e428] [cursor=pointer]:
+                    - generic [ref=e429]:
+                      - generic [ref=e430]: "6"
+                      - generic [ref=e431]: mai
+                    - generic [ref=e432]:
+                      - heading "Réflexologie Plantaire - 30 min" [level=4] [ref=e433]
+                      - generic [ref=e434]:
+                        - generic [ref=e435]:
+                          - img [ref=e436]
+                          - paragraph [ref=e439]: 12:30 - 10:00
+                        - paragraph [ref=e441]: 45 min
+                    - generic [ref=e442]:
+                      - generic [ref=e443]: En attente
+                      - img [ref=e445]
+                  - button "6 mai Réflexologie Plantaire - 30 min 10:00 - 10:00 45 min En attente" [ref=e447] [cursor=pointer]:
+                    - generic [ref=e448]:
+                      - generic [ref=e449]: "6"
+                      - generic [ref=e450]: mai
+                    - generic [ref=e451]:
+                      - heading "Réflexologie Plantaire - 30 min" [level=4] [ref=e452]
+                      - generic [ref=e453]:
+                        - generic [ref=e454]:
+                          - img [ref=e455]
+                          - paragraph [ref=e458]: 10:00 - 10:00
+                        - paragraph [ref=e460]: 45 min
+                    - generic [ref=e461]:
+                      - generic [ref=e462]: En attente
+                      - img [ref=e464]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e148] [cursor=pointer]:
+    - img [ref=e149]
+  - alert [ref=e4]

@@ -62,7 +62,7 @@ export default function WeekTimeGrid({
   const activeAppt = useMemo(() => activeId ? appointments.find((a: Appointment) => a.id === activeId) : null, [activeId, appointments]);
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-background">
+    <div className="flex min-h-[calc(100vh-260px)] flex-1 flex-col overflow-hidden bg-white">
       <WeekHeader 
         days={days}
         isDayOpen={isDayOpen}
@@ -74,8 +74,8 @@ export default function WeekTimeGrid({
       <div className="flex-1 overflow-auto scrollbar-hide">
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
           <div
-            className="grid relative"
-            style={{ gridTemplateColumns: '72px repeat(7, 1fr)', height: gridHeight }}
+            className="relative grid min-w-[1080px] bg-white"
+            style={{ gridTemplateColumns: '84px repeat(7, minmax(0, 1fr))', height: gridHeight }}
           >
             <TimeLabels />
 

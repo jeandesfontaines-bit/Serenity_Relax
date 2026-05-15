@@ -47,11 +47,13 @@ export default function ClientDetail({
 
   return (
     <div className="flex-1 bg-transparent text-foreground">
-      <main className="mx-auto space-y-10">
-        
-        {/* Header removed — handled by AppLayout global header */}
+      <main className="mx-auto space-y-6">
+        <section className="space-y-1">
+          <h1 className="text-[2.1rem] font-semibold tracking-tight text-slate-900">{fullName}</h1>
+          <p className="text-sm text-slate-500">Dossier patient et historique des séances.</p>
+        </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-start pt-4">
+        <div className="grid grid-cols-1 gap-8 items-start pt-2 lg:grid-cols-[340px_1fr]">
           <ClientProfileSidebar 
             client={client}
             editData={editData}

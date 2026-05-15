@@ -1,0 +1,39 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - link "S SERENITY" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]: S
+          - generic [ref=e10]: SERENITY
+        - navigation [ref=e11]:
+          - link "Agenda" [ref=e12] [cursor=pointer]:
+            - /url: /agenda
+            - img [ref=e13]
+            - generic [ref=e15]: Agenda
+          - link "Clients" [ref=e16] [cursor=pointer]:
+            - /url: /clients
+            - img [ref=e17]
+            - generic [ref=e22]: Clients
+          - link "Finances" [ref=e23] [cursor=pointer]:
+            - /url: /finances
+            - img [ref=e24]
+            - generic [ref=e27]: Finances
+          - link "Paramètres" [ref=e28] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e29]
+            - generic [ref=e32]: Paramètres
+      - button [ref=e34] [cursor=pointer]:
+        - img
+    - generic [ref=e35]:
+      - banner [ref=e36]:
+        - generic [ref=e38]:
+          - img [ref=e39]
+          - textbox "Rechercher..." [ref=e42]
+        - generic [ref=e43]:
+          - button [ref=e44] [cursor=pointer]:
+            - img
+          - button "DR" [ref=e46] [cursor=pointer]:
+            - generic [ref=e48]: DR
+      - main [ref=e49]: Chargement...
+  - region "Notifications alt+T"

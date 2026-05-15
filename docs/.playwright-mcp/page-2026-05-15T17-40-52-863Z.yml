@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e130]:
+        - button "S Serenity" [ref=e132] [cursor=pointer]:
+          - generic [ref=e134]: S
+          - generic [ref=e135]: Serenity
+        - navigation [ref=e136]:
+          - button "Dashboard" [ref=e137] [cursor=pointer]:
+            - img [ref=e138]
+            - generic [ref=e141]: Dashboard
+          - button "Agenda" [ref=e142] [cursor=pointer]:
+            - img [ref=e143]
+            - generic [ref=e145]: Agenda
+          - button "Clients" [ref=e146] [cursor=pointer]:
+            - img [ref=e147]
+            - generic [ref=e152]: Clients
+          - button "Finances" [ref=e153] [cursor=pointer]:
+            - img [ref=e154]
+            - generic [ref=e157]: Finances
+        - generic [ref=e158]:
+          - button "Paramètres" [ref=e159] [cursor=pointer]:
+            - img [ref=e160]
+            - generic [ref=e163]: Paramètres
+          - button "Déconnexion" [ref=e164] [cursor=pointer]:
+            - img [ref=e165]
+            - generic [ref=e168]: Déconnexion
+    - generic [ref=e46]:
+      - banner [ref=e47]:
+        - generic [ref=e49]:
+          - heading "Paramètres" [level=2] [ref=e169]
+          - paragraph [ref=e170]: Configuration du compte
+        - generic [ref=e53]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e54]
+        - generic [ref=e171]: Système opérationnel
+      - main [ref=e69]:
+        - main [ref=e175]:
+          - generic [ref=e176]:
+            - generic [ref=e177]:
+              - heading "Paramètres" [level=1] [ref=e178]
+              - paragraph [ref=e179]: Configuration du compte, du cabinet et des communications.
+            - generic [ref=e180]:
+              - complementary [ref=e181]:
+                - navigation [ref=e182]:
+                  - button "Compte" [ref=e183] [cursor=pointer]:
+                    - generic [ref=e184]:
+                      - img [ref=e186]
+                      - generic [ref=e189]: Compte
+                    - img [ref=e190]
+                  - button "WhatsApp" [ref=e192] [cursor=pointer]:
+                    - generic [ref=e193]:
+                      - img [ref=e195]
+                      - generic [ref=e197]: WhatsApp
+                  - button "Emails" [ref=e198] [cursor=pointer]:
+                    - generic [ref=e199]:
+                      - img [ref=e201]
+                      - generic [ref=e204]: Emails
+                  - button "Cabinet" [ref=e205] [cursor=pointer]:
+                    - generic [ref=e206]:
+                      - img [ref=e208]
+                      - generic [ref=e213]: Cabinet
+                  - button "Objectifs" [ref=e214] [cursor=pointer]:
+                    - generic [ref=e215]:
+                      - img [ref=e217]
+                      - generic [ref=e221]: Objectifs
+                - generic [ref=e222]:
+                  - generic:
+                    - img
+                  - generic [ref=e223]:
+                    - paragraph [ref=e224]: Sécurité
+                    - heading "Accès cabinet" [level=4] [ref=e225]
+                  - button "Déconnexion" [ref=e226] [cursor=pointer]:
+                    - img [ref=e227]
+                    - text: Déconnexion
+              - generic [ref=e232]:
+                - generic [ref=e233]:
+                  - heading "Compte" [level=4] [ref=e234]
+                  - paragraph [ref=e235]: Accès essentiel
+                - generic [ref=e238]: joao.silva@sereneholistic.com
+                - generic [ref=e239]:
+                  - generic [ref=e240]:
+                    - generic [ref=e242]: Mot de passe actuel
+                    - generic [ref=e244]: Nouveau mot de passe
+                  - button "Mettre à jour le mot de passe" [ref=e245] [cursor=pointer]:
+                    - img [ref=e246]
+                    - text: Mettre à jour le mot de passe
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e126] [cursor=pointer]:
+    - img [ref=e127]
+  - alert [ref=e4]

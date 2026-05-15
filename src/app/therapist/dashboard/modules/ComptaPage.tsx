@@ -236,6 +236,11 @@ export default function ComptaPage({
       </AnimatePresence>
 
       <section className="relative space-y-6">
+        <div className="space-y-1">
+          <h1 className="text-[2.1rem] font-semibold tracking-tight text-slate-900">Finances</h1>
+          <p className="text-sm text-slate-500">Suivi des paiements, factures et rendez-vous.</p>
+        </div>
+
         {showFilterPanel && (
           <FilterPanel 
             filters={filters}
@@ -243,12 +248,9 @@ export default function ComptaPage({
             dropdownRef={filterDropdownRef}
           />
         )}
-        {/* Header removed — handled by AppLayout global header */}
-
-        <div className="space-y-4">
-          {/* Table Header */}
+        <div className="overflow-hidden rounded-[28px] border border-[#e2e9f3] bg-white shadow-[0_10px_30px_rgba(23,43,77,0.04)]">
           <div
-            className="grid items-center border-b border-border px-4 pb-3"
+            className="grid items-center border-b border-[#edf2f7] px-4 pb-3 pt-4"
             style={{ gridTemplateColumns: GRID_TEMPLATE }}
           >
             <div className="flex justify-center">
@@ -266,11 +268,11 @@ export default function ComptaPage({
             <HeaderBtn label="Référence" field="reference" current={sortField} onSort={toggleSort} />
             <HeaderBtn label="Soin" field="serviceName" current={sortField} onSort={toggleSort} />
             <HeaderBtn label="Statut" field="status" current={sortField} onSort={toggleSort} />
-            <div className="text-xs font-medium tracking-[0.05em] text-center text-muted-foreground">PDF</div>
+            <div className="text-center text-xs font-medium tracking-[0.05em] text-muted-foreground">PDF</div>
             <HeaderBtn label="Montant" field="price" current={sortField} onSort={toggleSort} align="right" />
           </div>
 
-          <div className="bg-background">
+          <div className="bg-white">
             {filtered.map(appt => (
               <TransactionRow
                 key={appt.id}
@@ -292,7 +294,7 @@ export default function ComptaPage({
             ))}
           </div>
 
-          {filtered.length === 0 && <EmptyState />}
+          {filtered.length === 0 && <div className="p-8"><EmptyState /></div>}
         </div>
       </section>
     </div>

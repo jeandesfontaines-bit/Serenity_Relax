@@ -37,6 +37,7 @@ export default function ClientsPage({
   onSelectClient,
   onDeleteClients,
   searchQuery,
+  onSearchQueryChange,
   showFilterPanel,
   onShowFilterPanelChange,
   onVisibleCountChange,
@@ -204,7 +205,7 @@ export default function ClientsPage({
   const allSelected = filtered.length > 0 && selectedClients.size === filtered.length;
 
   return (
-    <div className="flex flex-1 flex-col bg-transparent space-y-6">
+    <div className="flex flex-1 flex-col space-y-6 bg-transparent">
       <AnimatePresence>
         {selectedClients.size > 0 && (
           <SelectionToolbar 
@@ -215,7 +216,39 @@ export default function ClientsPage({
         )}
       </AnimatePresence>
 
-      <main className="relative flex-1">
+      <main className="relative flex-1 space-y-6">
+        <section className="space-y-1">
+          <h1 className="text-[2.1rem] font-semibold tracking-tight text-slate-900">Répertoire Patients</h1>
+          <p className="text-sm text-slate-500">{filtered.length} patient{filtered.length > 1 ? 's' : ''} trouvés.</p>
+        </section>
+
+        <section className="rounded-[28px] border border-[#e2e9f3] bg-white p-4 shadow-[0_10px_30px_rgba(23,43,77,0.04)]">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <input
+              value={searchQuery}
+              onChange={(e) => onSearchQueryChange(e.target.value)}
+              placeholder="Rechercher par nom, email..."
+              className="h-12 w-full max-w-[420px] rounded-2xl border border-[#e7edf5] bg-[#f6f9fc] px-4 text-sm text-slate-700 outline-none transition-colors placeholder:text-slate-400 focus:border-primary/30 focus:bg-white"
+            />
+            <div className="flex items-center gap-2 self-end lg:self-auto">
+              <button
+                type="button"
+                onClick={() => onShowFilterPanelChange(!showFilterPanel)}
+                className="flex h-10 items-center rounded-2xl border border-[#dbe4f0] bg-white px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-[#f8fbff]"
+              >
+                Filtres
+              </button>
+              <button
+                type="button"
+                onClick={() => toggleSort('patient')}
+                className="flex h-10 items-center rounded-2xl border border-[#dbe4f0] bg-white px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-[#f8fbff]"
+              >
+                Trier
+              </button>
+            </div>
+          </div>
+        </section>
+
         {showFilterPanel && (
           <FilterPanel 
             visibleColumnIds={visibleColumnIds} 
@@ -229,7 +262,7 @@ export default function ClientsPage({
         {filtered.length === 0 ? (
           <EmptyState />
         ) : viewMode === 'list' ? (
-          <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-sm">
+          <div className="overflow-hidden rounded-[28px] border border-[#e2e9f3] bg-white shadow-[0_10px_30px_rgba(23,43,77,0.04)]">
             <div className="pt-4">
               <ClientTableHeader
                 visibleColumns={visibleColumns}
@@ -245,7 +278,7 @@ export default function ClientsPage({
               />
             </div>
 
-            <div className="divide-y divide-border/50">
+            <div className="divide-y divide-[#edf2f7]">
               {filtered.map(client => {
                 const summary = summaryByClient.get(client.id);
                 if (!summary) return null;
@@ -265,7 +298,7 @@ export default function ClientsPage({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {filtered.map(client => {
               const summary = summaryByClient.get(client.id);
               if (!summary) return null;

@@ -4,9 +4,9 @@ import { Bell } from 'lucide-react';
 
 export function SectionHeader({ title, subtitle }: { title: string, subtitle: string }) {
    return (
-      <div className="border-l-[2px] pl-2.5 py-0.5 mb-4" style={{ borderColor: 'hsl(var(--primary))' }}>
-         <h4 className="text-[10px] font-bold tracking-[0.05em] leading-none" style={{ color: 'hsl(var(--foreground))' }}>{title}</h4>
-         <p className="text-[7.5px] font-bold tracking-[0.05em] mt-1 leading-none" style={{ color: 'hsl(var(--muted-foreground))' }}>{subtitle}</p>
+      <div className="mb-5 space-y-1">
+         <h4 className="text-lg font-semibold tracking-tight text-slate-900">{title}</h4>
+         <p className="text-sm text-slate-500">{subtitle}</p>
       </div>
    );
 }
@@ -57,17 +57,15 @@ export function InlineEditableField({
          onBlur={commit}
          onKeyDown={handleKey}
          placeholder={placeholder}
-         className={`w-full h-8 px-3 rounded-full text-[9px] font-bold tracking-tight outline-none shadow-sm ${align === 'center' ? 'text-center' : ''} ${editingClassName}`}
-         style={{ background: 'hsl(var(--secondary))', borderWidth: '1px', borderStyle: 'solid', borderColor: 'hsl(var(--primary))', color: 'hsl(var(--foreground))' }}
+         className={`w-full rounded-2xl border border-[#d9e2ee] bg-white px-4 text-[15px] font-medium tracking-tight text-slate-900 outline-none transition focus:border-slate-900 focus:ring-0 ${align === 'center' ? 'text-center' : ''} ${editingClassName || 'h-12'}`}
       />
    ) : (
       <div
          onDoubleClick={() => setEditing(true)}
-         className={`flex h-8 cursor-text items-center rounded-full px-3 text-[9px] font-bold tracking-tight transition-all ${align === 'center' ? 'justify-center text-center' : ''} ${className}`}
-         style={{ background: 'hsl(var(--secondary))', color: 'hsl(var(--foreground))' }}
+         className={`flex min-h-[3rem] cursor-text items-center rounded-2xl border border-[#d9e2ee] bg-white px-4 text-[15px] font-medium tracking-tight text-slate-900 transition ${align === 'center' ? 'justify-center text-center' : ''} ${className}`}
       >
          <span className="truncate">
-            {value || <span style={{ color: 'hsl(var(--border))' }}>{placeholder}</span>}
+            {value || <span className="text-slate-400">{placeholder}</span>}
          </span>
       </div>
    );
@@ -99,10 +97,10 @@ export function InlineEditableTextarea({
    };
 
    const baseView = variant === 'soft'
-      ? 'shadow-inner'
+      ? 'border border-[#d9e2ee] bg-[#f8fbff]'
       : 'border shadow-sm';
    const baseEdit = variant === 'soft'
-      ? 'ring-4 shadow-inner'
+      ? 'border border-slate-900 bg-white'
       : 'border shadow-sm';
 
    return editing ? (
@@ -113,17 +111,15 @@ export function InlineEditableTextarea({
          onBlur={commit}
          rows={rows}
          placeholder={placeholder}
-         className={`w-full rounded-xl p-3 text-[10px] font-medium outline-none resize-none leading-relaxed ${baseEdit}`}
-         style={{ background: 'hsl(var(--secondary))', color: 'hsl(var(--foreground))' }}
+         className={`w-full resize-none rounded-[20px] p-4 text-[15px] font-medium leading-7 text-slate-900 outline-none ${baseEdit}`}
       />
    ) : (
       <div
          onDoubleClick={() => setEditing(true)}
-         className={`min-h-[88px] w-full cursor-text rounded-xl p-3 text-[10px] font-medium transition-all hover:-translate-y-0.5 ${baseView}`}
-         style={{ background: 'hsl(var(--secondary))', color: 'hsl(var(--foreground))' }}
+         className={`min-h-[120px] w-full cursor-text rounded-[20px] p-4 text-[15px] font-medium leading-7 text-slate-900 transition ${baseView}`}
       >
          <p className="whitespace-pre-wrap leading-relaxed">
-            {value || <span style={{ color: 'hsl(var(--border))' }}>{placeholder}</span>}
+            {value || <span className="text-slate-400">{placeholder}</span>}
          </p>
       </div>
    );
@@ -169,14 +165,12 @@ export function InlineEditableFieldDark({
             }
          }}
          placeholder={placeholder}
-          className="w-full h-8 px-3 rounded-full border text-[9px] font-bold tracking-tight outline-none shadow-inner"
-          style={{ background: 'hsla(var(--primary-foreground) / 0.1)', borderColor: 'hsl(var(--primary-foreground))', color: 'hsl(var(--primary-foreground))' }}
+          className="h-12 w-full rounded-2xl border border-white/25 bg-white/10 px-4 text-[15px] font-medium tracking-tight text-white outline-none placeholder:text-white/35"
        />
    ) : (
       <div
           onDoubleClick={() => setEditing(true)}
-          className="flex h-8 cursor-text items-center rounded-full px-3 text-[9px] font-bold tracking-tight transition-all"
-          style={{ background: 'hsla(var(--primary-foreground) / 0.05)', color: 'hsl(var(--primary-foreground))' }}
+          className="flex h-12 cursor-text items-center rounded-2xl border border-white/10 bg-white/8 px-4 text-[15px] font-medium tracking-tight text-white transition-all"
        >
          <span className="truncate">
             {masked || <span className="opacity-20">{placeholder}</span>}
@@ -187,16 +181,16 @@ export function InlineEditableFieldDark({
 
 export function InputGroup({ label, value, onChange, icon, type = 'text' }: { label: string, value: string, onChange: (v: string) => void, icon?: React.ReactNode, type?: string }) {
    return (
-      <div className="space-y-1.5 group">
-         <div className="flex items-center gap-2 transition-colors px-1" style={{ color: 'hsl(var(--muted-foreground))' }}>
-            {icon && <div className="shrink-0 scale-[0.6] w-4 h-4 flex items-center justify-center">{icon}</div>}
-            <label className="text-[7.5px] font-bold tracking-[0.05em] leading-none">{label}</label>
+      <div className="space-y-2">
+         <div className="flex items-center gap-2 px-1 text-slate-500">
+            {icon && <div className="flex h-4 w-4 shrink-0 items-center justify-center">{icon}</div>}
+            <label className="text-sm font-medium leading-none">{label}</label>
          </div>
          <input 
             type={type} 
             value={value} 
             onChange={e => onChange(e.target.value)} 
-            className="w-full h-8 px-3 rounded-full text-[9px] font-bold tracking-tight transition-all outline-none shadow-sm border focus:ring-4" style={{ background: "hsl(var(--background))", borderColor: "hsl(var(--border))", color: "hsl(var(--foreground))" }} 
+            className="h-12 w-full rounded-2xl border border-[#d9e2ee] bg-white px-4 text-[15px] font-medium tracking-tight text-slate-900 outline-none transition focus:border-slate-900" 
          />
       </div>
    );
@@ -204,23 +198,23 @@ export function InputGroup({ label, value, onChange, icon, type = 'text' }: { la
 
 export function ToggleItem({ label, desc, val, set }: { label: string, desc: string, val: boolean, set: (v: boolean) => void }) {
    return (
-      <div className="flex items-center justify-between p-2 rounded-xl shadow-sm group transition-all border" style={{ background: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}>
-         <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-lg flex items-center justify-center transition-all shadow-md" style={{ background: val ? "hsl(var(--primary))" : "hsl(var(--secondary))", color: val ? "hsl(var(--primary-foreground))" : "hsl(var(--muted-foreground))" }}>
-               <Bell size={9} strokeWidth={2.5} />
+      <div className="flex items-center justify-between rounded-[20px] border border-[#e2e9f3] bg-[#f8fbff] p-4 transition-all">
+         <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl transition-all shadow-sm" style={{ background: val ? "hsl(var(--primary))" : "#e9f0f7", color: val ? "hsl(var(--primary-foreground))" : "#64748b" }}>
+               <Bell size={16} strokeWidth={2.1} />
             </div>
             <div>
-               <h5 className="text-[8px] font-bold tracking-[0.05em] leading-none" style={{ color: "hsl(var(--foreground))" }}>{label}</h5>
-               <p className="text-[6.5px] font-bold tracking-[0.05em] mt-1 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>{desc}</p>
+               <h5 className="text-sm font-semibold leading-none text-slate-900">{label}</h5>
+               <p className="mt-1 text-sm text-slate-500">{desc}</p>
             </div>
          </div>
          <button 
             onClick={() => set(!val)} 
-            className="w-7 h-4 rounded-full relative transition-all shadow-inner" style={{ background: val ? "hsl(var(--primary))" : "hsl(var(--secondary))" }}
+            className="relative h-7 w-12 rounded-full transition-all shadow-inner" style={{ background: val ? "hsl(var(--primary))" : "#dbe4ef" }}
          >
             <motion.div 
-               animate={{ x: val ? 14 : 2 }}
-               className="w-2.5 h-2.5 rounded-full absolute top-1 shadow-md" style={{ background: "hsl(var(--background))" }}
+               animate={{ x: val ? 22 : 3 }}
+               className="absolute top-1 h-5 w-5 rounded-full bg-white shadow-md"
             />
          </button>
       </div>

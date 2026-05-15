@@ -1,0 +1,120 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - link "S SERENITY" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]: S
+          - generic [ref=e10]: SERENITY
+        - navigation [ref=e11]:
+          - link "Agenda" [ref=e12] [cursor=pointer]:
+            - /url: /agenda
+            - img [ref=e13]
+            - generic [ref=e15]: Agenda
+          - link "Clients" [ref=e16] [cursor=pointer]:
+            - /url: /clients
+            - img [ref=e17]
+            - generic [ref=e22]: Clients
+          - link "Finances" [ref=e23] [cursor=pointer]:
+            - /url: /finances
+            - img [ref=e24]
+            - generic [ref=e27]: Finances
+          - link "Paramètres" [ref=e28] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e29]
+            - generic [ref=e32]: Paramètres
+      - button [ref=e34] [cursor=pointer]:
+        - img
+    - generic [ref=e35]:
+      - banner [ref=e36]:
+        - generic [ref=e38]:
+          - img [ref=e39]
+          - textbox "Rechercher..." [ref=e42]
+        - generic [ref=e43]:
+          - button [ref=e44] [cursor=pointer]:
+            - img
+          - button "DR" [ref=e46] [cursor=pointer]:
+            - generic [ref=e48]: DR
+      - main [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - generic [ref=e52]:
+              - heading "Finances" [level=1] [ref=e53]
+              - paragraph [ref=e54]: Suivi de votre chiffre d'affaires et facturation.
+            - button "Exporter CSV" [ref=e55] [cursor=pointer]:
+              - img
+              - text: Exporter CSV
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - generic [ref=e58]:
+                - generic [ref=e59]: Revenus encaissés
+                - img [ref=e60]
+              - generic [ref=e63]:
+                - generic [ref=e64]: 0€
+                - paragraph [ref=e65]:
+                  - img [ref=e66]
+                  - text: +8.2% par rapport au mois dernier
+            - generic [ref=e69]:
+              - generic [ref=e70]:
+                - generic [ref=e71]: Volume d'activité
+                - img [ref=e72]
+              - generic [ref=e74]:
+                - generic [ref=e75]: "0"
+                - paragraph [ref=e76]: Nombre total de prestations facturées
+            - generic [ref=e77]:
+              - generic [ref=e78]:
+                - generic [ref=e79]: Encours clients
+                - img [ref=e80]
+              - generic [ref=e83]:
+                - generic [ref=e84]: 0€
+                - paragraph [ref=e85]: Factures en attente de règlement
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic [ref=e89]:
+                - img [ref=e90]
+                - text: Revenus (6 mois)
+              - generic [ref=e93]:
+                - generic [ref=e95]: déc.
+                - generic [ref=e97]: janv.
+                - generic [ref=e99]: févr.
+                - generic [ref=e101]: mars
+                - generic [ref=e103]: avr.
+                - generic [ref=e105]: mai
+            - generic [ref=e106]:
+              - generic [ref=e108]:
+                - img [ref=e109]
+                - text: Répartition soins
+              - generic [ref=e112]:
+                - generic [ref=e114]:
+                  - generic [ref=e115]: Massage
+                  - generic [ref=e116]: 45%
+                - generic [ref=e120]:
+                  - generic [ref=e121]: Réflexologie
+                  - generic [ref=e122]: 28%
+                - generic [ref=e126]:
+                  - generic [ref=e127]: Drainage
+                  - generic [ref=e128]: 18%
+                - generic [ref=e132]:
+                  - generic [ref=e133]: Shiatsu
+                  - generic [ref=e134]: 9%
+          - generic [ref=e138]:
+            - generic [ref=e140]:
+              - generic [ref=e141]: Transactions
+              - generic [ref=e142]:
+                - generic [ref=e143]:
+                  - img [ref=e144]
+                  - textbox "Client, facture..." [ref=e147]
+                - button "Filtres" [ref=e148] [cursor=pointer]:
+                  - img
+                  - text: Filtres
+            - table [ref=e151]:
+              - rowgroup [ref=e152]:
+                - row "Facture Client Soin Montant Statut" [ref=e153]:
+                  - columnheader "Facture" [ref=e154]
+                  - columnheader "Client" [ref=e155]
+                  - columnheader "Soin" [ref=e156]
+                  - columnheader "Montant" [ref=e157]
+                  - columnheader "Statut" [ref=e158]
+                  - columnheader [ref=e159]
+              - rowgroup
+  - region "Notifications alt+T"
