@@ -103,11 +103,7 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
       <div className={`relative mx-auto grid max-w-[1360px] grid-cols-12 items-center gap-10 px-6 md:px-10 lg:px-12 ${layoutClassName}`}>
         <div className={`${imageColumnClassName} ${variant === "concierge" ? "lg:order-2" : ""}`}>
           <div className={`relative mx-auto ${variant === "editorial" ? "max-w-[280px]" : "max-w-[360px] lg:max-w-[340px]"}`}>
-            {variant !== "concierge" ? (
-              <div className="absolute -top-12 -left-12 pointer-events-none hidden select-none opacity-[0.03] lg:block">
-                <span className="display-tight text-[9rem] leading-none font-bold">JOÃO</span>
-              </div>
-            ) : null}
+
 
             <div
               className={[
@@ -175,9 +171,9 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
           {variant === "editorial" ? (
             <div className="mb-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_150px] lg:items-end">
               <h1 className="landing-type-hero landing-text-high display-tight">
-                {copy.titleTop}
+                <span className="font-serif tracking-[0.015em]">{copy.titleTop}</span>
                 <br />
-                <span className="landing-display-italic opacity-90">{copy.titleBottom}</span>
+                <span className="landing-display-italic text-[0.75em] opacity-90">{copy.titleBottom}</span>
               </h1>
               <p className="landing-type-small landing-text-body max-w-[14ch]">
                 {copy.aside}
@@ -185,9 +181,9 @@ export default function Hero({ variant = "default" }: { variant?: LandingVariant
             </div>
           ) : (
             <h1 className="landing-type-hero landing-text-high display-tight mb-12">
-              {copy.titleTop}
+              <span className="font-serif tracking-[0.015em]">{copy.titleTop}</span>
               <br />
-              <span className="landing-display-italic opacity-90">{copy.titleBottom}</span>
+              <span className="landing-display-italic text-[0.75em] opacity-90">{copy.titleBottom}</span>
             </h1>
           )}
 

@@ -71,16 +71,17 @@ export default function AppLayout({
   appointmentDetailToolbar, financeToolbar, settingsToolbar, onLogout,
 }: AppLayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const NavContent = () => (
+  const NavContent = ({ collapsed = false }: { collapsed?: boolean }) => (
     <div className="flex flex-col h-full py-6">
       {/* Logo */}
-      <div className="px-6 mb-8">
-        <button onClick={() => onNavigate('dashboard')} className="group flex items-center gap-3">
+      <div className={`mb-8 ${collapsed ? 'px-4' : 'px-6'}`}>
+        <button onClick={() => onNavigate('dashboard')} className={`group flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}>
           <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-            <span className="text-primary-foreground font-bold text-base">S</span>
+            <span className="dashboard-section-title text-primary-foreground">S</span>
           </div>
-          <span className="text-base font-bold tracking-tight text-foreground">
+          <span className={`${collapsed ? 'hidden' : 'block'} dashboard-section-title`}>
             Serenity
           </span>
         </button>
@@ -95,14 +96,17 @@ export default function AppLayout({
             <button
               key={item.id}
               onClick={() => { onNavigate(item.id); setIsMobileMenuOpen(false); }}
-              className={`w-full group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+              title={collapsed ? item.label : undefined}
+              className={`dashboard-body-strong w-full group flex items-center rounded-lg transition-all duration-200 ${
+                collapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2.5'
+              } ${
                 active 
                   ? 'bg-primary text-primary-foreground shadow-sm' 
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
               }`}
             >
               <Icon size={18} strokeWidth={active ? 2 : 1.5} className="transition-colors" />
-              <span>{item.label}</span>
+              <span className={collapsed ? 'hidden' : 'block'}>{item.label}</span>
             </button>
           );
         })}
@@ -118,42 +122,60 @@ export default function AppLayout({
             <button
               key={id}
               onClick={() => onNavigate(id)}
-              className={`w-full group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+              title={collapsed ? label : undefined}
+              className={`dashboard-body-strong w-full group flex items-center rounded-lg transition-all duration-200 ${
+                collapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2.5'
+              } ${
                 active 
                   ? 'bg-primary text-primary-foreground shadow-sm' 
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
               }`}
             >
               <Icon size={18} strokeWidth={active ? 2 : 1.5} className="transition-colors" />
-              <span>{label}</span>
+              <span className={collapsed ? 'hidden' : 'block'}>{label}</span>
             </button>
           );
         })}
         {onLogout && (
           <button
             onClick={onLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-muted-foreground hover:bg-destructive/10 hover:text-destructive group"
+            title={collapsed ? 'Déconnexion' : undefined}
+            className={`dashboard-body w-full rounded-lg transition-all duration-200 text-muted-foreground hover:bg-destructive/10 hover:text-destructive group ${
+              collapsed ? 'flex items-center justify-center px-2 py-2.5' : 'flex items-center gap-3 px-3 py-2.5'
+            }`}
           >
             <LogOut size={18} strokeWidth={1.5} className="transition-colors" />
-            <span>Déconnexion</span>
+            <span className={collapsed ? 'hidden' : 'block'}>Déconnexion</span>
           </button>
         )}
+        <button
+          type="button"
+          onClick={() => setIsSidebarCollapsed((prev) => !prev)}
+          className={`mt-4 flex h-10 w-full items-center text-muted-foreground transition-colors hover:text-foreground ${collapsed ? 'justify-center px-0' : 'justify-start px-3'}`}
+          aria-label={collapsed ? 'Ouvrir le menu' : 'Réduire le menu'}
+        >
+          <ChevronLeft
+            size={16}
+            strokeWidth={2}
+            className={`transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`}
+          />
+        </button>
       </div>
     </div>
   );
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#eff4fb]">
+    <div className="dashboard-shell flex h-screen overflow-hidden">
       {/* Sidebar */}
-      <aside className="hidden md:flex w-[254px] shrink-0 border-r border-[#dbe4f0] bg-white flex-col">
-        <NavContent />
+      <aside className={`hidden shrink-0 flex-col border-r border-border bg-card transition-[width] duration-200 md:flex ${isSidebarCollapsed ? 'w-[84px]' : 'w-[254px]'}`}>
+        <NavContent collapsed={isSidebarCollapsed} />
       </aside>
 
       <div className="flex flex-col flex-1 min-w-0">
         {/* Header */}
-        <header className="h-16 shrink-0 flex items-center justify-between px-7 border-b border-[#dbe4f0] bg-white sticky top-0 z-40">
+        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-border bg-card px-4 md:px-6">
           {/* Left: Menu & Title */}
-          <div className="flex items-center gap-4 min-w-[240px]">
+          <div className="flex min-w-[240px] items-center gap-3">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <button className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg border border-border bg-background hover:bg-accent transition-colors">
@@ -164,24 +186,23 @@ export default function AppLayout({
                 <NavContent />
               </SheetContent>
             </Sheet>
-
             <div className="flex flex-col">
               {activePage === 'dashboard' && dashboardSummary && (
                 <>
-                  <h2 className="text-[15px] font-semibold text-slate-900 leading-tight tracking-tight">{dashboardSummary.title}</h2>
-                  <p className="text-xs text-slate-500 tracking-normal font-medium">{dashboardSummary.subtitle}</p>
+                  <h2 className="dashboard-header-title">{dashboardSummary.title}</h2>
+                  <p className="dashboard-header-subtitle normal-case tracking-normal">{dashboardSummary.subtitle}</p>
                 </>
               )}
               {activePage === 'scheduler' && schedulerToolbar && (
                 <>
-                  <h2 className="text-sm font-semibold text-foreground leading-tight tracking-tight">{schedulerToolbar.title}</h2>
-                  <p className="text-[10px] text-muted-foreground tracking-wide font-medium">Agenda Thérapeute</p>
+                  <h2 className="dashboard-header-title">{schedulerToolbar.title}</h2>
+                  <p className="dashboard-header-subtitle">Agenda Thérapeute</p>
                 </>
               )}
               {activePage === 'clients' && clientsToolbar && (
                 <>
-                  <h2 className="text-sm font-semibold text-foreground leading-tight tracking-tight">Répertoire Patients</h2>
-                  <p className="text-[10px] text-muted-foreground tracking-wide font-medium">{clientsToolbar.subtitle}</p>
+                  <h2 className="dashboard-header-title">Répertoire Patients</h2>
+                  <p className="dashboard-header-subtitle">{clientsToolbar.subtitle}</p>
                 </>
               )}
               {activePage === 'client-detail' && clientDetailToolbar && (
@@ -194,8 +215,8 @@ export default function AppLayout({
                       <ChevronLeft size={16} strokeWidth={2} />
                     </button>
                     <div className="flex flex-col">
-                      <h2 className="text-sm font-semibold text-foreground leading-tight tracking-tight">{clientDetailToolbar.title}</h2>
-                      <p className="text-[10px] text-muted-foreground tracking-wide font-medium">{clientDetailToolbar.eyebrow}</p>
+                      <h2 className="dashboard-header-title">{clientDetailToolbar.title}</h2>
+                      <p className="dashboard-header-subtitle">{clientDetailToolbar.eyebrow}</p>
                     </div>
                   </div>
                 </>
@@ -210,49 +231,63 @@ export default function AppLayout({
                       <ChevronLeft size={16} strokeWidth={2} />
                     </button>
                     <div className="flex flex-col">
-                      <h2 className="text-sm font-semibold text-foreground leading-tight tracking-tight">{appointmentDetailToolbar.title}</h2>
-                      <p className="text-[10px] text-muted-foreground tracking-wide font-medium">{appointmentDetailToolbar.eyebrow}</p>
+                      <h2 className="dashboard-header-title">{appointmentDetailToolbar.title}</h2>
+                      <p className="dashboard-header-subtitle">{appointmentDetailToolbar.eyebrow}</p>
                     </div>
                   </div>
                 </>
               )}
               {activePage === 'accounting' && financeToolbar && (
                 <>
-                  <h2 className="text-sm font-bold text-foreground leading-tight tracking-tight uppercase tracking-[0.05em]">Finances</h2>
+                  <h2 className="dashboard-header-title">Finances</h2>
                 </>
               )}
               {activePage === 'settings' && settingsToolbar && (
                 <>
-                  <h2 className="text-sm font-semibold text-foreground leading-tight tracking-tight">Paramètres</h2>
-                  <p className="text-[10px] text-muted-foreground tracking-wide font-medium">Configuration du compte</p>
+                  <h2 className="dashboard-header-title">Paramètres</h2>
+                  <p className="dashboard-header-subtitle">Configuration du compte</p>
                 </>
               )}
             </div>
+
+            {activePage === 'scheduler' && schedulerToolbar && (
+              <div className="hidden xl:flex items-center gap-2">
+                <button onClick={schedulerToolbar.onPrev} className="dashboard-topbar-icon">
+                  <ChevronLeft size={14} strokeWidth={2} />
+                </button>
+                <button onClick={schedulerToolbar.onToday} className="dashboard-topbar-control dashboard-topbar-today px-4 uppercase">
+                  Aujourd&apos;hui
+                </button>
+                <button onClick={schedulerToolbar.onNext} className="dashboard-topbar-icon">
+                  <ChevronRight size={14} strokeWidth={2} />
+                </button>
+              </div>
+            )}
           </div>
           
-          <div className="flex-1 flex justify-center px-6">
-            <div className="relative group w-full max-w-md hidden md:block">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 transition-colors group-focus-within:text-primary" size={14} strokeWidth={2} />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 hidden w-full max-w-[520px] -translate-x-1/2 -translate-y-1/2 px-4 md:block">
+            <div className="pointer-events-auto relative group">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/70 transition-colors group-focus-within:text-primary" size={14} strokeWidth={2} />
               <input
                 type="text" value={globalSearch}
                 onChange={(e) => onGlobalSearchChange(e.target.value)}
                 placeholder="Rechercher un patient, un rdv, un soin..."
-                className="h-10 w-full rounded-2xl border border-[#e1e8f2] bg-[#f4f7fb] pl-10 pr-4 text-[13px] font-medium text-slate-700 outline-none transition-all duration-300 focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/5 placeholder:text-slate-400"
+                className="dashboard-topbar-search pl-10"
               />
             </div>
           </div>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-3 min-w-[240px] justify-end">
+          <div className="ml-auto flex min-w-[300px] items-center justify-end gap-2">
             {activePage === 'dashboard' && dashboardToolbar && (
               <div className="hidden lg:flex items-center gap-3">
-                <div className="flex h-8 items-center gap-2 rounded-xl border border-[#dbe4f0] bg-white px-3 text-xs font-medium text-slate-600">
+                <div className="dashboard-topbar-control gap-2 px-3 text-muted-foreground">
                   <Calendar size={14} strokeWidth={1.8} />
                   <span>{dashboardToolbar.dateLabel}</span>
                 </div>
                 <button
                   onClick={dashboardToolbar.onGoalClick}
-                  className="flex h-8 items-center gap-2 rounded-xl bg-primary px-3 text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:brightness-105"
+                  className="dashboard-topbar-primary gap-2 px-4"
                 >
                   <Goal size={14} strokeWidth={1.8} />
                   <span>{dashboardToolbar.goalLabel}</span>
@@ -260,29 +295,25 @@ export default function AppLayout({
               </div>
             )}
             {activePage === 'scheduler' && schedulerToolbar && (
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1">
-                  <button onClick={schedulerToolbar.onPrev} className="h-8 w-8 flex items-center justify-center rounded-md border border-border bg-background hover:bg-accent transition-colors">
-                    <ChevronLeft size={14} strokeWidth={2} />
-                  </button>
-                  <button onClick={schedulerToolbar.onNext} className="h-8 w-8 flex items-center justify-center rounded-md border border-border bg-background hover:bg-accent transition-colors">
-                    <ChevronRight size={14} strokeWidth={2} />
-                  </button>
-                  <button onClick={schedulerToolbar.onToday} className="h-8 px-3 flex items-center justify-center rounded-md border border-border bg-background text-[11px] font-semibold tracking-wide hover:bg-accent transition-colors ml-1 uppercase">
-                    Aujourd&apos;hui
-                  </button>
-                </div>
-                <div className="flex h-8 items-center rounded-md p-0.5 border border-border bg-muted/50">
+              <div className="flex items-center gap-2">
+                <div className="dashboard-topbar-switch">
                   {(['week', 'month'] as const).map((view) => (
-                    <button key={view} onClick={() => schedulerToolbar.onToggleView(view)} className={`h-7 px-3 rounded-md text-[11px] font-semibold tracking-wide transition-all duration-200 uppercase ${schedulerToolbar.view === view ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}>
+                    <button key={view} onClick={() => schedulerToolbar.onToggleView(view)} className={`dashboard-topbar-segment tracking-wide uppercase ${schedulerToolbar.view === view ? 'dashboard-topbar-segment-active' : ''}`}>
                       {view === 'week' ? 'Semaine' : 'Mois'}
                     </button>
                   ))}
                 </div>
-                <button onClick={schedulerToolbar.onToggleAbsenceMode} className={`flex items-center gap-1.5 h-8 px-3 rounded-md transition-all duration-200 border text-[11px] font-semibold tracking-wide uppercase ${
+                <button
+                  onClick={schedulerToolbar.onOpenSettings}
+                  className="dashboard-topbar-control gap-1.5 px-3 uppercase"
+                >
+                  <Calendar size={12} strokeWidth={2} />
+                  Créneaux
+                </button>
+                <button onClick={schedulerToolbar.onToggleAbsenceMode} className={`dashboard-topbar-control gap-1.5 px-3 uppercase ${
                   schedulerToolbar.absenceMode 
-                    ? 'bg-primary border-primary text-primary-foreground' 
-                    : 'border-border bg-background text-muted-foreground hover:bg-accent'
+                    ? 'bg-primary border-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground' 
+                    : ''
                 }`}>
                   <Ban size={12} strokeWidth={2} />
                   {schedulerToolbar.absenceMode ? `Valider (${schedulerToolbar.absencePendingCount})` : 'Absences'}
@@ -292,14 +323,14 @@ export default function AppLayout({
 
             {activePage === 'clients' && clientsToolbar && (
               <div className="flex items-center gap-2">
-                <div className="flex h-8 items-center rounded-md border border-border p-0.5 bg-muted/50">
+                <div className="dashboard-topbar-switch">
                   {(['list', 'grid'] as const).map((mode) => (
-                    <button key={mode} onClick={() => clientsToolbar.onViewModeChange(mode)} className={`flex h-7 w-7 items-center justify-center rounded-md transition-all duration-200 ${clientsToolbar.viewMode === mode ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}>
+                    <button key={mode} onClick={() => clientsToolbar.onViewModeChange(mode)} className={`dashboard-topbar-segment min-w-0 px-0 ${clientsToolbar.viewMode === mode ? 'dashboard-topbar-segment-active' : ''}`}>
                       {mode === 'list' ? <List size={14} strokeWidth={2} /> : <LayoutGrid size={14} strokeWidth={2} />}
                     </button>
                   ))}
                 </div>
-                <button onClick={clientsToolbar.onToggleFilters} className="flex h-8 items-center gap-1.5 rounded-md border border-border px-3 text-[11px] font-semibold tracking-wide uppercase bg-background text-muted-foreground hover:bg-accent transition-colors">
+                <button onClick={clientsToolbar.onToggleFilters} className="dashboard-topbar-control gap-1.5 px-3 uppercase">
                   <Filter size={12} strokeWidth={2} /> Filtres
                 </button>
               </div>
@@ -310,7 +341,7 @@ export default function AppLayout({
                 {clientDetailToolbar.onSchedule && (
                   <button 
                     onClick={clientDetailToolbar.onSchedule}
-                    className="h-8 px-3 rounded-md text-[11px] font-semibold tracking-wide uppercase transition-all duration-200 flex items-center gap-1.5 bg-primary text-primary-foreground hover:brightness-110"
+                    className="dashboard-topbar-primary gap-1.5 px-4 uppercase"
                   >
                     <Plus size={13} strokeWidth={2} /> Nouvelle séance
                   </button>
@@ -321,26 +352,26 @@ export default function AppLayout({
             {activePage === 'accounting' && financeToolbar && (
               <div className="flex items-center gap-2">
                 {financeToolbar.showDateRange && (
-                  <div className="flex h-8 items-center gap-2 rounded-md px-3 border border-border bg-background">
-                    <input type="date" value={financeToolbar.dateRange.start} onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, start: e.target.value })} className="bg-transparent text-[11px] font-medium outline-none text-foreground" />
+                  <div className="dashboard-topbar-control gap-2 px-3">
+                    <input type="date" value={financeToolbar.dateRange.start} onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, start: e.target.value })} className="dashboard-meta-strong bg-transparent outline-none text-foreground" />
                     <ArrowRight size={12} className="text-muted-foreground" />
-                    <input type="date" value={financeToolbar.dateRange.end} onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, end: e.target.value })} className="bg-transparent text-[11px] font-medium outline-none text-foreground" />
+                    <input type="date" value={financeToolbar.dateRange.end} onChange={(e) => financeToolbar.onDateRangeChange({ ...financeToolbar.dateRange, end: e.target.value })} className="dashboard-meta-strong bg-transparent outline-none text-foreground" />
                   </div>
                 )}
-                <button onClick={financeToolbar.onToggleDateFilter} className="w-8 h-8 flex items-center justify-center rounded-md border border-border bg-background hover:bg-accent transition-colors text-muted-foreground">
+                <button onClick={financeToolbar.onToggleDateFilter} className="dashboard-topbar-icon">
                   <Calendar size={14} strokeWidth={2} />
                 </button>
-                <button onClick={financeToolbar.onToggleFilters} className="w-8 h-8 flex items-center justify-center rounded-md border border-border bg-background hover:bg-accent transition-colors text-muted-foreground">
+                <button onClick={financeToolbar.onToggleFilters} className="dashboard-topbar-icon">
                   <Filter size={14} strokeWidth={2} />
                 </button>
-                <button onClick={financeToolbar.onExport} className="h-8 px-3 rounded-md text-[11px] font-semibold tracking-wide uppercase transition-all duration-200 flex items-center gap-1.5 bg-primary text-primary-foreground hover:brightness-110">
+                <button onClick={financeToolbar.onExport} className="dashboard-topbar-primary gap-1.5 px-4 uppercase">
                   <Download size={13} strokeWidth={2} /> Exporter
                 </button>
               </div>
             )}
 
             {activePage === 'settings' && (
-              <div className="flex items-center gap-2 text-[11px] font-semibold text-muted-foreground tracking-wide uppercase">
+              <div className="dashboard-table-header-cell flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 Système opérationnel
               </div>
@@ -351,7 +382,7 @@ export default function AppLayout({
 
 
         {/* Main Content */}
-        <main className={`flex-1 overflow-hidden ${activePage === 'scheduler' ? 'p-0' : activePage === 'appointment-detail' ? 'p-0' : 'p-8'}`} style={{ background: '#eff4fb' }}>
+        <main className={`flex-1 overflow-hidden ${activePage === 'scheduler' ? 'p-0' : activePage === 'appointment-detail' ? 'p-0' : 'p-8'}`} style={{ background: 'hsl(var(--secondary) / 0.4)' }}>
           <AnimatePresence mode="wait">
             <motion.div 
               key={activePage} 

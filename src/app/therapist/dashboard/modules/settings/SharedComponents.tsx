@@ -5,8 +5,8 @@ import { Bell } from 'lucide-react';
 export function SectionHeader({ title, subtitle }: { title: string, subtitle: string }) {
    return (
       <div className="mb-5 space-y-1">
-         <h4 className="text-lg font-semibold tracking-tight text-slate-900">{title}</h4>
-         <p className="text-sm text-slate-500">{subtitle}</p>
+         <h4 className="dashboard-title">{title}</h4>
+         <p className="dashboard-muted-text">{subtitle}</p>
       </div>
    );
 }
@@ -57,15 +57,15 @@ export function InlineEditableField({
          onBlur={commit}
          onKeyDown={handleKey}
          placeholder={placeholder}
-         className={`w-full rounded-2xl border border-[#d9e2ee] bg-white px-4 text-[15px] font-medium tracking-tight text-slate-900 outline-none transition focus:border-slate-900 focus:ring-0 ${align === 'center' ? 'text-center' : ''} ${editingClassName || 'h-12'}`}
+         className={`dashboard-field dashboard-body-strong w-full rounded-2xl px-4 ${align === 'center' ? 'text-center' : ''} ${editingClassName || 'h-12'}`}
       />
    ) : (
       <div
          onDoubleClick={() => setEditing(true)}
-         className={`flex min-h-[3rem] cursor-text items-center rounded-2xl border border-[#d9e2ee] bg-white px-4 text-[15px] font-medium tracking-tight text-slate-900 transition ${align === 'center' ? 'justify-center text-center' : ''} ${className}`}
+         className={`dashboard-body-strong flex min-h-[3rem] cursor-text items-center rounded-2xl border border-border bg-background px-4 transition ${align === 'center' ? 'justify-center text-center' : ''} ${className}`}
       >
          <span className="truncate">
-            {value || <span className="text-slate-400">{placeholder}</span>}
+            {value || <span className="text-muted-foreground/60">{placeholder}</span>}
          </span>
       </div>
    );
@@ -97,29 +97,29 @@ export function InlineEditableTextarea({
    };
 
    const baseView = variant === 'soft'
-      ? 'border border-[#d9e2ee] bg-[#f8fbff]'
-      : 'border shadow-sm';
+      ? 'border border-border bg-secondary/20'
+      : 'border border-border bg-background shadow-sm';
    const baseEdit = variant === 'soft'
-      ? 'border border-slate-900 bg-white'
-      : 'border shadow-sm';
+      ? 'border border-primary bg-background'
+      : 'border border-border bg-background shadow-sm';
 
    return editing ? (
-      <textarea
+         <textarea
          autoFocus
          value={draft}
          onChange={(e) => setDraft(e.target.value)}
          onBlur={commit}
          rows={rows}
          placeholder={placeholder}
-         className={`w-full resize-none rounded-[20px] p-4 text-[15px] font-medium leading-7 text-slate-900 outline-none ${baseEdit}`}
+         className={`dashboard-body-strong w-full resize-none rounded-xl p-4 leading-7 outline-none ${baseEdit}`}
       />
    ) : (
       <div
          onDoubleClick={() => setEditing(true)}
-         className={`min-h-[120px] w-full cursor-text rounded-[20px] p-4 text-[15px] font-medium leading-7 text-slate-900 transition ${baseView}`}
+         className={`dashboard-body-strong min-h-[120px] w-full cursor-text rounded-xl p-4 leading-7 transition ${baseView}`}
       >
          <p className="whitespace-pre-wrap leading-relaxed">
-            {value || <span className="text-slate-400">{placeholder}</span>}
+            {value || <span className="text-muted-foreground/60">{placeholder}</span>}
          </p>
       </div>
    );
@@ -165,12 +165,12 @@ export function InlineEditableFieldDark({
             }
          }}
          placeholder={placeholder}
-          className="h-12 w-full rounded-2xl border border-white/25 bg-white/10 px-4 text-[15px] font-medium tracking-tight text-white outline-none placeholder:text-white/35"
+          className="dashboard-body-strong h-12 w-full rounded-2xl border border-white/25 bg-white/10 px-4 text-white outline-none placeholder:text-white/35"
        />
    ) : (
       <div
           onDoubleClick={() => setEditing(true)}
-          className="flex h-12 cursor-text items-center rounded-2xl border border-white/10 bg-white/8 px-4 text-[15px] font-medium tracking-tight text-white transition-all"
+          className="dashboard-body-strong flex h-12 cursor-text items-center rounded-2xl border border-white/10 bg-white/8 px-4 text-white transition-all"
        >
          <span className="truncate">
             {masked || <span className="opacity-20">{placeholder}</span>}
@@ -182,15 +182,15 @@ export function InlineEditableFieldDark({
 export function InputGroup({ label, value, onChange, icon, type = 'text' }: { label: string, value: string, onChange: (v: string) => void, icon?: React.ReactNode, type?: string }) {
    return (
       <div className="space-y-2">
-         <div className="flex items-center gap-2 px-1 text-slate-500">
+         <div className="flex items-center gap-2 px-1 text-muted-foreground">
             {icon && <div className="flex h-4 w-4 shrink-0 items-center justify-center">{icon}</div>}
-            <label className="text-sm font-medium leading-none">{label}</label>
+            <label className="dashboard-body leading-none">{label}</label>
          </div>
          <input 
             type={type} 
             value={value} 
             onChange={e => onChange(e.target.value)} 
-            className="h-12 w-full rounded-2xl border border-[#d9e2ee] bg-white px-4 text-[15px] font-medium tracking-tight text-slate-900 outline-none transition focus:border-slate-900" 
+            className="dashboard-field dashboard-body-strong h-12 rounded-2xl px-4" 
          />
       </div>
    );
@@ -198,19 +198,19 @@ export function InputGroup({ label, value, onChange, icon, type = 'text' }: { la
 
 export function ToggleItem({ label, desc, val, set }: { label: string, desc: string, val: boolean, set: (v: boolean) => void }) {
    return (
-      <div className="flex items-center justify-between rounded-[20px] border border-[#e2e9f3] bg-[#f8fbff] p-4 transition-all">
+      <div className="dashboard-surface-soft flex items-center justify-between rounded-[20px] p-4 transition-all">
          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl transition-all shadow-sm" style={{ background: val ? "hsl(var(--primary))" : "#e9f0f7", color: val ? "hsl(var(--primary-foreground))" : "#64748b" }}>
+            <div className={`flex h-10 w-10 items-center justify-center rounded-2xl transition-all shadow-sm ${val ? 'bg-primary text-primary-foreground' : 'bg-secondary text-muted-foreground'}`}>
                <Bell size={16} strokeWidth={2.1} />
             </div>
             <div>
-               <h5 className="text-sm font-semibold leading-none text-slate-900">{label}</h5>
-               <p className="mt-1 text-sm text-slate-500">{desc}</p>
+               <h5 className="dashboard-body-strong leading-none">{label}</h5>
+               <p className="dashboard-body mt-1">{desc}</p>
             </div>
          </div>
          <button 
             onClick={() => set(!val)} 
-            className="relative h-7 w-12 rounded-full transition-all shadow-inner" style={{ background: val ? "hsl(var(--primary))" : "#dbe4ef" }}
+            className={`relative h-7 w-12 rounded-full transition-all shadow-inner ${val ? 'bg-primary' : 'bg-border'}`}
          >
             <motion.div 
                animate={{ x: val ? 22 : 3 }}

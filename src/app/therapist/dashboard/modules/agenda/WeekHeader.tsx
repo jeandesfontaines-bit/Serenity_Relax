@@ -18,9 +18,9 @@ export default function WeekHeader({
   togglePending,
 }: WeekHeaderProps) {
   return (
-    <div className="grid shrink-0 border-b border-[#edf2f7] bg-white" style={{ gridTemplateColumns: '84px repeat(7, minmax(0, 1fr))' }}>
-      <div className="flex items-center justify-center border-r border-[#edf2f7] bg-[#f8fbff]">
-        <span className="text-[11px] font-semibold tracking-[0.16em] text-slate-400 uppercase">
+    <div className="grid shrink-0 border-b border-border/60 bg-background" style={{ gridTemplateColumns: '84px repeat(7, minmax(0, 1fr))' }}>
+      <div className="flex items-center justify-center border-r border-border/60 bg-secondary/20">
+        <span className="dashboard-calendar-label">
           Heures
         </span>
       </div>
@@ -33,23 +33,23 @@ export default function WeekHeader({
           <div
             key={i}
             onClick={() => absenceMode && togglePending(dStr)}
-            className={`relative border-r border-[#edf2f7] px-2 py-4 text-center transition-all duration-200 ${
+            className={`relative border-r border-border/60 px-2 py-4 text-center transition-all duration-200 ${
               absenceMode ? 'cursor-pointer hover:bg-red-50' : ''
-            } ${isPending ? 'bg-red-50' : 'bg-white'}`}
+            } ${isPending ? 'bg-red-50' : 'bg-background'}`}
           >
-            <p className={`mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
-              isToday && !isPending ? 'text-slate-800' : isPending ? 'text-red-500' : 'text-slate-400'
+            <p className={`dashboard-calendar-label mb-2 transition-colors ${
+              isToday && !isPending ? 'text-foreground' : isPending ? 'text-red-500' : 'text-muted-foreground/75'
             }`}>
               {DAYS_LABELS[i]}
             </p>
-            <div className={`inline-flex h-11 min-w-[62px] items-center justify-center rounded-2xl border px-4 transition-all ${
+            <div className={`inline-flex h-11 min-w-[62px] items-center justify-center px-4 transition-all ${
               isToday && !isPending
-                ? 'border-slate-900 bg-slate-900 text-white'
+                ? 'bg-transparent text-primary'
                 : isOpen
-                  ? (isPending ? 'border-red-200 bg-white text-red-600' : 'border-[#e2e9f3] bg-[#f8fbff] text-slate-900')
-                  : 'border-[#edf2f7] bg-[#fbfcfe] text-slate-300'
+                  ? (isPending ? 'bg-transparent text-red-600' : 'bg-transparent text-foreground')
+                  : 'bg-transparent text-muted-foreground/45'
             }`}>
-              <span className="text-[1.35rem] font-semibold tabular-nums tracking-tight">
+              <span className={isToday && !isPending ? 'dashboard-calendar-date-active' : 'dashboard-calendar-date'}>
                 {d.getDate()}
               </span>
             </div>

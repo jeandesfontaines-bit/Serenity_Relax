@@ -55,8 +55,8 @@
   --font-signature: 'Allura', cursive;
 
   /* Layout */
-  --topbar-control-height: 44px;
-  --topbar-icon-size: 20px;
+  --topbar-control-height: 34px;
+  --topbar-icon-size: 34px;
 }
 
 .dark {
@@ -653,6 +653,10 @@
 }
 
 @layer components {
+  .dashboard-shell {
+    @apply bg-secondary/40;
+  }
+
   .dashboard-panel {
     @apply rounded-xl border border-border bg-card transition-all duration-300;
     box-shadow: var(--shadow-card);
@@ -666,8 +670,25 @@
     @apply rounded-lg border border-border/50 bg-secondary/30;
   }
 
+  .dashboard-panel-lg {
+    @apply rounded-2xl border border-border bg-card transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+
+  .dashboard-panel-lg:hover {
+    box-shadow: var(--shadow-hover);
+  }
+
   .dashboard-inset {
     @apply rounded-lg border border-border/50 bg-secondary/50;
+  }
+
+  .dashboard-surface-soft {
+    @apply rounded-xl border border-border/60 bg-secondary/30;
+  }
+
+  .dashboard-divider {
+    @apply border-border/60;
   }
 
   .dashboard-toolbar-input {
@@ -723,6 +744,58 @@
     @apply block text-xs font-medium text-muted-foreground tracking-[0.05em];
   }
 
+  .dashboard-header-title {
+    @apply text-sm font-semibold tracking-tight leading-tight text-foreground;
+  }
+
+  .dashboard-header-subtitle {
+    @apply text-[10px] font-medium tracking-[0.08em] text-muted-foreground/80;
+  }
+
+  .dashboard-section-title {
+    @apply text-base font-semibold tracking-tight text-foreground;
+  }
+
+  .dashboard-section-title-lg {
+    @apply text-lg font-semibold tracking-tight text-foreground;
+  }
+
+  .dashboard-metric-value {
+    @apply text-2xl font-semibold tracking-tight leading-none text-foreground tabular-nums;
+  }
+
+  .dashboard-metric-label {
+    @apply text-[9px] font-semibold uppercase tracking-[0.08em] text-muted-foreground/70;
+  }
+
+  .dashboard-body-strong {
+    @apply text-sm font-medium tracking-tight text-foreground;
+  }
+
+  .dashboard-body {
+    @apply text-sm font-medium text-muted-foreground;
+  }
+
+  .dashboard-body-muted {
+    @apply text-sm font-normal text-muted-foreground;
+  }
+
+  .dashboard-edit-value {
+    @apply text-sm font-medium text-foreground;
+  }
+
+  .dashboard-edit-value-lg {
+    @apply text-2xl font-semibold tracking-tight text-foreground tabular-nums;
+  }
+
+  .dashboard-meta {
+    @apply text-[10px] font-medium tracking-[0.05em] text-muted-foreground/75;
+  }
+
+  .dashboard-meta-strong {
+    @apply text-[11px] font-semibold tracking-[0.05em];
+  }
+
   .dashboard-muted-text {
     @apply text-sm font-normal text-muted-foreground leading-relaxed;
   }
@@ -753,12 +826,101 @@
     @apply rounded-md px-3 py-1 text-xs font-medium bg-secondary text-muted-foreground;
   }
 
+  .dashboard-status-chip {
+    @apply inline-flex items-center justify-center rounded-full border border-border bg-secondary/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground;
+  }
+
+  .dashboard-table-header-cell {
+    @apply inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/80 transition-colors;
+  }
+
+  .dashboard-table-header-cell:hover {
+    @apply text-foreground;
+  }
+
+  .dashboard-table-cell {
+    @apply text-sm font-medium text-muted-foreground;
+  }
+
+  .dashboard-table-cell-strong {
+    @apply text-sm font-medium text-foreground;
+  }
+
+  .dashboard-calendar-label {
+    @apply text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/75;
+  }
+
+  .dashboard-calendar-date {
+    @apply text-[1.45rem] font-medium tracking-tight text-foreground tabular-nums;
+  }
+
+  .dashboard-calendar-date-active {
+    @apply text-[1.55rem] font-semibold tracking-tight text-primary tabular-nums;
+  }
+
+  .dashboard-calendar-date-sm {
+    @apply text-[1rem] font-medium tracking-tight text-muted-foreground tabular-nums;
+  }
+
+  .dashboard-action-button {
+    @apply inline-flex items-center justify-center gap-2 h-10 rounded-xl border border-border bg-background px-5 text-foreground transition-all duration-200;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .dashboard-action-button:hover {
+    @apply bg-accent border-border shadow-sm;
+  }
+
+  .dashboard-action-button-primary {
+    @apply inline-flex items-center justify-center gap-2 h-10 rounded-xl border border-primary bg-primary px-5 text-primary-foreground transition-all duration-200;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 1px 3px 0 hsl(var(--primary) / 0.3);
+  }
+
+  .dashboard-action-button-primary:hover {
+    filter: brightness(1.06);
+    box-shadow: 0 4px 12px -2px hsl(var(--primary) / 0.35);
+  }
+
+  .dashboard-action-button-danger {
+    @apply inline-flex items-center justify-center gap-2 h-10 rounded-xl border border-destructive/20 bg-destructive/10 px-5 text-destructive transition-all duration-200;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .dashboard-action-button-danger:hover {
+    @apply bg-destructive text-destructive-foreground border-destructive;
+  }
+
+  .dashboard-action-card {
+    @apply rounded-2xl border border-border bg-background transition-all duration-200;
+    box-shadow: var(--shadow-card);
+  }
+
+  .dashboard-action-card:hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  .dashboard-checkbox {
+    @apply flex h-5 w-5 items-center justify-center rounded border border-border bg-background transition-all;
+  }
+
+  .dashboard-checkbox:hover {
+    @apply border-muted-foreground;
+  }
+
+  .dashboard-checkbox-checked {
+    @apply border-primary bg-primary text-primary-foreground;
+  }
+
   .dashboard-topbar-control {
     @apply inline-flex items-center justify-center rounded-lg border border-border px-4 transition-all duration-200 bg-background;
     height: var(--topbar-control-height);
     color: hsl(var(--foreground));
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 10px;
+    font-weight: 600;
   }
 
   .dashboard-topbar-control:hover {
@@ -792,14 +954,28 @@
     @apply border-transparent bg-transparent text-muted-foreground/50;
   }
 
+  .dashboard-topbar-primary {
+    @apply inline-flex items-center justify-center rounded-lg border border-primary bg-primary px-4 text-primary-foreground transition-all duration-200;
+    height: var(--topbar-control-height);
+    font-size: 10px;
+    font-weight: 600;
+    box-shadow: 0 1px 3px 0 hsl(var(--primary) / 0.22);
+  }
+
+  .dashboard-topbar-primary:hover {
+    filter: brightness(1.06);
+    box-shadow: 0 4px 12px -2px hsl(var(--primary) / 0.28);
+  }
+
   .dashboard-topbar-today {
-    @apply min-w-[200px] font-medium text-muted-foreground;
+    @apply min-w-[96px] font-semibold text-muted-foreground;
   }
 
   .dashboard-topbar-search {
-    @apply w-full h-10 rounded-lg border border-border pl-10 pr-4 outline-none transition-all duration-200 bg-background;
+    @apply w-full rounded-lg border border-border pl-10 pr-4 outline-none transition-all duration-200 bg-background;
+    height: var(--topbar-control-height);
     color: hsl(var(--foreground));
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 500;
   }
 
@@ -818,18 +994,53 @@
     @apply border-primary ring-2 ring-primary/10;
   }
 
+  .dashboard-field {
+    @apply h-11 w-full rounded-xl border border-border bg-background px-4 outline-none transition-all duration-200;
+    color: hsl(var(--foreground));
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .dashboard-field::placeholder {
+    @apply text-muted-foreground/55;
+  }
+
+  .dashboard-field:focus {
+    @apply border-primary ring-2 ring-primary/10;
+  }
+
+  .dashboard-field-static {
+    @apply rounded-xl border border-border/60 bg-secondary/20 px-4 py-3;
+  }
+
+  .dashboard-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground/80;
+  }
+
+  .dashboard-value {
+    @apply text-sm font-medium text-foreground;
+  }
+
+  .dashboard-value-muted {
+    @apply text-sm font-medium text-muted-foreground/65;
+  }
+
+  .dashboard-empty-state {
+    @apply rounded-xl border border-dashed border-border bg-secondary/30 text-center;
+  }
+
   .dashboard-topbar-switch {
     @apply inline-flex items-center rounded-lg border border-border p-1 bg-muted;
     height: var(--topbar-control-height);
   }
 
   .dashboard-topbar-segment {
-    @apply inline-flex items-center justify-center rounded-md px-4 transition-all duration-200;
-    height: calc(var(--topbar-control-height) - 10px);
-    min-width: 80px;
+    @apply inline-flex items-center justify-center rounded-md px-3.5 transition-all duration-200;
+    height: calc(var(--topbar-control-height) - 8px);
+    min-width: 60px;
     color: hsl(var(--muted-foreground));
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 10px;
+    font-weight: 600;
   }
 
   .dashboard-topbar-segment:hover {

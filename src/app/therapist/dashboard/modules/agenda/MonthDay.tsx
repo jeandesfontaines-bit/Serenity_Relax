@@ -60,34 +60,36 @@ export default function MonthDay({
         if (!inMonth) return;
         absenceMode ? togglePending(dStr) : onToggleView('week');
       }}
-      className={`relative flex flex-col h-full p-2 transition-all duration-200 group ${
-        !inMonth ? 'bg-muted/40 opacity-40' : isOpen ? 'bg-background cursor-pointer hover:bg-accent/50' : 'cursor-pointer hover:bg-accent/50'
-      } ${isPend ? 'ring-2 ring-primary/20 bg-primary/5 z-10' : ''} ${
+      className={`relative flex h-full flex-col p-2.5 transition-all duration-200 group ${
+        !inMonth ? 'bg-secondary/20 opacity-50' : isOpen ? 'bg-background cursor-pointer hover:bg-secondary/10' : 'cursor-pointer hover:bg-secondary/10'
+      } ${isPend ? 'bg-primary/5 z-10' : ''} ${
         inMonth && !isOpen ? 'closed-day-stripes' : ''
       }`}
     >
-      <div className="flex items-center justify-between mb-1.5">
+      <div className="mb-2 flex items-center justify-between">
         <div className={`flex items-center justify-center transition-all ${
           isToday && inMonth 
-            ? 'w-9 h-9 rounded-full bg-blue-600 text-white shadow-md shadow-blue-200 scale-110' 
-            : 'w-7 h-7'
+            ? 'h-8 min-w-[2rem] rounded-full bg-primary px-2 text-primary-foreground' 
+            : 'h-7 min-w-[1.75rem]'
         }`}>
-          <span className={`text-[17px] font-black tabular-nums tracking-tighter ${
-            isToday && inMonth ? 'text-white' : 
-            inMonth ? 'text-slate-900' : 'text-slate-300'
+          <span className={`tabular-nums tracking-tight ${
+            isToday && inMonth ? 'text-primary-foreground' : 
+            inMonth ? 'text-muted-foreground' : 'text-muted-foreground/40'
           }`}>
+            <span className={isToday && inMonth ? 'dashboard-calendar-date-active text-primary-foreground' : 'dashboard-calendar-date-sm'}>
             {day.getDate()}
+            </span>
           </span>
         </div>
         
         {day.getDate() === 1 && inMonth && (
-          <span className="text-[11px] font-black uppercase tracking-[0.1em] text-blue-600">
+          <span className="dashboard-calendar-label text-primary">
             {format(day, 'MMM', { locale: fr })}
           </span>
         )}
       </div>
 
-      <div className="flex-1 flex flex-col gap-1 overflow-hidden">
+      <div className="flex flex-1 flex-col gap-1 overflow-hidden">
         {dayAppointments.length > 0 && !isPend && (
           <div className="space-y-1">
             {dayAppointments.slice(0, 3).map((appt: Appointment) => (
@@ -97,13 +99,13 @@ export default function MonthDay({
                   event.stopPropagation();
                   onSelectAppt(appt);
                 }}
-                className={`px-2 py-1 rounded-md shadow-sm ${getAppointmentTone(appt).bg} transition-transform hover:scale-[1.02]`}
+                className={`rounded-full px-2.5 py-1 ${getAppointmentTone(appt).bg} transition-transform hover:scale-[1.01]`}
               >
                 <div className="flex items-center gap-1.5 overflow-hidden">
-                  <span className="text-[9px] font-black tabular-nums text-white/90 shrink-0">
+                  <span className="dashboard-meta shrink-0 tabular-nums text-white/85">
                     {appt.time}
                   </span>
-                  <p className="truncate text-[10px] font-bold tracking-tight text-white">
+                  <p className="dashboard-meta-strong truncate tracking-tight text-white">
                     {appt.clientNameSnapshot || appt.title}
                   </p>
                 </div>
@@ -111,8 +113,8 @@ export default function MonthDay({
             ))}
             {dayAppointments.length > 3 && (
               <div className="flex items-center gap-1 pl-2">
-                <div className="w-1 h-1 rounded-full bg-slate-300" />
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                <div className="h-1 w-1 rounded-full bg-muted-foreground/40" />
+                <p className="dashboard-metric-label text-muted-foreground/70">
                   + {dayAppointments.length - 3} autres
                 </p>
               </div>
@@ -124,7 +126,7 @@ export default function MonthDay({
           <div className="mt-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <div className="flex items-center gap-1 text-emerald-500/60 pl-1">
               <div className="w-1 h-1 rounded-full bg-current" />
-              <p className="text-[9px] font-bold uppercase tracking-widest">
+              <p className="dashboard-metric-label">
                 {freeSlots.length} dispo
               </p>
             </div>
@@ -133,7 +135,7 @@ export default function MonthDay({
       </div>
 
       {isPend && (
-        <div className="absolute inset-0 bg-primary/10 border-2 border-primary pointer-events-none" />
+        <div className="pointer-events-none absolute inset-0 bg-primary/8 ring-1 ring-primary/15" />
       )}
     </div>
   );

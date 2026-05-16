@@ -11,10 +11,10 @@ export default function Checkbox({ checked, onChange }: CheckboxProps) {
     <button
       type="button"
       onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`flex h-5 w-5 items-center justify-center rounded border transition-all ${
+      className={`dashboard-checkbox ${
         checked 
-          ? 'bg-primary border-primary text-primary-foreground' 
-          : 'bg-background border-border text-transparent hover:border-muted-foreground'
+          ? 'dashboard-checkbox-checked' 
+          : 'text-transparent'
       }`}
     >
       <Check size={12} strokeWidth={3} className={`transition-all ${checked ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} />

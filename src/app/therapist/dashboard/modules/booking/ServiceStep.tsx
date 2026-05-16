@@ -33,9 +33,9 @@ export function ServiceStep({
       className="p-12 space-y-8"
     >
       {/* Patient Recap */}
-      <div className="flex items-center justify-between p-5 rounded-3xl border border-border/30 bg-secondary/50">
+      <div className="dashboard-surface-soft flex items-center justify-between rounded-2xl p-5">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-[1.25rem] flex items-center justify-center shadow-sm bg-primary text-primary-foreground">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
             <User size={16} strokeWidth={2.5} />
           </div>
           <div className="min-w-0">
@@ -47,7 +47,7 @@ export function ServiceStep({
         </div>
         <button
           onClick={onBack}
-          className="h-9 px-5 rounded-full border border-border text-[11px] font-bold tracking-[0.05em] transition-all duration-200 text-muted-foreground hover:border-primary hover:text-primary"
+          className="dashboard-secondary-button h-9 rounded-full px-5 text-[11px]"
         >
           Modifier
         </button>
@@ -66,10 +66,10 @@ export function ServiceStep({
                 onClick={() => onSelectService(s.name)}
                 whileHover={isSelected ? {} : { y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className={`p-6 rounded-3xl border-2 text-left transition-all duration-700 relative overflow-hidden ${
+                className={`relative overflow-hidden rounded-2xl border-2 p-6 text-left transition-all duration-300 ${
                   isSelected 
                     ? 'border-primary bg-primary shadow-[0_12px_32px_-8px_hsl(var(--primary)/0.35)] scale-[1.02]' 
-                    : 'border-border/30 bg-background shadow-[0_1px_4px_hsl(var(--foreground)/0.04)] hover:border-primary/50'
+                    : 'border-border bg-background shadow-sm hover:border-primary/50'
                 }`}
               >
                 {isSelected && (
@@ -100,7 +100,7 @@ export function ServiceStep({
         onClick={onConfirm}
         whileHover={{ y: -3 }}
         whileTap={{ scale: 0.97 }}
-        className="w-full h-16 rounded-3xl text-[12px] font-bold tracking-[0.05em] flex items-center justify-center gap-3 group transition-all duration-700 bg-primary text-primary-foreground shadow-[0_12px_32px_-8px_hsl(var(--primary)/0.4)]"
+        className="dashboard-primary-button h-16 w-full rounded-2xl text-[12px] tracking-[0.05em] shadow-[0_12px_32px_-8px_hsl(var(--primary)/0.4)]"
       >
         <ShieldCheck size={20} strokeWidth={2.5} className="transition-transform duration-300 group-hover:scale-110" />
         {isCreatingNew ? 'Finaliser et créer le profil' : 'Confirmer la réservation'}

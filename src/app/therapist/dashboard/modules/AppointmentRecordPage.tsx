@@ -131,7 +131,7 @@ export default function AppointmentRecordPage({
           <button
             type="button"
             onClick={handleCancelAppt}
-            className="inline-flex h-11 items-center gap-3 rounded-full border border-destructive/20 bg-destructive/10 px-5 text-[11px] font-bold tracking-[0.05em] text-destructive transition-colors hover:bg-destructive/15"
+            className="dashboard-action-button-danger h-11 gap-3 rounded-xl px-5"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 6h18" />
@@ -188,11 +188,11 @@ export default function AppointmentRecordPage({
             </div>
 
             {showPaymentMethods && !current.paid && (
-              <div className="rounded-[2rem] border border-border/60 bg-card p-5 shadow-sm">
+              <div className="dashboard-panel rounded-[1.25rem] p-5">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
                     <p className="dashboard-eyebrow mb-1">Règlement</p>
-                    <p className="text-sm font-medium text-muted-foreground">
+                    <p className="dashboard-body">
                       Choisissez le mode utilisé pour enregistrer la facture comme réglée.
                     </p>
                   </div>
@@ -203,7 +203,7 @@ export default function AppointmentRecordPage({
                         type="button"
                         disabled={isUpdatingPayment}
                         onClick={() => void handlePayment(method.value)}
-                        className="inline-flex h-11 items-center rounded-full border border-border bg-background px-5 text-[11px] font-bold tracking-[0.08em] text-foreground transition-colors hover:bg-accent disabled:opacity-50"
+                        className="dashboard-action-button h-11 rounded-xl px-5 disabled:opacity-50"
                       >
                         {method.label}
                       </button>
@@ -240,7 +240,7 @@ export default function AppointmentRecordPage({
                         value={String(current.price || '')}
                         onChange={(value) => updateDoc(doc(firestore!, 'appointments', current.id), { price: Number(value) })}
                       />
-                      <span className="font-bold text-muted-foreground">CHF</span>
+                      <span className="dashboard-body-strong text-muted-foreground">CHF</span>
                     </div>
                   }
                 />
@@ -272,11 +272,11 @@ export default function AppointmentRecordPage({
 
           <div className="space-y-8">
             <div className="grid grid-cols-1 gap-5">
-              <div className="rounded-[2rem] border border-border/40 bg-card p-6 shadow-sm">
+              <div className="dashboard-panel rounded-[1.25rem] p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="dashboard-eyebrow mb-1 text-muted-foreground">Séances totales</p>
-                    <p className="text-2xl font-bold tracking-tight text-foreground">{sessionCount}</p>
+                    <p className="dashboard-metric-value text-foreground">{sessionCount}</p>
                   </div>
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-muted-foreground">
                     <BarChart size={20} strokeWidth={2.5} />
@@ -284,13 +284,13 @@ export default function AppointmentRecordPage({
                 </div>
               </div>
 
-              <div className={`rounded-[2rem] border p-6 shadow-sm ${totalDue > 0 ? 'border-transparent bg-primary text-primary-foreground' : 'border-border/40 bg-card text-foreground'}`}>
+              <div className={`rounded-[1.25rem] border p-6 shadow-sm ${totalDue > 0 ? 'border-transparent bg-primary text-primary-foreground' : 'border-border/40 bg-card text-foreground'}`}>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className={`dashboard-eyebrow mb-1 ${totalDue > 0 ? 'text-primary-foreground/60' : 'text-muted-foreground'}`}>Solde à régler</p>
-                    <p className="text-2xl font-bold tracking-tight">{totalDue} CHF</p>
+                    <p className="dashboard-metric-value">{totalDue} CHF</p>
                     {current.paid && current.paymentMethod && (
-                      <p className="mt-2 text-xs font-semibold tracking-[0.05em] text-primary-foreground/80">
+                      <p className="dashboard-meta-strong mt-2 text-primary-foreground/80">
                         Dernier règlement : {current.paymentMethod}
                       </p>
                     )}
@@ -301,11 +301,11 @@ export default function AppointmentRecordPage({
                 </div>
               </div>
 
-              <div className="rounded-[2rem] border border-border/40 bg-card p-6 shadow-sm">
+              <div className="dashboard-panel rounded-[1.25rem] p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="dashboard-eyebrow mb-1 text-muted-foreground">Dernière visite</p>
-                    <p className="text-2xl font-bold tracking-tight text-foreground">
+                    <p className="dashboard-metric-value text-foreground">
                       {lastVisit?.date ? format(parseISO(lastVisit.date), 'dd MMM', { locale: fr }) : 'aucune'}
                     </p>
                   </div>
@@ -316,15 +316,15 @@ export default function AppointmentRecordPage({
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-border/40 bg-card p-8 shadow-sm">
+            <div className="dashboard-panel rounded-[1.25rem] p-8">
               <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
                     <Edit3 size={16} strokeWidth={2.5} />
                   </div>
-                  <h4 className="text-[13px] font-bold tracking-[0.05em] text-foreground">Journal clinique</h4>
+                  <h4 className="dashboard-section-title">Journal clinique</h4>
                 </div>
-                <span className="rounded-full bg-primary px-4 py-2 text-[9px] font-bold tracking-[0.1em] text-primary-foreground">
+                <span className="dashboard-status-chip rounded-full bg-primary px-4 py-2 text-primary-foreground">
                   Archivé
                 </span>
               </div>
@@ -339,7 +339,7 @@ export default function AppointmentRecordPage({
                 type="button"
                 onClick={handleSaveNotes}
                 disabled={isSavingNotes}
-                className={`mt-6 flex h-14 w-full items-center justify-center gap-4 rounded-full text-[12px] font-bold tracking-[0.1em] transition-all ${
+                className={`dashboard-action-button-primary mt-6 h-14 w-full justify-center gap-4 rounded-full transition-all ${
                   saveSuccess
                     ? 'scale-95 bg-primary text-primary-foreground'
                     : 'bg-primary text-primary-foreground shadow-sm hover:-translate-y-0.5 hover:shadow-lg'

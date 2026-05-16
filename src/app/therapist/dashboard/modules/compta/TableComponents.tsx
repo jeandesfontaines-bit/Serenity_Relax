@@ -7,8 +7,8 @@ export function TableCheckbox({ checked, onChange }: { checked: boolean; onChang
     <button
       type="button"
       onClick={(e) => { e.stopPropagation(); onChange(); }}
-      className={`h-5 w-5 flex items-center justify-center rounded border transition-all ${
-        checked ? 'bg-primary border-primary text-primary-foreground' : 'bg-background border-border text-transparent hover:border-muted-foreground'
+      className={`dashboard-checkbox ${
+        checked ? 'dashboard-checkbox-checked' : 'text-transparent'
       }`}
     >
       <Check size={12} strokeWidth={3} className={checked ? 'opacity-100 scale-100' : 'opacity-0 scale-75'} />
@@ -28,7 +28,7 @@ export function HeaderBtn({ label, field, current, onSort, align = 'left' }: Hea
   return (
     <button
       onClick={(e) => { e.stopPropagation(); onSort(field); }}
-      className={`text-xs font-medium tracking-[0.05em] transition-colors flex items-center gap-1.5 text-muted-foreground hover:text-foreground ${align === 'right' ? 'justify-end w-full' : ''}`}
+      className={`dashboard-table-header-cell ${align === 'right' ? 'justify-end w-full' : ''}`}
     >
       {label}
       {current === field && <ArrowUpDown size={10} strokeWidth={2} />}

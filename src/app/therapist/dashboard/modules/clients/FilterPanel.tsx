@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, UserCheck, Filter, List } from 'lucide-react';
+import { Check, Filter, List } from 'lucide-react';
 import { ALL_COLUMNS, ClientFilters } from './constants';
 
 interface FilterPanelProps {
@@ -23,31 +23,8 @@ export default function FilterPanel({
       className="absolute right-0 top-0 z-20 w-[300px] rounded-xl border p-5 shadow-lg bg-card border-border"
     >
       <div className="space-y-6">
-        {/* Status Section */}
         <section>
-          <p className="pb-3 text-xs font-medium text-muted-foreground flex items-center gap-2">
-            <UserCheck size={14} strokeWidth={1.5} /> Statut patient
-          </p>
-          <div className="grid grid-cols-3 gap-1.5">
-            {(['all', 'active', 'inactive'] as const).map((s) => (
-              <button
-                key={s}
-                onClick={() => onFiltersChange({ ...filters, status: s })}
-                className={`px-3 py-2 rounded-lg text-xs font-medium transition-all border ${
-                  filters.status === s 
-                    ? 'bg-primary text-primary-foreground border-primary' 
-                    : 'bg-transparent text-muted-foreground border-border hover:bg-accent hover:text-foreground'
-                }`}
-              >
-                {s === 'all' ? 'Tous' : s === 'active' ? 'Actifs' : 'Inactifs'}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Sessions Section */}
-        <section>
-          <p className="pb-3 text-xs font-medium text-muted-foreground flex items-center gap-2">
+          <p className="dashboard-table-header-cell flex items-center gap-2 pb-3">
             <Filter size={14} strokeWidth={1.5} /> Minimum de séances
           </p>
           <div className="flex items-center gap-3">
@@ -59,13 +36,13 @@ export default function FilterPanel({
               onChange={(e) => onFiltersChange({ ...filters, minSessions: parseInt(e.target.value) || null })}
               className="flex-1 accent-primary"
             />
-            <span className="text-sm font-bold text-foreground w-6 tabular-nums">{filters.minSessions || 0}+</span>
+            <span className="dashboard-body-strong w-6 tabular-nums text-foreground">{filters.minSessions || 0}+</span>
           </div>
         </section>
 
         {/* Columns Section */}
         <section>
-          <p className="pb-3 text-xs font-medium text-muted-foreground flex items-center gap-2">
+          <p className="dashboard-table-header-cell flex items-center gap-2 pb-3">
             <List size={14} strokeWidth={1.5} /> Colonnes affichées
           </p>
           <div className="max-h-[200px] overflow-y-auto space-y-0.5">
@@ -85,7 +62,7 @@ export default function FilterPanel({
                   >
                     <Check size={10} strokeWidth={3} />
                   </span>
-                  <span className={`text-xs font-medium ${active ? 'text-foreground' : 'text-muted-foreground'}`}>
+                  <span className={`dashboard-meta-strong ${active ? 'text-foreground' : 'text-muted-foreground'}`}>
                     {column.label}
                   </span>
                 </button>
@@ -96,8 +73,8 @@ export default function FilterPanel({
 
         <div className="border-t border-border pt-3">
           <button 
-            onClick={() => onFiltersChange({ status: 'all', minSessions: null, lastVisitWithinDays: null })}
-            className="w-full py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            onClick={() => onFiltersChange({ minSessions: null, lastVisitWithinDays: null })}
+            className="dashboard-body w-full rounded-lg py-2 transition-colors hover:bg-accent hover:text-foreground"
           >
             Réinitialiser les filtres
           </button>

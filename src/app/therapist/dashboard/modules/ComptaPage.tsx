@@ -32,6 +32,7 @@ export default function ComptaPage({
   onSelectedCountChange,
   showFilterPanel,
   onShowFilterPanelChange,
+  quickFilter,
 }: ComptaPageProps) {
   const router = useRouter();
   const filterDropdownRef = React.useRef<HTMLDivElement>(null);
@@ -99,13 +100,15 @@ export default function ComptaPage({
         const inRange = appt.date
           ? appt.date >= dateRange.start && appt.date <= dateRange.end
           : false;
+        const matchesQuickClient = quickFilter?.clientId ? appt.clientId === quickFilter.clientId : true;
+        const matchesQuickUnpaid = quickFilter?.unpaidOnly ? !appt.paid : true;
 
         // Apply Advanced Filters
         if (filters.status !== 'all' && status !== filters.status) return false;
         if (filters.paymentMethod !== 'all' && appt.paymentMethod !== filters.paymentMethod) return false;
         if (filters.minAmount !== null && (appt.price || 0) < filters.minAmount) return false;
 
-        return matchesSearch && inRange;
+        return matchesSearch && inRange && matchesQuickClient && matchesQuickUnpaid;
       })
       .sort((a, b) => {
         let valueA: string | number = '';
@@ -153,7 +156,7 @@ export default function ComptaPage({
 
         return sortDir === 'asc' ? result : -result;
       }),
-    [appointments, dateRange.end, dateRange.start, invoiceByAppointmentId, searchQuery, sortDir, sortField, todayStr, filters],
+    [appointments, dateRange.end, dateRange.start, invoiceByAppointmentId, searchQuery, sortDir, sortField, todayStr, filters, quickFilter],
   );
 
   const toggleSort = useCallback((field: SortField) => {
@@ -236,11 +239,6 @@ export default function ComptaPage({
       </AnimatePresence>
 
       <section className="relative space-y-6">
-        <div className="space-y-1">
-          <h1 className="text-[2.1rem] font-semibold tracking-tight text-slate-900">Finances</h1>
-          <p className="text-sm text-slate-500">Suivi des paiements, factures et rendez-vous.</p>
-        </div>
-
         {showFilterPanel && (
           <FilterPanel 
             filters={filters}
@@ -248,9 +246,9 @@ export default function ComptaPage({
             dropdownRef={filterDropdownRef}
           />
         )}
-        <div className="overflow-hidden rounded-[28px] border border-[#e2e9f3] bg-white shadow-[0_10px_30px_rgba(23,43,77,0.04)]">
+        <div className="dashboard-panel-lg overflow-hidden">
           <div
-            className="grid items-center border-b border-[#edf2f7] px-4 pb-3 pt-4"
+            className="grid items-center border-b border-border/60 px-4 pb-3 pt-4"
             style={{ gridTemplateColumns: GRID_TEMPLATE }}
           >
             <div className="flex justify-center">
@@ -268,7 +266,7 @@ export default function ComptaPage({
             <HeaderBtn label="Référence" field="reference" current={sortField} onSort={toggleSort} />
             <HeaderBtn label="Soin" field="serviceName" current={sortField} onSort={toggleSort} />
             <HeaderBtn label="Statut" field="status" current={sortField} onSort={toggleSort} />
-            <div className="text-center text-xs font-medium tracking-[0.05em] text-muted-foreground">PDF</div>
+            <div className="dashboard-table-header-cell justify-center">PDF</div>
             <HeaderBtn label="Montant" field="price" current={sortField} onSort={toggleSort} align="right" />
           </div>
 

@@ -9,10 +9,16 @@ export interface Client {
   street?: string;
   zip?: string;
   city?: string;
+  addressStreet?: string;
+  addressPostalCode?: string;
+  addressCity?: string;
+  addressCountry?: string;
+  addressCanton?: string;
   canton?: string;
   insurance?: string;
   initials?: string;
   notes?: string;
+  therapistNotes?: string;
   birthDate?: string;
   color?: string;
 }

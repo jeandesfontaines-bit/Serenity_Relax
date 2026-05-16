@@ -23,4 +23,8 @@ export interface ComptaPageProps {
   onSelectedCountChange: (count: number) => void;
   showFilterPanel: boolean;
   onShowFilterPanelChange: (value: boolean) => void;
+  quickFilter?: {
+    clientId?: string;
+    unpaidOnly?: boolean;
+  } | null;
 }

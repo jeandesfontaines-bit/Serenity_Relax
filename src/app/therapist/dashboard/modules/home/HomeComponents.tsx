@@ -66,19 +66,19 @@ export function MetricCard({
     orange: "bg-orange-100 text-orange-600",
     pink: "bg-pink-100 text-pink-600",
     blueSoft: "bg-sky-100 text-sky-600",
-    default: "bg-slate-100 text-slate-500",
+    default: "bg-secondary text-muted-foreground",
   };
 
   return (
-    <div className="group rounded-3xl border border-[#e2e9f3] bg-white p-6 shadow-[0_10px_30px_rgba(23,43,77,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_36px_rgba(23,43,77,0.08)]">
-      <div className="mb-4 flex items-center justify-between">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${iconStyles[variant]}`}>
+    <div className="dashboard-panel-lg group rounded-[1.35rem] p-5 hover:-translate-y-0.5">
+      <div className="mb-3 flex items-center justify-between">
+        <div className={`flex h-9 w-9 items-center justify-center rounded-[1rem] ${iconStyles[variant]}`}>
           {icon}
         </div>
-        <ChevronRight size={14} className="text-slate-300 opacity-0 transition-opacity group-hover:opacity-70" />
+        <ChevronRight size={14} className="text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-70" />
       </div>
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">{label}</p>
-      <h3 className="text-[2rem] font-bold tracking-tight leading-none tabular-nums text-slate-900">{value}</h3>
+      <p className="dashboard-label mb-2.5">{label}</p>
+      <h3 className="dashboard-metric-value">{value}</h3>
     </div>
   );
 }
@@ -90,30 +90,30 @@ export function AgendaAppointmentRow({ appt, todayStr, onClick }: { appt: Appoin
   return (
     <button
       onClick={onClick}
-      className={`group flex w-full items-center gap-6 rounded-2xl border border-[#e2e9f3] bg-white p-5 text-left transition-all duration-200 hover:shadow-sm active:scale-[0.995] ${status.muted ? 'opacity-60 hover:opacity-100' : ''}`}
+      className={`dashboard-panel group flex w-full items-center gap-6 rounded-xl p-5 text-left active:scale-[0.995] ${status.muted ? 'opacity-60 hover:opacity-100' : ''}`}
     >
       {/* Time */}
-      <div className="min-w-[60px] border-r border-[#edf2f7] pr-6 text-center">
-        <p className="text-lg font-bold tracking-tight leading-none tabular-nums text-slate-900">{hour}</p>
-        <p className="mt-1 text-[10px] font-semibold tracking-[0.08em] text-slate-400">{period}</p>
+      <div className="min-w-[60px] border-r border-border/60 pr-6 text-center">
+        <p className="dashboard-body-strong tabular-nums">{hour}</p>
+        <p className="dashboard-meta mt-1">{period}</p>
       </div>
       {/* Details */}
       <div className="min-w-0 flex-1">
-        <h5 className="truncate text-sm font-semibold tracking-tight leading-none text-slate-900">
+        <h5 className="dashboard-body-strong truncate leading-none">
           {appt.clientNameSnapshot || appt.title || 'Client'}
         </h5>
-        <p className="mt-1.5 truncate text-xs tracking-[0.04em] text-slate-500">
+        <p className="dashboard-meta mt-1.5 truncate">
           {cleanServiceLabel(appt.serviceName) || 'Consultation'} · {appt.duration || '60 min'}
         </p>
       </div>
       {/* Badge */}
       <div className="flex items-center gap-3">
         <span 
-          className={`shrink-0 rounded-md px-2.5 py-1 text-[11px] font-medium tracking-[0.05em] border ${status.className}`}
+          className={`dashboard-status-chip shrink-0 rounded-md border ${status.className}`}
         >
           {status.label}
         </span>
-        <ChevronRight size={16} strokeWidth={1.5} className="text-slate-300 opacity-0 transition-opacity group-hover:opacity-60" />
+        <ChevronRight size={16} strokeWidth={1.5} className="text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-60" />
       </div>
     </button>
   );
@@ -123,11 +123,11 @@ export function NoteCard({ appt, onClick }: { appt: Appointment, onClick: () => 
   return (
     <button
       onClick={onClick}
-      className="block w-full rounded-2xl border border-[#e2e9f3] bg-white p-5 text-left transition-all duration-200 hover:shadow-sm group active:scale-[0.99]"
+      className="dashboard-panel block w-full rounded-xl p-5 text-left group active:scale-[0.99]"
     >
-      <p className="mb-1.5 text-[11px] font-semibold tracking-[0.05em] text-primary">{formatDayLabel(appt.date)}</p>
-      <h6 className="truncate text-sm font-semibold tracking-tight text-slate-900">{appt.clientNameSnapshot || appt.title || 'Client'}</h6>
-      <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed tracking-[0.03em] text-slate-500 italic">
+      <p className="dashboard-meta-strong mb-1.5 text-primary">{formatDayLabel(appt.date)}</p>
+      <h6 className="dashboard-body-strong truncate">{appt.clientNameSnapshot || appt.title || 'Client'}</h6>
+      <p className="dashboard-meta mt-1.5 line-clamp-2 italic leading-relaxed">
         &ldquo;{appt.notes?.trim()}&rdquo;
       </p>
     </button>

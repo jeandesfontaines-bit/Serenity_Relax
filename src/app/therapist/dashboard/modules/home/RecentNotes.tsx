@@ -24,14 +24,14 @@ export function RecentNotes({
 }: RecentNotesProps) {
   return (
     <div className="space-y-6">
-      <div className="rounded-[28px] border border-[#e2e9f3] bg-white p-6 shadow-[0_10px_30px_rgba(23,43,77,0.04)] space-y-5">
+      <div className="dashboard-panel-lg space-y-5 p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h4 className="text-[1.05rem] font-semibold tracking-tight text-slate-900">Notes récentes</h4>
+            <h4 className="dashboard-title">Notes récentes</h4>
           </div>
           <button
             onClick={onEditGoal}
-            className="flex h-9 w-9 items-center justify-center rounded-2xl border border-[#dbe4f0] bg-[#f8fbff] text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+            className="dashboard-icon-button h-9 w-9 rounded-xl"
           >
             <BarChart3 size={16} strokeWidth={2} />
           </button>
@@ -47,23 +47,23 @@ export function RecentNotes({
               />
             ))
           ) : (
-            <div className="rounded-2xl border border-dashed border-[#dbe4f0] bg-[#f8fbff] py-12 text-center">
-              <p className="text-sm font-medium text-slate-500">Aucune note récente.</p>
+            <div className="dashboard-empty-state py-12">
+              <p className="dashboard-body">Aucune note récente.</p>
             </div>
           )}
         </div>
 
         <button
           onClick={() => onNavigate('clients')}
-          className="flex h-9 w-full items-center justify-center rounded-2xl border border-[#dbe4f0] bg-[#f8fbff] text-sm font-medium text-slate-700 transition-all duration-200 hover:bg-slate-100"
+          className="dashboard-secondary-button h-9 w-full rounded-xl px-4"
         >
           Répertoire patients
         </button>
       </div>
 
-      <div className="rounded-[28px] bg-primary p-6 text-primary-foreground shadow-[0_18px_40px_rgba(37,99,235,0.26)]">
-        <h4 className="text-[1.05rem] font-semibold tracking-tight">Objectif mensuel</h4>
-        <p className="mt-2 text-sm text-primary-foreground/80">
+      <div className="rounded-[1.5rem] bg-primary p-6 text-primary-foreground shadow-[0_18px_40px_rgba(37,99,235,0.26)]">
+        <h4 className="dashboard-title text-primary-foreground">Objectif mensuel</h4>
+        <p className="dashboard-body mt-2 text-primary-foreground/80">
           {paidThisMonth.toLocaleString('fr-CH')} CHF sur {monthlyGoal.toLocaleString('fr-CH')} CHF.
         </p>
         <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-white/20">
@@ -71,7 +71,7 @@ export function RecentNotes({
         </div>
         <button
           onClick={onEditGoal}
-          className="mt-5 flex h-10 w-full items-center justify-center rounded-2xl bg-white text-sm font-medium text-primary transition-colors hover:bg-white/90"
+          className="dashboard-secondary-button mt-5 h-10 w-full rounded-2xl border-white bg-white px-4 text-primary hover:bg-white/90"
         >
           Ajuster l'objectif
         </button>

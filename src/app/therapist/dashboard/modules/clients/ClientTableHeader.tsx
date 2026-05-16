@@ -37,13 +37,13 @@ export default function ClientTableHeader({
         <button
           key={col.id}
           onClick={() => onToggleSort(col.id)}
-          className={`text-[10px] font-bold uppercase tracking-[0.15em] transition-colors flex items-center gap-1.5 text-muted-foreground/80 hover:text-foreground ${col.align === 'center' ? 'justify-center' : ''}`}
+          className={`dashboard-table-header-cell ${col.align === 'center' ? 'justify-center' : ''}`}
         >
           {col.label}
           {sortField === col.id && <ArrowUpDown size={10} strokeWidth={2} className="text-primary" />}
         </button>
       ))}
-      <div className="flex justify-end pr-4 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/80">
+      <div className="dashboard-table-header-cell flex justify-end pr-4">
         Actions
       </div>
     </div>

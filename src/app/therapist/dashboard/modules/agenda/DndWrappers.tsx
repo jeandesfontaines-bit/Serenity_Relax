@@ -11,14 +11,14 @@ export function DroppableSlot({ id, onClick, top }: { id: string; onClick: () =>
     <button
       ref={setNodeRef}
       onClick={onClick}
-      className={`absolute left-4 right-4 z-[2] rounded-3xl border-2 border-dashed transition-all duration-700 group flex items-center justify-center overflow-hidden ${
+      className={`absolute left-4 right-4 z-[2] flex items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed transition-all duration-300 group ${
         isOver 
           ? 'border-primary/40 bg-primary/5 shadow-xl scale-[1.02]' 
           : 'border-transparent bg-transparent hover:bg-secondary/5'
       }`}
       style={{ top: top + 4, height: getHeight(DEFAULT_DURATION) - 8 }}
     >
-      <div className={`w-8 h-8 rounded-full bg-background/80 border border-border/50 flex items-center justify-center transition-all duration-700 shadow-sm ${
+      <div className={`flex h-8 w-8 items-center justify-center rounded-full border border-border/50 bg-background/80 transition-all duration-300 shadow-sm ${
         isOver ? 'scale-110' : 'opacity-0 group-hover:opacity-100'
       }`}>
         <Plus size={16} strokeWidth={1.5} className="text-primary/60" />

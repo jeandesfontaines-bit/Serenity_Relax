@@ -5,10 +5,10 @@ export function ActionBtn({ icon, label, sub, onClick, isPrimary = false }: { ic
   return (
     <button 
       onClick={onClick}
-      className={`flex flex-col items-center justify-center p-4 rounded-3xl transition-all group relative overflow-hidden ${
+      className={`dashboard-action-card flex flex-col items-center justify-center rounded-2xl p-4 group relative overflow-hidden ${
         isPrimary 
-          ? 'shadow-xl hover:scale-[1.03] bg-primary text-primary-foreground border-transparent' 
-          : 'border border-border shadow-sm bg-background text-foreground'
+          ? 'border-primary bg-primary text-primary-foreground shadow-sm hover:scale-[1.02]' 
+          : 'text-foreground'
       }`}
     >
       <div className={`mb-3 w-10 h-10 flex items-center justify-center rounded-xl transition-all ${
@@ -16,21 +16,21 @@ export function ActionBtn({ icon, label, sub, onClick, isPrimary = false }: { ic
       }`}>
         {icon}
       </div>
-      <p className="text-[11px] font-bold tracking-[0.05em] mb-1">{label}</p>
-      <p className={`text-[8px] font-bold tracking-[0.05em] opacity-40`}>{sub}</p>
+      <p className="dashboard-meta-strong mb-1">{label}</p>
+      <p className="dashboard-meta opacity-40">{sub}</p>
     </button>
   );
 }
 
 export function DetailRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-4 p-4 rounded-3xl border border-border transition-all group shadow-sm hover:shadow-lg hover:-translate-y-0.5 bg-background">
+    <div className="dashboard-action-card flex items-center gap-4 rounded-2xl p-4 group hover:-translate-y-0.5">
       <div className="w-12 h-12 flex items-center justify-center rounded-xl transition-all shadow-inner bg-secondary text-muted-foreground">
         {icon}
       </div>
       <div className="flex-1">
         <p className="dashboard-eyebrow mb-1">{label}</p>
-        <div className="text-lg font-bold tracking-tight text-foreground">{value}</div>
+        <div className="dashboard-body-strong">{value}</div>
       </div>
     </div>
   );
@@ -38,16 +38,16 @@ export function DetailRow({ icon, label, value }: { icon: React.ReactNode, label
 
 export function SummaryCard({ label, value, sub, accent = false }: { label: string, value: string | number, sub: string, accent?: boolean }) {
   return (
-    <div className={`border rounded-3xl p-6 text-center space-y-1 transition-all shadow-sm ${
+    <div className={`rounded-2xl border p-6 text-center space-y-1 transition-all shadow-sm ${
       accent ? "bg-primary border-transparent" : "bg-background border-border"
     }`}>
-      <p className={`text-[9px] font-bold tracking-[0.05em] ${
+      <p className={`dashboard-metric-label ${
         accent ? 'text-primary-foreground/50' : 'text-muted-foreground'
       }`}>{label}</p>
-      <p className={`text-2xl font-bold tracking-tight leading-none ${
+      <p className={`dashboard-metric-value ${
         accent ? 'text-primary-foreground' : 'text-foreground'
       }`}>{value}</p>
-      <p className={`text-[10px] font-bold tracking-[0.05em] ${
+      <p className={`dashboard-meta-strong ${
         accent ? 'text-primary-foreground/25' : 'text-border'
       }`}>{sub}</p>
     </div>
@@ -147,12 +147,12 @@ export function InlineEditableTextarea({
       onChange={(e) => setDraft(e.target.value)}
       onBlur={commit}
       placeholder={placeholder}
-      className="w-full min-h-[150px] rounded-2xl p-6 text-base font-medium border-none outline-none resize-none relative z-10 leading-relaxed shadow-inner transition-all focus:ring-4 bg-secondary text-foreground"
+      className="dashboard-edit-value relative z-10 min-h-[150px] w-full resize-none rounded-xl border border-border bg-secondary/30 p-6 leading-relaxed outline-none transition-all focus:ring-4 focus:ring-primary/10"
     />
   ) : (
     <div
       onDoubleClick={() => setEditing(true)}
-      className="w-full min-h-[150px] cursor-text rounded-2xl p-6 text-base font-medium transition-all relative z-10 leading-relaxed shadow-inner bg-secondary text-foreground"
+      className="dashboard-edit-value relative z-10 min-h-[150px] w-full cursor-text rounded-xl border border-border bg-secondary/30 p-6 leading-relaxed transition-all"
     >
       <p className="whitespace-pre-wrap">
         {value || <span className="text-border">{placeholder}</span>}

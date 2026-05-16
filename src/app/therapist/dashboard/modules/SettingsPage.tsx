@@ -192,14 +192,14 @@ export default function SettingsPage({
       <main className="mx-auto">
         <div className="mx-auto max-w-[1120px] space-y-6">
           <section className="space-y-1">
-            <h1 className="text-[2.1rem] font-semibold tracking-tight text-slate-900">Paramètres</h1>
-            <p className="text-sm text-slate-500">Configuration du compte, du cabinet et des communications.</p>
+            <h1 className="dashboard-title-lg">Paramètres</h1>
+            <p className="dashboard-muted-text">Configuration du compte, du cabinet et des communications.</p>
           </section>
 
           <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[260px_1fr]">
             {/* Sidebar Navigation */}
             <aside className="space-y-8 sticky top-0">
-               <nav className="space-y-2 rounded-[28px] border border-[#e2e9f3] bg-white p-4 shadow-[0_10px_30px_rgba(23,43,77,0.04)]">
+               <nav className="dashboard-panel-lg space-y-2 rounded-[1.75rem] p-4">
                   {TABS.map(t => {
                     const Icon = t.icon;
                     const isActive = activeTab === t.id;
@@ -210,9 +210,9 @@ export default function SettingsPage({
                         className={`w-full flex items-center justify-between h-10 px-4 rounded-xl transition-all duration-300 group ${
                           isActive 
                             ? 'shadow-sm ring-1 ring-black/5 z-10' 
-                            : 'border border-[#e7edf5]'
+                            : 'border border-border bg-secondary/20 text-muted-foreground'
                         }`}
-                        style={isActive ? { background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' } : { background: '#f8fbff', color: '#64748b' }}
+                        style={isActive ? { background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' } : undefined}
                       >
                         <div className="flex items-center gap-3">
                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${
@@ -220,7 +220,7 @@ export default function SettingsPage({
                            }`}>
                               <Icon size={12} strokeWidth={2.5} />
                            </div>
-                           <span className="text-[10px] font-bold tracking-[0.05em]">{t.label}</span>
+                           <span className="dashboard-meta-strong">{t.label}</span>
                         </div>
                         {isActive && <ChevronRight size={10} strokeWidth={3} className="opacity-50" />}
                       </button>
@@ -228,15 +228,15 @@ export default function SettingsPage({
                   })}
                </nav>
 
-               <div className="rounded-[28px] p-5 text-white shadow-lg space-y-3 relative overflow-hidden group transition-transform duration-500 hover:scale-[1.02]" style={{ background: 'hsl(var(--primary))' }}>
+               <div className="relative overflow-hidden rounded-[1.75rem] bg-primary p-5 text-white shadow-lg transition-transform duration-500 group space-y-3 hover:scale-[1.02]">
                   <div className="absolute -top-4 -right-4 p-2 opacity-10 pointer-events-none group-hover:rotate-12 transition-transform duration-700">
                      <Shield size={60} strokeWidth={1} />
                   </div>
                   <div className="relative z-10">
-                     <p className="text-[9px] font-bold tracking-[0.15em] text-white/50 mb-1">Sécurité</p>
-                     <h4 className="text-[13px] font-bold tracking-tight leading-tight">Accès cabinet</h4>
+                     <p className="dashboard-table-header-cell mb-1 text-white/50">Sécurité</p>
+                     <h4 className="dashboard-section-title text-white">Accès cabinet</h4>
                   </div>
-                  <button onClick={handleDisconnect} className="relative z-10 flex items-center gap-2 text-[10px] font-bold tracking-[0.05em] transition-all hover:translate-x-1" style={{ color: 'hsl(var(--destructive-foreground))' }}>
+                  <button onClick={handleDisconnect} className="dashboard-meta-strong relative z-10 flex items-center gap-2 transition-all hover:translate-x-1" style={{ color: 'hsl(var(--destructive-foreground))' }}>
                      <LogOut size={12} strokeWidth={3} /> Déconnexion
                   </button>
                </div>
@@ -247,7 +247,7 @@ export default function SettingsPage({
                        initial={{ opacity: 0, y: 10 }}
                        animate={{ opacity: 1, y: 0 }}
                        exit={{ opacity: 0, y: 10 }}
-                        className={`flex items-center gap-2 px-4 py-3 rounded-2xl text-[10px] font-bold tracking-[0.05em] shadow-lg border border-white/10 text-primary-foreground ${
+                        className={`dashboard-meta-strong flex items-center gap-2 rounded-2xl border border-white/10 px-4 py-3 shadow-lg text-primary-foreground ${
                           saveState === 'saving' ? 'bg-primary' : 'bg-emerald-500'
                         }`}
                       >
@@ -259,7 +259,7 @@ export default function SettingsPage({
             </aside>
 
             {/* Content Area */}
-            <div className="min-h-[600px] rounded-[28px] border border-[#e2e9f3] bg-white p-6 shadow-[0_10px_30px_rgba(23,43,77,0.04)]">
+            <div className="dashboard-panel-lg min-h-[600px] rounded-[1.75rem] p-6">
                <AnimatePresence mode="wait">
                  <motion.div
                     key={activeTab}

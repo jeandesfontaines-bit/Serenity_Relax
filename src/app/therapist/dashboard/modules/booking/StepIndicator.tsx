@@ -11,15 +11,15 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
   ] as const;
 
   return (
-    <div className="px-12 py-3 flex items-center gap-3 border-b border-border">
+    <div className="flex items-center gap-3 border-b border-border px-12 py-3">
       {steps.map((s, i) => (
         <React.Fragment key={s.id}>
           <div className="flex items-center gap-2">
             <div
-              className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${
+              className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold transition-all duration-300 ${
                 currentStep === s.id || (s.id === 'client' && currentStep === 'service')
                   ? 'bg-primary text-primary-foreground'
-                  : 'bg-border text-muted-foreground'
+                  : 'bg-secondary text-muted-foreground'
               }`}
             >
               {i + 1}

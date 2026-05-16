@@ -15,12 +15,12 @@ export default function ObjectivesSettings({
   return (
     <div className="space-y-3">
       <SectionHeader title="Performance & Objectifs" subtitle="Ambitions financières mensuelles" />
-      <div className="rounded-xl p-6 border shadow-sm text-center relative overflow-hidden group" style={{ background: 'hsl(var(--background))', borderColor: 'hsl(var(--border))' }}>
+      <div className="dashboard-panel relative overflow-hidden rounded-xl p-6 text-center group">
         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform duration-1000">
           <Target size={60} strokeWidth={1} />
         </div>
         <div className="relative z-10 max-w-[260px] mx-auto space-y-2">
-          <label className="text-[7.5px] font-bold tracking-[0.05em] leading-none block" style={{ color: 'hsl(var(--muted-foreground))' }}>Chiffre d'affaire mensuel cible</label>
+          <label className="dashboard-metric-label block">Chiffre d'affaire mensuel cible</label>
           <div className="relative inline-block group/input">
             <InlineEditableField
               placeholder="0"
@@ -28,19 +28,19 @@ export default function ObjectivesSettings({
               onChange={onMonthlyGoalChange}
               type="number"
               align="center"
-              className="h-10 bg-transparent px-0 text-xl font-black tabular-nums tracking-tighter hover:bg-transparent"
-              editingClassName="h-10 rounded-none border-0 border-b border-primary bg-transparent px-0 text-center text-xl font-black tabular-nums tracking-tighter shadow-none"
+              className="dashboard-edit-value-lg h-10 bg-transparent px-0 hover:bg-transparent"
+              editingClassName="dashboard-edit-value-lg h-10 rounded-none border-0 border-b border-primary bg-transparent px-0 text-center shadow-none"
             />
-            <p className="mt-0 text-[7px] font-bold tracking-[0.05em] opacity-30" style={{ color: 'hsl(var(--foreground))' }}>Francs suisses / mois</p>
-            <div className="h-1 w-full rounded-full mt-3 overflow-hidden shadow-inner" style={{ background: 'hsl(var(--secondary))' }}>
+            <p className="dashboard-meta mt-0 text-foreground/40">Francs suisses / mois</p>
+            <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-secondary shadow-inner">
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: '65%' }}
-                className="h-full" style={{ background: 'hsl(var(--primary))' }}
+                className="h-full bg-primary"
               />
             </div>
           </div>
-          <p className="text-[9px] font-bold leading-normal max-w-[180px] mx-auto tracking-[0.05em]" style={{ color: 'hsl(var(--muted-foreground))' }}>
+          <p className="dashboard-meta mx-auto max-w-[180px] leading-normal">
             Influence vos KPIs affichés sur le tableau de bord.
           </p>
         </div>

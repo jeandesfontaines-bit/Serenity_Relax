@@ -22,7 +22,7 @@ export const FilterPanel = ({
       <div className="space-y-6">
         {/* Status Section */}
         <section>
-          <p className="pb-3 text-xs font-medium tracking-[0.05em] text-muted-foreground flex items-center gap-2">
+          <p className="dashboard-table-header-cell flex items-center gap-2 pb-3">
             <CreditCard size={14} strokeWidth={1.5} /> Statut transaction
           </p>
           <div className="grid grid-cols-2 gap-1.5">
@@ -30,7 +30,7 @@ export const FilterPanel = ({
               <button
                 key={s}
                 onClick={() => onFiltersChange({ ...filters, status: s })}
-                className={`px-3 py-2 rounded-lg text-xs font-medium transition-all border ${
+                className={`dashboard-meta-strong rounded-lg border px-3 py-2 transition-all ${
                   filters.status === s 
                     ? 'bg-primary text-primary-foreground border-primary' 
                     : 'bg-transparent text-muted-foreground border-border hover:bg-accent hover:text-foreground'
@@ -44,7 +44,7 @@ export const FilterPanel = ({
 
         {/* Payment Method Section */}
         <section>
-          <p className="pb-3 text-xs font-medium tracking-[0.05em] text-muted-foreground flex items-center gap-2">
+          <p className="dashboard-table-header-cell flex items-center gap-2 pb-3">
             <Wallet size={14} strokeWidth={1.5} /> Mode de paiement
           </p>
           <div className="grid grid-cols-2 gap-1.5">
@@ -52,7 +52,7 @@ export const FilterPanel = ({
               <button
                 key={m}
                 onClick={() => onFiltersChange({ ...filters, paymentMethod: m })}
-                className={`px-3 py-2 rounded-lg text-xs font-medium transition-all border ${
+                className={`dashboard-meta-strong rounded-lg border px-3 py-2 transition-all ${
                   filters.paymentMethod === m 
                     ? 'bg-primary text-primary-foreground border-primary' 
                     : 'bg-transparent text-muted-foreground border-border hover:bg-accent hover:text-foreground'
@@ -66,7 +66,7 @@ export const FilterPanel = ({
 
         {/* Min Amount Section */}
         <section>
-          <p className="pb-3 text-xs font-medium tracking-[0.05em] text-muted-foreground flex items-center gap-2">
+          <p className="dashboard-table-header-cell flex items-center gap-2 pb-3">
             <Filter size={14} strokeWidth={1.5} /> Montant minimum
           </p>
           <div className="flex items-center gap-3">
@@ -79,14 +79,14 @@ export const FilterPanel = ({
               onChange={(e) => onFiltersChange({ ...filters, minAmount: parseInt(e.target.value) || null })}
               className="flex-1 accent-primary"
             />
-            <span className="text-sm font-bold w-14 text-right tabular-nums">{filters.minAmount || 0} CHF</span>
+            <span className="dashboard-body-strong w-14 text-right tabular-nums">{filters.minAmount || 0} CHF</span>
           </div>
         </section>
 
         <div className="border-t border-border pt-3">
           <button 
             onClick={() => onFiltersChange({ status: 'all', paymentMethod: 'all', minAmount: null })}
-            className="w-full py-2 rounded-lg text-xs font-medium tracking-[0.05em] text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            className="dashboard-body w-full rounded-lg py-2 transition-colors hover:bg-accent hover:text-foreground"
           >
             Réinitialiser les filtres
           </button>

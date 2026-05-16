@@ -46,7 +46,7 @@ export default function DayColumn({
   );
 
   return (
-    <div className={`relative border-r border-[#edf2f7] bg-white ${!isOpen ? 'closed-day-stripes bg-[#fbfcfe]' : ''}`}>
+    <div className={`relative border-r border-border/60 bg-background ${!isOpen ? 'closed-day-stripes bg-secondary/20' : ''}`}>
       <GridLines />
       
       {/* Available slot markers */}

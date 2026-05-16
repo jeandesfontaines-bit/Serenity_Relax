@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { X, Plus, Clock, Copy, Save, Trash2, ArrowRight } from 'lucide-react';
+import { X, Plus, Clock, Copy, Save, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface WeeklySettingsModalProps {
@@ -10,13 +10,13 @@ interface WeeklySettingsModalProps {
 }
 
 const DAYS = [
-  { id: 0, label: 'Lu' },
-  { id: 1, label: 'Ma' },
-  { id: 2, label: 'Me' },
-  { id: 3, label: 'Je' },
-  { id: 4, label: 'Ve' },
-  { id: 5, label: 'Sa' },
-  { id: 6, label: 'Di' },
+  { id: 0, label: 'Lundi', short: 'Lu' },
+  { id: 1, label: 'Mardi', short: 'Ma' },
+  { id: 2, label: 'Mercredi', short: 'Me' },
+  { id: 3, label: 'Jeudi', short: 'Je' },
+  { id: 4, label: 'Vendredi', short: 'Ve' },
+  { id: 5, label: 'Samedi', short: 'Sa' },
+  { id: 6, label: 'Dimanche', short: 'Di' },
 ];
 
 export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: WeeklySettingsModalProps) {
@@ -24,8 +24,11 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
   const [activeDay, setActiveDay] = useState<number>(0);
   const [newTime, setNewTime] = useState('09:00');
 
+  const activeSlots = [...(slots[activeDay] || [])].sort();
+
   const handleAddSlot = () => {
-    const daySlots = [...(slots[activeDay] || [])];
+    if (!newTime) return;
+    const daySlots = [...activeSlots];
     if (!daySlots.includes(newTime)) {
       daySlots.push(newTime);
       daySlots.sort();
@@ -34,21 +37,23 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
   };
 
   const handleRemoveSlot = (time: string) => {
-    const daySlots = (slots[activeDay] || []).filter(t => t !== time);
-    setSlots({ ...slots, [activeDay]: daySlots });
+    setSlots({ ...slots, [activeDay]: activeSlots.filter((t) => t !== time) });
   };
 
   const handleCopyToWeek = () => {
-    const current = slots[activeDay] || [];
     const next = { ...slots };
-    [0, 1, 2, 3, 4, 5, 6].forEach(d => { next[d] = [...current]; });
+    DAYS.forEach((day) => {
+      next[day.id] = [...activeSlots];
+    });
     setSlots(next);
   };
 
   return (
-    <div className="fixed inset-0 z-[300] flex items-center justify-center p-6">
-      <motion.div
-        className="absolute inset-0 backdrop-blur-xl" style={{ background: "hsl(var(--primary) / 0.6)" }}
+    <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 sm:p-6">
+      <motion.button
+        type="button"
+        aria-label="Fermer"
+        className="absolute inset-0 bg-slate-900/45 backdrop-blur-[2px]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -56,130 +61,138 @@ export default function WeeklySettingsModal({ initialSlots, onClose, onSave }: W
       />
 
       <motion.div
-        className="relative w-full max-w-2xl rounded-[4rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border" style={{ background: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}
-        initial={{ opacity: 0, scale: 0.9, y: 100 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 100 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, y: 20, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 20, scale: 0.98 }}
+        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        className="dashboard-panel-lg relative flex max-h-[88vh] w-full max-w-[980px] flex-col overflow-hidden rounded-[1.75rem] shadow-[0_24px_80px_rgba(15,23,42,0.22)]"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-12 py-10 border-b" style={{ borderColor: "hsl(var(--border))" }}>
+        <div className="flex items-start justify-between border-b border-border/60 px-6 py-5 sm:px-8">
           <div>
-            <p className="text-[10px] font-medium tracking-[0.1em] mb-2 leading-none" style={{ color: "hsl(var(--muted-foreground))" }}>Configuration</p>
-            <h2 className="text-4xl font-bold tracking-tighter leading-none" style={{ color: "hsl(var(--foreground))" }}>Horaires Types</h2>
+            <p className="dashboard-table-header-cell">Configuration</p>
+            <h2 className="dashboard-title-lg mt-1">Horaires types</h2>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="w-14 h-14 flex items-center justify-center rounded-full text-white hover:scale-105 transition-all shadow-xl" style={{ background: "hsl(var(--primary))" }}
+            className="dashboard-icon-button h-11 w-11 rounded-2xl"
           >
-            <X size={20} strokeWidth={3} />
+            <X size={18} strokeWidth={2.2} />
           </button>
         </div>
 
-        {/* Day selection */}
-        <div className="flex p-2 border-b" style={{ background: "hsl(var(--secondary))", borderColor: "hsl(var(--border))" }}>
-          {DAYS.map(day => {
-            const count = (slots[day.id] || []).length;
-            const isActive = activeDay === day.id;
-            return (
-              <button
-                key={day.id}
-                onClick={() => setActiveDay(day.id)}
-                className={`flex-1 py-4 px-2 rounded-full transition-all flex flex-col items-center justify-center gap-1 ${
-                  isActive
-                    ? 'text-white shadow-xl scale-105 z-10'
-                    : ''
-                }`}
-              >
-                <span className="text-[11px] font-medium tracking-[0.05em]">{day.label}</span>
-                <span className={`text-[10px] font-bold ${isActive ? 'text-white/40' : 'text-neutral-200'}`}>
-                  {count} créneau{count > 1 ? 's' : ''}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Content */}
-        <div className="overflow-y-auto p-12 flex-1 scrollbar-hide">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeDay}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-8"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-[12px] font-medium tracking-[0.1em]" style={{ color: "hsl(var(--foreground))" }}>Disponibilités {DAYS[activeDay].label}</h3>
-                { (slots[activeDay] || []).length > 0 && (
-                   <button 
-                    onClick={handleCopyToWeek}
-                    className="flex items-center gap-2 text-[10px] font-medium tracking-[0.05em] transition-colors" style={{ color: "hsl(var(--muted-foreground))" }}
+        <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[220px_1fr]">
+          <aside className="bg-secondary/20 border-b border-border/60 p-4 lg:border-b-0 lg:border-r">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-1">
+              {DAYS.map((day) => {
+                const count = (slots[day.id] || []).length;
+                const isActive = activeDay === day.id;
+                return (
+                  <button
+                    key={day.id}
+                    type="button"
+                    onClick={() => setActiveDay(day.id)}
+                    className={`rounded-2xl px-4 py-3 text-left transition-all ${
+                      isActive
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'bg-background text-foreground hover:bg-accent'
+                    }`}
                   >
-                    <Copy size={14} strokeWidth={2.5} /> Dupliquer semaine
-                  </button>
-                )}
-              </div>
-
-              {(slots[activeDay] || []).length > 0 ? (
-                <div className="grid grid-cols-2 gap-6">
-                  {slots[activeDay].map(time => (
-                    <div
-                      key={time}
-                      className="flex items-center justify-between px-8 py-5 rounded-[2.5rem] shadow-sm transition-all group border" style={{ background: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}
-                    >
-                      <div className="flex items-center gap-4 text-xl font-bold tracking-tighter" style={{ color: "hsl(var(--foreground))" }}>
-                        <Clock size={18} strokeWidth={2.5} className="transition-colors" style={{ color: "hsl(var(--muted-foreground))" }} />
-                        {time}
-                      </div>
-                      <button
-                        onClick={() => handleRemoveSlot(time)}
-                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-500 hover:text-white transition-all" style={{ background: "hsl(var(--secondary))", color: "hsl(var(--muted-foreground))" }}
-                      >
-                        <Trash2 size={14} strokeWidth={2.5} />
-                      </button>
+                    <div className={`dashboard-body-strong ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>{day.label}</div>
+                    <div className={`dashboard-meta mt-1 ${isActive ? 'text-primary-foreground/75' : 'text-muted-foreground/70'}`}>
+                      {count} créneau{count > 1 ? 'x' : ''}
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="py-20 text-center rounded-[3rem] border-2 border-dashed" style={{ background: "hsl(var(--secondary))", borderColor: "hsl(var(--border))" }}>
-                  <Clock size={48} strokeWidth={1} className="mx-auto mb-6" style={{ color: "hsl(var(--border))" }} />
-                  <p className="text-[12px] font-medium tracking-[0.1em]" style={{ color: "hsl(var(--muted-foreground))" }}>Aucun créneau configuré</p>
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+                  </button>
+                );
+              })}
+            </div>
+          </aside>
 
-        {/* Add slot and Actions */}
-        <div className="p-12 border-t border-neutral-100 space-y-8 bg-white/50 backdrop-blur-md">
-          <div className="flex items-center gap-6">
-            <div className="flex-1 relative group">
-              <input
-                type="time"
-                value={newTime}
-                onChange={e => setNewTime(e.target.value)}
-                className="w-full h-20 border-2 border-transparent rounded-full px-10 text-2xl font-bold tracking-tighter focus:outline-none focus:ring-2 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer" style={{ background: "hsl(var(--secondary))", color: "hsl(var(--foreground))" }}
-              />
-              <div className="absolute right-10 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-focus-within:opacity-100 transition-opacity">
-                <ArrowRight size={24} strokeWidth={3} style={{ color: "hsl(var(--foreground))" }} />
+          <div className="flex min-h-0 flex-1 flex-col">
+            <div className="flex items-center justify-between border-b border-border/60 px-6 py-4">
+              <div>
+                <h3 className="dashboard-title">{DAYS[activeDay].label}</h3>
+                <p className="dashboard-muted-text">Définissez les créneaux proposés ce jour-là.</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyToWeek}
+                className="dashboard-secondary-button rounded-2xl px-4"
+              >
+                <Copy size={14} strokeWidth={2} />
+                Dupliquer sur la semaine
+              </button>
+            </div>
+
+            <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeDay}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.16 }}
+                >
+                  {activeSlots.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                      {activeSlots.map((time) => (
+                        <div
+                          key={time}
+                          className="dashboard-surface-soft flex items-center justify-between rounded-2xl px-4 py-4"
+                        >
+                          <div className="flex items-center gap-3 text-foreground">
+                            <Clock size={16} strokeWidth={2} className="text-muted-foreground/70" />
+                            <span className="dashboard-body-strong tabular-nums">{time}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveSlot(time)}
+                            className="dashboard-icon-button h-9 w-9 rounded-xl hover:border-red-200 hover:bg-red-50 hover:text-red-500"
+                          >
+                            <Trash2 size={14} strokeWidth={2} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="dashboard-empty-state flex min-h-[240px] flex-col items-center justify-center rounded-[24px] px-6">
+                      <Clock size={28} strokeWidth={1.6} className="text-muted-foreground/35" />
+                      <p className="dashboard-body mt-4">Aucun créneau configuré pour ce jour.</p>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            <div className="border-t border-border/60 px-6 py-5">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="relative flex-1">
+                  <input
+                    type="time"
+                    value={newTime}
+                    onChange={(e) => setNewTime(e.target.value)}
+                    className="dashboard-field dashboard-body-strong h-12 rounded-2xl bg-secondary/20"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddSlot}
+                  className="dashboard-primary-button h-12 rounded-2xl px-5"
+                >
+                  <Plus size={16} strokeWidth={2.4} />
+                  Ajouter
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSave(slots)}
+                  className="dashboard-secondary-button h-12 rounded-2xl px-5"
+                >
+                  <Save size={16} strokeWidth={2.2} />
+                  Enregistrer
+                </button>
               </div>
             </div>
-            <button
-              onClick={handleAddSlot}
-              className="h-20 px-12 rounded-full text-white font-bold text-[11px] tracking-[0.1em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center gap-4" style={{ background: "hsl(var(--primary))" }}
-            >
-              <Plus size={20} strokeWidth={3} /> Ajouter
-            </button>
           </div>
-
-          <button
-            onClick={() => onSave(slots)}
-            className="w-full h-20 rounded-full text-white font-bold text-[13px] tracking-[0.15em] hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:-translate-y-1 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-6" style={{ background: "hsl(var(--primary))" }}
-          >
-            <Save size={22} strokeWidth={2.5} /> Enregistrer la structure
-          </button>
         </div>
       </motion.div>
     </div>

@@ -1,8 +1,5 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
-import { 
-  Plus, ArrowLeft
-} from 'lucide-react';
 import { format } from 'date-fns';
 import { Appointment, Client } from '../types';
 import { ClientProfileSidebar } from './clients/ClientProfileSidebar';
@@ -15,6 +12,7 @@ interface ClientDetailProps {
   onSelectAppt: (appt: Appointment) => void;
   onUpdateClient: (id: string, data: Partial<Client>) => void;
   onScheduleClient: (client: Client) => void;
+  onOpenAccountingForClient: (client: Client) => void;
 }
 
 export default function ClientDetail({
@@ -24,6 +22,7 @@ export default function ClientDetail({
   onSelectAppt,
   onUpdateClient,
   onScheduleClient,
+  onOpenAccountingForClient,
 }: ClientDetailProps) {
   const [editData, setEditData] = useState<Partial<Client>>({ ...client });
 
@@ -43,16 +42,9 @@ export default function ClientDetail({
   const confirmedAppts = clientAppts.filter((appt) => appt.date && appt.time && (appt.date >= todayStr)).slice(0, 2);
   
   const unpaidCount = clientAppts.filter((appt) => !appt.paid && appt.price).length;
-  const fullName = `${client.firstName || ''} ${client.lastName || ''}`.trim() || 'Client';
-
   return (
     <div className="flex-1 bg-transparent text-foreground">
       <main className="mx-auto space-y-6">
-        <section className="space-y-1">
-          <h1 className="text-[2.1rem] font-semibold tracking-tight text-slate-900">{fullName}</h1>
-          <p className="text-sm text-slate-500">Dossier patient et historique des séances.</p>
-        </section>
-
         <div className="grid grid-cols-1 gap-8 items-start pt-2 lg:grid-cols-[340px_1fr]">
           <ClientProfileSidebar 
             client={client}
@@ -60,6 +52,7 @@ export default function ClientDetail({
             onUpdateClient={onUpdateClient}
             clientAppts={clientAppts}
             unpaidCount={unpaidCount}
+            onOpenUnpaidInvoices={() => onOpenAccountingForClient(client)}
           />
 
           <ClientAppointments 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Phone, MapPin, ShieldCheck, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import { Client, Appointment } from '../../types';
 import { ClientSidebarRow, InlineEditableField } from './ClientComponents';
 
@@ -9,6 +9,30 @@ interface ClientProfileSidebarProps {
   onUpdateClient: (id: string, data: Partial<Client>) => void;
   clientAppts: Appointment[];
   unpaidCount: number;
+  onOpenUnpaidInvoices: () => void;
+}
+
+function splitStreetAndNumber(address: string): { street: string; number: string } {
+  const value = address.trim();
+  if (!value) return { street: '', number: '' };
+
+  const startsWithNumber = value.match(/^(\d+[A-Za-z\-\/]*)\s+(.+)$/);
+  if (startsWithNumber) {
+    return {
+      number: startsWithNumber[1].trim(),
+      street: startsWithNumber[2].trim(),
+    };
+  }
+
+  const endsWithNumber = value.match(/^(.+?)\s+(\d+[A-Za-z\-\/]*)$/);
+  if (endsWithNumber) {
+    return {
+      street: endsWithNumber[1].trim(),
+      number: endsWithNumber[2].trim(),
+    };
+  }
+
+  return { street: value, number: '' };
 }
 
 export function ClientProfileSidebar({
@@ -17,49 +41,47 @@ export function ClientProfileSidebar({
   onUpdateClient,
   clientAppts,
   unpaidCount,
+  onOpenUnpaidInvoices,
 }: ClientProfileSidebarProps) {
-  const clientInitials = (client.initials || `${client.firstName?.[0] || ''}${client.lastName?.[0] || ''}` || 'CL').slice(0, 2).toUpperCase();
+  const rawAddressStreet = editData.addressStreet || editData.street || '';
+  const addressPostalCode = editData.addressPostalCode || editData.zip || '';
+  const addressCanton = editData.addressCanton || editData.canton || '';
+  const notes = editData.therapistNotes || editData.notes || '';
+  const { street, number } = splitStreetAndNumber(rawAddressStreet);
+
+  const updateStreetParts = (next: { street?: string; number?: string }) => {
+    const nextStreet = next.street ?? street;
+    const nextNumber = next.number ?? number;
+    const combined = [nextStreet.trim(), nextNumber.trim()].filter(Boolean).join(' ').trim();
+    onUpdateClient(client.id, { addressStreet: combined, street: combined });
+  };
 
   return (
-    <aside className="space-y-4 sticky top-24">
-      <div className="rounded-2xl p-5 border border-border shadow-sm space-y-6 bg-background">
-        <div className="flex flex-col items-center text-center space-y-4">
-          <div className="relative group">
-            <div className="w-16 h-16 rounded-xl flex items-center justify-center text-xl font-bold text-white shadow-lg transform group-hover:rotate-3 transition-all duration-700 bg-primary">
-              {clientInitials}
-            </div>
-            <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center shadow-md border border-border bg-background text-muted-foreground">
-              <User size={14} strokeWidth={2.5} />
-            </div>
-          </div>
-          
-          <div className="space-y-1">
-            <div className="flex flex-wrap justify-center gap-x-2 text-xl font-bold tracking-tighter leading-none text-foreground">
-              <InlineEditableField 
-                label="Prénom" 
-                value={editData.firstName || ''} 
-                onChange={(val) => onUpdateClient(client.id, { firstName: val })} 
-              />
-              <InlineEditableField 
-                label="Nom" 
-                value={editData.lastName || ''} 
-                onChange={(val) => onUpdateClient(client.id, { lastName: val })} 
-              />
-            </div>
-            <div className="text-[11px] font-medium tracking-[0.05em] text-muted-foreground">
-              <InlineEditableField 
-                label="Email" 
-                value={editData.email || ''} 
-                onChange={(val) => onUpdateClient(client.id, { email: val })} 
-              />
-            </div>
+    <aside className="sticky top-24 space-y-4">
+      <div className="dashboard-panel space-y-6 rounded-2xl p-5">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <InlineEditableField
+            label="Prénom"
+            value={editData.firstName || ''}
+            onChange={(val) => onUpdateClient(client.id, { firstName: val })}
+          />
+          <InlineEditableField
+            label="Nom"
+            value={editData.lastName || ''}
+            onChange={(val) => onUpdateClient(client.id, { lastName: val })}
+          />
+          <div className="md:col-span-2">
+            <InlineEditableField
+              label="Adresse e-mail"
+              value={editData.email || ''}
+              onChange={(val) => onUpdateClient(client.id, { email: val })}
+              type="email"
+            />
           </div>
         </div>
 
-        <div className="space-y-4 pt-6 border-t border-border">
+        <div className="space-y-4 border-t border-border/60 pt-6">
           <ClientSidebarRow 
-            icon={<Phone size={14} strokeWidth={2.5} />} 
-            label="Contact"
             value={
               <InlineEditableField 
                 label="Téléphone" 
@@ -69,26 +91,36 @@ export function ClientProfileSidebar({
             } 
           />
           <ClientSidebarRow 
-            icon={<MapPin size={14} strokeWidth={2.5} />} 
-            label="Adresse"
             value={
-              <div className="space-y-1">
-                <InlineEditableField 
-                  label="Rue" 
-                  value={editData.street || ''} 
-                  onChange={(val) => onUpdateClient(client.id, { street: val })} 
-                />
-                <InlineEditableField 
-                  label="Ville" 
-                  value={editData.city || ''} 
-                  onChange={(val) => onUpdateClient(client.id, { city: val })} 
-                />
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1.7fr_0.7fr]">
+                  <InlineEditableField 
+                    label="Rue" 
+                    value={street} 
+                    onChange={(val) => updateStreetParts({ street: val })} 
+                  />
+                  <InlineEditableField 
+                    label="Numéro" 
+                    value={number} 
+                    onChange={(val) => updateStreetParts({ number: val })} 
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <InlineEditableField 
+                    label="Code postal" 
+                    value={addressPostalCode} 
+                    onChange={(val) => onUpdateClient(client.id, { addressPostalCode: val, zip: val })} 
+                  />
+                  <InlineEditableField 
+                    label="Canton" 
+                    value={addressCanton} 
+                    onChange={(val) => onUpdateClient(client.id, { addressCanton: val, canton: val })} 
+                  />
+                </div>
               </div>
             } 
           />
           <ClientSidebarRow 
-            icon={<ShieldCheck size={14} strokeWidth={2.5} />} 
-            label="Assurance"
             value={
               <InlineEditableField 
                 label="Assurance" 
@@ -97,11 +129,24 @@ export function ClientProfileSidebar({
               />
             } 
           />
+          <ClientSidebarRow
+            value={
+              <InlineEditableField
+                label="Notes thérapeute"
+                value={notes}
+                onChange={(val) => onUpdateClient(client.id, { therapistNotes: val, notes: val })}
+              />
+            } 
+          />
         </div>
 
         <div className="pt-4">
-          <button className="w-full flex items-center justify-center gap-3 h-10 rounded-full border border-border text-[10px] font-bold tracking-[0.05em] transition-all group text-foreground hover:bg-secondary">
-            <FileText size={14} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" /> Archives financières
+          <button
+            type="button"
+            onClick={onOpenUnpaidInvoices}
+            className="dashboard-secondary-button group h-12 w-full justify-center gap-3 rounded-2xl"
+          >
+            <FileText size={14} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" /> Factures ouvertes
           </button>
         </div>
       </div>
@@ -109,15 +154,19 @@ export function ClientProfileSidebar({
       {/* Quick Metrics */}
       <div className="grid grid-cols-2 gap-3">
          <div className="rounded-2xl p-4 shadow-sm space-y-1 group hover:-translate-y-1 transition-transform bg-primary text-primary-foreground">
-            <p className="text-[9px] font-bold tracking-[0.05em] opacity-40 uppercase">Total</p>
-            <p className="text-2xl font-bold tracking-tight leading-none group-hover:scale-110 transition-transform origin-left">{clientAppts.length}</p>
-            <p className="text-[9px] font-bold tracking-[0.05em] opacity-45">Séances</p>
+            <p className="dashboard-metric-label opacity-40">Total</p>
+            <p className="dashboard-metric-value origin-left text-primary-foreground transition-transform group-hover:scale-110">{clientAppts.length}</p>
+            <p className="dashboard-metric-label opacity-45">Séances</p>
          </div>
-         <div className={`rounded-2xl p-4 shadow-sm space-y-1 group hover:-translate-y-1 transition-transform ${unpaidCount > 0 ? "bg-destructive text-destructive-foreground" : "bg-background border border-border text-foreground"}`}>
-            <p className={`text-[9px] font-bold tracking-[0.05em] uppercase ${unpaidCount > 0 ? 'opacity-45' : 'text-muted-foreground'}`}>Ouvertes</p>
-            <p className="text-2xl font-bold tracking-tight leading-none group-hover:scale-110 transition-transform origin-left">{unpaidCount}</p>
-            <p className={`text-[9px] font-bold tracking-[0.05em] ${unpaidCount > 0 ? 'opacity-45' : 'text-muted-foreground'}`}>Factures</p>
-         </div>
+         <button
+            type="button"
+            onClick={onOpenUnpaidInvoices}
+            className={`rounded-2xl p-4 shadow-sm space-y-1 group hover:-translate-y-1 transition-transform text-left ${unpaidCount > 0 ? "bg-destructive text-destructive-foreground" : "bg-background border border-border text-foreground"}`}
+         >
+            <p className={`dashboard-metric-label ${unpaidCount > 0 ? 'opacity-45' : 'text-muted-foreground/70'}`}>Ouvertes</p>
+            <p className="dashboard-metric-value origin-left transition-transform group-hover:scale-110">{unpaidCount}</p>
+            <p className={`dashboard-metric-label ${unpaidCount > 0 ? 'opacity-45' : 'text-muted-foreground/70'}`}>Factures</p>
+         </button>
       </div>
     </aside>
   );

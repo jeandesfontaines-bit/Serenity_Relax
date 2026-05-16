@@ -53,4 +53,4 @@ export function formatCurrency(value: number): string {
   return `${value.toLocaleString('fr-CH', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} CHF`;
 }
 
-export const GRID_TEMPLATE = `56px minmax(140px,0.95fr) minmax(160px,1fr) minmax(180px,1.1fr) minmax(220px,1.2fr) minmax(260px,1.5fr) minmax(150px,0.95fr) 88px minmax(150px,1fr)`;
+export const GRID_TEMPLATE = `52px minmax(118px,0.82fr) minmax(124px,0.85fr) minmax(138px,0.9fr) minmax(168px,0.95fr) minmax(205px,1.08fr) minmax(104px,0.72fr) 68px minmax(108px,0.78fr)`;

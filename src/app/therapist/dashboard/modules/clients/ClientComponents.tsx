@@ -1,20 +1,14 @@
 import React from 'react';
-import { Clock, ArrowRight, Edit3 } from 'lucide-react';
+import { Clock, ArrowRight } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Appointment } from '../../types';
 import { cleanServiceLabel } from '@/lib/cleanServiceLabel';
 
-export function ClientSidebarRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: React.ReactNode }) {
+export function ClientSidebarRow({ value }: { value: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 group">
-      <div className="w-10 h-10 flex items-center justify-center rounded-xl transition-all shadow-inner bg-secondary text-muted-foreground shrink-0">
-        {icon}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="dashboard-eyebrow mb-0.5">{label}</p>
-        <div className="text-sm font-bold tracking-tight leading-none text-foreground truncate">{value}</div>
-      </div>
+    <div className="min-w-0">
+      <div className="dashboard-body-strong leading-none">{value}</div>
     </div>
   );
 }
@@ -31,8 +25,8 @@ export function ConfirmedAppointmentCard({ appt, variant, onClick }: { appt: App
           : "bg-background text-foreground border-border"
       }`}
     >
-      <div className="flex items-center justify-between mb-8">
-        <div className={`flex items-center gap-3 text-[10px] font-bold tracking-[0.05em] ${
+      <div className="mb-8 flex items-center justify-between">
+        <div className={`dashboard-meta-strong flex items-center gap-3 ${
           isDark ? 'text-white/60' : 'text-muted-foreground'
         }`}>
           <Clock size={14} strokeWidth={2.5} />
@@ -45,17 +39,17 @@ export function ConfirmedAppointmentCard({ appt, variant, onClick }: { appt: App
         </div>
       </div>
       
-      <h4 className="text-xl font-bold tracking-tight leading-none mb-4">
+      <h4 className={`dashboard-section-title-lg mb-4 leading-none ${isDark ? 'text-white' : 'text-foreground'}`}>
         {cleanServiceLabel(appt.serviceName) || 'Soin Holistique'}
       </h4>
       
       <div className="flex items-center gap-4">
-        <span className={`text-[8px] font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-md ${
+        <span className={`dashboard-status-chip rounded-md px-3 py-1 ${
           isDark ? "bg-white text-primary" : "bg-primary text-primary-foreground"
         }`}>
           Confirmé
         </span>
-        <span className={`font-bold text-[10px] tracking-[0.05em] ${
+        <span className={`dashboard-meta-strong ${
           isDark ? 'text-white/40' : 'text-muted-foreground'
         }`}>
            {appt.duration || '60 min'}
@@ -75,29 +69,29 @@ export function AppointmentHistoryRow({ appt, onClick }: { appt: Appointment, on
       onClick={onClick}
       className="w-full rounded-2xl p-4 flex items-center gap-6 transition-all group shadow-sm hover:shadow-md hover:-translate-y-0.5 relative overflow-hidden border bg-background border-border"
     >
-      <div className="flex flex-col items-center justify-center w-12 border-r border-border pr-6 transition-colors">
-        <span className="text-xl font-bold leading-none tracking-tight text-foreground">{day}</span>
-        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mt-1">{month}</span>
+      <div className="flex w-12 flex-col items-center justify-center border-r border-border pr-6 transition-colors">
+        <span className="dashboard-section-title-lg leading-none text-foreground">{day}</span>
+        <span className="dashboard-calendar-label mt-1">{month}</span>
       </div>
       <div className="flex-1 text-left min-w-0">
-        <h4 className="text-sm font-bold tracking-tight leading-none transition-all truncate">
+        <h4 className="dashboard-body-strong truncate leading-none transition-all">
           {cleanServiceLabel(appt.serviceName) || 'Soin Signature'}
         </h4>
         <div className="flex items-center gap-4 mt-2">
           <div className="flex items-center gap-2">
              <Clock size={12} strokeWidth={2.5} className="text-muted-foreground" />
-             <p className="text-[10px] font-bold tracking-tight text-muted-foreground">
+             <p className="dashboard-meta">
                {appt.time || '09:00'} - {appt.endTime || '10:00'}
              </p>
           </div>
           <div className="w-1 h-1 rounded-full bg-border" />
-          <p className="text-[10px] font-bold tracking-tight text-muted-foreground">
+          <p className="dashboard-meta">
              {appt.duration || '45 min'}
           </p>
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <div className={`px-3 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider shadow-sm transition-all border ${
+        <div className={`dashboard-status-chip rounded-md shadow-sm transition-all ${
           appt.paid ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-secondary border-border text-muted-foreground'
         }`}>
           {appt.paid ? 'Payé' : 'En attente'}
@@ -115,15 +109,16 @@ export function InlineEditableField({
   value,
   onChange,
   type = 'text',
+  className = '',
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   type?: string;
+  className?: string;
 }) {
   const [editing, setEditing] = React.useState(false);
   const [draft, setDraft] = React.useState(value);
-  const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     setDraft(value);
@@ -144,7 +139,6 @@ export function InlineEditableField({
 
   return editing ? (
     <input
-      ref={inputRef}
       autoFocus
       type={type}
       value={draft}
@@ -152,15 +146,14 @@ export function InlineEditableField({
       onBlur={commit}
       onKeyDown={handleKey}
       placeholder={label}
-      className="w-full bg-transparent outline-none border-b-4 border-primary transition-all py-1 font-bold text-foreground"
+      className={`dashboard-edit-value w-full border-b border-primary bg-transparent pb-1 outline-none placeholder:font-normal placeholder:text-muted-foreground/60 ${className}`}
     />
   ) : (
     <div
       onDoubleClick={() => setEditing(true)}
-      className="cursor-text rounded-xl px-2 -mx-2 transition-all flex items-center group/edit hover:bg-secondary bg-transparent"
+      className={`dashboard-edit-value cursor-text ${className}`}
     >
-      <span className="truncate">{value || <span className="font-normal text-muted-foreground">{label}</span>}</span>
-      <Edit3 size={14} className="ml-3 opacity-0 group-hover/edit:opacity-100 transition-opacity text-muted-foreground" />
+      {value || <span className="font-normal text-muted-foreground/60">{label}</span>}
     </div>
   );
 }

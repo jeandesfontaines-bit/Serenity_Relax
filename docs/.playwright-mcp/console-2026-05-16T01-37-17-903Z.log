@@ -1,0 +1,16 @@
+[   37683ms] TypeError: Cannot read properties of null (reading 'addEventListener')
+    at chrome-extension://edlifbnjlicfpckhgjhflgkeeibhhcii/js/share-modal.js:1:135
+[   39844ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[   43403ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[   45784ms] [LOG] [Fast Refresh] done in 2483ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  286898ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  291928ms] [LOG] [Fast Refresh] done in 4848ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  650887ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=pdNpuDnyRrucBCRSyWdutOD9h4S5jWMSMHpVBw7Gy1w8J1_l2l_UsA&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=Gf5IZi6YKZhvLN2OvqRoOA&AID=191&CI=0&TYPE=xmlhttp&zx=2lb00imcwgoe&t=1:0
+[  655400ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=pdNpuDnyRrucBCRSyWdutOD9h4S5jWMSMHpVBw7Gy1w8J1_l2l_UsA&VER=8&database=projects%2Fserenity-relax-joao%2Fdatabases%2F(default)&RID=rpc&SID=Gf5IZi6YKZhvLN2OvqRoOA&AID=194&CI=0&TYPE=xmlhttp&zx=bn1sijf3yeqk&t=1:0
+[  655502ms] [WARNING] [2026-05-16T01:48:13.384Z]  @firebase/firestore: Firestore (11.10.0): WebChannelConnection RPC 'Listen' stream 0x67019718 transport errored. Name: undefined Message: undefined @ http://localhost:9002/_next/static/chunks/node_modules_0d688b2b._.js:4455
+[  665483ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  672546ms] [LOG] [Fast Refresh] done in 6846ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  683098ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  700778ms] [LOG] [Fast Refresh] done in 17634ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  701927ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  709549ms] [LOG] [Fast Refresh] done in 7360ms @ http://localhost:9002/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809

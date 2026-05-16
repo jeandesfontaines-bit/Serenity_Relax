@@ -20,7 +20,7 @@ export function ClientAppointments({
       <section className="space-y-6">
         <div className="flex items-center justify-between border-b border-border pb-4">
           <div>
-            <h3 className="text-2xl font-bold tracking-tight text-foreground">Prochaines Séances</h3>
+            <h3 className="dashboard-section-title-lg">Prochaines Séances</h3>
             <p className="dashboard-eyebrow mt-1">Planification active</p>
           </div>
         </div>
@@ -36,9 +36,9 @@ export function ClientAppointments({
               />
             ))
           ) : (
-            <div className="col-span-full py-16 flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-border group bg-secondary/30">
+            <div className="dashboard-empty-state col-span-full flex flex-col items-center justify-center rounded-2xl py-16 group">
               <Calendar size={32} strokeWidth={1.5} className="mb-4 group-hover:scale-110 transition-transform duration-700 text-muted-foreground/40" />
-              <p className="font-bold text-[11px] uppercase tracking-widest text-muted-foreground/60">Aucune planification en cours</p>
+              <p className="dashboard-table-header-cell text-muted-foreground/60">Aucune planification en cours</p>
             </div>
           )}
         </div>
@@ -48,7 +48,7 @@ export function ClientAppointments({
       <section className="space-y-6">
         <div className="flex items-center justify-between border-b border-border pb-4">
           <div>
-            <h3 className="text-2xl font-bold tracking-tight text-foreground">Historique Complet</h3>
+            <h3 className="dashboard-section-title-lg">Historique Complet</h3>
             <p className="dashboard-eyebrow mt-1">Chronologie des soins</p>
           </div>
         </div>
@@ -58,8 +58,8 @@ export function ClientAppointments({
               <AppointmentHistoryRow key={appt.id} appt={appt} onClick={() => onSelectAppt(appt)} />
             ))
           ) : (
-            <div className="py-12 px-8 rounded-3xl border border-border bg-secondary/30">
-              <p className="font-bold text-lg tracking-tight text-foreground/70">Nouveau patient sans historique enregistré.</p>
+            <div className="dashboard-empty-state rounded-2xl px-8 py-12">
+              <p className="dashboard-body-strong text-foreground/70">Nouveau patient sans historique enregistré.</p>
             </div>
           )}
         </div>

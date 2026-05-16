@@ -24,38 +24,72 @@ export default function ClientCard({ client, summary, isSelected, onSelect, onTo
       }}
       role="button"
       tabIndex={0}
-      className={`group flex cursor-pointer flex-col rounded-[28px] border bg-white p-6 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_36px_rgba(23,43,77,0.08)] ${
-        isSelected ? 'border-primary shadow-[0_10px_30px_rgba(37,99,235,0.12)]' : 'border-[#e2e9f3] shadow-[0_10px_30px_rgba(23,43,77,0.04)]'
+      className={`dashboard-panel-lg group flex cursor-pointer flex-col rounded-[1.25rem] p-5 text-left hover:-translate-y-0.5 ${
+        isSelected ? 'border-primary shadow-sm shadow-primary/15' : ''
       }`}
     >
-      <div className="mb-6 flex items-start justify-end">
+      <div className="mb-4 flex items-start justify-end">
         <Checkbox checked={isSelected} onChange={onToggle} />
       </div>
 
-      <div className="mb-6 flex flex-col items-center text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#e8f0ff] text-2xl font-bold text-primary">
-          {(client.firstName?.[0] || summary.fullName?.[0] || '?').toUpperCase()}
-          {(client.lastName?.[0] || '').toUpperCase()}
-        </div>
-        <h3 className="max-w-full truncate text-[1.15rem] font-semibold tracking-tight text-slate-900">
-          {summary.fullName}
+      <div className="mb-4 border-b border-border/60 pb-4">
+        <h3 className="dashboard-section-title truncate">
+          {summary.fullName || 'Client'}
         </h3>
-        <p className="mt-1 truncate text-sm text-slate-500">{client.email || 'Aucun email'}</p>
+        <p className="dashboard-body mt-1 truncate">
+          {client.email || client.phone || 'Aucune coordonnée'}
+        </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 border-t border-[#edf2f7] pt-4">
-        <div className="space-y-1 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-400">Dernier soin</p>
-          <p className="text-sm font-medium text-slate-900">{summary.lastVisitLabel}</p>
+      <div className="mb-4 space-y-2">
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <p className="dashboard-label">Prénom</p>
+            <p className={`dashboard-body-strong mt-1 ${client.firstName ? 'text-foreground' : 'text-muted-foreground/65'}`}>{client.firstName || '—'}</p>
+          </div>
+          <div>
+            <p className="dashboard-label">Nom</p>
+            <p className={`dashboard-body-strong mt-1 ${client.lastName ? 'text-foreground' : 'text-muted-foreground/65'}`}>{client.lastName || '—'}</p>
+          </div>
         </div>
-        <div className="space-y-1 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-400">Séances</p>
-          <p className="text-sm font-medium text-slate-900">{summary.sessionsCount}</p>
+        <div>
+          <p className="dashboard-label">Email</p>
+          <p className={`dashboard-body-strong mt-1 truncate ${client.email ? 'text-foreground' : 'text-muted-foreground/65'}`}>{client.email || '—'}</p>
+        </div>
+        <div>
+          <p className="dashboard-label">Téléphone</p>
+          <p className={`dashboard-body-strong mt-1 ${client.phone ? 'text-foreground' : 'text-muted-foreground/65'}`}>{client.phone || '—'}</p>
         </div>
       </div>
 
-      <div className="mt-5 flex justify-end">
-        <ChevronRight size={16} strokeWidth={1.5} className="text-slate-300 opacity-0 transition-opacity group-hover:opacity-70" />
+      <div className="grid grid-cols-2 gap-3 border-t border-border/60 pt-4">
+        <div className="dashboard-surface-soft rounded-[1rem] px-4 py-3">
+          <p className="dashboard-label">Dernier soin</p>
+          <p className="dashboard-body-strong mt-1 text-foreground">{summary.lastVisitLabel || '—'}</p>
+        </div>
+        <div className="dashboard-surface-soft rounded-[1rem] px-4 py-3">
+          <p className="dashboard-label">Séances</p>
+          <p className="dashboard-body-strong mt-1 text-foreground">{summary.sessionsCount}</p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-border/60 pt-4">
+        <div className="col-span-2">
+          <p className="dashboard-label">Rue</p>
+          <p className={`dashboard-body-strong mt-1 truncate ${summary.addressStreet ? 'text-foreground' : 'text-muted-foreground/65'}`}>{summary.addressStreet || '—'}</p>
+        </div>
+        <div>
+          <p className="dashboard-label">Code postal</p>
+          <p className={`dashboard-body-strong mt-1 ${summary.addressPostalCode ? 'text-foreground' : 'text-muted-foreground/65'}`}>{summary.addressPostalCode || '—'}</p>
+        </div>
+        <div>
+          <p className="dashboard-label">Ville</p>
+          <p className={`dashboard-body-strong mt-1 ${summary.addressCity ? 'text-foreground' : 'text-muted-foreground/65'}`}>{summary.addressCity || '—'}</p>
+        </div>
+      </div>
+
+      <div className="mt-4 flex justify-end">
+        <ChevronRight size={16} strokeWidth={1.5} className="text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-70" />
       </div>
     </div>
   );

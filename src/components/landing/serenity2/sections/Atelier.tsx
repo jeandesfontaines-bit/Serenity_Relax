@@ -90,9 +90,9 @@ export default function Atelier({ variant = "default" }: { variant?: LandingVari
               — Questions fréquentes
             </span>
             <h2 className="landing-type-h2 landing-text-high display-tight">
-              {variant === "concierge" ? "Ce qu'il faut savoir" : "Tout ce qu'il faut savoir"}
+              <span className="font-serif tracking-[0.015em]">{variant === "concierge" ? "Ce qu'il faut savoir" : "Tout ce qu'il faut savoir"}</span>
               <br />
-              <span className="landing-display-italic landing-text-muted">
+              <span className="landing-display-italic text-[0.75em] landing-text-muted">
                 {variant === "immersive" ? "avant de décrocher." : "avant la séance."}
               </span>
             </h2>

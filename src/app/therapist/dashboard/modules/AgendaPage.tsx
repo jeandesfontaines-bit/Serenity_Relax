@@ -100,50 +100,41 @@ export default function AgendaPage({
 
   return (
     <motion.div 
-      className="flex-1 overflow-auto bg-transparent"
+      className="flex h-full flex-1 overflow-hidden bg-white"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <div className="mx-auto flex min-h-full w-full max-w-[1320px] flex-col gap-6 px-1 pb-6">
-        <section className="space-y-1">
-          <h1 className="text-[2.1rem] font-semibold tracking-tight text-slate-900">Agenda</h1>
-          <p className="text-sm text-slate-500">Vue hebdomadaire et mensuelle de vos rendez-vous.</p>
-        </section>
-
-        <div className="overflow-hidden rounded-[32px] border border-[#e2e9f3] bg-white shadow-[0_14px_36px_rgba(23,43,77,0.05)]">
-          <div className="flex-1 flex flex-col overflow-hidden">
-            {view === 'week'
-              ? <WeekTimeGrid
-                  cur={cur}
-                  appointments={filteredAppointments}
-                  configSlots={configSlots}
-                  isDayOpen={isDayOpen}
-                  isSlotBlocked={isSlotBlocked}
-                  toggleSlot={toggleSlot}
-                  onSelectAppt={onSelectAppt}
-                  onOpenSlot={onOpenSlot}
-                  absenceMode={resolvedAbsenceMode}
-                  blockMode={resolvedBlockMode}
-                  pendingDates={activePendingDates}
-                  togglePending={handleTogglePending}
-                  onMoveAppt={onMoveAppt}
-                />
-              : <MonthView
-                  cur={cur}
-                  appointments={filteredAppointments}
-                  configSlots={configSlots}
-                  isDayOpen={isDayOpen}
-                  isSlotBlocked={isSlotBlocked}
-                  absenceMode={resolvedAbsenceMode}
-                  pendingDates={activePendingDates}
-                  togglePending={handleTogglePending}
-                  onToggleView={onToggleView}
-                  onSelectAppt={onSelectApptFromMonth || onSelectAppt}
-                />
-            }
-          </div>
-        </div>
+      <div className="flex h-full w-full flex-col">
+        {view === 'week'
+          ? <WeekTimeGrid
+              cur={cur}
+              appointments={filteredAppointments}
+              configSlots={configSlots}
+              isDayOpen={isDayOpen}
+              isSlotBlocked={isSlotBlocked}
+              toggleSlot={toggleSlot}
+              onSelectAppt={onSelectAppt}
+              onOpenSlot={onOpenSlot}
+              absenceMode={resolvedAbsenceMode}
+              blockMode={resolvedBlockMode}
+              pendingDates={activePendingDates}
+              togglePending={handleTogglePending}
+              onMoveAppt={onMoveAppt}
+            />
+          : <MonthView
+              cur={cur}
+              appointments={filteredAppointments}
+              configSlots={configSlots}
+              isDayOpen={isDayOpen}
+              isSlotBlocked={isSlotBlocked}
+              absenceMode={resolvedAbsenceMode}
+              pendingDates={activePendingDates}
+              togglePending={handleTogglePending}
+              onToggleView={onToggleView}
+              onSelectAppt={onSelectApptFromMonth || onSelectAppt}
+            />
+        }
       </div>
     </motion.div>
   );

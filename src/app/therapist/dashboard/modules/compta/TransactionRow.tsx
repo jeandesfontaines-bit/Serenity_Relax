@@ -64,27 +64,27 @@ export function TransactionRow({
         <TableCheckbox checked={isSelected} onChange={() => onToggleSelection(appt.id)} />
       </div>
 
-      <div className="text-sm font-medium text-foreground">
+      <div className="dashboard-table-cell-strong">
         {appt.date ? format(new Date(appt.date), 'dd MMM yyyy') : '—'}
       </div>
 
       <div className="min-w-0 pr-3">
-        <div className="truncate text-sm font-semibold text-foreground">
+        <div className="dashboard-table-cell-strong truncate">
           {firstName}
         </div>
       </div>
 
       <div className="min-w-0 pr-3">
-        <div className="truncate text-sm font-semibold text-foreground">
+        <div className="dashboard-table-cell-strong truncate">
           {lastName}
         </div>
       </div>
 
-      <div className="truncate pr-3 text-sm text-muted-foreground">
+      <div className="dashboard-table-cell truncate pr-3">
         {invoice?.invoiceNumber || '—'}
       </div>
 
-      <div className="truncate pr-3 text-sm text-foreground">
+      <div className="dashboard-table-cell-strong truncate pr-3">
         {cleanServiceLabel(appt.serviceName) || 'Session'}
       </div>
 
@@ -95,7 +95,7 @@ export function TransactionRow({
             if (appt.paid) onTogglePayment(appt.id, true);
             else setPayingId(appt.id);
           }}
-          className={`inline-flex rounded-md px-3 py-1 text-[10px] font-semibold tracking-[0.05em] cursor-pointer border transition-colors ${meta.className}`}
+          className={`dashboard-status-chip inline-flex cursor-pointer rounded-md px-3 py-1 border transition-colors ${meta.className}`}
         >
           {meta.label}
         </span>
@@ -111,7 +111,7 @@ export function TransactionRow({
                 type="button"
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={() => onChoosePaymentMethod(appt.id, method)}
-                className="px-3 py-2 text-[10px] font-bold tracking-[0.06em] text-foreground transition-colors hover:bg-accent"
+                className="dashboard-meta-strong px-3 py-2 text-foreground transition-colors hover:bg-accent"
               >
                 {method === 'Twint' ? 'TWINT' : method}
               </button>
@@ -130,7 +130,7 @@ export function TransactionRow({
       </div>
 
       <div 
-        className={`text-right text-sm font-bold tabular-nums ${status === 'cancelled' ? 'text-muted-foreground' : status === 'late' ? 'text-amber-500' : 'text-foreground'}`} 
+        className={`dashboard-table-cell-strong text-right tabular-nums ${status === 'cancelled' ? 'text-muted-foreground' : status === 'late' ? 'text-amber-500' : 'text-foreground'}`} 
       >
         {status === 'cancelled' ? '0 CHF' : formatCurrency(appt.price || 0)}
       </div>

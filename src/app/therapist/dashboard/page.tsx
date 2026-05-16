@@ -109,6 +109,7 @@ export default function TherapistDashboard() {
   const [showAccountingDateRange, setShowAccountingDateRange] = useState(false);
   const [accountingSelectedCount, setAccountingSelectedCount] = useState(0);
   const [showAccountingFilters, setShowAccountingFilters] = useState(false);
+  const [accountingQuickFilter, setAccountingQuickFilter] = useState<{ clientId?: string; unpaidOnly?: boolean } | null>(null);
 
   // Some client-side libraries can emit empty rejected promises in dev.
   // Ignore only `undefined` reasons to prevent false runtime overlays.
@@ -354,6 +355,12 @@ export default function TherapistDashboard() {
               time: '09:00',
               initialSearch: `${selected.firstName || ''} ${selected.lastName || ''}`.trim() || undefined,
             })}
+            onOpenAccountingForClient={(selected) => {
+              setGlobalSearch(`${selected.firstName || ''} ${selected.lastName || ''}`.trim());
+              setAccountingQuickFilter({ clientId: selected.id, unpaidOnly: true });
+              setSelectedClient(null);
+              setTab('accounting');
+            }}
           />
         ) : (
           <ClientsPage
@@ -383,6 +390,7 @@ export default function TherapistDashboard() {
             onSelectedCountChange={setAccountingSelectedCount}
             showFilterPanel={showAccountingFilters}
             onShowFilterPanelChange={setShowAccountingFilters}
+            quickFilter={accountingQuickFilter}
           />
         );
       case 'appointment-detail':

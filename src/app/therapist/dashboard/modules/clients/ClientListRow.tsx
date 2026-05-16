@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import { Client } from '../../types';
 import { ClientSummary } from './constants';
 import Checkbox from './Checkbox';
@@ -38,57 +38,57 @@ export default function ClientListRow({
         />
       </div>
 
-      {visibleColumnIds.has('patient') && (
-        <div className="flex min-w-0 items-center gap-3 pr-4">
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
-            {(client.firstName?.[0] || '') + (client.lastName?.[0] || '')}
-          </div>
-          <div className="flex flex-col min-w-0">
-            <span className="truncate text-sm font-semibold text-foreground">
-              {client.firstName} {client.lastName}
-            </span>
-            <span className="truncate text-[10px] text-muted-foreground uppercase tracking-wider">
-              {client.city || '—'}
-            </span>
-          </div>
+      {visibleColumnIds.has('firstName') && (
+        <div className="dashboard-table-cell-strong min-w-0 truncate pr-4">
+          {client.firstName || '—'}
         </div>
       )}
 
-      {visibleColumnIds.has('status') && (
-        <div className="flex items-center">
-          {summary.sessionsCount < 2 ? (
-            <div className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-600">
-              Nouveau
-            </div>
-          ) : (
-            <div className="rounded-full bg-primary/5 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary/60">
-              Actif
-            </div>
-          )}
+      {visibleColumnIds.has('lastName') && (
+        <div className="dashboard-table-cell-strong min-w-0 truncate pr-4">
+          {client.lastName || '—'}
         </div>
       )}
 
       {visibleColumnIds.has('lastVisit') && (
-        <div className="text-sm font-medium text-muted-foreground">
+        <div className="dashboard-table-cell">
           {summary.lastVisitLabel}
         </div>
       )}
 
       {visibleColumnIds.has('sessions') && (
-        <div className="flex justify-center text-sm font-bold text-foreground tabular-nums">
+        <div className="dashboard-table-cell-strong flex justify-center tabular-nums">
           {summary.sessionsCount}
         </div>
       )}
 
       {visibleColumnIds.has('email') && (
-        <div className="min-w-0 pr-4 text-sm text-muted-foreground truncate">
+        <div className="dashboard-table-cell min-w-0 truncate pr-4">
           {client.email || '—'}
         </div>
       )}
 
       {visibleColumnIds.has('phone') && (
-        <div className="min-w-0 pr-4 text-sm text-muted-foreground">
+        <div className="dashboard-table-cell min-w-0 pr-4">
           {client.phone || '—'}
+        </div>
+      )}
+
+      {visibleColumnIds.has('addressStreet') && (
+        <div className="dashboard-table-cell min-w-0 truncate pr-4">
+          {summary.addressStreet || '—'}
+        </div>
+      )}
+
+      {visibleColumnIds.has('addressPostalCode') && (
+        <div className="dashboard-table-cell min-w-0 pr-4">
+          {summary.addressPostalCode || '—'}
+        </div>
+      )}
+
+      {visibleColumnIds.has('addressCity') && (
+        <div className="dashboard-table-cell min-w-0 truncate pr-4">
+          {summary.addressCity || '—'}
         </div>
       )}
 

@@ -1,0 +1,91 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - complementary [ref=e5]:
+      - generic [ref=e565]:
+        - button "S Serenity" [ref=e567] [cursor=pointer]:
+          - generic [ref=e569]: S
+          - generic [ref=e570]: Serenity
+        - navigation [ref=e571]:
+          - button "Dashboard" [ref=e572] [cursor=pointer]:
+            - img [ref=e573]
+            - generic [ref=e576]: Dashboard
+          - button "Agenda" [ref=e577] [cursor=pointer]:
+            - img [ref=e578]
+            - generic [ref=e580]: Agenda
+          - button "Clients" [ref=e581] [cursor=pointer]:
+            - img [ref=e582]
+            - generic [ref=e587]: Clients
+          - button "Finances" [ref=e588] [cursor=pointer]:
+            - img [ref=e589]
+            - generic [ref=e592]: Finances
+        - generic [ref=e593]:
+          - button "Paramètres" [ref=e594] [cursor=pointer]:
+            - img [ref=e595]
+            - generic [ref=e598]: Paramètres
+          - button "Déconnexion" [ref=e599] [cursor=pointer]:
+            - img [ref=e600]
+            - generic [ref=e603]: Déconnexion
+          - button "Réduire le menu" [ref=e604] [cursor=pointer]:
+            - img [ref=e605]
+    - generic [ref=e48]:
+      - banner [ref=e49]:
+        - heading "Finances" [level=2] [ref=e607]
+        - generic [ref=e54]:
+          - img
+          - textbox "Rechercher un patient, un rdv, un soin..." [ref=e55]
+        - generic [ref=e608]:
+          - button [ref=e609] [cursor=pointer]:
+            - img [ref=e610]
+          - button [ref=e612] [cursor=pointer]:
+            - img [ref=e613]
+          - button "Exporter" [ref=e615] [cursor=pointer]:
+            - img [ref=e616]
+            - text: Exporter
+      - main [ref=e68]:
+        - main [ref=e508]:
+          - generic [ref=e509]:
+            - generic [ref=e511]:
+              - button [ref=e513] [cursor=pointer]:
+                - img [ref=e514]
+              - button "Prénom" [ref=e516] [cursor=pointer]
+              - button "Nom" [ref=e517] [cursor=pointer]
+              - button "Dernier soin" [ref=e518] [cursor=pointer]
+              - button "Séances" [ref=e519] [cursor=pointer]
+              - button "Email" [ref=e520] [cursor=pointer]
+              - button "Téléphone" [ref=e521] [cursor=pointer]
+              - button "Rue" [ref=e522] [cursor=pointer]
+              - button "Code postal" [ref=e523] [cursor=pointer]
+              - button "Ville" [ref=e524] [cursor=pointer]
+              - generic [ref=e525]: Actions
+            - generic [ref=e526]:
+              - generic [ref=e527] [cursor=pointer]:
+                - button [ref=e529]:
+                  - img [ref=e530]
+                - generic [ref=e532]: Jean
+                - generic [ref=e533]: Desfontaines
+                - generic [ref=e534]: 7 May 2026
+                - generic [ref=e535]: "3"
+                - generic [ref=e536]: Jean.desfontaines@me.com
+                - generic [ref=e537]: "078242716"
+                - generic [ref=e538]: —
+                - generic [ref=e539]: —
+                - generic [ref=e540]: Geneve
+                - img [ref=e542]
+              - generic [ref=e546] [cursor=pointer]:
+                - button [ref=e548]:
+                  - img [ref=e549]
+                - generic [ref=e551]: Jean
+                - generic [ref=e552]: j
+                - generic [ref=e553]: 14 May 2026
+                - generic [ref=e554]: "1"
+                - generic [ref=e555]: —
+                - generic [ref=e556]: —
+                - generic [ref=e557]: —
+                - generic [ref=e558]: —
+                - generic [ref=e559]: —
+                - img [ref=e561]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e149] [cursor=pointer]:
+    - img [ref=e150]
+  - alert [ref=e153]

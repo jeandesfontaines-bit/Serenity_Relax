@@ -19,22 +19,39 @@ export interface ClientSummary {
   lastVisitDate: Date | null;
   lastVisitLabel: string;
   preferredRitual: string;
+  addressStreet: string;
+  addressPostalCode: string;
+  addressCity: string;
 }
 
 export interface ClientFilters {
-  status: 'all' | 'active' | 'inactive';
   minSessions: number | null;
   lastVisitWithinDays: number | null;
 }
 
 export const ALL_COLUMNS: ColDef[] = [
-  { id: 'patient', label: 'Patient', minWidth: '220px', flex: '2fr' },
-  { id: 'status', label: 'Statut', minWidth: '100px', flex: '0.8fr', align: 'start' },
-  { id: 'lastVisit', label: 'Dernier soin', minWidth: '140px', flex: '1.2fr' },
-  { id: 'sessions', label: 'Séances', minWidth: '80px', flex: '0.7fr', align: 'center' },
-  { id: 'email', label: 'Email', minWidth: '220px', flex: '1.5fr' },
-  { id: 'phone', label: 'Téléphone', minWidth: '150px', flex: '1fr' },
+  { id: 'firstName', label: 'Prénom', minWidth: '120px', flex: '0.9fr' },
+  { id: 'lastName', label: 'Nom', minWidth: '130px', flex: '0.95fr' },
+  { id: 'lastVisit', label: 'Dernier soin', minWidth: '120px', flex: '1fr' },
+  { id: 'sessions', label: 'Séances', minWidth: '72px', flex: '0.6fr', align: 'center' },
+  { id: 'email', label: 'Email', minWidth: '180px', flex: '1.25fr' },
+  { id: 'phone', label: 'Téléphone', minWidth: '130px', flex: '0.95fr' },
+  { id: 'addressStreet', label: 'Rue', minWidth: '180px', flex: '1.2fr' },
+  { id: 'addressPostalCode', label: 'Code postal', minWidth: '96px', flex: '0.75fr' },
+  { id: 'addressCity', label: 'Ville', minWidth: '120px', flex: '0.9fr' },
 ];
+
+export function getClientAddressStreet(client: Client): string {
+  return client.addressStreet || client.street || '';
+}
+
+export function getClientAddressPostalCode(client: Client): string {
+  return client.addressPostalCode || client.zip || '';
+}
+
+export function getClientAddressCity(client: Client): string {
+  return client.addressCity || client.city || '';
+}
 
 export function parseAppointmentDate(date?: string): Date | null {
   if (!date) return null;
@@ -62,6 +79,9 @@ export function getClientSummary(client: Client, clientAppts: Appointment[]): Cl
   const sessionsCount = clientAppts.length;
   const fullName = `${client.firstName || ''} ${client.lastName || ''}`.trim();
   const lastVisitLabel = lastVisitDate ? format(lastVisitDate, 'd MMM yyyy') : '—';
+  const addressStreet = getClientAddressStreet(client);
+  const addressPostalCode = getClientAddressPostalCode(client);
+  const addressCity = getClientAddressCity(client);
 
   return {
     fullName,
@@ -71,10 +91,11 @@ export function getClientSummary(client: Client, clientAppts: Appointment[]): Cl
       client.lastName,
       client.email,
       client.phone,
-      client.zip,
-      client.city,
-      client.street,
+      addressPostalCode,
+      addressCity,
+      addressStreet,
       client.canton,
+      client.addressCanton,
       client.insurance,
       preferredRitual,
     ].filter(Boolean).join(' ').toLowerCase(),
@@ -82,5 +103,8 @@ export function getClientSummary(client: Client, clientAppts: Appointment[]): Cl
     lastVisitDate,
     lastVisitLabel,
     preferredRitual,
+    addressStreet,
+    addressPostalCode,
+    addressCity,
   };
 }

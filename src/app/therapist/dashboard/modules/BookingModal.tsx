@@ -67,7 +67,7 @@ export default function BookingModal({
 
       {/* Modal */}
       <motion.div
-        className="relative w-full max-w-3xl rounded-[3rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border border-border bg-background"
+        className="dashboard-panel-lg relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[1.75rem] shadow-2xl"
         initial={{ opacity: 0, scale: 0.92, y: 60 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.92, y: 60 }}
@@ -76,7 +76,7 @@ export default function BookingModal({
         {/* Header */}
         <div className="px-12 pt-12 pb-10 flex items-center justify-between border-b border-border/30">
           <div className="flex items-center gap-6">
-            <div className="w-14 h-14 rounded-[1.25rem] flex items-center justify-center shadow-lg rotate-3 bg-primary text-primary-foreground">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg">
               <Sparkles size={24} strokeWidth={2.5} />
             </div>
             <div>

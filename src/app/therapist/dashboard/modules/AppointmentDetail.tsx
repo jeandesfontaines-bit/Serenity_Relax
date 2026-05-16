@@ -94,7 +94,7 @@ export default function AppointmentDetail({
       />
 
       <motion.div
-        className="relative w-full max-w-5xl rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col max-h-[90vh] border bg-background border-border/30"
+        className="dashboard-panel-lg relative flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-[1.75rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)]"
         initial={{ opacity: 0, scale: 0.9, y: 100 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 100 }}
@@ -159,7 +159,7 @@ export default function AppointmentDetail({
                           value={String(current.price || '')} 
                           onChange={(val) => updateDoc(doc(firestore!, 'appointments', appt.id), { price: Number(val) })} 
                         />
-                        <span className="font-bold text-muted-foreground">CHF</span>
+                        <span className="dashboard-body-strong text-muted-foreground">CHF</span>
                       </div>
                     } 
                   />
@@ -173,22 +173,22 @@ export default function AppointmentDetail({
             <div className="space-y-8">
               {/* Executive Summary */}
               <div className="grid grid-cols-1 gap-6">
-                  <div className="rounded-[2rem] p-6 shadow-lg flex items-center justify-between group transition-all duration-700 border bg-background border-border/30">
+                  <div className="dashboard-panel flex items-center justify-between rounded-[1.25rem] p-6 shadow-lg transition-all duration-300">
                     <div>
                       <p className="dashboard-eyebrow mb-1 text-muted-foreground">Séances totales</p>
-                      <p className="text-2xl font-bold tracking-tight leading-none text-foreground">{sessionCount}</p>
+                      <p className="dashboard-metric-value text-foreground">{sessionCount}</p>
                     </div>
                     <div className="w-12 h-12 flex items-center justify-center rounded-xl transition-all bg-secondary text-muted-foreground">
                        <BarChart size={20} strokeWidth={2.5} />
                     </div>
                   </div>
 
-                  <div className={`rounded-[2rem] p-6 shadow-lg flex items-center justify-between transition-all duration-700 border ${
+                  <div className={`flex items-center justify-between rounded-[1.25rem] p-6 shadow-lg transition-all duration-300 border ${
                    totalDue > 0 ? "bg-primary text-primary-foreground border-transparent" : "bg-background text-foreground border-border/30"
                  }`}>
                     <div>
                       <p className={`dashboard-eyebrow mb-1 ${totalDue > 0 ? 'text-primary-foreground/50' : 'text-muted-foreground'}`}>Solde à régler</p>
-                      <p className="text-2xl font-bold tracking-tight leading-none">{totalDue} CHF</p>
+                      <p className="dashboard-metric-value">{totalDue} CHF</p>
                     </div>
                     <div className={`w-12 h-12 flex items-center justify-center rounded-xl transition-all ${
                       totalDue > 0 ? "bg-primary-foreground/10 text-primary-foreground" : "bg-secondary text-muted-foreground"
@@ -197,10 +197,10 @@ export default function AppointmentDetail({
                     </div>
                   </div>
 
-                  <div className="rounded-[2rem] p-6 shadow-lg flex items-center justify-between group transition-all duration-700 border bg-background border-border/30">
+                  <div className="dashboard-panel flex items-center justify-between rounded-[1.25rem] p-6 shadow-lg transition-all duration-300">
                     <div>
                       <p className="dashboard-eyebrow mb-1 text-muted-foreground">Dernière visite</p>
-                      <p className="text-2xl font-bold tracking-tight leading-none text-foreground">
+                      <p className="dashboard-metric-value text-foreground">
                         {lastVisit?.date ? format(parseISO(lastVisit.date), 'dd MMM', { locale: fr }) : 'aucune'}
                       </p>
                     </div>
@@ -211,7 +211,7 @@ export default function AppointmentDetail({
               </div>
 
               {/* Notes Section */}
-              <div className="rounded-[2rem] p-8 shadow-xl space-y-6 relative overflow-hidden border bg-background border-border/30">
+              <div className="dashboard-panel relative space-y-6 overflow-hidden rounded-[1.25rem] p-8 shadow-xl">
                 <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
                    <FileText size={140} strokeWidth={1} className="text-foreground/5" />
                 </div>
@@ -220,9 +220,9 @@ export default function AppointmentDetail({
                     <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg bg-primary text-primary-foreground">
                        <Edit3 size={16} strokeWidth={2.5} />
                     </div>
-                    <h4 className="text-[13px] font-bold tracking-[0.05em] text-foreground">Journal clinique</h4>
+                    <h4 className="dashboard-section-title">Journal clinique</h4>
                   </div>
-                  <span className="text-[9px] font-bold tracking-[0.1em] px-4 py-2 rounded-full shadow-lg bg-primary text-primary-foreground">Archivé</span>
+                  <span className="dashboard-status-chip rounded-full bg-primary px-4 py-2 text-primary-foreground shadow-lg">Archivé</span>
                 </div>
                 
                 <InlineEditableTextarea
@@ -234,7 +234,7 @@ export default function AppointmentDetail({
                 <button 
                   onClick={handleSaveNotes}
                   disabled={isSavingNotes}
-                  className={`w-full flex items-center justify-center gap-4 h-14 rounded-full font-bold text-[12px] tracking-[0.1em] transition-all duration-700 relative z-10 ${
+                  className={`dashboard-action-button-primary relative z-10 h-14 w-full justify-center gap-4 rounded-full transition-all duration-700 ${
                     saveSuccess 
                       ? 'shadow-md scale-95 bg-primary text-primary-foreground' 
                       : 'hover:shadow-lg hover:-translate-y-0.5 active:scale-95 shadow-xl bg-primary text-primary-foreground'

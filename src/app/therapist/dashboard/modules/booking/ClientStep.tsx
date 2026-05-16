@@ -40,7 +40,7 @@ export function ClientStep({
           onChange={e => onSearchChange(e.target.value)}
           autoFocus
           placeholder="Rechercher un patient…"
-          className="w-full h-14 rounded-3xl pl-14 pr-5 text-base font-semibold outline-none transition-all duration-700 border border-border/30 bg-secondary focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/10 text-foreground"
+          className="dashboard-field h-14 rounded-2xl bg-secondary/30 pl-14 pr-5 text-base font-semibold"
         />
       </div>
 
@@ -52,10 +52,10 @@ export function ClientStep({
             onClick={() => onSelectClient(c)}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="group w-full flex items-center justify-between p-5 rounded-3xl border border-border/30 bg-background transition-all duration-700 hover:border-primary hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/20"
+            className="dashboard-panel group flex w-full items-center justify-between rounded-2xl p-5 transition-all duration-300 hover:border-primary hover:bg-primary/5"
           >
             <div className="flex items-center gap-4 text-left">
-              <div className="w-10 h-10 rounded-[1.25rem] flex items-center justify-center flex-shrink-0 transition-all duration-700 bg-secondary text-muted-foreground">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary text-muted-foreground transition-all duration-300">
                 <User size={16} strokeWidth={2} />
               </div>
               <div>
@@ -81,10 +81,10 @@ export function ClientStep({
             onClick={onSelectNew}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full flex items-center justify-between p-5 rounded-3xl border-2 border-dashed border-border/30 bg-secondary/50 transition-all duration-700 group hover:border-primary hover:bg-primary/5"
+            className="group flex w-full items-center justify-between rounded-2xl border-2 border-dashed border-border bg-secondary/30 p-5 transition-all duration-300 hover:border-primary hover:bg-primary/5"
           >
             <div className="flex items-center gap-4 text-left">
-              <div className="w-10 h-10 rounded-[1.25rem] flex items-center justify-center flex-shrink-0 shadow-md transition-transform duration-700 group-hover:scale-110 bg-primary text-primary-foreground">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md transition-transform duration-300 group-hover:scale-110">
                 <UserPlus size={16} strokeWidth={2.5} />
               </div>
               <div>

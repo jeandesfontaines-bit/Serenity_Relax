@@ -27,9 +27,9 @@ export default function About() {
             — Bienfaits
           </span>
           <h2 className="landing-type-h2 landing-text-high display-tight leading-[0.94]">
-            Ce que le massage
+            <span className="font-serif tracking-[0.015em]">Ce que le massage</span>
             <br />
-            <span className="landing-display-italic landing-text-muted">vous apporte.</span>
+            <span className="landing-display-italic text-[0.75em] landing-text-muted">vous apporte.</span>
           </h2>
           <p className="landing-type-body landing-text-body mx-auto mt-6 max-w-[44ch]">
             Des effets concrets, visibles dans le corps et perceptibles dès les premières
@@ -46,10 +46,10 @@ export default function About() {
               <span className="landing-display-italic text-[1.45rem] leading-none text-[var(--orange)]/82 md:text-[1.7rem]">
                 {benefit.num}
               </span>
-              <h3 className="landing-type-h4 landing-text-high display-tight mt-4">
+              <h3 className="landing-type-h4 landing-text-high display-tight mt-4 font-serif tracking-[0.015em]">
                 {benefit.title}
               </h3>
-              <p className="landing-type-body-s landing-text-body mt-3 max-w-[30ch]">
+              <p className="landing-type-body-s landing-text-body mt-3 mx-auto max-w-[42ch]">
                 {benefit.desc}
               </p>
             </article>
