@@ -90,6 +90,7 @@ export function TransactionRow({
 
       <div className="relative">
         <span
+          data-payment-trigger="true"
           onClick={(e) => {
             e.stopPropagation();
             if (appt.paid) onTogglePayment(appt.id, true);
@@ -101,6 +102,7 @@ export function TransactionRow({
         </span>
         {isPaying && !appt.paid && (
           <div
+            data-payment-menu="true"
             onMouseDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
             className="absolute left-0 top-full z-30 mt-2 flex overflow-hidden rounded-xl border border-border bg-card shadow-xl"

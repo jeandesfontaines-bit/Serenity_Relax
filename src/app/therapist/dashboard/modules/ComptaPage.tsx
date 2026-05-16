@@ -59,7 +59,13 @@ export default function ComptaPage({
 
   React.useEffect(() => {
     if (!payingId) return;
-    const handlePointerDown = () => setPayingId(null);
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('[data-payment-trigger="true"]') || target?.closest('[data-payment-menu="true"]')) {
+        return;
+      }
+      setPayingId(null);
+    };
     document.addEventListener('mousedown', handlePointerDown);
     return () => document.removeEventListener('mousedown', handlePointerDown);
   }, [payingId]);

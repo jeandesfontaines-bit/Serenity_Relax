@@ -241,22 +241,62 @@ export default function TherapistDashboard() {
 
   const handleTogglePayment = async (id: string, current: boolean, method?: string) => {
     if (!firestore) return;
-    await updateDoc(doc(firestore, 'appointments', id), {
-      paid: !current,
-      paymentMethod: !current ? (method || 'Twint') : null
-    });
+    const nextPaid = !current;
+    const nextMethod = nextPaid ? (method || 'Twint') : null;
+    const previousAppointments = appointments;
+    const previousInvoices = invoices;
 
-    const qInvs = query(collection(firestore, 'invoices'), where('appointmentId', '==', id));
-    const invSnap = await getDocs(qInvs);
-    await Promise.all(
-      invSnap.docs.map((invoiceDoc) =>
-        updateDoc(invoiceDoc.ref, {
-          status: !current ? 'Paid' : 'Pending',
-          paymentMethod: !current ? (method || 'Twint') : null,
-          paidAt: !current ? serverTimestamp() : null,
-        }),
+    setAppointments((prev) =>
+      prev.map((appt) =>
+        appt.id === id
+          ? { ...appt, paid: nextPaid, paymentMethod: nextMethod || undefined }
+          : appt,
       ),
     );
+    setInvoices((prev) =>
+      prev.map((invoice) =>
+        invoice.appointmentId === id
+          ? ({
+              ...invoice,
+              status: nextPaid ? 'Paid' : 'Pending',
+              paymentMethod: nextMethod || undefined,
+            } as Invoice)
+          : invoice,
+      ),
+    );
+    setSelectedAppt((prev) =>
+      prev?.id === id
+        ? { ...prev, paid: nextPaid, paymentMethod: nextMethod || undefined }
+        : prev,
+    );
+
+    try {
+      await updateDoc(doc(firestore, 'appointments', id), {
+        paid: nextPaid,
+        paymentMethod: nextMethod,
+      });
+
+      const qInvs = query(collection(firestore, 'invoices'), where('appointmentId', '==', id));
+      const invSnap = await getDocs(qInvs);
+      await Promise.all(
+        invSnap.docs.map((invoiceDoc) =>
+          updateDoc(invoiceDoc.ref, {
+            status: nextPaid ? 'Paid' : 'Pending',
+            paymentMethod: nextMethod,
+            paidAt: nextPaid ? serverTimestamp() : null,
+          }),
+        ),
+      );
+    } catch (error) {
+      console.error('Failed to toggle payment status:', error);
+      setAppointments(previousAppointments);
+      setInvoices(previousInvoices);
+      setSelectedAppt((prev) => {
+        if (!prev || prev.id !== id) return prev;
+        const previous = previousAppointments.find((appt) => appt.id === id);
+        return previous ? { ...prev, paid: previous.paid, paymentMethod: previous.paymentMethod } : prev;
+      });
+    }
   };
 
   const handleSendWhatsApp = (appt: Appointment, type: 'reminder' | 'confirmation' | 'followup') => {
@@ -356,7 +396,7 @@ export default function TherapistDashboard() {
               initialSearch: `${selected.firstName || ''} ${selected.lastName || ''}`.trim() || undefined,
             })}
             onOpenAccountingForClient={(selected) => {
-              setGlobalSearch(`${selected.firstName || ''} ${selected.lastName || ''}`.trim());
+              setGlobalSearch('');
               setAccountingQuickFilter({ clientId: selected.id, unpaidOnly: true });
               setSelectedClient(null);
               setTab('accounting');
@@ -383,6 +423,7 @@ export default function TherapistDashboard() {
             appointments={appointments}
             invoices={invoices}
             onTogglePayment={handleTogglePayment}
+            onSelectAppt={openAppointmentRecord}
             onDeleteInvoices={handleDeleteAppointments}
             searchQuery={globalSearch}
             onSearchQueryChange={setGlobalSearch}
@@ -664,6 +705,10 @@ export default function TherapistDashboard() {
   const handleNavigate = useCallback((page: string) => {
     setTab(page);
     setSelectedClient(null);
+    if (page !== 'accounting') {
+      setAccountingQuickFilter(null);
+      setShowAccountingFilters(false);
+    }
     if (page !== 'appointment-detail') {
       setSelectedAppt(null);
     }
