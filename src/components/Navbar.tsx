@@ -8,6 +8,7 @@ import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { usePathname, useRouter } from 'next/navigation';
 import LoginModal from '@/components/auth/LoginModal';
+import { isTherapistEmail } from '@/lib/therapist-auth';
 
 export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
   const { user } = useUser();
@@ -63,7 +64,7 @@ export function Navbar({ onBookingClick }: { onBookingClick?: () => void }) {
   const isTherapistArea = pathname?.startsWith('/therapist');
   const isLoginPage = pathname === '/login';
 
-  const isTherapist = user && user.email === 'jean.desfontaines@gmail.com';
+  const isTherapist = user && isTherapistEmail(user.email);
   const effectiveUser = user && !user.isAnonymous ? {
     name: user.displayName?.split(' ')[0] || 'Profil',
     photo: user.photoURL,

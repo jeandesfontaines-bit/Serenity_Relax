@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { AlertCircle, ArrowRight, Loader2, Mail } from 'lucide-react';
+import { isTherapistEmail } from '@/lib/therapist-auth';
 
 export default function LoginPanel({
   onSuccess,
@@ -20,7 +21,6 @@ export default function LoginPanel({
   redirectIfAuthenticated?: boolean;
   framed?: boolean;
 }) {
-  const THERAPIST_EMAIL = 'jean.desfontaines@gmail.com';
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
@@ -37,7 +37,7 @@ export default function LoginPanel({
     : 'w-full space-y-8';
 
   const navigateToDashboard = (signedInEmail?: string | null) => {
-    if ((signedInEmail || user?.email) === THERAPIST_EMAIL) {
+    if (isTherapistEmail(signedInEmail || user?.email)) {
       router.push('/therapist/dashboard');
       return;
     }
@@ -121,7 +121,7 @@ export default function LoginPanel({
     }
 
     setError(null);
-    if (normalizedEmail === THERAPIST_EMAIL) {
+    if (isTherapistEmail(normalizedEmail)) {
       setIsLoading(true);
       try {
         setIsTherapist(true);

@@ -4,7 +4,9 @@ service cloud.firestore {
     // Helper to check if user is the therapist (João)
     function isTherapist() {
       return request.auth != null && (
-        request.auth.token.email == 'jean.desfontaines@gmail.com' || 
+        request.auth.token.email == 'jean.desfontaines@gmail.com' ||
+        request.auth.token.email == 'Joaoalbertodacosta@gmail.com' ||
+        request.auth.token.email == 'joaoalbertodacosta@gmail.com' ||
         request.auth.uid == 'udOfNm9dSFOGgSc0FrJwH7zqqFc2' ||
         request.auth.uid == 'v26ewfAECzY3jbXvayvUjuAhzrf1'
       );
