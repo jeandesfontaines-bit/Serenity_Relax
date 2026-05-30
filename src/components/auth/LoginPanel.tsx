@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth, useUser } from '@/firebase';
 import {
   GoogleAuthProvider,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -29,6 +30,7 @@ export default function LoginPanel({
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [step, setStep] = useState<'email' | 'auth'>('email');
   const [isTherapist, setIsTherapist] = useState(false);
   const [magicLinkSent, setMagicLinkSent] = useState(false);
@@ -56,6 +58,7 @@ export default function LoginPanel({
     if (isLoading) return;
     setIsLoading(true);
     setError(null);
+    setNotice(null);
     try {
       const provider = new GoogleAuthProvider();
       const credential = await signInWithPopup(auth, provider);
@@ -76,6 +79,7 @@ export default function LoginPanel({
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    setNotice(null);
     try {
       const credential = await signInWithEmailAndPassword(auth, email, password);
       if (!redirectIfAuthenticated) {
@@ -88,9 +92,30 @@ export default function LoginPanel({
     }
   };
 
+  const handlePasswordReset = async () => {
+    const normalizedEmail = email.toLowerCase().trim();
+    if (!isTherapistEmail(normalizedEmail) || isLoading) return;
+
+    setIsLoading(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await sendPasswordResetEmail(auth, normalizedEmail, {
+        url: `${window.location.origin}/login`,
+        handleCodeInApp: false,
+      });
+      setNotice(`Un e-mail de réinitialisation a été envoyé à ${normalizedEmail}.`);
+    } catch {
+      setError("Impossible d'envoyer l'e-mail de réinitialisation. Vérifiez que ce compte existe dans Firebase Auth.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSendMagicLink = async () => {
     setIsLoading(true);
     setError(null);
+    setNotice(null);
     try {
       const response = await fetch('/api/magic-link', {
         method: 'POST',
@@ -121,6 +146,7 @@ export default function LoginPanel({
     }
 
     setError(null);
+    setNotice(null);
     if (isTherapistEmail(normalizedEmail)) {
       setIsLoading(true);
       try {
@@ -242,6 +268,12 @@ export default function LoginPanel({
             </div>
           )}
 
+          {notice && (
+            <div className="rounded-[1.2rem] border border-[var(--landing-tint)] bg-[var(--off-white)] p-4 text-sm text-[var(--teal-deep)]">
+              {notice}
+            </div>
+          )}
+
           <div className="space-y-6">
             <div className="space-y-4">
               <label className="landing-type-micro text-[var(--landing-warm-muted)]">
@@ -269,6 +301,14 @@ export default function LoginPanel({
                   placeholder="••••••••"
                   className="w-full rounded-full border border-[var(--landing-tint)] bg-white px-6 py-4 text-[1.02rem] font-medium text-[var(--off-black)] transition-all placeholder:text-[var(--landing-warm-muted)]/75 focus:border-[var(--teal)] focus:outline-none focus:ring-4 focus:ring-[var(--teal)]/12"
                 />
+                <button
+                  type="button"
+                  onClick={handlePasswordReset}
+                  disabled={isLoading || !email}
+                  className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-warm-soft)] transition-colors hover:text-[var(--off-black)] disabled:opacity-50"
+                >
+                  Mot de passe oublié ?
+                </button>
               </div>
             )}
           </div>
